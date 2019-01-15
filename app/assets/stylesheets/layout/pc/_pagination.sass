@@ -1,0 +1,53 @@
+// ==============================================
+// ページネーション (PC)
+// ==============================================
+
+.l-pagination
+  padding-top: 30px
+  padding-bottom: 45px
+  nav
+    text-align: center
+    .page
+      vertical-align: middle
+      font-size: map-get($fontSize, 'large')
+      display: inline-block
+      border: solid 1px map-get($layoutColors, 'lightGray')
+      text-align: center
+      margin-right: 10px
+      height: 45px
+      min-width: 45px
+      &:hover
+        background-color: map-get($layoutColors, 'core')
+        border: solid 1px map-get($layoutColors, 'core')
+      a
+        display: block
+        line-height: 42px
+        padding: 0 10px
+        color: map-get($fontColors, 'default')
+      &:hover > a
+        color: map-get($fontColors, 'white')
+
+      &:last-child
+        margin-right: 0
+    .current
+      line-height: 42px
+      border: none
+      background-color: map-get($layoutColors, 'base')
+      border: solid 1px map-get($layoutColors, 'base')
+      &:hover
+        background-color: map-get($layoutColors, 'base')
+        border: solid 1px map-get($layoutColors, 'base')
+    .prev
+      font-size: map-get($fontSize, 'base')
+      svg
+        transform: rotate(-90deg)
+    .next
+      font-size: map-get($fontSize, 'base')
+      svg
+        transform: rotate(90deg)
+    .gap
+      display: none
+
+.l-infinite
+  padding-bottom: 30px
+  font-size: 0

@@ -1,0 +1,23 @@
+defaults: &defaults
+
+  # サイト設定
+  site_name: JiiFactory
+  site_title: 案件管理
+  site_description: Jiiの案件を管理するシステムです。
+
+  # サイト画像
+  logo:
+  favicon:
+  webclip:
+  og_image:
+
+  # 未承認ユーザーのログインの許可設定 true: 許可する false: 許可しない
+  allow_inactive_user: false
+  # お知らせや通知等の新着表示期限(h)
+  information_new_hours: 24
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults

@@ -1,0 +1,34 @@
+.p-sessions
+  section.p-sessions__inner
+    h1.p-sessions__title 新規登録
+
+    ul.c-steps.u-mt-30
+      li.c-steps__item.active 会員登録
+      li.c-steps__item メール認証
+      li.c-steps__item 情報入力
+      / 承認が必要な場合
+      - unless SiteConfig.allow_inactive_user
+        li.c-steps__item 承認
+
+    .u-my-30
+      = form_for user, url: sign_up_path, method: :post do |f|
+
+        .c-form-field
+          = f.label :email, 'メールアドレス', class: 'c-form-label'
+          = f.text_field :email, value: user.email, placeholder: 'email@example.co.jp', class: 'c-form-text'
+        
+        .c-form-field.u-mt-20
+          = f.submit '登録する', class: 'p-sessions__button c-btnMain-standard'
+
+  .p-sessions__sns
+    h2.p-sessions__snsTitle 持っているアカウントで登録
+
+    / google認証
+    .u-mt-20.u-ta-center
+      = link_to user_google_omniauth_authorize_path, class: 'p-sessions__button--google c-btnMain-standard' do
+        svg.u-svg-white.u-va-top width='30' height='42'
+          use xlink:href='#application-google'
+        span.u-ml-10 Google
+
+  .u-mt-30.u-ta-right
+    = link_to 'ログインはこちら', sign_in_path

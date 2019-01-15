@@ -1,0 +1,35 @@
+// ==============================================
+// ナビゲーションメニュー (PC)
+// ==============================================
+
+.l-navigation
+  position: sticky
+  top: 0
+  margin-top: 10px
+  background-color: map-get($layoutColors, 'white')
+  box-shadow: rgba(map-get($layoutColors, 'black'), .3) 0 2px 1px
+  z-index: $layerLevel-header
+  &__list
+    margin: 0 auto
+    width: $container-md
+    text-align: center
+  &__item
+    display: inline-block
+    line-height: 42px
+    border-right: solid 1px map-get($layoutColors, 'gray')
+    &:last-child
+      border-right: none
+
+  &__link
+    $self: &
+    display: block
+    padding: 0 15px
+    border-bottom: solid 3px map-get($layoutColors, 'white')
+    &:hover
+      border-bottom: solid 3px map-get($layoutColors, 'core')
+      background-color: map-get($layoutColors, 'base')
+    &--active
+      @extend #{$self}
+      border-bottom: solid 3px map-get($layoutColors, 'core')
+      &:hover
+        background-color: map-get($layoutColors, 'white')

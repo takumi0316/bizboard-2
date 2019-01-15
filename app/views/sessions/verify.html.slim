@@ -1,0 +1,38 @@
+/ ==============================================
+/ 会員登録フォーム
+/ ==============================================
+
+.p-sessions
+  section.p-sessions__inner
+    h1.p-sessions__title 新規登録
+    p.u-mt-10 会員情報を入力してください
+
+    ul.c-steps.u-mt-30
+      li.c-steps__item 会員登録
+      li.c-steps__item メール認証
+      li.c-steps__item.active 情報入力
+      / 承認が必要な場合
+      - unless SiteConfig.allow_inactive_user
+        li.c-steps__item 承認
+
+    .u-my-30
+
+      = form_for user, url: confirm_path, method: :post do |f|
+
+        .c-form-field
+          span.p-sessions__required 必須
+          = f.label :name, 'ユーザー名', class: 'c-form-label u-ml-5'
+          = f.text_field :name, placeholder: 'メディア太郎', class: 'c-form-text'
+        .c-form-field.u-mt-10
+          = f.label :email, 'メールアドレス', class: 'c-form-label'
+          = f.text_field :email, placeholder: 'email@example.co.jp', class: 'c-form-text', disabled: true
+        .c-form-field.u-mt-10
+          span.p-sessions__required 必須
+          = f.label :password, 'パスワード', class: 'c-form-label u-ml-5'
+          = f.password_field :password, class: 'c-form-text'
+        .c-form-field.u-mt-10
+          span.p-sessions__required 必須
+          = f.label :password_confirmation, 'パスワード(確認)', class: 'c-form-label u-ml-5'
+          = f.password_field :password_confirmation, class: 'c-form-text'
+        .c-form-field.u-mt-20
+          = f.submit '登録する', class: 'p-sessions__button c-btnMain-standard'

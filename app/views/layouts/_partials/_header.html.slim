@@ -1,0 +1,28 @@
+header.l-header id='turbolinks-header' data-turbolinks-permanent=true
+
+  .l-header__inner
+    = link_to user_signed_in?? root_path : root_path do
+      h1
+
+        - if SiteConfig.logo
+          
+          = image_tag SiteConfig.logo, height: 50, alt: "#{SiteConfig.site_title}|#{SiteConfig.site_name}"
+
+        - else
+
+          svg.l-header__logo viewBox='10 20 600 155' width='180' height='50'
+            title #{SiteConfig.site_title}|#{SiteConfig.site_name}
+            desc = SiteConfig.site_description
+            use.l-header__logo-logo xlink:href='#logo_main'
+            use.l-header__logo-logo xlink:href='#logo_text'
+            use.l-header__logo-title xlink:href='#logo_title'
+            use.l-header__logo-vivid xlink:href='#logo_vivid'
+    
+    - if user_signed_in?
+      .l-header__menu
+
+        = link_to edit_user_path(current_user), title: 'プロフィール編集' do
+          = evil_icon 'ei-user', size: :m
+
+        = link_to sign_out_path, title: 'ログアウト', method: :delete do
+          = evil_icon 'ei-close-o', size: :m

@@ -1,0 +1,7 @@
+/ 前後いずれかにページが存在する場合のみ表示
+- if defined?(pagination) && pagination.pages > 1
+  .l-pagination
+    == pagy_nav_compact pagination
+
+  javascript:
+    Pagy.init();

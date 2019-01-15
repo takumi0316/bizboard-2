@@ -1,0 +1,73 @@
+// ==============================================
+//  初期値
+// ==============================================
+*
+  box-sizing: border-box
+  background-clip: padding-box
+  -webkit-tap-highlight-color: rgba(0,0,0,0)
+  &::selection
+    background: map-get($layoutColors, 'thinBlack')
+    color: map-get($fontColors, 'white')
+html
+  background: map-get($layoutColors, 'white')
+  font-size: 62.5%
+  height: 100%
+body
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  -webkit-text-size-adjust: 100%
+  font-family: application, 'Yu Gothic', 'YuGothic', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'Osaka', 'メイリオ', 'Meiryo', 'ＭＳ Ｐゴシック', 'MS PGothic', 'sans-serif'
+  font-feature-settings: palt
+  line-height: $line-height
+  letter-spacing: #{(100/1000)}em
+  font-size: map-get($fontSize, 'base')
+  color: map-get($fontColors, 'black')
+  max-width: 100%
+input
+  &::selection
+    background: map-get($layoutColors, 'core')
+    color: map-get($fontColors, 'white')
+  &:focus
+    outline: none
+input[type='button'], input[type='submit']
+  -webkit-appearance: none
+  outline: none
+  cursor: pointer
+input[type='password'],input[type='email']
+  ime-mode: disabled
+textarea, input[type='text']
+  outline: none
+  -webkit-appearance: none
+  resize: none
+textarea, input[type='text'], select
+  // アクセシビリティの観点からinputタグのfont-sizeは16px以上推奨(iPhoneでフォーカス時にズームされない)
+  font-size: 1.6rem
+h1, h2, h3, h4, h5, h6
+  font-weight: normal
+  text-rendering: optimizeSpeed
+ol, ul, li
+  list-style: none
+em, strong
+  font-style: normal
+  font-weight: normal
+i
+  display: inline-block
+  font-style: normal
+a
+  text-decoration: none
+  color: map-get($fontColors, 'default')
+  transition: all .3s ease
+  img
+    &:hover
+      opacity: .7
+  &:hover
+    color: map-get($fontColors, 'core')
+aside
+  color: map-get($fontColors, 'black')
+time
+  color: map-get($fontColors, 'thinBlack')
+img
+  vertical-align: bottom
+svg
+  display: inline-block
+  vertical-align: sub

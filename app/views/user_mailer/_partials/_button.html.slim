@@ -1,0 +1,9 @@
+/ Outlook対応
+<!--[if mso]>
+  v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href=local_assigns[:url] style='height: 60px; v-text-anchor: middle; width: 300px;' arcsize='7%' strokecolor='#3664c9' fillcolor='#3664c9'
+    w:anchorlock
+    center style='color: #ffffff; font-family: sans-serif; font-size: 24px;'
+      = local_assigns[:title]
+<![endif]-->
+
+= link_to local_assigns[:title], local_assigns[:url], class: 'l-mailers__button'

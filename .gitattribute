@@ -1,0 +1,12 @@
+#app/assets/stylesheets/foundation/_variables.scss merge=ours
+#config/deploy/production.rb merge=ours
+#config/environments/production.rb merge=ours
+#config/site_config.yml merge=ours
+#config/system_config.yml merge=ours
+#config/unicorn/production.rb merge=ours
+#config/database.yml merge=ours
+#config/credentials.yml.enc merge=ours
+#config/omniauth.yml merge=ours
+#config/environment.rb merge=ours
+#config/newrelic.yml merge=ours
+#.gitattribute

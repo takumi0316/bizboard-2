@@ -1,0 +1,38 @@
+// ==============================================
+// パンくずリスト (PC)
+// ==============================================
+
+.l-breadcrumb
+  background: rgba(map-get($layoutColors, 'white'), .9)
+  border-bottom: solid 1px map-get($layoutColors, 'gray')
+  &__list
+    max-width: $container-md
+    display: flex
+    justify-content: flex-start
+    width: $container-md
+    margin: 0 auto
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+  &__item
+    padding: 10px 5px
+    display: flex
+    align-items: center
+    &:nth-child(n + 2)
+      &::before
+        content: ''
+        margin-right: 10px
+        display: block
+        width: 6px
+        height: 6px
+        border-right: 1px solid map-get($layoutColors, 'lightGray')
+        border-top: 1px solid map-get($layoutColors, 'lightGray')
+        transform: rotate(45deg)
+  &__link
+    color: map-get($fontColors, 'thinBlack')
+    display: flex
+    align-items: center
+    &:hover
+      text-decoration: underline
+    &:visited
+      color: map-get($fontColors, 'thinBlack')

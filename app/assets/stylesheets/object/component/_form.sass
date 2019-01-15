@@ -1,0 +1,204 @@
+// ==============================================
+// 汎用フォーム
+// ==============================================
+
+%formStyle
+  display: inline-block
+  padding: 10px
+  border: 1px solid #aab4b9
+  border-radius: 2px
+  appearance: none
+  &:focus
+    outline: none
+    border: solid 1px map-get($layoutColors, 'core')
+
+.c-form
+  // 項目
+  // ------------------------------------
+  &-label
+    margin: 5px 0
+    font-weight: bold
+  // 必須
+  &__required
+    border-radius: 2px
+    background-color: map-get($layoutColors, 'vivid')
+    color: map-get($fontColors, 'white')
+    font-size: map-get($fontSize, 'small')
+    line-height: 1.4rem
+    padding: 0 5px
+  &-field
+    &[data-isvalid="false"]
+      background: #ffffde
+  &-error
+    margin: 5px 0
+    color: map-get($fontColors, 'red')
+    font-weight: bold
+    font-size: map-get($fontSize, 'small')
+  // テキスト・テキストエリア
+  // ------------------------------------
+  &-text, &-textarea
+    @extend %formStyle
+    width: 100%
+    line-height: 2rem
+    min-height: 40px
+    vertical-align: bottom
+    &:disabled, &[disabled]
+      background-color: map-get($layoutColors, 'gray')
+    &:read-only
+      background-color: map-get($layoutColors, 'gray')
+    &::placeholder
+      color: map-get($fontColors, 'midBlack')
+
+  // チェックボックス
+  // ------------------------------------
+  &-checkboxLabel
+    cursor: pointer
+    &:hover
+      & > .c-form-checkboxIcon
+        border-color: map-get($layoutColors, 'core')
+        box-shadow: 0 0 0 1px map-get($layoutColors, 'vivid')
+  &-checkboxIcon
+    @extend %formStyle
+    position: relative
+    width: 30px
+    height: 30px
+    margin-right: 10px
+    vertical-align: middle
+    &:hover
+      border-color: map-get($layoutColors, 'core')
+      box-shadow: 0 0 0 1px map-get($layoutColors, 'vivid')
+    &::before
+      content: ''
+      position: absolute
+      left: 0
+      right: 0
+      top: 1px
+      display: block
+      width: 6px
+      height: 16px
+      margin: 0 auto
+      border-right: 4px solid map-get($layoutColors, 'white')
+      border-bottom: 4px solid map-get($layoutColors, 'white')
+      transform: rotate(45deg)
+  &-checkbox
+    opacity: 0
+    width: 1px
+    height: 1px
+    padding: 0
+    margin: 0
+    &:focus
+      & + .c-form-checkboxIcon
+        border-color: map-get($layoutColors, 'core')
+        box-shadow: 0 0 0 1px #04a9f4
+    &:hover
+      & + .c-form-checkboxIcon
+        border-color: map-get($layoutColors, 'core')
+        box-shadow: 0 0 0 1px #04a9f4
+        cursor: pointer
+    &:checked
+      & + .c-form-checkboxIcon
+        border-color: map-get($layoutColors, 'core')
+        background-color: map-get($layoutColors, 'core')
+    &:disabled
+      & + .c-form-checkboxIcon
+        border-color: map-get($layoutColors, 'gray')
+        background-color: map-get($layoutColors, 'gray')
+        cursor: default
+        box-shadow: none
+  // ラジオボタン
+  // ------------------------------------
+  &-radioLabel
+    cursor: pointer
+    &:hover
+      & > .c-form-radioIcon
+        border-width: 2px
+        border-color: map-get($layoutColors, 'core')
+  &-radioIcon
+    @extend %formStyle
+    width: 30px
+    height: 30px
+    border-radius: 50%
+    background-size: cover
+    position: relative
+    margin-right: 10px
+    vertical-align: middle
+    &:hover
+      border-width: 2px
+      border-color: map-get($layoutColors, 'core')
+  &-radio
+    display: none
+    width: 1px
+    height: 1px
+    padding: 0
+    margin: 0
+    &:focus
+      & + .c-form-radioIcon
+        border: 2px solid map-get($layoutColors, 'core')
+    &:hover
+      & + .c-form-radioIcon
+        border-width: 2px
+        border-color: map-get($layoutColors, 'core')
+        cursor: pointer
+    &:checked
+      & + .c-form-radioIcon
+        border-width: 2px
+        border-color: map-get($layoutColors, 'core')
+        background: map-get($layoutColors, 'white')
+        &:after
+          content: ''
+          display: block
+          position: absolute
+          left: 50%
+          top: 50%
+          width: 22px
+          height: 22px
+          margin-top: -11px
+          margin-left: -11px
+          border-radius: 50%
+          background: map-get($layoutColors, 'core')
+    &:disabled
+      & + .c-form-radioIcon
+        border-width: 2px
+        border-color: map-get($layoutColors, 'gray')
+        background: map-get($layoutColors, 'white')
+        cursor: default
+        &:after
+          content: ''
+          display: block
+          position: absolute
+          left: 50%
+          top: 50%
+          width: 22px
+          height: 22px
+          margin-top: -11px
+          margin-left: -11px
+          border-radius: 50%
+          background: map-get($layoutColors, 'gray')
+
+  // セレクトボックス
+  // ------------------------------------
+  &-selectWrap
+    position: relative
+    &:after
+      content: ''
+      width: 8px
+      height: 8px
+      display: inline-block
+      position: absolute
+      margin-top: -8px
+      top: 50%
+      right: 15px
+      border-right: 2px solid map-get($layoutColors, 'lightGray')
+      border-bottom: 2px solid map-get($layoutColors, 'lightGray')
+      transform: rotate(45deg)
+      pointer-events: none
+  &-select
+    @extend %formStyle
+    cursor: pointer
+    padding-right: 33px
+    background: none
+    background-color: map-get($layoutColors, 'white')
+    width: 100%
+    line-height: 2rem
+    &::-ms-expand
+      display: none

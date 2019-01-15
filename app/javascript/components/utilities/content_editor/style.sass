@@ -1,0 +1,30 @@
+@import '../../../../assets/stylesheets/foundation/_variables.scss'
+
+.ContentEditor
+  background-color: map-get($layoutColors, 'white')
+  border-radius: 2px
+  border: solid 1px map-get($layoutColors, 'lightGray')
+  padding: 10px
+  min-height: 150px
+  .publicDraftStyleDefaultBlock
+    word-break : break-all
+    margin-top: $element-margin-pc
+    &:first-child
+      margin-top: 0
+    a
+      text-decoration: underline
+      color: map-get($fontColors, 'vivid')
+  &__button
+    display: inline-block
+    padding: 0 10px
+    border-radius: 2px
+    line-height: 3rem
+    cursor: pointer
+    text-align: center
+    color: map-get($fontColors, 'black')
+    background-color: map-get($layoutColors, 'gray')
+    margin-left: 10px
+    &:hover
+      opacity: .8
+    &:first-child
+      margin-left: 0

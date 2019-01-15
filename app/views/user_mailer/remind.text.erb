@@ -1,0 +1,6 @@
+<%= @user.name %>様
+
+パスワードの再設定方法をご案内いたします。
+下記よりパスワードを再設定し、再度ログインをお試しください。
+
+<%= password_reset_url(key: @user.password_digest) %>

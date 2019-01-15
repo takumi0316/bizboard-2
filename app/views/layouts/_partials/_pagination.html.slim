@@ -1,0 +1,27 @@
+/ 前後いずれかにページが存在する場合のみ表示
+- if defined?(pagination) && pagination.pages > 1
+  - link = pagy_link_proc pagination
+
+  .l-pagination
+    nav.pagy_nav.pagination role="navigation" aria-label="pager"
+
+      - if pagination.prev
+        span.page.prev
+          = link_to pagy_trim_url(pagy_url_for(pagination.prev, pagination)), rel: :prev do
+            svg.u-svg-thinBlack width='15' height='20' viewBox='-2 0 52 50'
+              use xlink:href='#application-tilde'
+            span.u-ml-10 前へ
+
+      - pagination.series.each do |item|
+        - if item.is_a? Integer
+          span.page ==> link.call item
+
+        - elsif item.is_a? String
+          span.page.current ==> item
+
+      - if pagination.next
+        span.page.next
+          = link_to pagy_url_for(pagination.next, pagination), rel: :next do
+            span.u-mr-10 次へ
+            svg.u-svg-thinBlack width='15' height='20' viewBox='2 0 52 50'
+              use xlink:href='#application-tilde'

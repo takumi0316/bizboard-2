@@ -1,0 +1,18 @@
+.p-sessions
+  section.p-sessions__inner
+    h1.p-sessions__title 会員登録
+
+    ul.c-steps.u-mt-30
+      li.c-steps__item 会員登録
+      li.c-steps__item.active メール認証
+      li.c-steps__item 情報入力
+      / 承認が必要な場合
+      - unless SiteConfig.allow_inactive_user
+        li.c-steps__item 承認
+
+    h2.u-mt-30
+      | 承認メールを送信しました
+      br
+      span ※まだ登録は完了していません
+    
+    p メールに記載されたURLをクリックして本登録を行ってください。

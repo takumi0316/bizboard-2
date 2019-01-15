@@ -1,0 +1,23 @@
+defaults: &defaults
+
+  url: http://localhost:3000
+  host: localhost
+  email: ruby.on.nishizawa@gmail.com
+  redis_host: localhost
+  redis_port: 6379
+  fragment_cache_time: 3
+  native_database_string_limit: 191
+
+  # Basic認証
+  basic_auth_id: general
+  basic_auth_pass: adminadmin
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults
+  url: http://18.179.205.236
+  host: 18.179.205.236
+  redis_host: localhost
+  redis_port: 6379

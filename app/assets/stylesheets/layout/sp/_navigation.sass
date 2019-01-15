@@ -1,0 +1,27 @@
+// ==============================================
+// ナビゲーションメニュー (SP)
+// ==============================================
+
+.l-navigation
+  display: block
+  position: relative
+  overflow-y: hidden
+  height: 45px
+  box-shadow: rgba(map-get($layoutColors, 'black'), .2) 0 2px 1px
+  z-index: $layerLevel-drawer - 2
+  &__list
+    overflow-x: scroll
+    width: 100%
+    white-space: nowrap
+    -webkit-overflow-scrolling: touch
+    height: 55px
+  &__item
+    display: table-cell
+  
+  &__link
+    $self: &
+    display: block
+    padding: 1rem 15px
+    &--active
+      @extend #{$self}
+      border-bottom: solid 3px map-get($layoutColors, 'core')

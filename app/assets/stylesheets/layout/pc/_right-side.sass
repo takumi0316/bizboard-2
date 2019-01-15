@@ -1,0 +1,55 @@
+// ==============================================
+// 右サイドメニュー
+// ==============================================
+
+.l-right-side
+  margin: 0 0 10px 30px
+  width: 300px
+  position: relative
+  
+  &__heading
+    display: flex
+    align-items: center
+    font-size: map-get($fontSize, 'title')
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 15px 0
+  &__list
+    margin-top: 10px
+  &__item
+    position: relative
+    display: flex
+    padding: 10px
+    border-bottom: solid 1px map-get($layoutColors, 'gray')
+    background-color: map-get($layoutColors, 'white')
+    &:hover
+      text-decoration: underline
+    &:nth-child(1) > .l-right-side__ranking
+      background-color: map-get($rankingColors, '1st')
+      color: map-get($fontColors, 'black')
+    &:nth-child(2) > .l-right-side__ranking
+      background-color: map-get($rankingColors, '2nd')
+    &:nth-child(3) > .l-right-side__ranking
+      background-color: map-get($rankingColors, '3rd')
+  &__content
+    flex: 1
+  &__image
+    width: 75px
+    height: 75px
+    object-fit: cover
+    object-position: center
+  &__title
+    flex: 1
+    font-size: map-get($fontSize, 'small')
+    margin-left: 5px
+    @include leader(2, map-get($fontSize, 'small'))
+  &__label
+    position: absolute
+    top: 0
+    left: 0
+    padding: 0 5px
+    line-height: 1.6em
+    text-align: center
+    color: map-get($fontColors, 'white')
+    background-color: rgba(map-get($layoutColors, 'vivid'), .7)
+  &__ranking
+    @extend .l-right-side__label

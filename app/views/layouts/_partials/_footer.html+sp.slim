@@ -1,0 +1,18 @@
+footer.l-footer
+  .l-footer__inner
+
+    = link_to user_signed_in?? root_path : root_path do
+
+      - if SiteConfig.logo
+          
+        = image_tag SiteConfig.logo, height: 50, alt: "#{SiteConfig.site_title}|#{SiteConfig.site_name}"
+      
+      - else
+
+        svg.l-footer__logo viewBox='10 25 580 150' width='180' height='50'
+          title #{SiteConfig.site_title}|#{SiteConfig.site_name}
+          desc = SiteConfig.site_description
+          use.l-footer__logo-logo xlink:href='#logo_main'
+          use.l-footer__logo-logo xlink:href='#logo_text'
+          use.l-footer__logo-title xlink:href='#logo_title'
+          use.l-footer__logo-vivid xlink:href='#logo_vivid'

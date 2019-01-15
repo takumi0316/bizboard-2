@@ -1,0 +1,71 @@
+doctype html
+html lang='ja'
+  head
+    meta charset='utf-8'
+
+    / meta
+    = display_meta_tags application_meta_tags
+
+    / favicon
+    = favicon_link_tag SiteConfig.favicon ? SiteConfig.favicon : 'favicon.ico'
+    = favicon_link_tag 'webclip.png', rel: 'apple-touch-icon', type: 'image/png'
+
+    / viewport
+    meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0'
+    meta name='apple-mobile-web-app-capable' content='yes'
+
+    / csrf
+    = csrf_meta_tags
+
+    / fonts
+    link href=asset_path('fonts/application', type: :stylesheet) id='js-webfont'
+
+    / stylesheets
+    = stylesheet_link_tag 'object/project/sp/application', 'data-turbolinks-track': :reload
+    = stylesheet_link_tag 'fonts/application', 'data-turbolinks-track': :reload
+
+    / javascripts
+    = Gon::Base.render_data
+    
+    / packs
+    = javascript_pack_tag 'sp'
+    = stylesheet_pack_tag 'sp', async: true
+
+  body
+
+    / SVG
+    = render_asset 'application.svg'
+
+    / icons
+    = evil_icons_sprite
+
+    / ----------------------------------------------
+    / header
+    / ----------------------------------------------
+    = render 'layouts/_partials/header'
+
+    / ----------------------------------------------
+    / main
+    / ----------------------------------------------
+    main.l-main
+
+      / ----------------------------------------------
+      / パンくず
+      / ----------------------------------------------
+      = render 'layouts/_partials/breadcrumbs'
+
+      / ----------------------------------------------
+      / main
+      / ----------------------------------------------
+      = yield
+
+    / ----------------------------------------------
+    / footer
+    / ----------------------------------------------
+    = render 'layouts/_partials/footer'
+
+    / ----------------------------------------------
+    / flash messages
+    / ----------------------------------------------
+    = render 'layouts/_partials/flash'
+

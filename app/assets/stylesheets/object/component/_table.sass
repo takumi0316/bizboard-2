@@ -1,0 +1,44 @@
+// ==============================================
+// テーブル
+// ==============================================
+
+.c-table
+  
+  overflow: auto
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) 0 0/20px 100%, linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) right/20px 100%
+  background-repeat: no-repeat
+  background-attachment: scroll
+  border-right: 1px solid map-get($layoutColors, 'lightGray')
+  -webkit-overflow-scrolling: touch
+  table
+    width: 100%
+    background: linear-gradient(to left, hsla(0,0%,100%,0), white 15px) 0 0 / 50px 100%, linear-gradient(to right, hsla(0,0%,100%,0), white 15px) right / 50px 100%
+    background-repeat: no-repeat
+    background-attachment: local
+    border-bottom: 1px solid map-get($layoutColors, 'lightGray')
+    border-collapse: collapse
+    thead
+      tr
+        th
+          padding: 10px
+          background: rgba(map-get($layoutColors, 'thinBlack'), .1)
+          border-top: 1px solid map-get($layoutColors, 'lightGray')
+          border-left: 1px solid map-get($layoutColors, 'lightGray')
+          white-space: nowrap
+    tbody
+      tr
+        &:nth-child(even)
+          td
+            background: rgba(map-get($layoutColors, 'lightGray'), .1)
+        td
+          padding: 10px
+          border-top: 1px solid map-get($layoutColors, 'lightGray')
+          border-left: 1px solid map-get($layoutColors, 'lightGray')
+          white-space: nowrap
+          background: rgba(map-get($layoutColors, 'white'), .6)
+          img
+            width: 90px
+            height: 90px
+            object-fit: cover
+            object-position: center
+            vertical-align: middle

@@ -1,0 +1,29 @@
+// ==============================================
+// タグ
+// ==============================================
+
+.c-tags
+  &__item
+    display: inline-block
+    font-size: map-get($fontSize, 'small')
+    background-color: map-get($layoutColors, 'gray')
+    line-height: 2.4
+    padding: 0 10px
+    margin-top: 10px
+    margin-right: 15px
+    box-shadow: rgba(map-get($layoutColors, 'black'), .2) 0 2px 2px
+    a
+      display: block
+      position: relative
+      padding-left: 20px
+      &:before
+        content: ''
+        position: absolute
+        top: 8px
+        left: 0
+        width: 14px
+        height: 14px
+        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9InRhZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHdpZHRoPSI1MHB4IiBoZWlnaHQ9IjUwcHgiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNTAgNTAiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggZmlsbD0iIzY2NjY2NiIgZD0iTTQ2LjUwMiwxNC42NDhsLTcuNzg3LTEuNTAzbDEuNjA4LTguMzMxYzAuMTA0LTAuNTQyLTAuMjUtMS4wNjctMC43OTItMS4xNzENCgljLTAuNTM3LTAuMTA0LTEuMDY3LDAuMjUtMS4xNzIsMC43OTJsLTEuNjA3LDguMzMxTDE4LjI1LDkuMTk1bDEuNDI1LTcuMzhjMC4xMDQtMC41NDItMC4yNS0xLjA2Ni0wLjc5Mi0xLjE3MQ0KCWMtMC41NDQtMC4xMDQtMS4wNjcsMC4yNS0xLjE3MSwwLjc5MmwtMS40MjUsNy4zOEw0Ljg3Nyw2LjYxM0M0LjMzNCw2LjUwNiwzLjgxLDYuODYzLDMuNzA2LDcuNDA2DQoJYy0wLjEwNCwwLjU0MiwwLjI1LDEuMDY3LDAuNzkyLDEuMTcxbDExLjQwOSwyLjIwMmwtNC4wNTgsMjEuMDIzbC03Ljk3Mi0xLjUzOGMtMC41NDItMC4xMDQtMS4wNjcsMC4yNS0xLjE3MSwwLjc5MQ0KCWMtMC4xMDQsMC41NDMsMC4yNSwxLjA2NiwwLjc5MiwxLjE3Mmw3Ljk3MiwxLjUzOWwtMS43OTQsOS4yOTVjLTAuMTA0LDAuNTQxLDAuMjUsMS4wNjUsMC43OTIsMS4xNw0KCWMwLjA2NCwwLjAxNSwwLjEyNywwLjAyMSwwLjE5LDAuMDIxYzAuNDcsMCwwLjg4OS0wLjMzMiwwLjk4MS0wLjgxMmwxLjc5NC05LjI5NWwxOC41MDIsMy41N2wtMS42MSw4LjM0Ng0KCWMtMC4xMDQsMC41NDEsMC4yNSwxLjA2NSwwLjc5MiwxLjE3YzAuMDYyLDAuMDE1LDAuMTI4LDAuMDIxLDAuMTg5LDAuMDIxYzAuNDcxLDAsMC44ODktMC4zMzIsMC45NzktMC44MTJsMS42MDgtOC4zNDZMNDUuMTIsNDAuMjYNCgljMC4wNjIsMC4wMTQsMC4xMjgsMC4wMiwwLjE4OCwwLjAyYzAuNDcxLDAsMC44OTEtMC4zMzEsMC45OC0wLjgxMmMwLjEwNS0wLjU0Mi0wLjI1LTEuMDY1LTAuNzkyLTEuMTcxbC0xMS4yMjQtMi4xNjZsNC4wNTgtMjEuMDIyDQoJbDcuNzg3LDEuNTAzYzAuMDYzLDAuMDEyLDAuMTI4LDAuMDE4LDAuMTksMC4wMThjMC40NjksMCwwLjg4OS0wLjMzMiwwLjk3OS0wLjgxMUM0Ny4zOTgsMTUuMjc4LDQ3LjA0NCwxNC43NTMsNDYuNTAyLDE0LjY0OHoNCgkgTTMyLjMxNCwzNS43NTNsLTE4LjUwMS0zLjU3MWw0LjA1OC0yMS4wMjFsMTguNTAyLDMuNTcyTDMyLjMxNCwzNS43NTN6Ii8+DQo8L3N2Zz4NCg==)
+        background-size: cover
+    &:hover
+      background-color: map-get($layoutColors, 'base')

@@ -1,0 +1,67 @@
+// ==============================================
+// コンテンツ (PC)
+// ==============================================
+
+.l-contents
+  flex: 1
+  margin: 0 auto 30px
+  width: 100%
+  max-width: $container-lg
+  overflow-x: auto
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    padding: 15px
+    width: 100%
+    margin-top: 15px
+  &__heading
+    display: flex
+    align-items: center
+    position: relative
+    font-size: map-get($fontSize, 'title')
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 15px 0
+    
+  &__panel
+    position: relative
+    display: inline-block
+    width: 20%
+    height: 160px
+    padding: 10px
+    text-align: center
+    background-color: map-get($layoutColors, 'white')
+    box-shadow: rgba(map-get($layoutColors, 'black'), .15) 0 0 2px
+    transition: all .2s ease-out
+    &:hover
+      background-color: map-get($layoutColors, 'lightGray')
+
+    &Badge
+      position: absolute
+      display: flex
+      justify-content: center
+      align-items: center
+      top: -5px
+      right: -5px
+      width: 30px
+      height: 30px
+      border-radius: 50%
+      background-color: map-get($layoutColors, 'red')
+      color: map-get($fontColors, 'white')
+      z-index: $layerLevel-header - 1
+
+  &__list
+  &__item
+    text-align: left
+    position: relative
+    line-height: 40px
+    a
+      display: block
+      color: map-get($layoutColors, 'thinBlack')
+      &::before
+        content: ''
+        margin-right: 10px
+        display: inline-block
+        width: 6px
+        height: 6px
+        border-right: 2px solid map-get($layoutColors, 'lightGray')
+        border-top: 2px solid map-get($layoutColors, 'lightGray')
+        transform: rotate(45deg)

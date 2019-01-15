@@ -1,0 +1,46 @@
+@import '../../../../assets/stylesheets/foundation/_variables.scss'
+
+// ==============================================
+// 汎用モーダルウィンドウ
+// ==============================================
+.Modal
+  &__overlay
+    display: none
+    &:not(:empty)
+      position: fixed
+      left: 0
+      top: 0
+      right: 0
+      bottom: 0
+      display: flex
+      align-items: center
+      justify-content: center
+      z-index: $layerLevel-overlay
+      background: rgba(map-get($layoutColors, 'black'), .5)
+  &__inner
+    position: relative
+    width: 400px
+    margin: 10px
+    padding: 10px
+    background-color: map-get($layoutColors, 'white')
+    border-radius: 2px
+    z-index: $layerLevel-overlay+20
+  &__button
+    display: block
+    margin-top: 10px
+  &__close
+    &Icon
+      position: absolute
+      right: 5px
+      top: 5px
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')

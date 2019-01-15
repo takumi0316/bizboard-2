@@ -1,0 +1,45 @@
+// ==============================================
+// 工程ステップ
+// ==============================================
+
+.c-steps
+  counter-reset: step
+  display: flex
+
+  &__item
+    list-style-type: none
+    font-size: 12px
+    position: relative
+    text-align: center
+    text-transform: uppercase
+    color: map-get($layoutColors, 'thinBlack')
+    flex: 1
+    &:before
+      width: 30px
+      height: 30px
+      content: counter(step)
+      counter-increment: step
+      line-height: 30px
+      border: 2px solid map-get($layoutColors, 'thinBlack')
+      display: block
+      text-align: center
+      margin: 0 auto 10px auto
+      border-radius: 50%
+      background-color: white
+    &:after
+      content: ''
+      width: 100%
+      height: 2px
+      position: absolute
+      background-color: map-get($layoutColors, 'thinBlack')
+      top: 15px
+      left: -50%
+      z-index: -1
+    &:first-child:after
+      content: none
+    &.active
+      color: map-get($layoutColors, 'vivid')
+      &:before
+        border-color: map-get($layoutColors, 'vivid')
+    &.active + &:after
+      background-color: map-get($layoutColors, 'vivid')

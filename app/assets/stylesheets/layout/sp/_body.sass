@@ -1,0 +1,21 @@
+// ==============================================
+// body (SP)
+// ==============================================
+
+.l-body
+  &[data-menu-open=true]
+    overflow: hidden
+  &[data-search-open=true]
+    overflow: hidden
+
+.l-main
+  padding-top: 50px
+  min-height: 450px
+  transition: all 0.4s ease
+  // メニューオープン時
+  [data-menu-open=true] &
+    transform: translateX(calc(100% - 60px))
+    overflow: hidden
+  [data-search-open=true] &
+    transform: translateX(calc(-100% + 60px))
+    overflow: hidden

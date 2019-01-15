@@ -1,0 +1,59 @@
+// ==============================================
+// FOOTER (SP)
+// ==============================================
+
+.l-footer
+  background-color: map-get($layoutColors, 'gray')
+  transition: all 0.4s ease
+  color: map-get($fontColors, 'thinBlack')
+  &__inner
+    text-align: center
+    padding: 30px $element-padding-sp
+  &__bottom
+    background-color: map-get($layoutColors, 'thinBlack')
+    color: map-get($fontColors, 'white')
+    text-align: center
+    padding: 6px 0
+    font-size: map-get($fontSize, 'x-small')
+  &__logo
+    &-vivid
+      fill: map-get($layoutColors, 'vivid')
+    &-logo
+      fill: map-get($fontColors, 'black')
+    &-beta
+      fill: map-get($layoutColors, 'thinBlack')
+  &__description
+    text-align: left
+    margin-top: 20px
+    font-size: map-get($fontSize, 'small')
+  &__lisence
+    margin: 20px auto 10px
+    font-size: map-get($fontSize, 'x-small')
+  &__list
+    margin-top: 10px
+  &__item
+    text-align: left
+    position: relative
+    line-height: 40px
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    &:last-child
+      border-bottom: none
+    a
+      display: block
+      color: map-get($layoutColors, 'thinBlack')
+      font-size: map-get($fontSize, 'small')
+      &::before
+        content: ''
+        margin-right: 10px
+        display: inline-block
+        width: 6px
+        height: 6px
+        border-right: 2px solid map-get($layoutColors, 'lightGray')
+        border-top: 2px solid map-get($layoutColors, 'lightGray')
+        transform: rotate(45deg)
+      
+  // メニューオープン時
+  [data-menu-open=true] &
+    transform: translateX(calc(100% - 60px))
+  [data-search-open=true] &
+    transform: translateX(calc(-100% + 60px))

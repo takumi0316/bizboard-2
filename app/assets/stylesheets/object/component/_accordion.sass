@@ -1,0 +1,19 @@
+// ==============================================
+// アコーディオン
+// ==============================================
+
+.c-accordion
+  &-label
+    display: inline-block
+    width: 12px
+    height: 12px
+    border-right: solid 3px map-get($layoutColors, 'core')
+    border-bottom: solid 3px map-get($layoutColors, 'core')
+    transform: rotate(45deg)
+    cursor: pointer
+    border-radius: 2px
+  &-check
+    display: none
+    &:checked
+      & ~ *
+        display: none

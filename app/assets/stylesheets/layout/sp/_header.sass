@@ -1,0 +1,143 @@
+// ==============================================
+// HEADER (SP)
+// ==============================================
+
+.l-header
+  $self: &
+  position: fixed
+  background-color: rgba(map-get($layoutColors, 'white'), .8)
+  width: 100%
+  height: 50px
+  text-align: center
+  transition: all 0.4s ease
+  z-index: $layerLevel-drawer - 1
+
+  // メニューオープン時
+  [data-menu-open=true] &
+    transform: translateX(calc(100% - 60px))
+  [data-search-open=true] &
+    transform: translateX(calc(-100% + 60px))
+
+  &__inner
+    padding-top: 7px
+  &__logo
+    &-vivid
+      fill: map-get($layoutColors, 'vivid')
+    &-logo
+      fill: map-get($fontColors, 'black')
+    &-beta
+      fill: map-get($layoutColors, 'thinBlack')
+
+  // メニューボタン
+  //-----------------------
+  &-trigger
+    display: block
+    position: absolute
+    left: 0
+    top: 0
+    width: 60px
+    height: 50px
+    padding-top: 30px
+    z-index: $layerLevel-drawer + 100
+    &__icon
+      position: absolute
+      left: 15px
+      top: 15px
+      display: block
+      width: 26px
+      height: 20px
+      border-top: solid 2px map-get($layoutColors, 'core')
+      &::before, &::after
+        content: ''
+        position: absolute
+        left: 0
+        display: block
+        width: 20px
+        height: 2px
+        background-color: map-get($layoutColors, 'core')
+      &::before
+        top: 8px
+      &::after
+        top: 18px
+      [data-menu-open=true] &
+        position: absolute
+        left: 16px
+        top: 10px
+        display: block
+        width: 26px
+        height: 20px
+        border-top: none
+        &::before, &::after
+          content: ''
+          position: absolute
+          left: 0
+          top: 8px
+          display: block
+          width: 28px
+          height: 2px
+          background-color: map-get($layoutColors, 'core')
+        &::before
+          transform: rotate(45deg)
+        &:after
+          transform: rotate(-45deg)
+    &__text
+      text-align: center
+      font-size: 1rem
+      font-weight: bold
+      // メニューオープン時
+      [data-menu-open=true] &::before
+        content: '閉じる'
+
+  // 検索ボタン
+  //-----------------------
+  &-search
+    display: block
+    position: absolute
+    right: 0
+    top: 0
+    width: 60px
+    height: 50px
+    z-index: $layerLevel-drawer + 100
+    &__icon
+      position: absolute
+      right: 15px
+      top: 13px
+      display: block
+      width: 26px
+      height: 20px
+      svg
+        fill: map-get($layoutColors, 'core')
+      [data-search-open=true] &
+        position: absolute
+        left: 16px
+        top: 10px
+        display: block
+        width: 26px
+        height: 20px
+        border-top: none
+        svg
+          fill: none
+        &::before, &::after
+          content: ''
+          position: absolute
+          left: 0
+          top: 8px
+          display: block
+          width: 28px
+          height: 2px
+          background-color: map-get($layoutColors, 'core')
+        &::before
+          transform: rotate(45deg)
+        &:after
+          transform: rotate(-45deg)
+
+    &__text
+      position: absolute
+      top: 30px
+      text-align: center
+      font-size: 1rem
+      font-weight: bold
+      width: 100%
+      // メニューオープン時
+      [data-search-open=true] &::before
+        content: '閉じる'

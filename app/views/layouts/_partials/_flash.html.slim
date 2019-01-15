@@ -1,0 +1,4 @@
+/ フラッシュメッセージ
+- flash.each do |key, value|
+  - next if key =~ /timedout|alert/
+  = react_component('Alert', { alert: value })

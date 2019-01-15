@@ -1,0 +1,33 @@
+.l-contents
+  section.l-contents__inner
+
+    .c-table.u-mt-30
+      table
+        thead
+          tr
+            th ユーザーID
+            th 画像
+            th 名前
+            / 記事にライターを表示する場合に表示
+            - if SiteConfig.display_article_writer
+              th 公開設定
+            / ライター登録に承認が必要な場合に表示
+            - unless SiteConfig.allow_inactive_user
+              th 承認
+            th colspan=2 編集
+        tbody
+          - users.each do |r|
+            tr
+              td = r.id
+              td = image_tag r.decorate.image_thumb
+              td = r.name
+              / 記事にライターを表示する場合に表示
+              - if SiteConfig.display_article_writer
+                td = r.publish_i18n
+              / ライター登録に承認が必要な場合に表示
+              - unless SiteConfig.allow_inactive_user
+                td = r.status_i18n
+              td = link_to '編集', edit_user_path(r), class: 'c-btnMain-standard'
+              td = link_to '削除', user_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+
+  = render 'layouts/_partials/pagination'

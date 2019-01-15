@@ -1,0 +1,82 @@
+// ==============================================
+// 汎用ボタン
+// ==============================================
+
+%btn
+  position: relative
+  transition: all .2s ease-out
+  display: inline-block
+  line-height: 46px - 4px
+  padding: 0 20px
+  border-radius: 2px
+  font-size: map-get($fontSize, 'base')
+  text-decoration: none
+  text-align: center
+  color: map-get($fontColors, 'white')
+  background-color: map-get(map-get($buttonColors, 'standard'), 'default')
+  background-clip: border-box
+  cursor: pointer
+  border: 2px solid transparent
+  box-shadow: rgba(map-get($layoutColors, 'black'), .2) 0 2px 2px
+  > a, &:visited, &:hover
+    text-decoration: none
+  &:hover
+    color: white
+    text-decoration: none
+.c-btn
+  &Main
+    @each $type in map-keys($buttonColors)
+      &-#{$type}
+        @extend %btn
+        background-color: map-get(map-get($buttonColors, $type), 'default')
+        &:hover
+          background-color: map-get(map-get($buttonColors, $type), 'hover')
+        &:disabled, &[disabled]
+          opacity: .3
+          background-color: map-get(map-get($buttonColors, $type), 'default')
+          cursor: default
+  &Sub
+    @each $type in map-keys($buttonColors)
+      &-#{$type}
+        @extend %btn
+        background-color: transparent
+        border-color: map-get(map-get($buttonColors, $type), 'default')
+        color: map-get(map-get($buttonColors, $type), 'default')
+        font-weight: bold
+        &:hover
+          background-color: map-get(map-get($buttonColors, $type), 'default')
+          border-color: map-get(map-get($buttonColors, $type), 'default')
+          color: map-get($fontColors, 'white')
+          font-weight: bold
+        &:disabled, &[disabled]
+          opacity: .3
+          background-color: transparent
+          border-color: map-get(map-get($buttonColors, $type), 'default')
+          color: map-get(map-get($buttonColors, $type), 'default')
+          cursor: default
+  &-icon
+    &::after
+      content: ''
+      display: inline-block
+      width: 8px
+      height: 8px
+      border-right: 2px solid map-get($layoutColors, 'white')
+      border-top: 2px solid map-get($layoutColors, 'white')
+      transform: rotate(45deg)
+      margin-left: 5px
+  &-default
+    background-color: map-get(map-get($buttonColors, 'standard'), 'default')
+    &:hover
+      background-color: map-get(map-get($buttonColors, 'standard'), 'hover')
+  &-red
+    background-color: #ea3033
+    &:hover
+      background-color: #ef5e61
+  &-blue
+    background-color: #3664c9
+    &:hover
+      background-color: #5e83d4
+  &-orange
+    background-color: #ff8c00
+    &:hover
+      background-color: #ffa333

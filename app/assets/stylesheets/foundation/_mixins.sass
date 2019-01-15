@@ -1,0 +1,26 @@
+// zoom
+// ------------------------------------
+@mixin zoom($value)
+  zoom: $value
+  -moz-transform: scale($value)
+  -moz-transform-origin: 0 0
+
+// lead (複数行３点リーダ対応)
+// ------------------------------------
+@mixin leader($lines-to-show: 2, $fontSize: map-get($fontSize, 'base'), $line-height: 1.5)
+  overflow: hidden
+  max-height: $fontSize * $line-height * $lines-to-show
+  position: relative
+  text-align: justify
+  &:before, &:after
+    background: map-get($layoutColors, 'white')
+    position: absolute
+    width: 1.2em
+  &:before
+    content: '...'
+    top: $fontSize * $line-height
+    right: 0
+  &:after
+    content: ''
+    height: 100%
+    width: 100%

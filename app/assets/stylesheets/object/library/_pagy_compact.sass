@@ -1,0 +1,89 @@
+// ==============================================
+// Pagy - ページ選択
+// ==============================================
+
+nav.pagy-nav-compact
+  width: 100%
+  font-size: 0
+  .page
+    display: flex
+    align-items: center
+    height: 45px
+    a
+      display: block
+      line-height: 45px
+    &:first-child
+      justify-content: flex-start
+    &:last-child
+      justify-content: flex-end
+
+  .prev
+    transform: rotate(0deg)
+    width: 100%
+    a
+      &::before
+        content: ''
+        position: absolute
+        left: 15px
+        top: 50%
+        margin-top: -3px
+        display: block
+        width: 6px
+        height: 6px
+        border-left: 2px solid map-get($layoutColors, 'black')
+        border-bottom: 2px solid map-get($layoutColors, 'black')
+        transform: rotate(45deg)
+      &::after
+        content: '前へ'
+        font-size: 1em
+        font-size: map-get($fontSize, 'base')
+        margin-left: 25px
+        vertical-align: middle
+      &:disabled, &[disabled]
+        border-left: 2px solid map-get($layoutColors, 'gray')
+        border-bottom: 2px solid map-get($layoutColors, 'gray')
+  .current
+    line-height: 45px
+    flex: 1
+  .next
+    transform: rotate(0deg)
+    width: 100%
+    a
+      &::before
+        content: '次へ'
+        font-size: 1em
+        font-size: map-get($fontSize, 'base')
+        margin-right: 25px
+        vertical-align: middle
+      &::after
+        content: ''
+        position: absolute
+        right: 15px
+        top: 50%
+        margin-top: -3px
+        display: block
+        width: 6px
+        height: 6px
+        border-right: 2px solid map-get($layoutColors, 'black')
+        border-top: 2px solid map-get($layoutColors, 'black')
+        transform: rotate(45deg)
+      &:disabled, &[disabled]
+        border-right: 2px solid map-get($layoutColors, 'gray')
+        border-top: 2px solid map-get($layoutColors, 'gray')
+  .pagy-compact-input
+    input
+      width: 100px !important
+      display: inline-block
+      padding: 10px
+      border: 1px solid #aab4b9
+      border-radius: 2px
+      font-size: map-get($fontSize, 'base')
+      appearance: none
+      font-family: sans-serif
+      &:focus
+        outline: none
+        border: solid 1px map-get($layoutColors, 'core')
+      height: 100%
+      vertical-align: bottom
+      &:disabled, &[disabled]
+        background-color: map-get($layoutColors, 'gray')

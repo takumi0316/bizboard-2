@@ -1,0 +1,24 @@
+// ==============================================
+//  PADDING CLASS
+// ==============================================
+@for $integer from 1 through 10
+  $size: $integer * 5
+  .u-p
+    // top
+    &t-#{$size}
+      padding-top: #{$size}px
+    // bottom
+    &b-#{$size}
+      padding-bottom: #{$size}px
+    // left
+    &l-#{$size}
+      padding-left: #{$size}px
+    // right
+    &r-#{$size}
+      padding-right: #{$size}px
+    &x-#{$size}
+      padding-left: #{$size}px
+      padding-right: #{$size}px
+    &y-#{$size}
+      padding-top: #{$size}px
+      padding-bottom: #{$size}px

@@ -1,0 +1,26 @@
+/ パンくずリストを表示
+- if defined?(breadcrumbs) && breadcrumbs.present?
+
+  .l-breadcrumb
+    ul.l-breadcrumb__list
+
+      li.l-breadcrumb__item itemscope=true itemtype='http://data-vocabulary.org/Breadcrumb'
+        = link_to root_path, itemprop: :url, class: 'l-breadcrumb__link' do
+          svg.u-svg-thinBlack width='20' height='20'
+            use xlink:href='#application-home'
+          span.u-ml-5 itemprop='title' TOP
+
+      - breadcrumbs.each do |item|
+
+        / リンク先が存在する場合
+        - if item.path
+
+          li.l-breadcrumb__item itemscope=true itemtype='http://data-vocabulary.org/Breadcrumb'
+            = link_to item.path, itemprop: :url, class: 'l-breadcrumb__link' do
+              span itemprop='title' = item.name
+
+        / リンク先が存在しない場合
+        - else
+
+          li.l-breadcrumb__item itemscope=true itemtype='http://data-vocabulary.org/Breadcrumb'
+            strong itemprop='title' = item.name
