@@ -49,8 +49,6 @@ class WebhooksController < ApplicationController
     @res = http.request(req)
   end
 
-  equest = Net::HTTP::Post.new(uri.path, initheader = )
-
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
