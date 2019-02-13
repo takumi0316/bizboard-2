@@ -26,6 +26,3 @@ development:
 
 production:
   <<: *defaults
-
-
-#https://invoice.moneyforward.com/oauth/authorize?client_id=bfc749bad67cd5d265ec2bcc2266a0486168da64c722d0a14d9b453e44a5dbfe&redirect_uri=https://factory.jiinet.co.jp/webhooks/mfcloud&response_type=code&scope=write

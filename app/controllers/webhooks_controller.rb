@@ -46,7 +46,19 @@ class WebhooksController < ApplicationController
       grant_type: :authorization_code,
       code: params[:code],
     })
-    @res = http.request(req)
+    res = http.request(req)
+
+    current_user.mf_access_token = res.body['access_token']
+    current_user.mf_token_expires_in += 30.days
+    current_user.mf_refresh_token = res.body['refresh_token']
+
+    current_user.save!
+
+    # 登録後のリダイレクト先を指定
+    redirect_url = URI(session[:return_url].presence || root_path)
+    session[:return_url] = nil
+
+    redirect_to redirect_url.to_s
   end
 
   #----------------------------------------

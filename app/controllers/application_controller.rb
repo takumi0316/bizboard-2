@@ -166,6 +166,46 @@ class ApplicationController < ActionController::Base
     end
 
     ##
+    # MFクラウド認証
+    # @version 2018/06/10
+    #
+    def authenticate_mfcloud
+
+      # MFクラウド未承認の場合
+      if !current_user.mf_access_token?
+        session[:return_url] = request.original_fullpath
+        redirect_to "https://invoice.moneyforward.com/oauth/authorize?client_id=#{SiteConfig.mfcloud_client_id}&redirect_uri=#{SiteConfig.mfcloud_redirect_uri}&response_type=code&scope=#{SiteConfig.mfcloud_scope}" and return
+      end
+
+      # MFクラウドの認証切れの場合
+      if current_user.expires_in < 30.days.ago
+
+        uri = URI.parse('https://invoice.moneyforward.com/oauth/token')
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        req = Net::HTTP::Post.new(uri.path, {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        })
+        req.set_form_data({
+          client_id: SiteConfig.mfcloud_client_id,
+          client_secret: SiteConfig.mfcloud_client_secret,
+          redirect_uri: SiteConfig.mfcloud_redirect_uri,
+          grant_type: :refresh_token,
+          refresh_token: current_user.mf_refresh_token,
+        })
+        res = http.request(req)
+
+        current_user.mf_access_token = res.body['access_token']
+        current_user.mf_token_expires_in += 30.days
+        current_user.mf_refresh_token = res.body['refresh_token']
+
+        current_user.save!
+      end
+    end
+
+    ##
     # omniauth認証エラー時
     # @version 2018/06/10
     #
