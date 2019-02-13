@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_07_203546) do
+ActiveRecord::Schema.define(version: 2019_02_13_105027) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -81,6 +81,20 @@ ActiveRecord::Schema.define(version: 2019_02_07_203546) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_company_divisions_on_company_id"
+  end
+
+  create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "mf_item_id"
+    t.string "code"
+    t.string "note"
+    t.integer "unit_price"
+    t.string "unit_label"
+    t.integer "consumption_tax"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mf_item_id"], name: "index_items_on_mf_item_id", unique: true
+    t.index ["name"], name: "index_items_on_name", unique: true
   end
 
   create_table "project_after_processes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -284,6 +298,9 @@ ActiveRecord::Schema.define(version: 2019_02_07_203546) do
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "mf_access_token"
+    t.datetime "mf_token_expires_in"
+    t.string "mf_refresh_token"
     t.index ["division_id"], name: "index_users_on_division_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["password_digest"], name: "index_users_on_password_digest"

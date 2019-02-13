@@ -19,7 +19,7 @@
 #  note                       :text(65535)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
-#  status                     :integer          default(0)
+#  status                     :integer          default("draft")
 #
 
 class Project < ApplicationRecord

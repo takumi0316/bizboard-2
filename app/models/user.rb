@@ -24,6 +24,9 @@
 #  unconfirmed_email    :string(191)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  mf_access_token      :string(191)
+#  mf_token_expires_in  :datetime
+#  mf_refresh_token     :string(191)
 #
 
 class User < ApplicationRecord
