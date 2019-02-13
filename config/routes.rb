@@ -24,6 +24,9 @@ Rails.application.routes.draw do
   resources :company_divisions
   resources :company_division_clients
 
+  # 品目
+  resources :items
+
   # ユーザー管理
   resources :users, only: [:index, :edit, :update, :destroy]
 

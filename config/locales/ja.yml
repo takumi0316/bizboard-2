@@ -45,6 +45,10 @@ ja:
         deliverd: 納品済
         invoicing: 請求書発行済
         complete: 完了
+    item:
+      consumption_tax:
+        tax_in: 税込
+        tax_not_in: 税別
 
   attributes:
     created_at: 登録日時

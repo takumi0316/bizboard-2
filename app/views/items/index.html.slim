@@ -1,0 +1,39 @@
+.l-contents
+  section.l-contents__inner
+
+    h1.l-contents__heading 品目一覧
+
+    .u-mt-15 = link_to '品目を作成する', new_item_path, class: 'c-btnMain-standard'
+
+    = form_with url: items_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+
+      .c-search__item
+        = f.label :name, '名称'
+        = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'タイトル'
+
+      = f.submit '検索', class: 'c-btnMain-standard u-mt-20'
+
+    .c-table.u-mt-30
+      table
+        thead
+          tr
+            th 品目ID
+            th 品目コード
+            th 品名
+            th 単価
+            th 数量
+            th 単位
+            th 消費税
+            th colspan=1
+        tbody
+          - items.each do |r|
+            tr
+              td = r.id
+              td = r.code
+              td = r.name
+              td = r.unit_price
+              td = r.unit_label
+              td = r.consumption_tax
+              td = link_to '編集', edit_item_path(r), class: 'c-btnMain-standard'
+
+  = render 'layouts/_partials/pagination'
