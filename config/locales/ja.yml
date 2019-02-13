@@ -30,6 +30,21 @@ ja:
       user_type:
         general: 一般
         admin: 管理者
+    company_division_client:
+      title:
+        nothing: なし
+        honorific: 様
+        normal: さん
+    project:
+      status:
+        draft: 新規
+        estimate: 見積書発行済
+        pre_work: 作業依頼済
+        working: 作業中
+        end_work: 作業完了
+        deliverd: 納品済
+        invoicing: 請求書発行済
+        complete: 完了
 
   attributes:
     created_at: 登録日時

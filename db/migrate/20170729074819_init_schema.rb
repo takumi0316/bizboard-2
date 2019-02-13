@@ -6,15 +6,17 @@ class InitSchema < ActiveRecord::Migration[5.2]
     # 自社部署
     # @version 2018/06/10
     #
-    create_table :units do |t|
+    create_table :bases do |t|
 
       t.string :name
       t.string :kana
       t.string :zip
       t.string :prefecture
       t.string :address1
-      t.string :sddress2
+      t.string :address2
       t.text :note
+
+      t.timestamps
     end
 
     ##
@@ -23,7 +25,7 @@ class InitSchema < ActiveRecord::Migration[5.2]
     #
     create_table :users do |t|
 
-      t.references :unit,                index: true
+      t.references :division,            index: true
       t.string     :name,                limit: 191,                            comment: 'ユーザー名'
       t.string     :email,               limit: 191, index: true, unique: true, comment: 'email'
       t.text       :comment,                                                    comment: 'コメント'
@@ -54,69 +56,92 @@ class InitSchema < ActiveRecord::Migration[5.2]
 
       t.string :name
       t.string :kana
-      t.integer :title, limit: 1, default: 0
       t.text :note
+
+      t.timestamps
     end
 
     ##
     # 取引先会社-部署
     # @version 2018/06/10
     #
-    create_table :company_units do |t|
+    create_table :company_divisions do |t|
 
+      t.references :company,  index: true
       t.string  :name
       t.string  :kana
-      t.integer :title, limit: 1, default: 0
       t.string  :zip
-      t.string  :prefecture
+      t.string  :tel
+      t.integer :prefecture_id
       t.string  :address1
-      t.string  :sddress2
+      t.string  :address2
       t.text :note
+
+      t.timestamps
     end
 
     ##
     # 取引先担当者
     # @version 2018/06/10
     #
-    create_table :company_unit_clients do |t|
+    create_table :company_division_clients do |t|
 
-      t.references :company_unit,  index: true
+      t.references :company_division,  index: true
       t.references :user,          index: true
       t.string  :name
       t.string  :kana
-      t.integer :title, limit: 1, default: 0
+      t.integer :title, limit: 1, default: 10
       t.string  :tel
       t.string  :email
       t.text :note
+
+      t.timestamps
     end
 
     ##
     # 案件
     # @version 2018/06/10
     #
-    create_table :invoices do |t|
+    create_table :projects do |t|
 
       t.references :user,          index: true
-      t.references :company_unit_client, index: true
+      t.references :company_division_client, index: true
       t.string     :name,            limit: 191
       t.text       :description
-      t.integer    :invoice_category,  limit: 4,     default: 0
-      t.integer    :invoice_count,     default: 0
-      t.integer    :invoice_type,      limit: 1,     default: 0
+      t.integer    :project_category,  limit: 4,     default: 0
+      t.integer    :project_count,     default: 0
+      t.integer    :project_type,      limit: 1,     default: 0
       t.integer    :channel,         limit: 1,     default: 0
       t.datetime   :deliver_at
       t.integer    :deliver_type,    limit: 4,     default: 0
       t.text       :deliver_type_note
+      t.integer    :binding_work,    limit: 1,     default: 0
+      t.integer    :after_process,   limit: 1,     default: 0
       t.text       :note
+      t.integer    :status,   limit: 1,     default: 0
+
+      t.timestamps
+    end
+
+    ##
+    # 案件編集履歴
+    # @version 2018/06/10
+    #
+    create_table :project_histories do |t|
+
+      t.references :project,         index: true
+      t.text       :note
+
+      t.timestamps
     end
 
     ##
     # 案件(コピー)
     # @version 2018/06/10
     #
-    create_table :invoice_copies do |t|
+    create_table :project_copies do |t|
       
-      t.references :invoice,           index: true
+      t.references :project,           index: true
       t.integer    :posting_state,   default: 0
       t.integer    :draft_split,     limit: 1,     default: 0
       t.integer    :draft_restore,   limit: 1,     default: 0
@@ -125,41 +150,17 @@ class InitSchema < ActiveRecord::Migration[5.2]
       t.text       :print_size_note
       t.integer    :surface,         limit: 1,     default: 0
       t.integer    :open_type,       limit: 1,     default: 0
-      t.integer    :after_process,   limit: 1,     default: 0
-      t.integer    :folding,         limit: 1,     default: 0
-      t.integer    :stapler,         limit: 1,     default: 0
-      t.integer    :hole,            limit: 1,     default: 0
-      t.text       :hole_note
-      t.integer    :clip,            limit: 1,     default: 0
-      t.integer    :bind,            limit: 1,     default: 0
-      t.text       :bind_note
-      t.integer    :back_text,       limit: 1,     default: 0
-      t.text       :back_text_note
-      t.integer    :binding_work,    limit: 1,     default: 0
-      t.integer    :bind_type,       limit: 1,     default: 0
-      t.text       :cross_front
-      t.text       :cross_back
-      t.integer    :cross_color,     limit: 1,     default: 0
-      t.text       :wrap_front
-      t.integer    :wrap_back_text,  limit: 1,     default: 0
-      t.text       :stitching_paper
-      t.integer    :secret_stitch,   limit: 1,     default: 0
-      t.text       :secret_stitch_paper
-      t.integer    :secret_stitch,   limit: 1,     default: 0
-      t.integer    :radio_stitch,    limit: 1,     default: 0
-      t.integer    :radio_cut,       limit: 1,     default: 0
-      t.text       :radio_cut_note
-      t.text       :double_doors
-      t.text       :gold_letter
+
+      t.timestamps
     end
 
     ##
     # 案件(プリント)
     # @version 2018/06/10
     #
-    create_table :invoice_prints do |t|
+    create_table :project_prints do |t|
 
-      t.references :invoice,            index: true
+      t.references :project,            index: true
       t.integer    :draft_data,       limit: 1,     default: 0
       t.text       :url
       t.integer    :work_process,     limit: 1,     default: 0
@@ -172,6 +173,76 @@ class InitSchema < ActiveRecord::Migration[5.2]
       t.text       :print_size_note
       t.integer    :surface,          limit: 1,     default: 0
       t.integer    :open_type,        limit: 1,     default: 0
+
+      t.timestamps
+    end
+
+    ##
+    # 案件(カード)
+    # @version 2018/06/10
+    #
+    create_table :project_cards do |t|
+
+      t.references :project,            index: true
+      t.integer    :draft_data,       limit: 1,     default: 0
+      t.text       :url
+      t.integer    :card_type,        limit: 1,     default: 0
+      t.integer    :work_type,        limit: 1,     default: 0
+      t.integer    :work_time,        default: 0
+      t.integer    :color,            limit: 1,     default: 0
+      t.integer    :paper,            limit: 1,     default: 0
+      t.integer    :surface,          limit: 1,     default: 0
+      t.integer    :emboss,           limit: 1,     default: 0
+
+      t.timestamps
+    end
+
+    ##
+    # 案件(スキャン)
+    # @version 2018/06/10
+    #
+    create_table :project_scans do |t|
+
+      t.references :project,           index: true
+      t.integer    :posting_state,   default: 0
+      t.integer    :print_size,      limit: 1,     default: 0
+      t.integer    :draft_split,     limit: 1,     default: 0
+      t.integer    :draft_restore,   limit: 1,     default: 0
+      t.integer    :back_cut,        limit: 1,     default: 0
+      t.text       :back_cut_note
+      t.integer    :color,           limit: 1,     default: 0
+      t.integer    :resolution,      limit: 1,     default: 0
+      t.integer    :file_extension,  limit: 1,     default: 0
+      t.integer    :size_mix,        limit: 1,     default: 0
+      t.integer    :adf,             limit: 1,     default: 0
+      t.integer    :odr,             limit: 1,     default: 0
+      t.integer    :bookmark,        limit: 1,     default: 0
+      t.integer    :edit_file_name,  limit: 1,     default: 0
+
+      t.timestamps
+    end
+
+    ##
+    # 案件(製本のみ)
+    # @version 2018/06/10
+    #
+    create_table :project_binds do |t|
+
+      t.references :project,         index: true
+      t.integer    :posting_state,   default: 0
+      t.integer    :print_size,      limit: 1,     default: 0
+      t.text       :print_size_note
+
+      t.timestamps
+    end
+
+    ##
+    # 後加工作業
+    # @version 2018/06/10
+    #
+    create_table :project_after_processes do |t|
+
+      t.references :project,         index: true
       t.integer    :folding,          limit: 1,     default: 0
       t.integer    :stapler,          limit: 1,     default: 0
       t.integer    :hole,             limit: 1,     default: 0
@@ -182,6 +253,17 @@ class InitSchema < ActiveRecord::Migration[5.2]
       t.text       :bind_note
       t.integer    :back_text,        limit: 1,     default: 0
       t.text       :back_text_note
+
+      t.timestamps
+    end
+
+    ##
+    # 製本仕様
+    # @version 2018/06/10
+    #
+    create_table :project_binding_works do |t|
+
+      t.references :project,         index: true
       t.integer    :bind_type,       limit: 1,     default: 0
       t.text       :cross_front
       t.text       :cross_back
@@ -190,87 +272,15 @@ class InitSchema < ActiveRecord::Migration[5.2]
       t.integer    :wrap_back_text,  limit: 1,     default: 0
       t.text       :stitching_paper
       t.integer    :secret_stitch,   limit: 1,     default: 0
-      t.text       :secret_stitch_paper
+      t.integer    :secret_stitch_paper, limit: 1,     default: 0
       t.integer    :secret_stitch,   limit: 1,     default: 0
       t.integer    :radio_stitch,    limit: 1,     default: 0
       t.integer    :radio_cut,       limit: 1,     default: 0
       t.text       :radio_cut_note
       t.text       :double_doors
       t.text       :gold_letter
-    end
 
-    ##
-    # 案件(カード)
-    # @version 2018/06/10
-    #
-    create_table :invoice_cards do |t|
-
-      t.references :invoice,            index: true
-      t.integer    :draft_data,       limit: 1,     default: 0
-      t.text       :url
-      t.integer    :card_type,        limit: 1,     default: 0
-      t.integer    :work_type,        limit: 1,     default: 0
-      t.integer    :work_time,        default: 0
-      t.integer    :color,            limit: 1,     default: 0
-      t.integer    :paper
-      t.integer    :surface,          limit: 1,     default: 0
-      t.integer    :emboss,           limit: 1,     default: 0
-    end
-
-    ##
-    # 案件(スキャン)
-    # @version 2018/06/10
-    #
-    create_table :invoice_scans do |t|
-
-      t.references :invoice,           index: true
-      t.integer    :posting_state,   default: 0
-      t.integer    :draft_split,     limit: 1,     default: 0
-      t.integer    :draft_restore,   limit: 1,     default: 0
-      t.integer    :back_cut,        limit: 1,     default: 0
-      t.text       :back_cut_note
-      t.integer    :color,           limit: 1,     default: 0
-      t.integer    :resolution,      limit: 1,     default: 0
-      t.integer    :extension,       limit: 1,     default: 0
-      t.integer    :size_mix,        limit: 1,     default: 0
-      t.integer    :adf,             limit: 1,     default: 0
-      t.integer    :odr,             limit: 1,     default: 0
-      t.integer    :bookmark,        limit: 1,     default: 0
-      t.integer    :edit_file_name,  limit: 1,     default: 0
-    end
-
-    ##
-    # 案件(製本のみ)
-    # @version 2018/06/10
-    #
-    create_table :invoice_binds do |t|
-
-      t.references :invoice,           index: true
-      t.integer    :posting_state,   default: 0
-      t.integer    :print_size,      limit: 1,     default: 0
-      t.text       :print_size_note
-      t.integer    :folding,         limit: 1,     default: 0
-      t.integer    :stapler,         limit: 1,     default: 0
-      t.integer    :hole,            limit: 1,     default: 0
-      t.text       :hole_note
-      t.integer    :clip,            limit: 1,     default: 0
-      t.integer    :bind,            limit: 1,     default: 0
-      t.text       :bind_note
-      t.integer    :back_text,       limit: 1,     default: 0
-      t.text       :cross_front
-      t.text       :cross_back
-      t.integer    :cross_color,     limit: 1,     default: 0
-      t.text       :wrap_front
-      t.integer    :wrap_back_text,  limit: 1,     default: 0
-      t.text       :stitching_paper
-      t.integer    :secret_stitch,   limit: 1,     default: 0
-      t.text       :secret_stitch_paper
-      t.integer    :secret_stitch,   limit: 1,     default: 0
-      t.integer    :radio_stitch,    limit: 1,     default: 0
-      t.integer    :radio_cut,       limit: 1,     default: 0
-      t.text       :radio_cut_note
-      t.text       :double_doors
-      t.text       :gold_letter
+      t.timestamps
     end
 
     ##

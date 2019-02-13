@@ -1,25 +1,28 @@
 # == Schema Information
 #
-# Table name: invoice_cards
+# Table name: company_divisions
 #
-#  id         :bigint(8)        not null, primary key
-#  invoice_id :bigint(8)
-#  draft_data :integer          default(0)
-#  url        :text(65535)
-#  card_type  :integer          default(0)
-#  work_type  :integer          default(0)
-#  work_time  :integer          default(0)
-#  color      :integer          default(0)
-#  paper      :integer
-#  surface    :integer          default(0)
-#  emboss     :integer          default(0)
+#  id            :bigint(8)        not null, primary key
+#  company_id    :bigint(8)
+#  name          :string(191)
+#  kana          :string(191)
+#  zip           :string(191)
+#  tel           :string(191)
+#  prefecture_id :integer
+#  address1      :string(191)
+#  address2      :string(191)
+#  note          :text(65535)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 
-class InvoiceCard < ApplicationRecord
+class CompanyDivision < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
+
+  extend ActiveHash::Associations::ActiveRecordExtensions
 
   #----------------------------------------
   #  ** Constants **
@@ -37,7 +40,13 @@ class InvoiceCard < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :invoice
+  belongs_to :company
+
+  # 都道府県
+  belongs_to_active_hash :prefecture
+
+  # 部署
+  has_many :clients, class_name: 'CompanyDivisionClient'
 
   #----------------------------------------
   #  ** Scopes **

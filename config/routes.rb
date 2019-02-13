@@ -16,8 +16,21 @@ Rails.application.routes.draw do
   end
   resources :configs
 
+  # 案件
+  resources :projects
+
+  # 取引先
+  resources :companies
+  resources :company_divisions
+  resources :company_division_clients
+
   # ユーザー管理
   resources :users, only: [:index, :edit, :update, :destroy]
+
+  # サイト設定
+  namespace :webhooks do
+    get :mfcloud
+  end
 
   # 認証
   devise_scope :user do

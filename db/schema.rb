@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_07_29_074819) do
+ActiveRecord::Schema.define(version: 2019_02_07_203546) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -33,91 +33,58 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "bases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "kana"
-    t.integer "title", limit: 1, default: 0
-    t.text "note"
-  end
-
-  create_table "company_unit_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "company_unit_id"
-    t.bigint "user_id"
-    t.string "name"
-    t.string "kana"
-    t.integer "title", limit: 1, default: 0
-    t.string "tel"
-    t.string "email"
-    t.text "note"
-    t.index ["company_unit_id"], name: "index_company_unit_clients_on_company_unit_id"
-    t.index ["user_id"], name: "index_company_unit_clients_on_user_id"
-  end
-
-  create_table "company_units", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.string "kana"
-    t.integer "title", limit: 1, default: 0
     t.string "zip"
     t.string "prefecture"
     t.string "address1"
-    t.string "sddress2"
+    t.string "address2"
     t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "invoice_binds", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "invoice_id"
-    t.integer "posting_state", default: 0
-    t.integer "print_size", limit: 1, default: 0
-    t.text "print_size_note"
-    t.integer "folding", limit: 1, default: 0
-    t.integer "stapler", limit: 1, default: 0
-    t.integer "hole", limit: 1, default: 0
-    t.text "hole_note"
-    t.integer "clip", limit: 1, default: 0
-    t.integer "bind", limit: 1, default: 0
-    t.text "bind_note"
-    t.integer "back_text", limit: 1, default: 0
-    t.text "cross_front"
-    t.text "cross_back"
-    t.integer "cross_color", limit: 1, default: 0
-    t.text "wrap_front"
-    t.integer "wrap_back_text", limit: 1, default: 0
-    t.text "stitching_paper"
-    t.integer "secret_stitch", limit: 1, default: 0
-    t.text "secret_stitch_paper"
-    t.integer "radio_stitch", limit: 1, default: 0
-    t.integer "radio_cut", limit: 1, default: 0
-    t.text "radio_cut_note"
-    t.text "double_doors"
-    t.text "gold_letter"
-    t.index ["invoice_id"], name: "index_invoice_binds_on_invoice_id"
+  create_table "companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "kana"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "invoice_cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "invoice_id"
-    t.integer "draft_data", limit: 1, default: 0
-    t.text "url"
-    t.integer "card_type", limit: 1, default: 0
-    t.integer "work_type", limit: 1, default: 0
-    t.integer "work_time", default: 0
-    t.integer "color", limit: 1, default: 0
-    t.integer "paper"
-    t.integer "surface", limit: 1, default: 0
-    t.integer "emboss", limit: 1, default: 0
-    t.index ["invoice_id"], name: "index_invoice_cards_on_invoice_id"
+  create_table "company_division_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "company_division_id"
+    t.bigint "user_id"
+    t.string "name"
+    t.string "kana"
+    t.integer "title", limit: 1, default: 10
+    t.string "tel"
+    t.string "email"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_division_id"], name: "index_company_division_clients_on_company_division_id"
+    t.index ["user_id"], name: "index_company_division_clients_on_user_id"
   end
 
-  create_table "invoice_copies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "invoice_id"
-    t.integer "posting_state", default: 0
-    t.integer "draft_split", limit: 1, default: 0
-    t.integer "draft_restore", limit: 1, default: 0
-    t.integer "color", limit: 1, default: 0
-    t.integer "print_size", limit: 1, default: 0
-    t.text "print_size_note"
-    t.integer "surface", limit: 1, default: 0
-    t.integer "open_type", limit: 1, default: 0
-    t.integer "after_process", limit: 1, default: 0
+  create_table "company_divisions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "company_id"
+    t.string "name"
+    t.string "kana"
+    t.string "zip"
+    t.string "tel"
+    t.integer "prefecture_id"
+    t.string "address1"
+    t.string "address2"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_company_divisions_on_company_id"
+  end
+
+  create_table "project_after_processes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
     t.integer "folding", limit: 1, default: 0
     t.integer "stapler", limit: 1, default: 0
     t.integer "hole", limit: 1, default: 0
@@ -127,7 +94,13 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.text "bind_note"
     t.integer "back_text", limit: 1, default: 0
     t.text "back_text_note"
-    t.integer "binding_work", limit: 1, default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_after_processes_on_project_id"
+  end
+
+  create_table "project_binding_works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
     t.integer "bind_type", limit: 1, default: 0
     t.text "cross_front"
     t.text "cross_back"
@@ -136,17 +109,68 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.integer "wrap_back_text", limit: 1, default: 0
     t.text "stitching_paper"
     t.integer "secret_stitch", limit: 1, default: 0
-    t.text "secret_stitch_paper"
+    t.integer "secret_stitch_paper", limit: 1, default: 0
     t.integer "radio_stitch", limit: 1, default: 0
     t.integer "radio_cut", limit: 1, default: 0
     t.text "radio_cut_note"
     t.text "double_doors"
     t.text "gold_letter"
-    t.index ["invoice_id"], name: "index_invoice_copies_on_invoice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_binding_works_on_project_id"
   end
 
-  create_table "invoice_prints", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "invoice_id"
+  create_table "project_binds", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
+    t.integer "posting_state", default: 0
+    t.integer "print_size", limit: 1, default: 0
+    t.text "print_size_note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_binds_on_project_id"
+  end
+
+  create_table "project_cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
+    t.integer "draft_data", limit: 1, default: 0
+    t.text "url"
+    t.integer "card_type", limit: 1, default: 0
+    t.integer "work_type", limit: 1, default: 0
+    t.integer "work_time", default: 0
+    t.integer "color", limit: 1, default: 0
+    t.integer "paper", limit: 1, default: 0
+    t.integer "surface", limit: 1, default: 0
+    t.integer "emboss", limit: 1, default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_cards_on_project_id"
+  end
+
+  create_table "project_copies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
+    t.integer "posting_state", default: 0
+    t.integer "draft_split", limit: 1, default: 0
+    t.integer "draft_restore", limit: 1, default: 0
+    t.integer "color", limit: 1, default: 0
+    t.integer "print_size", limit: 1, default: 0
+    t.text "print_size_note"
+    t.integer "surface", limit: 1, default: 0
+    t.integer "open_type", limit: 1, default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_copies_on_project_id"
+  end
+
+  create_table "project_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_histories_on_project_id"
+  end
+
+  create_table "project_prints", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
     t.integer "draft_data", limit: 1, default: 0
     t.text "url"
     t.integer "work_process", limit: 1, default: 0
@@ -159,65 +183,52 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.text "print_size_note"
     t.integer "surface", limit: 1, default: 0
     t.integer "open_type", limit: 1, default: 0
-    t.integer "folding", limit: 1, default: 0
-    t.integer "stapler", limit: 1, default: 0
-    t.integer "hole", limit: 1, default: 0
-    t.text "hole_note"
-    t.integer "clip", limit: 1, default: 0
-    t.integer "bind", limit: 1, default: 0
-    t.text "bind_note"
-    t.integer "back_text", limit: 1, default: 0
-    t.text "back_text_note"
-    t.integer "bind_type", limit: 1, default: 0
-    t.text "cross_front"
-    t.text "cross_back"
-    t.integer "cross_color", limit: 1, default: 0
-    t.text "wrap_front"
-    t.integer "wrap_back_text", limit: 1, default: 0
-    t.text "stitching_paper"
-    t.integer "secret_stitch", limit: 1, default: 0
-    t.text "secret_stitch_paper"
-    t.integer "radio_stitch", limit: 1, default: 0
-    t.integer "radio_cut", limit: 1, default: 0
-    t.text "radio_cut_note"
-    t.text "double_doors"
-    t.text "gold_letter"
-    t.index ["invoice_id"], name: "index_invoice_prints_on_invoice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_prints_on_project_id"
   end
 
-  create_table "invoice_scans", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "invoice_id"
+  create_table "project_scans", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
     t.integer "posting_state", default: 0
+    t.integer "print_size", limit: 1, default: 0
     t.integer "draft_split", limit: 1, default: 0
     t.integer "draft_restore", limit: 1, default: 0
     t.integer "back_cut", limit: 1, default: 0
     t.text "back_cut_note"
     t.integer "color", limit: 1, default: 0
     t.integer "resolution", limit: 1, default: 0
-    t.integer "extension", limit: 1, default: 0
+    t.integer "file_extension", limit: 1, default: 0
     t.integer "size_mix", limit: 1, default: 0
     t.integer "adf", limit: 1, default: 0
     t.integer "odr", limit: 1, default: 0
     t.integer "bookmark", limit: 1, default: 0
     t.integer "edit_file_name", limit: 1, default: 0
-    t.index ["invoice_id"], name: "index_invoice_scans_on_invoice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_scans_on_project_id"
   end
 
-  create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "company_unit_client_id"
+    t.bigint "company_division_client_id"
     t.string "name"
     t.text "description"
-    t.integer "invoice_category", default: 0
-    t.integer "invoice_count", default: 0
-    t.integer "invoice_type", limit: 1, default: 0
+    t.integer "project_category", default: 0
+    t.integer "project_count", default: 0
+    t.integer "project_type", limit: 1, default: 0
     t.integer "channel", limit: 1, default: 0
     t.datetime "deliver_at"
     t.integer "deliver_type", default: 0
     t.text "deliver_type_note"
+    t.integer "binding_work", limit: 1, default: 0
+    t.integer "after_process", limit: 1, default: 0
     t.text "note"
-    t.index ["company_unit_client_id"], name: "index_invoices_on_company_unit_client_id"
-    t.index ["user_id"], name: "index_invoices_on_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "status", limit: 1, default: 0
+    t.index ["company_division_client_id"], name: "index_projects_on_company_division_client_id"
+    t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
   create_table "scheduler_stats", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -242,24 +253,6 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.index ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true
   end
 
-  create_table "static_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.text "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_static_texts_on_name"
-  end
-
-  create_table "units", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.string "kana"
-    t.string "zip"
-    t.string "prefecture"
-    t.string "address1"
-    t.string "sddress2"
-    t.text "note"
-  end
-
   create_table "uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", comment: "ファイルタイトル"
     t.string "author", comment: "作成者ID"
@@ -270,7 +263,7 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "unit_id"
+    t.bigint "division_id"
     t.string "name", comment: "ユーザー名"
     t.string "email", comment: "email"
     t.text "comment", comment: "コメント"
@@ -291,9 +284,9 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_users_on_division_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["password_digest"], name: "index_users_on_password_digest"
-    t.index ["unit_id"], name: "index_users_on_unit_id"
   end
 
 end

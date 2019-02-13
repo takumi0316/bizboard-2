@@ -1,25 +1,17 @@
 # == Schema Information
 #
-# Table name: invoice_scans
+# Table name: project_binds
 #
-#  id             :bigint(8)        not null, primary key
-#  invoice_id     :bigint(8)
-#  posting_state  :integer          default(0)
-#  draft_split    :integer          default(0)
-#  draft_restore  :integer          default(0)
-#  back_cut       :integer          default(0)
-#  back_cut_note  :text(65535)
-#  color          :integer          default(0)
-#  resolution     :integer          default(0)
-#  extension      :integer          default(0)
-#  size_mix       :integer          default(0)
-#  adf            :integer          default(0)
-#  odr            :integer          default(0)
-#  bookmark       :integer          default(0)
-#  edit_file_name :integer          default(0)
+#  id              :bigint(8)        not null, primary key
+#  project_id      :bigint(8)
+#  posting_state   :integer          default("stapler")
+#  print_size      :integer          default("card_size")
+#  print_size_note :text(65535)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
-class InvoiceScan < ApplicationRecord
+class ProjectBind < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -33,6 +25,9 @@ class InvoiceScan < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
+  enum posting_state: { stapler: 0, zem: 10, wclip: 20, band: 30, bara: 40, bind: 50, file: 60 }
+  enum print_size: { card_size: 0, a4: 10, a3: 20, a2: 30, a1: 40, a0: 50 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
@@ -41,7 +36,7 @@ class InvoiceScan < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :invoice
+  belongs_to :project
 
   #----------------------------------------
   #  ** Scopes **

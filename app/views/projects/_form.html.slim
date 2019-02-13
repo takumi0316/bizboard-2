@@ -1,0 +1,13 @@
+.l-contents
+  section.l-contents__inner
+
+    = react_component('ProjectEditor',
+      { action: action,
+      project: project,
+      project_bind: project.bind,
+      project_copy: project.copy,
+      project_card: project.card,
+      project_print: project.print,
+      project_scan: project.scan,
+      project_after_process: project.project_after_process,
+      project_binding_work: project.project_binding_work })

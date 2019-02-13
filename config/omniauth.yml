@@ -8,7 +8,7 @@ default: &default
   google:
     key: 846344407078-fut18i1sagoa8rgvp3uu68l75c3ftak6.apps.googleusercontent.com
     secret: 7SsmFq4vdmfOdV3i6lCv7tqT
-    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.me'
+    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
 
 development:
   <<: *default
@@ -20,4 +20,4 @@ production:
   google:
     key: 1042099504507-r5sbhh3umefm7e18kpebj21pug91q9jh.apps.googleusercontent.com
     secret: MCYGkgulqSKkCZEjLCp4zBKe
-    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.me'
+    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'

@@ -1,19 +1,21 @@
 # == Schema Information
 #
-# Table name: company_units
+# Table name: company_division_clients
 #
-#  id         :bigint(8)        not null, primary key
-#  name       :string(191)
-#  kana       :string(191)
-#  title      :integer          default(0)
-#  zip        :string(191)
-#  prefecture :string(191)
-#  address1   :string(191)
-#  sddress2   :string(191)
-#  note       :text(65535)
+#  id                  :bigint(8)        not null, primary key
+#  company_division_id :bigint(8)
+#  user_id             :bigint(8)
+#  name                :string(191)
+#  kana                :string(191)
+#  title               :integer          default("honorific")
+#  tel                 :string(191)
+#  email               :string(191)
+#  note                :text(65535)
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 
-class CompanyUnit < ApplicationRecord
+class CompanyDivisionClient < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -27,6 +29,9 @@ class CompanyUnit < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
+  # 敬称
+  enum title: { nothing: 0, honorific: 10, normal: 20 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
@@ -34,11 +39,11 @@ class CompanyUnit < ApplicationRecord
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
+  
+  belongs_to :company_division
 
-  belongs_to :company
-
-  # 部署
-  has_many :clients, class_name: 'CompanyUnitClient'
+  # 案件
+  has_many :projects, -> { order(id: :desc) }
 
   #----------------------------------------
   #  ** Scopes **

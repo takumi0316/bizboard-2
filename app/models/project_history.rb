@@ -1,18 +1,16 @@
 # == Schema Information
 #
-# Table name: units
+# Table name: project_histories
 #
 #  id         :bigint(8)        not null, primary key
-#  name       :string(191)
-#  kana       :string(191)
-#  zip        :string(191)
-#  prefecture :string(191)
-#  address1   :string(191)
-#  sddress2   :string(191)
+#  project_id :bigint(8)
 #  note       :text(65535)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
-class Unit < ApplicationRecord
+
+class ProjectHistory < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -34,8 +32,8 @@ class Unit < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  has_many :users
-
+  belongs_to :project
+  
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

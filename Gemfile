@@ -31,6 +31,9 @@ gem 'webpacker-react'
 # js grobal variables
 gem 'gon'
 
+# 静的データ
+gem 'active_hash', '~> 1.5.3'
+
 # Use ActiveStorage variant
 gem 'mini_magick', '~> 4.8'
 
@@ -82,6 +85,9 @@ gem 'enum_help'
 
 # pagination
 gem 'pagy'
+
+# moneyforward
+gem 'mf_cloud-invoice'
 
 # auth
 gem 'devise'

@@ -19,7 +19,6 @@ import 'scripts/image_converter';
     Initializer.drawer();
     Initializer.search();
     Initializer.smoothScroll();
-    WebpackerReact.unmountComponents();
   });
 })();
 

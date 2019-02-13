@@ -1,0 +1,39 @@
+@import '../../../assets/stylesheets/foundation/_variables.scss'
+
+.ProjectViewer
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: 10000
+  justify-content: center
+  padding-top: 60px
+  &__body
+    width: $container-lg
+    height: 80%
+    background-color: map-get($layoutColors, 'white')
+    border-radius: 5px
+    position: relative
+    animation: modalFadeIn 500ms ease 0ms
+    box-shadow: rgba(map-get($layoutColors, 'black'), .2) 0 4px 4px
+    overflow-y: scroll
+  &__close
+    position: absolute
+    top: 10px
+    right: 10px
+    cursor: pointer
+  &__overlay
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background-color: rgba(map-get($layoutColors, 'black'), .3)
+    display: flex
+    justify-content: center
+    align-items: center
+    font-size: 2.4rem
+    color: map-get($fontColors, 'white')

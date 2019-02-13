@@ -15,7 +15,6 @@ import 'scripts/image_converter';
 
     Initializer.lazy();
     Initializer.smoothScroll();
-    WebpackerReact.unmountComponents();
   });
 })();
 
@@ -31,8 +30,16 @@ import Kawaii from 'components/kawaii'
 // ロゴエディタ
 import LogoEditor from 'components/logo_editor'
 
+// 案件作成
+import ProjectEditor from 'components/project_editor'
+
+// 案件詳細
+import ProjectViewer from 'components/project_viewer'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
   LogoEditor,
+  ProjectEditor,
+  ProjectViewer,
 })

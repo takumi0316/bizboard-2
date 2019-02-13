@@ -9,7 +9,3 @@
 # 管理者データ
 User.delete_all
 User.create! id: 1,name: "#{SiteConfig.site_name}公式", email: SystemConfig.email, user_type: :admin, status: :active
-
-# 静的テキスト
-StaticText.delete_all
-StaticText.create! name: 'robots.txt', body: 'User-agent: *\r\nDisallow: /'

@@ -1,17 +1,12 @@
 .l-contents
   section.l-contents__inner
-    h1.l-contents__heading ユーザーメニュー
 
-    .u-mt-30
+    / 管理者メニュー
+    - if current_user.admin?
 
-      /= link_to articles_path do
-        .l-contents__panel
-          = evil_icon 'ei-pencil', size: :l
-          h2 記事管理
+      h1.l-contents__heading 管理者メニュー
+      .u-mt-30
 
-      / 管理者メニュー
-      - if current_user.admin?
-        
         = link_to users_path do
           .l-contents__panel
             = evil_icon 'ei-user', size: :l

@@ -1,19 +1,18 @@
 # == Schema Information
 #
-# Table name: company_unit_clients
+# Table name: units
 #
-#  id              :bigint(8)        not null, primary key
-#  company_unit_id :bigint(8)
-#  user_id         :bigint(8)
-#  name            :string(191)
-#  kana            :string(191)
-#  title           :integer          default(0)
-#  tel             :string(191)
-#  email           :string(191)
-#  note            :text(65535)
+#  id         :bigint(8)        not null, primary key
+#  name       :string(191)
+#  kana       :string(191)
+#  zip        :string(191)
+#  prefecture :string(191)
+#  address1   :string(191)
+#  sddress2   :string(191)
+#  note       :text(65535)
 #
 
-class CompanyUnitClient < ApplicationRecord
+class Division < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -34,11 +33,8 @@ class CompanyUnitClient < ApplicationRecord
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
-  
-  belongs_to :unit, class_name: 'CompanyUnit'
 
-  # 案件
-  has_many :invoices, -> { order(id: :desc) }
+  has_many :users
 
   #----------------------------------------
   #  ** Scopes **
