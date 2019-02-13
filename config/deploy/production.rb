@@ -7,8 +7,8 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
-#server 'jii', user: 'jii', roles: %w{app assets batch db}
-server 'jii', user: 'jii', roles: %w{app batch db}
+server 'factory', user: 'jii', roles: %w{app assets batch db}
+#server 'factory', user: 'jii', roles: %w{app batch db}
 
 set :assets_roles, [:assets]
 

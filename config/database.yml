@@ -26,6 +26,6 @@ development:
 production:
   <<: *default
   database: factory
-  username: jiinet
-  password: jiinetjiinet_2018
+  username: factory
+  password: factoryfactory_2018
   host: localhost
