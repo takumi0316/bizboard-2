@@ -48,6 +48,8 @@ class WebhooksController < ApplicationController
     })
     res = http.request(req)
 
+    @res = res
+
     current_user.mf_access_token = res.body['access_token']
     current_user.mf_token_expires_in = (current_user.mf_token_expires_in || Time.now) + 30.days
     current_user.mf_refresh_token = res.body['refresh_token']
@@ -58,7 +60,7 @@ class WebhooksController < ApplicationController
     redirect_url = URI(session[:return_url].presence || root_path)
     session[:return_url] = nil
 
-    redirect_to redirect_url.to_s
+    redirect_to redirect_url.to_s, flash: {notice: { message: 'MFクラウドの認証が完了しました'}}
   end
 
   #----------------------------------------
