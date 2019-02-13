@@ -25,7 +25,7 @@ development:
 
 production:
   <<: *default
-  database: jiifactory
-  username: factory
-  password: jiifactory_2019
+  database: factory
+  username: jiinet
+  password: jiinetjiinet_2018
   host: localhost
