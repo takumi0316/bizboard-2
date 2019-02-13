@@ -43,9 +43,7 @@ class WebhooksController < ApplicationController
       grant_type: :authorization_code,
       code: prams[:code],
     })
-    res = http.request(req)
-
-    p res.inspect
+    @res = http.request(req)
   end
 
   #----------------------------------------
