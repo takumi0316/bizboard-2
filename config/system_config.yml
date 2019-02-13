@@ -17,7 +17,7 @@ development:
 
 production:
   <<: *defaults
-  url: http://18.179.205.236
-  host: 18.179.205.236
+  url: https://factory.jiinet.co.jp
+  host: factory.jiinet.co.jp
   redis_host: localhost
   redis_port: 6379
