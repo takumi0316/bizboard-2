@@ -2,7 +2,7 @@ defaults: &defaults
 
   url: http://localhost:3000
   host: localhost
-  email: ruby.on.nishizawa@gmail.com
+  email: info@jiinet.co.jp
   redis_host: localhost
   redis_port: 6379
   fragment_cache_time: 3
