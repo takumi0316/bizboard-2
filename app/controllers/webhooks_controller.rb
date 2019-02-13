@@ -35,16 +35,21 @@ class WebhooksController < ApplicationController
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    req = Net::HTTP::Post.new(uri.path)
+    req = Net::HTTP::Post.new(uri.path, {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
+    })
     req.set_form_data({
       client_id: SiteConfig.mfcloud_client_id,
       client_secret: SiteConfig.mfcloud_client_secret,
       redirect_uri: SiteConfig.mfcloud_redirect_uri,
       grant_type: :authorization_code,
-      code: prams[:code],
+      code: params[:code],
     })
     @res = http.request(req)
   end
+
+  equest = Net::HTTP::Post.new(uri.path, initheader = )
 
   #----------------------------------------
   #  ** Methods **
