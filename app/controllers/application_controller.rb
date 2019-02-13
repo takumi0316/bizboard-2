@@ -195,11 +195,11 @@ class ApplicationController < ActionController::Base
           grant_type: :refresh_token,
           refresh_token: current_user.mf_refresh_token,
         })
-        res = http.request(req)
+        res = Oj.load http.request(req).body
 
-        current_user.mf_access_token = res.body['access_token']
+        current_user.mf_access_token = res['access_token']
         current_user.mf_token_expires_in += 30.days
-        current_user.mf_refresh_token = res.body['refresh_token']
+        current_user.mf_refresh_token = res['refresh_token']
 
         current_user.save!
       end

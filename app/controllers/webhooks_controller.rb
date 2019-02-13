@@ -46,13 +46,11 @@ class WebhooksController < ApplicationController
       grant_type: :authorization_code,
       code: params[:code],
     })
-    res = http.request(req)
+    res = Oj.load http.request(req).body
 
-    @res = res
-
-    current_user.mf_access_token = res.body['access_token']
+    current_user.mf_access_token = res['access_token']
     current_user.mf_token_expires_in = (current_user.mf_token_expires_in || Time.now) + 30.days
-    current_user.mf_refresh_token = res.body['refresh_token']
+    current_user.mf_refresh_token = res['refresh_token']
 
     current_user.save!
 
