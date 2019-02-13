@@ -32,8 +32,9 @@
               td = r.code
               td = r.name
               td = r.unit_price
-              td = r.unit_label
-              td = r.consumption_tax
+              td = r.quantity
+              td = r.unit
+              td = r.excise ? '税込' : '税別'
               td = link_to '編集', edit_item_path(r), class: 'c-btnMain-standard'
 
   = render 'layouts/_partials/pagination'

@@ -29,7 +29,7 @@
               td
                 - r.divisions.each do |d|
                   div
-                    = link_to d.name, edit_company_division_path(d), class: 'u-td-underline'
+                    = link_to d.name.presence || '部門名称なし', edit_company_division_path(d), class: 'u-td-underline'
                     hr
                 .u-mt-10
                   = link_to '＋ 部署を作成する', new_company_division_path(company_id: r.id), class: 'u-td-underline u-fc-blue'

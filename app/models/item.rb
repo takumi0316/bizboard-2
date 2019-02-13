@@ -28,8 +28,6 @@ class Item < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum consumption_tax: { tax_in: 0, tax_not_in: 10 }
-
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------

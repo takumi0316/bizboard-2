@@ -178,7 +178,7 @@ class ApplicationController < ActionController::Base
       end
 
       # MFクラウドの認証切れの場合
-      if current_user.expires_in < 30.days.ago
+      if current_user.mf_token_expires_in < 30.days.ago
 
         uri = URI.parse('https://invoice.moneyforward.com/oauth/token')
         http = Net::HTTP.new(uri.host, uri.port)
@@ -198,7 +198,7 @@ class ApplicationController < ActionController::Base
         res = Oj.load http.request(req).body
 
         current_user.mf_access_token = res['access_token']
-        current_user.mf_token_expires_in += 30.days
+        current_user.mf_token_expires_in = Time.now + 30.days
         current_user.mf_refresh_token = res['refresh_token']
 
         current_user.save!

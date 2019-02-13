@@ -48,11 +48,14 @@ class WebhooksController < ApplicationController
     })
     res = Oj.load http.request(req).body
 
-    current_user.mf_access_token = res['access_token']
-    current_user.mf_token_expires_in = (current_user.mf_token_expires_in || Time.now) + 30.days
-    current_user.mf_refresh_token = res['refresh_token']
+    unless current_user.mf_access_token?
 
-    current_user.save!
+      current_user.mf_access_token = res['access_token']
+      current_user.mf_token_expires_in = Time.now + 30.days
+      current_user.mf_refresh_token = res['refresh_token']
+
+      current_user.save!
+    end
 
     # 登録後のリダイレクト先を指定
     redirect_url = URI(session[:return_url].presence || root_path)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_13_105027) do
+ActiveRecord::Schema.define(version: 2019_02_13_105028) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2019_02_13_105027) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "mf_company_id"
   end
 
   create_table "company_division_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -80,6 +81,7 @@ ActiveRecord::Schema.define(version: 2019_02_13_105027) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "mf_company_division_id"
     t.index ["company_id"], name: "index_company_divisions_on_company_id"
   end
 
@@ -88,13 +90,14 @@ ActiveRecord::Schema.define(version: 2019_02_13_105027) do
     t.string "mf_item_id"
     t.string "code"
     t.string "note"
-    t.integer "unit_price"
-    t.string "unit_label"
-    t.integer "consumption_tax"
+    t.integer "unit_price", default: 0
+    t.string "unit"
+    t.integer "consumption_tax", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quantity", default: 0
+    t.boolean "excise", default: false
     t.index ["mf_item_id"], name: "index_items_on_mf_item_id", unique: true
-    t.index ["name"], name: "index_items_on_name", unique: true
   end
 
   create_table "project_after_processes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

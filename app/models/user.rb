@@ -88,6 +88,8 @@ class User < ApplicationRecord
   # 画像のN+1回避(eager load)
   scope :with_eager_loaded_image, -> { eager_load(image_attachment: :blob) }
 
+  scope :mf_expires_in, -> { where('mf_token_expires_in > ?', Time.now) }
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

@@ -16,6 +16,13 @@ Rails.application.routes.draw do
   end
   resources :configs
 
+  # マスタ同期
+  namespace :masters do
+    post :items
+    post :pertners
+  end
+  resources :masters
+
   # 案件
   resources :projects
 

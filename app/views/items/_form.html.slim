@@ -20,12 +20,16 @@
       = f.text_field :unit_price, placeholder: '単価', class: 'c-form-text', required: :true
 
       .c-form-label
-        = f.label :unit_label, '単位'
-      = f.text_field :unit_label, placeholder: '単位', class: 'c-form-text'
+        = f.label :unit, '単位'
+      = f.text_field :unit, placeholder: '単位', class: 'c-form-text'
 
       .c-form-label
-        = f.label :consumption_tax, '消費税'
-      = f.select :consumption_tax, Item.consumption_taxes_i18n.invert, {}, { class: 'c-form-select', required: true }
+        = f.label :quantity, '数量'
+      = f.text_field :quantity, placeholder: '数量', class: 'c-form-text'
+
+      .c-form-label
+        = f.label :excise, '消費税'
+      = f.select :excise, [['税込', true], ['税別', false]], {}, { class: 'c-form-select', required: true }
 
       .c-form-label
         = f.label :note, '詳細'
