@@ -20,6 +20,7 @@
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  status                     :integer          default("draft")
+#  free_word                  :text(65535)
 #
 
 class Project < ApplicationRecord
@@ -55,7 +56,7 @@ class Project < ApplicationRecord
   #----------------------------------------
 
   belongs_to :user, optional: true
-  belongs_to :client, optional: true, class_name: 'CompanyDivisionClient'
+  belongs_to :client, optional: true, class_name: 'CompanyDivisionClient', foreign_key: :company_division_client_id
 
   has_one  :bind,    class_name: 'ProjectBind',    dependent: :destroy
   has_one  :card,    class_name: 'ProjectCard',    dependent: :destroy
@@ -65,6 +66,8 @@ class Project < ApplicationRecord
 
   has_one  :project_after_process, dependent: :destroy
   has_one  :project_binding_work,  dependent: :destroy
+
+  has_one  :work,    dependent: :destroy
 
   has_many :histories, class_name: 'ProjectHistory',    dependent: :destroy
 
@@ -85,6 +88,18 @@ class Project < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
+  # フリーワード検索用文字列をセットする
+  before_validation :set_free_word
+
+  ##
+  # フリーワード検索用文字列をセットする
+  # @version 2018/06/10
+  #
+  def set_free_word
+
+    self.free_word = "#{self.user&.name} #{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
+  end
+
   ##
   # 名称検索
   # @version 2018/06/10
@@ -93,7 +108,7 @@ class Project < ApplicationRecord
 
     # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
     terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['name like ?'] * terms.size).join(' and ')
+    query = (['free_word like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
   end

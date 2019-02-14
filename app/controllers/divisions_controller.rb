@@ -1,7 +1,7 @@
 ##
-# Items Controller
+# Divisions Controller
 #
-class ItemsController < ApplicationController
+class DivisionsController < ApplicationController
 
   #----------------------------------------
   #  ** Includes **
@@ -11,15 +11,11 @@ class ItemsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 品目一覧
-  expose_with_pagination(:items) {
-    Item
-      .search(params[:name])
-      .all
-      .reverse_order
-  }
-  # 品目
-  expose(:item) { Item.find_or_initialize_by id: params[:id] || params[:item_id] }
+  # 自社部署
+  expose(:divisions) { Division.all }
+
+  # 自社部署
+  expose(:division) { Division.find_or_initialize_by id: params[:id] || params[:division_id] }
 
   #----------------------------------------
   #  ** Layouts **
@@ -39,7 +35,7 @@ class ItemsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '品目一覧'
+    add_breadcrumb '自社部署一覧'
   end
 
   ##
@@ -48,8 +44,8 @@ class ItemsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '品目一覧', path: items_path
-    add_breadcrumb '品目作成'
+    add_breadcrumb '自社部署一覧', path: divisions_path
+    add_breadcrumb '自社部署作成'
   end
 
   ##
@@ -58,8 +54,8 @@ class ItemsController < ApplicationController
   #
   def edit
 
-    add_breadcrumb '品目一覧', path: items_path
-    add_breadcrumb '品目編集'
+    add_breadcrumb '自社部署一覧', path: divisions_path
+    add_breadcrumb '自社部署編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
@@ -70,10 +66,10 @@ class ItemsController < ApplicationController
   #
   def update
 
-    # 品目情報更新
-    item.update! item_params
+    # 自社部署情報更新
+    division.update! division_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '品目情報を更新しました'}}
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '自社部署情報を更新しました'}}
   rescue => e
     
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -85,10 +81,10 @@ class ItemsController < ApplicationController
   #
   def create
 
-    # 品目情報更新
-    item.update! item_params
+    # 自社部署情報更新
+    division.update! division_params
 
-    redirect_to edit_item_path(item), flash: {notice: {message: '品目情報を更新しました'}}
+    redirect_to edit_division_path(division), flash: {notice: {message: '自社部署情報を更新しました'}}
   rescue => e
     
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -100,7 +96,7 @@ class ItemsController < ApplicationController
   #
   def destroy
 
-    item.destroy!
+    division.destroy!
   rescue => e
 
     flash[:warning] = { message: e.message }
@@ -118,8 +114,8 @@ class ItemsController < ApplicationController
     # パラメータの取得
     # @version 2018/06/10
     #
-    def item_params
+    def division_params
 
-      params.require(:item).permit :name, :mf_item_id, :code, :note, :unit_price, :unit, :excise, :division_id
+      params.require(:division).permit :name, :kana, :note, :zip, :prefecture_id, :address1, :address2
     end
 end

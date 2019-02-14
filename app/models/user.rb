@@ -71,6 +71,9 @@ class User < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 自社部署
+  belongs_to :division, optional: true
+
   # 記事
   has_many :articles, -> { order(id: :desc) }
 

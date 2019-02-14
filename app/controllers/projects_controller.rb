@@ -122,6 +122,22 @@ class ProjectsController < ApplicationController
     redirect_to action: :index
   end
 
+  ##
+  # ステータスを更新する
+  # @version 2018/06/10
+  #
+  def status
+
+    project.update!(status: params[:status].to_sym)
+
+    if project.estimated? && project.work.blank?
+
+      project.build_work.save!
+    end
+
+    redirect_to works_path, flash: {notice: {message: '作業管理情報を作成しました'}}
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

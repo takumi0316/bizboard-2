@@ -19,7 +19,7 @@
       - if user.image.attached?
         .u-mt-10 = image_tag user.decorate.image_thumb
       
-      / 記事にライターを表示する場合
+      / 記事にユーザーを表示する場合
       - if SiteConfig.display_article_writer
 
         .c-form-label = f.label :publish, 'ユーザー情報公開'
@@ -34,11 +34,16 @@
 
       / 管理者のみ表示
       - if current_user.admin?
+
+        .c-form-label = f.label :division_id, '所属部署'
+        .c-form-selectWrap.u-mt-10
+          = f.select :division_id, Division.pluck(:name, :id), {}, { class: 'c-form-select' }
+
         .c-form-label = f.label :user_type, 'ユーザータイプ'
         .c-form-selectWrap.u-mt-10
           = f.select :user_type, User.user_types_i18n.invert, {}, { class: 'c-form-select' }
 
-        / ライター登録に承認が必要な場合
+        / ユーザー登録に承認が必要な場合
         - unless SiteConfig.allow_inactive_user
 
           .c-form-label = f.label :status, '状態'

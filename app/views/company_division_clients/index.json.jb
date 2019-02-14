@@ -1,0 +1,15 @@
+json = { status: :success }
+
+json[:clients] = clients.map do |r|
+
+  {
+    id: r.id,
+    name: r.name,
+    tel: r.tel,
+    email: r.email,
+    division: r.company_division,
+    company: r.company_division.company,
+  }
+end 
+
+json

@@ -5,7 +5,11 @@
 
     = form_for client, html: { class: 'u-mt-30'} do |f|
 
-      = f.hidden_field :company_division_id, value: division.id
+      = react_component('CompanyDivisions',
+        { companies: Company.all.order(:name),
+        company_id: (params[:company_division_id].present? || client.company_division_id?)? division.company.id : nil,
+        company_division_id: (params[:company_division_id].present? || client.company_division_id?)? division.id : nil,
+        divisions: (params[:company_division_id].present? || client.company_division_id?)? division.company.divisions : [] })
 
       .c-form-label
         = f.label :user_id, '自社担当者'

@@ -8,6 +8,7 @@
             th ユーザーID
             th 画像
             th 名前
+            th 部署
             / 記事にライターを表示する場合に表示
             - if SiteConfig.display_article_writer
               th 公開設定
@@ -21,6 +22,7 @@
               td = r.id
               td = image_tag r.decorate.image_thumb
               td = r.name
+              td = r.division.name
               / 記事にライターを表示する場合に表示
               - if SiteConfig.display_article_writer
                 td = r.publish_i18n

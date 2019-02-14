@@ -1,15 +1,18 @@
 # == Schema Information
 #
-# Table name: units
+# Table name: divisions
 #
-#  id         :bigint(8)        not null, primary key
-#  name       :string(191)
-#  kana       :string(191)
-#  zip        :string(191)
-#  prefecture :string(191)
-#  address1   :string(191)
-#  sddress2   :string(191)
-#  note       :text(65535)
+#  id            :bigint(8)        not null, primary key
+#  name          :string(191)
+#  kana          :string(191)
+#  zip           :string(191)
+#  tel           :string(191)
+#  prefecture_id :integer
+#  address1      :string(191)
+#  address2      :string(191)
+#  note          :text(65535)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 
 class Division < ApplicationRecord
@@ -17,6 +20,8 @@ class Division < ApplicationRecord
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
+
+  extend ActiveHash::Associations::ActiveRecordExtensions
 
   #----------------------------------------
   #  ** Constants **
@@ -35,6 +40,9 @@ class Division < ApplicationRecord
   #----------------------------------------
 
   has_many :users
+
+  # 都道府県
+  belongs_to_active_hash :prefecture
 
   #----------------------------------------
   #  ** Scopes **

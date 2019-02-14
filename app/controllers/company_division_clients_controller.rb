@@ -14,7 +14,9 @@ class CompanyDivisionClientsController < ApplicationController
   # 部署
   expose(:division) { CompanyDivision.find params[:company_division_id] }
   # 担当者一覧
-  expose_with_pagination(:clients) { division.clients }
+  expose(:clients) {
+    params[:company_division_id] ? division.clients : CompanyDivisionClient.search(params[:search]).all.reverse_order
+  }
   # 担当者
   expose(:client) { CompanyDivisionClient.find_or_initialize_by id: params[:id] }
 
@@ -36,9 +38,14 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '取引先 - 部署 一覧', path: company_divisions_path(company_id: division.company.id)
-    add_breadcrumb '部署 - 担当者 一覧'
+    respond_to do |format|
+      format.json
+      format.html {
+        add_breadcrumb '取引先一覧', path: companies_path
+        add_breadcrumb '取引先 - 部署 一覧', path: company_divisions_path(company_id: division.company.id)
+        add_breadcrumb '部署 - 担当者 一覧'
+      }
+    end
   end
 
   ##

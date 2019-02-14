@@ -1,7 +1,7 @@
 .l-contents
   section.l-contents__inner
     .u-ta-right
-      = link_to '作業書に変換する', edit_project_path(project), class: 'c-btnMain-standard'
+      = link_to '作業書に変換する', project_status_path(project, status: :estimated), class: 'c-btnMain-standard', method: :post
       span.u-ml-30
         = link_to '編集する', edit_project_path(project), class: 'u-td-underline'
       span.u-ml-30

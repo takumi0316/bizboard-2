@@ -28,4 +28,16 @@ namespace :deploy do
   task :restart do
     invoke 'unicorn:legacy_restart'
   end
+
+  # migration前にdatabaseを作成する
+  before :migrate, :db_create do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'creating database...'
+          execute :rails, 'db:create'
+        end
+      end
+    end
+  end
 end

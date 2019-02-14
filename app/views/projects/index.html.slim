@@ -6,8 +6,8 @@
     = form_with url: projects_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 
       .c-search__item
-        = f.label :name, '案件名'
-        = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '案件名'
+        = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
+        = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '担当者名/案件名/備考'
 
       = f.submit '検索', class: 'c-btnMain-standard u-mt-20'
 
@@ -16,7 +16,7 @@
         thead
           tr
             th 案件No
-            th 進捗
+            th ステータス
             th 更新日時
             th お客様
             th 案件名

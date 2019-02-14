@@ -7,11 +7,15 @@
 #  mf_item_id      :string(191)
 #  code            :string(191)
 #  note            :string(191)
-#  unit_price      :integer
-#  unit_label      :string(191)
-#  consumption_tax :integer
+#  unit_price      :integer          default(0)
+#  unit            :string(191)
+#  consumption_tax :integer          default(0)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  quantity        :integer          default(0)
+#  excise          :boolean          default(FALSE)
+#  division_id     :integer
+#  free_word       :text(65535)
 #
 
 class Item < ApplicationRecord
@@ -36,6 +40,9 @@ class Item < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 自社部署
+  belongs_to :division, optional: true
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------
@@ -48,6 +55,18 @@ class Item < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
+  # フリーワード検索用文字列をセットする
+  before_validation :set_free_word
+
+  ##
+  # フリーワード検索用文字列をセットする
+  # @version 2018/06/10
+  #
+  def set_free_word
+
+    self.free_word = "#{self.name} #{self.code} #{self.division&.name} #{self.note}"
+  end
+
   ##
   # 名称検索
   # @version 2018/06/10
@@ -56,7 +75,7 @@ class Item < ApplicationRecord
 
     # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
     terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['name like ?'] * terms.size).join(' and ')
+    query = (['free_word like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
   end

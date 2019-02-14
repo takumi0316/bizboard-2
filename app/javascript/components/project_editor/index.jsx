@@ -6,6 +6,7 @@ import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
 
 import DatetimePicker from './datetime_picker'
+import ClientSearch from './client_search'
 
 import ProjectCopy from './project_copy'
 import ProjectPrint from './project_print'
@@ -43,6 +44,9 @@ export default class ProjectEditor extends React.Component {
     console.log('props', props);
 
     this.state = {
+      company: props.company,
+      division: props.division,
+      client: props.client,
       project_category: props.project.project_category || 'project_print',
       project_type: props.project.project_type || 'contract',
       deliver_at: props.project.deliver_at,
@@ -196,6 +200,20 @@ export default class ProjectEditor extends React.Component {
   }
 
   /**
+   *  お客様選択時
+   *  @version 2018/06/10
+   */
+  applyClient(client) {
+
+    console.log('applyClient', client);
+    this.setState({
+      client: client,
+      company: client.company,
+      division: client.division,
+    });
+  }
+
+  /**
    *  表示処理
    *  @version 2018/06/10
    */
@@ -218,9 +236,24 @@ export default class ProjectEditor extends React.Component {
         
         <div className='c-form-label'>
           <label htmlFor='project_company_division_client_id'>お客様情報</label>
-          <span className='c-form__required u-ml-10'>必須</span>
         </div>
-        <input placeholder='お客様情報' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='company_division_client_id' defaultValue={this.props.project.company_division_client_id} />
+        
+        { this.state.client ?
+          <div className='c-attention'>
+            <div>会社名: {this.state.company.name}</div>
+            <div className='u-mt-10'>部署名: {this.state.division.name || '部署名なし'}</div>
+            <div className='u-mt-10'>担当者名: {this.state.client.name}</div>
+            <div className='u-mt-10'>担当者TEL: {this.state.client.tel}</div>
+            <div className='u-mt-10'>担当者email: {this.state.client.email}</div>
+          </div>
+          : null
+        }
+
+        <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.project.company_division_client_id} />
+
+        <div className='u-mt-15'>
+          <ClientSearch applyClient={::this.applyClient} />
+        </div>
         
         <div className='u-mt-30'>
           <div className='c-form-label'>

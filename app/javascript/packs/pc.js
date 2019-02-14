@@ -36,10 +36,14 @@ import ProjectEditor from 'components/project_editor'
 // 案件詳細
 import ProjectViewer from 'components/project_viewer'
 
+// 部署
+import CompanyDivisions from 'components/company_divisions'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
   LogoEditor,
   ProjectEditor,
   ProjectViewer,
+  CompanyDivisions,
 })

@@ -10,4 +10,7 @@
       project_print: project.print,
       project_scan: project.scan,
       project_after_process: project.project_after_process,
-      project_binding_work: project.project_binding_work })
+      project_binding_work: project.project_binding_work,
+      company: project.client&.company_division&.company,
+      division: project.client&.company_division,
+      client: project.client })

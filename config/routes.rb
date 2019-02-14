@@ -24,7 +24,12 @@ Rails.application.routes.draw do
   resources :masters
 
   # 案件
-  resources :projects
+  resources :projects do
+    post :status
+  end
+
+  # 作業進捗
+  resources :works
 
   # 取引先
   resources :companies
@@ -33,6 +38,9 @@ Rails.application.routes.draw do
 
   # 品目
   resources :items
+
+  # 自社部署
+  resources :divisions
 
   # ユーザー管理
   resources :users, only: [:index, :edit, :update, :destroy]
