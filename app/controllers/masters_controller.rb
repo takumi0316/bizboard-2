@@ -24,6 +24,8 @@ class MastersController < ApplicationController
 
   # 管理者認証
   before_action :authenticate_admin
+  # MFクラウド認証
+  before_action :authenticate_mfcloud
 
   #----------------------------------------
   #  ** Actions **
