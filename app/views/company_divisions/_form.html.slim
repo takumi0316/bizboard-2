@@ -1,12 +1,19 @@
 .l-contents
   section.l-contents__inner
 
-    h1.l-contents__heading 部署
-    
     - unless division.new_record?
+
+      h1.l-contents__heading 部署担当者
+
       .u-ta-left.u-mt-30
         = link_to "＋ #{division.name}の担当者を作成する", new_company_division_client_path(company_division_id: division.id), class: 'u-td-underline u-fc-blue'
 
+      - division.clients.each do |client|
+        .u-ta-left.u-mt-30
+          = link_to client.name, edit_company_division_client_path(id: client.id), class: 'u-td-underline'
+    
+    h1.l-contents__heading.u-mt-30 部署情報
+    
     = form_for division, html: { class: 'u-mt-30'} do |f|
 
       = f.hidden_field :company_id, value: company.id
