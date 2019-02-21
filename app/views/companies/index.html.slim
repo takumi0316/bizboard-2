@@ -3,7 +3,7 @@
 
     h1.l-contents__heading 取引先一覧
 
-    .u-mt-15 = link_to '取引先を作成する', new_company_path, class: 'c-btnMain-standard'
+    .u-mt-15 = link_to '取引先を作成する', new_company_path, class: 'c-btnMain-standard c-btn-blue'
 
     = form_with url: companies_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 

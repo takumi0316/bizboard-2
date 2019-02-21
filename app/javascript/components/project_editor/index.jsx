@@ -454,7 +454,7 @@ export default class ProjectEditor extends React.Component {
         }
 
         <div className='u-mt-30'>
-          <div className='c-btnMain-standard' onClick={::this.onSubmit}>{this.props.project.id ? '更新する' : '作成する'}</div>
+          <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>{this.props.project.id ? '更新する' : '作成する'}</div>
         </div>
       </div>
     );

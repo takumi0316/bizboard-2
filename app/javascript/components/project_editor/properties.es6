@@ -254,7 +254,6 @@ export const HOLES = {
 export const CLIPS = {
   'なし': 'clip_unnecessary',
   'あり': 'clip_necessary',
-  'なし': 'no_clip',
 };
 
 export const BINDS = {

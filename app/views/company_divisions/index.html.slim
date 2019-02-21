@@ -3,14 +3,14 @@
 
     h1.l-contents__heading 部署一覧
 
-    .u-mt-15 = link_to '取引先- 部署 を作成する', new_company_division_path(company_id: company.id), class: 'c-btnMain-standard'
+    .u-mt-15 = link_to '取引先- 部署 を作成する', new_company_division_path(company_id: company&.id), class: 'c-btnMain-standard c-btn-blue'
 
     .c-table.u-mt-30
       table
         thead
           tr
             th 部署ID
-            th 取引先
+            th 会社名
             th 部署名
             th 担当者
             th colspan=2
@@ -19,7 +19,7 @@
             tr
               td = r.id
               td = r.company.name
-              td = r.name
+              td = r.name || '部署名なし'
               td
                 - r.clients.each do |c|
                   div

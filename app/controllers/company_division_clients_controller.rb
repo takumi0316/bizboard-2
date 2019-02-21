@@ -12,9 +12,9 @@ class CompanyDivisionClientsController < ApplicationController
   #----------------------------------------
 
   # 部署
-  expose(:division) { CompanyDivision.find params[:company_division_id] }
+  expose(:division) { params[:company_division_id] ? CompanyDivision.find(params[:company_division_id]) : nil }
   # 担当者一覧
-  expose(:clients) {
+  expose_with_pagination(:clients) {
     params[:company_division_id] ? division.clients : CompanyDivisionClient.search(params[:search]).all.reverse_order
   }
   # 担当者
@@ -38,13 +38,11 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def index
 
-    respond_to do |format|
-      format.json
-      format.html {
-        add_breadcrumb '取引先一覧', path: companies_path
-        add_breadcrumb '取引先 - 部署 一覧', path: company_divisions_path(company_id: division.company.id)
-        add_breadcrumb '部署 - 担当者 一覧'
-      }
+    unless request.xhr?
+
+      add_breadcrumb '取引先一覧', path: companies_path
+      add_breadcrumb '部署一覧', path: company_divisions_path(company_id: division&.company&.id)
+      add_breadcrumb '担当者一覧'
     end
   end
 
@@ -54,11 +52,9 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def new
 
-    raise '部署を指定して下さい' if params[:company_division_id].blank?
-
     add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '取引先 - 部署 一覧', path: company_divisions_path(company_id: division.company.id)
-    add_breadcrumb '部署 - 担当者 一覧', path: company_division_clients_path(company_division_id: division.id)
+    add_breadcrumb '部署一覧', path: company_divisions_path(company_id: division&.company&.id)
+    add_breadcrumb '担当者一覧', path: company_division_clients_path(company_division_id: division&.id)
     add_breadcrumb '新規作成'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -73,8 +69,8 @@ class CompanyDivisionClientsController < ApplicationController
     self.division = client.company_division
 
     add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '取引先 - 部署 一覧', path: company_divisions_path(company_id: self.division.company.id)
-    add_breadcrumb '部署 - 担当者 一覧', path: company_division_clients_path(company_division_id: self.division.id)
+    add_breadcrumb '部署一覧', path: company_divisions_path(company_id: self.division.company.id)
+    add_breadcrumb '担当者一覧', path: company_division_clients_path(company_division_id: self.division.id)
     add_breadcrumb '編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}

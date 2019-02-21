@@ -38,13 +38,272 @@ ja:
     project:
       status:
         draft: 新規
-        estimate: 見積書発行済
+        estimated: 見積書発行済
         pre_work: 作業依頼済
         working: 作業中
         end_work: 作業完了
         deliverd: 納品済
         invoicing: 請求書発行済
         complete: 完了
+
+      project_category:
+        project_print: プリント
+        project_card: 名刺
+        project_copy: コピー
+        project_bind: 製本
+        project_scan: スキャン
+        project_other: その他
+      project_type:
+        contract: 請負
+        sales: 販売施工
+      channel:
+        estimate: 見積もり
+        bpr_erp: BPR/ERP
+        reception: 受付
+        channel_other: その他
+      deliver_type:
+        seat: 席まで
+        location: 指定場所
+        pickup: 引取り
+        other: その他
+      after_process:
+        after_process_unnecessary: なし
+        after_process_necessary: あり
+      binding_work:
+        binding_works_unnecessary: なし
+        binding_works_necessary: あり
+    
+    project_binding_work:
+      bind_type:
+        original_bind_type: 現行通り
+        cross_bind_type: クロス巻き
+        wrap_bind_type: くるみ
+        stitching_bind_type: 中綴じ
+        secret_bind_type: 袋とじ
+        radio_bind_type: 無線綴じ
+        double_door_bind_type: 観音
+        gold_letter_bind_type: 金文字
+        no_bind_type: なし
+      cross_color:
+        black_cross: 黒
+        white_cross: 白
+      wrap_back_text:
+        wrap_back_text_necessary: あり
+        wrap_back_text_unnecessary: なし
+      secret_stitch:
+        normal_secret_stitch: 通常
+        triangle_secret_stitch: 上三角
+      secret_stitch_paper:
+        stitch_paper_necessary: あり
+        stitch_paper_unnecessary: なし
+      radio_stitch:
+        radio_stitch_necessary: あり
+        radio_stitch_unnecessary: なし
+      radio_cut:
+        radio_cut_necessary: あり
+        radio_cut_unnecessary: なし
+
+    project_after_process:
+      folding:
+        original_folding: 現行通り
+        z_folding: Z折り
+        beta_folding: ベタ折り
+        three_folding: 三つ折り
+        file_folding: ファイル折り
+        no_folding: なし
+      stapler:
+        original_stapler: 現行通り
+        upper_left_stapler: 左上
+        upper_right_stapler: 右上
+        left_double_stapler: 左2箇所
+        right_double_stapler: 右2箇所
+        no_stapler: なし
+      hole:
+        original_hole: 現行通り
+        hole_necessary: なし
+        hole_other: その他
+      clip:
+        clip_unnecessary: なし
+        clip_necessary: あり
+      bind:
+        file_unnecessary: なし
+        king_file: キングファイル
+        flat_file: フラットファイル
+        other_file: その他
+      back_text:
+        back_text_unnecessary: なし
+        back_text_necessary: あり
+
+    project_bind:
+      posting_state:
+        stapler: ホチキス
+        zem: ゼム
+        wclip: Wクリ
+        band: 輪ゴム
+        bara: バラ
+        bind: 製本
+        file: ファイル
+      print_size:
+        card_size: 名刺
+        a4: A4
+        a3: A3
+        a2: A2
+        a1: A1
+        a0: A0
+
+    project_card:
+      draft_data:
+        data_available: あり
+        data_unavailable: なし
+      card_type:
+        template: 提携名刺(作業なし)
+        special: 特別名刺(作業あり)
+      work_type:
+        create_design: デザイン作成
+        edit_design: デザイン修正
+        create_data: データ作成
+        edit_data: データ修正
+      color:
+        original_print: 現行通り
+        color_print: カラー
+        monochrome_print: モノクロ
+      paper:
+        coc_413: 413CoC
+        noble: 薄口ノーブル
+        r_55: 再生ホワイト(55R)
+        white_prince: ホワイトプリンス
+        nouveau: ヴァンヌーボー
+        snow: スノーホワイト
+        top130: トップ130
+        prince: プリンス
+        cream: 五条クリーム
+        colorcopy200g: colorcopy200g/m2
+        colorcopy250g: colorcopy250g/m2
+        elite: エリート
+        prince_coc: プリンスCoC
+        ltg: LTG
+      surface:
+        both_side: 両面
+        one_side: 片面
+      emboss:
+        emboss_necessary: あり
+        emboss_unnecessary: なし
+
+    project_copy:
+      posting_state:
+        stapler: ホチキス
+        zem: ゼム
+        wclip: Wクリ
+        band: 輪ゴム
+        bara: バラ
+        bind: 製本
+        file: ファイル
+      draft_split:
+        split_available: 可能
+        split_unavailable: 不可
+      draft_restore:
+        restore_necessary: 必要
+        restore_unnecessary: 不要
+      color:
+        original_print: 現行通り
+        color_print: カラー
+        monochrome_print: モノクロ
+      print_size:
+        original_size: 現行通り
+        a3: A3
+        a4: A4
+        print_size_other: その他
+      surface:
+        original_surface: 現行通り
+        one_side: 片面→両面
+        both_side: 両面→片面
+      open_type:
+        side_open: 横開き
+        upper_open: 上開き
+
+    project_print:
+      work_process:
+        work_process_unnecessary: なし
+        work_process_necessary: あり
+      print_work:
+        print_work_unnecessary: なし
+        print_work_necessary: あり
+      work_type:
+        create_data: データ作成
+        edit_data: データ修正
+      color:
+        original_print: 現行通り
+        color_print: カラー
+        monochrome_print: モノクロ
+      print_size:
+        original_size: 現行通り
+        a3: A3
+        a4: A4
+        print_size_other: その他
+      surface:
+        original_surface: 現行通り
+        one_side: 片面→両面
+        both_side: 両面→片面
+      open_type:
+        side_open: 横開き
+        upper_open: 上開き
+    
+    project_scan:
+      posting_state:
+        stapler: ホチキス
+        zem: ゼム
+        wclip: Wクリ
+        band: 輪ゴム
+        bara: バラ
+        bind: 製本
+        file: ファイル
+      draft_split:
+        split_available: 可能
+        split_unavailable: 不可
+      draft_restore:
+        restore_necessary: 必要
+        restore_unnecessary: 不要
+      print_size:
+        card_size: 名刺
+        a4: A4
+        a3: A3
+        a2: A2
+        a1: A1
+        a0: A0
+      back_cut:
+        back_cut_unnecessary: 不要
+        back_cut_necessary: 必要
+      color:
+        monochrome_print: モノクロ
+        gray_scale: グレースケール
+        color_print: カラー
+      resolution:
+        dpi_200: 200dpi
+        dpi_300: 300dpi
+        dpi_400: 400dpi
+      file_extension:
+        jpg: jpg
+        pdf: pdf
+        png: png
+      size_mix:
+        all_same: 全て同じサイズ
+        other_1: 他のサイズが1%未満
+        other_10: 他のサイズが10%未満
+        other: その他
+      adf:
+        adf_available: 可能
+        adf_unavailable: 不可
+      odr:
+        odr_available: あり
+        odr_unavailable: なし
+      bookmark:
+        bookmark_necessary: あり
+        bookmark_unnecessary: なし
+      edit_file_name:
+        edit_filename_necessary: あり
+        edit_filename_unnecessary: なし
+
+
     item:
       consumption_tax:
         tax_in: 税込

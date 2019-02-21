@@ -49,7 +49,7 @@ class CompaniesController < ApplicationController
   def new
 
     add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '取引先作成'
+    add_breadcrumb '新規作成'
   end
 
   ##
@@ -59,7 +59,7 @@ class CompaniesController < ApplicationController
   def edit
 
     add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '取引先編集'
+    add_breadcrumb '編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end

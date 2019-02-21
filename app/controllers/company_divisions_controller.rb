@@ -12,9 +12,9 @@ class CompanyDivisionsController < ApplicationController
   #----------------------------------------
 
   # 取引先
-  expose(:company) { Company.find params[:company_id] }
+  expose(:company) { params[:company_id] ? Company.find(params[:company_id]) : nil }
   # 部署一覧
-  expose_with_pagination(:divisions) { company.divisions }
+  expose_with_pagination(:divisions) { params[:company_id] ? company.divisions : CompanyDivision.all }
   # 部署
   expose(:division) { CompanyDivision.find_or_initialize_by id: params[:id] }
 
@@ -37,7 +37,7 @@ class CompanyDivisionsController < ApplicationController
   def index
 
     add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '取引先 - 部署 一覧'
+    add_breadcrumb '部署一覧'
   end
 
   ##
@@ -46,11 +46,9 @@ class CompanyDivisionsController < ApplicationController
   #
   def new
 
-    raise '会社を指定して下さい' if params[:company_id].blank?
-
     add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '取引先 - 部署 一覧', path: company_divisions_path(company_id: company.id)
-    add_breadcrumb '取引先 - 部署 新規作成'
+    add_breadcrumb '部署一覧', path: company_divisions_path(company_id: company&.id)
+    add_breadcrumb '新規作成'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
@@ -64,8 +62,8 @@ class CompanyDivisionsController < ApplicationController
     self.company = division.company
 
     add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '取引先 - 部署 一覧', path: company_divisions_path(company_id: self.company.id)
-    add_breadcrumb '取引先 - 部署 編集'
+    add_breadcrumb '部署一覧', path: company_divisions_path(company_id: self.company.id)
+    add_breadcrumb '編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end

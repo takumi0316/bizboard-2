@@ -3,7 +3,7 @@
 
     h1.l-contents__heading 品目一覧
 
-    .u-mt-15 = link_to '品目を作成する', new_item_path, class: 'c-btnMain-standard'
+    .u-mt-15 = link_to '品目を作成する', new_item_path, class: 'c-btnMain-standard c-btn-blue'
 
     = form_with url: items_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 

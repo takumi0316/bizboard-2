@@ -22,8 +22,9 @@ export default class ClientSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    this.state = { show: false, clients: [] };
+    this.state = { show: false, clients: [], body: null };
   }
+  
 
   /**
    *  モーダルを表示する
@@ -31,9 +32,10 @@ export default class ClientSearch extends React.Component {
    */
   _open() {
 
+    this._search('');
+
     this.setState({ show: true }, () => {
 
-      
     });
   }
 
@@ -46,11 +48,7 @@ export default class ClientSearch extends React.Component {
     this.setState({ show: false, clients: [] });
   }
 
-  /**
-   *  フリーワード検索
-   *  @version 2018/06/10
-   */
-  _search(e) {
+  _onChange() {
 
     if (this.refs.word.value == '') {
 
@@ -58,8 +56,17 @@ export default class ClientSearch extends React.Component {
       return false
     }
 
+    this._search(this.refs.word.value);
+  }
+
+  /**
+   *  フリーワード検索
+   *  @version 2018/06/10
+   */
+  _search(search) {
+
     // 記事内容を送信
-    Request.get('/company_division_clients.json?search=' + this.refs.word.value)
+    Request.get('/company_division_clients.json?search=' + search)
       .end((error, response) => {
 
         if (error) return false;
@@ -104,6 +111,22 @@ export default class ClientSearch extends React.Component {
   }
 
   /**
+   *  担当者作成
+   *  @version 2018/06/10
+   */
+  createView() {
+
+    Request.get(`/company_division_clients/new`)
+      .set('X-Requested-With', 'XMLHttpRequest')
+      .end((error, response) => {
+        console.log('response', response);
+
+        this.setState({body: response.text});
+      });
+
+  }
+
+  /**
    *  表示処理
    *  @version 2018/06/10
    */
@@ -114,24 +137,32 @@ export default class ClientSearch extends React.Component {
 
         <div className={Style.ClientSearch__inner} onClick={this._stopPropagation}>
 
-          <div className={Style.ClientSearch__form}>
-            <input type='text' className={Style.ClientSearch__input} placeholder='お客様情報で検索' ref='word' onChange={::this._search}/>
-            <div onClick={::this._search} className='c-btnMain-standard u-ml-10'>検索</div>
-          </div>
-          
-          { this.state.clients.length > 0 ?
+          { this.state.body == null ?
+            <div>
+              <div className={Style.ClientSearch__form}>
+                <input type='text' className={Style.ClientSearch__input} placeholder='お客様情報で検索' ref='word' onChange={::this._onChange}/>
+                <div onClick={::this._onChange} className='c-btnMain-standard u-ml-10'>検索</div>
+                { true ? null : <div onClick={::this.createView} className='c-btnMain-standard c-btn-blue u-ml-50'>お客様情報を作成する</div> }
+              </div>
+              
+              { this.state.clients.length > 0 ?
 
-            <ul className={Style.ClientSearch__list}>
-              {this.state.clients.map((client, i) => {
-                var key = `clients-${i}`;
-                return (
-                  <li {...{key}} className={Style.ClientSearch__item}>
-                    <h2 className={Style.ClientSearch__itemName} data-number={i} onClick={::this._onSelect}>{client.company.name} {client.division.name} {client.name} 様</h2>
-                  </li>
-                );
-              })}
-            </ul>
-            : <div className='c-attention u-mt-30'>お客様情報が見つかりませんでした</div>
+                <ul className={Style.ClientSearch__list}>
+                  {this.state.clients.map((client, i) => {
+                    var key = `clients-${i}`;
+                    return (
+                      <li {...{key}} className={Style.ClientSearch__item}>
+                        <h2 className={Style.ClientSearch__itemName} data-number={i} onClick={::this._onSelect}>{client.company.name} {client.division.name} {client.name} 様</h2>
+                      </li>
+                    );
+                  })}
+                </ul>
+                :
+                <div className='c-attention u-mt-30'>お客様情報が見つかりませんでした</div>
+              }
+            </div>
+            :
+            <div dangerouslySetInnerHTML={{__html : this.state.body}} />
           }
           <div onClick={::this._close} className={Style.ClientSearch__closeIcon}>×</div>
         </div>
