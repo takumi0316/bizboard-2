@@ -1470,6 +1470,11 @@ capture-exit@^1.2.0:
   dependencies:
     rsvp "^3.3.3"
 
+card-vibes@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/card-vibes/-/card-vibes-0.1.0.tgz#f72420589af8bbccafd8092ee96929800b6fe3a4"
+  integrity sha512-Wf3FVP+HpwdYFif6BP2p+NH5us8jcMoY0j3XqX6iO0TfE7o4DXX3OZZxWQuqL6lOP9jHRBD7Rosv+VRHXOTDZA==
+
 case-sensitive-paths-webpack-plugin@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.1.2.tgz#c899b52175763689224571dad778742e133f0192"

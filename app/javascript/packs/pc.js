@@ -18,6 +18,8 @@ import 'scripts/image_converter';
   });
 })();
 
+import button from "components/add_companiese.jsx"
+
 // react
 import WebpackerReact from 'webpacker-react'
 
@@ -40,6 +42,7 @@ import ProjectViewer from 'components/project_viewer'
 import CompanyDivisions from 'components/company_divisions'
 
 WebpackerReact.setup({
+  button,
   Alert,
   Kawaii,
   LogoEditor,

@@ -105,7 +105,12 @@ class CompaniesController < ApplicationController
 
     flash[:warning] = { message: e.message }
   ensure
-    redirect_to action: :index
+    respond_to do |format|
+			format.html { redirect_to action: :index }
+			format.js
+      format.json { render json: nil }
+		end
+
   end
 
   #----------------------------------------

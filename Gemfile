@@ -28,6 +28,8 @@ gem 'rack-rewrite'
 gem 'webpacker'
 gem 'webpacker-react'
 
+gem "react-rails"
+
 # js grobal variables
 gem 'gon'
 
