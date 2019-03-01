@@ -17,16 +17,6 @@ export default class Button extends Component {
     }
   }
 
-//  submit = () => {
-//    this.setState({ count: this.state.count + 1 });
-//    Request.post("/companies")
-//      .send({name: "sample", kana: "サンプル", note: ""})
-//      .setCsrfToken()
-//      .end(function(err, res){
-//        console.log(res.body);
-//    });
-//  }
-
   update_name(e) {
     this.setState({ name: e.target.value })
   }
@@ -39,17 +29,9 @@ export default class Button extends Component {
     this.setState({ note: e.target.value })
   }
 
-  submit1 = () => {
-    Request.delete("companies/" + this.state.id)
-      .setCsrfToken()
-      .end(function(err, res){ 
-        console.log(res.body);
-      });
-  }
-
   submit = () => {
     var url = "http://localhost:3000/companies/" + this.state.id
-    Request.patch(url)
+    Request.put(url)
       .send({id: this.state.id, name: this.state.name, kana: this.state.kana, note: this.state.note})
       .setCsrfToken()
       .end(function(err, res){ 
@@ -58,6 +40,7 @@ export default class Button extends Component {
   }
 
   render() {
+    return (
       <div> 
         名称<input type="text" value={ this.state.name } onChange={ e => this.update_name(e) } />
         <br />
@@ -67,6 +50,9 @@ export default class Button extends Component {
         <br />
         <button onClick={ this.submit }>変更</button>
       </div>
+    )
   }
 }
+
+
 

@@ -71,6 +71,8 @@ class CompaniesController < ApplicationController
   def update
 
     # 取引先情報更新
+    @company = Company.find(params[:id])
+    @company.update_attributes(company_params)
     render json: { company: company_params } 
   end
 
