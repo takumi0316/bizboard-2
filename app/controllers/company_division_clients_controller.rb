@@ -100,10 +100,18 @@ class CompanyDivisionClientsController < ApplicationController
     # 担当者情報更新
     client.update! client_params
 
-    redirect_to edit_company_division_client_path(client), flash: {notice: {message: '担当者情報を更新しました'}}
+    if request.xhr?
+      render json: { status: :success, client: client, division: client.company_division, company: client.client.company_division.company }
+    else
+      redirect_to edit_company_division_client_path(client), flash: {notice: {message: '担当者情報を更新しました'}}
+    end
   rescue => e
-    
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+
+    if request.xhr?
+      render json: { status: :error, message: e.message }
+    else
+      redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    end
   end
 
   ##

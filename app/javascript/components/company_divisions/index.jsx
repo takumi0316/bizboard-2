@@ -49,6 +49,18 @@ export default class CompanyDivisions extends React.Component {
   }
 
   /**
+   *  内容の取得
+   *  @version 2018/06/10
+   */
+  getResources(e) {
+
+    return ({
+      company_id: this.refs.company_id.value,
+      company_division_id: this.refs.company_division_id.value,
+    });
+  }
+
+  /**
    *  表示処理
    *  @version 2018/06/10
    */
@@ -61,7 +73,8 @@ export default class CompanyDivisions extends React.Component {
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <div className='c-form-selectWrap'>
-          <select name='company_id' id='company_id' className='c-form-select' defaultValue={this.props.company_id} onChange={::this._onChange}>
+          <select ref='company_id' name='company_id' id='company_id' className='c-form-select' defaultValue={this.props.company_id} onChange={::this._onChange}>
+            <option value='nothing'>会社名を選択してください</option>
             { this.props.companies.map((company, index) => {
               const key = `company-${index}`;
               return (
@@ -76,7 +89,7 @@ export default class CompanyDivisions extends React.Component {
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <div className='c-form-selectWrap'>
-          <select className='c-form-select' defaultValue={this.props.company_division_id} required='required' name='company_division_client[company_division_id]' id='company_division_client_company_division_id'>
+          <select ref='company_division_id' className='c-form-select' defaultValue={this.props.company_division_id} required='required' name='company_division_client[company_division_id]' id='company_division_client_company_division_id'>
             { this.state.divisions.map((division, index) => {
               const key = `division-${index}`;
               return (

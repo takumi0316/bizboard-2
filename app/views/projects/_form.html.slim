@@ -12,5 +12,7 @@
       project_after_process: project.project_after_process,
       project_binding_work: project.project_binding_work,
       company: project.client&.company_division&.company,
+      companies: Company.all.order(:name),
+      users: User.active,
       division: project.client&.company_division,
       client: project.client })

@@ -41,8 +41,6 @@ export default class ProjectEditor extends React.Component {
 
     super(props);
 
-    console.log('props', props);
-
     this.state = {
       company: props.company,
       division: props.division,
@@ -173,8 +171,6 @@ export default class ProjectEditor extends React.Component {
       return false;
     }
 
-    console.log('field', field);
-
     // 記事内容を送信
     request
       .field(field)
@@ -205,7 +201,6 @@ export default class ProjectEditor extends React.Component {
    */
   applyClient(client) {
 
-    console.log('applyClient', client);
     this.setState({
       client: client,
       company: client.company,
@@ -252,7 +247,7 @@ export default class ProjectEditor extends React.Component {
         <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.project.company_division_client_id} />
 
         <div className='u-mt-15'>
-          <ClientSearch applyClient={::this.applyClient} />
+          <ClientSearch applyClient={::this.applyClient} companies={this.props.companies} users={this.props.users}/>
         </div>
         
         <div className='u-mt-30'>

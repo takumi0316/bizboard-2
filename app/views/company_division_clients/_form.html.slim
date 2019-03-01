@@ -28,18 +28,15 @@
 
       .c-form-label
         = f.label :title, '敬称'
-        span.c-form__required.u-ml-10 必須
-      = f.select :title, CompanyDivisionClient.titles_i18n.invert, {}, { class: 'c-form-select', required: true }
+      = f.select :title, CompanyDivisionClient.titles_i18n.invert, {}, { class: 'c-form-select' }
 
       .c-form-label
         = f.label :tel, '電話番号'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :tel, placeholder: '電話番号', class: 'c-form-text', required: :true
+      = f.text_field :tel, placeholder: '電話番号', class: 'c-form-text'
 
       .c-form-label
         = f.label :email, 'メールアドレス'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text', required: :true
+      = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text'
 
       .c-form-label
         = f.label :note, 'メモ'
