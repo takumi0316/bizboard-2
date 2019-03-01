@@ -71,12 +71,7 @@ class CompaniesController < ApplicationController
   def update
 
     # 取引先情報更新
-    company.update! company_params
-
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
-  rescue => e
-    
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    render json: { company: company_params } 
   end
 
   ##

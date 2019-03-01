@@ -1,1 +1,16 @@
-= render 'companies/form', action: company_path(company)
+/= form_for @company, remote: true, format: 'json' do |f|
+/  = f.label :name
+/  = f.text_field :name
+/  = f.submit 'Post' 
+h1 #{params[:id]}
+= form_for Company.find(params[:id]), remote: true, format: "json" do |f|
+    = f.label :name
+    = f.text_field :name
+    
+    = f.label :kana
+    = f.text_field :kana
+
+    = f.label :note
+    = f.text_area :note
+
+    = f.submit "送信"
