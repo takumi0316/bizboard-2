@@ -71,9 +71,16 @@ class CompaniesController < ApplicationController
   def update
 
     # 取引先情報更新
-    @company = Company.find(params[:id])
-    @company.update_attributes(company_params)
-    render json: { company: company_params } 
+    company.update! company_params
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
+  rescue => e
+    
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    # 取引先情報更新
+    #@company = Company.find(params[:id])
+    #@company.update_attributes(company_params)
+    #render json: { company: company_params } 
   end
 
   ##
