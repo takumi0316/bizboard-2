@@ -1,1 +1,6 @@
-= react_component("button", {id: params[:id]})
+/= react_component("button", {id: params[:id]})
+= form_for Company.find(params[:id]), remote: true, format: "json" do |f|
+    = f.label :name
+    = f.text_field :name
+
+    = f.submit "送信"

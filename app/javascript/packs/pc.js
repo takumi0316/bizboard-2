@@ -18,7 +18,11 @@ import 'scripts/image_converter';
   });
 })();
 
+// 取引先をajaxで編集
 import button from "components/add_companiese.jsx"
+
+// 品目
+import item from "components/item_to_react.jsx"
 
 // react
 import WebpackerReact from 'webpacker-react'
@@ -42,6 +46,7 @@ import ProjectViewer from 'components/project_viewer'
 import CompanyDivisions from 'components/company_divisions'
 
 WebpackerReact.setup({
+  item,
   button,
   Alert,
   Kawaii,

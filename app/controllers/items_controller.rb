@@ -73,7 +73,12 @@ class ItemsController < ApplicationController
     # 品目情報更新
     item.update! item_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '品目情報を更新しました'}}
+    if request.xhr?
+      render json: item_params
+    else
+      redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '品目情報を更新しました'}}
+    end
+
   rescue => e
     
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}

@@ -1,1 +1,3 @@
 = render 'items/form', action: item_path(item)
+
+= react_component("item", { id: item.id, division_id: item.division_id, name: item.name, mf_item_id: item.mf_item_id, code: item.code, note: item.note, quantity: item.quantity, unit_price: item.unit_price, unit: item.unit, excise: item.excise })
