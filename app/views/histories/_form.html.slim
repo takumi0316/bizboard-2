@@ -1,0 +1,31 @@
+.l-contents
+  section.l-contents__inner
+
+    h1.l-contents__heading.u-mt-30 活動履歴登録
+
+    = form_for history, html: { class: 'u-mt-30'} do |f|
+
+      .c-form-label
+        = f.label :date, '対応日時'
+        span.c-form__required.u-ml-10 必須
+      = f.date_select :date, class: 'c-form-select', required: :true
+
+      .c-form-label
+        = f.label :content, '対応内容'
+        span.c-form__required.u-ml-10 必須
+      = f.text_field :content, placeholder: '対応内容', class: 'c-form-text', required: :true
+
+      .c-form-label
+        = f.label :user, '対応者'
+        span.c-form__required.u-ml-10 必須
+      = f.select :user, ['李', '中原', '田中(雄)', '大橋', '米田'], {}, { class: 'c-form-select', required: true }
+
+      .c-form-label
+        = f.label :memo, 'メモ'
+      = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+
+      .c-form-label
+        = f.label :attachment, '添付'
+      = f.file_field :attachment, placeholder: '添付'
+
+      .u-ta-center.u-mt-30 = f.submit history.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

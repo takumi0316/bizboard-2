@@ -72,7 +72,7 @@ ja:
       binding_work:
         binding_works_unnecessary: なし
         binding_works_necessary: あり
-    
+
     project_binding_work:
       bind_type:
         original_bind_type: 現行通り
@@ -247,7 +247,7 @@ ja:
       open_type:
         side_open: 横開き
         upper_open: 上開き
-    
+
     project_scan:
       posting_state:
         stapler: ホチキス
