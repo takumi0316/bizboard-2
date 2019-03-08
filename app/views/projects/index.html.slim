@@ -1,6 +1,8 @@
 .l-contents
   section.l-contents__inner
 
+    = render 'layouts/_partials/tabmenu'
+
     = link_to '新規案件を作成する', new_project_path, class: 'c-btnMain-standard c-btn-blue'
 
     = form_with url: projects_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|

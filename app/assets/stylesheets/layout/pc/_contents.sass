@@ -20,7 +20,20 @@
     font-size: map-get($fontSize, 'title')
     border-bottom: solid 1px map-get($layoutColors, 'lightGray')
     padding: 15px 0
-    
+
+  #岡田追記しました
+  &__tabmenu
+    display: flex
+    align-items: center
+    position: relative
+    padding: 15px 0
+    li+ li
+      border-left: 1px solid
+  &__tabmenuText
+    font-size: map-get($fontSize, 'title')
+    a
+      margin: 0 20px
+
   &__panel
     position: relative
     display: inline-block
