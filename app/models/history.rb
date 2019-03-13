@@ -10,6 +10,10 @@ class History < ApplicationRecord
   #  ** Constants **
   #----------------------------------------
 
+  #バリデーション
+  #URLの正規表現
+  #ALID_URL_REGEX = /\A#{URI::regexp(%w(http https))}\z/
+
   #----------------------------------------
   #  ** Enums **
   #----------------------------------------
@@ -17,6 +21,9 @@ class History < ApplicationRecord
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
+
+  #URL
+  #Validates :attachment, format: {with: VALID_URL_REGEX }
 
   #----------------------------------------
   #  ** Associations **

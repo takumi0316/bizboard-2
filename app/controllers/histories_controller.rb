@@ -13,7 +13,7 @@ class HistoriesController < ApplicationController
   # 活動履歴
   expose(:histories) {History.all}
 
-  # 取引先
+  # 活動履歴
   expose(:history) { History.find_or_initialize_by id: params[:id] || params[:history_id] }
 
 
@@ -31,10 +31,10 @@ class HistoriesController < ApplicationController
 
   ##
   # 一覧
-  # @version 2018/06/10
+  # @version 2019/03/12
   #
   def index
-
+    @histories = History.order(date: "DESC")
     add_breadcrumb '活動履歴'
   end
 
@@ -84,7 +84,7 @@ class HistoriesController < ApplicationController
     # 取引先情報更新
     history.update! history_params
 
-    redirect_to edit_history_path(history), flash: {notice: {message: '取引先情報を更新しました'}}
+    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
