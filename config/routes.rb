@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   end
 
   #活動履歴
-  resources :histories
+  resources :activities
 
   # 作業進捗
   resources :works

@@ -1,7 +1,7 @@
 ##
-# histories Controller
+# activities Controller
 #
-class HistoriesController < ApplicationController
+class ActivitiesController < ApplicationController
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
@@ -11,10 +11,15 @@ class HistoriesController < ApplicationController
   #----------------------------------------
 
   # 活動履歴
-  expose(:histories) {History.all}
+  expose(:activities) {
+    Activity
+    .search(params[:name])
+    .all
+    .order(date: 'DESC')
+  }
 
   # 活動履歴
-  expose(:history) { History.find_or_initialize_by id: params[:id] || params[:history_id] }
+  expose(:activity) { Activity.find_or_initialize_by id: params[:id] || params[:activity_id] }
 
 
   #----------------------------------------
@@ -34,7 +39,7 @@ class HistoriesController < ApplicationController
   # @version 2019/03/12
   #
   def index
-    @histories = History.order(date: "DESC")
+
     add_breadcrumb '活動履歴'
   end
 
@@ -44,7 +49,7 @@ class HistoriesController < ApplicationController
   #
   def new
 
-    add_breadcrumb '活動履歴', path: histories_path
+    add_breadcrumb '活動履歴', path: activities_path
     add_breadcrumb '新規作成'
   end
 
@@ -54,7 +59,7 @@ class HistoriesController < ApplicationController
   #
   def edit
 
-    add_breadcrumb '活動履歴', path: histories_path
+    add_breadcrumb '活動履歴', path: activities_path
     add_breadcrumb '編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -67,7 +72,7 @@ class HistoriesController < ApplicationController
   def update
 
     # 取引先情報更新
-    history.update! history_params
+    activity.update! activity_params
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
@@ -82,7 +87,7 @@ class HistoriesController < ApplicationController
   def create
 
     # 取引先情報更新
-    history.update! history_params
+    activity.update! activity_params
 
     redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
@@ -96,7 +101,7 @@ class HistoriesController < ApplicationController
   #
   def destroy
 
-    history.destroy
+    activity.destroy
   rescue => e
 
     flash[:warning] = { message: e.message }
@@ -110,9 +115,9 @@ class HistoriesController < ApplicationController
 
   private
 
-  def history_params
+  def activity_params
 
-    params.require(:history).permit(:date, :content, :user, :memo, :attachment)
+    params.require(:activity).permit :name, :date, :status, :memo, :attachment, :project_id
   end
 
 end
