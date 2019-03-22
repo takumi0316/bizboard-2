@@ -1,0 +1,583 @@
+.l-contents
+  section.l-contents__inner
+    = react_component('WorkStatus', { status: works.find(params[:id]).status, id: params[:id] })      
+    .c-attention.u-mt-10
+      span.u-fw-bold = works.find(params[:id]).project.name
+      span.u-ml-30
+        | 案件番号: 
+        span.u-fw-bold = works.find(params[:id]).project.id
+      span.u-ml-30
+        | 受付日: 
+        span.u-fw-bold = works.find(params[:id]).project.created_at.to_s
+      span.u-ml-30
+        | 担当者: 
+        span.u-fw-bold = works.find(params[:id]).project.user.name
+      span.u-ml-30
+        = link_to '編集する', edit_project_path(works.find(params[:id]).project), class: 'u-td-underline'
+
+    .c-attention.u-mt-10
+      | お客様情報: 
+      span.u-ml-30
+        | 請求先情報:
+      div
+        | 納期: 
+        span.u-fw-bold = works.find(params[:id]).project.deliver_at.present? ? works.find(params[:id]).project.deliver_at.to_s : '未定'
+        span.u-ml-30
+          | 納品方法: 
+        span.u-fw-bold
+          = works.find(params[:id]).project.deliver_type_i18n
+          = " (#{works.find(params[:id]).project.deliver_type_note})" if works.find(params[:id]).project.deliver_type_note.present?
+
+    - if works.find(params[:id]).project.project_category_i18n === 'プリント'
+
+      .c-attention.u-mt-10
+        | 案件種別:
+        span.u-fw-bold = works.find(params[:id]).project.project_category_i18n
+        span.u-ml-30
+          | 部数:
+        span.u-fw-bold
+          = works.find(params[:id]).project.project_count
+        span.u-ml-30
+          | 入稿データ:
+        span.u-fw-bold
+          - if works.find(params[:id]).project.print.work_process === 0
+            | なし
+          - else
+            | あり
+        span.u-ml-30
+          | データURL:
+        span.u-fw-bold
+          = works.find(params[:id]).project.print.url.present? ? works.find(params[:id]).project.print.url : 'なし'
+
+      .c-attention.u-mt-10
+        | データ作成作業:
+        span.u-fw-bold
+          = works.find(params[:id]).project.print.work_process_i18n
+        - if works.find(params[:id]).project.print.work_process_i18n === 'あり'
+          span.u-ml-30
+            | 作業項目:
+          span.u-fw-bold
+            = works.find(params[:id]).project.print.work_type_i18n
+          span.u-ml-30
+            | 作業想定時間:
+          span.u-fw-bold
+            = works.find(params[:id]).project.print.work_time
+          span.u-ml-30
+          div
+            | 作業内容:
+            span.u-fw-bold
+              = works.find(params[:id]).project.print.work_note
+  
+      .c-attention.u-mt-10
+        | プリント作業:
+        span.u-fw-bold
+          = works.find(params[:id]).project.print.print_work_i18n
+        - if works.find(params[:id]).project.print.print_work_i18n === 'あり'
+          span.u-ml-30
+            | カラー区分:
+          span.u-fw-bold
+            = works.find(params[:id]).project.print.color_i18n
+          span.u-ml-30
+            | サイズ:
+          span.u-fw-bold
+            = works.find(params[:id]).project.print.print_size_i18n
+          span.u-ml-30
+            | 面付け:
+          span.u-fw-bold
+            = works.find(params[:id]).project.print.surface_i18n
+          - if works.find(params[:id]).project.print.surface_i18n === '両面→片面'
+            span.u-ml-30
+              | 開き(両面の場合):
+            span.u-fw-bold
+              = works.find(params[:id]).project.print.open_type_i18n
+
+      .c-attention.u-mt-10
+        | 後加工作業:
+        span.u-fw-bold
+          = works.find(params[:id]).project.after_process_i18n
+        - if works.find(params[:id]).project.after_process_i18n === 'あり'
+          span.u-ml-30
+            | 折り:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.folding_i18n
+          span.u-ml-30
+            | ホチキス留め:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.stapler_i18n
+          span.u-ml-30
+            | 穴あけ:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.hole_i18n
+            = "(#{works.find(params[:id]).project.project_after_process.hole_note})" if works.find(params[:id]).project.project_after_process.hole_note.present?
+          span.u-ml-30
+          div
+            | クリップ留:
+            span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.clip_i18n
+            span.u-ml-30
+              | ファイル綴じ:
+            span.u-fw-bold
+              = works.find(params[:id]).project.project_after_process.bind_i18n
+              - if works.find(params[:id]).project.project_after_process.bind_i18n === 'キングファイル' || works.find(params[:id]).project.project_after_process.bind_i18n === 'その他'
+                = "(#{works.find(params[:id]).project.project_after_process.bind_note})"
+            span.u-ml-30
+              | 背文字:
+            span.u-fw-bold
+              = works.find(params[:id]).project.project_after_process.back_text_i18n
+              = "(#{works.find(params[:id]).project.project_after_process.back_text_note})" if works.find(params[:id]).project.project_after_process.back_text_i18n === 'あり'
+
+      .c-attention.u-mt-10
+
+        | 製本作業:
+        span.u-fw-bold
+          = works.find(params[:id]).project.binding_work_i18n
+        - if works.find(params[:id]).project.binding_work_i18n === 'あり'
+          span.u-ml-30
+            | 製本方法:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_binding_work.bind_type_i18n
+            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り' 
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'クロス巻き'
+
+              span.u-ml-30
+                | 表紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_front
+              div
+                | 裏紙:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_back
+              div
+                | クロス色:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_color_i18n
+              
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'くるみ'
+
+              span.u-ml-30
+                | 表紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.wrap_front
+              div
+                | 背文字:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.wrap_back_text_i18n
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '中綴じ'
+
+              span.u-ml-30
+                | 用紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.stitching_paper
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '袋とじ'
+
+              span.u-ml-30
+                | 袋とじ:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.secret_stitch_i18n
+              span.u-ml-30
+                | 白紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.secret_stitch_paper_i18n
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '無線綴じ'
+
+              span.u-ml-30
+                | 綴じ:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_stitch_i18n
+              span.u-ml-30
+                | 断裁:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_cut_i18n
+              span.u-ml-30
+                |  カット:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_cut_note
+
+    - elsif works.find(params[:id]).project.project_category_i18n === 'コピー'
+
+      .c-attention.u-mt-10
+        | 案件種別: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.project_category_i18n
+        span.u-ml-30
+          | 入稿状態: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.copy.posting_state_i18n
+        span.u-ml-30
+          | 入稿バラシ: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.copy.draft_split_i18n
+        span.u-ml-30
+          | 入稿戻し: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.copy.draft_restore_i18n
+
+      .c-attention.u-mt-10
+        | カラー区分: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.copy.color_i18n
+        span.u-ml-30
+          | サイズ: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.copy.print_size_i18n
+        span.u-ml-30
+          | 面付け: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.copy.surface_i18n
+        - if works.find(params[:id]).project.copy.surface_i18n === '両面→片面'
+          span.u-ml-30
+            | 開き(両面の場合):
+          span.u-fw-bold
+            = works.find(params[:id]).project.copy.open_type_i18n
+
+      .c-attention.u-mt-10
+        | 後加工作業:
+        span.u-fw-bold
+          = works.find(params[:id]).project.after_process_i18n
+        - if works.find(params[:id]).project.after_process_i18n === 'あり'
+          span.u-ml-30
+            | 折り:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.folding_i18n
+          span.u-ml-30
+            | ホチキス留め:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.stapler_i18n
+          span.u-ml-30
+            | 穴あけ:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.hole_i18n
+            = "(#{works.find(params[:id]).project.project_after_process.hole_note})" if works.find(params[:id]).project.project_after_process.hole_note.present?
+          span.u-ml-30
+          div
+            | クリップ留:
+            span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.clip_i18n
+            span.u-ml-30
+              | ファイル綴じ:
+            span.u-fw-bold
+              = works.find(params[:id]).project.project_after_process.bind_i18n
+              - if works.find(params[:id]).project.project_after_process.bind_i18n === 'キングファイル' || works.find(params[:id]).project.project_after_process.bind_i18n === 'その他'
+                = "(#{works.find(params[:id]).project.project_after_process.bind_note})"
+            span.u-ml-30
+              | 背文字:
+            span.u-fw-bold
+              = works.find(params[:id]).project.project_after_process.back_text_i18n
+              = "(#{works.find(params[:id]).project.project_after_process.back_text_note})" if works.find(params[:id]).project.project_after_process.back_text_i18n === 'あり'
+
+      .c-attention.u-mt-10
+        | 製本作業:
+        span.u-fw-bold
+          = works.find(params[:id]).project.binding_work_i18n
+        - if works.find(params[:id]).project.binding_work_i18n === 'あり'
+          span.u-ml-30
+            | 製本方法:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_binding_work.bind_type_i18n
+            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り' 
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'クロス巻き'
+
+              span.u-ml-30
+                | 表紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_front
+              div
+                | 裏紙:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_back
+              div
+                | クロス色:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_color_i18n
+              
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'くるみ'
+
+              span.u-ml-30
+                | 表紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.wrap_front
+              div
+                | 背文字:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.wrap_back_text_i18n
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '中綴じ'
+
+              span.u-ml-30
+                | 用紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.stitching_paper
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '袋とじ'
+
+              span.u-ml-30
+                | 袋とじ:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.secret_stitch_i18n
+              span.u-ml-30
+                | 白紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.secret_stitch_paper_i18n
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '無線綴じ'
+
+              span.u-ml-30
+                | 綴じ:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_stitch_i18n
+              span.u-ml-30
+                | 断裁:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_cut_i18n
+              span.u-ml-30
+                |  カット:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_cut_note
+
+
+    - elsif works.find(params[:id]).project.project_category_i18n === '名刺'
+
+      .c-attention.u-mt-10
+        | 案件種別: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.project_category_i18n
+        span.u-ml-30
+          | 箱数: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.project_count
+        span.u-ml-30
+          | 入稿データ:
+        span.u-fw-bold 
+          - if works.find(params[:id]).project.card.draft_data === 0
+            | なし
+          - else
+            | あり
+        span.u-ml-30
+          | データURL:
+        span.u-fw-bold
+          = works.find(params[:id]).project.card.url.present? ? works.find(params[:id]).project.card.url : 'なし'
+        span.u-ml-30
+          | 作業項目:
+        span.u-fw-bold
+          = works.find(params[:id]).project.card.card_type_i18n
+      
+      .c-attention.u-mt-10
+        | カラー区分: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.card.color_i18n
+        span.u-ml-30
+          | 用紙: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.card.paper_i18n
+        span.u-ml-30
+          | 両面: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.card.surface_i18n
+        span.u-ml-30
+          | エンボス:
+        span.u-fw-bold 
+          = works.find(params[:id]).project.card.emboss_i18n 
+
+    - elsif works.find(params[:id]).project.project_category_i18n === 'スキャン'
+
+      .c-attention.u-mt-10
+        | 案件種別: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.project_category_i18n
+        span.u-ml-30
+          | 原稿箱数: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.project_count
+        span.u-ml-30
+          | 原稿サイズ:
+        span.u-fw-bold 
+          = works.find(params[:id]).project.scan.print_size_i18n
+        span.u-ml-30
+          | 入稿状態:
+        span.u-fw-bold
+          = works.find(params[:id]).project.scan.posting_state_i18n
+        span.u-ml-30
+          | 入稿もどし:
+        span.u-fw-bold
+          = works.find(params[:id]).project.scan.draft_restore_i18n
+        span.u-ml-30
+          | 背表紙裁断:
+        span.u-fw-bold
+          = works.find(params[:id]).project.scan.back_cut_i18n
+
+      .c-attention.u-mt-10
+        | カラー区分 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.scan.color_i18n
+        span.u-ml-30
+          | 解像度: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.scan.resolution_i18n
+        span.u-ml-30
+          | ファイル形式:
+        span.u-fw-bold 
+          = works.find(params[:id]).project.scan.file_extension_i18n
+        span.u-ml-30
+          | サイズ混合具合:
+        span.u-fw-bold
+          = works.find(params[:id]).project.scan.size_mix_i18n
+        span.u-ml-30
+          | ADF使用可否:
+        span.u-fw-bold
+          = works.find(params[:id]).project.scan.adf_i18n
+        span.u-ml-30
+          | OCR:
+        span.u-fw-bold
+          = works.find(params[:id]).project.scan.odr_i18n
+        div
+          | しおり作成:
+          span.u-fw-bold
+            = works.find(params[:id]).project.scan.bookmark_i18n
+          span.u-ml-30
+            | ファイル名編集:
+          span.u-fw-bold
+            = works.find(params[:id]).project.scan.edit_file_name_i18n
+
+
+          
+    - elsif works.find(params[:id]).project.project_category_i18n === '製本'
+      .c-attention.u-mt-10
+        | 案件種別: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.project_category_i18n
+        span.u-ml-30
+          | 後加工: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.after_process_i18n
+        span.u-ml-30
+          | 原稿箱数: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.project_count
+        span.u-ml-30
+          | 原稿サイズ:
+        span.u-fw-bold 
+          = works.find(params[:id]).project.bind.print_size_i18n
+        span.u-ml-30
+          | 入稿状態:
+        span.u-fw-bold
+          = works.find(params[:id]).project.bind.posting_state_i18n
+
+      .c-attention.u-mt-10
+        | 後加工作業:
+        span.u-fw-bold
+          = works.find(params[:id]).project.after_process_i18n
+        - if works.find(params[:id]).project.after_process_i18n === 'あり'
+          span.u-ml-30
+            | 折り:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.folding_i18n
+          span.u-ml-30
+            | ホチキス留め:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.stapler_i18n
+          span.u-ml-30
+            | 穴あけ:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.hole_i18n
+            = "(#{works.find(params[:id]).project.project_after_process.hole_note})" if works.find(params[:id]).project.project_after_process.hole_note.present?
+          span.u-ml-30
+          div
+            | クリップ留:
+            span.u-fw-bold
+            = works.find(params[:id]).project.project_after_process.clip_i18n
+            span.u-ml-30
+              | ファイル綴じ:
+            span.u-fw-bold
+              = works.find(params[:id]).project.project_after_process.bind_i18n
+              - if works.find(params[:id]).project.project_after_process.bind_i18n === 'キングファイル' || works.find(params[:id]).project.project_after_process.bind_i18n === 'その他'
+                = "(#{works.find(params[:id]).project.project_after_process.bind_note})"
+            span.u-ml-30
+              | 背文字:
+            span.u-fw-bold
+              = works.find(params[:id]).project.project_after_process.back_text_i18n
+              = "(#{works.find(params[:id]).project.project_after_process.back_text_note})" if works.find(params[:id]).project.project_after_process.back_text_i18n === 'あり'
+
+      .c-attention.u-mt-10
+        | 製本作業:
+        span.u-fw-bold
+          = works.find(params[:id]).project.binding_work_i18n
+        - if works.find(params[:id]).project.binding_work_i18n === 'あり'
+          span.u-ml-30
+            | 製本方法:
+          span.u-fw-bold
+            = works.find(params[:id]).project.project_binding_work.bind_type_i18n
+            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り' 
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'クロス巻き'
+
+              span.u-ml-30
+                | 表紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_front
+              div
+                | 裏紙:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_back
+              div
+                | クロス色:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.cross_color_i18n
+              
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'くるみ'
+
+              span.u-ml-30
+                | 表紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.wrap_front
+              div
+                | 背文字:
+                span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.wrap_back_text_i18n
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '中綴じ'
+
+              span.u-ml-30
+                | 用紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.stitching_paper
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '袋とじ'
+
+              span.u-ml-30
+                | 袋とじ:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.secret_stitch_i18n
+              span.u-ml-30
+                | 白紙:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.secret_stitch_paper_i18n
+
+            - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === '無線綴じ'
+
+              span.u-ml-30
+                | 綴じ:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_stitch_i18n
+              span.u-ml-30
+                | 断裁:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_cut_i18n
+              span.u-ml-30
+                |  カット:
+              span.u-fw-bold
+                = works.find(params[:id]).project.project_binding_work.radio_cut_note
+
+    - else
+      .c-attention.u-mt-10
+        | 案件種別: 
+        span.u-fw-bold 
+          = works.find(params[:id]).project.project_category_i18n
+                 
+
+    .c-table
+      = react_component('WorkDetails', { details: works.find(params[:id]).work_details, category:  works.find(params[:id]).project.project_category_i18n, work_id: params[:id], user_id: current_user.id })      

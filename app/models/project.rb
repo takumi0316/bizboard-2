@@ -84,6 +84,8 @@ class Project < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
+  scope :deliverd_in, ->(datetime) { where(deliver_at: datetime) } 
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

@@ -1,0 +1,121 @@
+##
+# WorkDetails Controller
+#
+class WorkDetailsController < ApplicationController
+
+  #------------------------------------------
+  #  ** Includes **
+  #------------------------------------------
+
+  #------------------------------------------
+  #  ** Instance variables **
+  #------------------------------------------
+
+  # 作業
+  #expose(:detail) { WorkDetail.find_or_initialize_by id: params[:id] }
+
+
+  #------------------------------------------
+  #  ** Layouts **
+  #------------------------------------------
+
+  #------------------------------------------
+  #  ** Request cycles **
+  #------------------------------------------
+
+  #------------------------------------------
+  #  ** Request cycles **
+  #------------------------------------------
+
+  #------------------------------------------
+  #  ** Actions **
+  #------------------------------------------
+
+  ##
+  # 新規作成
+  # 
+  #
+  def create
+
+    # create処理
+    if params[:work_detail][:work_id].present?
+
+      Work.find(params[:work_detail][:work_id]).work_details.create
+
+    # update処理
+    else
+
+      params.require(:work_detail_update).each do |detail|
+        
+        parse_json = JSON.parse(detail)
+        work_detail = WorkDetail.find(parse_json['id'])
+        work_detail.update!(
+          work_id: parse_json['work_id'],
+          count: parse_json['count'],
+          deliver_at: parse_json['deliver_at'].present? ?
+                                              Time.strptime("#{ parse_json['deliver_at'] }", "%Y年 %m月 %d日 %H時%M分") 
+                                              : 
+                                              parse_json['deliver_at'],
+          client_name: parse_json['client_name'],
+          status: parse_json['status'],
+          estimated_man_hours: parse_json['estimated_man_hours'],
+          estimated_cost: parse_json['estimated_cost'],
+          actual_man_hours: parse_json['actual_man_hours'],
+          actual_cost: parse_json['actual_cost']
+        )
+      end
+    end 
+
+    if request.xhr?
+
+      render json: { status: :success, detail: Work.find(params[:work_id]).work_details }
+    else
+      
+      redirect_to works_path(params[:work_detail][:work_id].work_details)
+    end
+
+
+  rescue => e
+      
+    puts 'rescueeeeeeeeee'
+    flash[:warning] = { message: e.message }
+    if params[:work_detail][:work_id].present?
+      render json: { detail: Work.find(params[:work_detail][:work_id]).work_details }
+    else
+      render json: { detail: Work.find(params[:work_id]).work_details }
+    end
+  end
+
+
+  ##
+  # 削除
+  #
+  #
+  def destroy
+
+    WorkDetail.find(params[:id]).destroy!
+
+    if request.xhr?
+      render json: { status: :success, detail: Work.find(params[:work_detail][:work_id]).work_details }
+    else
+      redirect_to works_path(params[:work_detail][:work_id])
+    end
+
+  rescue => e
+
+    flash[:warning] = { message: e.message }
+    render json: { detail: Work.find(params[:work_detail][:work_id]).work_details }
+  end
+
+  #------------------------------------------
+  #  ** Methods **
+  #------------------------------------------
+
+  private
+
+    def detail_params
+
+    end
+
+end
+

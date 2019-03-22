@@ -39,11 +39,28 @@ import ProjectViewer from 'components/project_viewer'
 // 部署
 import CompanyDivisions from 'components/company_divisions'
 
+// 作業進捗
+import WorkStatus from 'components/work_management/work_status/status_visualization.jsx'
+
+// 作業検索
+import WorksSearch from 'components/work_management/works_search/search.jsx'
+
+// 作業詳細
+import WorkDetails from 'components/work_management/work_details/add_details.jsx'
+
+
+// 作業管理一覧
+// import WorksEdit from 'components/work_management'
+
 WebpackerReact.setup({
+//  WorksEdit,
   Alert,
   Kawaii,
   LogoEditor,
   ProjectEditor,
   ProjectViewer,
   CompanyDivisions,
+  WorksSearch,
+  WorkDetails,
+  WorkStatus,
 })

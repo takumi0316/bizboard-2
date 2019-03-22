@@ -1,5 +1,8 @@
 .l-contents
-  section.l-contents__inner
+  
+
+    .c-search
+      = react_component('WorksSearch')
 
     .c-table.u-mt-30
       table
@@ -30,11 +33,11 @@
               td
               td = r.project.project_count
               td = r.project.deliver_at.to_s
-              td = r.status_i18n
+              td = r.status
               td = r.price
               td = r.cost
               td = r.cost.nonzero?? "#{r.price.to_f / r.cost.to_f}%" : '0%'
               td = r.updated_at
-              td = link_to '編集', edit_project_path(r), class: 'c-btnMain-standard'
+              td = link_to '編集', work_path(r), class: 'c-btnMain-standard'
 
-  = render 'layouts/_partials/pagination'
+      = render 'layouts/_partials/pagination'

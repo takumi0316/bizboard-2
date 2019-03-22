@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_14_163026) do
+ActiveRecord::Schema.define(version: 2019_03_13_031159) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -104,13 +104,12 @@ ActiveRecord::Schema.define(version: 2019_02_14_163026) do
     t.string "mf_item_id"
     t.string "code"
     t.string "note"
+    t.integer "quantity", default: 0
     t.integer "unit_price", default: 0
     t.string "unit"
-    t.integer "consumption_tax", default: 0
+    t.boolean "excise", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "quantity", default: 0
-    t.boolean "excise", default: false
     t.integer "division_id"
     t.text "free_word"
     t.index ["mf_item_id"], name: "index_items_on_mf_item_id", unique: true
@@ -257,9 +256,9 @@ ActiveRecord::Schema.define(version: 2019_02_14_163026) do
     t.integer "binding_work", limit: 1, default: 0
     t.integer "after_process", limit: 1, default: 0
     t.text "note"
+    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", limit: 1, default: 0
     t.text "free_word"
     t.index ["company_division_client_id"], name: "index_projects_on_company_division_client_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
@@ -326,6 +325,21 @@ ActiveRecord::Schema.define(version: 2019_02_14_163026) do
     t.index ["password_digest"], name: "index_users_on_password_digest"
   end
 
+  create_table "work_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "work_id"
+    t.string "count"
+    t.datetime "deliver_at"
+    t.string "client_name"
+    t.integer "status", default: 0, null: false
+    t.string "estimated_man_hours"
+    t.string "estimated_cost"
+    t.string "actual_man_hours"
+    t.string "actual_cost"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["work_id"], name: "index_work_details_on_work_id"
+  end
+
   create_table "works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "project_id"
     t.integer "price", default: 0
@@ -333,7 +347,9 @@ ActiveRecord::Schema.define(version: 2019_02_14_163026) do
     t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "free_word"
     t.index ["project_id"], name: "index_works_on_project_id"
   end
 
+  add_foreign_key "work_details", "works"
 end

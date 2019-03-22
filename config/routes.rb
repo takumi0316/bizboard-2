@@ -31,6 +31,9 @@ Rails.application.routes.draw do
   # 作業進捗
   resources :works
 
+  # 作業詳細
+  resources :work_details
+
   # 取引先
   resources :companies
   resources :company_divisions
