@@ -44,7 +44,7 @@ export default class WorksSearch extends Component {
     let field = this.refs.searchWord;
     let url = "/works";
     Request.get(url)
-      .set('X-Requested-With', 'XMLHttpRequest') // railsにajax通信であることを教える
+      .set('X-Requested-With', 'XMLHttpRequest')
       .setCsrfToken()
       .end(function(err, res){ 
         console.log(res.body.work_detail);

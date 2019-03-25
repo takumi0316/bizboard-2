@@ -37,27 +37,11 @@ export default class AddDetails extends React.Component {
       startDate: new Date()
     }
 
-    this.handleChange = this.handleChange.bind(this);
-    //this.onSubmit = this.onSubmit.bind(this);
-    //this.onDestroy = this.onDestroy.bind(this);
-  }
-
-  handleChange(date) {
-
-    this.setState({
-
-      startDate: date
-    })
   }
 
   _editable = () => {
 
     this.setState({ show: true });
-  }
-
-  _end_editable = () => {
-
-    this.setState({ show: false });
   }
 
   onCreate = () => {
@@ -108,11 +92,18 @@ export default class AddDetails extends React.Component {
     let array_rails = [];
     let count = this.state.work_details.length;
     for(var i = 0; i < count; i++) {
+      let replace_datetime =  document.getElementById('deliver_at' + i).value;
+      replace_datetime = replace_datetime.replace(/年/g, '/');
+      replace_datetime = replace_datetime.replace(/月/g, '/');
+      replace_datetime = replace_datetime.replace(/日/g, '');
+      replace_datetime = replace_datetime.replace(/時/g, ':');
+      replace_datetime = replace_datetime.replace(/分/g, '');
+      console.log(replace_datetime);
       array_rails.push(JSON.stringify({
         'id': document.getElementById('detail_id' + i).innerHTML,
         'work_id': this.props.work_id,
         'count': document.getElementById('count' + i).value,
-        'deliver_at': document.getElementById('deliver_at' + i).value,
+        'deliver_at': replace_datetime,
         'client_name': document.getElementById('client_name' + i).value,
         'status': Number(document.getElementById('status' + i).value),
         'estimated_man_hours': document.getElementById('estimated_man_hours' + i).value,
@@ -152,15 +143,15 @@ export default class AddDetails extends React.Component {
     return (
       <div className={ Style.AddDetails }>
         { this.state.show ? 
-          <div>
+          <div className={ Style.AddDetails__finish_button }>
             <button id='finish' onClick={ this.onUpdate }>完了</button>
             <button onClick={ this.onCreate }>+</button>
           </div>
           :
-          <button id='editable' onClick={ this._editable }>編集</button>
+          <div className={ Style.AddDetails__edit_button }><button id='editable' onClick={ this._editable }>編集</button></div>
         }
         { this.state.show ? 
-          <div>
+          <div className={ Style.AddDetails__edit_table }>
             <table>
               <thead>
                 <tr>
@@ -185,8 +176,17 @@ export default class AddDetails extends React.Component {
                       <td id={ 'detail_id' + index } >{ detail.id }</td>
                       <td>{ this.props.category }</td>
                       <td><input type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-                      <td><input type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') } /></td>
-                      <td><input type='text' id={ 'client_name' + index } defaultValue={ detail.client_name } /></td>
+                      <td><input style={{ width:'218px' }}type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }/></td>
+                      <td>
+                        <select id={ 'client_name' + index }>
+                          { detail.client_name === "" ? <option></option> : <option value={ detail.client_name }>{ detail.client_name }</option> }
+                          { this.props.users.map((user) => {
+                            return(
+                              detail.client_name !== user['name'] ? <option value={ user['name'] }>{ user['name'] }</option> : null
+                            );
+                          }) }
+                        </select>
+                      </td>
                       <td>
                         <select  id={ 'status' + index }>
                           <option value={ detail.status }>{ ENUM_STATUS[detail.status] }</option>
@@ -200,7 +200,7 @@ export default class AddDetails extends React.Component {
                           }) }
                         </select>
                       </td>
-                      <td><input type='text' id={ 'estimated_man_hours' + index } defaultValue={ detail.estimated_man_hours } /></td>
+                      <td><input className='text_right' type='text' id={ 'estimated_man_hours' + index } defaultValue={ detail.estimated_man_hours } /></td>
                       <td><input type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
                       <td><input type='text' id={ 'actual_man_hours' + index } defaultValue={ detail.actual_man_hours } /></td>
                       <td><input type='text' id={ 'actual_cost' + index } defaultValue={ detail.actual_cost } /></td>
@@ -211,43 +211,43 @@ export default class AddDetails extends React.Component {
             </table>
           </div>
         :
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>作業詳細番号</th>
-                <th>作業内容</th>
-                <th>数量</th>
-                <th>期日</th>
-                <th>担当者</th>
-                <th>ステータス</th>
-                <th>想定工数(時間)</th>
-                <th>想定原価(税抜)</th>
-                <th>実績工数(時間)</th>
-                <th>実績原価(税抜)</th>
-              </tr>
-            </thead>
-            <tbody>
-              { this.state.work_details.map((detail, index) => {
-                return (
-                  <tr>
-                    <td></td>
-                    <td>{ detail.id }</td>
-                    <td>{ this.props.category }</td>
-                    <td id={ 'count' + index }>{ detail.count }</td>
-                    <td style={{ Width: "100px" }}>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
-                    <td>{ detail.client_name }</td>
-                    <td>{ ENUM_STATUS[detail.status] }</td>
-                    <td>{ detail.estimated_man_hours }</td>
-                    <td>{ detail.estimated_cost }</td>
-                    <td>{ detail.actual_man_hours }</td>
-                    <td>{ detail.actual_cost }</td>
-                  </tr>
-                );
-              }) } 
-            </tbody>
-          </table>
-        }
+          <div className={ Style.AddDetails__reading_table }>
+            <table>
+              <thead>
+                <tr>
+                  <th>作業詳細番号</th>
+                  <th>作業内容</th>
+                  <th>数量</th>
+                  <th>期日</th>
+                  <th>担当者</th>
+                  <th>ステータス</th>
+                  <th>想定工数(時間)</th>
+                  <th>想定原価(税抜)</th>
+                  <th>実績工数(時間)</th>
+                  <th>実績原価(税抜)</th>
+                </tr>
+              </thead>
+              <tbody>
+                { this.state.work_details.map((detail, index) => {
+                  return (
+                    <tr>
+                      <td style={{ textAlign: 'center' }}>{ detail.id }</td>
+                      <td style={{ textAlign: 'center' }}>{ this.props.category }</td>
+                      <td style={{ textAlign: 'right', width: '55px' }} id={ 'count' + index }>{ detail.count }個</td>
+                      <td style={{ textAlign: 'right' }}>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
+                      <td style={{ textAlign: 'center' }}>{ detail.client_name }</td>
+                      <td style={{ textAlign: 'center' }}>{ ENUM_STATUS[detail.status] }</td>
+                      <td style={{ textAlign: 'right' }}>{ detail.estimated_man_hours }時間</td>
+                      <td style={{ textAlign: 'right' }}>{ detail.estimated_cost }円</td>
+                      <td style={{ textAlign: 'right' }}>{ detail.actual_man_hours }時間</td>
+                      <td style={{ textAlign: 'right' }}>{ detail.actual_cost }円</td>
+                    </tr>
+                  );
+                }) } 
+              </tbody>
+            </table>
+          </div>
+          }
       </div>
     );
   }

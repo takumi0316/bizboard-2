@@ -35,6 +35,14 @@ ja:
         nothing: なし
         honorific: 様
         normal: さん
+    activity:
+      status:
+        meeting: 商談
+        mail: メール
+        tell: 電話
+        estimate: 見積もり
+        workshop: セミナー
+        other: その他
     project:
       status:
         draft: 新規
@@ -72,7 +80,7 @@ ja:
       binding_work:
         binding_works_unnecessary: なし
         binding_works_necessary: あり
-    
+
     project_binding_work:
       bind_type:
         original_bind_type: 現行通り
@@ -247,7 +255,7 @@ ja:
       open_type:
         side_open: 横開き
         upper_open: 上開き
-    
+
     project_scan:
       posting_state:
         stapler: ホチキス

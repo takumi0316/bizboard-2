@@ -12,9 +12,6 @@ class WorkDetailsController < ApplicationController
   #------------------------------------------
 
   # 作業
-  #expose(:detail) { WorkDetail.find_or_initialize_by id: params[:id] }
-
-
   #------------------------------------------
   #  ** Layouts **
   #------------------------------------------
@@ -40,7 +37,8 @@ class WorkDetailsController < ApplicationController
     # create処理
     if params[:work_detail][:work_id].present?
 
-      Work.find(params[:work_detail][:work_id]).work_details.create
+      Work.find(params[:work_detail][:work_id]).work_details.create!(count: 1, deliver_at: DateTime.now, estimated_man_hours: 1, estimated_cost: 0, actual_man_hours: 0, actual_cost: 0)
+      render json: { status: :success, detail: Work.find(params[:work_detail][:work_id]).work_details }
 
     # update処理
     else
@@ -52,10 +50,7 @@ class WorkDetailsController < ApplicationController
         work_detail.update!(
           work_id: parse_json['work_id'],
           count: parse_json['count'],
-          deliver_at: parse_json['deliver_at'].present? ?
-                                              Time.strptime("#{ parse_json['deliver_at'] }", "%Y年 %m月 %d日 %H時%M分") 
-                                              : 
-                                              parse_json['deliver_at'],
+          deliver_at: parse_json['deliver_at'],
           client_name: parse_json['client_name'],
           status: parse_json['status'],
           estimated_man_hours: parse_json['estimated_man_hours'],
@@ -64,20 +59,11 @@ class WorkDetailsController < ApplicationController
           actual_cost: parse_json['actual_cost']
         )
       end
-    end 
-
-    if request.xhr?
-
       render json: { status: :success, detail: Work.find(params[:work_id]).work_details }
-    else
-      
-      redirect_to works_path(params[:work_detail][:work_id].work_details)
-    end
-
+    end 
 
   rescue => e
       
-    puts 'rescueeeeeeeeee'
     flash[:warning] = { message: e.message }
     if params[:work_detail][:work_id].present?
       render json: { detail: Work.find(params[:work_detail][:work_id]).work_details }
@@ -110,12 +96,6 @@ class WorkDetailsController < ApplicationController
   #------------------------------------------
   #  ** Methods **
   #------------------------------------------
-
-  private
-
-    def detail_params
-
-    end
 
 end
 

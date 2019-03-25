@@ -20,6 +20,7 @@ export default class StatusVisualization extends React.Component {
 
     this.state = {
       work_status: this.props.status,
+      work_id: this.props.id,
       status_draft: 0,
       status_working: 10,
       status_deliverd: 20,
@@ -30,7 +31,7 @@ export default class StatusVisualization extends React.Component {
   onUpdate = (e, status_type) => {
     console.log('nannyaomae', status_type);
 
-    let url = '/works/' + this.props.id; 
+    let url = '/works/' + this.state.work_id; 
     let field = {
       'work[status]': status_type, 
     }

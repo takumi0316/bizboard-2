@@ -579,5 +579,4 @@
           = works.find(params[:id]).project.project_category_i18n
                  
 
-    .c-table
-      = react_component('WorkDetails', { details: works.find(params[:id]).work_details, category:  works.find(params[:id]).project.project_category_i18n, work_id: params[:id], user_id: current_user.id })      
+    = react_component('WorkDetails', { details: works.find(params[:id]).work_details, category:  works.find(params[:id]).project.project_category_i18n, work_id: params[:id], user_id: current_user.id, users: User.all })      

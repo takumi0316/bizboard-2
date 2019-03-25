@@ -1,0 +1,43 @@
+.l-contents
+  section.l-contents__inner
+
+    = form_for activity, html: { class: 'u-mt-30'} do |f|
+
+      .c-form-label
+        = f.label :date, '対応日時'
+        span.c-form__required.u-ml-10 必須
+      = f.date_select :date, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+
+      .c-form-label
+        = f.label :status, '対応内容'
+        span.c-form__required.u-ml-10 必須
+      = f.select :status, Activity.statuses_i18n.invert, {prompt: '対応ステータス'}, { class: 'c-form-dateselect' }
+
+      .c-form-label
+        = f.label :project_id, '案件ID'
+        span.c-form__required.u-ml-10 必須
+      = f.collection_select :project_id, Project.all, :id, :id,{}, {:class=>'c-form-dateselect'}
+
+      .c-form-label
+        = f.label :memo, 'メモ'
+      = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+
+      .c-form-label
+        = f.label :attachment, '資料リンク'
+      = f.text_field :attachment, placeholder: '資料リンクを貼り付けてください', type: 'url', class: 'c-form-text'
+
+      .u-ta-center.u-mt-30 = f.submit activity.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+
+javascript:
+  window.onload = function(){
+
+  var url = document.getElementById('activity_attachment')
+
+  //urlのバリデーション
+  url.addEventListener('invalid', function(e) {
+        e.target.setCustomValidity('');
+        if(url.validity.typeMismatch){
+          e.target.setCustomValidity('URLが正しくありません');
+        }
+      }, false);
+  }

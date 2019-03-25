@@ -46,14 +46,6 @@ class WorksController < ApplicationController
   end
 
   ##
-  # 詳細
-  # @version 2018/06/10
-  #
-  def show
-
-  end
-
-  ##
   # 更新
   #
   #
@@ -63,15 +55,11 @@ class WorksController < ApplicationController
     work.update! status: params[:work][:status].to_i
 
     if request.xhr?
-      puts 'nannyanenomae'
       render json: { status: :success, work: work.status }
-    else
-      puts 'ussaihaboke'
     end
 
   rescue => e
 
-    puts 'rescueeeeeeeee'
     render json: { status: :error, work: work.status }
   end
 
@@ -81,9 +69,4 @@ class WorksController < ApplicationController
 
   private
     
-  ##
-  # パラメータの取得
-  #
-  #
-
 end

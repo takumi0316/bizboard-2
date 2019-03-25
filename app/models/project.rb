@@ -69,6 +69,8 @@ class Project < ApplicationRecord
 
   has_one  :work,    dependent: :destroy
 
+  has_one  :activity,    dependent: :destroy
+
   has_many :histories, class_name: 'ProjectHistory',    dependent: :destroy
 
   accepts_nested_attributes_for :bind

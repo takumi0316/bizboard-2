@@ -53,7 +53,6 @@ import WorkDetails from 'components/work_management/work_details/add_details.jsx
 // import WorksEdit from 'components/work_management'
 
 WebpackerReact.setup({
-//  WorksEdit,
   Alert,
   Kawaii,
   LogoEditor,

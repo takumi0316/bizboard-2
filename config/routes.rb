@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   # TOP
   root 'home#index'
 
@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   resources :projects do
     post :status
   end
+
+  #活動履歴
+  resources :activities
 
   # 作業進捗
   resources :works

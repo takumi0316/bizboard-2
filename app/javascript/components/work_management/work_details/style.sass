@@ -1,37 +1,92 @@
 .AddDetails
   
-  button
+  &__finish_button
+    display: flex
+    justify-content: flex-end
+    button
 
-    width: 50px
-    height: 30px
+      font-weight: bold
+      margin-top: 5px
+      width: 50px
+      height: 30px
 
-  table
-    width: 100%
-    border-collapse: separate
-    border-spacing: 0px
-    border-top: 1px solid #ccc
-    border-left: 1px solid #ccc
+  &__edit_button
+    display: flex
+    justify-content: flex-end
 
-    th
-      width: auto
-      padding: 1px
-      text-align: center
-      vertical-align: top
-      color: #444
-      background-color: white
-      border-top: 1px solid #fff
-      border-left: 1px solid #fff
-      border-right: 1px solid #ccc
-      border-bottom: 1px solid #ccc
-    td
-      text-align: center
-      background-color: #ccc
-      border-right: 1px solid #ccc 
-      border-bottom: 1px solid #ccc
-      button
-        font-size: 20px
-        color: white
-        padding: 0
-        width: 45px
-        height: 25px
-        background-color: red
+    button
+      
+      font-weight: bold
+      margin-top: 5px
+      width: 50px
+      height: 30px
+
+  &__edit_table
+    overflow: auto
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) 0 0/20px 100%, linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) right/20px 100%
+    background-repeat: no-repeat
+    background-attachment: scroll
+    -webkit-overflow-scrolling: touch
+    table
+      width: 1600px
+      background: linear-gradient(to left, hsla(0,0%,100%,0), white 15px) 0 0 / 50px 100%, linear-gradient(to right, hsla(0,0%,100%,0), white 15px) right / 50px 100%
+      background-repeat: no-repeat
+      background-attachment: local
+      border-bottom: 1px solid lightgray
+      border-collapse: collapse
+      thead
+        tr
+          th
+            padding: 5px
+            background: rgba(lightgray, .1)
+            border-top: 1px solid lightgray
+            border-left: 1px solid lightgray
+            white-space: nowrap
+      tbody
+        tr
+          &:nth-child(even)
+            td
+              background: rgba(lightgray, .1)
+          td
+            height: 24px
+            text-align: center
+            border-top: 0.5px solid lightgray
+            border-left: 0.5px solid lightgray
+            white-space: nowrap
+            background: rgba(white, 0)
+            input 
+              text-align: right
+            button
+              font-size: 20px
+              color: white
+              padding: 0
+              width: 34px
+              height: 24px
+              background-color: red
+
+
+  &__reading_table
+    table
+      width: 1170px
+      border-collapse: separate
+      border-spacing: 0px
+      border-top: 1px solid #ccc
+      border-left: 1px solid #ccc
+
+      th
+        width: auto
+        height: 10px
+        text-align: center
+        vertical-align: top
+        color: #444
+        background-color: white
+        border-top: 1px solid #fff
+        border-left: 1px solid #fff
+        border-right: 1px solid #ccc
+        border-bottom: 1px solid #ccc
+      td
+        background-color: white
+        border-right: 1px solid #ccc 
+        border-bottom: 1px solid #ccc
+
+    
