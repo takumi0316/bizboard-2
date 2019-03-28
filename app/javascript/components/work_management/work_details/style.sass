@@ -1,25 +1,30 @@
 .AddDetails
   
   &__finish_button
-    display: flex
-    justify-content: flex-end
+
     button
 
       font-weight: bold
+      color: white
       margin-top: 5px
-      width: 50px
-      height: 30px
+      margin-bottom: 5px
+      width: 54px
+      height: 36px
+      background: #2f4f4f
+      font: 1.5rem
 
   &__edit_button
-    display: flex
-    justify-content: flex-end
 
     button
       
       font-weight: bold
+      color: white
       margin-top: 5px
-      width: 50px
-      height: 30px
+      margin-bottom: 5px
+      width: 54px
+      height: 36px
+      background: #2f4f4f
+      font: 1.5rem
 
   &__edit_table
     overflow: auto
@@ -48,7 +53,7 @@
             td
               background: rgba(lightgray, .1)
           td
-            height: 24px
+            padding: 20px
             text-align: center
             border-top: 0.5px solid lightgray
             border-left: 0.5px solid lightgray
@@ -66,6 +71,7 @@
 
 
   &__reading_table
+    overflow: auto
     table
       width: 1170px
       border-collapse: separate
@@ -74,19 +80,31 @@
       border-left: 1px solid #ccc
 
       th
+        padding: 10px
         width: auto
-        height: 10px
         text-align: center
         vertical-align: top
         color: #444
-        background-color: white
+        background-color: rgba(204, 204, 204, 0.1)
         border-top: 1px solid #fff
         border-left: 1px solid #fff
         border-right: 1px solid #ccc
         border-bottom: 1px solid #ccc
-      td
-        background-color: white
-        border-right: 1px solid #ccc 
-        border-bottom: 1px solid #ccc
+        white-space: nowrap
+      tr
+        &:nth-child(even)
+          td
+            background: rgba(lightgray, .1)
+        td
+          padding: 10px
+          white-space: nowrap
+          text-align: center
+          border-top: 1px solid #fff
+          border-left: 1px solid #fff
+          white-space: nowrap
+          background: rgba(white, 0)
+          border-right: 1px solid lightgray
+          border-bottom: 1px solid lightgray
 
     
+            padding: 5px

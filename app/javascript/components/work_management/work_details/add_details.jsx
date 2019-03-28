@@ -1,19 +1,11 @@
 import React      from 'react'
 import Style      from './style.sass'
-import PropTypes from 'prop-types'
-
-import DatePicker from 'react-datepicker';
-import moment from 'moment';
- 
-import 'react-datepicker/dist/react-datepicker.css';
-
 // Ajax
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
 
 // datetime
 import Dayjs from 'dayjs'
-
 import { ENUM_STATUS } from '../properties.es6'
 
 /**
@@ -141,22 +133,22 @@ export default class AddDetails extends React.Component {
    */
   render() {
     return (
-      <div className={ Style.AddDetails }>
+      <div>
         { this.state.show ? 
-          <div className={ Style.AddDetails__finish_button }>
-            <button id='finish' onClick={ this.onUpdate }>完了</button>
-            <button onClick={ this.onCreate }>+</button>
+          <div>
+            <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onUpdate }>完了</button>
+            <button className={ 'c-btnMain-standard' } onClick={ this.onCreate }>+</button>
           </div>
           :
-          <div className={ Style.AddDetails__edit_button }><button id='editable' onClick={ this._editable }>編集</button></div>
+          <div><button className={ 'c-btnMain-standard' } id='editable' onClick={ this._editable }>編集</button></div>
         }
         { this.state.show ? 
-          <div className={ Style.AddDetails__edit_table }>
+          <div className={ 'c-table' }>
             <table>
               <thead>
                 <tr>
                   <th></th>
-                  <th>作業詳細番号</th>
+                  <th>No.</th>
                   <th>作業内容</th>
                   <th>数量</th>
                   <th>期日</th>
@@ -172,13 +164,13 @@ export default class AddDetails extends React.Component {
                 { this.state.work_details.map((detail, index) => {
                   return (
                     <tr>
-                      <td><button onClick={e => this.onDestroy(e, detail.id) }>×</button></td>
+                      <td><button className={ 'c-btnMain-standard' } onClick={e => this.onDestroy(e, detail.id) }>×</button></td>
                       <td id={ 'detail_id' + index } >{ detail.id }</td>
                       <td>{ this.props.category }</td>
-                      <td><input type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-                      <td><input style={{ width:'218px' }}type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }/></td>
+                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
+                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }/></td> 
                       <td>
-                        <select id={ 'client_name' + index }>
+                        <select className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
                           { detail.client_name === "" ? <option></option> : <option value={ detail.client_name }>{ detail.client_name }</option> }
                           { this.props.users.map((user) => {
                             return(
@@ -188,7 +180,7 @@ export default class AddDetails extends React.Component {
                         </select>
                       </td>
                       <td>
-                        <select  id={ 'status' + index }>
+                        <select className={ 'c-form-select__work-show' } id={ 'status' + index }>
                           <option value={ detail.status }>{ ENUM_STATUS[detail.status] }</option>
                           { Object.keys(ENUM_STATUS).map((status) => {
                             return (
@@ -200,10 +192,10 @@ export default class AddDetails extends React.Component {
                           }) }
                         </select>
                       </td>
-                      <td><input className='text_right' type='text' id={ 'estimated_man_hours' + index } defaultValue={ detail.estimated_man_hours } /></td>
-                      <td><input type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
-                      <td><input type='text' id={ 'actual_man_hours' + index } defaultValue={ detail.actual_man_hours } /></td>
-                      <td><input type='text' id={ 'actual_cost' + index } defaultValue={ detail.actual_cost } /></td>
+                      <td><input className={ 'c-form-text__work-show' } ttype='text' id={ 'estimated_man_hours' + index } defaultValue={ detail.estimated_man_hours } /></td>
+                      <td><input className={ 'c-form-text__work-show' } t type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+                      <td><input className={ 'c-form-text__work-show' } t type='text' id={ 'actual_man_hours' + index } defaultValue={ detail.actual_man_hours } /></td>
+                      <td><input className={ 'c-form-text__work-show' } t type='text' id={ 'actual_cost' + index } defaultValue={ detail.actual_cost } /></td>
                     </tr>
                   );
                 }) } 
@@ -211,11 +203,11 @@ export default class AddDetails extends React.Component {
             </table>
           </div>
         :
-          <div className={ Style.AddDetails__reading_table }>
+          <div className={ 'c-table' }>
             <table>
               <thead>
                 <tr>
-                  <th>作業詳細番号</th>
+                  <th>No.</th>
                   <th>作業内容</th>
                   <th>数量</th>
                   <th>期日</th>
@@ -233,7 +225,7 @@ export default class AddDetails extends React.Component {
                     <tr>
                       <td style={{ textAlign: 'center' }}>{ detail.id }</td>
                       <td style={{ textAlign: 'center' }}>{ this.props.category }</td>
-                      <td style={{ textAlign: 'right', width: '55px' }} id={ 'count' + index }>{ detail.count }個</td>
+                      <td style={{ textAlign: 'right', width: '55px' }} id={ 'count' + index }>{ detail.count }</td>
                       <td style={{ textAlign: 'right' }}>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
                       <td style={{ textAlign: 'center' }}>{ detail.client_name }</td>
                       <td style={{ textAlign: 'center' }}>{ ENUM_STATUS[detail.status] }</td>

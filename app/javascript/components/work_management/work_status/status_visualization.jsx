@@ -1,6 +1,5 @@
 import React      from 'react'
 import Style from './style.sass'
-import PropTypes from 'prop-types'
 
 // Ajax
 import Request from 'superagent'

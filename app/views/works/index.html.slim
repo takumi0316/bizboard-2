@@ -1,43 +1,41 @@
 .l-contents
   
+  = react_component('WorksSearch')
 
-    .c-search
-      = react_component('WorksSearch')
-
-    .c-table.u-mt-30
-      table
-        thead
+  .c-table.u-mt-30
+    table
+      thead
+        tr
+          th 案件No
+          th 顧客名
+          th 担当者
+          th 作業内容
+          th 弊社担当者
+          th 仕様
+          th 数量
+          th 期日
+          th ステータス
+          th 受注
+          th 実績原価
+          th 粗利率
+          th 更新日
+          th colspan=2
+      tbody
+        - works.each do |r|
           tr
-            th 案件No
-            th 顧客名
-            th 担当者
-            th 作業内容
-            th 弊社担当者
-            th 仕様
-            th 数量
-            th 期日
-            th ステータス
-            th 受注
-            th 実績原価
-            th 粗利率
-            th 更新日
-            th colspan=2
-        tbody
-          - works.each do |r|
-            tr
-              td = r.project.id
-              td = r.project.client.company_division.company.name if r.project.client.present?
-              td = r.project.client.name if r.project.client.present?
-              td = r.project.name
-              td = r.project.user.name
-              td
-              td = r.project.project_count
-              td = r.project.deliver_at.to_s
-              td = r.status
-              td = r.price
-              td = r.cost
-              td = r.cost.nonzero?? "#{r.price.to_f / r.cost.to_f}%" : '0%'
-              td = r.updated_at
-              td = link_to '編集', work_path(r), class: 'c-btnMain-standard'
+            td = r.project.id
+            td = r.project.client.company_division.company.name if r.project.client.present?
+            td = r.project.client.name if r.project.client.present?
+            td = r.project.name
+            td = r.project.user.name
+            td
+            td = r.project.project_count
+            td = r.project.deliver_at.to_s
+            td = r.status
+            td = r.price
+            td = r.cost
+            td = r.cost.nonzero?? "#{r.price.to_f / r.cost.to_f}%" : '0%'
+            td = r.updated_at
+            td = link_to '編集', work_path(r), class: 'c-btnMain-standard'
 
-      = render 'layouts/_partials/pagination'
+    = render 'layouts/_partials/pagination'

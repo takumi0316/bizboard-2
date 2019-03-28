@@ -36,7 +36,7 @@ class Work < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :project, optional: true
+  belongs_to :project
 
   has_many :work_details, class_name: 'WorkDetail', dependent: :destroy
 

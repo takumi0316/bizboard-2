@@ -1,10 +1,7 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
-
+import Style from './style.sass'
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
- 
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 // Ajax
 import Request from "superagent"
@@ -21,19 +18,15 @@ export default class WorksSearch extends Component {
       startDate: new Date(),
       startDate2: new Date()
     };
-    // クラス単位で参照をしている
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChange2 = this.handleChange2.bind(this);
-
   }
 
-  handleChange(date) {
+  handleChange = (date) => {
     this.setState({
       startDate: date
     })
   }
 
-  handleChange2(date) {
+  handleChange2 = (date) => {
     this.setState({
       startDate2: date
     })
@@ -55,31 +48,36 @@ export default class WorksSearch extends Component {
   render() {
     return (
       <div>
-        <form method='get' action='/works'>
-          <input type='text' name='name' />
-          <select name='status'>
-            <option>status</option>
-            { Object.keys(ENUM_STATUS).map((item, index) =>{
-              const key = 'status-' + index;
-              return (
-                <option {...{key}} value={item}>{ENUM_STATUS[item]}</option>
-              );
-            }) }
-          </select>
-          <DatePicker
+        <form className={ 'c-search u-mt-30' } method='get' action='/works'>
+          <label style={{ fontSize: '1.2rem', height: '18px' }} for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
+          <div className={ 'c-search__work-index' }> 
+            <input className={ 'c-form-text__work-index' } type='text' name='name' placeholder='顧客名/担当者名/作業内容'/>
+            <select name='status' className={ 'c-form-select__work-index' }>
+              <option>status</option>
+              { Object.keys(ENUM_STATUS).map((item, index) =>{
+                const key = 'status-' + index;
+                return (
+                  <option {...{key}} value={item}>{ENUM_STATUS[item]}</option>
+                );
+              }) }
+            </select>
+            <DatePicker
               selected={ this.state.startDate }
-              onChange={ this.handleChange }
+              onChange={ ::this.handleChange }
               name='date1'
               dateFormat="YYYY/MM/dd"
-          />
-          <DatePicker
+              className={ 'c-form-text__work-index__datepicker' }
+            />
+            <DatePicker
               selected={ this.state.startDate2 }
-              onChange={ this.handleChange2 }
+              onChange={ ::this.handleChange2 }
               name='date2'
               dateFormat="YYYY/MM/dd"
-          />
-          <input type='submit' value='検索' />
-        </form> 
+              className={ 'c-form-text__work-index__datepicker' }
+            />
+          </div>
+          <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard u-mt-20' }/>
+        </form>
       </div>
     );
   }

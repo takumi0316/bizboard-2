@@ -48,7 +48,24 @@
       background-color: map-get($layoutColors, 'gray')
     &::placeholder
       color: map-get($fontColors, 'midBlack')
-
+    &__work-index
+      @extend %formStyle
+      width: 350px
+      line-height: 2rem
+      min-height: 40px
+      vertical-align: bottom
+      &__datepicker
+        @extend %formStyle
+        width: 120px
+        line-height: 2rem
+        min-height: 40px
+        vertical-align: bottom
+    &__work-show
+      @extend %formStyle
+      width: 250px
+      line-height: 2rem
+      min-height: 40px
+  
   // チェックボックス
   // ------------------------------------
   &-checkboxLabel
@@ -202,6 +219,24 @@
     line-height: 2rem
     &::-ms-expand
       display: none
+    &__work-index
+      @extend %formStyle
+      cursor: pointer
+      padding-right: 33px
+      background: none
+      background-color: map-get($layoutColors, 'white')
+      width: 120px
+      line-height: 2rem
+      vertical-align: bottom
+    &__work-show
+      @extend %formStyle
+      cursor: pointer
+      padding-right: 33px
+      background: none
+      background-color: map-get($layoutColors, 'white')
+      width: 130px
+      line-height: 2rem
+ 
   // 日付セレクトボックス 岡田追加しました
   // ------------------------------------
   &-dateselect

@@ -40,7 +40,7 @@ class WorkDetail < ApplicationRecord
   #  ** Associations **
   #------------------------------------
 
-  belongs_to :work, optional: true
+  belongs_to :work
 
   #------------------------------------
   #  ** Scopes **
