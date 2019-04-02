@@ -16,6 +16,10 @@ nav.l-navigation
     li.l-navigation__item
       = link_to_unless_current '取引先', companies_path, class: 'l-navigation__link' do
         .l-navigation__link--active 取引先
+
+    li.l-navigation__item
+      = link_to_unless_current '外注先', subcontractors_path, class: 'l-navigation__link' do
+        .l-navigation__link--active 外注先
     
     li.l-navigation__item
       = link_to_unless_current '品目', items_path, class: 'l-navigation__link' do

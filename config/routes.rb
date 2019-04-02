@@ -42,6 +42,11 @@ Rails.application.routes.draw do
   resources :company_divisions
   resources :company_division_clients
 
+  # 外注先
+  resources :subcontractors
+  resources :subcontractor_divisions
+  resources :subcontractor_division_clients
+
   # 品目
   resources :items
 

@@ -39,6 +39,9 @@ import ProjectViewer from 'components/project_viewer'
 // 部署
 import CompanyDivisions from 'components/company_divisions'
 
+// 部署(外注)
+import SubcontractorDivisions from 'components/subcontractor_divisions'
+
 // 作業進捗
 import WorkStatus from 'components/work_management/work_status/status_visualization.jsx'
 
@@ -62,4 +65,5 @@ WebpackerReact.setup({
   WorksSearch,
   WorkDetails,
   WorkStatus,
+  SubcontractorDivisions,
 })

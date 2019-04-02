@@ -1,25 +1,20 @@
 # == Schema Information
 #
-# Table name: activities
+# Table name: subcontractors
 #
 #  id         :bigint(8)        not null, primary key
-#  date       :date
-#  status     :integer
-#  memo       :string(191)
-#  attachment :text(65535)
+#  name       :string(191)
+#  kana       :string(191)
+#  note       :text(65535)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  free_word  :text(65535)
-#  project_id :bigint(8)
 #
 
-class Activity < ApplicationRecord
+class Subcontractor < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
-
-  #extend ActiveHash::Associations::ActiveRecordExtensions
 
   #----------------------------------------
   #  ** Constants **
@@ -29,8 +24,6 @@ class Activity < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum status: { meeting: 0, mail: 10, tell: 20, estimate: 30, workshop: 40, other: 50 }
-
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
@@ -39,11 +32,8 @@ class Activity < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :project
-
-  #----------------------------------------
-  #  ** Delegates **
-  #----------------------------------------
+  # 部署
+  has_many :divisions, class_name: 'SubcontractorDivision'
 
   #----------------------------------------
   #  ** Scopes **
@@ -52,29 +42,17 @@ class Activity < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-  # フリーワード検索用文字列をセットする
-  before_validation :set_free_word
-
-  ##
-  # フリーワード検索用文字列をセットする
-  # @version 2018/06/10
-  #
-  def set_free_word
-
-    self.free_word = "#{self.memo} #{self.project_id} #{self.project&.user&.name} #{self.project&.name}"
-  end
 
   ##
   # 名称検索
-  # @version 2018/06/10
+  # @version 
   #
   def self.search(word)
 
     # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
     terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['free_word like ?'] * terms.size).join(' and ')
+    query = (['name like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
   end
-
 end
