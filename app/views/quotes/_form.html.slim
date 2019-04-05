@@ -1,0 +1,65 @@
+.l-contents
+  section.l-contents__inner
+
+    = form_for quote, html: { class: 'u-mt-30'} do |f|
+
+      .c-form-group
+
+        .c-form-line.u-mr-50
+          .c-form-label
+            = f.label :project_number, '案件ID'
+          = f.collection_select :project_id, Project.all, :id, :project_number,{}, {:class=>'c-form-dateselect'}
+
+        .c-form-line.u-mr-50
+          .c-form-label
+            = f.label :date, '発行日'
+          .c-form-group
+            = f.date_select :date, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+
+        .c-form-line
+          .c-form-label
+            = f.label :expiration, '発行期限'
+          .c-form-group
+            = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+
+      .c-form-label
+        = f.label :subject, '件名'
+      = f.text_field :subject, placeholder: '件名を入力してください', class: 'c-form-textarea', rows: 4
+
+      .c-table.u-mt-30
+        table
+          thead
+            tr
+              th 品目
+              th 単価
+              th 数量
+              th 価格
+              th 原価
+              th 粗利
+              th 詳細
+              th 削除
+              th colspan=3
+          tbody
+            - 2.times do
+              = f.fields_for :quote_items do |fi|
+                tr
+                  td = fi.collection_select :quote_id, Item.all, :id, :name,{}, {:class=>'c-form-dateselect'}
+                  td = fi.collection_select :quote_id, Item.all, :id, :unit_price,{}, {:class=>'c-form-dateselect'}
+                  td = fi.collection_select :quote_id, Item.all, :id, :quantity,{}, {:class=>'c-form-dateselect'}
+                  td
+                  td = fi.text_field :cost, class: 'c-form-textarea'
+                  td = fi.text_field :gross_profit, class: 'c-form-textarea'
+                  td = fi.text_field :detail, class: 'c-form-textarea'
+                  td
+
+      .c-form-label
+        = f.label :remarks, '備考'
+      = f.text_area :remarks, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+
+
+      .c-form-label
+        = f.label :memo, 'メモ'
+      = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+
+
+      .u-ta-center.u-mt-30 = f.submit quote.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

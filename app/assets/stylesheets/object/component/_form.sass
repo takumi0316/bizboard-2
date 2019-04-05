@@ -34,6 +34,11 @@
     color: map-get($fontColors, 'red')
     font-weight: bold
     font-size: map-get($fontSize, 'small')
+  &-group
+    display: flex
+  &-line
+    display: flex
+    flex-direction: column
   // テキスト・テキストエリア
   // ------------------------------------
   &-text, &-textarea
@@ -65,7 +70,7 @@
       width: 250px
       line-height: 2rem
       min-height: 40px
-  
+
   // チェックボックス
   // ------------------------------------
   &-checkboxLabel
@@ -236,7 +241,7 @@
       background-color: map-get($layoutColors, 'white')
       width: 130px
       line-height: 2rem
- 
+
   // 日付セレクトボックス 岡田追加しました
   // ------------------------------------
   &-dateselect

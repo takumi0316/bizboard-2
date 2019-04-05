@@ -73,6 +73,8 @@ class Project < ApplicationRecord
 
   has_many :histories, class_name: 'ProjectHistory',    dependent: :destroy
 
+  has_many :quotes
+
   accepts_nested_attributes_for :bind
   accepts_nested_attributes_for :card
   accepts_nested_attributes_for :copy
@@ -86,7 +88,7 @@ class Project < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
-  scope :deliverd_in, ->(datetime) { where(deliver_at: datetime) } 
+  scope :deliverd_in, ->(datetime) { where(deliver_at: datetime) }
 
   #----------------------------------------
   #  ** Methods **
@@ -94,6 +96,9 @@ class Project < ApplicationRecord
 
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
+
+  # 案件番号をセットする
+  after_create :set_project_number
 
   ##
   # フリーワード検索用文字列をセットする
@@ -103,6 +108,16 @@ class Project < ApplicationRecord
 
     self.free_word = "#{self.user&.name} #{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
   end
+
+  ##
+  # 案件番号をセットする
+  # @version 2019/04/02
+  #
+  def set_project_number
+
+    update_columns(:project_number => "#{created_at.strftime('%Y%m%d')}#{id}")
+  end
+
 
   ##
   # 名称検索

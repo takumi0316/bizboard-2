@@ -28,6 +28,12 @@ Rails.application.routes.draw do
     post :status
   end
 
+  #見積もり
+  namespace :quotes do
+    post :apipost
+  end
+  resources :quotes
+
   #活動履歴
   resources :activities
 

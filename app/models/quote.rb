@@ -1,11 +1,8 @@
-class Activity < ApplicationRecord
+class Quote < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
-
-  #extend
-  ActiveHash::Associations::ActiveRecordExtensions
 
   #----------------------------------------
   #  ** Constants **
@@ -15,10 +12,6 @@ class Activity < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  #種類のenum
-  enum status: { meeting: 0, mail: 10, tell: 20,
-   estimate: 30, workshop: 40, other: 50
-  }
 
   #----------------------------------------
   #  ** Validations **
@@ -29,6 +22,9 @@ class Activity < ApplicationRecord
   #----------------------------------------
 
   belongs_to :project
+
+  has_many :quote_items
+  accepts_nested_attributes_for :quote_items
 
   #----------------------------------------
   #  ** Delegates **
@@ -41,6 +37,7 @@ class Activity < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
 
@@ -50,7 +47,7 @@ class Activity < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.id} #{self.memo} #{self.project_id} #{self.project&.user&.name} #{self.project&.name}  #{self.project&.project_number} "
+    self.free_word = "#{self.id} #{self.project_id} #{self.project&.user&.name} #{self.project&.name}  #{self.project&.project_number} #{self.subject}"
   end
 
   ##
@@ -65,5 +62,6 @@ class Activity < ApplicationRecord
 
     where(query, *terms.map { |term| "%#{term}%" })
   end
+
 
 end
