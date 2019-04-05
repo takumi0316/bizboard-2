@@ -354,6 +354,45 @@ ActiveRecord::Schema.define(version: 2019_04_02_095445) do
     t.index ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true
   end
 
+  create_table "subcontractor_division_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "subcontractor_division_id"
+    t.bigint "user_id"
+    t.string "name"
+    t.string "kana"
+    t.integer "title", limit: 1, default: 10
+    t.string "tel"
+    t.string "email"
+    t.text "note"
+    t.text "free_word"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subcontractor_division_id"], name: "subcontractor_division_clients_index", unique: true
+    t.index ["user_id"], name: "index_subcontractor_division_clients_on_user_id"
+  end
+
+  create_table "subcontractor_divisions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "subcontractor_id"
+    t.string "name"
+    t.string "kana"
+    t.string "zip"
+    t.string "tel"
+    t.integer "prefecture_id"
+    t.string "address1"
+    t.string "address2"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subcontractor_id"], name: "index_subcontractor_divisions_on_subcontractor_id"
+  end
+
+  create_table "subcontractors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "kana"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", comment: "ファイルタイトル"
     t.string "author", comment: "作成者ID"

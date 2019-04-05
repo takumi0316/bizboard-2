@@ -1,0 +1,34 @@
+.l-contents
+  section.l-contents__inner
+
+    h1.l-contents__heading 部署一覧
+
+    .u-mt-15 = link_to '外注先- 部署 を作成する', new_subcontractor_division_path(subcontractor_id: subcontractor&.id), class: 'c-btnMain-standard c-btn-blue'
+
+    .c-table.u-mt-30
+      table
+        thead
+          tr
+            th 部署ID
+            th 会社名
+            th 部署名
+            th 担当者
+            th colspan=2
+        tbody
+          - divisions.each do |r|
+            tr
+              td = r.id
+              td = r.subcontractor.name
+              td = r.name || '部署名なし'
+              td
+                - r.clients.each do |c|
+                  div
+                    = link_to c.name, edit_subcontractor_division_client_path(c), class: 'u-td-underline'
+                    hr
+                .u-mt-10
+                  = link_to '＋ 担当者を作成する', new_subcontractor_division_client_path(subcontractor_division_id: r.id), class: 'u-td-underline u-fc-blue'
+
+              td = link_to '編集', edit_subcontractor_division_path(r), class: 'c-btnMain-standard'
+              td = link_to '削除', subcontractor_division_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+
+  = render 'layouts/_partials/pagination'

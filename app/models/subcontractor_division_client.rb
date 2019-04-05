@@ -1,26 +1,26 @@
 # == Schema Information
 #
-# Table name: activities
+# Table name: subcontractor_division_clients
 #
-#  id         :bigint(8)        not null, primary key
-#  date       :date
-#  status     :integer
-#  memo       :string(191)
-#  attachment :text(65535)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  free_word  :text(65535)
-#  project_id :bigint(8)
+#  id                        :bigint(8)        not null, primary key
+#  subcontractor_division_id :bigint(8)
+#  user_id                   :bigint(8)
+#  name                      :string(191)
+#  kana                      :string(191)
+#  title                     :integer          default(10)
+#  tel                       :string(191)
+#  email                     :string(191)
+#  note                      :text(65535)
+#  free_word                 :text(65535)
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
 #
 
-class Activity < ApplicationRecord
+class SubcontractorDivisionClient < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
-
-  #extend
-  ActiveHash::Associations::ActiveRecordExtensions
 
   #----------------------------------------
   #  ** Constants **
@@ -30,10 +30,8 @@ class Activity < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  #種類のenum
-  enum status: { meeting: 0, mail: 10, tell: 20,
-   estimate: 30, workshop: 40, other: 50
-  }
+  # 敬称
+  enum title: { nothing: 0, honorific: 10, normal: 20 }
 
   #----------------------------------------
   #  ** Validations **
@@ -42,12 +40,12 @@ class Activity < ApplicationRecord
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
+  
+  belongs_to :subcontractor_division
+  belongs_to :user
 
-  belongs_to :project
-
-  #----------------------------------------
-  #  ** Delegates **
-  #----------------------------------------
+  # 案件
+  has_many :projects, -> { order(id: :desc) }
 
   #----------------------------------------
   #  ** Scopes **
@@ -56,21 +54,22 @@ class Activity < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
 
   ##
   # フリーワード検索用文字列をセットする
-  # @version 2018/06/10
+  # @version 
   #
   def set_free_word
 
-    self.free_word = "#{self.id} #{self.memo} #{self.project_id} #{self.project&.user&.name} #{self.project&.name}  #{self.project&.project_number} "
+    self.free_word = "#{self.subcontractor_division&.subcontractor&.name} #{self.subcontractor_division&.subcontractor&.kana} #{self.subcontractor_division&.name} #{self.subcontractor_division&.kana} #{self.user&.name} #{self.name} #{self.kana} #{self.title} #{self.tel} #{self.email} #{self.note}"
   end
 
   ##
   # 名称検索
-  # @version 2018/06/10
+  # @version 
   #
   def self.search(word)
 
