@@ -7,7 +7,7 @@
 #  user_id                   :bigint(8)
 #  name                      :string(191)
 #  kana                      :string(191)
-#  title                     :integer          default(10)
+#  title                     :integer          default("honorific")
 #  tel                       :string(191)
 #  email                     :string(191)
 #  note                      :text(65535)
@@ -45,7 +45,7 @@ class SubcontractorDivisionClient < ApplicationRecord
   belongs_to :user
 
   # 案件
-  has_many :projects, -> { order(id: :desc) }
+  has_many :WorkSubcontractors, -> { order(id: :desc) }
 
   #----------------------------------------
   #  ** Scopes **

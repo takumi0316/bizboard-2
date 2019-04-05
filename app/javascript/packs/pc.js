@@ -51,9 +51,8 @@ import WorksSearch from 'components/work_management/works_search/search.jsx'
 // 作業詳細
 import WorkDetails from 'components/work_management/work_details/add_details.jsx'
 
-
-// 作業管理一覧
-// import WorksEdit from 'components/work_management'
+// 作業詳細外注
+import WorkSubcontractor from 'components/work_subcontractor/add_subcontractor/index.jsx'
 
 WebpackerReact.setup({
   Alert,
@@ -66,4 +65,5 @@ WebpackerReact.setup({
   WorkDetails,
   WorkStatus,
   SubcontractorDivisions,
+  WorkSubcontractor,
 })

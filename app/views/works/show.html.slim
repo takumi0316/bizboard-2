@@ -17,8 +17,21 @@
 
     .c-attention.u-mt-10
       | お客様情報: 
+      span.u-fw-bold 
+        | 株式会社
+        = works.find(params[:id]).project.client.company_division.company.name
+        |　
+        = works.find(params[:id]).project.client.name
+        | 樣
       span.u-ml-30
         | 請求先情報:
+        |    
+        span.u-fw-bold
+          | 株式会社
+          = works.find(params[:id]).project.client.company_division.company.name
+          |　
+          = works.find(params[:id]).project.client.company_division.name
+          | 部
       div
         | 納期: 
         span.u-fw-bold = works.find(params[:id]).project.deliver_at.present? ? works.find(params[:id]).project.deliver_at.to_s : '未定'
@@ -579,4 +592,17 @@
           = works.find(params[:id]).project.project_category_i18n
                  
 
-    = react_component('WorkDetails', { details: works.find(params[:id]).work_details, category:  works.find(params[:id]).project.project_category_i18n, work_id: params[:id], user_id: current_user.id, users: User.all })      
+    = react_component('WorkDetails',
+      { details: works.find(params[:id]).work_details,
+        category:  works.find(params[:id]).project.project_category_i18n, 
+        work_id: params[:id], 
+        user_id: current_user.id, 
+        users: User.all })      
+
+    = react_component('WorkSubcontractor',
+      { work_subcontractors: works.find(params[:id]).subcontractor.present? ? works.find(params[:id]).subcontractor : [], 
+        subcontractor_details: WorkSubcontractorDetail.present? ? WorkSubcontractorDetail.all : [], 
+        work_id: params[:id],
+        subcontractors: Subcontractor.all,
+        divisions: SubcontractorDivision.all,
+        clients: SubcontractorDivisionClient.all })

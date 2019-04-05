@@ -42,6 +42,8 @@ Rails.application.routes.draw do
 
   # 作業詳細
   resources :work_details
+  resources :work_subcontractors
+  resources :work_subcontractor_details
 
   # 取引先
   resources :companies

@@ -43,23 +43,32 @@ class WorkDetailsController < ApplicationController
     # update処理
     else
 
-      params.require(:work_detail_update).each do |detail|
-        
-        parse_json = JSON.parse(detail)
-        work_detail = WorkDetail.find(parse_json['id'])
-        work_detail.update!(
-          work_id: parse_json['work_id'],
-          count: parse_json['count'],
-          deliver_at: parse_json['deliver_at'],
-          client_name: parse_json['client_name'],
-          status: parse_json['status'],
-          estimated_man_hours: parse_json['estimated_man_hours'],
-          estimated_cost: parse_json['estimated_cost'],
-          actual_man_hours: parse_json['actual_man_hours'],
-          actual_cost: parse_json['actual_cost']
-        )
+      puts 'elsedayo'
+      if params[:token] === 'value'
+
+        puts 'valuedayo'
+        params.require(:work_detail_update).each do |detail|
+          
+          parse_json = JSON.parse(detail)
+          work_detail = WorkDetail.find(parse_json['id'])
+          work_detail.update!(
+            work_id: parse_json['work_id'],
+            count: parse_json['count'],
+            deliver_at: parse_json['deliver_at'],
+            client_name: parse_json['client_name'],
+            status: parse_json['status'],
+            estimated_man_hours: parse_json['estimated_man_hours'],
+            estimated_cost: parse_json['estimated_cost'],
+            actual_man_hours: parse_json['actual_man_hours'],
+            actual_cost: parse_json['actual_cost']
+          )
+        end
+        render json: { status: :success, detail: Work.find(params[:work_id]).work_details }
+      elsif params[:token] === 'empty'
+
+        puts 'emptydayo'
+        render json: { status: :nothing }
       end
-      render json: { status: :success, detail: Work.find(params[:work_id]).work_details }
     end 
 
   rescue => e

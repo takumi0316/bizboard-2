@@ -82,35 +82,45 @@ export default class AddDetails extends React.Component {
   onUpdate = () => {
 
     let array_rails = [];
+    let field = {};
     let count = this.state.work_details.length;
-    for(var i = 0; i < count; i++) {
-      let replace_datetime =  document.getElementById('deliver_at' + i).value;
-      replace_datetime = replace_datetime.replace(/年/g, '/');
-      replace_datetime = replace_datetime.replace(/月/g, '/');
-      replace_datetime = replace_datetime.replace(/日/g, '');
-      replace_datetime = replace_datetime.replace(/時/g, ':');
-      replace_datetime = replace_datetime.replace(/分/g, '');
-      console.log(replace_datetime);
-      array_rails.push(JSON.stringify({
-        'id': document.getElementById('detail_id' + i).innerHTML,
+    if( count !== 0 ){
+      for(var i = 0; i < count; i++) {
+        let replace_datetime =  document.getElementById('deliver_at' + i).value;
+        replace_datetime = replace_datetime.replace(/年/g, '/');
+        replace_datetime = replace_datetime.replace(/月/g, '/');
+        replace_datetime = replace_datetime.replace(/日/g, '');
+        replace_datetime = replace_datetime.replace(/時/g, ':');
+        replace_datetime = replace_datetime.replace(/分/g, '');
+        console.log(replace_datetime);
+        array_rails.push(JSON.stringify({
+          'id': document.getElementById('detail_id' + i).innerHTML,
+          'work_id': this.props.work_id,
+          'count': document.getElementById('count' + i).value,
+          'deliver_at': replace_datetime,
+          'client_name': document.getElementById('client_name' + i).value,
+          'status': Number(document.getElementById('status' + i).value),
+          'estimated_man_hours': document.getElementById('estimated_man_hours' + i).value,
+          'estimated_cost': document.getElementById('estimated_cost' + i).value,
+          'actual_man_hours': document.getElementById('actual_man_hours' + i).value,
+          'actual_cost': document.getElementById('actual_cost' + i).value,
+        }));
+      }
+      field = {
+        'work_detail_update[]': array_rails,
+        'work_detail[work_id]': '',
+        'token': 'value',
         'work_id': this.props.work_id,
-        'count': document.getElementById('count' + i).value,
-        'deliver_at': replace_datetime,
-        'client_name': document.getElementById('client_name' + i).value,
-        'status': Number(document.getElementById('status' + i).value),
-        'estimated_man_hours': document.getElementById('estimated_man_hours' + i).value,
-        'estimated_cost': document.getElementById('estimated_cost' + i).value,
-        'actual_man_hours': document.getElementById('actual_man_hours' + i).value,
-        'actual_cost': document.getElementById('actual_cost' + i).value,
-      }));
+        };
+    } else {
+      field = {
+        'work_detail_update[]': '',
+        'work_detail[work_id]': '',
+        'token': 'empty',
+        'work_id': this.props.work_id,
+      };
     }
 
-    let field = {
-      'work_detail_update[]': array_rails,
-      'work_detail[work_id]': '',
-      'work_id': this.props.work_id,
-    };
-    console.log('field', field);
     let url = '/work_details'; 
     Request
       .post(url)
@@ -120,8 +130,9 @@ export default class AddDetails extends React.Component {
       .end((err, res) => {
         if (!err && res.body.status === "success") {
           this.setState({ show: false, work_details: res.body.detail });
+        } else if (!err && res.body.status === 'nothing') {
+          this.setState({ show: false, });
         } else {
-          console.log(err)
           this.setState({ work_details: res.body.detail });
         }
       });
@@ -164,7 +175,7 @@ export default class AddDetails extends React.Component {
                 { this.state.work_details.map((detail, index) => {
                   return (
                     <tr>
-                      <td><button className={ 'c-btnMain-standard' } onClick={e => this.onDestroy(e, detail.id) }>×</button></td>
+                      <td><button className={ 'c-btnMain-standard' } onClick={e => this.onDestroy(e, detail.id) }>＋</button></td>
                       <td id={ 'detail_id' + index } >{ detail.id }</td>
                       <td>{ this.props.category }</td>
                       <td><input className={ 'c-form-text__work-show' } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
