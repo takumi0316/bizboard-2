@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_02_095445) do
+ActiveRecord::Schema.define(version: 2019_04_03_050204) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -109,38 +109,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_095445) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "estimate_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "estimate_id"
-    t.bigint "item_id"
-    t.integer "cost", comment: "原価"
-    t.integer "gross_profit", comment: "粗利"
-    t.text "detail", comment: "詳細"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["estimate_id"], name: "index_estimate_items_on_estimate_id"
-    t.index ["item_id"], name: "index_estimate_items_on_item_id"
-  end
-
-  create_table "estimates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "project_id"
-    t.string "estimat_number", comment: "見積もり番号"
-    t.date "date", comment: "発行日"
-    t.date "expiration", comment: "有効期限"
-    t.string "subject", comment: "件名"
-    t.string "item", comment: "品目"
-    t.integer "unit_price", comment: "単価"
-    t.integer "quantity", comment: "数量"
-    t.integer "cost", comment: "原価"
-    t.integer "gross_profit", comment: "粗利"
-    t.text "detail", comment: "詳細"
-    t.text "remarks", comment: "備考"
-    t.string "tag", comment: "タグ"
-    t.text "memo", comment: "メモ"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_estimates_on_project_id"
   end
 
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -445,6 +413,34 @@ ActiveRecord::Schema.define(version: 2019_04_02_095445) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["work_id"], name: "index_work_details_on_work_id"
+  end
+
+  create_table "work_subcontractor_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "work_subcontractor_id"
+    t.string "order_contents"
+    t.string "standard"
+    t.string "specification"
+    t.string "count"
+    t.string "number_of_copies"
+    t.datetime "deliver_at"
+    t.string "cost_unit_price"
+    t.string "estimated_cost"
+    t.string "actual_count"
+    t.string "actual_cost"
+    t.integer "status", limit: 1, default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["work_subcontractor_id"], name: "index_work_subcontractor_details_on_work_subcontractor_id"
+  end
+
+  create_table "work_subcontractors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "work_id"
+    t.bigint "subcontractor_division_client_id"
+    t.integer "status", limit: 1, default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subcontractor_division_client_id"], name: "index_work_subcontractors_on_subcontractor_division_client_id"
+    t.index ["work_id"], name: "index_work_subcontractors_on_work_id"
   end
 
   create_table "works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
