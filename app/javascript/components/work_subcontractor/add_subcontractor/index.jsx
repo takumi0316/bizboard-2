@@ -2,6 +2,7 @@ import React from 'react'
 import SubcontractorStatus from '../subcontractor_status/index.jsx'
 import ReadSubcontractorStatus from '../read-subcontractor_status/index.jsx'
 import ClientSearch from '../client_search/index.jsx'
+import Style from './style.sass'
 // Ajax
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
@@ -164,6 +165,24 @@ export default class AddSubcontractor extends React.Component {
       });
   }
 
+  onWorkSubcontractorDestroy = (e, id) => {
+    
+    let url = '/work_subcontractors/' + id;
+    let field = { 'work_subcontractor[work_id]': this.props.work_id };
+    Request
+      .del(url)
+      .field(field)
+      .set('X-Requested-With', 'XMLHttpRequest')
+      .setCsrfToken()
+      .end((err, res) => {
+        if (!err && res.body.status === 'success'){
+          this.setState({ work_subcontractors: res.body.work_subcontractors });
+        } else {
+          this.setState({ work_subcontractors: res.body.work_subcontractors });
+        }
+      });
+  }
+
   /**
    *  お客様選択時
    *  @version 2018/06/10
@@ -198,19 +217,20 @@ export default class AddSubcontractor extends React.Component {
       <div>
         { this.state.show ?
           <div>
-            <button className={ 'c-btnMain-standard' } onClick={ this.onUpdate }>完了</button>
-            <button className={ 'c-btnMain-standard' } onClick={ this.onSubcontractorCreate }>＋</button>
+            <div className={ Style.AddSubcontractor__EditButton }>
+              <button className={ 'c-btnMain-standard' } onClick={ this.onUpdate }>作業外注先[編集終了]</button>
+              <button className={ 'c-btnMain-primaryB' } onClick={ this.onSubcontractorCreate }>作業外注[追加]</button>
+            </div>
             { this.state.work_subcontractors.length > 0 ?
               <React.Fragment>
+                <div className={ 'c-attention u-mt-10' }>
+                  <span>外注区分: 作業詳細</span>
+                </div>
                 { this.state.work_subcontractors.map((work_subcontractor, index) => {
                   return(
                     <React.Fragment>
                       { this.props.work_id == work_subcontractor.work_id ?
                         <React.Fragment>
-                          <div key={ 'work_subcontractor_span' + index } className={ 'c-attention u-mt-10' }>
-                            <span>外注区分: 作業詳細</span>
-                          </div>
-                          <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } />
                           <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label' }>
                             <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
                           </div>
@@ -257,8 +277,12 @@ export default class AddSubcontractor extends React.Component {
                               null
                             }
                           </React.Fragment>
-                          <div key={ 'client_search' + index } className={ 'u-mt-15' }>
-                            <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
+                          <div key={ 'client_search' + index } className={ Style.AddSubcontractor__SideBySide }>
+                            <div>
+                              <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
+                              <button className={ 'c-btnMain-primaryA' } onClick={ e => this.onWorkSubcontractorDestroy(e, work_subcontractor.id) }>作業外注[削除]</button>
+                            </div>
+                            <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } />
                           </div>
                           <div key={ ' table' + index } className={ 'c-table' }>
                             <table>
@@ -288,18 +312,18 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
-                                                  <td><button className={ 'c-btnMain-standard' } onClick={ e => this.onDestroy(e, subcontractor_detail.id) }>＋</button></td>
+                                                  <td><button className={ 'c-btnMain-primaryA' } onClick={ e => this.onDestroy(e, subcontractor_detail.id) }>-</button></td>
                                                   <td id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'standard' + index1 } defaultValue={ subcontractor_detail.standard }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'specification' + index1 } defaultValue={ subcontractor_detail.specification }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'cost_unit_price' + index1 } defaultValue={ subcontractor_detail.cost_unit_price }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'estimated_cost' + index1 } defaultValue={ subcontractor_detail.estimated_cost }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'actual_count' + index1 } defaultValue={ subcontractor_detail.actual_count }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'standard' + index1 } defaultValue={ subcontractor_detail.standard }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'specification' + index1 } defaultValue={ subcontractor_detail.specification }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'cost_unit_price' + index1 } defaultValue={ subcontractor_detail.cost_unit_price }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'estimated_cost' + index1 } defaultValue={ subcontractor_detail.estimated_cost }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_count' + index1 } defaultValue={ subcontractor_detail.actual_count }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost }></input></td>
                                                   <td>
                                                     <select className={ 'c-form-select__work-show' } id={ 'status' + index1 }>
                                                       <option value={ subcontractor_detail.status }>{ ENUM_STATUS[subcontractor_detail.status] }</option>
@@ -326,33 +350,14 @@ export default class AddSubcontractor extends React.Component {
                                   }
                                 </React.Fragment>
                                 <tr key={ 'onCreate-td' + index }>
-                                  <td colSpan='13'><button className={ 'c-btnMain-standard' } onClick={ e => this.onCreate(e, work_subcontractor.id) }>＋</button></td>
+                                  <td colSpan='13'><button className={ 'c-btnMain-primaryB' } onClick={ e => this.onCreate(e, work_subcontractor.id) }>作業外注詳細[追加]</button></td>
                                 </tr>
                               </tbody>
                             </table>
                           </div>
                         </React.Fragment>
                         :
-                        <div key={ 'table' + index } className={ 'c-table' }>
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>No.</th>
-                                <th>発注内容</th>
-                                <th>規格</th>
-                                <th>仕様</th>
-                                <th>数量</th>
-                                <th>部数</th>
-                                <th>工程期日</th>
-                                <th>原価単価(想定)</th>
-                                <th>積算単価(想定)</th>
-                                <th>実績数量</th>
-                                <th>実績単価</th>
-                                <th>ステータス</th>
-                              </tr>
-                            </thead>
-                          </table>
-                        </div>
+                        null
                       }
                     </React.Fragment>
                   );
@@ -366,21 +371,25 @@ export default class AddSubcontractor extends React.Component {
           </div>
           :
           <div>
-            <button className={ 'c-btnMain-standard' } onClick={ this._editable }>編集</button>
+            <div className={ Style.AddSubcontractor__EditButton }>
+              <button className={ 'c-btnMain-standard' } onClick={ this._editable }>作業外注先[編集]</button>
+            </div>
             { this.state.work_subcontractors.length > 0 ?
               <React.Fragment>
+                <div className={ 'c-attention u-mt-10' }>
+                  <span>外注区分: 作業詳細</span>
+                </div>
                 { this.state.work_subcontractors.map((work_subcontractor, index) => {
                   return(
                     <React.Fragment>
                       { this.props.work_id == work_subcontractor.work_id ?
                         <React.Fragment>
-                          <div key={ 'work_subcontractor_span' + index } className={ 'c-attention u-mt-10' }>
-                            <span>外注区分: 作業詳細</span>
-                          </div>
-                          <ReadSubcontractorStatus key={ 'read-subcontractor-status' + index } status={ work_subcontractor.status } />
-                          <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label' }>
-                            <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
-                          </div>
+                          <div className={ Style.AddSubcontractor__ReadOnly }>
+                            <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label' }>
+                              <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
+                            </div>
+                            <ReadSubcontractorStatus key={ 'read-subcontractor-status' + index } status={ work_subcontractor.status } />
+                          </div>  
                           <React.Fragment>
                             { this.state.clients.length > 0 ?
                               <React.Fragment>

@@ -146,12 +146,13 @@ export default class AddDetails extends React.Component {
     return (
       <div>
         { this.state.show ? 
-          <div>
-            <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onUpdate }>完了</button>
-            <button className={ 'c-btnMain-standard' } onClick={ this.onCreate }>+</button>
+          <div className={ Style.AddDetails__WorkEdit }>
+            <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onUpdate }>作業詳細[編集終了]</button>
           </div>
           :
-          <div><button className={ 'c-btnMain-standard' } id='editable' onClick={ this._editable }>編集</button></div>
+          <div className={ Style.AddDetails__WorkEdit }>
+            <button className={ 'c-btnMain-standard' } id='editable' onClick={ this._editable }>作業詳細[編集]</button>
+          </div>
         }
         { this.state.show ? 
           <div className={ 'c-table' }>
@@ -175,11 +176,11 @@ export default class AddDetails extends React.Component {
                 { this.state.work_details.map((detail, index) => {
                   return (
                     <tr>
-                      <td><button className={ 'c-btnMain-standard' } onClick={e => this.onDestroy(e, detail.id) }>＋</button></td>
+                      <td><button className={ 'c-btnMain-primaryA' } onClick={e => this.onDestroy(e, detail.id) }>−</button></td>
                       <td id={ 'detail_id' + index } >{ detail.id }</td>
                       <td>{ this.props.category }</td>
-                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }/></td> 
+                      <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
+                      <td><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }/></td> 
                       <td>
                         <select className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
                           { detail.client_name === "" ? <option></option> : <option value={ detail.client_name }>{ detail.client_name }</option> }
@@ -203,13 +204,16 @@ export default class AddDetails extends React.Component {
                           }) }
                         </select>
                       </td>
-                      <td><input className={ 'c-form-text__work-show' } ttype='text' id={ 'estimated_man_hours' + index } defaultValue={ detail.estimated_man_hours } /></td>
-                      <td><input className={ 'c-form-text__work-show' } t type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
-                      <td><input className={ 'c-form-text__work-show' } t type='text' id={ 'actual_man_hours' + index } defaultValue={ detail.actual_man_hours } /></td>
-                      <td><input className={ 'c-form-text__work-show' } t type='text' id={ 'actual_cost' + index } defaultValue={ detail.actual_cost } /></td>
+                      <td><input className={ 'c-form-text__work-show-input2' } ttype='text' id={ 'estimated_man_hours' + index } defaultValue={ detail.estimated_man_hours } /></td>
+                      <td><input className={ 'c-form-text__work-show-input2' } t type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+                      <td><input className={ 'c-form-text__work-show-input2' } t type='text' id={ 'actual_man_hours' + index } defaultValue={ detail.actual_man_hours } /></td>
+                      <td><input className={ 'c-form-text__work-show-input2' } t type='text' id={ 'actual_cost' + index } defaultValue={ detail.actual_cost } /></td>
                     </tr>
                   );
                 }) } 
+                <tr>
+                  <td colSpan={ '11' }><button className={ 'c-btnMain-primaryB' } onClick={ this.onCreate }>作業詳細[追加]</button></td>
+                </tr>
               </tbody>
             </table>
           </div>

@@ -31,20 +31,20 @@ export default class ReadSubcontractorStatus extends React.Component {
     return(
       <div className={ Style.WorkStatus }>
         { this.state.subcontractor_status === 'draft' ? 
-          <div className={ Style.WorkStatus__color }><button>見作業</button></div> 
+          <button className={ 'c-btnMain-primaryC' }>見作業</button>
           : 
-          <button>見発注</button>
+          <button className={ 'c-btnMain-negative' }>見発注</button>
 
         }
         { this.state.subcontractor_status === 'deliverd' ?
-          <div className={ Style.WorkStatus__color }><button>発注済み</button></div> 
+          <button className={ 'c-btnMain-primaryC' }>発注済み</button> 
           : 
-          <button>発注済み</button> 
+          <button className={ 'c-btnMain-negative' }>発注済み</button> 
         }
         { this.state.subcontractor_status === 'complete' ? 
-        <div className={ Style.WorkStatus__color }><button>納品済み</button></div>
+        <button className={ 'c-btnMain-primaryC' }>納品済み</button>
         :
-        <button>納品済み</button>
+        <button className={ 'c-btnMain-negative' }>納品済み</button>
         }
       </div>
     );

@@ -7,6 +7,7 @@ class WorkSubcontractorsController < ApplicationController
   def create
     
     Work.find(params[:work_subcontractors][:work_id]).subcontractor.create!
+
     render json: { status: :success, subcontractors: Work.find(params[:work_subcontractors][:work_id]).subcontractor }
 
   rescue => e
@@ -25,10 +26,12 @@ class WorkSubcontractorsController < ApplicationController
     if params[:contents] === 'status'
 
       WorkSubcontractor.find(params[:id]).update! status: params[:subcontractor][:status].to_i
+
       render json: { status: :success, subcontractor_status: WorkSubcontractor.find(params[:id]).status  }
     elsif params[:contents] === 'subcontractor_division_client_id'
 
       WorkSubcontractor.find(params[:id]).update! subcontractor_division_client_id: params[:subcontractor_division_client_id].to_i
+
       render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor, clients: SubcontractorDivisionClient.all, divisions: SubcontractorDivision.all, subcontractors: Subcontractor.all }
     end
     
@@ -41,6 +44,17 @@ class WorkSubcontractorsController < ApplicationController
 
         render json: { status: :success, clients: SubcontractorDivisionClient.all, divisions: SubcontractorDivsion.all }
       end
+  end
+
+  def destroy
+
+    WorkSubcontractor.find(params[:id]).destroy!
+    
+    render json: { status: :success, work_subcontractors: WorkSubcontractor.all }
+
+  rescue => e
+    
+    render json: { work_subcontractors: WorkSubcontractor.all }
   end
 
 end

@@ -87,13 +87,13 @@ class WorkSubcontractorDetailsController < ApplicationController
       render json: { status: :success, details: WorkSubcontractorDetail.all }
     else
 
-      redirect_to works_path(params[:subcontractor_detail][:work_id])
+      render json: { details: WorkSubcontractorDetail.all }
     end
 
   rescue => e
 
     flash[:warning] = { message: e.message }
-    render json: { detail: WorkSubcontractorDetail.all }
+    render json: { details: WorkSubcontractorDetail.all }
   end
 
   #------------------------------------------

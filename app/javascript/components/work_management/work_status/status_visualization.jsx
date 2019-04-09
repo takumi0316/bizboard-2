@@ -55,25 +55,25 @@ export default class StatusVisualization extends React.Component {
     return(
       <div className={ Style.WorkStatus }>
         { this.state.work_status === 'draft' ? 
-          <div className={ Style.WorkStatus__color }><button onClick={ e => this.onUpdate(e, this.state.status_draft) }>見作業</button></div> 
+          <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>見作業</button></div> 
             : 
-          <button onClick={ e => this.onUpdate(e, this.state.status_draft) }>見作業</button>
+          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>見作業</button>
 
         }
         { this.state.work_status === 'working' ? 
-          <div className={ Style.WorkStatus__color }><button onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button></div>
+          <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button></div>
             : 
-          <button onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button> 
+          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button> 
         }
         { this.state.work_status === 'deliverd' ?
-          <div className={ Style.WorkStatus__color }><button onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button></div> 
+          <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button></div> 
             : 
-          <button onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button> 
+          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button> 
         }
         { this.state.work_status === 'complete' ? 
-        <div className={ Style.WorkStatus__color }><button onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button></div>
+        <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button></div>
           :
-        <button onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button>
+        <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button>
         }
       </div>
     );
