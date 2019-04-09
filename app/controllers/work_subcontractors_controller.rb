@@ -29,7 +29,7 @@ class WorkSubcontractorsController < ApplicationController
     elsif params[:contents] === 'subcontractor_division_client_id'
 
       WorkSubcontractor.find(params[:id]).update! subcontractor_division_client_id: params[:subcontractor_division_client_id].to_i
-      render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor, clients: SubcontractorDivisionClient.find(params[:subcontractor_division_client_id]), divisions: SubcontractorDivision.all, subcontractors: Subcontractor.all }
+      render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor, clients: SubcontractorDivisionClient.all, divisions: SubcontractorDivision.all, subcontractors: Subcontractor.all }
     end
     
     rescue => e

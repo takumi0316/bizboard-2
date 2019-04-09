@@ -22,7 +22,6 @@ export default class ClientSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    console.log('iddayo', props.work_subcontractor_id);
     this.state = { show: false, clients: [], body: null };
   }
   
@@ -107,7 +106,6 @@ export default class ClientSearch extends React.Component {
 
     const client = this.state.clients[e.target.dataset.number];
     const work_subcontractor_id = this.props.work_subcontractor_id; 
-    console.log(client);
     this.props.applyClient(client, work_subcontractor_id);
     this._close();
   }
@@ -121,7 +119,6 @@ export default class ClientSearch extends React.Component {
     Request.get(`/subcontractor_division_clients/new`)
       .set('X-Requested-With', 'XMLHttpRequest')
       .end((error, response) => {
-        console.log('response', response);
 
         this.setState({body: response.text});
       });
@@ -170,7 +167,7 @@ export default class ClientSearch extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain-standard' onClick={::this._open}>お客様情報</div>
+      <div className='c-btnMain-standard' onClick={::this._open}>外注先[お客様情報]</div>
     );
   }
 }

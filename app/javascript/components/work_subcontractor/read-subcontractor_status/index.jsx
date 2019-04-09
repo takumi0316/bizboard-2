@@ -10,7 +10,7 @@ require('superagent-rails-csrf')(Request);
  *  記事エディター
  *  @version 
  */
-export default class Index extends React.Component {
+export default class ReadSubcontractorStatus extends React.Component {
 
 
   constructor(props) {
@@ -18,13 +18,13 @@ export default class Index extends React.Component {
     super(props);
 
     this.state = {
+
       subcontractor_status: this.props.status,
       subcontractor_id: this.props.id,
       status_draft: 0,
       status_deliverd: 10,
       status_complete: 20,
     }
-    console.log(props.id, props.status);
   }
 
   render() {

@@ -10,7 +10,7 @@ require('superagent-rails-csrf')(Request);
 import Dayjs from 'dayjs'
 import { ENUM_STATUS } from '../../work_management/properties.es6'
 
-export default class Index extends React.Component {
+export default class AddSubcontractor extends React.Component {
 
   /**
    *  コンストラクタ
@@ -60,6 +60,7 @@ export default class Index extends React.Component {
     let url = '/work_subcontractor_details';
     let field = {
       'subcontractor_detail[subcontractor_id]': id,
+      'subcontractor_detail[work_id]': this.props.work_id,
     };
     Request
       .post(url)
@@ -68,10 +69,8 @@ export default class Index extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
-          console.log(res.body.detail);
           this.setState({ subcontractor_details: res.body.detail });
         } else {
-          console.log(err)
           this.setState({ subcontractor_details: res.body.detail });
         }
       });
@@ -81,29 +80,37 @@ export default class Index extends React.Component {
   onUpdate = () => {
     let array_rails = [];
     let field = {};
-    let count = this.state.subcontractor_details.length;
-    console.log('count: ', this.state.subcontractor_details.length);
-    if( count !== 0 ) {
-      for(var i = 0; i < count; i++) {
-        let replace_datetime =  document.getElementById('deliver_at' + i).value;
+    let subcontractor_value_count = [];
+    this.state.subcontractor_details.map((subcontractor_detail, index1) => {
+      if ( this.props.work_id == subcontractor_detail.work_id ){
+        this.state.work_subcontractors.map((work_subcontractor, index2) => {
+          if (work_subcontractor.id === subcontractor_detail.work_subcontractor_id) {
+            subcontractor_value_count.push(index1);
+          }
+        })
+      } 
+    })
+    if( subcontractor_value_count.length !== 0 ) {
+      for(var i = 0; i < subcontractor_value_count.length; i++) {
+        let replace_datetime =  document.getElementById('deliver_at' + subcontractor_value_count[i]).value;
         replace_datetime = replace_datetime.replace(/年/g, '/');
         replace_datetime = replace_datetime.replace(/月/g, '/');
         replace_datetime = replace_datetime.replace(/日/g, '');
         replace_datetime = replace_datetime.replace(/時/g, ':');
         replace_datetime = replace_datetime.replace(/分/g, '');
         array_rails.push(JSON.stringify({
-          'id': document.getElementById('detail_id' + i).innerHTML,
-          'order_contents': document.getElementById('order_contents' + i).value,
-          'standard': document.getElementById('standard' + i).value,
-          'specification': document.getElementById('specification' + i).value,
-          'count': document.getElementById('test-count' + i).value,
-          'number_of_copies': document.getElementById('number_of_copies' + i).value,
+          'id': document.getElementById('detail_id' + subcontractor_value_count[i]).innerHTML,
+          'order_contents': document.getElementById('order_contents' + subcontractor_value_count[i]).value,
+          'standard': document.getElementById('standard' + subcontractor_value_count[i]).value,
+          'specification': document.getElementById('specification' + subcontractor_value_count[i]).value,
+          'count': document.getElementById('test-count' + subcontractor_value_count[i]).value,
+          'number_of_copies': document.getElementById('number_of_copies' + subcontractor_value_count[i]).value,
           'deliver_at': replace_datetime,
-          'cost_unit_price': document.getElementById('cost_unit_price' + i).value,
-          'estimated_cost': document.getElementById('estimated_cost' + i).value,
-          'actual_count': document.getElementById('actual_count' + i).value,
-          'actual_cost': document.getElementById('actual_cost' + i).value,
-          'status': Number(document.getElementById('status' + i).value),
+          'cost_unit_price': document.getElementById('cost_unit_price' + subcontractor_value_count[i]).value,
+          'estimated_cost': document.getElementById('estimated_cost' + subcontractor_value_count[i]).value,
+          'actual_count': document.getElementById('actual_count' + subcontractor_value_count[i]).value,
+          'actual_cost': document.getElementById('actual_cost' + subcontractor_value_count[i]).value,
+          'status': Number(document.getElementById('status' + subcontractor_value_count[i]).value),
         }));
       }
       field = {
@@ -152,7 +159,6 @@ export default class Index extends React.Component {
         if (!err && res.body.status === "success") {
           this.setState({ subcontractor_details: res.body.details });
         } else {
-          console.log(err)
           this.setState({ subcontractor_details: res.body.details });
         }
       });
@@ -177,7 +183,6 @@ export default class Index extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === 'success') {
-          console.log('res.body.clients: ', res.body.clients);
           this.setState({ work_subcontractors: res.body.work_subcontractors, clients: res.body.clients, divisions: res.body.divisions, subcontractors: res.body.subcontractors });
         } else {
           this.setState({ clients: res.body.clients, divisions: res.body.divisions });
@@ -195,458 +200,49 @@ export default class Index extends React.Component {
           <div>
             <button className={ 'c-btnMain-standard' } onClick={ this.onUpdate }>完了</button>
             <button className={ 'c-btnMain-standard' } onClick={ this.onSubcontractorCreate }>＋</button>
-          </div>
-          :
-          <div><button className={ 'c-btnMain-standard' } onClick={ this._editable }>編集</button></div>
-        }
-        { this.state.show ?
-          <div>
             { this.state.work_subcontractors.length > 0 ?
-              <div>
-                { this.state.work_subcontractors.map((subcontractor, index) => {
-                  console.log( this.state.clients.length );
-                  return (
-                    <div>
-                      <div className={ 'c-attention u-mt-10' }>
-                        <span className={ 'u-ml-10' }>外注区分: 作業詳細</span>
-                      </div>
-                      <React.Fragment>
-                        <SubcontractorStatus id={ subcontractor.id } status={ subcontractor.status } />
-                      </React.Fragment>
-                      <div className={ 'c-form-label' }>
-                        <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
-                      </div>
-                      <React.Fragment>
-                        { this.state.clients.length > 0 ?
-                          <React.Fragment>
-                            { this.state.clients.map((client, index) => {
-                              return (
-                                <React.Fragment>
-                                  { subcontractor.subcontractor_division_client_id === client.id ?
-                                    <React.Fragment>
-                                      { this.state.divisions.map((division, index) => {
-                                        return(
-                                          <React.Fragment>
-                                            { this.state.subcontractors.map((subcont, index) => {
-                                              return (
-                                                <React.Fragment>
-                                                  { division.id === client.subcontractor_division_id ? 
-                                                    <React.Fragment>
-                                                      { division.subcontractor_id === subcont.id ?
-                                                        <div className={ 'c-attention' }>
-                                                          <div className={ 'u-mt-10' }>会社名: { subcont.name || '部署名なし' }</div>
-                                                          <div className={ 'u-mt-10' }>部署名: { division.name }</div>
-                                                          <div className={ 'u-mt-10' }>担当者名: { client.name }</div>
-                                                          <div className={ 'u-mt-10' }>担当者TEL: { client.tel }</div>
-                                                          <div className={ 'u-mt-10' }>担当者email: { client.email }</div>
-                                                        </div> 
-                                                        :
-                                                        null
-                                                      }
-                                                    </React.Fragment>
-                                                    :
-                                                    null
-                                                  }
-                                                </React.Fragment>
-                                              );
-                                            }) }
-                                          </React.Fragment>   
-                                        );
-                                      }) }
-                                    </React.Fragment>
-                                    :
-                                    null
-                                  }
-                                </React.Fragment>
-                              );
-                            }) }
-                          </React.Fragment>
-                          :
-                          null
-                        }
-                      </React.Fragment>
-                      <div className={ 'u-mt-15' }>
-                        <ClientSearch work_subcontractor_id={ subcontractor.id } applyClient={::this.applyClient} />
-                      </div>
-                      <div className={ 'c-table' }>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>No.</th>
-                              <th>発注内容</th>
-                              <th>規格</th>
-                              <th>仕様</th>
-                              <th>数量</th>
-                              <th>部数</th>
-                              <th>工程期日</th>
-                              <th>原価単価(想定)</th>
-                              <th>積算単価(想定)</th>
-                              <th>実績数量</th>
-                              <th>実績単価</th>
-                              <th>ステータス</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            { this.state.subcontractor_details.map((detail, index1) => {
-                              return(
-                                <tr>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><button className={ 'c-btnMain-standard' } onClick={ e => this.onDestroy(e, detail.id) }>＋</button></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td id={ 'detail_id' + index1 }>{ detail.id }</td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'order_contents' + index1 } defaultValue={ detail.order_contents }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'standard' + index1 } defaultValue={ detail.standard }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'specification' + index1 } defaultValue={ detail.specification }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'test-count' + index1 } defaultValue={ detail.count }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'number_of_copies' + index1 } defaultValue={ detail.number_of_copies }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'cost_unit_price' + index1 } defaultValue={ detail.cost_unit_price }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'estimated_cost' + index1 } defaultValue={ detail.estimated_cost }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'actual_count' + index1 } defaultValue={ detail.actual_count }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td><input className={ 'c-form-text__work-show' } type='text' id={ 'actual_cost' + index1 } defaultValue={ detail.actual_cost }></input></td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                                  <React.Fragment>
-                                    { subcontractor.id === detail.work_subcontractor_id ?
-                                      <td>
-                                        <select className={ 'c-form-select__work-show' } id={ 'status' + index1 }>
-                                          <option value={ detail.status }>{ ENUM_STATUS[detail.status] }</option>
-                                          { Object.keys(ENUM_STATUS).map((status) => {
-                                            return(
-                                              detail.status === Number(status) ? 
-                                                null
-                                                :
-                                                <option value={ status }>{ ENUM_STATUS[status] }</option>
-                                              );
-                                          }) }
-                                        </select>
-                                      </td>
-                                      :
-                                      null
-                                    }
-                                  </React.Fragment>
-                               </tr>
-                              );
-                            }) }
-                            <tr>
-                              <td colSpan='13'><button className={ 'c-btnMain-standard' } onClick={ e => this.onCreate(e, subcontractor.id) }>＋</button></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  );
-                }) }
-              </div>
-              :
-              <div className={ 'c-attention u-mt-10' }>
-                <span className={ 'u-ml-10' }>外注区分: 作業詳細</span>
-              </div>
-            }
-          </div>
-          :
-          <div>
-            { this.state.work_subcontractors.length > 0 && this.state.subcontractor_details.length > 0 ? 
-              <div>
-                { this.state.work_subcontractors.map((subcontractor, index) => {
-                  return (
-                    <div>
-                      <div className={ 'c-attention u-mt-10' }>
-                        <span className={ 'u-ml-10' }>外注区分: 作業詳細</span>
-                      </div>
-                      <React.Fragment>
-                        <ReadSubcontractorStatus status={ subcontractor.status } />
-                      </React.Fragment>
-                      <div className={ 'c-form-label' }>
-                        <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
-                      </div>
-                      { this.state.clients.map((client) => { return client.name }).join(',') }
-                      <React.Fragment>
-                        { this.state.clients.length > 0 ?
-                          <React.Fragment>
-                            { this.state.clients.map((client, index) => {
-                              return (
-                                <React.Fragment>
-                                  { subcontractor.subcontractor_division_client_id === client.id ?
-                                    <React.Fragment>
-                                      { this.state.divisions.map((division, index) => {
-                                        return(
-                                          <React.Fragment>
-                                            { this.state.subcontractors.map((subcont, index) => {
-                                              return (
-                                                <React.Fragment>
-                                                  { division.id === client.subcontractor_division_id ? 
-                                                    <React.Fragment>
-                                                      { division.subcontractor_id === subcont.id ?
-                                                        <div className={ 'c-attention' }>
-                                                          <div className={ 'u-mt-10' }>会社名: { subcont.name || '部署名なし' }</div>
-                                                          <div className={ 'u-mt-10' }>部署名: { division.name }</div>
-                                                          <div className={ 'u-mt-10' }>担当者名: { client.name }</div>
-                                                          <div className={ 'u-mt-10' }>担当者TEL: { client.tel }</div>
-                                                          <div className={ 'u-mt-10' }>担当者email: { client.email }</div>
-                                                        </div> 
-                                                        :
-                                                        null
-                                                      }
-                                                    </React.Fragment>
-                                                    :
-                                                    null
-                                                  }
-                                                </React.Fragment>
-                                              );
-                                            }) }
-                                          </React.Fragment>   
-                                        );
-                                      }) }
-                                    </React.Fragment>
-                                    :
-                                    null
-                                  }
-                                </React.Fragment>
-                              );
-                            }) }
-                          </React.Fragment>
-                          :
-                          null
-                        }
-                      </React.Fragment>
-                      <div className={ 'c-table' }>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>No.</th>
-                              <th>発注内容</th>
-                              <th>規格</th>
-                              <th>仕様</th>
-                              <th>数量</th>
-                              <th>部数</th>
-                              <th>工程期日</th>
-                              <th>原価単価(想定)</th>
-                              <th>積算単価(想定)</th>
-                              <th>実績数量</th>
-                              <th>実績単価</th>
-                              <th>ステータス</th>
-                            </tr>
-                          </thead>
-                        <tbody>
-                        { this.state.subcontractor_details.map((detail, index) => {
-                          return (
-                            <tr>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ? 
-                                  <td style={{ textAlign: 'center' }}>{ detail.id }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'center' }}>{ detail.order_contents }</td>
-                                  : 
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'center' }}>{ detail.standard }</td>
-                                  :
-                                  null 
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'center' }}>{ detail.specification }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'right' }}>{ detail.count }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'right' }}>{ detail.number_of_copies }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'center' }}>{ Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'right' }}>{ detail.cost_unit_price }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'right' }}>{ detail.estimated_cost }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'right' }}>{ detail.actual_count }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'right' }}>{ detail.actual_cost }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                              <React.Fragment>
-                                { subcontractor.id === detail.work_subcontractor_id ?
-                                  <td style={{ textAlign: 'center' }}>{ ENUM_STATUS[detail.status] }</td>
-                                  :
-                                  null
-                                }
-                              </React.Fragment>
-                            </tr>
-                          );
-                        }) }
-                      </tbody>
-                    </table>
-                  </div>
-                  </div>
-                  );
-                }) }
-              </div>
-              :
-              <div>
-                { this.state.work_subcontractors.length > 0 && this.state.subcontractor_details.length === 0 ?
-                  <div>
-                    { this.state.work_subcontractors.map((subcontractor, index) => {
-                      return ( 
-                        <div>
-                          <div className={ 'c-attention u-mt-10' }>
-                            <span className={ 'c-ml-10' }>外注区分: 作業詳細</span>
+              <React.Fragment>
+                { this.state.work_subcontractors.map((work_subcontractor, index) => {
+                  return(
+                    <React.Fragment>
+                      { this.props.work_id == work_subcontractor.work_id ?
+                        <React.Fragment>
+                          <div key={ 'work_subcontractor_span' + index } className={ 'c-attention u-mt-10' }>
+                            <span>外注区分: 作業詳細</span>
                           </div>
-                          <React.Fragment>
-                            <ReadSubcontractorStatus status={ subcontractor.status } />
-                          </React.Fragment>
-                          <div className={ 'c-form-label' }>
+                          <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } />
+                          <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label' }>
                             <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
                           </div>
                           <React.Fragment>
                             { this.state.clients.length > 0 ?
                               <React.Fragment>
                                 { this.state.clients.map((client, index) => {
-                                  return (
+                                  return(
                                     <React.Fragment>
-                                      { subcontractor.subcontractor_division_client_id === client.id ?
+                                      { work_subcontractor.subcontractor_division_client_id === client.id ?
                                         <React.Fragment>
                                           { this.state.divisions.map((division, index) => {
-                                            return(
+                                            return (
                                               <React.Fragment>
-                                                { this.state.subcontractors.map((subcont, index) => {
+                                                { this.state.subcontractors.map((subcontractor, index) => {
                                                   return (
                                                     <React.Fragment>
-                                                      { division.id === client.subcontractor_division_id ? 
-                                                        <React.Fragment>
-                                                          { division.subcontractor_id === subcont.id ?
-                                                            <div className={ 'c-attention' }>
-                                                              <div className={ 'u-mt-10' }>会社名: { subcont.name || '部署名なし' }</div>
-                                                              <div className={ 'u-mt-10' }>部署名: { division.name }</div>
-                                                              <div className={ 'u-mt-10' }>担当者名: { client.name }</div>
-                                                              <div className={ 'u-mt-10' }>担当者TEL: { client.tel }</div>
-                                                              <div className={ 'u-mt-10' }>担当者email: { client.email }</div>
-                                                            </div> 
-                                                            :
-                                                            null
-                                                          }
-                                                        </React.Fragment>
+                                                      { client.subcontractor_division_id === division.id && division.subcontractor_id === subcontractor.id  ? 
+                                                        <div key={ 'client' + index } className={ 'c-attention' }>
+                                                          <div className={ 'u-mt-10' }>会社名: { subcontractor.name || '部署名なし' }</div>
+                                                          <div className={ 'u-mt-10' }>部署名: { division.name }</div>
+                                                          <div className={ 'u-mt-10' }>担当者名: { client.name }</div>
+                                                          <div className={ 'u-mt-10' }>担当者TEL: { client.tel }</div>
+                                                          <div className={ 'u-mt-10' }>担当者email: { client.email }</div>
+                                                        </div>
                                                         :
                                                         null
-                                                      }
+                                                      } 
                                                     </React.Fragment>
                                                   );
                                                 }) }
-                                              </React.Fragment>   
+                                              </React.Fragment>
                                             );
                                           }) }
                                         </React.Fragment>
@@ -661,7 +257,174 @@ export default class Index extends React.Component {
                               null
                             }
                           </React.Fragment>
-                          <div className={ 'c-table' }>
+                          <div key={ 'client_search' + index } className={ 'u-mt-15' }>
+                            <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
+                          </div>
+                          <div key={ ' table' + index } className={ 'c-table' }>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th>No.</th>
+                                  <th>発注内容</th>
+                                  <th>規格</th>
+                                  <th>仕様</th>
+                                  <th>数量</th>
+                                  <th>部数</th>
+                                  <th>工程期日</th>
+                                  <th>原価単価(想定)</th>
+                                  <th>積算単価(想定)</th>
+                                  <th>実績数量</th>
+                                  <th>実績単価</th>
+                                  <th>ステータス</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <React.Fragment>
+                                  { this.state.subcontractor_details.length > 0 ? 
+                                    <React.Fragment>
+                                      { this.state.subcontractor_details.map((subcontractor_detail, index1) => {
+                                        return (
+                                          <React.Fragment>
+                                            { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
+                                              <tr key={ 'tr' + index }>
+                                                  <td><button className={ 'c-btnMain-standard' } onClick={ e => this.onDestroy(e, subcontractor_detail.id) }>＋</button></td>
+                                                  <td id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'standard' + index1 } defaultValue={ subcontractor_detail.standard }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'specification' + index1 } defaultValue={ subcontractor_detail.specification }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'cost_unit_price' + index1 } defaultValue={ subcontractor_detail.cost_unit_price }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'estimated_cost' + index1 } defaultValue={ subcontractor_detail.estimated_cost }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'actual_count' + index1 } defaultValue={ subcontractor_detail.actual_count }></input></td>
+                                                  <td><input className={ 'c-form-text__work-show' } type='text' id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost }></input></td>
+                                                  <td>
+                                                    <select className={ 'c-form-select__work-show' } id={ 'status' + index1 }>
+                                                      <option value={ subcontractor_detail.status }>{ ENUM_STATUS[subcontractor_detail.status] }</option>
+                                                      { Object.keys(ENUM_STATUS).map((status) => {
+                                                        return(
+                                                          subcontractor_detail.status === Number(status) ? 
+                                                            null
+                                                            :
+                                                            <option value={ status }>{ ENUM_STATUS[status] }</option>
+                                                          );
+                                                      }) }
+                                                    </select>
+                                                  </td>
+                                              </tr>
+                                              :
+                                              null
+                                            }
+                                          </React.Fragment>
+                                        ); 
+                                      }) }
+                                    </React.Fragment>
+                                    :
+                                    null
+                                  }
+                                </React.Fragment>
+                                <tr key={ 'onCreate-td' + index }>
+                                  <td colSpan='13'><button className={ 'c-btnMain-standard' } onClick={ e => this.onCreate(e, work_subcontractor.id) }>＋</button></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </React.Fragment>
+                        :
+                        <div key={ 'table' + index } className={ 'c-table' }>
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>No.</th>
+                                <th>発注内容</th>
+                                <th>規格</th>
+                                <th>仕様</th>
+                                <th>数量</th>
+                                <th>部数</th>
+                                <th>工程期日</th>
+                                <th>原価単価(想定)</th>
+                                <th>積算単価(想定)</th>
+                                <th>実績数量</th>
+                                <th>実績単価</th>
+                                <th>ステータス</th>
+                              </tr>
+                            </thead>
+                          </table>
+                        </div>
+                      }
+                    </React.Fragment>
+                  );
+                }) }
+              </React.Fragment>
+              :
+              <div className={ 'c-attention u-mt-10' }>
+                <span>外注区分: 作業詳細</span>
+              </div>
+            }
+          </div>
+          :
+          <div>
+            <button className={ 'c-btnMain-standard' } onClick={ this._editable }>編集</button>
+            { this.state.work_subcontractors.length > 0 ?
+              <React.Fragment>
+                { this.state.work_subcontractors.map((work_subcontractor, index) => {
+                  return(
+                    <React.Fragment>
+                      { this.props.work_id == work_subcontractor.work_id ?
+                        <React.Fragment>
+                          <div key={ 'work_subcontractor_span' + index } className={ 'c-attention u-mt-10' }>
+                            <span>外注区分: 作業詳細</span>
+                          </div>
+                          <ReadSubcontractorStatus key={ 'read-subcontractor-status' + index } status={ work_subcontractor.status } />
+                          <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label' }>
+                            <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
+                          </div>
+                          <React.Fragment>
+                            { this.state.clients.length > 0 ?
+                              <React.Fragment>
+                                { this.state.clients.map((client, index) => {
+                                  return(
+                                    <React.Fragment>
+                                      { work_subcontractor.subcontractor_division_client_id === client.id ?
+                                        <React.Fragment>
+                                          { this.state.divisions.map((division, index) => {
+                                            return (
+                                              <React.Fragment>
+                                                { this.state.subcontractors.map((subcontractor, index) => {
+                                                  return (
+                                                    <React.Fragment>
+                                                      { client.subcontractor_division_id === division.id && division.subcontractor_id === subcontractor.id  ? 
+                                                        <div key={ 'client' + index } className={ 'c-attention' }>
+                                                          <div className={ 'u-mt-10' }>会社名: { subcontractor.name || '部署名なし' }</div>
+                                                          <div className={ 'u-mt-10' }>部署名: { division.name }</div>
+                                                          <div className={ 'u-mt-10' }>担当者名: { client.name }</div>
+                                                          <div className={ 'u-mt-10' }>担当者TEL: { client.tel }</div>
+                                                          <div className={ 'u-mt-10' }>担当者email: { client.email }</div>
+                                                        </div>
+                                                        :
+                                                        null
+                                                      } 
+                                                    </React.Fragment>
+                                                  );
+                                                }) }
+                                              </React.Fragment>
+                                            );
+                                          }) }
+                                        </React.Fragment>
+                                        :
+                                        null
+                                      }
+                                    </React.Fragment>
+                                  );
+                                }) }
+                              </React.Fragment>
+                              :
+                              null
+                            }
+                          </React.Fragment>
+                          <div key={ ' table' + index } className={ 'c-table' }>
                             <table>
                               <thead>
                                 <tr>
@@ -679,23 +442,59 @@ export default class Index extends React.Component {
                                   <th>ステータス</th>
                                 </tr>
                               </thead>
+                              <tbody>
+                                <React.Fragment>
+                                  { this.state.subcontractor_details.length > 0 ? 
+                                    <React.Fragment>
+                                      { this.state.subcontractor_details.map((subcontractor_detail, index) => {
+                                        return (
+                                          <React.Fragment>
+                                            { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ? 
+                                              <tr className={'tr' + index }>
+                                                <td style={{ textAlign: 'center' }}>{ subcontractor_detail.id }</td>
+                                                <td style={{ textAlign: 'center' }}>{ subcontractor_detail.order_contents }</td>
+                                                <td style={{ textAlign: 'center' }}>{ subcontractor_detail.standard }</td>
+                                                <td style={{ textAlign: 'center' }}>{ subcontractor_detail.specification }</td>
+                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.count }</td>
+                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.number_of_copies }</td>
+                                                <td style={{ textAlign: 'center' }}>{ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
+                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.cost_unit_price }</td>
+                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.estimated_cost }</td>
+                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.actual_count }</td>
+                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.actual_cost }</td>
+                                                <td style={{ textAlign: 'center' }}>{ ENUM_STATUS[subcontractor_detail.status] }</td>
+                                              </tr>
+                                              :
+                                              null
+                                            }
+                                          </React.Fragment>
+                                        ); 
+                                      }) }
+                                    </React.Fragment>
+                                    :
+                                    null
+                                  }
+                                </React.Fragment>
+                              </tbody>
                             </table>
                           </div>
-                        </div>
-                      );
-                    }) }
-                  </div>
-                  :
-                  <div className={ 'c-attention u-mt-10' }>
-                    <span className={ 'c-ml-10' }>外注区分: 作業詳細</span>
-                  </div>
-                }
+                        </React.Fragment>
+                        :
+                        null
+                      }
+                    </React.Fragment>
+                  );
+                }) }
+              </React.Fragment>
+              :
+              <div className={ 'c-attention u-mt-10' }>
+                <span>外注区分: 作業詳細</span>
               </div>
             }
-          </div>    
+          </div>
         }
       </div>
-    )
+    );
   }
 } 
 

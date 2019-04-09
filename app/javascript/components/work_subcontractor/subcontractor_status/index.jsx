@@ -10,7 +10,7 @@ require('superagent-rails-csrf')(Request);
  *  記事エディター
  *  @version 
  */
-export default class Index extends React.Component {
+export default class SubcontractorStatus extends React.Component {
 
 
   constructor(props) {
@@ -19,7 +19,7 @@ export default class Index extends React.Component {
 
     this.state = {
       subcontractor_status: this.props.status,
-      subcontractor_id: this.props.id,
+      subcontractor_id: this.props.work_subcontractor_id,
       status_draft: 0,
       status_deliverd: 10,
       status_complete: 20,
@@ -41,10 +41,8 @@ export default class Index extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
-          console.log(res.body.subcontractor_status);
           this.setState({ subcontractor_status: res.body.subcontractor_status });
         } else {
-          console.log(err)
           this.setState({ subcontractor_status: res.body.subcontractor_status });
         }
       });
