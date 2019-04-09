@@ -65,11 +65,18 @@
         line-height: 2rem
         min-height: 40px
         vertical-align: bottom
-    &__work-show
+    &__work-show-input1
       @extend %formStyle
       width: 250px
       line-height: 2rem
       min-height: 40px
+      text-align: right
+    &__work-show-input2
+      @extend %formStyle
+      width: 150px
+      line-height: 2rem
+      min-height: 40px
+      text-align: right
 
   // チェックボックス
   // ------------------------------------
@@ -239,7 +246,7 @@
       padding-right: 33px
       background: none
       background-color: map-get($layoutColors, 'white')
-      width: 130px
+      width: 140px
       line-height: 2rem
 
   // 日付セレクトボックス 岡田追加しました
