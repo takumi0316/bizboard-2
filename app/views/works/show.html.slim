@@ -17,21 +17,26 @@
 
     .c-attention.u-mt-10
       | お客様情報: 
-      span.u-fw-bold 
-        | 株式会社
-        = works.find(params[:id]).project.client.company_division.company.name
-        |　
-        = works.find(params[:id]).project.client.name
-        | 樣
-      span.u-ml-30
-        | 請求先情報:
-        |    
-        span.u-fw-bold
+      - if works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.name&.present? && works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.company_division&.name&.present? 
+        span.u-fw-bold 
           | 株式会社
-          = works.find(params[:id]).project.client.company_division.company.name
+          - binding.pry
+          = works.find(params[:id]).project.client&.company_division&.company&.name&.present? ? works.find(params[:id]).project.client.company_division.company.name : nil
           |　
-          = works.find(params[:id]).project.client.company_division.name
-          | 部
+          = works.find(params[:id]).project.client&.name&.present? ? works.find(params[:id]).project.client.name : nil
+          | 樣
+        span.u-ml-30
+          | 請求先情報:
+          |    
+          span.u-fw-bold
+            | 株式会社
+            = works.find(params[:id]).project.client&.company_division&.company&.name&.present? ? works.find(params[:id]).project.client.company_division.company.name : nil
+            |　
+            = works.find(params[:id]).project.client&.company_division&.name&.present? ? works.find(params[:id]).project.client.company_division.name : nil
+            | 部
+      - else 
+        span.u-fw-bold
+          | 　請求先情報:
       div
         | 納期: 
         span.u-fw-bold = works.find(params[:id]).project.deliver_at.present? ? works.find(params[:id]).project.deliver_at.to_s : '未定'
