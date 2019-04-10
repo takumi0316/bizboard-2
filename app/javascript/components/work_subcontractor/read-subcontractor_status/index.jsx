@@ -30,7 +30,6 @@ export default class ReadSubcontractorStatus extends React.Component {
   render() {
     return(
       <div className={ Style.WorkStatus }>
-        { console.log(this.state.subcontractor_status) }
         { this.state.subcontractor_status == 0 ? 
           <button className={ 'c-btnMain-primaryC' }>見作業</button>
           : 

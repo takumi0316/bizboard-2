@@ -215,7 +215,15 @@ export default class AddSubcontractor extends React.Component {
    */
   applyStatus(work_subcontractors) {
     
-    this.setState({ work_subcontractors: work_subcontractors });
+    let workSubcontractors = this.state.work_subcontractors;
+    workSubcontractors.forEach((state_subcontractor) => {
+      work_subcontractors.map((props_subcontractor) => {
+        if( state_subcontractor.id === props_subcontractor.id && state_subcontractor.status !== props_subcontractor.status ){
+          state_subcontractor.status = props_subcontractor.status
+        }
+      })
+    })
+    this.setState({ work_subcontractors: workSubcontractors });
   }
 
   /**
@@ -291,7 +299,7 @@ export default class AddSubcontractor extends React.Component {
                               <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
                               <button className={ 'c-btnMain-primaryA' } onClick={ e => this.onWorkSubcontractorDestroy(e, work_subcontractor.id) }>作業外注[削除]</button>
                             </div>
-                            <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } applyStatus={ ::this.applyStatus } />
+                            <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_id={ this.props.work_id } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } applyStatus={ ::this.applyStatus } />
                           </div>
                           <div key={ ' table' + index } className={ 'c-table' }>
                             <table>
@@ -397,7 +405,6 @@ export default class AddSubcontractor extends React.Component {
                             <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label' }>
                               <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
                             </div>
-                            { console.log('return-status:', work_subcontractor.status) }
                             <ReadSubcontractorStatus key={ 'read-subcontractor-status' + index } status={ work_subcontractor.status } />
                           </div>  
                           <React.Fragment>

@@ -32,6 +32,7 @@ export default class SubcontractorStatus extends React.Component {
     let field = {
       'subcontractor[status]': status_type, 
       'contents': 'status',
+      'work_id': this.props.work_id,
     }
 
     Request
@@ -53,7 +54,6 @@ export default class SubcontractorStatus extends React.Component {
   render() {
     return(
       <div className={ Style.WorkStatus }>
-        { console.log(this.state.subcontractor_status) }
         { this.state.subcontractor_status == 0 ? 
           <button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>見作業</button> 
           : 
