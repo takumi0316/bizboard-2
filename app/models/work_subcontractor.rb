@@ -24,8 +24,6 @@ class WorkSubcontractor < ApplicationRecord
   #  ** Enums **
   #----------------------------------------  
 
-  enum status: { draft: 0, deliverd: 10, complete: 20 }
-
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------

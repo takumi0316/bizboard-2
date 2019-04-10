@@ -168,7 +168,7 @@ export default class AddSubcontractor extends React.Component {
   onWorkSubcontractorDestroy = (e, id) => {
     
     let url = '/work_subcontractors/' + id;
-    let field = { 'work_subcontractor[work_id]': this.props.work_id };
+    let field = { 'work_id': this.props.work_id };
     Request
       .del(url)
       .field(field)
@@ -185,7 +185,7 @@ export default class AddSubcontractor extends React.Component {
 
   /**
    *  お客様選択時
-   *  @version 2018/06/10
+   *  @version 
    */
   applyClient(client, work_subcontractor_id) {
 
@@ -207,6 +207,15 @@ export default class AddSubcontractor extends React.Component {
           this.setState({ clients: res.body.clients, divisions: res.body.divisions });
         }
       });
+  }
+
+  /**
+   * WorkSubcontractorStatus更新時
+   *
+   */
+  applyStatus(work_subcontractors) {
+    
+    this.setState({ work_subcontractors: work_subcontractors });
   }
 
   /**
@@ -282,7 +291,7 @@ export default class AddSubcontractor extends React.Component {
                               <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
                               <button className={ 'c-btnMain-primaryA' } onClick={ e => this.onWorkSubcontractorDestroy(e, work_subcontractor.id) }>作業外注[削除]</button>
                             </div>
-                            <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } />
+                            <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } applyStatus={ ::this.applyStatus } />
                           </div>
                           <div key={ ' table' + index } className={ 'c-table' }>
                             <table>
@@ -388,6 +397,7 @@ export default class AddSubcontractor extends React.Component {
                             <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label' }>
                               <label htmlFor='work_subcontractor_division_client_id'>お客様情報</label>
                             </div>
+                            { console.log('return-status:', work_subcontractor.status) }
                             <ReadSubcontractorStatus key={ 'read-subcontractor-status' + index } status={ work_subcontractor.status } />
                           </div>  
                           <React.Fragment>

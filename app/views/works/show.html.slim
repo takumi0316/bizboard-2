@@ -20,19 +20,18 @@
       - if works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.name&.present? && works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.company_division&.name&.present? 
         span.u-fw-bold 
           | 株式会社
-          - binding.pry
-          = works.find(params[:id]).project.client&.company_division&.company&.name&.present? ? works.find(params[:id]).project.client.company_division.company.name : nil
+          = works.find(params[:id]).project.client.company_division.company.name
           |　
-          = works.find(params[:id]).project.client&.name&.present? ? works.find(params[:id]).project.client.name : nil
+          = works.find(params[:id]).project.client.name
           | 樣
         span.u-ml-30
           | 請求先情報:
           |    
           span.u-fw-bold
             | 株式会社
-            = works.find(params[:id]).project.client&.company_division&.company&.name&.present? ? works.find(params[:id]).project.client.company_division.company.name : nil
+            = works.find(params[:id]).project.client.company_division.company.name 
             |　
-            = works.find(params[:id]).project.client&.company_division&.name&.present? ? works.find(params[:id]).project.client.company_division.name : nil
+            = works.find(params[:id]).project.client.company_division.name
             | 部
       - else 
         span.u-fw-bold
