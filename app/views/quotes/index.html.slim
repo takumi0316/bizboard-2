@@ -3,7 +3,7 @@
 
     = render 'layouts/_partials/tabmenu'
 
-    .u-mt-15 = link_to '見積もりを作成する', new_quote_path, class: 'c-btnMain-standard c-btn-blue'
+    .u-mt-15 = link_to '見積もりを作成する', new_quote_path(@quote, project_id: @id), class: 'c-btnMain-standard c-btn-blue'
 
     = form_with url: quotes_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 

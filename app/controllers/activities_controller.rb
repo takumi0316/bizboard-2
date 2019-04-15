@@ -41,6 +41,7 @@ class ActivitiesController < ApplicationController
   def index
 
     add_breadcrumb '活動履歴'
+    @id = params[:name]
   end
 
   ##
@@ -51,6 +52,9 @@ class ActivitiesController < ApplicationController
 
     add_breadcrumb '活動履歴', path: activities_path
     add_breadcrumb '新規作成'
+    @id = params[:project_id]
+    @activity = Activity.new(:project_id => @id)
+
   end
 
   ##
