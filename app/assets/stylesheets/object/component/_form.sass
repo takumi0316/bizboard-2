@@ -66,19 +66,51 @@
         min-height: 40px
         height: 46px
 
-    &__work-show-input1
-      @extend %formStyle
-      width: 250px
-      line-height: 2rem
-      min-height: 40px
-      text-align: right
+    &__work-show-input
 
-    &__work-show-input2
-      @extend %formStyle
-      width: 150px
-      line-height: 2rem
-      min-height: 40px
-      text-align: right
+      &1
+        @extend %formStyle
+        width: 250px
+        line-height: 2rem
+        min-height: 40px
+        text-align: right
+
+      &2
+        @extend %formStyle
+        width: 150px
+        line-height: 2rem
+        min-height: 40px
+        text-align: right
+        font-size: 1.6rem
+
+      &3
+        &-left
+            @extend %formStyle
+            width: 75px
+            line-height: 2rem
+            min-height: 40px
+            text-align: left
+
+        &-right
+            @extend %formStyle
+            width: 75px
+            line-height: 2rem
+            min-height: 40px
+            text-align: right
+
+      &4
+        @extend %formStyle
+        width: 100px
+        line-height: 2rem
+        min-height: 40px
+        text-align: left
+
+      &5
+        @extend %formStyle
+        width: 300px
+        line-height: 2rem
+        min-height: 40px
+        text-align: left
 
   // チェックボックス
   // ------------------------------------
@@ -242,7 +274,7 @@
       padding-right: 33px
       background: none
       background-color: map-get($layoutColors, 'white')
-      width: 120px
+      width: 125px
       line-height: 2rem
 
     &__work-show

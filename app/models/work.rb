@@ -6,7 +6,7 @@
 #  project_id :bigint(8)
 #  price      :integer          default(0)
 #  cost       :integer          default(0)
-#  status     :integer          default("draft")
+#  status     :integer          default("未作業")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  free_word  :text(65535)
@@ -26,7 +26,7 @@ class Work < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum status: { draft: 0, working: 10, deliverd: 20, complete: 30 }
+  enum status: { 未作業: 0, 作業中: 10, 配送済み: 20, 納品済み: 30 }
 
   #----------------------------------------
   #  ** Validations **
@@ -41,6 +41,8 @@ class Work < ApplicationRecord
   has_many :work_details, class_name: 'WorkDetail', dependent: :destroy
 
   has_many :subcontractor, class_name: 'WorkSubcontractor', dependent: :destroy
+
+  has_many :subcontractor_detail, class_name: 'WorkSubcontractorDetail', dependent: :destroy
 
   #----------------------------------------
   #  ** Scopes **
@@ -59,8 +61,8 @@ class Work < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.project.client&.company_division&.company&.name} #{self.project.client&.name} #{self.project.name} #{self.status} #{self.project.deliver_at}"  
-  end 
+    self.free_word = "#{self.project.client&.company_division&.company&.name} #{self.project.client&.name} #{self.project.name} #{self.status} #{self.project.deliver_at}"
+  end
 
   ##
   # 名称検索

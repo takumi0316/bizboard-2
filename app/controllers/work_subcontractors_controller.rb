@@ -50,7 +50,7 @@ class WorkSubcontractorsController < ApplicationController
 
     WorkSubcontractor.find(params[:id]).destroy!
     
-    render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor }
+    render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor, actual_costs: WorkSubcontractor.find(params[:id]).detail.pluck(:actual_cost) }
 
   rescue => e
     

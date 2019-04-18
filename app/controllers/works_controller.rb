@@ -51,22 +51,30 @@ class WorksController < ApplicationController
   #
   def update
 
-    # 作業進捗更新
-    work.update! status: params[:work][:status].to_i
+    if params[:status] === 'status'
 
-    if request.xhr?
+      work.update! status: params[:work][:status].to_i
       render json: { status: :success, work: work.status }
+    elsif params[:status] === 'price'
+
+      work.project.update! price: params[:price]
+      render json: { status: :success, price: work.project.price }
     end
 
   rescue => e
 
-    render json: { status: :error, work: work.status }
+    if params[:status] === 'status'
+
+      render json: { status: :error, work: work.status }
+    elsif params[:status] === 'price'
+
+      puts 'ahoka'
+      render json: { status: :error, price: work.project.price }
+    end
   end
 
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
 
-  private
-    
 end

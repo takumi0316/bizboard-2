@@ -10,7 +10,7 @@ import { ENUM_STATUS } from '../properties.es6'
 
 /**
  *  記事エディター
- *  @version 
+ *  @version
  */
 export default class AddDetails extends React.Component {
 
@@ -26,7 +26,7 @@ export default class AddDetails extends React.Component {
 
       show: false,
       work_details: this.props.details,
-      startDate: new Date()
+      startDate: new Date(),
     }
 
   }
@@ -39,7 +39,6 @@ export default class AddDetails extends React.Component {
   onChangeCost = (e, detail_id, index) => {
 
     let url = '/work_details';
-    console.log(url);
     let field = {
       'id': detail_id,
       'work_detail[work_id]': '',
@@ -64,7 +63,6 @@ export default class AddDetails extends React.Component {
   onChangeCount = (e, detail_id, index) => {
 
     let url = '/work_details';
-    console.log(url);
     let field = {
       'id': detail_id,
       'work_detail[work_id]': '',
@@ -101,7 +99,6 @@ export default class AddDetails extends React.Component {
         if (!err && res.body.status === "success") {
           this.setState({ work_details: res.body.detail });
         } else {
-          console.log(err)
           this.setState({ work_details: res.body.detail });
         }
       });
@@ -111,7 +108,6 @@ export default class AddDetails extends React.Component {
   onDestroy = (e, id, index) => {
 
     let url = '/work_details/' + id;
-    let actual_cost = Number(document.getElementById('actual_cost' + index).value);
     let field = {
       'work_detail[work_id]': this.props.work_id,
     };
@@ -123,10 +119,7 @@ export default class AddDetails extends React.Component {
       .end((err, res) => {
         if (!err && res.body.status === "success") {
           this.setState({ work_details: res.body.detail });
-          let status = 'destroy';
-          this.props.applyPrice(status, actual_cost);
         } else {
-          console.log(err)
           this.setState({ work_details: res.body.detail });
         }
       });
@@ -181,13 +174,17 @@ export default class AddDetails extends React.Component {
       .set('X-Requested-With', 'XMLHttpRequest')
       .setCsrfToken()
       .end((err, res) => {
+        let type = 'work_detail_cost';
         if (!err && res.body.status === "success") {
+
           this.setState({ show: false, work_details: res.body.detail });
-          let status = 'update';
-          this.props.applyPrice(status, actual_cost);
+          this.props.applyPrice(actual_cost, type);
         } else if (!err && res.body.status === 'nothing') {
+
           this.setState({ show: false, });
+          this.props.applyPrice(actual_cost, type);
         } else {
+
           this.setState({ work_details: res.body.detail });
         }
       });

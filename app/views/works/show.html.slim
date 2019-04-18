@@ -1,46 +1,46 @@
 .l-contents
   section.l-contents__inner
-    = react_component('WorkStatus', { status: works.find(params[:id]).status, id: params[:id] })      
+    = react_component('WorkStatus', { status: works.find(params[:id]).status, id: params[:id] })
     .c-attention.u-mt-10
       span.u-fw-bold = works.find(params[:id]).project.name
       span.u-ml-30
-        | 案件番号: 
+        | 案件番号:
         span.u-fw-bold = works.find(params[:id]).project.id
       span.u-ml-30
-        | 受付日: 
+        | 受付日:
         span.u-fw-bold = works.find(params[:id]).project.created_at.to_s
       span.u-ml-30
-        | 担当者: 
+        | 担当者:
         span.u-fw-bold = works.find(params[:id]).project.user.name
       span.u-ml-30
         = link_to '編集する', edit_project_path(works.find(params[:id]).project), class: 'u-td-underline'
 
     .c-attention.u-mt-10
-      | お客様情報: 
-      - if works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.name&.present? && works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.company_division&.name&.present? 
-        span.u-fw-bold 
+      | お客様情報:
+      - if works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.name&.present? && works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.company_division&.name&.present?
+        span.u-fw-bold
           | 株式会社
           = works.find(params[:id]).project.client.company_division.company.name
-          |　
+          |
           = works.find(params[:id]).project.client.name
           | 樣
         span.u-ml-30
           | 請求先情報:
-          |    
+          |
           span.u-fw-bold
             | 株式会社
-            = works.find(params[:id]).project.client.company_division.company.name 
-            |　
+            = works.find(params[:id]).project.client.company_division.company.name
+            |
             = works.find(params[:id]).project.client.company_division.name
             | 部
-      - else 
+      - else
         span.u-fw-bold
           | 　請求先情報:
       div
-        | 納期: 
+        | 納期:
         span.u-fw-bold = works.find(params[:id]).project.deliver_at.present? ? works.find(params[:id]).project.deliver_at.to_s : '未定'
         span.u-ml-30
-          | 納品方法: 
+          | 納品方法:
         span.u-fw-bold
           = works.find(params[:id]).project.deliver_type_i18n
           = " (#{works.find(params[:id]).project.deliver_type_note})" if works.find(params[:id]).project.deliver_type_note.present?
@@ -84,7 +84,7 @@
             | 作業内容:
             span.u-fw-bold
               = works.find(params[:id]).project.print.work_note
-  
+
       .c-attention.u-mt-10
         | プリント作業:
         span.u-fw-bold
@@ -153,7 +153,7 @@
             | 製本方法:
           span.u-fw-bold
             = works.find(params[:id]).project.project_binding_work.bind_type_i18n
-            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り' 
+            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り'
 
             - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'クロス巻き'
 
@@ -169,7 +169,7 @@
                 | クロス色:
                 span.u-fw-bold
                 = works.find(params[:id]).project.project_binding_work.cross_color_i18n
-              
+
             - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'くるみ'
 
               span.u-ml-30
@@ -217,33 +217,33 @@
     - elsif works.find(params[:id]).project.project_category_i18n === 'コピー'
 
       .c-attention.u-mt-10
-        | 案件種別: 
-        span.u-fw-bold 
+        | 案件種別:
+        span.u-fw-bold
           = works.find(params[:id]).project.project_category_i18n
         span.u-ml-30
-          | 入稿状態: 
-        span.u-fw-bold 
+          | 入稿状態:
+        span.u-fw-bold
           = works.find(params[:id]).project.copy.posting_state_i18n
         span.u-ml-30
-          | 入稿バラシ: 
-        span.u-fw-bold 
+          | 入稿バラシ:
+        span.u-fw-bold
           = works.find(params[:id]).project.copy.draft_split_i18n
         span.u-ml-30
-          | 入稿戻し: 
-        span.u-fw-bold 
+          | 入稿戻し:
+        span.u-fw-bold
           = works.find(params[:id]).project.copy.draft_restore_i18n
 
       .c-attention.u-mt-10
-        | カラー区分: 
-        span.u-fw-bold 
+        | カラー区分:
+        span.u-fw-bold
           = works.find(params[:id]).project.copy.color_i18n
         span.u-ml-30
-          | サイズ: 
-        span.u-fw-bold 
+          | サイズ:
+        span.u-fw-bold
           = works.find(params[:id]).project.copy.print_size_i18n
         span.u-ml-30
-          | 面付け: 
-        span.u-fw-bold 
+          | 面付け:
+        span.u-fw-bold
           = works.find(params[:id]).project.copy.surface_i18n
         - if works.find(params[:id]).project.copy.surface_i18n === '両面→片面'
           span.u-ml-30
@@ -295,7 +295,7 @@
             | 製本方法:
           span.u-fw-bold
             = works.find(params[:id]).project.project_binding_work.bind_type_i18n
-            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り' 
+            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り'
 
             - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'クロス巻き'
 
@@ -311,7 +311,7 @@
                 | クロス色:
                 span.u-fw-bold
                 = works.find(params[:id]).project.project_binding_work.cross_color_i18n
-              
+
             - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'くるみ'
 
               span.u-ml-30
@@ -360,16 +360,16 @@
     - elsif works.find(params[:id]).project.project_category_i18n === '名刺'
 
       .c-attention.u-mt-10
-        | 案件種別: 
-        span.u-fw-bold 
+        | 案件種別:
+        span.u-fw-bold
           = works.find(params[:id]).project.project_category_i18n
         span.u-ml-30
-          | 箱数: 
-        span.u-fw-bold 
+          | 箱数:
+        span.u-fw-bold
           = works.find(params[:id]).project.project_count
         span.u-ml-30
           | 入稿データ:
-        span.u-fw-bold 
+        span.u-fw-bold
           - if works.find(params[:id]).project.card.draft_data === 0
             | なし
           - else
@@ -382,37 +382,37 @@
           | 作業項目:
         span.u-fw-bold
           = works.find(params[:id]).project.card.card_type_i18n
-      
+
       .c-attention.u-mt-10
-        | カラー区分: 
-        span.u-fw-bold 
+        | カラー区分:
+        span.u-fw-bold
           = works.find(params[:id]).project.card.color_i18n
         span.u-ml-30
-          | 用紙: 
-        span.u-fw-bold 
+          | 用紙:
+        span.u-fw-bold
           = works.find(params[:id]).project.card.paper_i18n
         span.u-ml-30
-          | 両面: 
-        span.u-fw-bold 
+          | 両面:
+        span.u-fw-bold
           = works.find(params[:id]).project.card.surface_i18n
         span.u-ml-30
           | エンボス:
-        span.u-fw-bold 
-          = works.find(params[:id]).project.card.emboss_i18n 
+        span.u-fw-bold
+          = works.find(params[:id]).project.card.emboss_i18n
 
     - elsif works.find(params[:id]).project.project_category_i18n === 'スキャン'
 
       .c-attention.u-mt-10
-        | 案件種別: 
-        span.u-fw-bold 
+        | 案件種別:
+        span.u-fw-bold
           = works.find(params[:id]).project.project_category_i18n
         span.u-ml-30
-          | 原稿箱数: 
-        span.u-fw-bold 
+          | 原稿箱数:
+        span.u-fw-bold
           = works.find(params[:id]).project.project_count
         span.u-ml-30
           | 原稿サイズ:
-        span.u-fw-bold 
+        span.u-fw-bold
           = works.find(params[:id]).project.scan.print_size_i18n
         span.u-ml-30
           | 入稿状態:
@@ -428,16 +428,16 @@
           = works.find(params[:id]).project.scan.back_cut_i18n
 
       .c-attention.u-mt-10
-        | カラー区分 
-        span.u-fw-bold 
+        | カラー区分
+        span.u-fw-bold
           = works.find(params[:id]).project.scan.color_i18n
         span.u-ml-30
-          | 解像度: 
-        span.u-fw-bold 
+          | 解像度:
+        span.u-fw-bold
           = works.find(params[:id]).project.scan.resolution_i18n
         span.u-ml-30
           | ファイル形式:
-        span.u-fw-bold 
+        span.u-fw-bold
           = works.find(params[:id]).project.scan.file_extension_i18n
         span.u-ml-30
           | サイズ混合具合:
@@ -461,23 +461,23 @@
             = works.find(params[:id]).project.scan.edit_file_name_i18n
 
 
-          
+
     - elsif works.find(params[:id]).project.project_category_i18n === '製本'
       .c-attention.u-mt-10
-        | 案件種別: 
-        span.u-fw-bold 
+        | 案件種別:
+        span.u-fw-bold
           = works.find(params[:id]).project.project_category_i18n
         span.u-ml-30
-          | 後加工: 
-        span.u-fw-bold 
+          | 後加工:
+        span.u-fw-bold
           = works.find(params[:id]).project.after_process_i18n
         span.u-ml-30
-          | 原稿箱数: 
-        span.u-fw-bold 
+          | 原稿箱数:
+        span.u-fw-bold
           = works.find(params[:id]).project.project_count
         span.u-ml-30
           | 原稿サイズ:
-        span.u-fw-bold 
+        span.u-fw-bold
           = works.find(params[:id]).project.bind.print_size_i18n
         span.u-ml-30
           | 入稿状態:
@@ -528,7 +528,7 @@
             | 製本方法:
           span.u-fw-bold
             = works.find(params[:id]).project.project_binding_work.bind_type_i18n
-            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り' 
+            - if works.find(params[:id]).project.project_binding_work.bind_type_i18n === '現行通り'
 
             - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'クロス巻き'
 
@@ -544,7 +544,7 @@
                 | クロス色:
                 span.u-fw-bold
                 = works.find(params[:id]).project.project_binding_work.cross_color_i18n
-              
+
             - elsif works.find(params[:id]).project.project_binding_work.bind_type_i18n === 'くるみ'
 
               span.u-ml-30
@@ -591,22 +591,22 @@
 
     - else
       .c-attention.u-mt-10
-        | 案件種別: 
-        span.u-fw-bold 
+        | 案件種別:
+        span.u-fw-bold
           = works.find(params[:id]).project.project_category_i18n
-                 
 
-    = react_component('WorkDetails',
+    = react_component('WorkEditor',
       { details: works.find(params[:id]).work_details,
-        category:  works.find(params[:id]).project.project_category_i18n, 
-        work_id: params[:id], 
-        user_id: current_user.id, 
-        users: User.all })      
-
-    = react_component('WorkSubcontractor',
-      { work_subcontractors: works.find(params[:id]).subcontractor.present? ? works.find(params[:id]).subcontractor : [], 
-        subcontractor_details: WorkSubcontractorDetail.present? ? WorkSubcontractorDetail.all : [], 
+        category: works.find(params[:id]).project.project_category_i18n,
         work_id: params[:id],
+        user_id: current_user.id,
+        users: User.all,
+        work_subcontractors: works.find(params[:id]).subcontractor.present? ? works.find(params[:id]).subcontractor : [],
+        subcontractor_details: WorkSubcontractorDetail.present? ? WorkSubcontractorDetail.all : [],
         subcontractors: Subcontractor.all,
         divisions: SubcontractorDivision.all,
-        clients: SubcontractorDivisionClient.all })
+        clients: SubcontractorDivisionClient.all,
+        price: works.find(params[:id]).project.price,
+        work_detail_actual_cost: (works.find(params[:id]).work_details.sum(:actual_cost)).to_i,
+        subcontractor_detail_actual_cost: (works.find(params[:id]).subcontractor_detail.sum(:actual_cost)).to_i,
+        })

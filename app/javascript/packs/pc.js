@@ -54,6 +54,9 @@ import WorkDetails from 'components/work_management/work_details/add_details.jsx
 // 作業詳細外注
 import WorkSubcontractor from 'components/work_subcontractor/add_subcontractor/index.jsx'
 
+// 作業詳細作成
+import WorkEditor from 'components/work_editor/index.jsx'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -66,4 +69,5 @@ WebpackerReact.setup({
   WorkStatus,
   SubcontractorDivisions,
   WorkSubcontractor,
+  WorkEditor,
 })

@@ -87,7 +87,7 @@ class ProjectsController < ApplicationController
 
     render json: { status: :success, project: project }
   rescue => e
-    
+
     render json: { status: :error, project: project }
   end
 
@@ -128,6 +128,7 @@ class ProjectsController < ApplicationController
   #
   def status
 
+    binding.pry
     project.update!(status: params[:status].to_sym)
 
     if project.estimated? && project.work.blank?
@@ -150,7 +151,7 @@ class ProjectsController < ApplicationController
     #
     def project_params
 
-      params.require(:project).permit(:user_id, :company_division_client_id, :name, :project_count, :project_category, :project_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :note, :after_process, :binding_work,
+      params.require(:project).permit(:price, :user_id, :company_division_client_id, :name, :project_count, :project_category, :project_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :note, :after_process, :binding_work,
         bind_attributes:  [:project_id, :posting_state, :print_size, :print_size_note],
         card_attributes:  [:project_id, :draft_data, :url, :card_type, :work_type, :work_time, :color, :paper, :surface, :emboss],
         copy_attributes:  [:project_id, :posting_state, :draft_split, :draft_restore, :color, :surface, :open_type, :print_size, :print_size_note],

@@ -43,12 +43,10 @@ class WorkDetailsController < ApplicationController
     # update処理
     else
 
-      puts 'elsedayo'
       if params[:token] === 'value'
 
-        puts 'valuedayo'
         params.require(:work_detail_update).each do |detail|
-          
+
           parse_json = JSON.parse(detail)
           work_detail = WorkDetail.find(parse_json['id'])
           work_detail.update!(
@@ -64,15 +62,22 @@ class WorkDetailsController < ApplicationController
           )
         end
         render json: { status: :success, detail: Work.find(params[:work_id]).work_details }
+      elsif params[:token] === 'cost'
+
+        WorkDetail.find(params[:id]).update!(estimated_cost: params[:estimated_cost])
+        render json: { status: :success, detail: Work.find(params[:work_id]).work_details }
+      elsif params[:token] === 'count'
+
+        WorkDetail.find(params[:id]).update!(count: params[:count])
+        render json: { status: :success, detail: Work.find(params[:work_id]).work_details }
       elsif params[:token] === 'empty'
 
-        puts 'emptydayo'
         render json: { status: :nothing }
       end
-    end 
+    end
 
   rescue => e
-      
+
     flash[:warning] = { message: e.message }
     if params[:work_detail][:work_id].present?
       render json: { detail: Work.find(params[:work_detail][:work_id]).work_details }
