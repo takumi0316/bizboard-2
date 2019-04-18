@@ -12,12 +12,12 @@ class WorksController < ApplicationController
   #----------------------------------------
 
   # 作業進捗一覧
-  expose_with_pagination(:works) { 
+  expose_with_pagination(:works) {
     Work
-      .by_params(status: params[:status], date1: params[:date1], date2: params[:date2]) 
+      .by_params(status: params[:status], date1: params[:date1], date2: params[:date2])
       .search(params[:name])
       .all
-      .reverse_order 
+      .reverse_order
   }
 
   # 案件
@@ -68,7 +68,6 @@ class WorksController < ApplicationController
       render json: { status: :error, work: work.status }
     elsif params[:status] === 'price'
 
-      puts 'ahoka'
       render json: { status: :error, price: work.project.price }
     end
   end

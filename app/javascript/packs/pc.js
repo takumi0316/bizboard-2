@@ -43,16 +43,13 @@ import CompanyDivisions from 'components/company_divisions'
 import SubcontractorDivisions from 'components/subcontractor_divisions'
 
 // 作業進捗
-import WorkStatus from 'components/work_management/work_status/status_visualization.jsx'
+import WorkStatus from 'components/work_editor/work_status/index.jsx'
 
 // 作業検索
-import WorksSearch from 'components/work_management/works_search/search.jsx'
+import WorksSearch from 'components/work_editor/works_search/index.jsx'
 
 // 作業詳細
-import WorkDetails from 'components/work_management/work_details/add_details.jsx'
-
-// 作業詳細外注
-import WorkSubcontractor from 'components/work_subcontractor/add_subcontractor/index.jsx'
+import WorkDetails from 'components/work_editor/work_details/index.jsx'
 
 // 作業詳細作成
 import WorkEditor from 'components/work_editor/index.jsx'
@@ -68,6 +65,5 @@ WebpackerReact.setup({
   WorkDetails,
   WorkStatus,
   SubcontractorDivisions,
-  WorkSubcontractor,
   WorkEditor,
 })

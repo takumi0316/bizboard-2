@@ -38,7 +38,7 @@ export default class AddSubcontractor extends React.Component {
     this.setState({ show: true })
   }
 
-  onSubcontractorCreate = () => {
+  onWorkSubcontractorCreate = () => {
 
     let url = '/work_subcontractors';
     let field = {
@@ -56,12 +56,12 @@ export default class AddSubcontractor extends React.Component {
       })
   }
 
-  onCreate = (e, id) => {
+  onWorkSubcontractorDetailCreate = (e, id) => {
 
     let url = '/work_subcontractor_details';
     let field = {
       'subcontractor_detail[subcontractor_id]': id,
-      'subcontractor_detail[work_id]': this.props.work_id,
+      'work_id': this.props.work_id,
     };
     Request
       .post(url)
@@ -78,7 +78,7 @@ export default class AddSubcontractor extends React.Component {
 
   }
 
-  onUpdate = () => {
+  onWorkSubcontractorDetailUpdate = () => {
 
     let array_rails = [];
     let field = {};
@@ -151,12 +151,10 @@ export default class AddSubcontractor extends React.Component {
       });
   }
 
-    onDestroy = (e, id, index) => {
+    onWorkSubcontractorDetailDestroy = (e, id, index) => {
 
     let url = '/work_subcontractor_details/' + id;
-    let field = {
-      'work_subcontractor_detail[work_id]': this.props.work_id,
-    };
+    let field = { 'work_id': this.props.work_id };
     Request
       .del(url)
       .field(field)
@@ -164,8 +162,10 @@ export default class AddSubcontractor extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
+
           this.setState({ subcontractor_details: res.body.details });
         } else {
+
           this.setState({ subcontractor_details: res.body.details });
         }
       });
@@ -188,6 +188,7 @@ export default class AddSubcontractor extends React.Component {
           });
           this.setState({ work_subcontractors: res.body.work_subcontractors });
         } else {
+
           this.setState({ work_subcontractors: res.body.work_subcontractors });
         }
       });
@@ -212,8 +213,10 @@ export default class AddSubcontractor extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === 'success') {
+
           this.setState({ work_subcontractors: res.body.work_subcontractors, clients: res.body.clients, divisions: res.body.divisions, subcontractors: res.body.subcontractors });
         } else {
+
           this.setState({ clients: res.body.clients, divisions: res.body.divisions });
         }
       });
@@ -245,7 +248,7 @@ export default class AddSubcontractor extends React.Component {
         { this.state.show ?
           <div>
             <div className={ Style.AddSubcontractor__EditButton }>
-              <button className={ 'c-btnMain-standard' } onClick={ this.onUpdate }>作業外注先[編集終了]</button>
+              <button className={ 'c-btnMain-standard' } onClick={ this.onWorkSubcontractorDetailUpdate }>作業外注先[編集終了]</button>
             </div>
             { this.state.work_subcontractors.length > 0 ?
               <React.Fragment>
@@ -335,7 +338,7 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
-                                                  <td><button className={ 'c-btnMain-primaryA' } onClick={ e => this.onDestroy(e, subcontractor_detail.id, index1) }>ー</button></td>
+                                                  <td><button className={ 'c-btnMain-primaryA' } onClick={ e => this.onWorkSubcontractorDetailDestroy(e, subcontractor_detail.id, index1) }>ー</button></td>
                                                   <td id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
                                                   <td>
                                                     <select className={ 'c-form-select__work-show' } id={ 'status' + index1 }>
@@ -370,7 +373,7 @@ export default class AddSubcontractor extends React.Component {
                                   }
                                 </React.Fragment>
                                 <tr key={ 'onCreate-td' + index }>
-                                  <td colSpan='13'><button className={ 'c-btnMain-primaryB' } onClick={ e => this.onCreate(e, work_subcontractor.id) }>＋</button></td>
+                                  <td colSpan='13'><button className={ 'c-btnMain-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -389,7 +392,7 @@ export default class AddSubcontractor extends React.Component {
               </div>
             }
             <div className={ Style.AddSubcontractor__EditButton }>
-              <button className={ 'c-btnMain-primaryB' } onClick={ this.onSubcontractorCreate }>作業外注[追加]</button>
+              <button className={ 'c-btnMain-primaryB' } onClick={ this.onWorkSubcontractorCreate }>作業外注[追加]</button>
             </div>
           </div>
           :

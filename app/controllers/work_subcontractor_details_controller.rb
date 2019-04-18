@@ -27,23 +27,23 @@ class WorkSubcontractorDetailsController < ApplicationController
 
   ##
   # 新規作成
-  # 
+  #
   #
   def create
 
     # create処理
     if params[:subcontractor_detail][:subcontractor_id].present?
 
-      WorkSubcontractor.find(params[:subcontractor_detail][:subcontractor_id]).detail.create!(count: 1, number_of_copies: 1, deliver_at: DateTime.now, cost_unit_price: 0, estimated_cost: 0, actual_count: 1, actual_cost: 0, work_id: params[:subcontractor_detail][:work_id])
-      render json: { status: :success, detail: WorkSubcontractorDetail.all }
+      WorkSubcontractor.find(params[:subcontractor_detail][:subcontractor_id]).detail.create!(count: 1, number_of_copies: 1, deliver_at: DateTime.now, cost_unit_price: 0, estimated_cost: 0, actual_count: 1, actual_cost: 0, work_id: params[:work_id])
+      render json: { status: :success, detail: Work.find(params[:work_id]).subcontractor_detail }
 
     # update処理
     else
-      
+
       if params[:token] === 'value'
 
         params.require(:subcontractor_detail_update).each do |detail|
-        
+
           parse_json = JSON.parse(detail)
           subcontractor_detail = WorkSubcontractorDetail.find(parse_json['id'])
           subcontractor_detail.update!(
@@ -60,17 +60,17 @@ class WorkSubcontractorDetailsController < ApplicationController
             status: parse_json['status']
           )
         end
-        render json: { status: :success, detail: WorkSubcontractorDetail.all }
+        render json: { status: :success, detail: Work.find(params[:work_id]).subcontractor_detail }
       elsif params[:token] === 'empty'
 
         render json: { status: :nothing }
       end
-    end 
+    end
 
   rescue => e
-      
+
     flash[:warning] = { message: e.message }
-    render json: { detail: WorkSubcontractorDetail.all }
+    render json: { detail: Work.find(params[:work_id]).subcontractor_detail }
   end
 
 
@@ -81,19 +81,12 @@ class WorkSubcontractorDetailsController < ApplicationController
   def destroy
 
     WorkSubcontractorDetail.find(params[:id]).destroy!
-
-    if request.xhr?
-
-      render json: { status: :success, details: WorkSubcontractorDetail.all }
-    else
-
-      render json: { details: WorkSubcontractorDetail.all }
-    end
+    render json: { status: :success, details: Work.find(params[:work_id]).subcontractor_detail }
 
   rescue => e
 
     flash[:warning] = { message: e.message }
-    render json: { details: WorkSubcontractorDetail.all }
+    render json: { status: :error, details: Work.find(params[:work_id]).subcontractor_detail }
   end
 
   #------------------------------------------

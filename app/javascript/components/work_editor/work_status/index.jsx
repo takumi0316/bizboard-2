@@ -28,7 +28,6 @@ export default class StatusVisualization extends React.Component {
   }
 
   onUpdate = (e, status_type) => {
-    console.log('nannyaomae', status_type);
 
     let url = '/works/' + this.state.work_id;
     let field = {
@@ -43,9 +42,10 @@ export default class StatusVisualization extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
+
           this.setState({ work_status: res.body.work });
         } else {
-          console.log(err)
+
           this.setState({ work_status: res.body.work });
         }
       });

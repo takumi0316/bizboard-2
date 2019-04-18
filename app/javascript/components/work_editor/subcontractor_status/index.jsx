@@ -8,7 +8,7 @@ require('superagent-rails-csrf')(Request);
 
 /**
  *  記事エディター
- *  @version 
+ *  @version
  */
 export default class SubcontractorStatus extends React.Component {
 
@@ -28,9 +28,9 @@ export default class SubcontractorStatus extends React.Component {
 
   onUpdate = (e, status_type) => {
 
-    let url = '/work_subcontractors/' + this.state.subcontractor_id; 
+    let url = '/work_subcontractors/' + this.state.subcontractor_id;
     let field = {
-      'subcontractor[status]': status_type, 
+      'subcontractor[status]': status_type,
       'contents': 'status',
       'work_id': this.props.work_id,
     }
@@ -49,23 +49,23 @@ export default class SubcontractorStatus extends React.Component {
         }
       });
 
- } 
+ }
 
   render() {
     return(
       <div className={ Style.WorkStatus }>
-        { this.state.subcontractor_status == 0 ? 
-          <button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>見作業</button> 
-          : 
+        { this.state.subcontractor_status == 0 ?
+          <button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>見作業</button>
+          :
           <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>見作業</button>
 
         }
         { this.state.subcontractor_status == 10 ?
-          <button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発注済み</button> 
-          : 
-          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発注済み</button> 
+          <button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発注済み</button>
+          :
+          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発注済み</button>
         }
-        { this.state.subcontractor_status == 20 ? 
+        { this.state.subcontractor_status == 20 ?
         <button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button>
         :
         <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button>

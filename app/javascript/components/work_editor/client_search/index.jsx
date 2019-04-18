@@ -24,7 +24,7 @@ export default class ClientSearch extends React.Component {
 
     this.state = { show: false, clients: [], body: null };
   }
-  
+
 
   /**
    *  モーダルを表示する
@@ -97,7 +97,7 @@ export default class ClientSearch extends React.Component {
 
     event.stopPropagation();
   }
-  
+
   /**
    *  選択時
    *  @version 2018/06/10
@@ -105,7 +105,7 @@ export default class ClientSearch extends React.Component {
   _onSelect(e) {
 
     const client = this.state.clients[e.target.dataset.number];
-    const work_subcontractor_id = this.props.work_subcontractor_id; 
+    const work_subcontractor_id = this.props.work_subcontractor_id;
     this.props.applyClient(client, work_subcontractor_id);
     this._close();
   }
@@ -143,7 +143,7 @@ export default class ClientSearch extends React.Component {
                 <div onClick={::this._onChange} className='c-btnMain-standard u-ml-10'>検索</div>
                 { true ? null : <div onClick={::this.createView} className='c-btnMain-standard c-btn-blue u-ml-50'>お客様情報を作成する</div> }
               </div>
-              
+
               { this.state.clients.length > 0 ?
 
                 <ul className={Style.ClientSearch__list}>

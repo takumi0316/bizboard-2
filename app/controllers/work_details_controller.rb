@@ -30,7 +30,7 @@ class WorkDetailsController < ApplicationController
 
   ##
   # 新規作成
-  # 
+  #
   #
   def create
 

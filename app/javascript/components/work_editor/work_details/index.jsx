@@ -84,7 +84,7 @@ export default class AddDetails extends React.Component {
       });
   }
 
-  onCreate = () => {
+  onWorkDetailCreate = () => {
 
     let url = '/work_details';
     let field = {
@@ -105,7 +105,7 @@ export default class AddDetails extends React.Component {
 
   }
 
-  onDestroy = (e, id, index) => {
+  onWorkDetailDestroy = (e, id, index) => {
 
     let url = '/work_details/' + id;
     let field = {
@@ -125,7 +125,7 @@ export default class AddDetails extends React.Component {
       });
   }
 
-  onUpdate = () => {
+  onWorkDetailUpdate = () => {
 
     let array_rails = [];
     let field = {};
@@ -199,7 +199,7 @@ export default class AddDetails extends React.Component {
       <div>
         { this.state.show ?
           <div className={ Style.AddDetails__WorkEdit }>
-            <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onUpdate }>作業詳細[編集終了]</button>
+            <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onWorkDetailUpdate }>作業詳細[編集終了]</button>
           </div>
           :
           <div className={ Style.AddDetails__WorkEdit }>
@@ -227,7 +227,7 @@ export default class AddDetails extends React.Component {
                 { this.state.work_details.map((detail, index) => {
                   return (
                     <tr>
-                      <td><button className={ 'c-btnMain-primaryA' } onClick={e => this.onDestroy(e, detail.id, index) }>−</button></td>
+                      <td><button className={ 'c-btnMain-primaryA' } onClick={e => this.onWorkDetailDestroy(e, detail.id, index) }>−</button></td>
                       <td id={ 'detail_id' + index } >{ detail.id }</td>
                       <td>{ this.props.category }</td>
                       <td><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCount(e, detail.id, index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
@@ -262,7 +262,7 @@ export default class AddDetails extends React.Component {
                   );
                 }) }
                 <tr>
-                  <td colSpan={ '11' }><button className={ 'c-btnMain-primaryB' } onClick={ this.onCreate }>作業詳細[追加]</button></td>
+                  <td colSpan={ '11' }><button className={ 'c-btnMain-primaryB' } onClick={ this.onWorkDetailCreate }>作業詳細[追加]</button></td>
                 </tr>
               </tbody>
             </table>

@@ -32,19 +32,6 @@ export default class WorksSearch extends Component {
     })
   }
 
-
-  onSubmit = () => {
-    let field = this.refs.searchWord;
-    let url = "/works";
-    Request.get(url)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end(function(err, res){
-        console.log(res.body.work_detail);
-      });
-  }
-
-
   render() {
     return (
       <div className={ 'c-search__work-index u-mt-20' }>
