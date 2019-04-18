@@ -43,6 +43,10 @@ ja:
         estimate: 見積もり
         workshop: セミナー
         other: その他
+    quote:
+      attention:
+        messrs: 御中
+        dear: 様
     project:
       status:
         draft: 新規
@@ -53,7 +57,6 @@ ja:
         deliverd: 納品済
         invoicing: 請求書発行済
         complete: 完了
-
       project_category:
         project_print: プリント
         project_card: 名刺

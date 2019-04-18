@@ -8,7 +8,7 @@
         .c-form-line.u-mr-50
           .c-form-label
             = f.label :project_number, '案件ID'
-          = f.collection_select :project_id, Project.all, :id, :project_number,{}, {:class=>'c-form-dateselect'}
+          = f.select :project_id, Project.all.pluck(:project_number, :id),{},{:class=>'c-form-dateselect'}
 
         .c-form-line.u-mr-50
           .c-form-label
@@ -21,6 +21,15 @@
             = f.label :expiration, '発行期限'
           .c-form-group
             = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+
+      / 会社名を取得して表示してみましたがエラーになるのでコメントアウトしてます
+      /.c-form-label
+      /  = f.label :project_id, '会社名'
+      /= f.select :project_id, Project.all.map(&:client).map(&:company_division).map(&:company).pluck(:name, :id),{},{:class=>'c-form-dateselect'}
+
+      .c-form-label
+        = f.label :attention, '御中・様'
+      = f.select :attention, Quote.attentions_i18n.invert, {prompt: ''}, { class: 'c-form-dateselect' }
 
       .c-form-label
         = f.label :subject, '件名'
@@ -38,27 +47,30 @@
               th 粗利
               th 詳細
               th 削除
-              th colspan=3
           tbody
             - 2.times do
               = f.fields_for :quote_items do |fi|
                 tr
-                  td = fi.collection_select :quote_id, Item.all, :id, :name,{}, {:class=>'c-form-dateselect'}
-                  td = fi.collection_select :quote_id, Item.all, :id, :unit_price,{}, {:class=>'c-form-dateselect'}
-                  td = fi.collection_select :quote_id, Item.all, :id, :quantity,{}, {:class=>'c-form-dateselect'}
+                  td = fi.text_field :cost, placeholder: 'モノクロコピー', class: 'c-form-textarea'
+                  td = fi.text_field :cost, placeholder: '10', class: 'c-form-textarea'
+                  td = fi.text_field :cost, placeholder: '100', class: 'c-form-textarea'
                   td
-                  td = fi.text_field :cost, class: 'c-form-textarea'
-                  td = fi.text_field :gross_profit, class: 'c-form-textarea'
-                  td = fi.text_field :detail, class: 'c-form-textarea'
+                  td = fi.text_field :cost, placeholder: '5', class: 'c-form-textarea'
+                  td = fi.text_field :gross_profit, placeholder: '0.7', class: 'c-form-textarea'
+                  td = fi.text_field :detail, placeholder: '両面', class: 'c-form-textarea'
                   td
 
       .c-form-label
-        = f.label :remarks, '備考'
-      = f.text_area :remarks, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+        = f.label :price, '合計金額'
+      = f.text_field :price, placeholder: 'とりあえずテキストフィールドにしてます', class: 'c-form-textarea', rows: 4
+
+      .c-form-label
+        = f.label :remarks, '備考　※見積書に記載されます'
+      = f.text_area :remarks, placeholder: '備考を入力してください', class: 'c-form-textarea', rows: 4
 
 
       .c-form-label
-        = f.label :memo, 'メモ'
+        = f.label :memo, 'メモ　※見積書に記載されません'
       = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
 
 

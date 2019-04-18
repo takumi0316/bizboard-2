@@ -26,6 +26,7 @@
             th 作成者
             th 詳細を確認
             th 活動履歴
+            th 見積もり
             th colspan=2
         tbody
           - projects.each do |r|
@@ -49,6 +50,7 @@
                   project_binding_work: r.project_binding_work })
 
               td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+              td = link_to '見積もり', quotes_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
 
               td = link_to '編集', edit_project_path(r), class: 'c-btnMain-standard'
               td = link_to '削除', project_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }

@@ -28,6 +28,9 @@ class Quote < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
+  #のenum
+  enum attention: { messrs: 0, dear: 10}
+
 
   #----------------------------------------
   #  ** Validations **

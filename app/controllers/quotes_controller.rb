@@ -2,6 +2,7 @@
 # quotes Controller
 #
 class QuotesController < ApplicationController
+
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
@@ -41,6 +42,7 @@ class QuotesController < ApplicationController
   def index
 
     add_breadcrumb '見積もり'
+    @id = params[:name]
   end
 
   ##
@@ -51,7 +53,8 @@ class QuotesController < ApplicationController
 
     add_breadcrumb '見積もり', path: quotes_path
     add_breadcrumb '新規作成'
-
+    @id = params[:project_id]
+    @quote = Quote.new(:project_id => @id)
     quote.quote_items.build
   end
 
@@ -91,6 +94,30 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
+    token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
+    #api送信に飛ぶ？
+    # hostやpathを分けてもたせる？
+    uri = URI.parse('https://invoice.moneyforward.com/api/v2/quotes.json')
+
+    http = Net::HTTP.new(uri.host, uri.port)
+
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    req = Net::HTTP::Post.new(uri.path)
+    req["Authorization"] = "BEARER {{#{token}}}"
+    req["Content-Type"] = "application/json"
+
+
+    data = {
+      "name" => "testserver",
+    }.to_json
+
+    req.body = data
+
+    binding.pry
+    #レスポンス
+    res = http.request(req)
 
 
     redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}

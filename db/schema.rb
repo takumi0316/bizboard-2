@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_04_15_083051) do
+=======
+ActiveRecord::Schema.define(version: 2019_04_15_090207) do
+>>>>>>> 6e8e529320d7f861ba9545898711e3e38759c707
+[commit id]
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -109,6 +114,38 @@ ActiveRecord::Schema.define(version: 2019_04_15_083051) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "estimate_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
+    t.bigint "item_id"
+    t.integer "cost", comment: "原価"
+    t.integer "gross_profit", comment: "粗利"
+    t.text "detail", comment: "詳細"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["estimate_id"], name: "index_estimate_items_on_estimate_id"
+    t.index ["item_id"], name: "index_estimate_items_on_item_id"
+  end
+
+  create_table "estimates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
+    t.string "estimat_number", comment: "見積もり番号"
+    t.date "date", comment: "発行日"
+    t.date "expiration", comment: "有効期限"
+    t.string "subject", comment: "件名"
+    t.string "item", comment: "品目"
+    t.integer "unit_price", comment: "単価"
+    t.integer "quantity", comment: "数量"
+    t.integer "cost", comment: "原価"
+    t.integer "gross_profit", comment: "粗利"
+    t.text "detail", comment: "詳細"
+    t.text "remarks", comment: "備考"
+    t.string "tag", comment: "タグ"
+    t.text "memo", comment: "メモ"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_estimates_on_project_id"
   end
 
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -298,6 +335,8 @@ ActiveRecord::Schema.define(version: 2019_04_15_083051) do
     t.text "free_word", comment: "検索用"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "price"
+    t.integer "attention"
     t.index ["project_id"], name: "index_quotes_on_project_id"
   end
 

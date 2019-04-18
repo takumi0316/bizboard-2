@@ -40,7 +40,7 @@ class CompanyDivisionClient < ApplicationRecord
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
-  
+
   belongs_to :company_division
   belongs_to :user
 

@@ -14,9 +14,9 @@
       = f.select :status, Activity.statuses_i18n.invert, {prompt: '対応ステータス'}, { class: 'c-form-dateselect' }
 
       .c-form-label
-        = f.label :project_id, '案件ID'
+        = f.label :project_id, '案件番号'
         span.c-form__required.u-ml-10 必須
-      = f.collection_select :project_id, Project.all, :id, :id,{}, {:class=>'c-form-dateselect'}
+      = f.select :project_id, Project.all.pluck(:project_number, :id),{},{:class=>'c-form-dateselect'}
 
       .c-form-label
         = f.label :memo, 'メモ'
