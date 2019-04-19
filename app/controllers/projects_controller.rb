@@ -128,7 +128,6 @@ class ProjectsController < ApplicationController
   #
   def status
 
-    binding.pry
     project.update!(status: params[:status].to_sym)
 
     if project.estimated? && project.work.blank?

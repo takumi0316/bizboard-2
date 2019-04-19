@@ -62,6 +62,7 @@ class MastersController < ApplicationController
 
         Item.create!(
           mf_item_id: item.id,
+          code: item.code,
           name: item.name,
           note: item.detail,
           unit_price: item.unit_price.to_i,

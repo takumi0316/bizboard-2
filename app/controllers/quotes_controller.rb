@@ -96,29 +96,37 @@ class QuotesController < ApplicationController
 
     token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
     #api送信に飛ぶ？
-    # hostやpathを分けてもたせる？
-    uri = URI.parse('https://invoice.moneyforward.com/api/v2/quotes.json')
 
-    http = Net::HTTP.new(uri.host, uri.port)
+    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
+        request = Net::HTTP::Post.new(uri)
+        request.content_type = "application/json"
+        request["Authorization"] = "BEARER {{#{token}}}"
+        request.body = JSON.dump({
+          "quote" => {
+            "department_id" => "asdfghjkl",
+            "items" => [
+              {
+                "name" => "商品A",
+                "quantity" => 1,
+                "unit_price" => 100
+              },
+              {
+                "code" => "qwertyuiop"
+              }
+            ]
+          }
+        })
 
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        req_options = {
+          use_ssl: uri.scheme == "https",
+        }
 
-    req = Net::HTTP::Post.new(uri.path)
-    req["Authorization"] = "BEARER {{#{token}}}"
-    req["Content-Type"] = "application/json"
+        response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+          http.request(request)
+        end
 
-
-    data = {
-      "name" => "testserver",
-    }.to_json
-
-    req.body = data
-
-    binding.pry
-    #レスポンス
-    res = http.request(req)
-
+        response.code
+        response.body
 
     redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
