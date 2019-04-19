@@ -190,6 +190,27 @@ export default class AddDetails extends React.Component {
       });
   }
 
+  modalContent = () => {
+
+    return (
+      <div>
+          <input type='text' ref='url' placeholder='httpsから始まるURLを入力して下さい' />
+      </div>
+    );
+  }
+
+
+  disp(e, detail_id, index) {
+
+    if(window.confirm('削除します。')){
+
+      this.onWorkDetailDestroy(e, detail_id, index);
+    } else {
+
+      window.confirm('キャンセルしました。')
+    }
+  }
+
   /**
    *  表示処理
    *  @version
@@ -227,7 +248,7 @@ export default class AddDetails extends React.Component {
                 { this.state.work_details.map((detail, index) => {
                   return (
                     <tr>
-                      <td><button className={ 'c-btnMain-primaryA' } onClick={e => this.onWorkDetailDestroy(e, detail.id, index) }>−</button></td>
+                      <td><button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
                       <td id={ 'detail_id' + index } >{ detail.id }</td>
                       <td>{ this.props.category }</td>
                       <td><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCount(e, detail.id, index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>

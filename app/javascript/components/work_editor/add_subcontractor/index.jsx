@@ -239,6 +239,23 @@ export default class AddSubcontractor extends React.Component {
     this.setState({ work_subcontractors: workSubcontractors });
   }
 
+  disp(e, id, index, type) {
+
+    if (window.confirm('削除します。')){
+
+      if (type) {
+
+        this.onWorkSubcontractorDestroy(e, id);
+      } else {
+
+        this.onWorkSubcontractorDetailDestroy(e, id, index);
+      }
+    } else {
+
+      window.confirm('キャンセルしました。');
+    }
+  }
+
   /**
    *　表示処理
    */
@@ -309,7 +326,7 @@ export default class AddSubcontractor extends React.Component {
                           <div key={ 'client_search' + index } className={ Style.AddSubcontractor__SideBySide }>
                             <div>
                               <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
-                              <button className={ 'c-btnMain-primaryA' } onClick={ e => this.onWorkSubcontractorDestroy(e, work_subcontractor.id) }>作業外注[削除]</button>
+                              <button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, work_subcontractor.id, index, true) }>作業外注[削除]</button>
                             </div>
                             <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_id={ this.props.work_id } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } applyStatus={ ::this.applyStatus } />
                           </div>
@@ -338,7 +355,7 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
-                                                  <td><button className={ 'c-btnMain-primaryA' } onClick={ e => this.onWorkSubcontractorDetailDestroy(e, subcontractor_detail.id, index1) }>ー</button></td>
+                                                  <td><button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
                                                   <td id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
                                                   <td>
                                                     <select className={ 'c-form-select__work-show' } id={ 'status' + index1 }>
