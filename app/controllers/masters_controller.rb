@@ -61,7 +61,7 @@ class MastersController < ApplicationController
         next if Item.exists?(mf_item_id: item.id)
 
         Item.create!(
-          mf_item_id: item.id,
+          mf_item_id: item.item_code,
           name: item.name,
           note: item.detail,
           unit_price: item.unit_price.to_i,

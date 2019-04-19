@@ -94,6 +94,8 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
+    binding.pry
+
     token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
     #api送信に飛ぶ？
 
