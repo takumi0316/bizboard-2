@@ -10,12 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2019_04_15_083051) do
-=======
 ActiveRecord::Schema.define(version: 2019_04_15_090207) do
->>>>>>> 6e8e529320d7f861ba9545898711e3e38759c707
-[commit id]
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
