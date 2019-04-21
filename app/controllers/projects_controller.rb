@@ -130,12 +130,14 @@ class ProjectsController < ApplicationController
 
     project.update!(status: params[:status].to_sym)
 
-    if project.estimated? && project.work.blank?
+    if project.working? && project.work.blank?
 
       project.build_work.save!
+
+      redirect_to work_path(project.work), flash: {notice: {message: '作業書を作成しました'}} and return
     end
 
-    redirect_to works_path, flash: {notice: {message: '作業管理情報を作成しました'}}
+    redirect_to projects_path, flash: {notice: {message: '案件ステータスを更新しました'}}
   end
 
   #----------------------------------------

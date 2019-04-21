@@ -47,7 +47,7 @@ class Project < ApplicationRecord
   enum after_process: { after_process_unnecessary: 0, after_process_necessary: 10 }
   enum binding_work: { binding_works_unnecessary: 0, binding_works_necessary: 10 }
 
-  enum status: { draft: 0, estimated: 10, pre_work: 20, working: 30, end_work: 40, deliverd: 50, invoicing: 60, complete: 70 }
+  enum status: { draft: 0, estimated: 10, working: 20, end_work: 30, invoicing: 40, complete: 50 }
 
   #----------------------------------------
   #  ** Validations **

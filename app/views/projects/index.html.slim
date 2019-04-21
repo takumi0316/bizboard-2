@@ -24,9 +24,9 @@
             th 案件名
             th 金額
             th 作成者
-            th 詳細を確認
-            th 活動履歴
             th 見積もり
+            th 作業詳細
+            th 活動履歴
             th colspan=2
         tbody
           - projects.each do |r|
@@ -35,22 +35,18 @@
               td = r.status_i18n
               td = r.updated_at.to_s
               td
+                - if r.company_division_client_id?
+                  = "#{r.client&.company_division&.company&.name} #{r.client&.name} 様"
               td = r.name
               td
               td = r.user.name
-              td
-                = react_component('ProjectViewer',
-                  { project: r,
-                  project_bind: r.bind,
-                  project_copy: r.copy,
-                  project_card: r.card,
-                  project_print: r.print,
-                  project_scan: r.scan,
-                  project_after_process: r.project_after_process,
-                  project_binding_work: r.project_binding_work })
-
-              td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
               td = link_to '見積もり', quotes_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+              td
+                - if r.estimated?
+                  = link_to '作業書を作成する', project_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                - unless r.estimated? || r.draft?
+                  = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
+              td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
 
               td = link_to '編集', edit_project_path(r), class: 'c-btnMain-standard'
               td = link_to '削除', project_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
