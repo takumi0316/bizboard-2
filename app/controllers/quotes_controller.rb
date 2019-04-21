@@ -94,7 +94,6 @@ class QuotesController < ApplicationController
     quote.update! quote_params
 
     token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
-    #api送信に飛ぶ？
 
     uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
     request = Net::HTTP::Post.new(uri)
@@ -109,9 +108,6 @@ class QuotesController < ApplicationController
             "quantity" => 1,
             "unit_price" => 100
           },
-          {
-            "code" => "qwertyuiop"
-          }
         ]
       }
     })
