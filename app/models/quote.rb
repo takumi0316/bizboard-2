@@ -12,6 +12,8 @@
 #  free_word  :text(65535)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  price      :integer
+#  attention  :integer
 #
 
 class Quote < ApplicationRecord

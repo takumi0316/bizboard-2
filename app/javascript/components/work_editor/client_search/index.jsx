@@ -141,7 +141,7 @@ export default class ClientSearch extends React.Component {
               <div className={Style.ClientSearch__form}>
                 <input type='text' className={Style.ClientSearch__input} placeholder='お客様情報で検索' ref='word' onChange={::this._onChange}/>
                 <div onClick={::this._onChange} className='c-btnMain-standard u-ml-10'>検索</div>
-                { true ? null : <div onClick={::this.createView} className='c-btnMain-standard c-btn-blue u-ml-50'>お客様情報を作成する</div> }
+                { true ? null : <div onClick={::this.createView} className='c-btnMain-standard c-btn-blue u-ml-50'>外注先情報を作成する</div> }
               </div>
 
               { this.state.clients.length > 0 ?
@@ -157,7 +157,7 @@ export default class ClientSearch extends React.Component {
                   })}
                 </ul>
                 :
-                <div className='c-attention u-mt-30'>お客様情報が見つかりませんでした</div>
+                <div className='c-attention u-mt-30'>外注先情報が見つかりませんでした</div>
               }
             </div>
             :
@@ -167,7 +167,7 @@ export default class ClientSearch extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain-standard' onClick={::this._open}>外注先[お客様情報]</div>
+      <div className='c-btnMain-standard' onClick={::this._open}>外注先情報</div>
     );
   }
 }

@@ -48,7 +48,7 @@ class WorkSubcontractorDetailsController < ApplicationController
           subcontractor_detail = WorkSubcontractorDetail.find(parse_json['id'])
           subcontractor_detail.update!(
             order_contents: parse_json['order_contents'],
-            standard: parse_json['standard'],
+            deliver_method: parse_json['deliver_method'],
             specification: parse_json['specification'],
             count: parse_json['count'],
             number_of_copies: parse_json['number_of_copies'],

@@ -22,7 +22,7 @@
 #  updated_at                 :datetime         not null
 #  free_word                  :text(65535)
 #  project_number             :bigint(8)
-#  price                      :integer
+#  price                      :integer          default(0)
 #
 
 class Project < ApplicationRecord

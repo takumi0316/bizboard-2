@@ -5,8 +5,8 @@
 #  id                    :bigint(8)        not null, primary key
 #  work_subcontractor_id :bigint(8)
 #  order_contents        :string(191)
-#  standard              :string(191)
-#  specification         :string(191)
+#  deliver_method        :text(65535)
+#  specification         :text(65535)
 #  count                 :string(191)
 #  number_of_copies      :string(191)
 #  deliver_at            :datetime
@@ -18,6 +18,7 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  work_id               :bigint(8)
+#  notices               :text(65535)
 #
 
 class WorkSubcontractorDetail < ApplicationRecord
