@@ -40,7 +40,11 @@
               td = r.name
               td
               td = r.user.name
-              td = link_to '見積もり', quotes_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+              td
+                - if r.draft?
+                  = link_to '見積書を作成する', new_quote_path(project_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+                - else
+                  = link_to '見積書', quotes_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
               td
                 - if r.estimated?
                   = link_to '作業書を作成する', project_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post

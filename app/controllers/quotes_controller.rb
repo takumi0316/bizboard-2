@@ -53,8 +53,7 @@ class QuotesController < ApplicationController
 
     add_breadcrumb '見積もり', path: quotes_path
     add_breadcrumb '新規作成'
-    @id = params[:project_id]
-    @quote = Quote.new(:project_id => @id)
+    @quote = Quote.new(project_id: params[:project_id])
     quote.quote_items.build
   end
 
@@ -98,35 +97,43 @@ class QuotesController < ApplicationController
     #api送信に飛ぶ？
 
     uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
-        request = Net::HTTP::Post.new(uri)
-        request.content_type = "application/json"
-        request["Authorization"] = "BEARER {{#{token}}}"
-        request.body = JSON.dump({
-          "quote" => {
-            "department_id" => "asdfghjkl",
-            "items" => [
-              {
-                "name" => "商品A",
-                "quantity" => 1,
-                "unit_price" => 100
-              },
-              {
-                "code" => "qwertyuiop"
-              }
-            ]
+    request = Net::HTTP::Post.new(uri)
+    request.content_type = "application/json"
+    request["Authorization"] = "BEARER {{#{token}}}"
+    request.body = JSON.dump({
+      "quote" => {
+        "department_id" => "asdfghjkl",
+        "items" => [
+          {
+            "name" => "商品A",
+            "quantity" => 1,
+            "unit_price" => 100
+          },
+          {
+            "code" => "qwertyuiop"
           }
-        })
+        ]
+      }
+    })
 
-        req_options = {
-          use_ssl: uri.scheme == "https",
-        }
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
 
-        response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-          http.request(request)
-        end
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
 
-        response.code
-        response.body
+    response.code
+    response.body
+
+    # ここで見積もり金額の合計値(※税抜き)を出し、Quoteテーブルのpriceを更新してください
+    # また、その際に見積もり金額と同じ値で、Projectテーブルのpriceを更新してください。
+    # あとこれは重要なのですが、現状だと見積もりデータを作成するたびに見積書がMFクラウド上に生成されてしまうので、
+    # 更新するたびではなく、見積書を発行するボタンを作成し、そのボタンが押された場合に発行してください。
+    # 見積書の発行が完了した際に、Projectモデルを下記のコードでステータスを更新してください
+    #    quote.proect.estimated!
+    # また、見積もり書を作成した際にAPIから返ってくるURL(pdf_url)をQuoteテーブルに保存し、一覧画面からリンクできるようにしてください。
 
     redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e

@@ -1,7 +1,33 @@
 .l-contents
   section.l-contents__inner
 
+    - if quote.project.present?
+
+      h1.l-contents__heading = quote.project.name
+      
+      - if quote.project.client.present?
+
+        .u-mt-15.c-attention
+          p
+            | 会社名: 
+            = quote.project.client&.company_division&.company&.name
+          p
+            | 部署名: 
+            = quote.project.client&.company_division&.name
+          p
+            | 担当者名: 
+            = quote.project.client&.name
+      
+      - else
+        
+        .u-mt-15.c-attention
+          | 請求先情報が登録されていません。
+          = link_to 'こちら', edit_project_path(quote.project), class: 'u-td-underline'
+          | から請求先情報を登録してください。
+
     = form_for quote, html: { class: 'u-mt-30'} do |f|
+
+      = f.hidden_field :project_id
 
       .c-form-group
 
@@ -29,7 +55,7 @@
 
       .c-form-label
         = f.label :attention, '御中・様'
-      = f.select :attention, Quote.attentions_i18n.invert, {prompt: ''}, { class: 'c-form-dateselect' }
+      = f.select :attention, Quote.attentions_i18n.invert, {}, { class: 'c-form-dateselect' }
 
       .c-form-label
         = f.label :subject, '件名'
