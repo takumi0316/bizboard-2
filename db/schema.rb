@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_19_114449) do
+ActiveRecord::Schema.define(version: 2019_04_22_044142) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -116,13 +116,12 @@ ActiveRecord::Schema.define(version: 2019_04_19_114449) do
     t.string "mf_item_id"
     t.string "code"
     t.string "note"
+    t.integer "quantity", default: 0
     t.integer "unit_price", default: 0
     t.string "unit"
-    t.integer "consumption_tax", default: 0
+    t.boolean "excise", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "quantity", default: 0
-    t.boolean "excise", default: false
     t.integer "division_id"
     t.text "free_word"
     t.index ["mf_item_id"], name: "index_items_on_mf_item_id", unique: true
@@ -269,9 +268,9 @@ ActiveRecord::Schema.define(version: 2019_04_19_114449) do
     t.integer "binding_work", limit: 1, default: 0
     t.integer "after_process", limit: 1, default: 0
     t.text "note"
+    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", limit: 1, default: 0
     t.text "free_word"
     t.bigint "project_number"
     t.integer "price", default: 0
@@ -435,7 +434,6 @@ ActiveRecord::Schema.define(version: 2019_04_19_114449) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "work_id"
-    t.text "notices"
     t.index ["work_id"], name: "index_work_subcontractor_details_on_work_id"
     t.index ["work_subcontractor_id"], name: "index_work_subcontractor_details_on_work_subcontractor_id"
   end
@@ -446,6 +444,7 @@ ActiveRecord::Schema.define(version: 2019_04_19_114449) do
     t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "notices"
     t.index ["subcontractor_division_client_id"], name: "index_work_subcontractors_on_subcontractor_division_client_id"
     t.index ["work_id"], name: "index_work_subcontractors_on_work_id"
   end

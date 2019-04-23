@@ -18,7 +18,6 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  work_id               :bigint(8)
-#  notices               :text(65535)
 #
 
 class WorkSubcontractorDetail < ApplicationRecord

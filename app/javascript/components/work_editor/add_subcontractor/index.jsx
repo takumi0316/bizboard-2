@@ -43,6 +43,7 @@ export default class AddSubcontractor extends React.Component {
     let url = '/work_subcontractors';
     let field = {
       'work_subcontractors[work_id]': this.props.work_id,
+      'contents': 'create',
     }
     Request
       .post(url)
@@ -51,6 +52,10 @@ export default class AddSubcontractor extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if(!err && res.body.status == 'success') {
+
+          this.setState({ work_subcontractors: res.body.subcontractors })
+        } else {
+
           this.setState({ work_subcontractors: res.body.subcontractors })
         }
       })
@@ -138,15 +143,59 @@ export default class AddSubcontractor extends React.Component {
         let type = 'subcontractor_detail_cost';
         if (!err && res.body.status === "success") {
 
-          this.setState({ show: false, subcontractor_details: res.body.detail });
-          this.props.applyPrice(actual_cost, type);
+          this.setState({ subcontractor_details: res.body.detail }, this.onWorkSubcontractorNoticesUpdate(actual_cost));
         } else if (!err && res.body.status === 'nothing') {
 
-          this.props.applyPrice(actual_cost, type);
-          this.setState({ show: false });
+          if (this.state.work_subcontractors.length < 0) {
+
+            this.setState({ show: false });
+          } else {
+
+            this.onWorkSubcontractorNoticesUpdate(actual_cost);
+          }
         } else {
 
           this.setState({ subcontractor_details: res.body.detail });
+        }
+      });
+  }
+
+  onWorkSubcontractorNoticesUpdate = (actual_cost) => {
+
+    let array_rails = [];
+    let field = {};
+    let work_subcontractor_length = this.state.work_subcontractors.length;
+    console.log('work_subcontractors: ', this.state.work_subcontractors.length)
+    let url = '/work_subcontractors'
+    for(let i = 0; i < work_subcontractor_length; i++) {
+
+      array_rails.push(JSON.stringify({
+
+        'id': Number(document.getElementById('work_subcontractor_id' + i).value),
+        'notices': document.getElementById('notices' + i).value,
+      }));
+    }
+    console.log('array_rails: ', array_rails)
+    field = {
+      'work_subcontractor_notices_update[]': array_rails,
+      'work_id': this.props.work_id,
+      'contents': 'notices',
+    };
+    console.log('field: ', field)
+    Request
+      .post(url)
+      .field(field)
+      .set('X-Request-With', 'XMLHttpRequest')
+      .setCsrfToken()
+      .end((err, res) => {
+
+        if (!err && res.body.status === 'success') {
+
+          this.props.applyPrice(actual_cost);
+          this.setState({ show: false, work_subcontractors: res.body.work_subcontractors });
+        } else {
+
+          this.setState({ work_subcontractors: res.body.work_subcontractors });
         }
       });
   }
@@ -324,6 +373,7 @@ export default class AddSubcontractor extends React.Component {
                             <div>
                               <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
                               <button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, work_subcontractor.id, index, true) }>外注先[削除]</button>
+                              <button className={ 'c-btnMain-primaryB' }><a style={{ color: 'white' }} href={ '/work_subcontractors/' + work_subcontractor.id } target='_blank'>外注指示書発行</a></button>
                             </div>
                             <SubcontractorStatus key={ 'read-subcontractor-status' + index } work_id={ this.props.work_id } work_subcontractor_id={ work_subcontractor.id } status={ work_subcontractor.status } applyStatus={ ::this.applyStatus } />
                           </div>
@@ -332,15 +382,15 @@ export default class AddSubcontractor extends React.Component {
                               <thead>
                                 <tr>
                                   <th></th>
-                                  <th>No.</th>
-                                  <th>ステータス</th>
-                                  <th>発注内容</th>
-                                  <th>納品物</th>
-                                  <th>仕様</th>
+                                  <th className={ 'u-va-middle' }>No.</th>
+                                  <th className={ 'u-va-middle' }>ステータス</th>
+                                  <th className={ 'u-va-middle' }>発注内容</th>
+                                  <th className={ 'u-va-middle' }>納品物</th>
+                                  <th className={ 'u-va-middle' }>仕様</th>
                                   <th>原稿<br />数量</th>
                                   <th>部数<br />数量</th>
-                                  <th>工程期日</th>
-                                  <th>実績原価</th>
+                                  <th className={ 'u-va-middle' }>工程期日</th>
+                                  <th className={ 'u-va-middle' }>実績原価</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -352,9 +402,9 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
-                                                  <td><button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
-                                                  <td id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
-                                                  <td>
+                                                  <td className={ 'u-va-top' }><button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
+                                                  <td className={ 'u-va-top' } id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
+                                                  <td className={ 'u-va-top' }>
                                                     <select className={ 'c-form-select__work-show' } id={ 'status' + index1 }>
                                                       <option value={ subcontractor_detail.status }>{ ENUM_STATUS[subcontractor_detail.status] }</option>
                                                       { Object.keys(ENUM_STATUS).map((status) => {
@@ -367,13 +417,13 @@ export default class AddSubcontractor extends React.Component {
                                                       }) }
                                                     </select>
                                                   </td>
-                                                  <td><input className={ 'c-form-text__work-show-input4' } type='text' id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' }></input></td>
+                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input4' } type='text' id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' }></input></td>
                                                   <td><textarea id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='6' cols='50' placeholder={ 'AIデータ, アウトライン済み1ファイル' }></textarea></td>
                                                   <td><textarea id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='6' cols='50' placeholder={ '表紙:ダイヤボード' }></textarea></td>
-                                                  <td><input className={ 'c-form-text__work-show-input3-right' } type='text' id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show-input3-right' } type='text' id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }></input></td>
-                                                  <td><input className={ 'c-form-text__work-show-input2' } type='number' id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
+                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input3-right' } type='text' id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
+                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input3-right' } type='text' id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
+                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }></input></td>
+                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } type='number' id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
                                               </tr>
                                               :
                                               null
@@ -386,12 +436,27 @@ export default class AddSubcontractor extends React.Component {
                                     null
                                   }
                                 </React.Fragment>
-                                <tr key={ 'onCreate-td' + index }>
-                                  <td colSpan='13'><button className={ 'c-btnMain-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
+                               <tr>
+                                  <td id={ 'onCreate-td' + index } colSpan='13'><button className={ 'c-btnMain-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
                                 </tr>
                               </tbody>
                             </table>
-                          </div>
+                            </div>
+                            <div className={ 'c-table' }>
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>特記事項</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td colSpan='13'><textarea id={ 'notices' + index } rows='6' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ work_subcontractor.notices }></textarea></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <input type='hidden' id={ 'work_subcontractor_id' + index } value={ work_subcontractor.id } />
                         </React.Fragment>
                         :
                         null
@@ -468,19 +533,19 @@ export default class AddSubcontractor extends React.Component {
                               null
                             }
                           </React.Fragment>
-                          <div key={ ' table' + index } className={ 'c-table u-mt-20' }>
+                          <div key={ 'table' + index } className={ 'c-table u-mt-20' }>
                             <table>
                               <thead>
                                 <tr>
-                                  <th>No.</th>
-                                  <th>ステータス</th>
-                                  <th>発注内容</th>
-                                  <th>納品物</th>
-                                  <th>仕様</th>
+                                  <th className={ 'u-va-middle' }>No.</th>
+                                  <th className={ 'u-va-middle' }>ステータス</th>
+                                  <th className={ 'u-va-middle' }>発注内容</th>
+                                  <th className={ 'u-va-middle' }>納品物</th>
+                                  <th className={ 'u-va-middle' }>仕様</th>
                                   <th>原稿<br />数量</th>
                                   <th>部数<br />数量</th>
-                                  <th>工程期日</th>
-                                  <th>実績単価</th>
+                                  <th className={ 'u-va-middle' }>工程期日</th>
+                                  <th className={ 'u-va-middle' }>実績単価</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -492,15 +557,15 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr className={'tr' + index }>
-                                                <td style={{ textAlign: 'center' }}>{ subcontractor_detail.id }</td>
-                                                <td style={{ textAlign: 'center' }}>{ ENUM_STATUS[subcontractor_detail.status] }</td>
-                                                <td style={{ textAlign: 'center' }}>{ subcontractor_detail.order_contents }</td>
-                                                <td style={{ textAlign: 'center' }}>{ subcontractor_detail.deliver_method }</td>
-                                                <td style={{ textAlign: 'center' }}>{ subcontractor_detail.specification }</td>
-                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.count }</td>
-                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.number_of_copies }</td>
-                                                <td style={{ textAlign: 'center' }}>{ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
-                                                <td style={{ textAlign: 'right' }}>{ subcontractor_detail.actual_cost }円</td>
+                                                <td className={ 'u-va-top u-ta-center' }>{ subcontractor_detail.id }</td>
+                                                <td className={ 'u-va-top u-ta-center' }>{ ENUM_STATUS[subcontractor_detail.status] }</td>
+                                                <td className={ 'u-va-top u-ta-center' }>{ subcontractor_detail.order_contents }</td>
+                                                <td><textarea readOnly className={ 'c-form-textarea__work-show-input__textarea' } rows='6' cols='50'></textarea></td>
+                                                <td><textarea readOnly className={ 'c-form-textarea__work-show-input__textarea' } rows='6' cols='50'></textarea></td>
+                                                <td className={ 'u-va-top u-ta-right' }>{ subcontractor_detail.count }</td>
+                                                <td className={ 'u-va-top u-ta-right' }>{ subcontractor_detail.number_of_copies }</td>
+                                                <td className={ 'u-va-top u-ta-center' }>{ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
+                                                <td className={ 'u-va-top u-ta-right' }>{ subcontractor_detail.actual_cost }円</td>
                                               </tr>
                                               :
                                               null
@@ -513,6 +578,20 @@ export default class AddSubcontractor extends React.Component {
                                     null
                                   }
                                 </React.Fragment>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div className={ 'c-table' }>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>特記事項</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colSpan='13'><textarea readOnly id={ 'notices' + index } rows='6' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ work_subcontractor.notices }></textarea></td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>

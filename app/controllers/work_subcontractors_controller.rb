@@ -6,13 +6,30 @@ class WorkSubcontractorsController < ApplicationController
   #
   def create
 
-    Work.find(params[:work_subcontractors][:work_id]).subcontractor.create!
+    if params[:contents] === 'create'
 
-    render json: { status: :success, subcontractors: Work.find(params[:work_subcontractors][:work_id]).subcontractor }
+      Work.find(params[:work_subcontractors][:work_id]).subcontractor.create!
+      render json: { status: :success, subcontractors: Work.find(params[:work_subcontractors][:work_id]).subcontractor }
+    elsif params[:contents] === 'notices'
 
-  rescue => e
-    flash[:warning] = { message: e.message }
-    render json: { subcontractors: Work.find(params[:work_subcontractors][:work_id]).subcontractor }
+      params.require(:work_subcontractor_notices_update).each do |subcontractors|
+
+        parse_json = JSON.parse(subcontractors)
+        WorkSubcontractor.find(parse_json['id']).update!(notices: parse_json['notices'])
+      end
+      render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor }
+    end
+
+    rescue => e
+
+      flash[:warning] = { message: e.message }
+      if params[:contents] === 'create'
+
+        render json: { subcontractors: Work.find(params[:work_subcontractors][:work_id]).subcontractor }
+      elsif params[:contents] === 'notices'
+
+        render json: { status: :error, work_subcontractor: Work.find(params[:work_id]).subcontractor }
+      end
   end
 
   ##
@@ -42,7 +59,7 @@ class WorkSubcontractorsController < ApplicationController
         render json: { status: :error, subcontractor_status: WorkSubcontractor.find(params[:id]).status }
       elsif params[:contents] === 'subcontractor_division_client_id'
 
-        render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor, clients: SubcontractorDivisionClient.all, divisions: SubcontractorDivsion.all }
+        render json: { status: :error, work_subcontractors: Work.find(params[:work_id]).subcontractor, clients: SubcontractorDivisionClient.all, divisions: SubcontractorDivsion.all }
       end
   end
 
