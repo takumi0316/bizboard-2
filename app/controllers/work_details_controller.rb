@@ -54,7 +54,6 @@ class WorkDetailsController < ApplicationController
             count: parse_json['count'],
             deliver_at: parse_json['deliver_at'],
             client_name: parse_json['client_name'],
-            status: parse_json['status'],
             estimated_man_hours: parse_json['estimated_man_hours'],
             estimated_cost: parse_json['estimated_cost'],
             actual_man_hours: parse_json['actual_man_hours'],

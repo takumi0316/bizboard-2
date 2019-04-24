@@ -39,6 +39,7 @@ Rails.application.routes.draw do
 
   # 作業進捗
   resources :works
+  get 'works/:id/directions' => 'works#directions'
 
   # 作業詳細
   resources :work_details

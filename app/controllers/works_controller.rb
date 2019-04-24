@@ -57,19 +57,28 @@ class WorksController < ApplicationController
       render json: { status: :success, work: work.status }
     elsif params[:status] === 'price'
 
-      work.project.update! price: params[:price]
-      render json: { status: :success, price: work.project.price }
+      work.update! price: params[:price]
+      render json: { status: :success, price: work.price }
+
+    elsif params[:status] === 'notices'
+
+      work.update! notices: params[:work_notices]
+      render json: { status: :success, notices: work.notices }
     end
 
-  rescue => e
+    rescue => e
 
-    if params[:status] === 'status'
+      if params[:status] === 'status'
 
-      render json: { status: :error, work: work.status }
-    elsif params[:status] === 'price'
+        render json: { status: :error, work: work.status }
+      elsif params[:status] === 'price'
 
-      render json: { status: :error, price: work.project.price }
-    end
+        render json: { status: :error, price: work.price }
+      elsif params[:status] === 'notices'
+
+        work.update! notices: params[:work_notices]
+        render json: { status: :success, notices: work.notices }
+      end
   end
 
   #----------------------------------------

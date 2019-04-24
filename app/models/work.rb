@@ -10,6 +10,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  free_word  :text(65535)
+#  notices    :text(65535)
 #
 
 class Work < ApplicationRecord
@@ -80,6 +81,7 @@ class Work < ApplicationRecord
   # パラメータによる検索
   # @version 2018/06/10
   #
+  binding.pry
   def self.by_params(**parameters)
 
     _self = self

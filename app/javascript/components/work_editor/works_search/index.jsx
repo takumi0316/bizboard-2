@@ -13,10 +13,14 @@ import { ENUM_STATUS, } from '../properties.es6'
 export default class WorksSearch extends Component {
   constructor(props) {
     super(props)
-
+    const date = new Date()
+    const year = date.getFullYear()
+    const last_month = date.getMonth() - 1
+    const next_month = date.getMonth() + 1
+    const day = date.getDate()
     this.state = {
-      startDate: new Date(),
-      startDate2: new Date()
+      startDate: new Date(year, last_month, day),
+      startDate2: new Date(year, next_month, day)
     };
   }
 

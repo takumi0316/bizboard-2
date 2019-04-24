@@ -20,43 +20,37 @@ script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas
   section.l-contents__inner#captcha
 
     h1.l-contents__heading
-      | 発注・指示書(外注用)
-      label.u-fs-x-small
-        | ※納品時は必ず、本発注番号を明記した納品書、もしくはこの発注・
-        br
-        |　指示書の「納品日・署名」欄に納品日、署名を記入した上、お返し下さい。
+      | 発注・指示書(社内用)
 
     .u-mt-10.c-flex__between
 
       .c-table-work_subcontractors1
         table
           tr
-            th 発注先社名
-            td = WorkSubcontractor.find(141).client.subcontractor_division.subcontractor.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name : nil
+            th 案件管理番号
+            td = Work.find(params[:id]).project.id
           tr
-            th 部署名
-            td = WorkSubcontractor.find(params[:id]).client.subcontractor_division.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.name : nil
+            th 発注先部署
+            td
           tr
-            th ご担当者名
-            td = WorkSubcontractor.find(params[:id]).client.name.present? ? WorkSubcontractor.find(params[:id]).client.name : nil
-          tr
-            th TEL
-            td = WorkSubcontractor.find(params[:id]).client.present? ? WorkSubcontractor.find(params[:id]).client.tel : nil
-            th FAX
+            th 担当者
             td
       .c-table-work_subcontractors2
         table
           tr
-            th 発注日
+            th 受注/発注日
             td
           tr
-            th 納期
+            th 校正納期
+            td
+          tr
+            th 仕上げ納期
+            td.u-fs-large
+          tr
+            th 納品方法
             td
           tr
             th 納品先
-            td
-          tr
-            th 納品方法
             td
       .c-table-work_subcontractors3
         table
@@ -74,12 +68,8 @@ script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas
         table
           tr
             th 発注決済
-            th 発注決済
-            th 発注決済
           tr
             td.u-ta-center
-            td
-            td
         label.u-fs-x-small
           | マネージャーもしくは部門長
 
@@ -94,16 +84,17 @@ script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas
             th 仕様(用紙種類、面付、サイズなど)
             th 原稿枚数
             th 部数数量
+            th 各工程検品
         tbody
-          - WorkSubcontractor.find(params[:id]).detail.each do |r, index|
             tr
-              td.u-va-top.u-ta-right = index
-              td.u-va-top.u-ta-left = r.order_contents
-              td.u-va-top.u-ta-left = simple_format(r.deliver_method)
+              td.u-va-top.u-ta-right
+              td.u-va-top.u-ta-left
+              td.u-va-top.u-ta-left
               td.u-va-top.u-ta-center □
-              td.u-va-top.u-ta-left = simple_format(r.specification)
-              td.u-va-top.u-ta-left = "#{r.count}枚"
-              td.u-va-top.u-ta-left = "#{r.number_of_copies}冊"
+              td.u-va-top.u-ta-left
+              td.u-va-top.u-ta-left
+              td.u-va-top.u-ta-left
+              td
     .c-table
       table
         thead
@@ -111,7 +102,7 @@ script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas
             th 特記事項
         tbody
           tr
-            td.u-va-top.u-ta-left = simple_format(WorkSubcontractor.find(params[:id]).notices)
+            td.u-va-top.u-ta-left = simple_format(Work.find(params[:id]).notices)
 
     .u-mt-10
       .u-fs-title
@@ -122,14 +113,14 @@ script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas
         table
           tr
             th 案件名
-            td = WorkSubcontractor.find(params[:id]).work.project.name
+            td = Work.find(params[:id]).project.name
       .c-table-work_subcontractors5
         table
           tr
-            th 発注部署
-            td
+            th 案件管理番号
+            td 
             th 営業担当
-            td
+            td = Work.find(params[:id]).project.user.name
 
     .u-mt-20.c-flex__between
       .div
@@ -143,9 +134,9 @@ script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas
       .c-table-work_subcontractors5
         table
           tr
-            th 外注見積もり金額
+            th 受注金額
           tr
-            td.u-ta-center = "#{(WorkSubcontractor.find(params[:id]).detail.sum(:actual_cost)).to_i}円"
+            td.u-ta-center = "#{Work.find(params[:id]).project.price}円"
       .c-flex
         .c-table-work_subcontractors3
           table
@@ -189,4 +180,3 @@ script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas
             tr.u-ta-center
               td.u-va-middle
                 | /
-
