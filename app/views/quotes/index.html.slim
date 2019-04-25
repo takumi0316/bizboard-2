@@ -21,6 +21,7 @@
             th 件名
             th 発行日
             th メモ
+            th PDFダウンロード
             th colspan=3
         tbody
           - quotes.each do |r|
@@ -31,6 +32,11 @@
               td = r.subject
               td = r.date
               td = r.memo
+              td
+                - if r.pdf_url.present?
+                  = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
+                -else
+                  p MFに見積もり書がないですよ
               td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
               td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 

@@ -299,9 +299,12 @@ ActiveRecord::Schema.define(version: 2019_04_25_082405) do
     t.bigint "quote_id"
     t.integer "cost", comment: "コスト"
     t.decimal "gross_profit", precision: 11, scale: 8, comment: "粗利"
-    t.text "detail", comment: "詳細"
+    t.string "detail", comment: "詳細"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.integer "unit_price"
+    t.integer "quantity"
     t.index ["quote_id"], name: "index_quote_items_on_quote_id"
   end
 
@@ -317,6 +320,8 @@ ActiveRecord::Schema.define(version: 2019_04_25_082405) do
     t.datetime "updated_at", null: false
     t.integer "price"
     t.integer "attention"
+    t.text "pdf_url"
+    t.text "mf_quote_id"
     t.index ["project_id"], name: "index_quotes_on_project_id"
   end
 

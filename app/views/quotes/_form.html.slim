@@ -4,22 +4,22 @@
     - if quote.project.present?
 
       h1.l-contents__heading = quote.project.name
-      
+
       - if quote.project.client.present?
 
         .u-mt-15.c-attention
           p
-            | 会社名: 
+            | 会社名:
             = quote.project.client&.company_division&.company&.name
           p
-            | 部署名: 
+            | 部署名:
             = quote.project.client&.company_division&.name
           p
-            | 担当者名: 
+            | 担当者名:
             = quote.project.client&.name
-      
+
       - else
-        
+
         .u-mt-15.c-attention
           | 請求先情報が登録されていません。
           = link_to 'こちら', edit_project_path(quote.project), class: 'u-td-underline'
@@ -48,14 +48,16 @@
           .c-form-group
             = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
 
-      / 会社名を取得して表示してみましたがエラーになるのでコメントアウトしてます
-      /.c-form-label
-      /  = f.label :project_id, '会社名'
-      /= f.select :project_id, Project.all.map(&:client).map(&:company_division).map(&:company).pluck(:name, :id),{},{:class=>'c-form-dateselect'}
+      .c-form-group
 
-      .c-form-label
-        = f.label :attention, '御中・様'
-      = f.select :attention, Quote.attentions_i18n.invert, {}, { class: 'c-form-dateselect' }
+        .c-form-group
+          .c-form-label
+            .u-mt-35 = quote.project.client&.company_division&.company&.name
+
+        .c-form-line
+          .c-form-label
+            = f.label :attention, '御中・様'
+          = f.select :attention, Quote.attentions_i18n.invert, {}, { class: 'c-form-dateselect' }
 
       .c-form-label
         = f.label :subject, '件名'
@@ -74,17 +76,17 @@
               th 詳細
               th 削除
           tbody
-            - 2.times do
-              = f.fields_for :quote_items do |fi|
-                tr
-                  td = fi.text_field :cost, placeholder: 'モノクロコピー', class: 'c-form-textarea'
-                  td = fi.text_field :cost, placeholder: '10', class: 'c-form-textarea'
-                  td = fi.text_field :cost, placeholder: '100', class: 'c-form-textarea'
-                  td
-                  td = fi.text_field :cost, placeholder: '5', class: 'c-form-textarea'
-                  td = fi.text_field :gross_profit, placeholder: '0.7', class: 'c-form-textarea'
-                  td = fi.text_field :detail, placeholder: '両面', class: 'c-form-textarea'
-                  td
+              - 1.times do
+                = f.fields_for :quote_items do |fi|
+                  tr
+                    td = fi.text_field :name, placeholder: 'モノクロコピー', class: 'c-form-textarea'
+                    td = fi.text_field :unit_price, placeholder: '10', class: 'c-form-textarea'
+                    td = fi.text_field :quantity, placeholder: '100', class: 'c-form-textarea'
+                    td
+                    td = fi.text_field :cost, placeholder: '5', class: 'c-form-textarea'
+                    td = fi.text_field :gross_profit, placeholder: '0.7', class: 'c-form-textarea'
+                    td = fi.text_field :detail, placeholder: '両面', class: 'c-form-textarea'
+                    td
 
       .c-form-label
         = f.label :price, '合計金額'
@@ -100,4 +102,10 @@
       = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
 
 
-      .c-overlay-submit = f.submit quote.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+      .c-overlay-submit
+        = f.submit quote.new_record?? '保存する' : '更新する', class: 'c-btnMain-standard c-btn-blue u-va-middle'
+
+        - if quote.pdf_url.present?
+          = link_to 'MFに見積もりを更新する', quotes_api_post_path(id: quote.id, quote_items_id: quote.quote_items.ids), class: 'c-btnMain-standard c-btn-red u-va-middle u-ml-15'
+        - else
+          = link_to 'MFに見積もりを作成する', quotes_api_post_path(id: quote.id, quote_items_id: quote.quote_items.ids), class: 'c-btnMain-standard c-btn-blue u-va-middle u-ml-15'
