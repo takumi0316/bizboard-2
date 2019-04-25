@@ -198,7 +198,6 @@ export default class AddDetails extends React.Component {
       'work_notices': document.getElementById('notices').value,
       'status': 'notices',
     };
-    console.log(document.getElementById('notices').value)
     Request
       .put(url)
       .field(field)
@@ -226,15 +225,6 @@ export default class AddDetails extends React.Component {
 
       window.confirm('キャンセルしました。')
     }
-  }
-
-  componentDidMount = () => {
-
-    console.log(this.state.work_notices)
-    let notices = this.props.work_notices;
-    notices = notices.replace(/\n/g, '<br />');
-    console.log(notices)
-    this.setState({ read_work_notices: notices });
   }
 
   /**
