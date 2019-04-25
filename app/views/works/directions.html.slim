@@ -1,182 +1,181 @@
 script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"
 script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"
-.l-contents
 
-  a.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
-  javascript:
-    function downloadImage() {
-      html2canvas(document.getElementById('captcha'), {
-        onrendered: function(canvas) {
-          var dataURI = canvas.toDataURL();
-          var pdf = new jsPDF('l');
-          // 横幅をぴったり合わせたかったので横幅を取得して指定してます
-          var width = pdf.internal.pageSize.width;
-          var height = pdf.internal.pageSize.height;
-          pdf.addImage(canvas, 'JPEG', 0, 0, width, height);
-          pdf.save('work-subcontractor.pdf')
-        }
-      });
-    }
-  section.l-contents__inner#captcha
+a.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
+javascript:
+  function downloadImage() {
+    html2canvas(document.getElementById('captcha'), {
+      onrendered: function(canvas) {
+        var dataURI = canvas.toDataURL();
+        var pdf = new jsPDF('l');
+        // 横幅をぴったり合わせたかったので横幅を取得して指定してます
+        var width = pdf.internal.pageSize.width;
+        var height = pdf.internal.pageSize.height;
+        pdf.addImage(canvas, 'JPEG', 0, 0, width, height);
+        pdf.save('work-subcontractor.pdf')
+      }
+    });
+  }
+#captcha
 
-    h1.l-contents__heading
-      | 発注・指示書(社内用)
+  h1.l-dashboard__heading
+    | 発注・指示書(社内用)
 
-    .u-mt-10.c-flex__between
+  .u-mt-10.c-flex__between
 
-      .c-table-work_subcontractors1
-        table
+    .c-table-work_subcontractors1
+      table
+        tr
+          th 案件管理番号
+          td = Work.find(params[:id]).project.project_number
+        tr
+          th 発注先部署
+          td
+        tr
+          th 担当者
+          td
+    .c-table-work_subcontractors2
+      table
+        tr
+          th 受注/発注日
+          td
+        tr
+          th 校正納期
+          td
+        tr
+          th 仕上げ納期
+          td.u-fs-large
+        tr
+          th 納品方法
+          td
+        tr
+          th 納品先
+          td
+    .c-table-work_subcontractors3
+      table
+        tr
+          th 受注区分
+        tr
+          td.u-ta-center
+        tr
+          th 受注担当者
+        tr
+          td.u-ta-center
+    .u-fs-smal
+      span →
+    .c-table-work_subcontractors3
+      table
+        tr
+          th 発注決済
+        tr
+          td.u-ta-center
+      label.u-fs-x-small
+        | マネージャーもしくは部門長
+
+  .c-table.u-mt-10
+    table
+      thead
+        tr
+          th No.
+          th 発注内容
+          th 納品物(支給品含む)
+          th 返却
+          th 仕様(用紙種類、面付、サイズなど)
+          th 原稿枚数
+          th 部数数量
+          th 各工程検品
+      tbody
           tr
-            th 案件管理番号
-            td = Work.find(params[:id]).project.project_number
-          tr
-            th 発注先部署
+            td.u-va-top.u-ta-right
+            td.u-va-top.u-ta-left
+            td.u-va-top.u-ta-left
+            td.u-va-top.u-ta-center □
+            td.u-va-top.u-ta-left
+            td.u-va-top.u-ta-left
+            td.u-va-top.u-ta-left
             td
-          tr
-            th 担当者
-            td
-      .c-table-work_subcontractors2
-        table
-          tr
-            th 受注/発注日
-            td
-          tr
-            th 校正納期
-            td
-          tr
-            th 仕上げ納期
-            td.u-fs-large
-          tr
-            th 納品方法
-            td
-          tr
-            th 納品先
-            td
+  .c-table
+    table
+      thead
+        tr
+          th 特記事項
+      tbody
+        tr
+          td.u-va-top.u-ta-left = simple_format(Work.find(params[:id]).notices)
+
+  .u-mt-10
+    .u-fs-title
+      | (弊社使用欄)
+
+  .u-mt-5
+    .c-table-work_subcontractors4
+      table
+        tr
+          th 案件名
+          td = Work.find(params[:id]).project.name
+    .c-table-work_subcontractors5
+      table
+        tr
+          th 案件管理番号
+          td 
+          th 営業担当
+          td = Work.find(params[:id]).project.user.name
+
+  .u-mt-20.c-flex__between
+    .div
+      | 株式会社 日本工業社
+      br
+      | 営業部
+      br
+      | 〒104-0033 中央区新川2-26-3 住友不動産茅場町ビル
+      br
+      | TEL 03-6280-3922　　　　　　FAX 03-3537-3511
+    .c-table-work_subcontractors5
+      table
+        tr
+          th 受注金額
+        tr
+          td.u-ta-center = "#{Work.find(params[:id]).project.price}円"
+    .c-flex
       .c-table-work_subcontractors3
         table
           tr
-            th 受注区分
-          tr
-            td.u-ta-center
-          tr
-            th 受注担当者
-          tr
-            td.u-ta-center
+            th 受取確認
+          tr.u-ta-center
+            td.u-va-middle.u-fs-x-small 印/署名
+          tr.u-ta-center
+            td.u-va-middle
+              | /
       .u-fs-smal
         span →
       .c-table-work_subcontractors3
         table
           tr
-            th 発注決済
-          tr
-            td.u-ta-center
-        label.u-fs-x-small
-          | マネージャーもしくは部門長
-
-    .c-table.u-mt-10
-      table
-        thead
-          tr
-            th No.
-            th 発注内容
-            th 納品物(支給品含む)
-            th 返却
-            th 仕様(用紙種類、面付、サイズなど)
-            th 原稿枚数
-            th 部数数量
-            th 各工程検品
-        tbody
-            tr
-              td.u-va-top.u-ta-right
-              td.u-va-top.u-ta-left
-              td.u-va-top.u-ta-left
-              td.u-va-top.u-ta-center □
-              td.u-va-top.u-ta-left
-              td.u-va-top.u-ta-left
-              td.u-va-top.u-ta-left
-              td
-    .c-table
-      table
-        thead
-          tr
-            th 特記事項
-        tbody
-          tr
-            td.u-va-top.u-ta-left = simple_format(Work.find(params[:id]).notices)
-
-    .u-mt-10
-      .u-fs-title
-        | (弊社使用欄)
-
-    .u-mt-5
-      .c-table-work_subcontractors4
+            th 検品
+          tr.u-ta-center
+            td.u-va-middle 印/署名
+          tr.u-ta-center
+            td.u-va-middle
+              | /
+      .u-fs-smal
+        span →
+      .c-table-work_subcontractors3
         table
           tr
-            th 案件名
-            td = Work.find(params[:id]).project.name
-      .c-table-work_subcontractors5
+            th 出荷前確認
+          tr.u-ta-center
+            td.u-va-middle 印/署名
+          tr.u-ta-center
+            td.u-va-middle
+              | /
+      .u-fs-smal
+        span →
+      .c-table-work_subcontractors3
         table
           tr
-            th 案件管理番号
-            td 
-            th 営業担当
-            td = Work.find(params[:id]).project.user.name
-
-    .u-mt-20.c-flex__between
-      .div
-        | 株式会社 日本工業社
-        br
-        | 営業部
-        br
-        | 〒104-0033 中央区新川2-26-3 住友不動産茅場町ビル
-        br
-        | TEL 03-6280-3922　　　　　　FAX 03-3537-3511
-      .c-table-work_subcontractors5
-        table
-          tr
-            th 受注金額
-          tr
-            td.u-ta-center = "#{Work.find(params[:id]).project.price}円"
-      .c-flex
-        .c-table-work_subcontractors3
-          table
-            tr
-              th 受取確認
-            tr.u-ta-center
-              td.u-va-middle.u-fs-x-small 印/署名
-            tr.u-ta-center
-              td.u-va-middle
-                | /
-        .u-fs-smal
-          span →
-        .c-table-work_subcontractors3
-          table
-            tr
-              th 検品
-            tr.u-ta-center
-              td.u-va-middle 印/署名
-            tr.u-ta-center
-              td.u-va-middle
-                | /
-        .u-fs-smal
-          span →
-        .c-table-work_subcontractors3
-          table
-            tr
-              th 出荷前確認
-            tr.u-ta-center
-              td.u-va-middle 印/署名
-            tr.u-ta-center
-              td.u-va-middle
-                | /
-        .u-fs-smal
-          span →
-        .c-table-work_subcontractors3
-          table
-            tr
-              th 検品確認
-            tr.u-ta-center
-              td.u-fs-small.u-va-middle 印/署名
-            tr.u-ta-center
-              td.u-va-middle
-                | /
+            th 検品確認
+          tr.u-ta-center
+            td.u-fs-small.u-va-middle 印/署名
+          tr.u-ta-center
+            td.u-va-middle
+              | /

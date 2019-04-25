@@ -1,39 +1,37 @@
-.l-contents
-  
-  = react_component('WorksSearch')
+= react_component('WorksSearch')
 
-  .c-table.u-mt-20
-    table
-      thead
+.c-table.u-mt-20
+  table
+    thead
+      tr
+        th 案件No.
+        th
+        th 顧客名
+        th 担当者
+        th 作業内容
+        th 弊社担当者
+        th 期日
+        th ステータス
+        th 売上
+        th 実績原価
+        th 粗利
+        th 粗利率
+        th 更新日
+    tbody
+      - works.each do |r|
         tr
-          th 案件No.
-          th
-          th 顧客名
-          th 担当者
-          th 作業内容
-          th 弊社担当者
-          th 期日
-          th ステータス
-          th 売上
-          th 実績原価
-          th 粗利
-          th 粗利率
-          th 更新日
-      tbody
-        - works.each do |r|
-          tr
-            td style='text-align: center;' = r.project.project_number
-            td style='text-align: center;' = link_to '編集', work_path(r), class: 'c-btnMain-standard'
-            td style='text-align: center;' = r.project.client.company_division.company.name if r.project.client.present?
-            td style='text-align: center;' = r.project.client.name if r.project.client.present?
-            td style='text-align: center;' = r.project.name
-            td style='text-align: center;' = r.project.user.name
-            td style='text-align: center;' = r.project.deliver_at.to_s
-            td style='text-align: center;' = r.status
-            td style='text-align: right;' = "#{r.project.price}円"
-            td style='text-align: right;' = "#{r.price}円"
-            td style='text-align: right;' = "#{r.project.price - r.price}"
-            td style='text-align: right;' = r.price.nonzero?? "#{r.price.to_f / r.price.to_f}%" : '0%'
-            td style='text-align: center;' = r.updated_at
+          td style='text-align: center;' = r.project.project_number
+          td style='text-align: center;' = link_to '編集', work_path(r), class: 'c-btnMain-standard'
+          td style='text-align: center;' = r.project.client.company_division.company.name if r.project.client.present?
+          td style='text-align: center;' = r.project.client.name if r.project.client.present?
+          td style='text-align: center;' = r.project.name
+          td style='text-align: center;' = r.project.user.name
+          td style='text-align: center;' = r.project.deliver_at.to_s
+          td style='text-align: center;' = r.status
+          td style='text-align: right;' = "#{r.project.price}円"
+          td style='text-align: right;' = "#{r.price}円"
+          td style='text-align: right;' = "#{r.project.price - r.price}"
+          td style='text-align: right;' = r.price.nonzero?? "#{r.price.to_f / r.price.to_f}%" : '0%'
+          td style='text-align: center;' = r.updated_at
 
-    = render 'layouts/_partials/pagination'
+  = render 'layouts/_partials/pagination'

@@ -1,37 +1,34 @@
-.l-contents
-  section.l-contents__inner
+= render 'layouts/_partials/tabmenu'
 
-    = render 'layouts/_partials/tabmenu'
+= form_with url: invoices_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 
-    = form_with url: invoices_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+  .c-search__item
+    = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
+    = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '件名/請求先/備考'
 
-      .c-search__item
-        = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
-        = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '件名/請求先/備考'
+  = f.submit '検索', class: 'c-btnMain-standard'
 
-      = f.submit '検索', class: 'c-btnMain-standard'
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th ID
+        th 請求番号
+        th 件名
+        th 請求先
+        th 請求日
+        th colspan=3
+    tbody
+      - invoices.each do |r|
+        tr
+          td = r.id
+          td = r.project.project_number
+          td = r.subject
+          td
+            - if r.project.company_division_client_id?
+              = "#{r.project.client.company_division.company.name} #{r.project.client.name} 様"
+          td = r.date
+          td = link_to '編集', edit_invoice_path(r), class: 'c-btnMain-standard'
+          td = link_to '削除', invoice_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
-    .c-table.u-mt-30
-      table
-        thead
-          tr
-            th ID
-            th 請求番号
-            th 件名
-            th 請求先
-            th 請求日
-            th colspan=3
-        tbody
-          - invoices.each do |r|
-            tr
-              td = r.id
-              td = r.project.project_number
-              td = r.subject
-              td
-                - if r.project.company_division_client_id?
-                  = "#{r.project.client.company_division.company.name} #{r.project.client.name} 様"
-              td = r.date
-              td = link_to '編集', edit_invoice_path(r), class: 'c-btnMain-standard'
-              td = link_to '削除', invoice_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
-
-  = render 'layouts/_partials/pagination'
+= render 'layouts/_partials/pagination'

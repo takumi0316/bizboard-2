@@ -1,42 +1,39 @@
-.l-contents
-  section.l-contents__inner
+h1.l-dashboard__heading 取引先
 
-    h1.l-contents__heading 取引先
-    
-    = form_for item, html: { class: 'u-mt-30'} do |f|
+= form_for item, html: { class: 'u-mt-30'} do |f|
 
-      .c-form-label = f.label :division_id, '部署'
-      .c-form-selectWrap.u-mt-10
-        = f.select :division_id, Division.pluck(:name, :id), {}, { class: 'c-form-select' }
+  .c-form-label = f.label :division_id, '部署'
+  .c-form-selectWrap.u-mt-10
+    = f.select :division_id, Division.pluck(:name, :id), {}, { class: 'c-form-select' }
 
-      .c-form-label
-        = f.label :name, '名称'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :name, placeholder: '名称', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :name, '名称'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :name, placeholder: '名称', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :code, '品目コード'
-      = f.text_field :code, placeholder: '品目コード', class: 'c-form-text'
+  .c-form-label
+    = f.label :code, '品目コード'
+  = f.text_field :code, placeholder: '品目コード', class: 'c-form-text'
 
-      .c-form-label
-        = f.label :unit_price, '単価'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :unit_price, placeholder: '単価', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :unit_price, '単価'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :unit_price, placeholder: '単価', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :unit, '単位'
-      = f.text_field :unit, placeholder: '単位', class: 'c-form-text'
+  .c-form-label
+    = f.label :unit, '単位'
+  = f.text_field :unit, placeholder: '単位', class: 'c-form-text'
 
-      .c-form-label
-        = f.label :quantity, '数量'
-      = f.text_field :quantity, placeholder: '数量', class: 'c-form-text'
+  .c-form-label
+    = f.label :quantity, '数量'
+  = f.text_field :quantity, placeholder: '数量', class: 'c-form-text'
 
-      .c-form-label
-        = f.label :excise, '消費税'
-      = f.select :excise, [['税込', true], ['税別', false]], {}, { class: 'c-form-select', required: true }
+  .c-form-label
+    = f.label :excise, '消費税'
+  = f.select :excise, [['税込', true], ['税別', false]], {}, { class: 'c-form-select', required: true }
 
-      .c-form-label
-        = f.label :note, '詳細'
-      = f.text_area :note, placeholder: '詳細を入力してください', class: 'c-form-textarea', rows: 4
+  .c-form-label
+    = f.label :note, '詳細'
+  = f.text_area :note, placeholder: '詳細を入力してください', class: 'c-form-textarea', rows: 4
 
-      .u-ta-center.u-mt-30 = f.submit item.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+  .u-ta-center.u-mt-30 = f.submit item.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

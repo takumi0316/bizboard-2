@@ -1,48 +1,45 @@
-.l-contents
-  section.l-contents__inner
+h1.l-dashboard__heading 担当者
 
-    h1.l-contents__heading 担当者
+= form_for client, html: { class: 'u-mt-30'} do |f|
 
-    = form_for client, html: { class: 'u-mt-30'} do |f|
+  = react_component('SubcontractorDivisions',
+    { subcontractors: Subcontractor.all.order(:name),
+    subcontractor_id: (params[:subcontractor_division_id].present? || client.subcontractor_division_id?)? division.subcontractor.id : nil,
+    subcontractor_division_id: (params[:subcontractor_division_id].present? || client.subcontractor_division_id?)? division.id : nil,
+    divisions: (params[:subcontractor_division_id].present? || client.subcontractor_division_id?)? division.subcontractor.divisions : [] })
 
-      = react_component('SubcontractorDivisions',
-        { subcontractors: Subcontractor.all.order(:name),
-        subcontractor_id: (params[:subcontractor_division_id].present? || client.subcontractor_division_id?)? division.subcontractor.id : nil,
-        subcontractor_division_id: (params[:subcontractor_division_id].present? || client.subcontractor_division_id?)? division.id : nil,
-        divisions: (params[:subcontractor_division_id].present? || client.subcontractor_division_id?)? division.subcontractor.divisions : [] })
+  .c-form-label
+    = f.label :user_id, '自社担当者'
+    span.c-form__required.u-ml-10 必須
+  = f.select :user_id, User.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
 
-      .c-form-label
-        = f.label :user_id, '自社担当者'
-        span.c-form__required.u-ml-10 必須
-      = f.select :user_id, User.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
+  .c-form-label
+    = f.label :name, '氏名'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :name, placeholder: '氏名', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :name, '氏名'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :name, placeholder: '氏名', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :kana, '氏名(カナ)'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :kana, placeholder: '氏名(カナ)', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :kana, '氏名(カナ)'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :kana, placeholder: '氏名(カナ)', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :title, '敬称'
+    span.c-form__required.u-ml-10 必須
+  = f.select :title, SubcontractorDivisionClient.titles_i18n.invert, {}, { class: 'c-form-select', required: true }
 
-      .c-form-label
-        = f.label :title, '敬称'
-        span.c-form__required.u-ml-10 必須
-      = f.select :title, SubcontractorDivisionClient.titles_i18n.invert, {}, { class: 'c-form-select', required: true }
+  .c-form-label
+    = f.label :tel, '電話番号'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :tel, placeholder: '電話番号', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :tel, '電話番号'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :tel, placeholder: '電話番号', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :email, 'メールアドレス'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :email, 'メールアドレス'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :note, 'メモ'
+  = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
 
-      .c-form-label
-        = f.label :note, 'メモ'
-      = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
-
-      .u-ta-center.u-mt-30 = f.submit client.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+  .u-ta-center.u-mt-30 = f.submit client.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

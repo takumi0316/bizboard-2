@@ -1,0 +1,220 @@
+// ==============================================
+// ダッシュボード (PC)
+// ==============================================
+
+.l-dashboard
+  $menu-width: 200px
+  width: 100%
+  min-height: 100%
+  min-width: $container-md
+  &__writer
+    width: $container-lg
+    margin: 0 auto
+  &__logo
+    margin-top: 15px
+    margin-left: 15px
+    [data-menu-open=false] &
+      display: none
+  &__menu
+    user-select: none
+    width: $menu-width
+    border-right: 1px solid map-get($layoutColors, 'lightGray')
+    position: fixed
+    background-color: #fcfcfc
+    top: 0
+    left: 0
+    bottom: 0
+    z-index: $layerLevel-overlay - 1
+    [data-menu-open=false] &
+      width: 60px
+      &List
+        display: none
+    [data-menu-open=true] &
+      &List
+        margin-top: 15px
+        border-top: 1px solid map-get($layoutColors, 'lightGray')
+      &Item
+        a
+          padding: 7px 0 5px 15px
+          display: flex
+          align-items: center
+          &:hover
+            text-decoration: underline
+        &:nth-child(7n+1)
+          a
+            svg
+              fill: #3A83F7
+        &:nth-child(7n+2)
+          a
+            svg
+              fill: #DE44A5
+        &:nth-child(7n+3)
+          a
+            svg
+              fill: #F7BB44
+        &:nth-child(7n+4)
+          a
+            svg
+              fill: #6D6D6D
+        &:nth-child(7n+5)
+          a
+            svg
+              fill: #5FD8CC
+        &:nth-child(7n+6)
+          a
+            svg
+              fill: #8F35A2
+        &:nth-child(7n+7)
+          a
+            svg
+              fill: #11bbcc
+  &__main
+    padding-bottom: 120px
+    background-color: map-get($layoutColors, 'white')
+    [data-menu-open=false] &
+      padding-left: 60px
+    [data-menu-open=true] &
+      padding-left: $menu-width
+  &__heading
+    display: flex
+    align-items: center
+    position: relative
+    font-size: map-get($fontSize, 'title')
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 15px
+    margin-top: 30px
+    background-image: linear-gradient(-45deg, rgba(map-get($layoutColors, 'core'), .1) 25%, transparent 25%, transparent 50%, rgba(map-get($layoutColors, 'core'), .1) 50%, rgba(map-get($layoutColors, 'core'), .1) 75%, transparent 75%, transparent )
+    background-size: 5px 5px
+  &__panel
+    position: relative
+    display: inline-block
+    width: calc(20% - 30px)
+    height: 160px
+    text-align: center
+    background-color: map-get($layoutColors, 'white')
+    box-shadow: rgba(map-get($layoutColors, 'black'), .15) 0 0 2px
+    transition: all .2s ease-out
+    border-radius: 15px
+    box-shadow: 0px 2px 23px -2px #bbb
+    margin: 15px
+    vertical-align: top
+    &:hover
+      background-color: map-get($layoutColors, 'gray')
+    a
+      display: block
+      padding: 10px
+
+    &:nth-child(7n+1)
+      svg
+        fill: #3A83F7
+    &:nth-child(7n+2)
+      svg
+        fill: #DE44A5
+    &:nth-child(7n+3)
+      svg
+        fill: #F7BB44
+    &:nth-child(7n+4)
+      svg
+        fill: #6D6D6D
+    &:nth-child(7n+5)
+      svg
+        fill: #5FD8CC
+    &:nth-child(7n+6)
+      svg
+        fill: #8F35A2
+    &:nth-child(7n+7)
+      svg
+        fill: #11bbcc
+
+    &Badge
+      position: absolute
+      display: flex
+      justify-content: center
+      align-items: center
+      top: -5px
+      right: -5px
+      width: 30px
+      height: 30px
+      border-radius: 50%
+      background-color: map-get($layoutColors, 'red')
+      color: map-get($fontColors, 'white')
+      z-index: $layerLevel-header - 1
+
+  // メニューボタン
+  //-----------------------
+  &-trigger
+    display: block
+    position: absolute
+    left: 0
+    bottom: 15px
+    width: 60px
+    height: 50px
+    padding-top: 30px
+    cursor: pointer
+    &__icon
+      position: absolute
+      left: 15px
+      top: 15px
+      display: block
+      width: 26px
+      height: 20px
+      border-top: solid 2px map-get($layoutColors, 'core')
+      &::before, &::after
+        content: ''
+        position: absolute
+        left: 0
+        display: block
+        width: 20px
+        height: 2px
+        background-color: map-get($layoutColors, 'core')
+      &::before
+        top: 8px
+      &::after
+        top: 18px
+      [data-menu-open=true] &
+        position: absolute
+        left: 16px
+        top: 10px
+        display: block
+        width: 26px
+        height: 20px
+        border-top: none
+        &::before, &::after
+          content: ''
+          position: absolute
+          left: 0
+          top: 8px
+          display: block
+          width: 28px
+          height: 2px
+          background-color: map-get($layoutColors, 'core')
+        &::before
+          transform: rotate(45deg)
+        &:after
+          transform: rotate(-45deg)
+    &__text
+      text-align: center
+      font-size: 1rem
+      font-weight: bold
+      // メニューオープン時
+      [data-menu-open=true] &::before
+        content: '閉じる'
+  
+  &__tabmenu
+    display: flex
+    align-items: center
+    position: relative
+    padding: 15px 0
+    li+ li
+      border-left: 1px solid map-get($layoutColors, 'lightGray')
+  &__tabmenuText
+    $self: &
+    display: inline-block
+    font-size: map-get($fontSize, 'large')
+    margin: 0 20px
+    border-bottom: solid 3px map-get($layoutColors, 'white')
+    vertical-align: middle
+    &--active
+      @extend #{$self}
+      color: map-get($layoutColors, 'core')
+      border-bottom: solid 3px map-get($layoutColors, 'blue')

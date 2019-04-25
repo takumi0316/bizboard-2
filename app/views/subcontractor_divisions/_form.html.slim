@@ -1,55 +1,52 @@
-.l-contents
-  section.l-contents__inner
+- unless division.new_record?
 
-    - unless division.new_record?
+  h1.l-dashboard__heading 部署担当者
 
-      h1.l-contents__heading 部署担当者
+  .u-ta-left.u-mt-30
+    = link_to "＋ #{division.name}の担当者を作成する", new_subcontractor_division_client_path(subcontractor_division_id: division.id), class: 'u-td-underline u-fc-blue'
 
-      .u-ta-left.u-mt-30
-        = link_to "＋ #{division.name}の担当者を作成する", new_subcontractor_division_client_path(subcontractor_division_id: division.id), class: 'u-td-underline u-fc-blue'
+  - division.clients.each do |client|
+    .u-ta-left.u-mt-30
+      = link_to client.name, edit_subcontractor_division_client_path(id: client.id), class: 'u-td-underline'
 
-      - division.clients.each do |client|
-        .u-ta-left.u-mt-30
-          = link_to client.name, edit_subcontractor_division_client_path(id: client.id), class: 'u-td-underline'
-    
-    h1.l-contents__heading.u-mt-30 部署情報
-    
-    = form_for division, html: { class: 'u-mt-30'} do |f|
+h1.l-dashboard__heading.u-mt-30 部署情報
 
-      = f.hidden_field :subcontractor_id, value: subcontractor.id
+= form_for division, html: { class: 'u-mt-30'} do |f|
 
-      .c-form-label
-        = f.label :name, '名称'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :name, placeholder: '名称', class: 'c-form-text', required: :true
+  = f.hidden_field :subcontractor_id, value: subcontractor.id
 
-      .c-form-label
-        = f.label :kana, '名称(カナ)'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :kana, placeholder: '名称(カナ)', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :name, '名称'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :name, placeholder: '名称', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :zip, '郵便番号'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :zip, placeholder: '郵便番号', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :kana, '名称(カナ)'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :kana, placeholder: '名称(カナ)', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :prefecture_id, '都道府県'
-        span.c-form__required.u-ml-10 必須
-      = f.select :prefecture_id, Prefecture.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
+  .c-form-label
+    = f.label :zip, '郵便番号'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :zip, placeholder: '郵便番号', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :address1, '住所1'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :address1, placeholder: '住所1', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :prefecture_id, '都道府県'
+    span.c-form__required.u-ml-10 必須
+  = f.select :prefecture_id, Prefecture.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
 
-      .c-form-label
-        = f.label :address2, '住所2'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :address2, placeholder: '住所2', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :address1, '住所1'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :address1, placeholder: '住所1', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :note, 'メモ'
-      = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+  .c-form-label
+    = f.label :address2, '住所2'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :address2, placeholder: '住所2', class: 'c-form-text', required: :true
 
-      .u-ta-center.u-mt-30 = f.submit division.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+  .c-form-label
+    = f.label :note, 'メモ'
+  = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+
+  .u-ta-center.u-mt-30 = f.submit division.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

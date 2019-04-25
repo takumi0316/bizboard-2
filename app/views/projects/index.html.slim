@@ -1,72 +1,70 @@
-.l-contents
-  section.l-contents__inner
 
-    = render 'layouts/_partials/tabmenu'
+= render 'layouts/_partials/tabmenu'
 
-    = link_to '新規案件を作成する', new_project_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
+= link_to '新規案件を作成する', new_project_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
-    = form_with url: projects_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+= form_with url: projects_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 
-      .c-search__item
-        = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
-        = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '担当者名/案件名/備考'
+  .c-search__item
+    = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
+    = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '担当者名/案件名/備考'
 
-      = f.submit '検索', class: 'c-btnMain-standard'
+  = f.submit '検索', class: 'c-btnMain-standard'
 
-    .c-table.u-mt-30
-      table
-        thead
-          tr
-            th 案件No
-            th 編集
-            th ステータス
-            th 仕様
-            th 納期
-            th 案件名
-            th お客様
-            th 金額
-            th 作成者
-            th 見積もり
-            th 作業詳細
-            th 請求書
-            th 活動履歴
-            th 更新日
-            th 削除
-        tbody
-          - projects.each do |r|
-            tr
-              td = r.project_number
-              td = link_to '編集', edit_project_path(r), class: 'c-btnMain-standard'
-              td = r.status_i18n
-              td = r.project_category_i18n
-              td = r.deliver_at.to_s
-              td = r.name
-              td
-                - if r.company_division_client_id?
-                  = "#{r.client&.company_division&.company&.name} #{r.client&.name} 様"
-              td
-              td = r.user.name
-              td
-                - if r.draft?
-                  = link_to '見積書を作成する', new_quote_path(project_id: r.id), class: 'c-btnMain-standard c-btn-blue'
-                - else
-                  = link_to '見積書', quotes_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-              td
-                - if r.draft?
-                  | 未発行
-                - elsif r.estimated?
-                  = link_to '作業書を作成する', project_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
-                - else
-                  = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
-              td
-                - if r.invoicing? && r.invoice.present?
-                  = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
-                - elsif r.end_work?
-                  = link_to '請求書を作成する', new_invoice_path(project_id: r.id), class: 'c-btnMain-standard c-btn-blue'
-                - else
-                  | 未発行
-              td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-              td = r.updated_at.to_s
-              td = link_to '削除', project_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 案件No
+        th 編集
+        th ステータス
+        th 仕様
+        th 納期
+        th 案件名
+        th お客様
+        th 金額
+        th 作成者
+        th 見積もり
+        th 作業詳細
+        th 請求書
+        th 活動履歴
+        th 更新日
+        th 削除
+    tbody
+      - projects.each do |r|
+        tr
+          td = r.project_number
+          td = link_to '編集', edit_project_path(r), class: 'c-btnMain-standard'
+          td = r.status_i18n
+          td = r.project_category_i18n
+          td = r.deliver_at.to_s
+          td = r.name
+          td
+            - if r.company_division_client_id?
+              = "#{r.client&.company_division&.company&.name} #{r.client&.name} 様"
+          td
+          td = r.user.name
+          td
+            - if r.draft?
+              = link_to '見積書を作成する', new_quote_path(project_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+            - else
+              = link_to '見積書', quotes_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+          td
+            - if r.draft?
+              | 未発行
+            - elsif r.estimated?
+              = link_to '作業書を作成する', project_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+            - else
+              = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
+          td
+            - if r.invoicing? && r.invoice.present?
+              = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
+            - elsif r.end_work?
+              = link_to '請求書を作成する', new_invoice_path(project_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+            - else
+              | 未発行
+          td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+          td = r.updated_at.to_s
+          td = link_to '削除', project_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
-  = render 'layouts/_partials/pagination'
+= render 'layouts/_partials/pagination'

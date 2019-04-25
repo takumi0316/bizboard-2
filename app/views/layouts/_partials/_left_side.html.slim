@@ -1,0 +1,101 @@
+.l-dashboard__menu
+
+  #js-drawerOpen.js-drawerOpen.l-dashboard-trigger
+    .l-dashboard-trigger__icon
+    .l-dashboard-trigger__text
+  
+  h1.l-dashboard__logo
+    = link_to root_path do
+
+      - if SiteConfig.logo
+        
+        = image_tag SiteConfig.logo, height: 50, alt: "#{SiteConfig.site_title}|#{SiteConfig.site_name}"
+
+      - else
+
+        svg viewBox='10 20 600 155' width='180' height='50'
+          title #{SiteConfig.site_title}|#{SiteConfig.site_name}
+          desc = SiteConfig.site_description
+          use xlink:href='#logo_main'
+          use xlink:href='#logo_text'
+          use xlink:href='#logo_title'
+          use xlink:href='#logo_vivid'
+
+  - if user_signed_in?
+
+    ul.l-dashboard__menuList
+
+      li.l-dashboard__menuItem
+        = link_to projects_path do
+          = evil_icon 'ei-plus', size: :s
+          span.u-ml-10 案件管理
+      
+      li.l-dashboard__menuItem
+        = link_to works_path do
+          = evil_icon 'ei-calendar', size: :s
+          span.u-ml-10 作業管理
+      
+      li.l-dashboard__menuItem
+        = link_to companies_path do
+          = evil_icon 'ei-link', size: :s
+          span.u-ml-10 取引先
+      
+      li.l-dashboard__menuItem
+        = link_to subcontractors_path do
+          = evil_icon 'ei-user', size: :s
+          span.u-ml-10 外注先
+      
+      li.l-dashboard__menuItem
+        = link_to items_path do
+          = evil_icon 'ei-paperclip', size: :s
+          span.u-ml-10 品目
+
+      li.l-dashboard__menuItem
+        = link_to root_path do
+          = evil_icon 'ei-chart', size: :s
+          span.u-ml-10 目標管理
+
+    - if current_user.admin?
+
+      .u-mt-50
+        ul.l-dashboard__menuList
+          li.l-dashboard__menuItem
+            = link_to users_path do
+              = evil_icon 'ei-user', size: :s
+              span.u-ml-10 ユーザー一覧
+          
+          li.l-dashboard__menuItem
+            = link_to divisions_path do
+              = evil_icon 'ei-user', size: :s
+              span.u-ml-10 自社部署一覧
+
+          li.l-dashboard__menuItem
+            = link_to masters_path do
+              = evil_icon 'ei-gear', size: :s
+              span.u-ml-10 マスタ同期
+
+          li.l-dashboard__menuItem
+            = link_to configs_path do
+              = evil_icon 'ei-user', size: :s
+              span.u-ml-10 サイト設定
+
+    .u-mt-50
+      ul.l-dashboard__menuList
+
+        li.l-dashboard__menuItem
+          = link_to edit_user_path(current_user) do
+            = evil_icon 'ei-pencil', size: :s
+            span.u-ml-10 プロフィール編集
+
+        li.l-dashboard__menuItem
+          = link_to sign_out_path, method: :delete do
+            = evil_icon 'ei-close-o', size: :s
+            span.u-ml-10 ログアウト
+
+javascript:
+      
+  // 左サイドメニューの開閉
+  document.querySelectorAll('.js-drawerOpen').forEach(trigger => trigger.onclick = () => {
+
+    document.body.dataset.menuOpen = document.body.dataset.menuOpen == 'true'? 'false' : 'true';
+  });

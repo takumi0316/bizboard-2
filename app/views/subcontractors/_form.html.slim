@@ -1,26 +1,23 @@
-.l-contents
-  section.l-contents__inner
+h1.l-dashboard__heading 取引先
 
-    h1.l-contents__heading 取引先
-    
-    - unless subcontractor.new_record?
-      .u-ta-left.u-mt-30
-        = link_to '部署を作成する', new_subcontractor_division_path(subcontractor_id: subcontractor.id), class: 'u-td-underline u-fc-blue'
+- unless subcontractor.new_record?
+  .u-ta-left.u-mt-30
+    = link_to '部署を作成する', new_subcontractor_division_path(subcontractor_id: subcontractor.id), class: 'u-td-underline u-fc-blue'
 
-    = form_for subcontractor, html: { class: 'u-mt-30'} do |f|
+= form_for subcontractor, html: { class: 'u-mt-30'} do |f|
 
-      .c-form-label
-        = f.label :name, '名称'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :name, placeholder: '名称', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :name, '名称'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :name, placeholder: '名称', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :kana, '名称(カナ)'
-        span.c-form__required.u-ml-10 必須
-      = f.text_field :kana, placeholder: '名称(カナ)', class: 'c-form-text', required: :true
+  .c-form-label
+    = f.label :kana, '名称(カナ)'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :kana, placeholder: '名称(カナ)', class: 'c-form-text', required: :true
 
-      .c-form-label
-        = f.label :note, 'メモ'
-      = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+  .c-form-label
+    = f.label :note, 'メモ'
+  = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
 
-      .u-ta-center.u-mt-30 = f.submit subcontractor.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+  .u-ta-center.u-mt-30 = f.submit subcontractor.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
