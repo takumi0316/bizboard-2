@@ -50,15 +50,16 @@
           = evil_icon 'ei-paperclip', size: :s
           span.u-ml-10 品目
 
-      li.l-dashboard__menuItem
-        = link_to root_path do
-          = evil_icon 'ei-chart', size: :s
-          span.u-ml-10 目標管理
-
     - if current_user.admin?
 
       .u-mt-50
         ul.l-dashboard__menuList
+        
+          li.l-dashboard__menuItem
+            = link_to root_path do
+              = evil_icon 'ei-chart', size: :s
+              span.u-ml-10 目標管理
+
           li.l-dashboard__menuItem
             = link_to users_path do
               = evil_icon 'ei-user', size: :s
