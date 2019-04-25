@@ -26,6 +26,8 @@ export default class AddDetails extends React.Component {
 
       show: false,
       work_details: this.props.details,
+      work_notices: this.props.work_notices,
+      read_work_notices: this.props.work_notices,
       startDate: new Date(),
     }
 
@@ -145,7 +147,6 @@ export default class AddDetails extends React.Component {
           'count': document.getElementById('count' + i).value,
           'deliver_at': replace_datetime,
           'client_name': document.getElementById('client_name' + i).value,
-          'status': Number(document.getElementById('status' + i).value),
           'estimated_cost': document.getElementById('estimated_cost' + i).value,
           'actual_man_hours': document.getElementById('actual_man_hours' + i).value,
           'actual_cost': document.getElementById('actual_cost' + i).value,
@@ -177,12 +178,10 @@ export default class AddDetails extends React.Component {
         let type = 'work_detail_cost';
         if (!err && res.body.status === "success") {
 
-          this.setState({ show: false, work_details: res.body.detail });
-          this.props.applyPrice(actual_cost, type);
+          this.setState({ work_details: res.body.detail }, this.onWorkNoticesUpdate(actual_cost, type));
         } else if (!err && res.body.status === 'nothing') {
 
-          this.setState({ show: false, });
-          this.props.applyPrice(actual_cost, type);
+          this.onWorkNoticesUpdate(actual_cost, type);
         } else {
 
           this.setState({ work_details: res.body.detail });
@@ -190,13 +189,30 @@ export default class AddDetails extends React.Component {
       });
   }
 
-  modalContent = () => {
+  onWorkNoticesUpdate = (actual_cost, type) => {
 
-    return (
-      <div>
-          <input type='text' ref='url' placeholder='httpsから始まるURLを入力して下さい' />
-      </div>
-    );
+    let field = {};
+    let url = '/works/' + this.props.work_id;
+    field = {
+      'work_id': this.props.work_id,
+      'work_notices': document.getElementById('notices').value,
+      'status': 'notices',
+    };
+    Request
+      .put(url)
+      .field(field)
+      .set('X-Request-With', 'XMLHttpRequest')
+      .setCsrfToken()
+      .end((err, res) => {
+
+        if (!err && res.body.status === 'success') {
+
+          this.setState({ show: false, work_notices: res.body.notices }, this.props.applyPrice(actual_cost, type));
+        } else {
+
+          this.setState({ work_notices: res.body.notices });
+        }
+      });
   }
 
 
@@ -225,6 +241,7 @@ export default class AddDetails extends React.Component {
           :
           <div className={ Style.AddDetails__WorkEdit }>
             <button className={ 'c-btnMain-standard' } id='editable' onClick={ this._editable }>作業詳細[編集]</button>
+            <a className={ 'c-btnMain-primaryB' } href={ '/works/' + this.props.work_id + '/directions'   } target='_blank'>指示書発行[社内用]</a>
           </div>
         }
         { this.state.show ?
@@ -238,10 +255,9 @@ export default class AddDetails extends React.Component {
                   <th>数量</th>
                   <th>期日</th>
                   <th>担当者</th>
-                  <th>ステータス</th>
                   <th>想定原価(税抜)</th>
                   <th>実績工数(時間)</th>
-                  <th>実績単価(税抜)</th>
+                  <th>実績原価(税抜)</th>
                 </tr>
               </thead>
               <tbody>
@@ -263,19 +279,6 @@ export default class AddDetails extends React.Component {
                           }) }
                         </select>
                       </td>
-                      <td>
-                        <select className={ 'c-form-select__work-show' } id={ 'status' + index }>
-                          <option value={ detail.status }>{ ENUM_STATUS[detail.status] }</option>
-                          { Object.keys(ENUM_STATUS).map((status) => {
-                            return (
-                              detail.status === Number(status) ?
-                                null
-                              :
-                                <option value={ status }>{ ENUM_STATUS[status] }</option>
-                            );
-                          }) }
-                        </select>
-                      </td>
                       <td><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCost(e, detail.id, index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
                       <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_man_hours' + index } defaultValue={ detail.actual_man_hours } /></td>
                       <td><input readOnly className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost } /></td>
@@ -283,12 +286,26 @@ export default class AddDetails extends React.Component {
                   );
                 }) }
                 <tr>
-                  <td colSpan={ '11' }><button className={ 'c-btnMain-primaryB' } onClick={ this.onWorkDetailCreate }>作業詳細[追加]</button></td>
+                    <td colSpan='9'><button className={ 'c-btnMain-primaryB' } onClick={ this.onWorkDetailCreate }>＋</button></td>
                 </tr>
               </tbody>
             </table>
+            <div className={ 'c-table' }>
+              <table>
+                <thead>
+                  <tr>
+                    <th>特記事項</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colSpan='9'><textarea id='notices' rows='3' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ this.state.work_notices }></textarea></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        :
+          :
           <div className={ 'c-table' }>
             <table>
               <thead>
@@ -298,7 +315,6 @@ export default class AddDetails extends React.Component {
                   <th>数量</th>
                   <th>期日</th>
                   <th>担当者</th>
-                  <th>ステータス</th>
                   <th>想定原価(税抜)</th>
                   <th>実績工数(時間)</th>
                   <th>実績原価(税抜)</th>
@@ -308,20 +324,33 @@ export default class AddDetails extends React.Component {
                 { this.state.work_details.map((detail, index) => {
                   return (
                     <tr>
-                      <td style={{ textAlign: 'center' }}>{ detail.id }</td>
-                      <td style={{ textAlign: 'center' }}>{ this.props.category }</td>
-                      <td style={{ textAlign: 'right', width: '55px' }} id={ 'count' + index }>{ detail.count }</td>
-                      <td style={{ textAlign: 'center' }}>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
-                      <td style={{ textAlign: 'center' }}>{ detail.client_name }</td>
-                      <td style={{ textAlign: 'center' }}>{ ENUM_STATUS[detail.status] }</td>
-                      <td style={{ textAlign: 'right' }}>{ detail.estimated_cost }円</td>
-                      <td style={{ textAlign: 'right' }}>{ detail.actual_man_hours }時間</td>
-                      <td style={{ textAlign: 'right' }}>{ detail.actual_cost }円</td>
+                      <td className={ 'u-ta-center' }>{ detail.id }</td>
+                      <td className={ 'u-ta-center' }>{ this.props.category }</td>
+                      <td className={ 'u-ta-right' } id={ 'count' + index }>{ detail.count }</td>
+                      <td className={ 'u-ta-center' }>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
+                      <td className={ 'u-ta-center' }>{ detail.client_name }</td>
+                      <td className={ 'u-ta-right' }>{ detail.estimated_cost }円</td>
+                      <td className={ 'u-ta-right' }>{ detail.actual_man_hours }時間</td>
+                      <td className={ 'u-ta-right' }>{ detail.actual_cost }円</td>
                     </tr>
                   );
                 }) }
               </tbody>
             </table>
+            <div className={ 'c-table' }>
+              <table>
+                <thead>
+                  <tr>
+                    <th>特記事項</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{ this.state.read_work_notices }</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           }
       </div>

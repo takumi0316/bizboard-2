@@ -15,7 +15,7 @@
           th 期日
           th ステータス
           th 売上
-          th 実績単価
+          th 実績原価
           th 粗利
           th 粗利率
           th 更新日
@@ -30,10 +30,10 @@
             td style='text-align: center;' = r.project.user.name
             td style='text-align: center;' = r.project.deliver_at.to_s
             td style='text-align: center;' = r.status
-            td style='text-align: right;' = "#{r.price}円"
             td style='text-align: right;' = "#{r.project.price}円"
-            td style='text-align: right;' = '0円'
-            td style='text-align: right;' = r.cost.nonzero?? "#{r.price.to_f / r.cost.to_f}%" : '0%'
+            td style='text-align: right;' = "#{r.price}円"
+            td style='text-align: right;' = "#{r.project.price - r.price}"
+            td style='text-align: right;' = r.price.nonzero?? "#{r.price.to_f / r.price.to_f}%" : '0%'
             td style='text-align: center;' = r.updated_at
 
     = render 'layouts/_partials/pagination'

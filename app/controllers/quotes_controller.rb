@@ -35,6 +35,9 @@ class QuotesController < ApplicationController
   #  ** Request cycles **
   #----------------------------------------
 
+  # MFクラウド認証
+  before_action :authenticate_mfcloud
+
   #----------------------------------------
   #  ** Actions **
   #----------------------------------------

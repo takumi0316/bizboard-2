@@ -10,6 +10,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  free_word  :text(65535)
+#  notices    :text(65535)
 #
 
 class Work < ApplicationRecord
@@ -68,28 +69,31 @@ class Work < ApplicationRecord
   # 名称検索
   #
   #
-  def self.search(word)
-
-    terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['free_word like ?'] * terms.size).join(' and ')
-
-    where(query, *terms.map { |term| "%#{term}%" })
-  end
-
-  ##
-  # パラメータによる検索
-  # @version 2018/06/10
-  #
-  def self.by_params(**parameters)
+  def self.search(**parameters)
 
     _self = self
+    if parameters[:name].present? && parameters[:status] == 'ステータス'
 
-    # ステータス
-    _self = _self.where(status: parameters[:status]) if parameters[:status].present?
+      # 名称検索
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
+      # 日付検索
+      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      return _self
+    elsif parameters[:name].present? && parameters[:status] != 'ステータス'
 
-    _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)) if parameters[:date1].present? && parameters[:date2].present?
-
-    _self
+      # 名称検索
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      where(query, *terms.map { |term| "%#{term}%" })
+      # ステータス検索
+      _self = _self.where(status: parameters[:status])
+      # 日付検索
+      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      return _self
+    end
+     return _self
   end
 
 end

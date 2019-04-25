@@ -57,7 +57,6 @@ class WorkSubcontractorDetailsController < ApplicationController
             estimated_cost: parse_json['estimated_cost'],
             actual_count: parse_json['actual_count'],
             actual_cost: parse_json['actual_cost'],
-            status: parse_json['status']
           )
         end
         render json: { status: :success, detail: Work.find(params[:work_id]).subcontractor_detail }

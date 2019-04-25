@@ -14,8 +14,7 @@ class WorksController < ApplicationController
   # 作業進捗一覧
   expose_with_pagination(:works) {
     Work
-      .by_params(status: params[:status], date1: params[:date1], date2: params[:date2])
-      .search(params[:name])
+      .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
       .all
       .reverse_order
   }
@@ -54,22 +53,34 @@ class WorksController < ApplicationController
     if params[:status] === 'status'
 
       work.update! status: params[:work][:status].to_i
+
+      work.project.end_work! if work.配送済み? || work.納品済み?
+
       render json: { status: :success, work: work.status }
     elsif params[:status] === 'price'
 
-      work.project.update! price: params[:price]
-      render json: { status: :success, price: work.project.price }
+      work.update! price: params[:price]
+      render json: { status: :success, price: work.price }
+
+    elsif params[:status] === 'notices'
+
+      work.update! notices: params[:work_notices]
+      render json: { status: :success, notices: work.notices }
     end
 
-  rescue => e
+    rescue => e
 
-    if params[:status] === 'status'
+      if params[:status] === 'status'
 
-      render json: { status: :error, work: work.status }
-    elsif params[:status] === 'price'
+        render json: { status: :error, work: work.status }
+      elsif params[:status] === 'price'
 
-      render json: { status: :error, price: work.project.price }
-    end
+        render json: { status: :error, price: work.price }
+      elsif params[:status] === 'notices'
+
+        work.update! notices: params[:work_notices]
+        render json: { status: :success, notices: work.notices }
+      end
   end
 
   #----------------------------------------

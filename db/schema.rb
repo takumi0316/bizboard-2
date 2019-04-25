@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_064529) do
+ActiveRecord::Schema.define(version: 2019_04_25_082405) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_064529) do
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< HEAD
   create_table "estimate_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "estimate_id"
     t.bigint "item_id"
@@ -141,6 +142,22 @@ ActiveRecord::Schema.define(version: 2019_04_24_064529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_estimates_on_project_id"
+=======
+  create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
+    t.date "date", comment: "請求日"
+    t.date "expiration", comment: "支払い期限"
+    t.string "subject", comment: "件名"
+    t.text "remarks", comment: "備考"
+    t.text "memo", comment: "メモ"
+    t.text "free_word", comment: "検索用"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "attention"
+    t.string "mf_invoice_id"
+    t.string "pdf_url"
+    t.index ["project_id"], name: "index_invoices_on_project_id"
+>>>>>>> 88cb336752c735ed1572cf4ca7815114ccb03851
   end
 
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -471,7 +488,6 @@ ActiveRecord::Schema.define(version: 2019_04_24_064529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "work_id"
-    t.text "notices"
     t.index ["work_id"], name: "index_work_subcontractor_details_on_work_id"
     t.index ["work_subcontractor_id"], name: "index_work_subcontractor_details_on_work_subcontractor_id"
   end
@@ -482,6 +498,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_064529) do
     t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "notices"
     t.index ["subcontractor_division_client_id"], name: "index_work_subcontractors_on_subcontractor_division_client_id"
     t.index ["work_id"], name: "index_work_subcontractors_on_work_id"
   end
@@ -494,6 +511,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_064529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "free_word"
+    t.text "notices"
     t.index ["project_id"], name: "index_works_on_project_id"
   end
 

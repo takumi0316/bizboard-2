@@ -599,6 +599,7 @@
       { details: works.find(params[:id]).work_details,
         category: works.find(params[:id]).project.project_category_i18n,
         work_id: params[:id],
+        work_notices: works.find(params[:id]).notices,
         user_id: current_user.id,
         users: User.all,
         work_subcontractors: works.find(params[:id]).subcontractor,
@@ -606,7 +607,8 @@
         subcontractors: Subcontractor.all,
         divisions: SubcontractorDivision.all,
         clients: SubcontractorDivisionClient.all,
-        price: works.find(params[:id]).project.price,
+        project_price: works.find(params[:id]).project.price,
+        work_price: works.find(params[:id]).price,
         work_detail_actual_cost: (works.find(params[:id]).work_details.sum(:actual_cost)).to_i,
         subcontractor_detail_actual_cost: (works.find(params[:id]).subcontractor_detail.sum(:actual_cost)).to_i,
         })

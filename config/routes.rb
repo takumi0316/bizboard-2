@@ -36,11 +36,18 @@ Rails.application.routes.draw do
   end
   resources :quotes
 
+  # 案件
+  namespace :invoices do
+    post :apipost
+  end
+  resources :invoices
+
   #活動履歴
   resources :activities
 
   # 作業進捗
   resources :works
+  get 'works/:id/directions' => 'works#directions'
 
   # 作業詳細
   resources :work_details
