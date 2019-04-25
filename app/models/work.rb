@@ -69,19 +69,37 @@ class Work < ApplicationRecord
   # 名称検索
   #
   #
-  def self.search(word)
+  def self.search(**parameters)
 
-    terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['free_word like ?'] * terms.size).join(' and ')
+    _self = self
+    if parameters[:name].present? && parameters[:status] == 'ステータス'
 
-    where(query, *terms.map { |term| "%#{term}%" })
+      # 名称検索
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
+      # 日付検索
+      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      return _self
+    elsif parameters[:name].present? && parameters[:status] != 'ステータス'
+
+      # 名称検索
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      where(query, *terms.map { |term| "%#{term}%" })
+      # ステータス検索
+      _self = _self.where(status: parameters[:status])
+      # 日付検索
+      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      return _self
+    end
+     return _self
   end
 
   ##
   # パラメータによる検索
   # @version 2018/06/10
   #
-  binding.pry
   def self.by_params(**parameters)
 
     _self = self
