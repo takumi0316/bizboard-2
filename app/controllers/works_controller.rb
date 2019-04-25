@@ -13,10 +13,8 @@ class WorksController < ApplicationController
 
   # 作業進捗一覧
   expose_with_pagination(:works) {
-    binding.pry
     Work
       .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-      .by_params(status: params[:status], date1: params[:date1], date2: params[:date2])
       .all
       .reverse_order
   }

@@ -96,20 +96,4 @@ class Work < ApplicationRecord
      return _self
   end
 
-  ##
-  # パラメータによる検索
-  # @version 2018/06/10
-  #
-  def self.by_params(**parameters)
-
-    _self = self
-
-    # ステータス
-    _self = _self.where(status: parameters[:status]) if parameters[:status].present?
-
-    _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)) if parameters[:date1].present? && parameters[:date2].present?
-
-    _self
-  end
-
 end

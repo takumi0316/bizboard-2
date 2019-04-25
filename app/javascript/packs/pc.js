@@ -54,9 +54,6 @@ import WorkDetails from 'components/work_editor/work_details/index.jsx'
 // 作業詳細作成
 import WorkEditor from 'components/work_editor/index.jsx'
 
-// 作業外注スクリーンショット
-import HtmlCaptcha from 'components/html-captcha'
-
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -69,5 +66,4 @@ WebpackerReact.setup({
   WorkStatus,
   SubcontractorDivisions,
   WorkEditor,
-  HtmlCaptcha,
 })
