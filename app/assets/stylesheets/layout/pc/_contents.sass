@@ -21,18 +21,24 @@
     border-bottom: solid 1px map-get($layoutColors, 'lightGray')
     padding: 15px 0
 
-  #岡田追記しました
   &__tabmenu
     display: flex
     align-items: center
     position: relative
     padding: 15px 0
     li+ li
-      border-left: 1px solid
+      border-left: 1px solid map-get($layoutColors, 'lightGray')
   &__tabmenuText
-    font-size: map-get($fontSize, 'title')
-    a
-      margin: 0 20px
+    $self: &
+    display: inline-block
+    font-size: map-get($fontSize, 'large')
+    margin: 0 20px
+    border-bottom: solid 3px map-get($layoutColors, 'white')
+    vertical-align: middle
+    &--active
+      @extend #{$self}
+      color: map-get($layoutColors, 'core')
+      border-bottom: solid 3px map-get($layoutColors, 'blue')
 
   &__panel
     position: relative

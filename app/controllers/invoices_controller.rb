@@ -12,7 +12,7 @@ class InvoicesController < ApplicationController
   #----------------------------------------
 
   # 請求書一覧
-  expose_with_pagination(:invoices) { Invoice.all.order(date: :desc) }
+  expose_with_pagination(:invoices) { Invoice.search(params[:free_word]).all.order(date: :desc) }
 
   # 請求書
   expose(:invoice) { params[:project_id].present?? Invoice.new(project_id: params[:project_id]) : Invoice.find_or_initialize_by(id: params[:id] || params[:invoice_id]) }
@@ -76,10 +76,9 @@ class InvoicesController < ApplicationController
       title: invoice.subject,
       billing_number: invoice.project.project_number,
       payment_condition: SiteConfig.payment_condition,
-      note: invoice.memo,
+      note: invoice.remarks,
       billing_date: invoice.date.to_s(:system),
       due_date: invoice.expiration.to_s(:system),
-      memo: invoice.free_word,
       document_name: invoice.project.project_number,
     }
 
@@ -113,10 +112,9 @@ class InvoicesController < ApplicationController
       title: invoice.subject,
       billing_number: invoice.project.project_number,
       payment_condition: SiteConfig.payment_condition,
-      note: invoice.memo,
+      note: invoice.remarks,
       billing_date: invoice.date.to_s(:system),
       due_date: invoice.expiration.to_s(:system),
-      memo: invoice.free_word,
       document_name: invoice.project.project_number,
     }
 

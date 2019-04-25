@@ -110,7 +110,7 @@ class Project < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.user&.name} #{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
+    self.free_word = "#{self.project_number} #{self.user&.name} #{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
   end
 
   ##
@@ -119,7 +119,7 @@ class Project < ApplicationRecord
   #
   def set_project_number
 
-    update_columns(:project_number => "#{created_at.strftime('%Y%m%d')}#{id}")
+    update_columns(project_number: "#{created_at.strftime('%Y%m%d')}#{id}")
   end
 
 

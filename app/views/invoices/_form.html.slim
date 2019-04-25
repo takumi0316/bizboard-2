@@ -83,4 +83,4 @@
         = f.label :memo, 'メモ　※請求書に記載されません'
       = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
 
-      .u-ta-center.u-mt-30 = f.submit invoice.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+      .c-overlay-submit = f.submit invoice.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

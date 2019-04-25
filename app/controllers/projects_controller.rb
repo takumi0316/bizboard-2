@@ -14,7 +14,7 @@ class ProjectsController < ApplicationController
   # 案件一覧
   expose_with_pagination(:projects) {
     Project
-      .search(params[:name])
+      .search(params[:free_word])
       .all
       .reverse_order
   }

@@ -5,7 +5,7 @@
       span.u-fw-bold = works.find(params[:id]).project.name
       span.u-ml-30
         | 案件番号:
-        span.u-fw-bold = works.find(params[:id]).project.id
+        span.u-fw-bold = works.find(params[:id]).project.project_number
       span.u-ml-30
         | 受付日:
         span.u-fw-bold = works.find(params[:id]).project.created_at.to_s

@@ -22,7 +22,7 @@
       tbody
         - works.each do |r|
           tr
-            td style='text-align: center;' = r.project.id
+            td style='text-align: center;' = r.project.project_number
             td style='text-align: center;' = link_to '編集', work_path(r), class: 'c-btnMain-standard'
             td style='text-align: center;' = r.project.client.company_division.company.name if r.project.client.present?
             td style='text-align: center;' = r.project.client.name if r.project.client.present?
