@@ -34,7 +34,7 @@ class QuoteItem < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  has_many :quotes
+  belongs_to :quote
 
   #----------------------------------------
   #  ** Delegates **

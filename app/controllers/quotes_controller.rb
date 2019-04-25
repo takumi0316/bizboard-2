@@ -16,11 +16,15 @@ class QuotesController < ApplicationController
     Quote
     .search(params[:name])
     .all
+    .includes(:quote_items)
     .order(date: 'DESC')
   }
 
+  # 見積もりアイテム
+  expose(:quote_item) { QuoteItem.find_or_initialize_by id: params[:id] || params[:quote_item_id]}
+
   # 見積もり
-  expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id] }
+  expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id]}
 
 
   #----------------------------------------
@@ -42,7 +46,6 @@ class QuotesController < ApplicationController
   def index
 
     add_breadcrumb '見積もり'
-    @id = params[:name]
   end
 
   ##
@@ -78,7 +81,7 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを更新しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -93,45 +96,7 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
-    token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
-
-    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
-    request = Net::HTTP::Post.new(uri)
-    request.content_type = "application/json"
-    request["Authorization"] = "BEARER {{#{token}}}"
-    request.body = JSON.dump({
-      "quote" => {
-        "department_id" => "asdfghjkl",
-        "items" => [
-          {
-            "name" => "商品A",
-            "quantity" => 1,
-            "unit_price" => 100
-          },
-        ]
-      }
-    })
-
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
-
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
-    end
-
-    response.code
-    response.body
-
-    # ここで見積もり金額の合計値(※税抜き)を出し、Quoteテーブルのpriceを更新してください
-    # また、その際に見積もり金額と同じ値で、Projectテーブルのpriceを更新してください。
-    # あとこれは重要なのですが、現状だと見積もりデータを作成するたびに見積書がMFクラウド上に生成されてしまうので、
-    # 更新するたびではなく、見積書を発行するボタンを作成し、そのボタンが押された場合に発行してください。
-    # 見積書の発行が完了した際に、Projectモデルを下記のコードでステータスを更新してください
-    #    quote.proect.estimated!
-    # また、見積もり書を作成した際にAPIから返ってくるURL(pdf_url)をQuoteテーブルに保存し、一覧画面からリンクできるようにしてください。
-
-    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
+    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -151,6 +116,107 @@ class QuotesController < ApplicationController
     redirect_to action: :index
   end
 
+  def api_post
+
+    token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
+    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
+    request = Net::HTTP::Post.new(uri)
+    request.content_type = "application/json"
+    request["Authorization"] = "BEARER #{token}"
+
+    request.body = JSON.dump({
+      "quote": {
+        "department_id": quote.project.client.company_division.mf_company_division_id,
+        "quote_number": quote.project.project_number,
+        "quote_date": quote.date.strftime('%Y-%m-%d'),
+        "expired_date": quote.expiration.strftime('%Y-%m-%d'),
+        "title": quote.subject,
+        "note": quote.remarks,
+        "memo": quote.memo,
+        "items": [
+          {
+            "name": '商品B',
+            "quantity": 10,
+            "unit_price": 100,
+          },
+        ]
+      }
+    })
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    data = JSON.parse(response.body)
+
+    quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
+    quote.update_columns(:mf_quote_id => data['data']['id'])
+
+    quote.project.estimated!
+
+    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFに見積もりを作成しました'}}
+  rescue => e
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+  end
+
+  def api_update
+
+    token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
+    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{quote.project.client.company_division.mf_company_division_id}.json")
+    request = Net::HTTP::Patch.new(uri)
+    request.content_type = "application/json"
+    request["Authorization"] = "BEARER {{TOKEN}}"
+    request.body = JSON.dump({
+      "quote": {
+        "title": quote.subject,
+        "items": [
+          {
+            "id": "qwertyuiop",
+            "_destroy": "true"
+          }
+        ]
+      }
+    })
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFの見積もりを更新しました'}}
+  rescue => e
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+  end
+
+
+  def pdf_dl
+
+    token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
+    pdf_url = quote.pdf_url
+
+    uri = URI.parse("#{pdf_url}")
+    request = Net::HTTP::Get.new(uri)
+    request["Authorization"] = "BEARER #{token}"
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    send_data response.body
+
+  end
 
   #----------------------------------------
   #  ** Methods **
@@ -160,8 +226,8 @@ class QuotesController < ApplicationController
 
   def quote_params
 
-    params.require(:quote).permit :id, :project_id, :date, :expiration, :subject, :remarks, :memo,
-      quote_items_attributes: [:cost, :gross_profit, :detail]
+    params.require(:quote).permit :id, :project_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :mf_quote_id,
+      quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
   end
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_19_114449) do
+ActiveRecord::Schema.define(version: 2019_04_24_064529) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -111,18 +111,49 @@ ActiveRecord::Schema.define(version: 2019_04_19_114449) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "estimate_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
+    t.bigint "item_id"
+    t.integer "cost", comment: "原価"
+    t.integer "gross_profit", comment: "粗利"
+    t.text "detail", comment: "詳細"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["estimate_id"], name: "index_estimate_items_on_estimate_id"
+    t.index ["item_id"], name: "index_estimate_items_on_item_id"
+  end
+
+  create_table "estimates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
+    t.string "estimat_number", comment: "見積もり番号"
+    t.date "date", comment: "発行日"
+    t.date "expiration", comment: "有効期限"
+    t.string "subject", comment: "件名"
+    t.string "item", comment: "品目"
+    t.integer "unit_price", comment: "単価"
+    t.integer "quantity", comment: "数量"
+    t.integer "cost", comment: "原価"
+    t.integer "gross_profit", comment: "粗利"
+    t.text "detail", comment: "詳細"
+    t.text "remarks", comment: "備考"
+    t.string "tag", comment: "タグ"
+    t.text "memo", comment: "メモ"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_estimates_on_project_id"
+  end
+
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "mf_item_id"
     t.string "code"
     t.string "note"
+    t.integer "quantity", default: 0
     t.integer "unit_price", default: 0
     t.string "unit"
-    t.integer "consumption_tax", default: 0
+    t.boolean "excise", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "quantity", default: 0
-    t.boolean "excise", default: false
     t.integer "division_id"
     t.text "free_word"
     t.index ["mf_item_id"], name: "index_items_on_mf_item_id", unique: true
@@ -269,9 +300,9 @@ ActiveRecord::Schema.define(version: 2019_04_19_114449) do
     t.integer "binding_work", limit: 1, default: 0
     t.integer "after_process", limit: 1, default: 0
     t.text "note"
+    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", limit: 1, default: 0
     t.text "free_word"
     t.bigint "project_number"
     t.integer "price", default: 0
@@ -283,9 +314,12 @@ ActiveRecord::Schema.define(version: 2019_04_19_114449) do
     t.bigint "quote_id"
     t.integer "cost", comment: "コスト"
     t.decimal "gross_profit", precision: 11, scale: 8, comment: "粗利"
-    t.text "detail", comment: "詳細"
+    t.string "detail", comment: "詳細"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.integer "unit_price"
+    t.integer "quantity"
     t.index ["quote_id"], name: "index_quote_items_on_quote_id"
   end
 
@@ -301,6 +335,8 @@ ActiveRecord::Schema.define(version: 2019_04_19_114449) do
     t.datetime "updated_at", null: false
     t.integer "price"
     t.integer "attention"
+    t.text "pdf_url"
+    t.text "mf_quote_id"
     t.index ["project_id"], name: "index_quotes_on_project_id"
   end
 

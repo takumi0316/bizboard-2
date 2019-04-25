@@ -30,7 +30,9 @@ Rails.application.routes.draw do
 
   #見積もり
   namespace :quotes do
-    post :apipost
+    get :api_post
+    get :api_update
+    get :pdf_dl
   end
   resources :quotes
 
