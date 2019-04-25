@@ -224,11 +224,11 @@ export default class ProjectEditor extends React.Component {
     return (
       <div className={Style.ProjectEditor}>
 
-        <h1 className='l-contents__heading'>案件作成</h1>
+        <h1 className='l-dashboard__heading'>案件作成</h1>
 
         <input type='hidden' name='authenticity_token' value={'test'} />
         
-        <div className='c-form-label'>
+        <div className='c-form-label u-mt-30'>
           <label htmlFor='project_name'>案件名</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
