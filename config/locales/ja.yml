@@ -47,6 +47,10 @@ ja:
       attention:
         messrs: 御中
         dear: 様
+    invoice:
+      attention:
+        messrs: 御中
+        dear: 様
     project:
       status:
         draft: 新規

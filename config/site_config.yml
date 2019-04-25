@@ -21,6 +21,9 @@ defaults: &defaults
   mfcloud_scope: write
   mfcloud_redirect_uri: https://factory.jiinet.co.jp/webhooks/mfcloud
 
+  # 請求額振込先
+  payment_condition: '三菱UFJ銀行 神田支店 当座 0001776 カ）ニホンコウギョウシャ'
+
 development:
   <<: *defaults
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_25_081506) do
+ActiveRecord::Schema.define(version: 2019_04_25_082405) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -121,6 +121,9 @@ ActiveRecord::Schema.define(version: 2019_04_25_081506) do
     t.text "free_word", comment: "検索用"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "attention"
+    t.string "mf_invoice_id"
+    t.string "pdf_url"
     t.index ["project_id"], name: "index_invoices_on_project_id"
   end
 

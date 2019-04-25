@@ -18,27 +18,32 @@
         thead
           tr
             th 案件No
+            th 編集
             th ステータス
-            th 更新日時
-            th お客様
+            th 仕様
+            th 納期
             th 案件名
+            th お客様
             th 金額
             th 作成者
             th 見積もり
             th 作業詳細
             th 請求書
             th 活動履歴
-            th colspan=2
+            th 更新日
+            th 削除
         tbody
           - projects.each do |r|
             tr
-              td = r.id
+              td = r.project_number
+              td = link_to '編集', edit_project_path(r), class: 'c-btnMain-standard'
               td = r.status_i18n
-              td = r.updated_at.to_s
+              td = r.project_category_i18n
+              td = r.deliver_at.to_s
+              td = r.name
               td
                 - if r.company_division_client_id?
                   = "#{r.client&.company_division&.company&.name} #{r.client&.name} 様"
-              td = r.name
               td
               td = r.user.name
               td
@@ -54,15 +59,14 @@
                 - else
                   = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
               td
-                - if r.invoicing?
-                  = link_to '請求書', '/', class: 'c-btnMain-standard c-btn-blue'
+                - if r.invoicing? && r.invoice.present?
+                  = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
                 - elsif r.end_work?
-                  = link_to '請求書を作成する', '/', class: 'c-btnMain-standard c-btn-blue'
+                  = link_to '請求書を作成する', new_invoice_path(project_id: r.id), class: 'c-btnMain-standard c-btn-blue'
                 - else
                   | 未発行
               td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-
-              td = link_to '編集', edit_project_path(r), class: 'c-btnMain-standard'
+              td = r.updated_at.to_s
               td = link_to '削除', project_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
   = render 'layouts/_partials/pagination'

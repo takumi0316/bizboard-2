@@ -34,6 +34,12 @@ Rails.application.routes.draw do
   end
   resources :quotes
 
+  # 案件
+  namespace :invoices do
+    post :apipost
+  end
+  resources :invoices
+
   #活動履歴
   resources :activities
 

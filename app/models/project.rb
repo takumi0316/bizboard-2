@@ -77,6 +77,8 @@ class Project < ApplicationRecord
 
   has_many :quotes
 
+  has_one  :invoice,    dependent: :destroy
+
   accepts_nested_attributes_for :bind
   accepts_nested_attributes_for :card
   accepts_nested_attributes_for :copy
