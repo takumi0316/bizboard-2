@@ -8,7 +8,6 @@ javascript:
       onrendered: function(canvas) {
         var dataURI = canvas.toDataURL();
         var pdf = new jsPDF('l');
-        // 横幅をぴったり合わせたかったので横幅を取得して指定してます
         var width = pdf.internal.pageSize.width;
         var height = pdf.internal.pageSize.height;
         pdf.addImage(canvas, 'JPEG', 0, 0, width, height);
@@ -46,17 +45,17 @@ javascript:
     .c-table-work_subcontractors2
       table
         tr
-          th 発注日
-          td
+          th.u-va-middle 発注日
+          td.u-va-middle.u-ta-left
         tr
-          th 納期
-          td
+          th.u-va-middle 納期
+          td.u-va-middle.u-ta-left
         tr
-          th 納品先
-          td
+          th.u-va-middle 納品先
+          td.u-va-middle.u-ta-left
         tr
-          th 納品方法
-          td
+          th.u-va-middle 納品方法
+          td.u-va-middle.u-ta-left
     .c-table-work_subcontractors3
       table
         tr
@@ -101,8 +100,8 @@ javascript:
             td.u-va-top.u-ta-left = simple_format(r.deliver_method)
             td.u-va-top.u-ta-center □
             td.u-va-top.u-ta-left = simple_format(r.specification)
-            td.u-va-top.u-ta-left = "#{r.count}枚"
-            td.u-va-top.u-ta-left = "#{r.number_of_copies}冊"
+            td.u-va-top.u-ta-right = "#{r.count}枚"
+            td.u-va-top.u-ta-right = "#{r.number_of_copies}冊"
   .c-table
     table
       thead
@@ -125,10 +124,10 @@ javascript:
     .c-table-work_subcontractors5
       table
         tr
-          th 発注部署
-          td
-          th 営業担当
-          td
+          th.u-va-middle 案件管理番号
+          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.project.project_number if WorkSubcontractor.find(params[:id]).work.project.project_number
+          th.u-va-middle 営業担当
+          td.u-va-middle.u-ta-left
 
   .u-mt-20.c-flex__between
     .div

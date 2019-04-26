@@ -6,9 +6,12 @@
 #  quote_id     :bigint(8)
 #  cost         :integer
 #  gross_profit :decimal(11, 8)
-#  detail       :text(65535)
+#  detail       :string(191)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  name         :string(191)
+#  unit_price   :integer
+#  quantity     :integer
 #
 
 class QuoteItem < ApplicationRecord

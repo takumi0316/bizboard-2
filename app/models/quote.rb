@@ -2,18 +2,20 @@
 #
 # Table name: quotes
 #
-#  id         :bigint(8)        not null, primary key
-#  project_id :bigint(8)
-#  date       :date
-#  expiration :date
-#  subject    :string(191)
-#  remarks    :text(65535)
-#  memo       :text(65535)
-#  free_word  :text(65535)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  price      :integer
-#  attention  :integer
+#  id          :bigint(8)        not null, primary key
+#  project_id  :bigint(8)
+#  date        :date
+#  expiration  :date
+#  subject     :string(191)
+#  remarks     :text(65535)
+#  memo        :text(65535)
+#  free_word   :text(65535)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  price       :integer
+#  attention   :integer
+#  pdf_url     :text(65535)
+#  mf_quote_id :text(65535)
 #
 
 class Quote < ApplicationRecord

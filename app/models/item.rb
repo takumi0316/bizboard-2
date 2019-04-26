@@ -2,20 +2,19 @@
 #
 # Table name: items
 #
-#  id              :bigint(8)        not null, primary key
-#  name            :string(191)
-#  mf_item_id      :string(191)
-#  code            :string(191)
-#  note            :string(191)
-#  unit_price      :integer          default(0)
-#  unit            :string(191)
-#  consumption_tax :integer          default(0)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  quantity        :integer          default(0)
-#  excise          :boolean          default(FALSE)
-#  division_id     :integer
-#  free_word       :text(65535)
+#  id          :bigint(8)        not null, primary key
+#  name        :string(191)
+#  mf_item_id  :string(191)
+#  code        :string(191)
+#  note        :string(191)
+#  quantity    :integer          default(0)
+#  unit_price  :integer          default(0)
+#  unit        :string(191)
+#  excise      :boolean          default(FALSE)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  division_id :integer
+#  free_word   :text(65535)
 #
 
 class Item < ApplicationRecord

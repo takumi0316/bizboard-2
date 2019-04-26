@@ -14,6 +14,10 @@
 #  actual_cost         :string(191)
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  order_contents      :string(191)
+#  deliver_method      :text(65535)
+#  specification       :text(65535)
+#  number_of_copies    :string(191)
 #
 
 class WorkDetail < ApplicationRecord
@@ -21,10 +25,10 @@ class WorkDetail < ApplicationRecord
   #------------------------------------
   #  ** Includes **
   #------------------------------------
-  
+
   #------------------------------------
   #  ** Constants **
-  #------------------------------------ 
+  #------------------------------------
 
   #------------------------------------
   #  ** Enums **

@@ -6,7 +6,7 @@
 #  project_id :bigint(8)
 #  price      :integer          default(0)
 #  cost       :integer          default(0)
-#  status     :integer          default("未作業")
+#  status     :integer          default("draft")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  free_word  :text(65535)
@@ -27,7 +27,8 @@ class Work < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum status: { 未作業: 0, 作業中: 10, 配送済み: 20, 納品済み: 30 }
+  enum status: { inactive: 0, active: 10 }
+  enum status: { draft: 0, working: 10, delivered: 20, completed: 30 }
 
   #----------------------------------------
   #  ** Validations **

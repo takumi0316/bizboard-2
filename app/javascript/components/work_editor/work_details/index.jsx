@@ -142,13 +142,16 @@ export default class AddDetails extends React.Component {
         replace_datetime = replace_datetime.replace(/時/g, ':');
         replace_datetime = replace_datetime.replace(/分/g, '');
         array_rails.push(JSON.stringify({
-          'id': document.getElementById('detail_id' + i).innerHTML,
           'work_id': this.props.work_id,
-          'count': document.getElementById('count' + i).value,
+          'id': document.getElementById('detail_id' + i).innerHTML,
+          'order_contents': document.getElementById('order_contents' + i).value,
+          'deliver_method': document.getElementById('deliver_method' + i).value,
+          'specification': document.getElementById('specification' + i).value,
           'deliver_at': replace_datetime,
           'client_name': document.getElementById('client_name' + i).value,
+          'number_of_copies': document.getElementById('number_of_copies' + i).value,
+          'count': document.getElementById('count' + i).value,
           'estimated_cost': document.getElementById('estimated_cost' + i).value,
-          'actual_man_hours': document.getElementById('actual_man_hours' + i).value,
           'actual_cost': document.getElementById('actual_cost' + i).value,
         }));
         actual_cost = actual_cost + Number(document.getElementById('actual_cost' + i).value);
@@ -245,51 +248,57 @@ export default class AddDetails extends React.Component {
           </div>
         }
         { this.state.show ?
-          <div className={ 'c-table' }>
-            <table>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>No.</th>
-                  <th>作業内容</th>
-                  <th>数量</th>
-                  <th>期日</th>
-                  <th>担当者</th>
-                  <th>想定原価(税抜)</th>
-                  <th>実績工数(時間)</th>
-                  <th>実績原価(税抜)</th>
-                </tr>
-              </thead>
-              <tbody>
-                { this.state.work_details.map((detail, index) => {
-                  return (
-                    <tr>
-                      <td><button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
-                      <td id={ 'detail_id' + index } >{ detail.id }</td>
-                      <td>{ this.props.category }</td>
-                      <td><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCount(e, detail.id, index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-                      <td><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }/></td>
-                      <td>
-                        <select className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
-                          { detail.client_name === "" ? <option></option> : <option value={ detail.client_name }>{ detail.client_name }</option> }
-                          { this.props.users.map((user) => {
-                            return(
-                              detail.client_name !== user['name'] ? <option value={ user['name'] }>{ user['name'] }</option> : null
-                            );
-                          }) }
-                        </select>
-                      </td>
-                      <td><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCost(e, detail.id, index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
-                      <td><input className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_man_hours' + index } defaultValue={ detail.actual_man_hours } /></td>
-                      <td><input readOnly className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost } /></td>
-                    </tr>
-                  );
-                }) }
-                <tr>
-                    <td colSpan='9'><button className={ 'c-btnMain-primaryB' } onClick={ this.onWorkDetailCreate }>＋</button></td>
-                </tr>
-              </tbody>
-            </table>
+          <React.Fragment>
+            <div className={ 'c-table' }>
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>No.</th>
+                    <th>発注内容</th>
+                    <th>入稿物</th>
+                    <th>仕様</th>
+                    <th>期日</th>
+                    <th>担当者</th>
+                    <th>原稿<br />枚数</th>
+                    <th>部数<br />数量</th>
+                    <th>想定原価(税抜)</th>
+                    <th>実績原価(税抜)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { this.state.work_details.map((detail, index) => {
+                    return (
+                      <tr>
+                        <td className={ 'u-va-top' }><button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
+                        <td id={ 'detail_id' + index } className={ 'u-va-top' } >{ detail.id }</td>
+                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input4' } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' }></input></td>
+                        <td className={ 'u-va-top' }><textarea id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='50' placeholder={ 'AIデータ, アウトライン済み1ファイル' }>{ detail.deliver_method }</textarea></td>
+                        <td className={ 'u-va-top' }><textarea id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='50' placeholder={ '表紙:ダイヤボード' }>{ detail.specification }</textarea></td>
+                        <td><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
+                        <td className={ 'u-va-top' }>
+                          <select className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
+                            { detail.client_name === "" ? <option></option> : <option value={ detail.client_name }>{ detail.client_name }</option> }
+                            { this.props.users.map((user) => {
+                              return(
+                                detail.client_name !== user['name'] ? <option value={ user['name'] }>{ user['name'] }</option> : null
+                              );
+                            }) }
+                          </select>
+                        </td>
+                        <td className={ 'u-va-top' }><input type='number' className={ 'c-form-text__work-show-input2' } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
+                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCount(e, detail.id, index) } type='number' id={ 'count' + index } defaultValue={ detail.count } /></td>
+                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCost(e, detail.id, index) } type='number' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+                        <td className={ 'u-va-top' }><input readOnly className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost } /></td>
+                      </tr>
+                    );
+                  }) }
+                  <tr>
+                     <td colSpan='13'><button className={ 'c-btnMain-primaryB' } onClick={ this.onWorkDetailCreate }>＋</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <div className={ 'c-table' }>
               <table>
                 <thead>
@@ -299,44 +308,50 @@ export default class AddDetails extends React.Component {
                 </thead>
                 <tbody>
                   <tr>
-                    <td colSpan='9'><textarea id='notices' rows='3' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ this.state.work_notices }></textarea></td>
+                    <td><textarea id='notices' rows='3' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ this.state.work_notices }></textarea></td>
                   </tr>
                 </tbody>
               </table>
             </div>
-          </div>
+          </React.Fragment>
           :
-          <div className={ 'c-table' }>
-            <table>
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>作業内容</th>
-                  <th>数量</th>
-                  <th>期日</th>
-                  <th>担当者</th>
-                  <th>想定原価(税抜)</th>
-                  <th>実績工数(時間)</th>
-                  <th>実績原価(税抜)</th>
-                </tr>
-              </thead>
-              <tbody>
-                { this.state.work_details.map((detail, index) => {
-                  return (
-                    <tr>
-                      <td className={ 'u-ta-center' }>{ detail.id }</td>
-                      <td className={ 'u-ta-center' }>{ this.props.category }</td>
-                      <td className={ 'u-ta-right' } id={ 'count' + index }>{ detail.count }</td>
-                      <td className={ 'u-ta-center' }>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日 HH時mm分') }</td>
-                      <td className={ 'u-ta-center' }>{ detail.client_name }</td>
-                      <td className={ 'u-ta-right' }>{ detail.estimated_cost }円</td>
-                      <td className={ 'u-ta-right' }>{ detail.actual_man_hours }時間</td>
-                      <td className={ 'u-ta-right' }>{ detail.actual_cost }円</td>
-                    </tr>
-                  );
-                }) }
-              </tbody>
-            </table>
+          <React.Fragment>
+            <div className={ 'c-table' }>
+              <table>
+                <thead>
+                  <tr>
+                    <th className={ 'u-va-middle' }>No.</th>
+                    <th className={ 'u-va-middle' }>発注内容</th>
+                    <th className={ 'u-va-middle' }>納品物</th>
+                    <th className={ 'u-va-middle' }>仕様</th>
+                    <th className={ 'u-va-middle' }>期日</th>
+                    <th className={ 'u-va-middle' }>担当者</th>
+                    <th>原稿<br />枚数</th>
+                    <th>部数<br />数量</th>
+                    <th className={ 'u-va-middle' }>想定原価(税抜)</th>
+                    <th className={ 'u-va-middle' }>実績原価(税抜)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { this.state.work_details.map((detail, index) => {
+                    return (
+                      <tr>
+                        <td className={ 'u-va-top u-ta-center' }>{ detail.id }</td>
+                        <td className={ 'u-va-top u-ta-center' }>{ detail.order_contents }</td>
+                        <td className={ 'u-va-top u-ta-left' }>{ detail.deliver_method }</td>
+                        <td className={ 'u-va-top u-ta-left' }>{ detail.specification }</td>
+                        <td className={ 'u-va-top u-ta-center' }>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }</td>
+                        <td className={ 'u-va-top u-ta-center' }>{ detail.client_name }</td>
+                        <td className={ 'u-va-top u-ta-right' } id={ 'count' + index }>{ detail.count }</td>
+                        <td className={ 'u-va-top u-ta-right' }>{ detail.number_of_copies }</td>
+                        <td className={ 'u-va-top u-ta-right' }>{ detail.estimated_cost }円</td>
+                        <td className={ 'u-va-top u-ta-right' }>{ detail.actual_cost }円</td>
+                      </tr>
+                    );
+                  }) }
+                </tbody>
+              </table>
+            </div>
             <div className={ 'c-table' }>
               <table>
                 <thead>
@@ -351,7 +366,7 @@ export default class AddDetails extends React.Component {
                 </tbody>
               </table>
             </div>
-          </div>
+          </React.Fragment>
           }
       </div>
     );

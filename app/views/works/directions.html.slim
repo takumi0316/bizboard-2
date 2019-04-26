@@ -8,49 +8,44 @@ javascript:
       onrendered: function(canvas) {
         var dataURI = canvas.toDataURL();
         var pdf = new jsPDF('l');
-        // 横幅をぴったり合わせたかったので横幅を取得して指定してます
         var width = pdf.internal.pageSize.width;
         var height = pdf.internal.pageSize.height;
-        pdf.addImage(canvas, 'JPEG', 0, 0, width, height);
+        pdf.addImage(canvas, 'JPEG', 10, 10, width, height);
         pdf.save('work-subcontractor.pdf')
       }
     });
   }
 #captcha
-
-  h1.l-dashboard__heading
-    | 発注・指示書(社内用)
-
   .u-mt-10.c-flex__between
-
     .c-table-work_subcontractors1
+      .u-fs-x-large.u-fw-bold 発注・指示書(社内用)
       table
         tr
           th 案件管理番号
           td = Work.find(params[:id]).project.project_number
         tr
           th 発注先部署
-          td
+          td CS
         tr
           th 担当者
-          td
+          td 
     .c-table-work_subcontractors2
       table
         tr
-          th 受注/発注日
-          td
+          th.u-va-middle 受注日
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).project.created_at
         tr
-          th 校正納期
-          td
+          th.u-va-middle 校正納期
+          td.u-va-middle.u-ta-leftd
         tr
-          th 仕上げ納期
-          td.u-fs-large
+          th.u-va-middle 仕上納期
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).project.deliver_at if Work.find(params[:id]).project.deliver_at.present?
         tr
-          th 納品方法
-          td
+          th.u-va-middle 納品先
+          td.u-va-middle.u-ta-left
         tr
-          th 納品先
-          td
+          th.u-va-middle 納品方法
+          td.u-va-middle.u-ta-left
     .c-table-work_subcontractors3
       table
         tr
@@ -70,7 +65,7 @@ javascript:
         tr
           td.u-ta-center
       label.u-fs-x-small
-        | マネージャーもしくは部門長
+        | 部門長
 
   .c-table.u-mt-10
     table
@@ -78,21 +73,22 @@ javascript:
         tr
           th No.
           th 発注内容
-          th 納品物(支給品含む)
+          th 納品物
           th 返却
-          th 仕様(用紙種類、面付、サイズなど)
+          th 仕様
           th 原稿枚数
           th 部数数量
           th 各工程検品
       tbody
+         - Work.find(params[:id]).work_details.each do |r, index|
           tr
-            td.u-va-top.u-ta-right
-            td.u-va-top.u-ta-left
-            td.u-va-top.u-ta-left
+            td.u-va-top.u-ta-right = index
+            td.u-va-top.u-ta-left = r.order_contents
+            td.u-va-top.u-ta-left = simple_format(r.deliver_method)
             td.u-va-top.u-ta-center □
-            td.u-va-top.u-ta-left
-            td.u-va-top.u-ta-left
-            td.u-va-top.u-ta-left
+            td.u-va-top.u-ta-left = simple_format(r.specification)
+            td.u-va-top.u-ta-right= "#{r.count}"
+            td.u-va-top.u-ta-right = "#{r.number_of_copies}"
             td
   .c-table
     table
@@ -101,13 +97,10 @@ javascript:
           th 特記事項
       tbody
         tr
+          / workのnoticesを入れる
           td.u-va-top.u-ta-left = simple_format(Work.find(params[:id]).notices)
 
   .u-mt-10
-    .u-fs-title
-      | (弊社使用欄)
-
-  .u-mt-5
     .c-table-work_subcontractors4
       table
         tr
@@ -116,12 +109,12 @@ javascript:
     .c-table-work_subcontractors5
       table
         tr
-          th 案件管理番号
-          td 
-          th 営業担当
-          td = Work.find(params[:id]).project.user.name
+          th.u-va-middle 発注部署
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).project.user.divsion if  Work.find(params[:id]).project.user.division.present?
+          th.u-va-middle 発注担当
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).project.user.name
 
-  .u-mt-20.c-flex__between
+  .u-mt-30.c-flex__between
     .div
       | 株式会社 日本工業社
       br
