@@ -301,6 +301,49 @@ export default class AddSubcontractor extends React.Component {
     }
   }
 
+	contentNotices = (notices) => {
+
+		let replace_notices = notices.replace(/\n/g, '<br />')
+
+		return (
+			<React.Fragment>
+				<td dangerouslySetInnerHTML={{ __html: replace_notices }} />
+			</React.Fragment>
+		);
+	}
+
+	contentOrder = (order_content) => {
+
+		let replace_order_content = order_content.replace(/\n/g, '<br /<')
+
+		return (
+			<React.Fragment>
+				<td dangerouslySetInnerHTML={{ __html: replace_order_content }} />
+			</React.Fragment>
+		);
+	}
+
+	contentDeliver = (deliver_method) => {
+
+		let replace_deliver_method = deliver_method.replace(/\n/g, '<br /<')
+
+		return (
+			<React.Fragment>
+				<td dangerouslySetInnerHTML={{ __html: replace_deliver_method }} />
+			</React.Fragment>
+		);
+	}
+
+	contentSpecification = (specification) => {
+
+		let replace_specification = specification.replace(/\n/g, '<br /<')
+
+		return (
+			<React.Fragment>
+				<td dangerouslySetInnerHTML={{ __html: replace_specification }} />
+			</React.Fragment>
+		);
+	}
   /**
    *　表示処理
    */
@@ -365,11 +408,13 @@ export default class AddSubcontractor extends React.Component {
                               null
                             }
                           </React.Fragment>
-                          <div className={ 'u-mt-10' } key={ 'client_search' + index }>
+                          <div className={ 'u-mt-10 c-flex__start' } key={ 'client_search' + index }>
                             <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
-                            <button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, work_subcontractor.id, index, true) }>外注先[削除]</button>
+														<div>
+                            	<button className={ 'u-mt-10 c-btnMain-primaryA' } onClick={ e => this.disp(e, work_subcontractor.id, index, true) }>外注先[削除]</button>
+														</div>
                           </div>
-                          <div key={ ' table' + index } className={ 'c-table2 u-mt-10' }>
+                          <div key={ 'table' + index } className={ 'c-table2 u-mt-10' }>
                             <table>
                               <thead>
                                 <tr>
@@ -393,7 +438,7 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
-                                                  <td className={ 'u-va-top' }><button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
+                                                  <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
                                                   <td className={ 'u-va-top' } id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
                                                   <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input4' } type='text' id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' }></input></td>
                                                   <td><textarea id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='50' placeholder={ 'AIデータ, アウトライン済み1ファイル' }>{ subcontractor_detail.deliver_method }</textarea></td>
@@ -415,7 +460,7 @@ export default class AddSubcontractor extends React.Component {
                                   }
                                 </React.Fragment>
                                <tr>
-                                  <td id={ 'onCreate-td' + index } colSpan='12'><button className={ 'c-btnMain-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
+                                  <td id={ 'onCreate-td' + index } colSpan='12'><button className={ 'c-btnMain2-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -539,9 +584,9 @@ export default class AddSubcontractor extends React.Component {
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr className={'tr' + index }>
                                                 <td className={ 'u-va-top u-ta-center' }>{ subcontractor_detail.id }</td>
-                                                <td className={ 'u-va-top u-ta-center' }>{ subcontractor_detail.order_contents }</td>
-                                                <td className={ 'u-va-top u-ta-left' }>{ subcontractor_detail.deliver_method }</td>
-                                                <td className={ 'u-va-top u-ta-left' }>{ subcontractor_detail.specification }</td>
+                                                { this.contentOrder(subcontractor_detail.order_contents) }
+                                                { this.contentDeliver(subcontractor_detail.deliver_method) }
+                                                { this.contentSpecification(subcontractor_detail.specification) }
                                                 <td className={ 'u-va-top u-ta-right' }>{ subcontractor_detail.count }</td>
                                                 <td className={ 'u-va-top u-ta-right' }>{ subcontractor_detail.number_of_copies }</td>
                                                 <td className={ 'u-va-top u-ta-center' }>{ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日') }</td>
@@ -570,7 +615,7 @@ export default class AddSubcontractor extends React.Component {
                               </thead>
                               <tbody>
                                 <tr>
-                                  <td colSpan='12'>{ work_subcontractor.notices }</td>
+                                  { this.contentNotices(work_subcontractor.notices) }
                                 </tr>
                               </tbody>
                             </table>

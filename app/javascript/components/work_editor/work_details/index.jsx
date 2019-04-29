@@ -210,7 +210,7 @@ export default class AddDetails extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.setState({ show: false, work_notices: res.body.notices }, this.props.applyPrice(actual_cost, type));
+          this.setState({ show: false,read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(actual_cost, type));
         } else {
 
           this.setState({ work_notices: res.body.notices });
@@ -219,7 +219,7 @@ export default class AddDetails extends React.Component {
   }
 
 
-  disp(e, detail_id, index) {
+  disp = (e, detail_id, index) => {
 
     if(window.confirm('削除します。')){
 
@@ -230,6 +230,51 @@ export default class AddDetails extends React.Component {
     }
   }
 
+  contentNotices = () => {
+
+    var work_notices = this.state.read_work_notices;
+    work_notices = work_notices.replace(/\n/g, '<br />')
+
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: work_notices }} />
+      </React.Fragment>
+    );
+  }
+
+  contentOrder = (order_content) => {
+
+    let replace_order_content = order_content.replace(/\n/g, '<br />')
+
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_order_content }} />
+      </React.Fragment>
+    );
+  }
+
+  contentDeliver = (deliver_method) => {
+
+    let replace_deliver_method = deliver_method.replace(/\n/g, '<br />')
+
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_deliver_method }} />
+      </React.Fragment>
+    );
+  }
+
+  contentSpecification = (specification) => {
+
+    let replace_specification = specification.replace(/\n/g, '<br />')
+
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_specification }} />
+      </React.Fragment>
+    );
+  }
+
   /**
    *  表示処理
    *  @version
@@ -238,18 +283,22 @@ export default class AddDetails extends React.Component {
     return (
       <div>
         { this.state.show ?
-          <div className={ Style.AddDetails__WorkEdit }>
+          <div className={ 'u-mt-10' }>
             <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onWorkDetailUpdate }>作業詳細[編集終了]</button>
           </div>
           :
-          <div className={ Style.AddDetails__WorkEdit }>
-            <button className={ 'c-btnMain-standard' } id='editable' onClick={ this._editable }>作業詳細[編集]</button>
-            <a className={ 'c-btnMain-primaryB' } href={ '/works/' + this.props.work_id + '/directions'   } target='_blank'>指示書発行[社内用]</a>
+          <div className={ 'c-flex__start u-mt-10' }>
+            <div>
+              <button className={ 'c-btnMain-standard' } id='editable' onClick={ this._editable }>作業詳細[編集]</button>
+            </div>
+            <div>
+              <a className={ 'u-mt-10 c-btnMain-primaryB' } href={ '/works/' + this.props.work_id + '/directions'   } target='_blank'>指示書発行[社内用]</a>
+            </div>
           </div>
         }
         { this.state.show ?
           <React.Fragment>
-            <div className={ 'c-table' }>
+            <div className={ 'u-mt-10 c-table' }>
               <table>
                 <thead>
                   <tr>
@@ -270,7 +319,7 @@ export default class AddDetails extends React.Component {
                   { this.state.work_details.map((detail, index) => {
                     return (
                       <tr>
-                        <td className={ 'u-va-top' }><button className={ 'c-btnMain-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
+                        <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
                         <td id={ 'detail_id' + index } className={ 'u-va-top' } >{ detail.id }</td>
                         <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input4' } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' }></input></td>
                         <td className={ 'u-va-top' }><textarea id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='50' placeholder={ 'AIデータ, アウトライン済み1ファイル' }>{ detail.deliver_method }</textarea></td>
@@ -294,7 +343,7 @@ export default class AddDetails extends React.Component {
                     );
                   }) }
                   <tr>
-                     <td colSpan='13'><button className={ 'c-btnMain-primaryB' } onClick={ this.onWorkDetailCreate }>＋</button></td>
+                     <td colSpan='13'><button className={ 'c-btnMain2-primaryB' } onClick={ this.onWorkDetailCreate }>＋</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -316,7 +365,7 @@ export default class AddDetails extends React.Component {
           </React.Fragment>
           :
           <React.Fragment>
-            <div className={ 'c-table' }>
+            <div className={ 'u-mt-10 c-table' }>
               <table>
                 <thead>
                   <tr>
@@ -334,12 +383,13 @@ export default class AddDetails extends React.Component {
                 </thead>
                 <tbody>
                   { this.state.work_details.map((detail, index) => {
+                    { console.log(detail.order_contents); }
                     return (
                       <tr>
                         <td className={ 'u-va-top u-ta-center' }>{ detail.id }</td>
-                        <td className={ 'u-va-top u-ta-center' }>{ detail.order_contents }</td>
-                        <td className={ 'u-va-top u-ta-left' }>{ detail.deliver_method }</td>
-                        <td className={ 'u-va-top u-ta-left' }>{ detail.specification }</td>
+                        { this.contentOrder(detail.order_contents) }
+                        { this.contentDeliver(detail.deliver_method) }
+                        { this.contentSpecification(detail.specification) }
                         <td className={ 'u-va-top u-ta-center' }>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }</td>
                         <td className={ 'u-va-top u-ta-center' }>{ detail.client_name }</td>
                         <td className={ 'u-va-top u-ta-right' } id={ 'count' + index }>{ detail.count }</td>
@@ -361,7 +411,7 @@ export default class AddDetails extends React.Component {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{ this.state.read_work_notices }</td>
+                    { this.contentNotices() }
                   </tr>
                 </tbody>
               </table>
