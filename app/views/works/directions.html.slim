@@ -80,7 +80,7 @@ javascript:
           th 部数数量
           th 各工程検品
       tbody
-         - Work.find(params[:id]).work_details.each do |r, index|
+         - Work.find(params[:id]).work_details.each_with_index do |r, index|
           tr
             td.u-va-top.u-ta-right = index
             td.u-va-top.u-ta-left = r.order_contents

@@ -30,7 +30,7 @@ javascript:
       table
         tr
           th 発注先社名
-          td = WorkSubcontractor.find(141).client.subcontractor_division.subcontractor.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name : nil
+          td = WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name : nil
         tr
           th 部署名
           td = WorkSubcontractor.find(params[:id]).client.subcontractor_division.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.name : nil
@@ -93,7 +93,7 @@ javascript:
           th 原稿枚数
           th 部数数量
       tbody
-        - WorkSubcontractor.find(params[:id]).detail.each do |r, index|
+        - WorkSubcontractor.find(params[:id]).detail.each_with_index do |r, index|
           tr
             td.u-va-top.u-ta-right = index
             td.u-va-top.u-ta-left = r.order_contents
