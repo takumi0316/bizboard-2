@@ -321,9 +321,9 @@ export default class AddDetails extends React.Component {
                       <tr>
                         <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
                         <td id={ 'detail_id' + index } className={ 'u-va-top' } >{ detail.id }</td>
-                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input4' } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' }></input></td>
-                        <td className={ 'u-va-top' }><textarea id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='50' placeholder={ 'AIデータ, アウトライン済み1ファイル' }>{ detail.deliver_method }</textarea></td>
-                        <td className={ 'u-va-top' }><textarea id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='50' placeholder={ '表紙:ダイヤボード' }>{ detail.specification }</textarea></td>
+                        <td className={ 'u-va-top' }><textarea rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
+                        <td className={ 'u-va-top' }><textarea id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
+                        <td className={ 'u-va-top' }><textarea id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
                         <td><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
                         <td className={ 'u-va-top' }>
                           <select className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
@@ -383,7 +383,6 @@ export default class AddDetails extends React.Component {
                 </thead>
                 <tbody>
                   { this.state.work_details.map((detail, index) => {
-                    { console.log(detail.order_contents); }
                     return (
                       <tr>
                         <td className={ 'u-va-top u-ta-center' }>{ detail.id }</td>

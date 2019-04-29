@@ -440,9 +440,9 @@ export default class AddSubcontractor extends React.Component {
                                               <tr key={ 'tr' + index }>
                                                   <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
                                                   <td className={ 'u-va-top' } id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
-                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input4' } type='text' id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' }></input></td>
-                                                  <td><textarea id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='50' placeholder={ 'AIデータ, アウトライン済み1ファイル' }>{ subcontractor_detail.deliver_method }</textarea></td>
-                                                  <td><textarea id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='50' placeholder={ '表紙:ダイヤボード' }>{ subcontractor_detail.specification }</textarea></td>
+																									<td className={ 'u-va-top' }><textarea rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
+																									<td><textarea id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
+																									<td><textarea id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
                                                   <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input3-right' } type='text' id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
                                                   <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input3-right' } type='text' id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
                                                   <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日') }></input></td>
@@ -570,7 +570,7 @@ export default class AddSubcontractor extends React.Component {
                                   <th className={ 'u-va-middle' }>仕様</th>
                                   <th>原稿<br />数量</th>
                                   <th>部数<br />数量</th>
-                                  <th className={ 'u-va-middle' }>工程期日</th>
+                                  <th className={ 'u-va-middle' }>期日</th>
                                   <th className={ 'u-va-middle' }>実績原価</th>
                                 </tr>
                               </thead>
