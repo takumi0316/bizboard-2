@@ -287,13 +287,9 @@ export default class AddDetails extends React.Component {
             <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onWorkDetailUpdate }>作業詳細[編集終了]</button>
           </div>
           :
-          <div className={ 'c-flex__start u-mt-10' }>
-            <div>
-              <button className={ 'c-btnMain-standard' } id='editable' onClick={ this._editable }>作業詳細[編集]</button>
-            </div>
-            <div>
-              <a className={ 'u-mt-10 c-btnMain-primaryB' } href={ '/works/' + this.props.work_id + '/directions'   } target='_blank'>指示書発行[社内用]</a>
-            </div>
+          <div className={ 'u-mt-10' }>
+            <button className={ 'c-btnMain-standard u-mr-10' } id='editable' onClick={ this._editable }>作業詳細[編集]</button>
+            <a className={ 'c-btnMain-primaryB' } href={ '/works/' + this.props.work_id + '/directions'   } target='_blank'>指示書発行[社内用]</a>
           </div>
         }
         { this.state.show ?
@@ -335,8 +331,8 @@ export default class AddDetails extends React.Component {
                             }) }
                           </select>
                         </td>
-                        <td className={ 'u-va-top' }><input type='number' className={ 'c-form-text__work-show-input2' } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
-                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCount(e, detail.id, index) } type='number' id={ 'count' + index } defaultValue={ detail.count } /></td>
+                        <td className={ 'u-va-top' }><input type='number' className={ 'c-form-text__work-show-input6' } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
+                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input6' } onChange={ e => this.onChangeCount(e, detail.id, index) } type='number' id={ 'count' + index } defaultValue={ detail.count } /></td>
                         <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCost(e, detail.id, index) } type='number' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
                         <td className={ 'u-va-top' }><input readOnly className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost } /></td>
                       </tr>
