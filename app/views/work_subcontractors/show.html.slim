@@ -1,17 +1,18 @@
 script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"
 script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"
 
-a.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
+a.u-mt-10.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
 javascript:
   function downloadImage() {
     html2canvas(document.getElementById('captcha'), {
       onrendered: function(canvas) {
-        var dataURI = canvas.toDataURL();
-        var pdf = new jsPDF('l');
-        var width = pdf.internal.pageSize.width;
-        var height = pdf.internal.pageSize.height;
-        pdf.addImage(canvas, 'JPEG', 0, 0, width, height);
-        pdf.save('work-subcontractor.pdf')
+        const downloadName = '発注・指示書(外注)' + document.getElementById('project_name').innerHTML;
+        const dataURI = canvas.toDataURL();
+        const pdf = new jsPDF('l');
+        const width = pdf.internal.pageSize.width * 0.97;
+        const height = pdf.internal.pageSize.height * 0.97;
+        pdf.addImage(canvas, 'JPEG', 4, 4, width, height);
+        pdf.save(downloadName)
       }
     });
   }
@@ -30,7 +31,7 @@ javascript:
       table
         tr
           th 発注先社名
-          td = WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name : nil
+          td#project_name = WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name : nil
         tr
           th 部署名
           td = WorkSubcontractor.find(params[:id]).client.subcontractor_division.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.name : nil
