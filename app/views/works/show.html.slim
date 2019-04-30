@@ -594,6 +594,11 @@
     span.u-fw-bold
       = works.find(params[:id]).project.project_category_i18n
 
+.c-attention.u-mt-10
+  | 備考:
+  span.u-fw-bold
+    = works.find(params[:id]).project.note
+
 = react_component('WorkEditor',
   { details: works.find(params[:id]).work_details,
     category: works.find(params[:id]).project.project_category_i18n,

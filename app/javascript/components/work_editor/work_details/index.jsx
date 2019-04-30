@@ -393,8 +393,8 @@ export default class AddDetails extends React.Component {
                         { this.contentSpecification(detail.specification) }
                         <td className={ 'u-va-top u-ta-center' }>{ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }</td>
                         <td className={ 'u-va-top u-ta-center' }>{ detail.client_name }</td>
-                        <td className={ 'u-va-top u-ta-right' } id={ 'count' + index }>{ detail.count }</td>
                         <td className={ 'u-va-top u-ta-right' }>{ detail.number_of_copies }</td>
+                        <td className={ 'u-va-top u-ta-right' } id={ 'count' + index }>{ detail.count }</td>
                         <td className={ 'u-va-top u-ta-right' }>{ detail.estimated_cost }円</td>
                         <td className={ 'u-va-top u-ta-right' }>{ detail.actual_cost }円</td>
                       </tr>
