@@ -10,6 +10,6 @@ json[:clients] = clients.map do |r|
     division: r.subcontractor_division,
     company: r.subcontractor_division.subcontractor,
   }
-end 
+end
 
 json

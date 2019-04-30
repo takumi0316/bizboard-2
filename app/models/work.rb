@@ -78,7 +78,7 @@ class Work < ApplicationRecord
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
-      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
+      where(query, *terms.map { |term| "%#{term}%" })
       # 日付検索
       _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
       return _self
@@ -91,6 +91,11 @@ class Work < ApplicationRecord
       # ステータス検索
       _self = _self.where(status: parameters[:status])
       # 日付検索
+      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      return _self
+
+    elsif parameters[:name].blank? && parameters[:status] == 'ステータス'
+
       _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
       return _self
     end

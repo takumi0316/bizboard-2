@@ -70,6 +70,7 @@ export default class WorksSearch extends Component {
                 className={ 'c-form-text__work-index__datepicker' }
               />
               <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
+              <a className={ 'c-btnMain-standard' } href={ '/works' } >元に戻す</a>
             </div>
           </form>
         </div>
