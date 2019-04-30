@@ -230,14 +230,20 @@ export default class AddDetails extends React.Component {
     }
   }
 
-  contentNotices = () => {
+  contentNotices = (work_notices) => {
 
-    var work_notices = this.state.read_work_notices;
-    work_notices = work_notices.replace(/\n/g, '<br />')
+    let replace_work_notices = '';
+    if (work_notices !== null) {
+
+      replace_work_notices = work_notices.replace(/\n/g, '<br />')
+    } else {
+
+      replace_work_notices = work_notices;
+    }
 
     return (
       <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: work_notices }} />
+        <td dangerouslySetInnerHTML={{ __html: replace_work_notices }} />
       </React.Fragment>
     );
   }
@@ -406,7 +412,7 @@ export default class AddDetails extends React.Component {
                 </thead>
                 <tbody>
                   <tr>
-                    { this.contentNotices() }
+                    { this.contentNotices(this.state.work_notices) }
                   </tr>
                 </tbody>
               </table>
