@@ -174,7 +174,7 @@ export default class AddDetails extends React.Component {
         replace_datetime = replace_datetime.replace(/分/g, '');
         array_rails.push(JSON.stringify({
           'work_id': this.props.work_id,
-          'id': document.getElementById('detail_id' + i).innerHTML,
+          'id': document.getElementById('detail_id' + i).value,
           'order_contents': document.getElementById('order_contents' + i).value,
           'deliver_method': document.getElementById('deliver_method' + i).value,
           'specification': document.getElementById('specification' + i).value,
@@ -373,8 +373,9 @@ export default class AddDetails extends React.Component {
                   { this.state.work_details.map((detail, index) => {
                     return (
                       <tr>
+                        <input type='hidden' id={ 'detail_id' + index } defaultValue={ detail.id } />
                         <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
-                        <td id={ 'detail_id' + index } className={ 'u-va-top' } >{ detail.id }</td>
+                        <td id={ 'detail_id' + index } className={ 'u-va-top' } >{ index + 1 }</td>
                         <td className={ 'u-va-top' }><textarea rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
                         <td className={ 'u-va-top' }><textarea id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
                         <td className={ 'u-va-top' }><textarea id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
@@ -439,7 +440,7 @@ export default class AddDetails extends React.Component {
                   { this.state.work_details.map((detail, index) => {
                     return (
                       <tr>
-                        <td className={ 'u-va-top u-ta-center' }>{ detail.id }</td>
+                        <td className={ 'u-va-top u-ta-center' }>{ index + 1 }</td>
                         { this.contentOrder(detail.order_contents) }
                         { this.contentDeliver(detail.deliver_method) }
                         { this.contentSpecification(detail.specification) }

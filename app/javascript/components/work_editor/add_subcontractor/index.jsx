@@ -107,7 +107,7 @@ export default class AddSubcontractor extends React.Component {
         replace_datetime = replace_datetime.replace(/時/g, ':');
         replace_datetime = replace_datetime.replace(/分/g, '');
         array_rails.push(JSON.stringify({
-          'id': document.getElementById('detail_id' + subcontractor_value_count[i]).innerHTML,
+          'id': document.getElementById('detail_id' + subcontractor_value_count[i]).value,
           'order_contents': document.getElementById('order_contents' + subcontractor_value_count[i]).value,
           'deliver_method': document.getElementById('deliver_method' + subcontractor_value_count[i]).value,
           'specification': document.getElementById('specification' + subcontractor_value_count[i]).value,
@@ -496,8 +496,9 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
+                                                  <input type='hidden' id={ 'detail_id' + index1 } defaultValue={ subcontractor_detail.id } />
                                                   <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
-                                                  <td className={ 'u-va-top' } id={ 'detail_id' + index1 }>{ subcontractor_detail.id }</td>
+                                                  <td className={ 'u-va-top' } id={ 'detail_id' + index1 }>{ index1 + 1 }</td>
 																									<td className={ 'u-va-top' }><textarea rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
 																									<td><textarea id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
 																									<td><textarea id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
@@ -641,7 +642,7 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr className={'tr' + index }>
-                                                <td className={ 'u-va-top u-ta-center' }>{ subcontractor_detail.id }</td>
+                                                <td className={ 'u-va-top u-ta-center' }>{ index + 1 }</td>
                                                 { this.contentOrder(subcontractor_detail.order_contents) }
                                                 { this.contentDeliver(subcontractor_detail.deliver_method) }
                                                 { this.contentSpecification(subcontractor_detail.specification) }
