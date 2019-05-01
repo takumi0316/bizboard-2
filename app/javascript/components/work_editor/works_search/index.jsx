@@ -94,7 +94,7 @@ export default class WorksSearch extends Component {
             <div className={ Style.Search__SideBySide }>
               <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='顧客名/担当者名/作業内容' />
               <select name='status' className={ 'c-form-select__work-index' }>
-                <option>{ this.state.status === 'ステータス' ? 'ステータス' : ENUM_STATUS[this.state.status] }</option>
+                <option value={ this.state.status }>{ this.state.status === 'ステータス' ? 'ステータス' : ENUM_STATUS[this.state.status] }</option>
                 { Object.keys(ENUM_STATUS).map((item, index) =>{
                   const key = 'status-' + index;
                   return (
