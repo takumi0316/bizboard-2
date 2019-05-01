@@ -20,7 +20,8 @@ export default class WorksSearch extends Component {
     const day = date.getDate()
     this.state = {
       startDate: new Date(year, last_month, day),
-      startDate2: new Date(year, next_month, day)
+      startDate2: new Date(year, next_month, day),
+      status: 'ステータス',
     };
   }
 
@@ -36,22 +37,71 @@ export default class WorksSearch extends Component {
     })
   }
 
+  componentWillMount = () => {
+
+    if (location.search.length > 0) {
+
+      // 最初の1文字 (?記号) を除いた文字列を取得する
+      let query = document.location.search.substring(1);
+      let parameters = query.split('&');
+      let result = new Object();
+      for (var i = 0; i < parameters.length; i++) {
+        // パラメータ名とパラメータ値に分割する
+        let element = parameters[i].split('=');
+        let paramName = decodeURIComponent(element[0]);
+        let paramValue = decodeURIComponent(element[1]);
+
+        // パラメータ名をキーとして連想配列に追加する
+        result[paramName] = decodeURIComponent(paramValue);
+      }
+
+      this.setState({ status: result['status'], startDate: new Date(result['date1']), startDate2: new Date(result['date2']) });
+    }
+  }
+
+  onSearchParams = (params) => {
+
+    if (location.search.length > 0) {
+
+      // 最初の1文字 (?記号) を除いた文字列を取得する
+      let query = document.location.search.substring(1);
+      let parameters = query.split('&');
+      let result = new Object();
+      for (var i = 0; i < parameters.length; i++) {
+        // パラメータ名とパラメータ値に分割する
+        let element = parameters[i].split('=');
+        let paramName = decodeURIComponent(element[0]);
+        let paramValue = decodeURIComponent(element[1]);
+
+        // パラメータ名をキーとして連想配列に追加する
+        result[paramName] = decodeURIComponent(paramValue);
+      }
+      return result[params];
+    } else {
+
+      return null;
+    }
+  }
+
   render() {
     return (
       <div className={ 'c-search__work-index u-mt-20' }>
         <div className={ Style.Search }>
-          <form method='get' action='/works'>
+          <form method='get' action='/works' >
             <div>
               <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
             </div>
             <div className={ Style.Search__SideBySide }>
-              <input className={ 'c-form-text__work-index' } type='text' name='name' placeholder='顧客名/担当者名/作業内容'/>
+              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='顧客名/担当者名/作業内容' />
               <select name='status' className={ 'c-form-select__work-index' }>
-                <option>ステータス</option>
+                <option>{ this.state.status === 'ステータス' ? 'ステータス' : ENUM_STATUS[this.state.status] }</option>
                 { Object.keys(ENUM_STATUS).map((item, index) =>{
                   const key = 'status-' + index;
                   return (
+                    this.state.status === 'ステータス' ?
                     <option {...{key}} value={item}>{ENUM_STATUS[item]}</option>
+                    :
+                    this.state.status === item ? <option>ステータス</option> : <option {...{key}} value={item}>{ENUM_STATUS[item]}</option>
                   );
                 }) }
               </select>
