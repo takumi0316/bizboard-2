@@ -239,6 +239,38 @@ export default class AddSubcontractor extends React.Component {
       });
   }
 
+    onIntCheck = (e, index, funcName ) => {
+
+    if (funcName === 'count') {
+   	  if(document.getElementById('test-count' + index).value.match(/[^0-9]+/)){
+
+        window.confirm('半角数字以外を入力しないで下さい。')
+      } else {
+
+        return
+      }
+
+    } else if (funcName === 'actual_cost') {
+
+      if(document.getElementById('actual_cost' + index).value.match(/[^0-9]+/)){
+
+        window.confirm('半角数字以外を入力しないで下さい。')
+      } else {
+
+        return
+      }
+    } else if (funcName === 'number_of_copies') {
+
+      if(document.getElementById('number_of_copies' + index).value.match(/[^0-9]+/)){
+
+        window.confirm('半角数字以外を入力しないで下さい。')
+      } else {
+
+        return
+      }
+    }
+  }
+
   /**
    *  お客様選択時
    *  @version
@@ -303,7 +335,14 @@ export default class AddSubcontractor extends React.Component {
 
 	contentNotices = (notices) => {
 
-		let replace_notices = notices.replace(/\n/g, '<br />')
+		let replace_notices = '';
+    if (notices !== null) {
+
+      replace_notices = notices.replace(/\n/g, '<br />')
+    } else {
+
+      replace_notices = notices;
+    }
 
 		return (
 			<React.Fragment>
@@ -314,8 +353,14 @@ export default class AddSubcontractor extends React.Component {
 
 	contentOrder = (order_content) => {
 
-		let replace_order_content = order_content.replace(/\n/g, '<br /<')
+    let replace_order_content = '';
+    if (order_content !== null) {
 
+      replace_order_content = order_content.replace(/\n/g, '<br /<')
+    } else {
+
+      replace_order_content = order_content;
+    }
 		return (
 			<React.Fragment>
 				<td dangerouslySetInnerHTML={{ __html: replace_order_content }} />
@@ -325,8 +370,14 @@ export default class AddSubcontractor extends React.Component {
 
 	contentDeliver = (deliver_method) => {
 
-		let replace_deliver_method = deliver_method.replace(/\n/g, '<br /<')
+    let replace_deliver_method = '';
+    if (deliver_method !== null) {
 
+      replace_deliver_method = deliver_method.replace(/\n/g, '<br /<')
+    } else {
+
+      replace_deliver_method = deliver_method;
+    }
 		return (
 			<React.Fragment>
 				<td dangerouslySetInnerHTML={{ __html: replace_deliver_method }} />
@@ -336,7 +387,14 @@ export default class AddSubcontractor extends React.Component {
 
 	contentSpecification = (specification) => {
 
-		let replace_specification = specification.replace(/\n/g, '<br /<')
+		let replace_specification = '';
+    if (specification !== null) {
+
+      replace_specification = specification.replace(/\n/g, '<br /<')
+    } else {
+
+      replace_specification = specification;
+    }
 
 		return (
 			<React.Fragment>
@@ -443,10 +501,10 @@ export default class AddSubcontractor extends React.Component {
 																									<td className={ 'u-va-top' }><textarea rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
 																									<td><textarea id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
 																									<td><textarea id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
-                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input6' } type='text' id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
-                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input6' } type='text' id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
+                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'count') } id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
+                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'number_of_copies') } id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
                                                   <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日') }></input></td>
-                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } type='number' id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
+                                                  <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } type='text' onChange={ e => this.onIntCheck(e, index1, 'actual_cost') } id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
                                               </tr>
                                               :
                                               null

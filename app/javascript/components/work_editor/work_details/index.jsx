@@ -38,6 +38,38 @@ export default class AddDetails extends React.Component {
     this.setState({ show: true });
   }
 
+  onIntCheck = (e, detail_id, index, funcName ) => {
+
+    if (funcName === 'onChangeCost') {
+   	  if(document.getElementById('estimated_cost' + index).value.match(/[^0-9]+/)){
+
+        window.confirm('半角数字以外を入力しないで下さい。')
+      } else {
+
+        this.onChangeCost(e, detail_id, index);
+      }
+
+    } else if (funcName === 'onChangeCount') {
+
+      if(document.getElementById('count' + index).value.match(/[^0-9]+/)){
+
+        window.confirm('半角数字以外を入力しないで下さい。')
+      } else {
+
+        this.onChangeCount(e, detail_id, index);
+      }
+    } else if (funcName === 'number_of_copies') {
+
+      if(document.getElementById('number_of_copies' + index).value.match(/[^0-9]+/)){
+
+        window.confirm('半角数字以外を入力しないで下さい。')
+      } else {
+
+        return
+      }
+    }
+  }
+
   onChangeCost = (e, detail_id, index) => {
 
     let url = '/work_details';
@@ -63,7 +95,6 @@ export default class AddDetails extends React.Component {
   }
 
   onChangeCount = (e, detail_id, index) => {
-
     let url = '/work_details';
     let field = {
       'id': detail_id,
@@ -152,9 +183,9 @@ export default class AddDetails extends React.Component {
           'number_of_copies': document.getElementById('number_of_copies' + i).value,
           'count': document.getElementById('count' + i).value,
           'estimated_cost': document.getElementById('estimated_cost' + i).value,
-          'actual_cost': document.getElementById('actual_cost' + i).value,
+          'actual_cost': document.getElementById('actual_cost' + i).innerHTML,
         }));
-        actual_cost = actual_cost + Number(document.getElementById('actual_cost' + i).value);
+        actual_cost = actual_cost + Number(document.getElementById('actual_cost' + i).innerHTML);
       }
       field = {
         'work_detail_update[]': array_rails,
@@ -210,7 +241,7 @@ export default class AddDetails extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.setState({ show: false,read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(actual_cost, type));
+          this.setState({ show: false,read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(Number(actual_cost), type));
         } else {
 
           this.setState({ work_notices: res.body.notices });
@@ -250,7 +281,14 @@ export default class AddDetails extends React.Component {
 
   contentOrder = (order_content) => {
 
-    let replace_order_content = order_content.replace(/\n/g, '<br />')
+    let replace_order_content = '';
+    if (order_content !== null) {
+
+      replace_order_content = order_content.replace(/\n/g, '<br />')
+    } else {
+
+      replace_order_content = order_content;
+    }
 
     return (
       <React.Fragment>
@@ -261,7 +299,14 @@ export default class AddDetails extends React.Component {
 
   contentDeliver = (deliver_method) => {
 
-    let replace_deliver_method = deliver_method.replace(/\n/g, '<br />')
+     let replace_deliver_method = '';
+     if (deliver_method !== null) {
+
+        replace_deliver_method = deliver_method.replace(/\n/g, '<br />')
+     } else {
+
+        replace_deliver_method = deliver_method;
+     }
 
     return (
       <React.Fragment>
@@ -272,7 +317,14 @@ export default class AddDetails extends React.Component {
 
   contentSpecification = (specification) => {
 
-    let replace_specification = specification.replace(/\n/g, '<br />')
+    let replace_specification = '';
+    if (specification !== null) {
+
+      replace_specification = specification.replace(/\n/g, '<br />')
+    } else {
+
+      replace_specification = specification;
+    }
 
     return (
       <React.Fragment>
@@ -337,10 +389,10 @@ export default class AddDetails extends React.Component {
                             }) }
                           </select>
                         </td>
-                        <td className={ 'u-va-top' }><input type='number' className={ 'c-form-text__work-show-input6' } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
-                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input6' } onChange={ e => this.onChangeCount(e, detail.id, index) } type='number' id={ 'count' + index } defaultValue={ detail.count } /></td>
-                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onChangeCost(e, detail.id, index) } type='number' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
-                        <td className={ 'u-va-top' }><input readOnly className={ 'c-form-text__work-show-input2' } type='text' id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost } /></td>
+                        <td className={ 'u-va-top' }><input type='text' className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(e, detail.id, index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
+                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(e, detail.id, index, 'onChangeCount') } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
+                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(e, detail.id, index, 'onChangeCost') } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+                        <td className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost }>{ detail.count * detail.estimated_cost }</td>
                       </tr>
                     );
                   }) }
