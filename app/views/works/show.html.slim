@@ -14,27 +14,33 @@
   span.u-ml-30
     = link_to '編集する', edit_project_path(works.find(params[:id]).project), class: 'u-td-underline'
 
-.c-attention.u-mt-10
-  | お客様情報:
+.c-attention.u-mt-10.u-fw-bold
+  | お客様情報
+  br
   - if works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.name&.present? && works.find(params[:id]).project.client&.company_division&.company&.name&.present? && works.find(params[:id]).project.client&.company_division&.name&.present?
-    span.u-fw-bold
-      | 株式会社
+    span
+      | 会社名:
       = works.find(params[:id]).project.client.company_division.company.name
-      |
-      = works.find(params[:id]).project.client.name
+    span.u-ml-10
+      | 部署名:
+      = works.find(params[:id]).project.client.company_division.name
+    span.u-ml-10
+      | 担当者名:
+      = works.find(params[:id]).project.client.name if works.find(params[:id]).project.client.name.present?
       | 樣
-    span.u-ml-30
-      | 請求先情報:
-      |
-      span.u-fw-bold
-        | 株式会社
+    br
+    span
+      | 請求先情報
+      br
+      span
+        | 会社名:
         = works.find(params[:id]).project.client.company_division.company.name
-        |
+      span.u-ml-10
+        | 部署名:
         = works.find(params[:id]).project.client.company_division.name
-        | 部
   - else
-    span.u-fw-bold
-      | 　請求先情報:
+    span
+      | 請求先情報
   div
     | 納期:
     span.u-fw-bold = works.find(params[:id]).project.deliver_at.present? ? works.find(params[:id]).project.deliver_at.to_s : '未定'
