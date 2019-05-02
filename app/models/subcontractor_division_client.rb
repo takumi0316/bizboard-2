@@ -45,7 +45,7 @@ class SubcontractorDivisionClient < ApplicationRecord
   belongs_to :user
 
   # 案件
-  has_many :WorkSubcontractors, -> { order(id: :desc) }
+  has_many :WorkSubcontractors, -> { order(id: :desc) }, dependent: :destroy
 
   #----------------------------------------
   #  ** Scopes **

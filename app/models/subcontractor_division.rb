@@ -46,7 +46,7 @@ class SubcontractorDivision < ApplicationRecord
   belongs_to_active_hash :prefecture
 
   # 部署
-  has_many :clients, class_name: 'SubcontractorDivisionClient'
+  has_many :clients, class_name: 'SubcontractorDivisionClient', dependent: :destroy
 
   #----------------------------------------
   #  ** Scopes **

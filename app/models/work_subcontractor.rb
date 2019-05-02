@@ -46,5 +46,5 @@ class WorkSubcontractor < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-  
+
 end
