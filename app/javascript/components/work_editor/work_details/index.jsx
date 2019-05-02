@@ -385,7 +385,7 @@ export default class AddDetails extends React.Component {
                         	<td key={ 'td-deliver_at' + index }><input key={ detail.deliver_at } className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
                         	<td key={ 'td-client_name' + index } className={ 'u-va-top' }>
                           	<select key={ 'select-client_name' + index } className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
-                            	{ detail.client_name === "" ? <option key={ detail.client_name }></option> : <option key={ detail.client_name } value={ detail.client_name }>{ detail.client_name }</option> }
+                            	<option key={ detail.client_name } value={ detail.client_name }>{ detail.client_name }</option> }
                             	{ this.props.users.map((user) => {
                               	return(
                                 	detail.client_name !== user['name'] ? <option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option> : null
