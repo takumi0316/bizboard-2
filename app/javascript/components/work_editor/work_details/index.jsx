@@ -151,6 +151,7 @@ export default class AddDetails extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
+					console.log('destroy: ', res.body.detail)
           this.setState({ work_details: res.body.detail });
         } else {
           this.setState({ work_details: res.body.detail });
@@ -212,7 +213,8 @@ export default class AddDetails extends React.Component {
         let type = 'work_detail_cost';
         if (!err && res.body.status === "success") {
 
-          this.setState({ work_details: res.body.detail }, this.onWorkNoticesUpdate(actual_cost, type));
+					const resJsonDetail = res.body.detail;
+          this.setState({ work_details: resJsonDetail }, this.onWorkNoticesUpdate(actual_cost, type));
         } else if (!err && res.body.status === 'nothing') {
 
           this.onWorkNoticesUpdate(actual_cost, type);
@@ -372,29 +374,31 @@ export default class AddDetails extends React.Component {
                 <tbody>
                   { this.state.work_details.map((detail, index) => {
                     return (
-                      <tr>
-                        <input type='hidden' id={ 'detail_id' + index } defaultValue={ detail.id } />
-                        <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
-                        <td id={ 'detail_id' + index } className={ 'u-va-top' } >{ index + 1 }</td>
-                        <td className={ 'u-va-top' }><textarea rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
-                        <td className={ 'u-va-top' }><textarea id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
-                        <td className={ 'u-va-top' }><textarea id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
-                        <td><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
-                        <td className={ 'u-va-top' }>
-                          <select className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
-                            { detail.client_name === "" ? <option></option> : <option value={ detail.client_name }>{ detail.client_name }</option> }
-                            { this.props.users.map((user) => {
-                              return(
-                                detail.client_name !== user['name'] ? <option value={ user['name'] }>{ user['name'] }</option> : null
-                              );
-                            }) }
-                          </select>
-                        </td>
-                        <td className={ 'u-va-top' }><input type='text' className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(e, detail.id, index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
-                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(e, detail.id, index, 'onChangeCount') } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-                        <td className={ 'u-va-top' }><input className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(e, detail.id, index, 'onChangeCost') } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
-                        <td className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost }>{ detail.count * detail.estimated_cost }</td>
-                      </tr>
+											<React.Fragment>
+                      	<input type='hidden' id={ 'detail_id' + index } key={ 'input_detail_id' + index } defaultValue={ detail.id } />
+                      	<tr>
+                        	<td key={ 'td-button' + index } className={ 'u-va-top' }><button key={ 'button' + index } className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
+                        	<td key={ 'td-detail_id' + index } id={ 'detail_id' + index } className={ 'u-va-top' } >{ index + 1 }</td>
+                        	<td key={ 'td-order_contents' + index } className={ 'u-va-top' }><textarea key={ detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
+                        	<td key={ 'td-deliver_method' + index } className={ 'u-va-top' }><textarea key={ detail.deliver_method } id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
+                        	<td key={ 'td-specification' + index } className={ 'u-va-top' }><textarea key={ detail.specification } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
+                        	<td key={ 'td-deliver_at' + index }><input key={ detail.deliver_at } className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
+                        	<td key={ 'td-client_name' + index } className={ 'u-va-top' }>
+                          	<select key={ 'select-client_name' + index } className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
+                            	{ detail.client_name === "" ? <option key={ detail.client_name }></option> : <option key={ detail.client_name } value={ detail.client_name }>{ detail.client_name }</option> }
+                            	{ this.props.users.map((user) => {
+                              	return(
+                                	detail.client_name !== user['name'] ? <option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option> : null
+                              	);
+                            	}) }
+                          	</select>
+                        	</td>
+                        	<td key={ 'td-number_of_copies' + index } className={ 'u-va-top' }><input key={ detail.number_of_copies } type='text' className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(e, detail.id, index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
+                        	<td key={ 'td-count' + index } className={ 'u-va-top' }><input key={ detail.count } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(e, detail.id, index, 'onChangeCount') } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
+                        	<td key={ 'td-estimated_cost' + index } className={ 'u-va-top' }><input key={ detail.estimated_cost } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(e, detail.id, index, 'onChangeCost') } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+                        	<td key={ detail.actual_cost } className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost }>{ detail.count * detail.estimated_cost }</td>
+                      	</tr>
+											</React.Fragment>
                     );
                   }) }
                   <tr>
