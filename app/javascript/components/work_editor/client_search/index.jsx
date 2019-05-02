@@ -29,6 +29,7 @@ export default class ClientSearch extends React.Component {
   /**
    *  モーダルを表示する
    *  @version 2018/06/10
+   *
    */
   _open() {
 
