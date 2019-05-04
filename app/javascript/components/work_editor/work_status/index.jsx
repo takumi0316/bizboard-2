@@ -43,11 +43,9 @@ export default class StatusVisualization extends React.Component {
       .end((err, res) => {
         if (!err && res.body.status === "success") {
 
-          console.log(res.body.work)
           this.setState({ work_status: res.body.work });
         } else {
 
-          console.log(res.body.work)
           this.setState({ work_status: res.body.work });
         }
       });

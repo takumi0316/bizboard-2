@@ -54,7 +54,7 @@ class WorksController < ApplicationController
 
       work.update! status: params[:work][:status]
 
-      work.project.end_work! if work.配送済み? || work.納品済み?
+      work.project.end_work! if work.delivered? || work.completed?
 
       render json: { status: :success, work: work.status }
     elsif params[:status] === 'price'

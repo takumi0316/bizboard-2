@@ -37,8 +37,8 @@ class WorkDetailsController < ApplicationController
     # create処理
     if params[:work_detail][:work_id].present?
 
-      Work.find(params[:work_detail][:work_id]).work_details.create!(count: 1, deliver_at: DateTime.now, estimated_man_hours: 1, estimated_cost: 0, number_of_copies: 0, actual_cost: 0)
-      render json: { status: :success, detail: Work.find(params[:work_detail][:work_id]).work_details }
+      Work.find(params[:work_detail][:work_id]).work_details.create!(count: 1, deliver_at: DateTime.now, estimated_man_hours: 1, estimated_cost: 0, number_of_copies: 1, actual_cost: 0)
+      render json: { status: :success, detail: Work.find(params[:work_detail][:work_id]).work_details.last }
 
     # update処理
     else
@@ -97,7 +97,7 @@ class WorkDetailsController < ApplicationController
     WorkDetail.find(params[:id]).destroy!
 
     if request.xhr?
-      render json: { status: :success, detail: Work.find(params[:work_detail][:work_id]).work_details }
+      render json: { status: :success }
     else
       redirect_to works_path(params[:work_detail][:work_id])
     end

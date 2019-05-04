@@ -38,6 +38,164 @@ export default class AddSubcontractor extends React.Component {
     this.setState({ show: true })
   }
 
+  onIntCheck = (e, index, funcName) => {
+
+    switch (funcName) {
+
+      case 'count':
+        if(document.getElementById('test-count' + index).value.match(/[^0-9]+/)){
+
+          window.confirm('半角数字以外を入力しないで下さい。')
+         } else {
+
+          return
+         }
+         break;
+      case 'actual_cost':
+        if(document.getElementById('actual_cost' + index).value.match(/[^0-9]+/)){
+
+          window.confirm('半角数字以外を入力しないで下さい。')
+        } else {
+
+          return
+        }
+        break;
+      case 'number_of_copies':
+        if(document.getElementById('number_of_copies' + index).value.match(/[^0-9]+/)){
+
+          window.confirm('半角数字以外を入力しないで下さい。')
+        } else {
+
+          return
+        }
+        break;
+    }
+  }
+
+	onSetStateBlur = (funcName, index, subcontractorDetailId) => {
+
+		switch (funcName) {
+			case 'onChangeOrderContents':
+				this.onChangeOrderContents(index, subcontractorDetailId);
+				break;
+			case 'onChangeDeliverMethod':
+				this.onChangeDeliverMethod(index, subcontractorDetailId);
+				break;
+			case 'onChangeSpecification':
+				this.onChangeSpecification(index, subcontractorDetailId);
+				break;
+			case 'onChangeDeliverAt':
+				this.onChangeDeliverAt(index, subcontractorDetailId);
+				break;
+			case 'onChangeNumberOfCopies':
+				this.onChangeNumberOfCopies(index, subcontractorDetailId);
+				break;
+			case 'onChangeCost':
+				this.onChangeCost(index, subcontractorDetailId);
+				break;
+    	case 'onChangeCount':
+				this.onChangeCount(index, subcontractorDetailId);
+				break;
+		}
+	}
+
+  onChangeOrderContents = (index, subcontractorDetailId) => {
+
+    let subcontractorDetails = this.state.subcontractor_details.slice();
+    subcontractorDetails.forEach((detail) => {
+
+      if ( detail.id === subcontractorDetailId ) {
+
+        detail.order_contents = document.getElementById('order_contents' + index).value
+      }
+    });
+		this.setState({ subcontractor_details: subcontractorDetails });
+	}
+
+	onChangeDeliverMethod = (index, subcontractorDetailId) => {
+
+		let subcontractorDetails = this.state.subcontractor_details.slice();
+    subcontractorDetails.forEach((detail) => {
+
+      if ( detail.id === subcontractorDetailId ) {
+
+        detail.deliver_method = document.getElementById('deliver_method' + index).value
+      }
+    });
+		this.setState({ subcontractor_details: subcontractorDetails });
+	}
+
+	onChangeSpecification = (index, subcontractorDetailId) => {
+
+		let subcontractorDetails = this.state.subcontractor_details.slice();
+    subcontractorDetails.forEach((detail) => {
+
+      if ( detail.id === subcontractorDetailId ) {
+
+        detail.specification = document.getElementById('specification' + index).value
+      }
+    });
+		this.setState({ subcontractor_details: subcontractorDetails });
+	}
+
+	onChangeDeliverAt = (index, subcontractorDetailId) => {
+
+    let subcontractorDetails = this.state.subcontractor_details.slice();
+    subcontractorDetails.forEach((detail) => {
+
+      if ( detail.id === subcontractorDetailId ) {
+
+        let replace_datetime =  document.getElementById('deliver_at' + index).value;
+   			replace_datetime = replace_datetime.replace(/年/g, '/');
+   			replace_datetime = replace_datetime.replace(/月/g, '/');
+   			replace_datetime = replace_datetime.replace(/日/g, '');
+   			replace_datetime = replace_datetime.replace(/時/g, ':');
+   			replace_datetime = replace_datetime.replace(/分/g, '');
+				detail.deliver_at = replace_datetime
+      }
+    });
+		this.setState({ subcontractor_details: subcontractorDetails });
+	}
+
+	onChangeNumberOfCopies = (index, subcontractorDetailId) => {
+
+		let subcontractorDetails = this.state.subcontractor_details.slice();
+    subcontractorDetails.forEach((detail) => {
+
+      if ( detail.id === subcontractorDetailId ) {
+
+        detail.number_of_copies = document.getElementById('number_of_copies' + index).value
+      }
+    });
+		this.setState({ subcontractor_details: subcontractorDetails });
+  }
+
+	onChangeCost = (index, subcontractorDetailId) => {
+
+		let subcontractorDetails = this.state.subcontractor_details.slice();
+    subcontractorDetails.forEach((detail) => {
+
+      if ( detail.id === subcontractorDetailId ) {
+
+        detail.actual_cost = document.getElementById('actual_cost' + index).value
+      }
+    });
+		this.setState({ subcontractor_details: subcontractorDetails });
+  }
+
+	onChangeCount = (index, subcontractorDetailId) => {
+
+		let subcontractorDetails = this.state.subcontractor_details.slice();
+    subcontractorDetails.forEach((detail) => {
+
+      if ( detail.id === subcontractorDetailId ) {
+
+        detail.count = document.getElementById('test-count' + index).value
+      }
+    });
+		this.setState({ subcontractor_details: subcontractorDetails });
+  }
+
   onWorkSubcontractorCreate = () => {
 
     let url = '/work_subcontractors';
@@ -208,7 +366,47 @@ export default class AddSubcontractor extends React.Component {
       .end((err, res) => {
         if (!err && res.body.status === "success") {
 
-          this.setState({ subcontractor_details: res.body.details });
+          let detail_array = [];
+					let field = {};
+          let subcontractor_value_count = [];
+          this.state.subcontractor_details.map((subcontractor_detail, index1) => {
+
+            if ( this.props.work_id == subcontractor_detail.work_id ){
+
+              this.state.work_subcontractors.map((work_subcontractor, index2) => {
+              if (work_subcontractor.id === subcontractor_detail.work_subcontractor_id) {
+
+                subcontractor_value_count.push(index1);
+              }
+            })
+           }
+          })
+					for ( let i = 0; i < subcontractor_value_count.length; i++ ) {
+
+						if(i != index){
+
+							let replace_datetime =  document.getElementById('deliver_at' + i).value;
+        			replace_datetime = replace_datetime.replace(/年/g, '/');
+        			replace_datetime = replace_datetime.replace(/月/g, '/');
+        			replace_datetime = replace_datetime.replace(/日/g, '');
+        			replace_datetime = replace_datetime.replace(/時/g, ':');
+        			replace_datetime = replace_datetime.replace(/分/g, '');
+              field = {
+                'id': Number(document.getElementById('detail_id' + subcontractor_value_count[i]).value),
+                'work_subcontractor_id': Number(document.getElementById('work_subcontractor_id' + subcontractor_value_count[i]).value),
+                'work_id': this.props.work_id,
+                'order_contents': document.getElementById('order_contents' + subcontractor_value_count[i]).value,
+                'deliver_method': document.getElementById('deliver_method' + subcontractor_value_count[i]).value,
+                'specification': document.getElementById('specification' + subcontractor_value_count[i]).value,
+                'count': Number(document.getElementById('test-count' + subcontractor_value_count[i]).value),
+                'number_of_copies': document.getElementById('number_of_copies' + subcontractor_value_count[i]).value,
+                'deliver_at': replace_datetime,
+                'actual_cost': Number(document.getElementById('actual_cost' + subcontractor_value_count[i]).value),
+ 							};
+							detail_array.push(field);
+						}
+					}
+          this.setState({ subcontractor_details: detail_array });
         } else {
 
           this.setState({ subcontractor_details: res.body.details });
@@ -220,6 +418,7 @@ export default class AddSubcontractor extends React.Component {
 
     let url = '/work_subcontractors/' + id;
     let field = { 'work_id': this.props.work_id };
+    let arrayDetail = [];
     Request
       .del(url)
       .field(field)
@@ -228,9 +427,6 @@ export default class AddSubcontractor extends React.Component {
       .end((err, res) => {
         if (!err && res.body.status === 'success'){
 
-          res.body.actual_costs.map((cost) => {
-            actual_cost = actual_cost + Number(cost);
-          });
           this.setState({ work_subcontractors: res.body.work_subcontractors });
         } else {
 
@@ -239,37 +435,6 @@ export default class AddSubcontractor extends React.Component {
       });
   }
 
-    onIntCheck = (e, index, funcName ) => {
-
-    if (funcName === 'count') {
-   	  if(document.getElementById('test-count' + index).value.match(/[^0-9]+/)){
-
-        window.confirm('半角数字以外を入力しないで下さい。')
-      } else {
-
-        return
-      }
-
-    } else if (funcName === 'actual_cost') {
-
-      if(document.getElementById('actual_cost' + index).value.match(/[^0-9]+/)){
-
-        window.confirm('半角数字以外を入力しないで下さい。')
-      } else {
-
-        return
-      }
-    } else if (funcName === 'number_of_copies') {
-
-      if(document.getElementById('number_of_copies' + index).value.match(/[^0-9]+/)){
-
-        window.confirm('半角数字以外を入力しないで下さい。')
-      } else {
-
-        return
-      }
-    }
-  }
 
   /**
    *  お客様選択時
@@ -496,16 +661,17 @@ export default class AddSubcontractor extends React.Component {
                                           <React.Fragment>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
-                                                  <input key={ 'input-subcontractor_detail.id' + index } type='hidden' id={ 'detail_id' + index1 } defaultValue={ subcontractor_detail.id } />
+                                                  <input key={ 'input-subcontractor_detail_id' + index } type='hidden' id={ 'detail_id' + index1 } defaultValue={ subcontractor_detail.id } />
+                                                  <input key={ 'input-work_subcontractor_id' + index } type='hidden' id={ 'work_subcontractor_id' + index1 } defaultValue={ subcontractor_detail.work_subcontractor_id } />
                                                   <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
                                                   <td className={ 'u-va-top' } id={ 'detail_id' + index1 }>{ index1 + 1 }</td>
-																									<td className={ 'u-va-top' }><textarea key={ subcontractor_detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
-																									<td><textarea key={ subcontractor_detail.deliver_method } id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
-																									<td><textarea key={ subcontractor_detail.specification } id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
-                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.count } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'count') } id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
-                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.number_of_copies } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'number_of_copies') } id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
-                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.deliver_at } className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日') }></input></td>
-                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.actual_cost } className={ 'c-form-text__work-show-input2' } type='text' onChange={ e => this.onIntCheck(e, index1, 'actual_cost') } id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
+                                                  <td className={ 'u-va-top' }><textarea key={ subcontractor_detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index1, subcontractor_detail.id) } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
+																									<td><textarea key={ subcontractor_detail.deliver_method + index1 } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index1, subcontractor_detail.id) } id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
+																									<td><textarea key={ subcontractor_detail.specification } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index1, subcontractor_detail.id) } id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
+                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.count } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'count') } onBlur={ e => this.onSetStateBlur('onChangeCount', index1, subcontractor_detail.id) } id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
+                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.number_of_copies } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'number_of_copies') } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index1, subcontractor_detail.id) } id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
+                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.deliver_at } className={ 'c-form-text__work-show-input1' } type='text' onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index1, subcontractor_detail.id) } id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日') }></input></td>
+                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.actual_cost } className={ 'c-form-text__work-show-input2' } type='text' onChange={ e => this.onIntCheck(e, index1, 'actual_cost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index1, subcontractor_detail.id) } id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
                                               </tr>
                                               :
                                               null

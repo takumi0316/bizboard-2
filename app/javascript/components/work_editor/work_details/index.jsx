@@ -38,83 +38,233 @@ export default class AddDetails extends React.Component {
     this.setState({ show: true });
   }
 
-  onIntCheck = (e, detail_id, index, funcName ) => {
+  onIntCheck = (index, funcName) => {
 
-    if (funcName === 'onChangeCost') {
-   	  if(document.getElementById('estimated_cost' + index).value.match(/[^0-9]+/)){
+		switch (funcName) {
+    	case 'number_of_copies':
 
-        window.confirm('半角数字以外を入力しないで下さい。')
-      } else {
+				if (document.getElementById('number_of_copies' + index).value.match(/[^0-9]+/)) {
 
-        this.onChangeCost(e, detail_id, index);
-      }
+					window.confirm('半角数字以外を入力しないで下さい。')
+				} else {
 
-    } else if (funcName === 'onChangeCount') {
+					return
+				}
+				break;
+			case 'onChangeCount':
 
-      if(document.getElementById('count' + index).value.match(/[^0-9]+/)){
+				if (document.getElementById('count' + index).value.match(/[^0-9]+/)) {
 
-        window.confirm('半角数字以外を入力しないで下さい。')
-      } else {
+					window.confirm('半角数字以外を入力しないで下さい。')
+				} else {
 
-        this.onChangeCount(e, detail_id, index);
-      }
-    } else if (funcName === 'number_of_copies') {
+					return
+				}
+				break;
+			case 'onChangeCost':
 
-      if(document.getElementById('number_of_copies' + index).value.match(/[^0-9]+/)){
+				if (document.getElementById('estimated_cost' + index).value.match(/[^0-9]+/)) {
 
-        window.confirm('半角数字以外を入力しないで下さい。')
-      } else {
+					window.confirm('半角数字以外を入力しないで下さい。')
+				} else {
 
-        return
-      }
-    }
+					return
+				}
+				break;
+		}
+	}
+
+	onSetStateBlur = (funcName, index) => {
+
+		switch (funcName) {
+			case 'onChangeOrderContents':
+				this.onChangeOrderContents(index);
+				break;
+			case 'onChangeDeliverMethod':
+				this.onChangeDeliverMethod(index);
+				break;
+			case 'onChangeSpecification':
+				this.onChangeSpecification(index);
+				break;
+			case 'onChangeDeliverAt':
+				this.onChangeDeliverAt(index);
+				break;
+			case 'onChangeClientName':
+				this.onChangeClientName(index);
+				break;
+			case 'onChangeNumberOfCopies':
+				this.onChangeNumberOfCopies(index);
+				break;
+			case 'onChangeCost':
+				this.onChangeCost(index);
+				break;
+    	case 'onChangeCount':
+				this.onChangeCount(index);
+				break;
+		}
+	}
+
+	onChangeOrderContents = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.order_contents = document.getElementById('order_contents' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+	onChangeDeliverMethod = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.deliver_method = document.getElementById('deliver_method' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+	onChangeSpecification = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.specification = document.getElementById('specification' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+	onChangeDeliverAt = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				let replace_datetime =  document.getElementById('deliver_at' + index).value;
+   			replace_datetime = replace_datetime.replace(/年/g, '/');
+   			replace_datetime = replace_datetime.replace(/月/g, '/');
+   			replace_datetime = replace_datetime.replace(/日/g, '');
+   			replace_datetime = replace_datetime.replace(/時/g, ':');
+   			replace_datetime = replace_datetime.replace(/分/g, '');
+				detail.deliver_at = replace_datetime
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+	onChangeClientName = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.client_name = document.getElementById('client_name' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+	onChangeNumberOfCopies = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.number_of_copies = document.getElementById('number_of_copies' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails });
   }
 
-  onChangeCost = (e, detail_id, index) => {
+	onChangeCost = (index) => {
 
-    let url = '/work_details';
-    let field = {
-      'id': detail_id,
-      'work_detail[work_id]': '',
-      'work_id': this.props.work_id,
-      'estimated_cost': document.getElementById('estimated_cost' + index).value,
-      'token': 'cost',
-    };
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === "success") {
-          this.setState({ work_details: res.body.detail });
-        } else {
-          this.setState({ work_details: res.body.detail });
-        }
-      });
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.estimated_cost = document.getElementById('estimated_cost' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails });
   }
 
-  onChangeCount = (e, detail_id, index) => {
-    let url = '/work_details';
-    let field = {
-      'id': detail_id,
-      'work_detail[work_id]': '',
-      'work_id': this.props.work_id,
-      'count': document.getElementById('count' + index).value,
-      'token': 'count',
-    };
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === "success") {
-          this.setState({ work_details: res.body.detail });
-        } else {
-          this.setState({ work_details: res.body.detail });
-        }
-      });
+	onChangeCount = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.count = Number(document.getElementById('count' + index).value)
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails });
+  }
+
+	  onConfirm = (e, detail_id, index) => {
+
+    window.confirm('削除します。') ? this.onWorkDetailDestroy(e, detail_id, index) : window.confirm('キャンセルしました。')
+  }
+
+  contentNotices = (work_notices) => {
+
+    let replace_work_notices = '';
+    work_notices !== null ? replace_work_notices = work_notices.replace(/\n/g, '<br />') : replace_work_notices = work_notices
+
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_work_notices }} />
+      </React.Fragment>
+    );
+  }
+
+  contentOrder = (order_content) => {
+
+    let replace_order_content = '';
+    order_content !== null ? replace_order_content = order_content.replace(/\n/g, '<br />') : replace_order_content = order_content
+
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_order_content }} />
+      </React.Fragment>
+    );
+  }
+
+  contentDeliver = (deliver_method) => {
+
+    let replace_deliver_method = '';
+    deliver_method !== null ? replace_deliver_method = deliver_method.replace(/\n/g, '<br />') : replace_deliver_method = deliver_method
+
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_deliver_method }} />
+      </React.Fragment>
+    );
+  }
+
+  contentSpecification = (specification) => {
+
+    let replace_specification = '';
+    specification !== null ? replace_specification = specification.replace(/\n/g, '<br />') : replace_specification = specification
+
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_specification }} />
+      </React.Fragment>
+    );
   }
 
   onWorkDetailCreate = () => {
@@ -130,7 +280,35 @@ export default class AddDetails extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
-          this.setState({ work_details: res.body.detail });
+
+					let detail_array = [];
+					let field = {};
+					const detail_length = this.state.work_details.length;
+					for ( let i = 0; i < detail_length; i++ ) {
+
+						let replace_datetime =  document.getElementById('deliver_at' + i).value;
+        		replace_datetime = replace_datetime.replace(/年/g, '/');
+        		replace_datetime = replace_datetime.replace(/月/g, '/');
+        		replace_datetime = replace_datetime.replace(/日/g, '');
+        		replace_datetime = replace_datetime.replace(/時/g, ':');
+        		replace_datetime = replace_datetime.replace(/分/g, '');
+						field = {
+         		 'work_id': Number(this.props.work_id),
+         		 'id': Number(document.getElementById('detail_id' + i).value),
+         		 'order_contents': document.getElementById('order_contents' + i).value,
+         		 'deliver_method': document.getElementById('deliver_method' + i).value,
+         		 'specification': document.getElementById('specification' + i).value,
+         		 'deliver_at': replace_datetime,
+         		 'client_name': document.getElementById('client_name' + i).value,
+         		 'number_of_copies': document.getElementById('number_of_copies' + i).value,
+         		 'count': document.getElementById('count' + i).value,
+         		 'estimated_cost': document.getElementById('estimated_cost' + i).value,
+						 'actual_cost': document.getElementById('actual_cost' + i).innerHTML,
+						};
+						detail_array.push(field);
+					}
+					detail_array.push(res.body.detail)
+          this.setState({ work_details: detail_array });
         } else {
           this.setState({ work_details: res.body.detail });
         }
@@ -151,8 +329,36 @@ export default class AddDetails extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
-					console.log('destroy: ', res.body.detail)
-          this.setState({ work_details: res.body.detail });
+					let detail_array = [];
+					let field = {};
+					const detail_length = this.state.work_details.length;
+					for ( let i = 0; i < detail_length; i++ ) {
+
+						if(i != index){
+							let replace_datetime =  document.getElementById('deliver_at' + i).value;
+        			replace_datetime = replace_datetime.replace(/年/g, '/');
+        			replace_datetime = replace_datetime.replace(/月/g, '/');
+        			replace_datetime = replace_datetime.replace(/日/g, '');
+        			replace_datetime = replace_datetime.replace(/時/g, ':');
+        			replace_datetime = replace_datetime.replace(/分/g, '');
+							field = {
+         			 'work_id': Number(this.props.work_id),
+         			 'id': Number(document.getElementById('detail_id' + i).value),
+         			 'order_contents': document.getElementById('order_contents' + i).value,
+         			 'deliver_method': document.getElementById('deliver_method' + i).value,
+         			 'specification': document.getElementById('specification' + i).value,
+         			 'deliver_at': replace_datetime,
+         			 'client_name': document.getElementById('client_name' + i).value,
+         			 'number_of_copies': document.getElementById('number_of_copies' + i).value,
+         			 'count': document.getElementById('count' + i).value,
+         			 'estimated_cost': document.getElementById('estimated_cost' + i).value,
+							 'actual_cost': document.getElementById('actual_cost' + i).innerHTML,
+							};
+							detail_array.push(field);
+						}
+					}
+
+          this.setState({ work_details: detail_array });
         } else {
           this.setState({ work_details: res.body.detail });
         }
@@ -213,8 +419,7 @@ export default class AddDetails extends React.Component {
         let type = 'work_detail_cost';
         if (!err && res.body.status === "success") {
 
-					const resJsonDetail = res.body.detail;
-          this.setState({ work_details: resJsonDetail }, this.onWorkNoticesUpdate(actual_cost, type));
+          this.setState({ work_details: res.body.detail }, this.onWorkNoticesUpdate(actual_cost, type));
         } else if (!err && res.body.status === 'nothing') {
 
           this.onWorkNoticesUpdate(actual_cost, type);
@@ -243,96 +448,12 @@ export default class AddDetails extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.setState({ show: false,read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(Number(actual_cost), type));
+          this.setState({ show: false, read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(Number(actual_cost), type));
         } else {
 
           this.setState({ work_notices: res.body.notices });
         }
       });
-  }
-
-
-  disp = (e, detail_id, index) => {
-
-    if(window.confirm('削除します。')){
-
-      this.onWorkDetailDestroy(e, detail_id, index);
-    } else {
-
-      window.confirm('キャンセルしました。')
-    }
-  }
-
-  contentNotices = (work_notices) => {
-
-    let replace_work_notices = '';
-    if (work_notices !== null) {
-
-      replace_work_notices = work_notices.replace(/\n/g, '<br />')
-    } else {
-
-      replace_work_notices = work_notices;
-    }
-
-    return (
-      <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: replace_work_notices }} />
-      </React.Fragment>
-    );
-  }
-
-  contentOrder = (order_content) => {
-
-    let replace_order_content = '';
-    if (order_content !== null) {
-
-      replace_order_content = order_content.replace(/\n/g, '<br />')
-    } else {
-
-      replace_order_content = order_content;
-    }
-
-    return (
-      <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: replace_order_content }} />
-      </React.Fragment>
-    );
-  }
-
-  contentDeliver = (deliver_method) => {
-
-     let replace_deliver_method = '';
-     if (deliver_method !== null) {
-
-        replace_deliver_method = deliver_method.replace(/\n/g, '<br />')
-     } else {
-
-        replace_deliver_method = deliver_method;
-     }
-
-    return (
-      <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: replace_deliver_method }} />
-      </React.Fragment>
-    );
-  }
-
-  contentSpecification = (specification) => {
-
-    let replace_specification = '';
-    if (specification !== null) {
-
-      replace_specification = specification.replace(/\n/g, '<br />')
-    } else {
-
-      replace_specification = specification;
-    }
-
-    return (
-      <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: replace_specification }} />
-      </React.Fragment>
-    );
   }
 
   /**
@@ -341,8 +462,10 @@ export default class AddDetails extends React.Component {
    */
   render() {
     return (
+
       <div>
         { this.state.show ?
+
           <div className={ 'u-mt-10' }>
             <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onWorkDetailUpdate }>作業詳細[編集終了]</button>
           </div>
@@ -353,6 +476,7 @@ export default class AddDetails extends React.Component {
           </div>
         }
         { this.state.show ?
+
           <React.Fragment>
             <div className={ 'u-mt-10 c-table' }>
               <table>
@@ -377,26 +501,25 @@ export default class AddDetails extends React.Component {
 											<React.Fragment>
                       	<input type='hidden' id={ 'detail_id' + index } key={ 'input_detail_id' + index } defaultValue={ detail.id } />
                       	<tr>
-                        	<td key={ 'td-button' + index } className={ 'u-va-top' }><button key={ 'button' + index } className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, detail.id, index) }>−</button></td>
-                        	<td key={ 'td-detail_id' + index } id={ 'detail_id' + index } className={ 'u-va-top' } >{ index + 1 }</td>
-                        	<td key={ 'td-order_contents' + index } className={ 'u-va-top' }><textarea key={ detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
-                        	<td key={ 'td-deliver_method' + index } className={ 'u-va-top' }><textarea key={ detail.deliver_method } id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
-                        	<td key={ 'td-specification' + index } className={ 'u-va-top' }><textarea key={ detail.specification } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
-                        	<td key={ 'td-deliver_at' + index }><input key={ detail.deliver_at } className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
+                        	<td key={ 'td-button' + index } className={ 'u-va-top' }><button key={ 'button' + index } className={ 'c-btnMain2-primaryA' } onClick={ e => this.onConfirm(e, detail.id, index) }>−</button></td>
+                        	<td key={ 'td-detail_id' + index } className={ 'u-va-top' } defaultValue={ detail.id }>{ index + 1 }</td>
+													<td key={ 'td-order_contents' + index } className={ 'u-va-top' }><textarea key={ detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index) } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
+													<td key={ 'td-deliver_method' + index } className={ 'u-va-top' }><textarea key={ detail.deliver_method } id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index) } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
+													<td key={ 'td-specification' + index } className={ 'u-va-top' }><textarea key={ detail.specification } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index) } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
+													<td key={ 'td-deliver_at' + index }><input key={ detail.deliver_at } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
                         	<td key={ 'td-client_name' + index } className={ 'u-va-top' }>
-                          	<select key={ 'select-client_name' + index } className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
-                            	<option key={ detail.client_name } value={ detail.client_name }>{ detail.client_name }</option> }
+															<select key={ detail.client_name + index } onBlur={ e => this.onSetStateBlur('onChangeClientName', index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } defaultValue={ detail.client_name }>
                             	{ this.props.users.map((user) => {
                               	return(
-                                	detail.client_name !== user['name'] ? <option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option> : null
+																	detail.client_name !== user['name'] ? <option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option> : <option key={ user['name'] } value={ user['name'] }></option>
                               	);
                             	}) }
                           	</select>
                         	</td>
-                        	<td key={ 'td-number_of_copies' + index } className={ 'u-va-top' }><input key={ detail.number_of_copies } type='text' className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(e, detail.id, index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
-                        	<td key={ 'td-count' + index } className={ 'u-va-top' }><input key={ detail.count } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(e, detail.id, index, 'onChangeCount') } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-                        	<td key={ 'td-estimated_cost' + index } className={ 'u-va-top' }><input key={ detail.estimated_cost } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(e, detail.id, index, 'onChangeCost') } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
-                        	<td key={ detail.actual_cost } className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } value={ detail.count * detail.estimated_cost }>{ detail.count * detail.estimated_cost }</td>
+													<td key={ 'td-number_of_copies' + index } className={ 'u-va-top' }><input key={ detail.number_of_copies } type='text' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
+													<td key={ 'td-count' + index } className={ 'u-va-top' }><input key={ detail.count } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, 'onChangeCount') } onBlur={ e => this.onSetStateBlur('onChangeCount', index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
+													<td key={ 'td-estimated_cost' + index } className={ 'u-va-top' }><input key={ detail.estimated_cost } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(index, 'onChangeCost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+                        	<td key={ detail.actual_cost } className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } defaultValue={ detail.count * detail.estimated_cost }>{ detail.count * detail.estimated_cost }</td>
                       	</tr>
 											</React.Fragment>
                     );
@@ -442,7 +565,9 @@ export default class AddDetails extends React.Component {
                 </thead>
                 <tbody>
                   { this.state.work_details.map((detail, index) => {
+
                     return (
+
                       <tr>
                         <td className={ 'u-va-top u-ta-center' }>{ index + 1 }</td>
                         { this.contentOrder(detail.order_contents) }

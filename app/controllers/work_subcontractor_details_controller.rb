@@ -80,7 +80,7 @@ class WorkSubcontractorDetailsController < ApplicationController
   def destroy
 
     WorkSubcontractorDetail.find(params[:id]).destroy!
-    render json: { status: :success, details: Work.find(params[:work_id]).subcontractor_detail }
+    render json: { status: :success }
 
   rescue => e
 
