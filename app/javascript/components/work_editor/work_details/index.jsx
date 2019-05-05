@@ -512,7 +512,7 @@ export default class AddDetails extends React.Component {
                               { console.log('client_name: ', detail.client_name) }
                             	{ this.props.users.map((user) => {
                               	return(
-																	detail.client_name !== user['name'] ? <option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option> : null
+																	<option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option>
                               	);
                             	}) }
                           	</select>
