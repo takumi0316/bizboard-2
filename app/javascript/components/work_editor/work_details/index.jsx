@@ -170,8 +170,10 @@ export default class AddDetails extends React.Component {
 			if ( i === index ) {
 
 				detail.client_name = document.getElementById('client_name' + index).value
+        console.log('client_name: ', document.getElementById('client_name' + index).value)
 			}
 		});
+    console.log('workArray: ', arrayWorkDetails)
 		this.setState({ work_details: arrayWorkDetails })
 	}
 
@@ -511,7 +513,7 @@ export default class AddDetails extends React.Component {
 															<select key={ detail.client_name + index } onBlur={ e => this.onSetStateBlur('onChangeClientName', index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } defaultValue={ detail.client_name }>
                             	{ this.props.users.map((user) => {
                               	return(
-																	detail.client_name !== user['name'] ? <option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option> : <option key={ user['name'] } value={ user['name'] }></option>
+																	detail.client_name !== user['name'] ? <option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option> : <option key={ user['name'] } value={ user['name'] }>{ detail.client_name }</option>
                               	);
                             	}) }
                           	</select>
