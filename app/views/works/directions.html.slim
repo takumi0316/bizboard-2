@@ -29,7 +29,7 @@ javascript:
           td CS
         tr
           th 担当者
-          td
+          td = @clients.present? ? @clients : @client
     .c-table-work_subcontractors2
       table
         tr

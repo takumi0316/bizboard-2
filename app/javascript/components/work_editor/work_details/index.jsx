@@ -35,6 +35,7 @@ export default class AddDetails extends React.Component {
 
   _editable = () => {
 
+    this.props.applyWorkDetails(true, 'work_details')
     this.setState({ show: true });
   }
 
@@ -367,6 +368,7 @@ export default class AddDetails extends React.Component {
 
   onWorkDetailUpdate = () => {
 
+    this.props.applyAlert();
     let array_rails = [];
     let field = {};
     let actual_cost = 0;
@@ -448,7 +450,7 @@ export default class AddDetails extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.setState({ show: false, read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(Number(actual_cost), type));
+          this.setState({ show: false, read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(Number(actual_cost), type), this.props.applyWorkDetails(false));
         } else {
 
           this.setState({ work_notices: res.body.notices });
@@ -509,7 +511,6 @@ export default class AddDetails extends React.Component {
 													<td key={ 'td-deliver_at' + index }><input key={ detail.deliver_at } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
                         	<td key={ 'td-client_name' + index } className={ 'u-va-top' }>
                               <select key={ detail.client_name + index } onBlur={ e => this.onSetStateBlur('onChangeClientName', index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } defaultValue={ detail.client_name === null ? '' : detail.client_name }>
-                              { console.log('client_name: ', detail.client_name) }
                             	{ this.props.users.map((user) => {
                               	return(
 																	<option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option>

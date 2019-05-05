@@ -35,7 +35,7 @@ export default class AddSubcontractor extends React.Component {
 
   _editable = () => {
 
-    this.setState({ show: true })
+    this.setState({ show: true }, this.props.applyAddSubcontractor(true, 'add_subcontractor'))
   }
 
   onIntCheck = (e, index, funcName) => {
@@ -243,6 +243,7 @@ export default class AddSubcontractor extends React.Component {
 
   onWorkSubcontractorDetailUpdate = () => {
 
+    this.props.applyAlert('add_subcontractor');
     let array_rails = [];
     let field = {};
     let actual_cost = 0;
@@ -345,8 +346,7 @@ export default class AddSubcontractor extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.props.applyPrice(actual_cost, type);
-          this.setState({ show: false, work_subcontractors: res.body.work_subcontractors });
+          this.setState({ show: false, work_subcontractors: res.body.work_subcontractors }, this.props.applyPrice(actual_cost, type), this.props.applyAddSubcontractor(false));
         } else {
 
           this.setState({ work_subcontractors: res.body.work_subcontractors });
@@ -567,6 +567,7 @@ export default class AddSubcontractor extends React.Component {
 			</React.Fragment>
 		);
 	}
+
   /**
    *　表示処理
    */
