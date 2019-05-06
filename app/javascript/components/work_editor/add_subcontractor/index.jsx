@@ -582,8 +582,9 @@ export default class AddSubcontractor extends React.Component {
             { this.state.work_subcontractors.length > 0 ?
               <React.Fragment>
                 { this.state.work_subcontractors.map((work_subcontractor, index) => {
+									const key = 'work_subcontractor' + index;
                   return(
-                    <React.Fragment>
+                    <React.Fragment key={ key }>
                       { this.props.work_id == work_subcontractor.work_id ?
                         <React.Fragment>
                           <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label u-mt-20' }>
@@ -593,16 +594,19 @@ export default class AddSubcontractor extends React.Component {
                             { this.state.clients.length > 0 ?
                               <React.Fragment>
                                 { this.state.clients.map((client, index) => {
+																	const key = 'client' + index;
                                   return(
-                                    <React.Fragment>
+                                    <React.Fragment key={ key }>
                                       { work_subcontractor.subcontractor_division_client_id === client.id ?
                                         <React.Fragment>
                                           { this.state.divisions.map((division, index) => {
+																						const key = 'division' + index;
                                             return (
-                                              <React.Fragment>
+                                              <React.Fragment key={ key }>
                                                 { this.state.subcontractors.map((subcontractor, index) => {
+																									const key = 'subcontractor' + index;
                                                   return (
-                                                    <React.Fragment>
+                                                    <React.Fragment key={ key }>
                                                       { client.subcontractor_division_id === division.id && division.subcontractor_id === subcontractor.id  ?
                                                         <div key={ 'client' + index } className={ 'c-attention' }>
                                                           <div className={ 'u-mt-10' }>会社名: { subcontractor.name || '部署名なし' }</div>
@@ -658,14 +662,13 @@ export default class AddSubcontractor extends React.Component {
                                   { this.state.subcontractor_details.length > 0 ?
                                     <React.Fragment>
                                       { this.state.subcontractor_details.map((subcontractor_detail, index1) => {
+																				const key = 'subcontractor_detail' + index1;
                                         return (
-                                          <React.Fragment>
+                                          <React.Fragment key={ key }>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
-                                                  <input key={ 'input-subcontractor_detail_id' + index } type='hidden' id={ 'detail_id' + index1 } defaultValue={ subcontractor_detail.id } />
-                                                  <input key={ 'input-work_subcontractor_id' + index } type='hidden' id={ 'work_subcontractor_id' + index1 } defaultValue={ subcontractor_detail.work_subcontractor_id } />
                                                   <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
-                                                  <td className={ 'u-va-top' } id={ 'detail_id' + index1 }>{ index1 + 1 }</td>
+                                                  <td className={ 'u-va-top' }>{ index1 + 1 } <input key={ 'input-subcontractor_detail_id' + index } type='hidden' id={ 'detail_id' + index1 } defaultValue={ subcontractor_detail.id } /> <input key={ 'input-work_subcontractor_id' + index } type='hidden' id={ 'work_subcontractor_id' + index1 } defaultValue={ subcontractor_detail.work_subcontractor_id } /></td>
                                                   <td className={ 'u-va-top' }><textarea key={ subcontractor_detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index1, subcontractor_detail.id) } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
 																									<td><textarea key={ subcontractor_detail.deliver_method + index1 } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index1, subcontractor_detail.id) } id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
 																									<td><textarea key={ subcontractor_detail.specification } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index1, subcontractor_detail.id) } id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
@@ -729,8 +732,9 @@ export default class AddSubcontractor extends React.Component {
             { this.state.work_subcontractors.length > 0 ?
               <React.Fragment>
                 { this.state.work_subcontractors.map((work_subcontractor, index) => {
+									const key = 'work_subcontractor' + index;
                   return(
-                    <React.Fragment>
+                    <React.Fragment key={ key }>
                       { this.props.work_id == work_subcontractor.work_id ?
                         <React.Fragment>
 													{ work_subcontractor.subcontractor_division_client_id === null ?
@@ -747,18 +751,21 @@ export default class AddSubcontractor extends React.Component {
                             { this.state.clients.length > 0 ?
                               <React.Fragment>
                                 { this.state.clients.map((client, index) => {
+																	const key = 'client' + index;
                                   return(
-                                    <React.Fragment>
+                                    <React.Fragment key={ key }>
                                       { work_subcontractor.subcontractor_division_client_id === client.id ?
                                         <React.Fragment>
                                           { this.state.divisions.map((division, index) => {
+																						const key = 'division' + index;
                                             return (
-                                              <React.Fragment>
+                                              <React.Fragment key={ key }>
                                                 { this.state.subcontractors.map((subcontractor, index) => {
+																									const key = 'subcontractor' + index;
                                                   return (
-                                                    <React.Fragment>
+                                                    <React.Fragment key={ key }>
                                                       { client.subcontractor_division_id === division.id && division.subcontractor_id === subcontractor.id  ?
-                                                        <div key={ 'client' + index } className={ 'c-attention' }>
+                                                        <div className={ 'c-attention' }>
                                                           <div className={ 'u-mt-10' }>会社名: { subcontractor.name || '部署名なし' }</div>
                                                           <div className={ 'u-mt-10' }>部署名: { division.name }</div>
                                                           <div className={ 'u-mt-10' }>担当者名: { client.name }</div>
@@ -805,10 +812,11 @@ export default class AddSubcontractor extends React.Component {
                                   { this.state.subcontractor_details.length > 0 ?
                                     <React.Fragment>
                                       { this.state.subcontractor_details.map((subcontractor_detail, index) => {
+																				const key = 'subcontractor' + index;
                                         return (
-                                          <React.Fragment>
+                                          <React.Fragment key={ key }>
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
-                                              <tr className={'tr' + index }>
+                                              <tr>
                                                 <td className={ 'u-va-top u-ta-center' }>{ index + 1 }</td>
                                                 { this.contentOrder(subcontractor_detail.order_contents) }
                                                 { this.contentDeliver(subcontractor_detail.deliver_method) }

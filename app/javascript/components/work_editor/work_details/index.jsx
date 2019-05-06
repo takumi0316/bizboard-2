@@ -499,30 +499,30 @@ export default class AddDetails extends React.Component {
                 </thead>
                 <tbody>
                   { this.state.work_details.map((detail, index) => {
+                    const key = 'detail' + index;
                     return (
-											<React.Fragment>
-                      	<input type='hidden' id={ 'detail_id' + index } key={ 'input_detail_id' + index } defaultValue={ detail.id } />
+											<React.Fragment key={ key }>
                       	<tr>
-                        	<td key={ 'td-button' + index } className={ 'u-va-top' }><button key={ 'button' + index } className={ 'c-btnMain2-primaryA' } onClick={ e => this.onConfirm(e, detail.id, index) }>−</button></td>
-                        	<td key={ 'td-detail_id' + index } className={ 'u-va-top' } defaultValue={ detail.id }>{ index + 1 }</td>
-													<td key={ 'td-order_contents' + index } className={ 'u-va-top' }><textarea key={ detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index) } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
-													<td key={ 'td-deliver_method' + index } className={ 'u-va-top' }><textarea key={ detail.deliver_method } id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index) } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
-													<td key={ 'td-specification' + index } className={ 'u-va-top' }><textarea key={ detail.specification } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index) } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
-													<td key={ 'td-deliver_at' + index }><input key={ detail.deliver_at } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
-                        	<td key={ 'td-client_name' + index } className={ 'u-va-top' }>
-                              <select key={ detail.client_name + index } onBlur={ e => this.onSetStateBlur('onChangeClientName', index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
-                                <option selected>{ detail.client_name }</option>
-                            	{ this.props.users.map((user) => {
+                        	<td className={ 'u-va-top' }><button key={ 'button' + index } className={ 'c-btnMain2-primaryA' } onClick={ e => this.onConfirm(e, detail.id, index) }>−</button></td>
+                        	<td className={ 'u-va-top' }>{ index + 1 }<input key={ detail.id + index } type='hidden' id={ 'detail_id' + index } defaultValue={ detail.id }/></td>
+													<td className={ 'u-va-top' }><textarea key={ detail.order_contents + index } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index) } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
+													<td className={ 'u-va-top' }><textarea key={ detail.deliver_method + index } id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index) } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
+													<td className={ 'u-va-top' }><textarea key={ detail.specification + index } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index) } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
+													<td><input key={ detail.deliver_at + index } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
+                        	<td className={ 'u-va-top' }>
+                              <select key={ detail.client_name + index } onChange={ e => this.onChangeClientName(index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } defaultValue={ detail.client_name }>
+                            	{ this.props.users.map((user, index) => {
+                                const key = 'user_name' + index;
                               	return(
-																	<option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option>
+																	<option key={ key } value={ user['name'] }>{ user['name'] }</option>
                               	);
                             	}) }
                           	</select>
                         	</td>
-													<td key={ 'td-number_of_copies' + index } className={ 'u-va-top' }><input key={ detail.number_of_copies } type='text' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
-													<td key={ 'td-count' + index } className={ 'u-va-top' }><input key={ detail.count } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, 'onChangeCount') } onBlur={ e => this.onSetStateBlur('onChangeCount', index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-													<td key={ 'td-estimated_cost' + index } className={ 'u-va-top' }><input key={ detail.estimated_cost } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(index, 'onChangeCost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
-                        	<td key={ detail.actual_cost } className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } defaultValue={ detail.count * detail.estimated_cost }>{ detail.count * detail.estimated_cost }</td>
+													<td className={ 'u-va-top' }><input key={ detail.number_of_copies + index } type='text' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
+													<td className={ 'u-va-top' }><input key={ detail.count + index } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, 'onChangeCount') } onBlur={ e => this.onSetStateBlur('onChangeCount', index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
+													<td className={ 'u-va-top' }><input key={ detail.estimated_cost + index } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(index, 'onChangeCost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+                        	<td className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } defaultValue={ detail.count * detail.estimated_cost }>{ detail.count * detail.estimated_cost }</td>
                       	</tr>
 											</React.Fragment>
                     );
@@ -568,10 +568,9 @@ export default class AddDetails extends React.Component {
                 </thead>
                 <tbody>
                   { this.state.work_details.map((detail, index) => {
-
+                    const key = 'work_details' + index;
                     return (
-
-                      <tr>
+                      <tr key={ key }>
                         <td className={ 'u-va-top u-ta-center' }>{ index + 1 }</td>
                         { this.contentOrder(detail.order_contents) }
                         { this.contentDeliver(detail.deliver_method) }
