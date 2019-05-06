@@ -510,7 +510,8 @@ export default class AddDetails extends React.Component {
 													<td key={ 'td-specification' + index } className={ 'u-va-top' }><textarea key={ detail.specification } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index) } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
 													<td key={ 'td-deliver_at' + index }><input key={ detail.deliver_at } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ detail.deliver_at === null ? detail.deliver_at : Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
                         	<td key={ 'td-client_name' + index } className={ 'u-va-top' }>
-                              <select key={ detail.client_name + index } onBlur={ e => this.onSetStateBlur('onChangeClientName', index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } defaultValue={ detail.client_name === null ? '' : detail.client_name }>
+                              <select key={ detail.client_name + index } onBlur={ e => this.onSetStateBlur('onChangeClientName', index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index }>
+                                <option selected>{ detail.client_name }</option>
                             	{ this.props.users.map((user) => {
                               	return(
 																	<option key={ user['name'] } value={ user['name'] }>{ user['name'] }</option>
