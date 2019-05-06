@@ -86,6 +86,7 @@ class WorksController < ApplicationController
   def directions
 
     work_detail_clients = Work.find(params[:id]).work_details.pluck(:client_name).uniq
+    work_detail_clients = work_detail_clients.reject{ |client| client == '' }
     @client = String.new
     @clients = String.new
     if work_detail_clients.present?
@@ -98,19 +99,13 @@ class WorksController < ApplicationController
 
        work_detail_clients.each_with_index do |client, index|
 
-         if client.present?
+        if work_detail_clients.length - 1 == index
 
-           if work_detail_clients.length - 1 == index
+           @clients << "#{client}"
+        else
 
-             puts client_if: "#{client}"
-             @clients << "#{client}"
-           else
-
-             puts client_index: "#{index}"
-             puts client_length: "#{work_detail_clients.length}"
-             @clients << "#{client}, "
-           end
-         end
+           @clients << "#{client}, "
+        end
        end
        return @clients
      end
