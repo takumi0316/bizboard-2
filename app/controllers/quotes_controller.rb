@@ -157,6 +157,9 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
+    # デバックの時に使う為ここに書いてるだけです
+    quote.project.estimated!
+
     token = current_user.mf_access_token
     uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
     request = Net::HTTP::Post.new(uri)
@@ -200,7 +203,7 @@ class QuotesController < ApplicationController
     quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
     quote.update_columns(:mf_quote_id => data['data']['id'])
 
-    #quote.project.estimated!
+    quote.project.estimated!
 
 
     redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
