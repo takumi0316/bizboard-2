@@ -35,7 +35,6 @@ export default class AddDetails extends React.Component {
 
   _editable = () => {
 
-    this.props.applyWorkDetails(true, 'work_details')
     this.setState({ show: true });
   }
 
@@ -368,7 +367,6 @@ export default class AddDetails extends React.Component {
 
   onWorkDetailUpdate = () => {
 
-    this.props.applyAlert();
     let array_rails = [];
     let field = {};
     let actual_cost = 0;
@@ -450,7 +448,7 @@ export default class AddDetails extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.setState({ show: false, read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(Number(actual_cost), type), this.props.applyWorkDetails(false));
+          this.setState({ show: false, read_work_notices: res.body.notices , work_notices: res.body.notices }, this.props.applyPrice(Number(actual_cost), type));
         } else {
 
           this.setState({ work_notices: res.body.notices });

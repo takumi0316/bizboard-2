@@ -8,7 +8,7 @@ json[:clients] = clients.map do |r|
     tel: r.tel,
     email: r.email,
     division: r.subcontractor_division,
-    company: r.subcontractor_division.subcontractor,
+    company: r.subcontractor_division&.subcontractor,
   }
 end
 

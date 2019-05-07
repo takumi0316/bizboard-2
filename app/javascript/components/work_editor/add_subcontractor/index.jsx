@@ -35,7 +35,7 @@ export default class AddSubcontractor extends React.Component {
 
   _editable = () => {
 
-    this.setState({ show: true }, this.props.applyAddSubcontractor(true, 'add_subcontractor'))
+    this.setState({ show: true });
   }
 
   onIntCheck = (e, index, funcName) => {
@@ -243,7 +243,6 @@ export default class AddSubcontractor extends React.Component {
 
   onWorkSubcontractorDetailUpdate = () => {
 
-    this.props.applyAlert('add_subcontractor');
     let array_rails = [];
     let field = {};
     let actual_cost = 0;
@@ -266,7 +265,7 @@ export default class AddSubcontractor extends React.Component {
         replace_datetime = replace_datetime.replace(/時/g, ':');
         replace_datetime = replace_datetime.replace(/分/g, '');
         array_rails.push(JSON.stringify({
-          'id': document.getElementById('detail_id' + subcontractor_value_count[i]).value,
+          'id': Number(document.getElementById('work_subcontractor_detail_id' + subcontractor_value_count[i]).value),
           'order_contents': document.getElementById('order_contents' + subcontractor_value_count[i]).value,
           'deliver_method': document.getElementById('deliver_method' + subcontractor_value_count[i]).value,
           'specification': document.getElementById('specification' + subcontractor_value_count[i]).value,
@@ -346,7 +345,7 @@ export default class AddSubcontractor extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.setState({ show: false, work_subcontractors: res.body.work_subcontractors }, this.props.applyPrice(actual_cost, type), this.props.applyAddSubcontractor(false));
+          this.setState({ show: false, work_subcontractors: res.body.work_subcontractors }, this.props.applyPrice(actual_cost, type));
         } else {
 
           this.setState({ work_subcontractors: res.body.work_subcontractors });
@@ -392,16 +391,16 @@ export default class AddSubcontractor extends React.Component {
         			replace_datetime = replace_datetime.replace(/時/g, ':');
         			replace_datetime = replace_datetime.replace(/分/g, '');
               field = {
-                'id': Number(document.getElementById('detail_id' + subcontractor_value_count[i]).value),
+                'id': Number(document.getElementById('work_subcontractor_detail_id' + subcontractor_value_count[i]).value),
                 'work_subcontractor_id': Number(document.getElementById('work_subcontractor_id' + subcontractor_value_count[i]).value),
                 'work_id': this.props.work_id,
                 'order_contents': document.getElementById('order_contents' + subcontractor_value_count[i]).value,
                 'deliver_method': document.getElementById('deliver_method' + subcontractor_value_count[i]).value,
                 'specification': document.getElementById('specification' + subcontractor_value_count[i]).value,
-                'count': Number(document.getElementById('test-count' + subcontractor_value_count[i]).value),
+                'count': document.getElementById('test-count' + subcontractor_value_count[i]).value,
                 'number_of_copies': document.getElementById('number_of_copies' + subcontractor_value_count[i]).value,
                 'deliver_at': replace_datetime,
-                'actual_cost': Number(document.getElementById('actual_cost' + subcontractor_value_count[i]).value),
+                'actual_cost': document.getElementById('actual_cost' + subcontractor_value_count[i]).value,
  							};
 							detail_array.push(field);
 						}
@@ -668,7 +667,7 @@ export default class AddSubcontractor extends React.Component {
                                             { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
                                               <tr key={ 'tr' + index }>
                                                   <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
-                                                  <td className={ 'u-va-top' }>{ index1 + 1 } <input key={ 'input-subcontractor_detail_id' + index } type='hidden' id={ 'detail_id' + index1 } defaultValue={ subcontractor_detail.id } /> <input key={ 'input-work_subcontractor_id' + index } type='hidden' id={ 'work_subcontractor_id' + index1 } defaultValue={ subcontractor_detail.work_subcontractor_id } /></td>
+																									<td className={ 'u-va-top' }>{ index1 + 1 }  <input key={ 'input-work_subcontractor_id' + index } type='hidden' id={ 'work_subcontractor_id' + index1 } defaultValue={ subcontractor_detail.work_subcontractor_id } /> <input type='hidden' id={ 'work_subcontractor_detail_id' + index1} defaultValue={ subcontractor_detail.id } /></td>
                                                   <td className={ 'u-va-top' }><textarea key={ subcontractor_detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index1, subcontractor_detail.id) } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
 																									<td><textarea key={ subcontractor_detail.deliver_method + index1 } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index1, subcontractor_detail.id) } id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
 																									<td><textarea key={ subcontractor_detail.specification } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index1, subcontractor_detail.id) } id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
