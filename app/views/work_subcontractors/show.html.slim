@@ -8,7 +8,7 @@ javascript:
       onrendered: function(canvas) {
         const downloadName = '発注・指示書(外注)' + document.getElementById('project_name').innerHTML;
         const dataURI = canvas.toDataURL();
-        const pdf = new jsPDF('l');
+        const pdf = new jsPDF('l', 'mm', 'a4', '15');
         const width = pdf.internal.pageSize.width * 0.97;
         const height = pdf.internal.pageSize.height * 0.97;
         pdf.addImage(canvas, 'JPEG', 4, 4, width, height);
