@@ -71,11 +71,11 @@ class Project < ApplicationRecord
 
   has_one  :work,    dependent: :destroy
 
-  has_one  :activity,    dependent: :destroy
+  has_one  :activity, dependent: :destroy
 
   has_many :histories, class_name: 'ProjectHistory',    dependent: :destroy
 
-  has_many :quotes
+  has_many :quotes, dependent: :destroy
 
   has_one  :invoice,    dependent: :destroy
 

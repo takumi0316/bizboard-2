@@ -22,87 +22,9 @@
       = link_to 'こちら', edit_project_path(quote.project), class: 'u-td-underline'
       | から請求先情報を登録してください。
 
-= form_for quote, html: { class: 'u-mt-30'} do |f|
+  = form_for quote, html: { class: 'u-mt-30'} do |f|
 
-  = f.hidden_field :project_id
-
-  .c-form-group
-
-    .c-form-line.u-mr-50
-      .c-form-label
-        = f.label :project_number, '案件ID'
-      = f.select :project_id, Project.all.pluck(:project_number, :id),{},{:class=>'c-form-dateselect'}
-
-    .c-form-line.u-mr-50
-      .c-form-label
-        = f.label :date, '発行日'
-      .c-form-group
-        = f.date_select :date, {use_month_numbers: true}, {class: 'c-form-dateselect'}
-
-    .c-form-line
-      .c-form-label
-        = f.label :expiration, '発行期限'
-      .c-form-group
-        = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
-
-  .c-form-group
-
-    .c-form-group
-      .c-form-label
-        .u-mt-35 = quote.project.client&.company_division&.company&.name
-
-    .c-form-line
-      .c-form-label
-        = f.label :attention, '御中・様'
-      = f.select :attention, Quote.attentions_i18n.invert, {}, { class: 'c-form-dateselect' }
-
-  .c-form-label
-    = f.label :subject, '件名'
-  = f.text_field :subject, placeholder: '件名を入力してください', class: 'c-form-textarea', rows: 4
-
-  .c-table.u-mt-30
-    table
-      thead
-        tr
-          th 品目
-          th 単価
-          th 数量
-          th 価格
-          th 原価
-          th 粗利
-          th 詳細
-          th 削除
-      tbody
-          - 1.times do
-            = f.fields_for :quote_items do |fi|
-              tr
-                td = fi.text_field :name, placeholder: 'モノクロコピー', class: 'c-form-textarea'
-                td = fi.text_field :unit_price, placeholder: '10', class: 'c-form-textarea'
-                td = fi.text_field :quantity, placeholder: '100', class: 'c-form-textarea'
-                td
-                td = fi.text_field :cost, placeholder: '5', class: 'c-form-textarea'
-                td = fi.text_field :gross_profit, placeholder: '0.7', class: 'c-form-textarea'
-                td = fi.text_field :detail, placeholder: '両面', class: 'c-form-textarea'
-                td
-
-  .c-form-label
-    = f.label :price, '合計金額'
-  = f.text_field :price, placeholder: 'とりあえずテキストフィールドにしてます', class: 'c-form-textarea', rows: 4
-
-  .c-form-label
-    = f.label :remarks, '備考　※見積書に記載されます'
-  = f.text_area :remarks, placeholder: '備考を入力してください', class: 'c-form-textarea', rows: 4
+    = f.hidden_field :project_id
 
 
-  .c-form-label
-    = f.label :memo, 'メモ　※見積書に記載されません'
-  = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
-
-
-  .c-overlay-submit
-    = f.submit quote.new_record?? '保存する' : '更新する', class: 'c-btnMain-standard c-btn-blue u-va-middle'
-
-    - if quote.pdf_url.present?
-      = link_to 'MFに見積もりを更新する', quotes_api_post_path(id: quote.id, quote_items_id: quote.quote_items.ids), class: 'c-btnMain-standard c-btn-red u-va-middle u-ml-15'
-    - else
-      = link_to 'MFに見積もりを作成する', quotes_api_post_path(id: quote.id, quote_items_id: quote.quote_items.ids), class: 'c-btnMain-standard c-btn-blue u-va-middle u-ml-15'
+  = react_component('QuoteFrom')

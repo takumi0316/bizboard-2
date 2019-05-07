@@ -54,6 +54,9 @@ import WorkDetails from 'components/work_editor/work_details/index.jsx'
 // 作業詳細作成
 import WorkEditor from 'components/work_editor/index.jsx'
 
+// 見積もり
+import QuoteFrom from 'components/quote_from/index.jsx'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -66,4 +69,5 @@ WebpackerReact.setup({
   WorkStatus,
   SubcontractorDivisions,
   WorkEditor,
+  QuoteFrom,
 })

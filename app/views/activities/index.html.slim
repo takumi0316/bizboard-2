@@ -6,7 +6,7 @@
 
   .c-search__item
     = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '対応者/案件名/メモ/案件ID'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '対応者/案件名/メモ/案件番号末尾２桁'
 
   = f.submit '検索', class: 'c-btnMain-standard'
 
@@ -27,7 +27,7 @@
         tr
           td = r.date
           td = r.status_i18n
-          td = r.project_id
+          td = r.project.project_number
           td = r.project.name
           td = r.project.user.name
           td = r.memo

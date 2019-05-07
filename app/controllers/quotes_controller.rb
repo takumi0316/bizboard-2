@@ -21,6 +21,12 @@ class QuotesController < ApplicationController
   }
 
   # 見積もりアイテム
+  expose(:quote_items) {
+    QuoteItem
+    .all
+  }
+
+  # 見積もりアイテム
   expose(:quote_item) { QuoteItem.find_or_initialize_by id: params[:id] || params[:quote_item_id]}
 
   # 見積もり
@@ -84,44 +90,21 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを更新しました'}}
-  rescue => e
+    token = current_user.mf_access_token
+    delete_id = quote.mf_quote_id
+    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
+    request = Net::HTTP::Delete.new(uri)
+    request["Authorization"] = "BEARER #{token}"
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-  end
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
 
-  ##
-  # 新規作成
-  # @version 2018/06/10
-  #
-  def create
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
 
-    # 情報更新
-    quote.update! quote_params
 
-    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
-  rescue => e
-
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-  end
-
-  ##
-  # 削除
-  # @version 2018/06/10
-  #
-  def destroy
-
-    quote.destroy
-  rescue => e
-
-    flash[:warning] = { message: e.message }
-  ensure
-    redirect_to action: :index
-  end
-
-  def api_post
-
-    token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
     uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
     request = Net::HTTP::Post.new(uri)
     request.content_type = "application/json"
@@ -137,10 +120,68 @@ class QuotesController < ApplicationController
         "note": quote.remarks,
         "memo": quote.memo,
         "items": [
+          quote.quote_items.pluck(*[:name, :quantity, :unit_price]).map {
+            |tm| [:name, :quantity, :unit_price].zip(tm).to_h
+          }
+        ]
+      }
+    })
+
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    data = JSON.parse(response.body)
+
+    quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
+    quote.update_columns(:mf_quote_id => data['data']['id'])
+
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを更新しました'}}
+  rescue => e
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+  end
+
+  ##
+  # 新規作成
+  # @version 2018/06/10
+  #
+  def create
+
+    # 情報更新
+    quote.update! quote_params
+
+    token = current_user.mf_access_token
+    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
+    request = Net::HTTP::Post.new(uri)
+    request.content_type = "application/json"
+    request["Authorization"] = "BEARER #{token}"
+
+    request.body = JSON.dump({
+      "quote": {
+        "department_id": quote.project.client.company_division.mf_company_division_id,
+        "quote_number": quote.project.project_number,
+        "quote_date": quote.date.strftime('%Y-%m-%d'),
+        "expired_date": quote.expiration.strftime('%Y-%m-%d'),
+        "title": quote.subject,
+        "note": quote.remarks,
+        "memo": quote.memo,
+        “items”: [
           {
-            "name": '商品B',
-            "quantity": 10,
-            "unit_price": 100,
+            “name”: "商品A",
+            “quantity”: 10,
+            “unit_price”: 100,
+          },
+          {
+            “name”: "商品B",
+            “quantity”: 10,
+            “unit_price”: 100,
           },
         ]
       }
@@ -159,32 +200,28 @@ class QuotesController < ApplicationController
     quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
     quote.update_columns(:mf_quote_id => data['data']['id'])
 
-    quote.project.estimated!
+    #quote.project.estimated!
 
-    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFに見積もりを作成しました'}}
+
+    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
-  def api_update
+  ##
+  # 削除
+  # @version 2018/06/10
+  #
+  def destroy
 
-    token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
-    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{quote.project.client.company_division.mf_company_division_id}.json")
-    request = Net::HTTP::Patch.new(uri)
-    request.content_type = "application/json"
-    request["Authorization"] = "BEARER {{TOKEN}}"
-    request.body = JSON.dump({
-      "quote": {
-        "title": quote.subject,
-        "items": [
-          {
-            "id": "qwertyuiop",
-            "_destroy": "true"
-          }
-        ]
-      }
-    })
+    quote.destroy
+
+    token = current_user.mf_access_token
+    delete_id = quote.mf_quote_id
+    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
+    request = Net::HTTP::Delete.new(uri)
+    request["Authorization"] = "BEARER #{token}"
 
     req_options = {
       use_ssl: uri.scheme == "https",
@@ -194,16 +231,16 @@ class QuotesController < ApplicationController
       http.request(request)
     end
 
-    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFの見積もりを更新しました'}}
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    flash[:warning] = { message: e.message }
+  ensure
+    redirect_to action: :index
   end
-
 
   def pdf_dl
 
-    token = '7061804ec577bd26fc171ffb12d739d110872f13d4c0504b7709449468ab6310'
+    token = current_user.mf_access_token
     pdf_url = quote.pdf_url
 
     uri = URI.parse("#{pdf_url}")
