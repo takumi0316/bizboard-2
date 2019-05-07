@@ -8,15 +8,15 @@ javascript:
       onrendered: function(canvas) {
         const downloadName = '発注・指示書(外注)' + document.getElementById('project_name').innerHTML;
         const dataURI = canvas.toDataURL();
-        const pdf = new jsPDF('l', 'mm', 'a4', '15');
-        const width = pdf.internal.pageSize.width * 0.97;
-        const height = pdf.internal.pageSize.height * 0.97;
-        pdf.addImage(canvas, 'JPEG', 4, 4, width, height);
+        const pdf = new jsPDF('l', 'mm', 'a4');
+        const width = pdf.internal.pageSize.width * 0.80;
+        const height = pdf.internal.pageSize.height * 0.80;
+        pdf.addImage(canvas, 'JPEG', 25, 22, width, height);
         pdf.save(downloadName)
       }
     });
   }
-#captcha
+#captcha.u-fw-bold
 
   h1.l-dashboard__heading
     | 発注・指示書(外注用)
