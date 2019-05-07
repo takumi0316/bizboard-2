@@ -74,4 +74,9 @@ class WorkSubcontractorsController < ApplicationController
     render json: { work_subcontractors: Work.find(params[:work_id]).subcontractor }
   end
 
+  def show
+
+    @directions = (Date.today).to_s + WorkSubcontractor.find(params[:id]).work.project.name
+  end
+
 end

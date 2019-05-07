@@ -1,18 +1,13 @@
 script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"
 script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"
 
-a.u-mt-10.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
+a.u-mt-10.c-btnMain-primaryB#ss(href='', download="#{@directions}.png") スクショをダウンロードするよ
 javascript:
-  function downloadImage() {
+  window.onload = function() {
     html2canvas(document.getElementById('captcha'), {
-      onrendered: function(canvas) {
-        const downloadName = '発注・指示書(社内用)' + document.getElementById('project_name').innerHTML;
-        const dataURI = canvas.toDataURL();
-        const pdf = new jsPDF('l', 'mm', 'a4');
-        const width = pdf.internal.pageSize.width * 0.80;
-        const height = pdf.internal.pageSize.height * 0.80;
-        pdf.addImage(canvas, 'JPEG', 25, 22, width, height);
-        pdf.save(downloadName)
+     onrendered: function(canvas) {
+        let dataURI = canvas.toDataURL();
+        document.getElementById('ss').href = dataURI;
       }
     });
   }
