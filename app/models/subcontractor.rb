@@ -33,7 +33,7 @@ class Subcontractor < ApplicationRecord
   #----------------------------------------
 
   # 部署
-  has_many :divisions, class_name: 'SubcontractorDivision', dependent: :destroy
+  has_many :divisions, class_name: 'SubcontractorDivision'
 
   #----------------------------------------
   #  ** Scopes **
