@@ -6,7 +6,7 @@
 
   .c-search__item
     = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '対応者/案件名/メモ/案件番号末尾２桁'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '対応者/案件名/メモ/案件番号'
 
   = f.submit '検索', class: 'c-btnMain-standard'
 
@@ -16,12 +16,12 @@
       tr
         th 対応日時
         th 対応内容
-        th 案件ID
+        th 案件番号
         th 案件名
         th 対応者
         th メモ
         th 添付
-        th colspan=3
+        th colspan= 3
     tbody
       - activities.each do |r|
         tr
