@@ -65,7 +65,7 @@ class Activity < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.id} #{self.memo} #{self.project_id} #{self.project&.user&.name} #{self.project&.name} "
+    self.free_word = "#{self.id} #{self.memo} #{self.project_id} #{self.project&.user&.name} #{self.project&.name} #{self.project&.project_number} "
   end
 
   ##

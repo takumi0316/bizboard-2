@@ -78,7 +78,7 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    @id = activity.project_id
+    @id = activity.project.project_number
     redirect_to activities_path+"?name=#{@id}", flash: {notice: {message: '活動履歴を更新しました'}}
   rescue => e
 
@@ -94,7 +94,7 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    @id = activity.project_id
+    @id = activity.project.project_number
     redirect_to activities_path+"?name=#{@id}", flash: {notice: {message: '活動履歴を作成しました'}}
   rescue => e
 

@@ -30,10 +30,10 @@
           td = r.project.project_number
           td = r.project.name
           td = r.project.user.name
-          td = r.memo
+          td = r.memo.truncate(30)
           td
             - if r.attachment.present?
-              = link_to '資料へ飛ぶ', r.attachment, class: 'c-btnMain-primaryB'
+              = link_to '資料へ飛ぶ', r.attachment, target: :_blank, class: 'c-btnMain-primaryB'
           td = link_to '編集', edit_activity_path(r), class: 'c-btnMain-standard'
           td = link_to '削除', activity_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
