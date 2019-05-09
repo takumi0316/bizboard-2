@@ -62,7 +62,7 @@ class WorkSubcontractorDetailsController < ApplicationController
         render json: { status: :success, detail: Work.find(params[:work_id]).subcontractor_detail }
       elsif params[:token] === 'empty'
 
-        render json: { status: :nothing }
+        render json: { status: :nothing, work_subcontractor: Work.find(params[:work_id]).subcontractor }
       end
     end
 

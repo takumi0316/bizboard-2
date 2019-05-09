@@ -303,7 +303,7 @@ export default class AddSubcontractor extends React.Component {
           this.setState({ subcontractor_details: res.body.detail }, this.onWorkSubcontractorNoticesUpdate(actual_cost, type));
         } else if (!err && res.body.status === 'nothing') {
 
-          if (this.state.work_subcontractors.length < 0) {
+          if ( res.body.work_subcontractor.length === 0 ) {
 
             this.setState({ show: false });
           } else {
