@@ -78,8 +78,8 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    @id = activity.project.project_number
-    redirect_to activities_path+"?name=#{@id}", flash: {notice: {message: '活動履歴を更新しました'}}
+    @sort = activity.project_id
+    redirect_to activities_path+"?name=#{@sort}", flash: {notice: {message: '活動履歴を更新しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -94,8 +94,8 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    @id = activity.project.project_number
-    redirect_to activities_path+"?name=#{@id}", flash: {notice: {message: '活動履歴を作成しました'}}
+    @sort = activity.project_id
+    redirect_to activities_path+"?name=#{@sort}", flash: {notice: {message: '活動履歴を作成しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
