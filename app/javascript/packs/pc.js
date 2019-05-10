@@ -33,6 +33,9 @@ import LogoEditor from 'components/logo_editor'
 // 案件作成
 import ProjectEditor from 'components/project_editor'
 
+// 見積り作成
+import QuoteEditor from 'components/quote_editor'
+
 // 案件詳細
 import ProjectViewer from 'components/project_viewer'
 
@@ -62,6 +65,7 @@ WebpackerReact.setup({
   Kawaii,
   LogoEditor,
   ProjectEditor,
+  QuoteEditor,
   ProjectViewer,
   CompanyDivisions,
   WorksSearch,

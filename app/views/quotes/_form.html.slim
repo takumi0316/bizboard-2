@@ -1,92 +1,73 @@
-- if quote.project.present?
 
-  h1.l-dashboard__heading = quote.project.name
+= react_component('QuoteEditor',
+  { action: action,
+  quote: quote,
+  company: quote.client&.company_division&.company,
+  division: quote.client&.company_division,
+  client: quote.client })
 
-  - if quote.project.client.present?
 
-    .u-mt-15.c-attention
-      p
-        | 会社名:
-        = quote.project.client&.company_division&.company&.name
-      p
-        | 部署名:
-        = quote.project.client&.company_division&.name
-      p
-        | 担当者名:
-        = quote.project.client&.name
+= form_for quote, html: { class: 'u-mt-30'} do |f|
 
-  - else
-
-    .u-mt-15.c-attention
-      | 請求先情報が登録されていません。
-      = link_to 'こちら', edit_project_path(quote.project), class: 'u-td-underline'
-      | から請求先情報を登録してください。
-
-  = form_for quote, html: { class: 'u-mt-30'} do |f|
-
-    = f.hidden_field :project_id
-
-    .c-form-group
-      .c-form-line.u-mr-50
-        .c-form-label
-          = f.label :project_number, '案件ID'
-        = f.select :project_id, Project.all.pluck(:project_number, :id),{},{:class=>'c-form-dateselect'}
-
-      .c-form-line.u-mr-50
-        .c-form-label
-          = f.label :date, '発行日'
-        .c-form-group
-          = f.date_select :date, {use_month_numbers: true}, {class: 'c-form-dateselect'}
-
-      .c-form-line
-        .c-form-label
-          = f.label :expiration, '発行期限'
-        .c-form-group
-          = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+  .c-form-group
+    .c-form-line.u-mr-50
+      .c-form-label
+        = f.label :quote_number, '見積番号'
+      /p = f.quote_number
 
     .c-form-label
       = f.label :subject, '件名'
     = f.text_field :subject, placeholder: '件名を入力してください', class: 'c-form-textarea', rows: 4
 
-    .c-table.u-mt-30
-      table
-        thead
-          tr
-            th 品目
-            th 単価
-            th 数量
-            th 価格
-            th 原価
-            th 粗利
-            th 詳細
-            th 削除
-        tbody
-          - 1.times do
-              = f.fields_for :quote_items do |fi|
-                tr
-                  td = fi.text_field :name, placeholder: 'モノクロコピー', class: 'c-form-textarea'
-                  td = fi.text_field :unit_price, placeholder: '10', class: 'c-form-textarea'
-                  td = fi.text_field :quantity, placeholder: '100', class: 'c-form-textarea'
-                  td
-                  td = fi.text_field :cost, placeholder: '5', class: 'c-form-textarea'
-                  td = fi.text_field :gross_profit, placeholder: '0.7', class: 'c-form-textarea'
-                  td = fi.text_field :detail, placeholder: '両面', class: 'c-form-textarea'
-                  td
+    .c-form-line.u-mr-50
+      .c-form-label
+        = f.label :date, '発行日'
+      .c-form-group
+        = f.date_select :date, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+
+    .c-form-line
+      .c-form-label
+        = f.label :expiration, '発行期限'
+      .c-form-group
+        = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+
+  .c-table.u-mt-30
+    table
+      thead
+        tr
+          th 品目
+          th 単価
+          th 数量
+          th 価格
+          th 原価
+          th 粗利
+          th 詳細
+          th 削除
+      tbody
+        - 1.times do
+            = f.fields_for :quote_items do |fi|
+              tr
+                td = fi.text_field :name, placeholder: 'モノクロコピー', class: 'c-form-textarea'
+                td = fi.text_field :unit_price, placeholder: '10', class: 'c-form-textarea'
+                td = fi.text_field :quantity, placeholder: '100', class: 'c-form-textarea'
+                td
+                td = fi.text_field :cost, placeholder: '5', class: 'c-form-textarea'
+                td = fi.text_field :gross_profit, placeholder: '0.7', class: 'c-form-textarea'
+                td = fi.text_field :detail, placeholder: '両面', class: 'c-form-textarea'
+                td
 
 
-    .c-form-label
-      = f.label :remarks, '備考　※見積書に記載されます'
-    = f.text_area :remarks, placeholder: '備考を入力してください', class: 'c-form-textarea', rows: 4
+  .c-form-label
+    = f.label :remarks, '備考　※見積書に記載されます'
+  = f.text_area :remarks, placeholder: '備考を入力してください', class: 'c-form-textarea', rows: 4
 
 
-    .c-form-label
-      = f.label :memo, 'メモ　※見積書に記載されません'
-    = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+  .c-form-label
+    = f.label :memo, 'メモ　※見積書に記載されません'
+  = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
 
 
-    .c-overlay-submit
-      = f.submit quote.new_record?? '保存する' : '更新する', class: 'c-btnMain-standard c-btn-blue u-va-middle'
+  .c-overlay-submit
+    = f.submit quote.new_record?? '保存する' : '更新する', class: 'c-btnMain-standard c-btn-blue u-va-middle'
 
-    .c-form-label  ※ 作成したらエラーになりますがMF側にデータが送れていないだけです…作業指示書は作成できるようになっています!　　動的に行追加する機能は作成中です…すみません
-
-  //= react_component('QuoteFrom')
+  .c-form-label  ※ 作成したらエラーになりますがMF側にデータが送れていないだけです…作業指示書は作成できるようになっています!　　動的に行追加する機能は作成中です…すみません

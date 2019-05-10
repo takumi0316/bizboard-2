@@ -112,6 +112,8 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def destroy
 
+    raise '対象のクライアントは見積り情報とのひも付きがあるため削除できません' if client.quotes.exists?
+
     client.destroy!
   rescue => e
 

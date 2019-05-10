@@ -43,15 +43,14 @@ ja:
         estimate: 見積もり
         workshop: セミナー
         other: その他
-    quote:
-      attention:
-        messrs: 御中
-        dear: 様
     invoice:
       attention:
         messrs: 御中
         dear: 様
-    project:
+    quote:
+      attention:
+        messrs: 御中
+        dear: 様
       status:
         draft: 新規
         estimated: 見積書発行済
@@ -61,14 +60,7 @@ ja:
         deliverd: 納品済
         invoicing: 請求書発行済
         complete: 完了
-      project_category:
-        project_print: プリント
-        project_card: 名刺
-        project_copy: コピー
-        project_bind: 製本
-        project_scan: スキャン
-        project_other: その他
-      project_type:
+      quote_type:
         contract: 請負
         sales: 販売施工
       channel:
@@ -81,6 +73,14 @@ ja:
         location: 指定場所
         pickup: 引取り
         other: その他
+    project:
+      project_category:
+        project_print: プリント
+        project_card: 名刺
+        project_copy: コピー
+        project_bind: 製本
+        project_scan: スキャン
+        project_other: その他
       after_process:
         after_process_unnecessary: なし
         after_process_necessary: あり

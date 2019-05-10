@@ -84,7 +84,7 @@ class UsersController < ApplicationController
   #
   def destroy
 
-    raise '対象のユーザーは記事に紐付きがあります' if user.articles.exists?
+    raise '対象のユーザーは見積りに紐付きがあります' if user.quotes.exists?
 
     user.destroy!
   rescue => e

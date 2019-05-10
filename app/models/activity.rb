@@ -10,7 +10,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  free_word  :text(65535)
-#  project_id :bigint(8)
+#  quote_id   :bigint(8)
 #
 
 class Activity < ApplicationRecord
@@ -43,7 +43,7 @@ class Activity < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :project
+  belongs_to :quote
 
   #----------------------------------------
   #  ** Delegates **
@@ -65,7 +65,7 @@ class Activity < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.id} #{self.memo} #{self.project_id} #{self.project&.user&.name} #{self.project&.name} "
+    self.free_word = "#{self.id} #{self.memo} #{self.quote_id} #{self.quote&.user&.name} #{self.quote&.name} "
   end
 
   ##

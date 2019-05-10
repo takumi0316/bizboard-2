@@ -100,6 +100,8 @@ class CompaniesController < ApplicationController
   #
   def destroy
 
+    raise '対象の会社には部署情報が登録されているため削除できません' if company.divisions.exists?
+
     company.destroy!
   rescue => e
 

@@ -44,15 +44,6 @@ class ProjectsController < ApplicationController
   end
 
   ##
-  # 詳細
-  # @version 2018/06/10
-  #
-  def show
-
-    render :show, layout: false if request.xhr?
-  end
-
-  ##
   # 新規作成
   # @version 2018/06/10
   #
@@ -98,7 +89,7 @@ class ProjectsController < ApplicationController
   def create
 
     # 案件情報更新
-    project.update! project_params.merge(user_id: current_user.id)
+    project.update! project_params
 
     project.histories.create!(note: "#{current_user.name}さんが案件を作成しました。")
 
@@ -114,30 +105,14 @@ class ProjectsController < ApplicationController
   #
   def destroy
 
+    raise '対象の案件を用いた見積書が作成済みのため削除することはできません' if project.quotes.exists?
+
     project.destroy!
   rescue => e
 
     flash[:warning] = { message: e.message }
   ensure
     redirect_to action: :index
-  end
-
-  ##
-  # ステータスを更新する
-  # @version 2018/06/10
-  #
-  def status
-
-    project.update!(status: params[:status].to_sym)
-
-    if project.working? && project.work.blank?
-
-      project.build_work.save!
-
-      redirect_to work_path(project.work), flash: {notice: {message: '作業書を作成しました'}} and return
-    end
-
-    redirect_to projects_path, flash: {notice: {message: '案件ステータスを更新しました'}}
   end
 
   #----------------------------------------
@@ -152,7 +127,7 @@ class ProjectsController < ApplicationController
     #
     def project_params
 
-      params.require(:project).permit(:price, :user_id, :company_division_client_id, :name, :project_count, :project_category, :project_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :note, :after_process, :binding_work,
+      params.require(:project).permit(:price, :user_id, :company_division_client_id, :name, :project_category, :note, :after_process, :binding_work,
         bind_attributes:  [:project_id, :posting_state, :print_size, :print_size_note],
         card_attributes:  [:project_id, :draft_data, :url, :card_type, :work_type, :work_time, :color, :paper, :surface, :emboss],
         copy_attributes:  [:project_id, :posting_state, :draft_split, :draft_restore, :color, :surface, :open_type, :print_size, :print_size_note],

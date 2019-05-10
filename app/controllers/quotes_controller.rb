@@ -65,7 +65,7 @@ class QuotesController < ApplicationController
 
     add_breadcrumb '見積もり', path: quotes_path
     add_breadcrumb '新規作成'
-    @quote = Quote.new(project_id: params[:project_id])
+    @quote = Quote.new
     quote.quote_items.build
   end
 
@@ -112,8 +112,8 @@ class QuotesController < ApplicationController
 
     request.body = JSON.dump({
       "quote": {
-        "department_id": quote.project.client.company_division.mf_company_division_id,
-        "quote_number": quote.project.project_number,
+        "department_id": quote.client.company_division.mf_company_division_id,
+        "quote_number": quote.quote.quote_number,
         "quote_date": quote.date.strftime('%Y-%m-%d'),
         "expired_date": quote.expiration.strftime('%Y-%m-%d'),
         "title": quote.subject,
@@ -155,10 +155,10 @@ class QuotesController < ApplicationController
   def create
 
     # 情報更新
-    quote.update! quote_params
+    quote.update! quote_params.merge({user_id: current_user.id})
 
     # デバックの時に使う為ここに書いてるだけです
-    quote.project.estimated!
+    quote.estimated!
 
     token = current_user.mf_access_token
     uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
@@ -168,8 +168,8 @@ class QuotesController < ApplicationController
 
     request.body = JSON.dump({
       "quote": {
-        "department_id": quote.project.client.company_division.mf_company_division_id,
-        "quote_number": quote.project.project_number,
+        "department_id": quote.quote.client.company_division.mf_company_division_id,
+        "quote_number": quote.quote.quote_number,
         "quote_date": quote.date.strftime('%Y-%m-%d'),
         "expired_date": quote.expiration.strftime('%Y-%m-%d'),
         "title": quote.subject,
@@ -203,7 +203,7 @@ class QuotesController < ApplicationController
     quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
     quote.update_columns(:mf_quote_id => data['data']['id'])
 
-    quote.project.estimated!
+    quote.estimated!
 
 
     redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
@@ -261,6 +261,24 @@ class QuotesController < ApplicationController
 
   end
 
+  ##
+  # ステータスを更新する
+  # @version 2018/06/10
+  #
+  def status
+
+    quote.update!(status: params[:status].to_sym)
+
+    if quote.working? && quote.work.blank?
+
+      quote.build_work.save!
+
+      redirect_to work_path(quote.work), flash: {notice: {message: '作業書を作成しました'}} and return
+    end
+
+    redirect_to quotes_path, flash: {notice: {message: 'ステータスを更新しました'}}
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
@@ -269,7 +287,7 @@ class QuotesController < ApplicationController
 
   def quote_params
 
-    params.require(:quote).permit :id, :project_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :mf_quote_id,
+    params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :mf_quote_id,
       quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
   end
 

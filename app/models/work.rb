@@ -3,7 +3,7 @@
 # Table name: works
 #
 #  id         :bigint(8)        not null, primary key
-#  project_id :bigint(8)
+#  quote_id   :bigint(8)
 #  price      :integer          default(0)
 #  cost       :integer          default(0)
 #  status     :integer          default("draft")
@@ -38,7 +38,7 @@ class Work < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :project
+  belongs_to :quote
 
   has_many :work_details, class_name: 'WorkDetail', dependent: :destroy
 
@@ -63,7 +63,7 @@ class Work < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.project.client&.company_division&.company&.name} #{self.project.client&.name} #{self.project.name} #{self.status} #{self.project.deliver_at}"
+    self.free_word = "#{self.quote.client&.company_division&.company&.name} #{self.quote.client&.name} #{self.quote.subject} #{self.status} #{self.quote.deliver_at}"
   end
 
   ##
@@ -81,7 +81,7 @@ class Work < ApplicationRecord
       query = (['free_word like ?'] * terms.size).join(' and ')
       where(query, *terms.map { |term| "%#{term}%" })
       # 日付検索
-      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
       return _self
     # フリーワードが入っていて、ステータスが選択されている
     elsif parameters[:name].present? && parameters[:status] != 'ステータス'
@@ -93,20 +93,20 @@ class Work < ApplicationRecord
       # ステータス検索
       _self = _self.where(status: parameters[:status])
       # 日付検索
-      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
       return _self
 
     # フリーワードが空で、ステータスが未選択
     elsif parameters[:name].blank? && parameters[:status] == 'ステータス'
 
-      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
       return _self
     # フリーワードが空で、ステータスが入力されている
     elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != 'ステータス'
 
       _self = _self.where(status: parameters[:status])
       # 日付検索
-      _self = _self.joins(:project).merge(Project.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
       return _self
     end
      return _self

@@ -18,23 +18,22 @@ Rails.application.routes.draw do
 
   # マスタ同期
   namespace :masters do
-    post :items
     post :pertners
   end
   resources :masters
 
   # 案件
-  resources :projects do
-    post :status
-  end
+  resources :projects
 
   #見積もり
   namespace :quotes do
-    get :api_post
-    get :api_update
-    get :pdf_dl
+    get  :api_post
+    get  :api_update
+    get  :pdf_dl
   end
-  resources :quotes
+  resources :quotes do
+    post :status
+  end
 
   # 案件
   namespace :invoices do
@@ -63,9 +62,6 @@ Rails.application.routes.draw do
   resources :subcontractors
   resources :subcontractor_divisions
   resources :subcontractor_division_clients
-
-  # 品目
-  resources :items
 
   # 自社部署
   resources :divisions

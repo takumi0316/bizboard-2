@@ -96,6 +96,8 @@ class DivisionsController < ApplicationController
   #
   def destroy
 
+    raise '対象の部署にはユーザーとのひも付きがあるため削除できません' if division.users.exists?
+
     division.destroy!
   rescue => e
 

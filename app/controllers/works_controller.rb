@@ -54,7 +54,7 @@ class WorksController < ApplicationController
 
       work.update! status: params[:work][:status]
 
-      work.project.end_work! if work.delivered? || work.completed?
+      work.quote.end_work! if work.delivered? || work.completed?
 
       render json: { status: :success, work: work.status }
     elsif params[:status] === 'price'
@@ -89,7 +89,7 @@ class WorksController < ApplicationController
     work_detail_clients = work_detail_clients.reject{ |client| client == '' }
     @client = String.new
     @clients = String.new
-    @directions = (Date.today).to_s + works.find(params[:id]).project.name
+    @directions = (Date.today).to_s + works.find(params[:id]).quote.subject
     if work_detail_clients.present?
 
      if work_detail_clients.length == 1

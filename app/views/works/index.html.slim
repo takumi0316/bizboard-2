@@ -20,17 +20,17 @@
     tbody
       - works.each_with_index do |r, index|
         tr
-          td.u-ta-center = r.project.project_number
+          td.u-ta-center = r.quote.quote_number
           td.u-ta-center = link_to '詳細', work_path(r), class: 'c-btnMain-standard'
-          td.u-ta-center = (r.project.client&.company_division&.company&.name if r.project&.client&.present?)
-          td.u-ta-center = r.project.name if r.project&.name.present?
-          td.u-ta-center = r.project.user.name if r.project&.user&.name.present?
+          td.u-ta-center = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
+          td.u-ta-center = r.quote.subject if r.quote&.subject.present?
+          td.u-ta-center = r.quote.user&.name if r.quote&.user&.name.present?
           td.u-ta-left = r.work_details.limit(1).pluck(:client_name)[0] if r.work_details&.limit(1).pluck(:client_name).present?
-          td.u-ta-center = r.project.deliver_at.to_s
+          td.u-ta-center = r.quote.deliver_at.to_s
           td.u-ta-center = r.status_i18n
-          td.u-ta-right  = "#{r.project.price}円"
+          td.u-ta-right  = "#{r.quote.price}円"
           td.u-ta-right  = "#{r.price}円"
-          td.u-ta-right  = "#{r.project.price - r.price}"
+          td.u-ta-right  = "#{r.quote.price - r.price}" if r.quote.price?
           td.u-ta-right  = r.price.nonzero?? "#{r.price.to_f / r.price.to_f}%" : '0%'
           td.u-ta-right  = r.updated_at
 

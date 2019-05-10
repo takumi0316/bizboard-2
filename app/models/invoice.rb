@@ -3,7 +3,7 @@
 # Table name: invoices
 #
 #  id            :bigint(8)        not null, primary key
-#  project_id    :bigint(8)
+#  quote_id      :bigint(8)
 #  date          :date
 #  expiration    :date
 #  subject       :string(191)
@@ -42,7 +42,7 @@ class Invoice < ApplicationRecord
   #----------------------------------------
 
   # 案件
-  belongs_to :project
+  belongs_to :quote
 
   #----------------------------------------
   #  ** Scopes **
@@ -61,7 +61,7 @@ class Invoice < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.project.project_number} #{self.subject} #{self.remarks} #{self.memo} #{self.project.client.company_division.company.name} #{self.project.client.company_division.name} #{self.project.client.name}"
+    self.free_word = "#{self.quote.quote_number} #{self.subject} #{self.remarks} #{self.memo} #{self.quote.client.company_division.company.name} #{self.quote.client.company_division.name} #{self.quote.client.name}"
   end
 
   ##

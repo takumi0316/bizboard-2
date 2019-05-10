@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_26_034111) do
+ActiveRecord::Schema.define(version: 2019_05_10_085931) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -41,8 +41,8 @@ ActiveRecord::Schema.define(version: 2019_04_26_034111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "free_word"
-    t.bigint "project_id"
-    t.index ["project_id"], name: "index_activities_on_project_id"
+    t.bigint "quote_id"
+    t.index ["quote_id"], name: "index_activities_on_quote_id"
   end
 
   create_table "bases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(version: 2019_04_26_034111) do
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "project_id"
+    t.bigint "quote_id"
     t.date "date", comment: "請求日"
     t.date "expiration", comment: "支払い期限"
     t.string "subject", comment: "件名"
@@ -124,23 +124,7 @@ ActiveRecord::Schema.define(version: 2019_04_26_034111) do
     t.integer "attention"
     t.string "mf_invoice_id"
     t.string "pdf_url"
-    t.index ["project_id"], name: "index_invoices_on_project_id"
-  end
-
-  create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.string "mf_item_id"
-    t.string "code"
-    t.string "note"
-    t.integer "quantity", default: 0
-    t.integer "unit_price", default: 0
-    t.string "unit"
-    t.boolean "excise", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "division_id"
-    t.text "free_word"
-    t.index ["mf_item_id"], name: "index_items_on_mf_item_id", unique: true
+    t.index ["quote_id"], name: "index_invoices_on_quote_id"
   end
 
   create_table "project_after_processes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -276,17 +260,12 @@ ActiveRecord::Schema.define(version: 2019_04_26_034111) do
     t.text "description"
     t.integer "project_category", default: 0
     t.integer "project_count", default: 0
-    t.integer "project_type", limit: 1, default: 0
-    t.integer "channel", limit: 1, default: 0
-    t.datetime "deliver_at"
-    t.integer "deliver_type", default: 0
-    t.text "deliver_type_note"
     t.integer "binding_work", limit: 1, default: 0
     t.integer "after_process", limit: 1, default: 0
     t.text "note"
-    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", limit: 1, default: 0
     t.text "free_word"
     t.bigint "project_number"
     t.integer "price", default: 0
@@ -307,8 +286,18 @@ ActiveRecord::Schema.define(version: 2019_04_26_034111) do
     t.index ["quote_id"], name: "index_quote_items_on_quote_id"
   end
 
-  create_table "quotes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "quote_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "quote_id"
     t.bigint "project_id"
+    t.integer "price", limit: 1, default: 10
+    t.integer "unit", limit: 1, default: 10
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_quote_projects_on_project_id"
+    t.index ["quote_id"], name: "index_quote_projects_on_quote_id"
+  end
+
+  create_table "quotes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.date "date", comment: "発行日"
     t.date "expiration", comment: "発行期限"
     t.string "subject", comment: "件名"
@@ -321,7 +310,15 @@ ActiveRecord::Schema.define(version: 2019_04_26_034111) do
     t.integer "attention"
     t.text "pdf_url"
     t.text "mf_quote_id"
-    t.index ["project_id"], name: "index_quotes_on_project_id"
+    t.integer "user_id"
+    t.integer "status", default: 0
+    t.string "quote_number"
+    t.integer "company_division_client_id"
+    t.integer "quote_type"
+    t.integer "channel"
+    t.datetime "deliver_at"
+    t.integer "deliver_type"
+    t.text "deliver_type_note"
   end
 
   create_table "scheduler_stats", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -475,7 +472,7 @@ ActiveRecord::Schema.define(version: 2019_04_26_034111) do
   end
 
   create_table "works", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "project_id"
+    t.bigint "quote_id"
     t.integer "price", default: 0
     t.integer "cost", default: 0
     t.integer "status", limit: 1, default: 0
@@ -483,7 +480,7 @@ ActiveRecord::Schema.define(version: 2019_04_26_034111) do
     t.datetime "updated_at", null: false
     t.text "free_word"
     t.text "notices"
-    t.index ["project_id"], name: "index_works_on_project_id"
+    t.index ["quote_id"], name: "index_works_on_quote_id"
   end
 
   add_foreign_key "work_details", "works"

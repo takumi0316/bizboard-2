@@ -5,7 +5,6 @@ import Style      from './style.sass'
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
 
-import DatetimePicker from './datetime_picker'
 import ClientSearch from './client_search'
 
 import ProjectCopy from './project_copy'
@@ -16,13 +15,8 @@ import ProjectScan from './project_scan'
 import ProjectAfterProcess from './project_after_process'
 import ProjectBindingWork from './project_binding_work'
 
-// datetime
-import Dayjs from 'dayjs'
-
 import {
   PROJECT_NAMES,
-  PROJECT_TYPES,
-  CHANNELS,
   BINDING_WORKS,
   AFTER_PROCESSES,
 } from './properties.es6'
@@ -48,23 +42,9 @@ export default class ProjectEditor extends React.Component {
       division: props.division,
       client: props.client,
       project_category: props.project.project_category || 'project_print',
-      project_type: props.project.project_type || 'contract',
-      deliver_at: props.project.deliver_at,
-      deliver_type: props.project.deliver_type || 'seat',
       after_process: props.project.after_process || 'after_process_unnecessary',
       binding_work: props.project.binding_work || 'binding_works_unnecessary',
     }
-  }
-
-  /**
-   *  公開日時を適用するcallback
-   *  @version 2018/06/10
-   */
-  setDeliverAt(datetime) {
-
-    this.setState({
-      deliver_at: datetime.datetime,
-    });
   }
 
   /**
@@ -96,28 +76,15 @@ export default class ProjectEditor extends React.Component {
     let field = {
       'project[company_division_client_id]': this.refs.company_division_client_id.value,
       'project[name]': this.refs.name.value,
+      'project[price]': this.refs.price.value,
       'project[project_category]': this.state.project_category,
-      'project[project_type]': this.refs.project_type.value,
-      'project[channel]': this.refs.channel.value,
-      'project[deliver_at]': this.state.deliver_at || '',
-      'project[deliver_type]': this.state.deliver_type,
-      'project[note]': this.refs.note.value,
       'project[after_process]': this.state.after_process,
       'project[binding_work]': this.state.binding_work,
     };
 
-    // 納品方法
-    if (this.state.deliver_type == 'location' || this.state.deliver_type == 'other') {
-
-      if (this.refs.deliver_type_note.value == '') messages.push('納品方法を記入してください');
-
-      field['project[deliver_type_note]'] = this.refs.deliver_type_note.value;
-    }
-
     // その他案件
     if (this.state.project_category == 'project_other') {
 
-      field['project[project_count]'] = 1;
       field['project[after_process]'] = 'after_process_unnecessary';
       field['project[binding_work]'] = 'binding_works_unnecessary';
 
@@ -172,8 +139,6 @@ export default class ProjectEditor extends React.Component {
       alert(messages.join('\n'));
       return false;
     }
-
-    console.log('field', field);
 
     // 記事内容を送信
     request
@@ -233,8 +198,14 @@ export default class ProjectEditor extends React.Component {
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <input placeholder='案件名' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='name' defaultValue={this.props.project.name} />
+
+        <div className='c-form-label u-mt-30'>
+          <label htmlFor='project_name'>単価</label>
+          <span className='c-form__required u-ml-10'>必須</span>
+        </div>
+        <input placeholder='100' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={this.props.project.price} />
         
-        <div className='c-form-label'>
+        <div className='c-form-label u-mt-30'>
           <label htmlFor='project_company_division_client_id'>お客様情報</label>
         </div>
         
@@ -289,97 +260,6 @@ export default class ProjectEditor extends React.Component {
             <i className='c-form-radioIcon' />
             <span>その他</span>
           </label>
-        </div>
-
-        <h2 className={Style.ProjectEditor__heading}>案件情報 ({PROJECT_NAMES[this.state.project_category]})</h2>
-
-        <div className='u-mt-30 c-table'>
-
-          <table>
-            <tbody>
-              <tr>
-                <td className='u-fw-bold'>納期</td>
-                <td>
-                  <span className='u-mr-30'>{ this.state.deliver_at ? Dayjs(this.state.deliver_at).format('YYYY年MM月DD日 HH時mm分') : '未定' }</span>
-                  <DatetimePicker apply={::this.setDeliverAt} defaultDatetime={this.state.deliver_at} />
-                </td>
-              </tr>
-
-              <tr>
-                <td className='u-fw-bold'>納品方法</td>
-                <td>
-                  <div className='u-mt-15'>
-                    <label className='c-form-radioLabel'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>席まで配達</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'location'} onChange={() => this.setState({deliver_type: 'location'})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>指定場所に配達</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'pickup'} onChange={() => this.setState({deliver_type: 'pickup'})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>引取り</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>その他</span>
-                    </label>
-                  </div>
-                  
-                  <div className='u-mt-15'>
-                    { this.state.deliver_type == 'location' || this.state.deliver_type == 'other' ?
-                      <textarea placeholder='納品方法を記入てください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='deliver_type_note' defaultValue={this.props.project.deliver_type_note}></textarea>
-                      : null
-                    }
-                  </div>
-                </td>
-              </tr>
-              
-              <tr>
-                <td className='u-fw-bold'>受注経路</td>
-                <td>
-                  <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='channel' defaultValue={this.props.project.channel}>
-                      { Object.keys(CHANNELS).map((item, index) => {
-                        const key = 'channel-'+index;
-                        return (
-                          <option {...{key}} value={CHANNELS[item]}>{item}</option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td className='u-fw-bold'>受注区分</td>
-                <td>
-                  <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='project_type' defaultValue={this.props.project.project_type}>
-                      { Object.keys(PROJECT_TYPES).map((item, index) => {
-                        const key = 'project_type-'+index;
-                        return (
-                          <option {...{key}} value={PROJECT_TYPES[item]}>{item}</option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td className='u-fw-bold'>備考</td>
-                <td>
-                  <textarea placeholder='案件に関する備考を入力してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='note' defaultValue={this.props.project.note}></textarea>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
 
         { this.state.project_category != 'project_other' ?

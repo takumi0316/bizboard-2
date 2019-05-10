@@ -18,7 +18,7 @@ javascript:
       table
         tr
           th 案件管理番号
-          td = Work.find(params[:id]).project.project_number
+          td = Work.find(params[:id]).quote.quote_number
         tr
           th 発注先部署
           td CS
@@ -29,13 +29,13 @@ javascript:
       table
         tr
           th.u-va-middle 受注日
-          td.u-va-middle.u-ta-left = Work.find(params[:id]).project.created_at
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.created_at
         tr
           th.u-va-middle 校正納期
           td.u-va-middle.u-ta-leftd
         tr
           th.u-va-middle 仕上納期
-          td.u-va-middle.u-ta-left = Work.find(params[:id]).project.deliver_at if Work.find(params[:id]).project.deliver_at.present?
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.deliver_at if Work.find(params[:id]).quote.deliver_at.present?
         tr
           th.u-va-middle 納品先
           td.u-va-middle.u-ta-left
@@ -100,14 +100,14 @@ javascript:
       table
         tr
           th 案件名
-          td#project_name = Work.find(params[:id]).project.name
+          td#project_name = Work.find(params[:id]).quote.subject
     .c-table-work_subcontractors5
       table
         tr
           th.u-va-middle 発注部署
-          td.u-va-middle.u-ta-left = Work.find(params[:id]).project.user.divsion if  Work.find(params[:id]).project.user.division.present?
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.divsion if  Work.find(params[:id]).quote.user.division.present?
           th.u-va-middle 発注担当
-          td.u-va-middle.u-ta-left = Work.find(params[:id]).project.user.name
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.name
 
   .u-mt-30.c-flex__between
     .div
@@ -123,7 +123,7 @@ javascript:
         tr
           th 受注金額
         tr
-          td.u-ta-center = "#{Work.find(params[:id]).project.price}円"
+          td.u-ta-center = "#{Work.find(params[:id]).quote.price}円"
     .c-flex
       .c-table-work_subcontractors3
         table

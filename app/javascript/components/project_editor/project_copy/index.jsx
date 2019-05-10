@@ -38,7 +38,6 @@ export default class ProjectCopy extends React.Component {
   getDetail() {
 
     let result = {
-      'project[project_count]': this.refs.project_count.value,
       'project[copy_attributes][posting_state]': this.refs.posting_state.value,
       'project[copy_attributes][draft_split]': this.refs.draft_split.value,
       'project[copy_attributes][draft_restore]': this.refs.draft_restore.value,
@@ -68,12 +67,6 @@ export default class ProjectCopy extends React.Component {
         <div className='u-mt-30 c-table'>
           <table>
             <tbody>
-              <tr>
-                <td className='u-fw-bold'>部数</td>
-                <td>
-                  <input placeholder='100' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='project_count' defaultValue={this.props.project.project_count} />
-                </td>
-              </tr>
               <tr>
                 <td className='u-fw-bold'>入稿状態</td>
                 <td>

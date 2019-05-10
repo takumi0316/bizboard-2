@@ -74,8 +74,8 @@ class User < ApplicationRecord
   # 自社部署
   belongs_to :division, optional: true
 
-  # 記事
-  has_many :articles, -> { order(id: :desc) }
+  # 案件
+  has_many :projects
 
   # 画像
   has_one_attached :image, dependent: :detach

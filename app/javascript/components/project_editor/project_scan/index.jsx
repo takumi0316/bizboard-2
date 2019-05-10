@@ -43,7 +43,6 @@ export default class ProjectScan extends React.Component {
   getDetail() {
 
     let result = {
-      'project[project_count]': this.refs.project_count.value,
       'project[scan_attributes][print_size]': this.refs.print_size.value,
       'project[scan_attributes][posting_state]': this.refs.posting_state.value,
       'project[scan_attributes][draft_split]': this.refs.draft_split.value,
@@ -80,12 +79,6 @@ export default class ProjectScan extends React.Component {
         <div className='u-mt-30 c-table'>
           <table>
             <tbody>
-              <tr>
-                <td className='u-fw-bold'>原稿箱数</td>
-                <td>
-                  <input placeholder='2' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='project_count' defaultValue={this.props.project.project_count} />
-                </td>
-              </tr>
               <tr>
                 <td className='u-fw-bold'>原稿サイズ</td>
                 <td>

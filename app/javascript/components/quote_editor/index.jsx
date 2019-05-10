@@ -1,0 +1,282 @@
+import React      from 'react'
+import Style      from './style.sass'
+
+// Ajax
+import Request from 'superagent'
+require('superagent-rails-csrf')(Request);
+
+import DatetimePicker from './datetime_picker'
+import ClientSearch from './client_search'
+
+// datetime
+import Dayjs from 'dayjs'
+
+import {
+  QUOTE_TYPES,
+  CHANNELS,
+} from './properties.es6'
+
+/**
+ *  記事エディター
+ *  @version 2018/06/10
+ */
+export default class QuoteEditor extends React.Component {
+
+  /**
+   *  コンストラクタ
+   *  @version 2018/06/10
+   */
+  constructor (props) {
+
+    super(props);
+
+    this.state = {
+      company: props.company,
+      division: props.division,
+      client: props.client,
+      quote_type: props.quote_type || 'contract',
+      deliver_at: props.deliver_at,
+      deliver_type: props.deliver_type || 'seat',
+    }
+  }
+
+  /**
+   *  公開日時を適用するcallback
+   *  @version 2018/06/10
+   */
+  setDeliverAt(datetime) {
+
+    this.setState({
+      deliver_at: datetime.datetime,
+    });
+  }
+
+  /**
+   *  バリデーション
+   *  @version 2018/06/10
+   */
+  validation() {
+
+    let message = [];
+
+    if (this.refs.subject.value == '') {
+      message.push('見積りタイトルを入力してください。');
+    }
+
+    return message;
+  }
+
+  /**
+   *  登録処理
+   *  @version 2018/06/10
+   */
+  onSubmit() {
+
+    let messages = this.validation();
+
+    // 新規登録時、更新時とでmethodを分ける
+    const request = this.props.quote.id ? Request.put(this.props.action) : Request.post(this.props.action);
+
+    let field = {
+      'quote[company_division_client_id]': this.refs.company_division_client_id.value,
+      'quote[subject]': this.refs.subject.value,
+      'quote[quote_type]': this.refs.quote_type.value,
+      'quote[channel]': this.refs.channel.value,
+      'quote[deliver_at]': this.state.deliver_at || '',
+      'quote[deliver_type]': this.state.deliver_type,
+      'quote[note]': this.refs.note.value,
+    };
+
+    // 納品方法
+    if (this.state.deliver_type == 'location' || this.state.deliver_type == 'other') {
+
+      if (this.refs.deliver_type_note.value == '') messages.push('納品方法を記入してください');
+
+      field['quote[deliver_type_note]'] = this.refs.deliver_type_note.value;
+    }
+
+    // エラーが存在する場合
+    if (messages.length > 0) {
+
+      alert(messages.join('\n'));
+      return false;
+    }
+
+    console.log('field', field);
+
+    // 記事内容を送信
+    request
+      .field(field)
+      .set('X-Requested-With', 'XMLHttpRequest')
+      .setCsrfToken()
+      .end((error, response) => {
+        
+        if (response.body.status == 'success' && response.body.quote.id) {
+
+          // 新規作成時は編集画面はリダイレクト
+          if (!this.props.quote.id) {
+            alert('見積り情報を作成しました');
+            location.href = `${response.body.quote.id}/edit`;
+          } else {
+            alert('見積り情報を更新しました');
+          }
+
+        } else {
+
+          alert('見積り情報の保存に失敗しました。');
+        }
+      });
+  }
+
+  /**
+   *  お客様選択時
+   *  @version 2018/06/10
+   */
+  applyClient(client) {
+
+    console.log('applyClient', client);
+    this.setState({
+      client: client,
+      company: client.company,
+      division: client.division,
+    });
+  }
+
+  /**
+   *  表示処理
+   *  @version 2018/06/10
+   */
+  render() {
+
+    const { quote } = this.props;
+
+    return (
+      <div className={Style.QuoteEditor}>
+
+        <h1 className='l-dashboard__heading'>見積書作成</h1>
+
+        <input type='hidden' name='authenticity_token' value={'test'} />
+        
+        <div className='c-form-label u-mt-30'>
+          <label htmlFor='quote_name'>見積書タイトル</label>
+          <span className='c-form__required u-ml-10'>必須</span>
+        </div>
+        <input placeholder='見積書タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='subject' defaultValue={this.props.quote.subject} />
+        
+        <div className='c-form-label u-mt-30'>
+          <label htmlFor='quote_company_division_client_id'>お客様情報</label>
+        </div>
+        
+        { this.state.client ?
+          <div className='c-attention'>
+            <div>会社名: {this.state.company.name}</div>
+            <div className='u-mt-10'>部署名: {this.state.division.name || '部署名なし'}</div>
+            <div className='u-mt-10'>担当者名: {this.state.client.name}</div>
+            <div className='u-mt-10'>担当者TEL: {this.state.client.tel}</div>
+            <div className='u-mt-10'>担当者email: {this.state.client.email}</div>
+          </div>
+          : null
+        }
+
+        <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.quote.company_division_client_id} />
+
+        <div className='u-mt-15'>
+          <ClientSearch applyClient={::this.applyClient} />
+        </div>
+
+        <div className='u-mt-30 c-table'>
+
+          <table>
+            <tbody>
+              <tr>
+                <td className='u-fw-bold'>納期</td>
+                <td>
+                  <span className='u-mr-30'>{ this.state.deliver_at ? Dayjs(this.state.deliver_at).format('YYYY年MM月DD日 HH時mm分') : '未定' }</span>
+                  <DatetimePicker apply={::this.setDeliverAt} defaultDatetime={this.state.deliver_at} />
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>納品方法</td>
+                <td>
+                  <div className='u-mt-15'>
+                    <label className='c-form-radioLabel'>
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>席まで配達</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'location'} onChange={() => this.setState({deliver_type: 'location'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>指定場所に配達</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'pickup'} onChange={() => this.setState({deliver_type: 'pickup'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>引取り</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>その他</span>
+                    </label>
+                  </div>
+                  
+                  <div className='u-mt-15'>
+                    { this.state.deliver_type == 'location' || this.state.deliver_type == 'other' ?
+                      <textarea placeholder='納品方法を記入てください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='deliver_type_note' defaultValue={this.props.quote.deliver_type_note}></textarea>
+                      : null
+                    }
+                  </div>
+                </td>
+              </tr>
+              
+              <tr>
+                <td className='u-fw-bold'>受注経路</td>
+                <td>
+                  <div className='c-form-selectWrap'>
+                    <select className='c-form-select' ref='channel' defaultValue={this.props.channel}>
+                      { Object.keys(CHANNELS).map((item, index) => {
+                        const key = 'channel-'+index;
+                        return (
+                          <option {...{key}} value={CHANNELS[item]}>{item}</option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>受注区分</td>
+                <td>
+                  <div className='c-form-selectWrap'>
+                    <select className='c-form-select' ref='quote_type' defaultValue={this.props.quote_type}>
+                      { Object.keys(QUOTE_TYPES).map((item, index) => {
+                        const key = 'quote_type-'+index;
+                        return (
+                          <option {...{key}} value={QUOTE_TYPES[item]}>{item}</option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>備考</td>
+                <td>
+                  <textarea placeholder='案件に関する備考を入力してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='note' defaultValue={this.props.quote.note}></textarea>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className='c-overlay-submit'>
+          <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>{this.props.quote.id ? '更新する' : '作成する'}</div>
+        </div>
+      </div>
+    );
+  }
+}

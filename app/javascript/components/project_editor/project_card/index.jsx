@@ -37,7 +37,6 @@ export default class ProjectCard extends React.Component {
   getDetail() {
 
     let result = {
-      'project[project_count]': this.refs.project_count.value,
       'project[card_attributes][draft_data]': this.refs.draft_data.value,
       'project[card_attributes][url]': this.refs.url.value,
       'project[card_attributes][card_type]': this.state.card_type,
@@ -70,12 +69,6 @@ export default class ProjectCard extends React.Component {
         <div className='u-mt-30 c-table'>
           <table>
             <tbody>
-              <tr>
-                <td className='u-fw-bold'>箱数</td>
-                <td>
-                  <input placeholder='2' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='project_count' defaultValue={this.props.project.project_count} />
-                </td>
-              </tr>
               <tr>
                 <td className='u-fw-bold'>入稿データ</td>
                 <td>

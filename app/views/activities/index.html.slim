@@ -1,6 +1,6 @@
 = render 'layouts/_partials/tabmenu'
 
-= link_to '活動履歴を作成する', new_activity_path(project_id: @id), class: 'c-btnMain-standard c-btn-blue u-mt-15'
+= link_to '活動履歴を作成する', new_activity_path(quote_id: @id), class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
 = form_with url: activities_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 
@@ -27,9 +27,9 @@
         tr
           td = r.date
           td = r.status_i18n
-          td = r.project.project_number
-          td = r.project.name
-          td = r.project.user.name
+          td = r.quote.quote_number
+          td = r.quote.subject
+          td = r.user.name
           td = r.memo.truncate(30)
           td
             - if r.attachment.present?

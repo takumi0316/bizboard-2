@@ -40,7 +40,6 @@ export default class ProjectPrint extends React.Component {
   getDetail() {
 
     let result = {
-      'project[project_count]': this.refs.project_count.value,
       'project[print_attributes][draft_data]': this.refs.draft_data.value,
       'project[print_attributes][url]': this.refs.url.value,
       'project[print_attributes][work_process]': this.state.work_process,
@@ -88,12 +87,6 @@ export default class ProjectPrint extends React.Component {
 
           <table>
             <tbody>
-              <tr>
-                <td className='u-fw-bold'>部数</td>
-                <td>
-                  <input placeholder='100' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='project_count' defaultValue={this.props.project.project_count} />
-                </td>
-              </tr>
               <tr>
                 <td className='u-fw-bold'>入稿データ</td>
                 <td>

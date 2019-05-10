@@ -116,12 +116,12 @@ javascript:
       table
         tr
           th 案件名
-          td = WorkSubcontractor.find(params[:id]).work.project.name
+          td = WorkSubcontractor.find(params[:id]).work.quote.subject
     .c-table-work_subcontractors5
       table
         tr
           th.u-va-middle 案件管理番号
-          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.project.project_number if WorkSubcontractor.find(params[:id]).work.project.project_number
+          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.quote_number if WorkSubcontractor.find(params[:id]).work.quote.quote_number
           th.u-va-middle 営業担当
           td.u-va-middle.u-ta-left
 

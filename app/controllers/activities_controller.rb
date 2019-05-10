@@ -52,8 +52,8 @@ class ActivitiesController < ApplicationController
 
     add_breadcrumb '活動履歴', path: activities_path
     add_breadcrumb '新規作成'
-    @id = params[:project_id]
-    @activity = Activity.new(:project_id => @id)
+    @id = params[:quote_id]
+    @activity = Activity.new(:quote_id => @id)
 
   end
 
@@ -78,7 +78,7 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    @sort = activity.project_id
+    @sort = activity.quote_id
     redirect_to activities_path+"?name=#{@sort}", flash: {notice: {message: '活動履歴を更新しました'}}
   rescue => e
 
@@ -94,7 +94,7 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    @sort = activity.project_id
+    @sort = activity.quote_id
     redirect_to activities_path+"?name=#{@sort}", flash: {notice: {message: '活動履歴を作成しました'}}
   rescue => e
 
@@ -123,7 +123,7 @@ class ActivitiesController < ApplicationController
 
   def activity_params
 
-    params.require(:activity).permit :name, :date, :status, :memo, :attachment, :project_id
+    params.require(:activity).permit :name, :date, :status, :memo, :attachment, :quote_id
   end
 
 end

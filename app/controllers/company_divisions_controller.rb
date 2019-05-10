@@ -104,6 +104,8 @@ class CompanyDivisionsController < ApplicationController
   #
   def destroy
 
+    raise '対象の部署にはクライアントが情報が登録されているため削除できません' if division.clients.exists?
+
     division.destroy!
   rescue => e
 

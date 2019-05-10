@@ -11,18 +11,6 @@ export const PROJECT_NAMES = {
   project_other: 'その他',
 };
 
-export const CHANNELS = {
-  '見積もり': 'estimate',
-  'BPR/ERP': 'bpr_erp',
-  '受付':   'reception',
-  'その他': 'channel_other',
-};
-
-export const PROJECT_TYPES = {
-  '請負': 'contract',
-  '販売施工': 'sales',
-};
-
 // ------------------------------------
 // コピー仕様
 // ------------------------------------

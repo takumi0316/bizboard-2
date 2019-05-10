@@ -15,7 +15,7 @@ class InvoicesController < ApplicationController
   expose_with_pagination(:invoices) { Invoice.search(params[:free_word]).all.order(date: :desc) }
 
   # 請求書
-  expose(:invoice) { params[:project_id].present?? Invoice.new(project_id: params[:project_id]) : Invoice.find_or_initialize_by(id: params[:id] || params[:invoice_id]) }
+  expose(:invoice) { params[:quote_id].present?? Invoice.new(quote_id: params[:quote_id]) : Invoice.find_or_initialize_by(id: params[:id] || params[:invoice_id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -72,14 +72,14 @@ class InvoicesController < ApplicationController
     client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
 
     request_params = {
-      department_id: invoice.project.client.company_division.mf_company_division_id,
+      department_id: invoice.quote.client.company_division.mf_company_division_id,
       title: invoice.subject,
-      billing_number: invoice.project.project_number,
+      billing_number: invoice.quote.quote_number,
       payment_condition: SiteConfig.payment_condition,
       note: invoice.remarks,
       billing_date: invoice.date.to_s(:system),
       due_date: invoice.expiration.to_s(:system),
-      document_name: invoice.project.project_number,
+      document_name: invoice.quote.quote_number,
     }
 
     # 請求書の発行
@@ -108,14 +108,14 @@ class InvoicesController < ApplicationController
     client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
 
     request_params = {
-      department_id: invoice.project.client.company_division.mf_company_division_id,
+      department_id: invoice.quote.client.company_division.mf_company_division_id,
       title: invoice.subject,
-      billing_number: invoice.project.project_number,
+      billing_number: invoice.quote.quote_number,
       payment_condition: SiteConfig.payment_condition,
       note: invoice.remarks,
       billing_date: invoice.date.to_s(:system),
       due_date: invoice.expiration.to_s(:system),
-      document_name: invoice.project.project_number,
+      document_name: invoice.quote.quote_number,
     }
 
     # 請求書の発行
@@ -123,7 +123,7 @@ class InvoicesController < ApplicationController
 
     invoice.update!(mf_invoice_id: result.id, pdf_url: result.pdf_url)
 
-    invoice.project.invoicing! unless invoice.project.invoicing?
+    invoice.quote.invoicing! unless invoice.quote.invoicing?
 
     redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '請求書情報を更新しました'}}
   rescue => e
@@ -154,7 +154,7 @@ class InvoicesController < ApplicationController
 
   def invoice_params
 
-    params.require(:invoice).permit :project_id, :date, :expiration, :subject, :remarks, :memo
+    params.require(:invoice).permit :quote_id, :date, :expiration, :subject, :remarks, :memo
   end
 
 end

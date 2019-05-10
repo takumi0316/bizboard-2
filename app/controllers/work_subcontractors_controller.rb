@@ -76,7 +76,7 @@ class WorkSubcontractorsController < ApplicationController
 
   def show
 
-    @directions = (Date.today).to_s + WorkSubcontractor.find(params[:id]).work.project.name
+    @directions = (Date.today).to_s + WorkSubcontractor.find(params[:id]).work.quote.subject
   end
 
 end

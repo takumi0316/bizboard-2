@@ -1,26 +1,26 @@
-h1.l-dashboard__heading = "#{invoice.project.name} 請求書"
+h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
 
 .u-mt-15.c-attention
   p
     | 会社名: 
-    = invoice.project.client&.company_division&.company&.name
+    = invoice.quote.client&.company_division&.company&.name
   p
     | 部署名: 
-    = invoice.project.client&.company_division&.name
+    = invoice.quote.client&.company_division&.name
   p
     | 担当者名: 
-    = invoice.project.client&.name
+    = invoice.quote.client&.name
   
 = form_for invoice, html: { class: 'u-mt-30'} do |f|
 
-  = f.hidden_field :project_id
+  = f.hidden_field :quote_id
 
   .c-form-group
 
     .c-form-line.u-mr-50
       .c-form-label
         label 請求書番号
-      = invoice.project.project_number
+      = invoice.quote.quote_number
 
     .c-form-line.u-mr-50
       .c-form-label
@@ -38,7 +38,7 @@ h1.l-dashboard__heading = "#{invoice.project.name} 請求書"
     = f.label :attention, '御中・様'
   = f.select :attention, Invoice.attentions_i18n.invert, {}, { class: 'c-form-dateselect' }
 
-  - invoice.subject ||= invoice.project.name
+  - invoice.subject ||= invoice.quote.subject
 
   .c-form-label
     = f.label :subject, '件名'
@@ -57,7 +57,7 @@ h1.l-dashboard__heading = "#{invoice.project.name} 請求書"
           th 詳細
       tbody
 
-        /- invoice.project.quotes.last.quote_items.each do |r|
+        /- invoice.quote.quote_items.each do |r|
           tr
             td = r.name
             td = r.price
@@ -70,7 +70,7 @@ h1.l-dashboard__heading = "#{invoice.project.name} 請求書"
 
   .c-form-label
     label 合計金額
-  = invoice.project.price
+  = invoice.quote.price
 
   .c-form-label
     = f.label :remarks, '備考　※請求書に記載されます'
