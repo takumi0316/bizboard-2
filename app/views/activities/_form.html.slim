@@ -1,9 +1,9 @@
 = form_for activity, html: { class: 'u-mt-30'} do |f|
-  
+
   .c-form-label
     = f.label :date, '対応日時'
     span.c-form__required.u-ml-10 必須
-  = f.date_select :date, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+  = f.date_select :date, {use_month_numbers: true, :start_year => Date.today.years_ago(5).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
 
   .c-form-label
     = f.label :status, '対応内容'
@@ -29,6 +29,7 @@ javascript:
   window.onload = function(){
 
   var url = document.getElementById('activity_attachment')
+  var date_y = document.getElementById('activity_date_1i')
 
   //urlのバリデーション
   url.addEventListener('invalid', function(e) {
@@ -37,4 +38,6 @@ javascript:
           e.target.setCustomValidity('URLが正しくありません');
         }
       }, false);
-  }
+  };
+
+  //日付のバリデーション
