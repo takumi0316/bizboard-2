@@ -8,14 +8,14 @@ class SubcontractorsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 取引先一覧
+  # 外注先一覧
   expose_with_pagination(:subcontractors) {
     Subcontractor
       .search(params[:name])
       .all
       .reverse_order
   }
-  # 取引先
+  # 外注先
   expose(:subcontractor) { Subcontractor.find_or_initialize_by id: params[:id] || params[:subcontractor_id] }
 
   #----------------------------------------
@@ -32,30 +32,30 @@ class SubcontractorsController < ApplicationController
 
   ##
   # 一覧
-  # @version 
+  # @version
   #
   def index
 
-    add_breadcrumb '取引先一覧'
+    add_breadcrumb '外注先一覧'
   end
 
   ##
   # 新規作成
-  # @version 
+  # @version
   #
   def new
 
-    add_breadcrumb '取引先一覧', path: subcontractors_path
+    add_breadcrumb '外注先一覧', path: subcontractors_path
     add_breadcrumb '新規作成'
   end
 
   ##
   # 編集
-  # @version 
+  # @version
   #
   def edit
 
-    add_breadcrumb '取引先一覧', path: subcontractors_path
+    add_breadcrumb '外注先一覧', path: subcontractors_path
     add_breadcrumb '編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -63,31 +63,31 @@ class SubcontractorsController < ApplicationController
 
   ##
   # 更新処理
-  # @version 
+  # @version
   #
   def update
 
     # 外注先情報更新
     subcontractor.update! subcontractor_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '外注先情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
   ##
   # 新規作成
-  # @version 
+  # @version
   #
   def create
 
     # 外注先情報更新
     subcontractor.update! subcontractor_params
 
-    redirect_to edit_subcontractor_path(subcontractor), flash: {notice: {message: '取引先情報を更新しました'}}
+    redirect_to edit_subcontractor_path(subcontractor), flash: {notice: {message: '外注先情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -113,7 +113,7 @@ class SubcontractorsController < ApplicationController
 
     ##
     # パラメータの取得
-    # @version 
+    # @version
     #
     def subcontractor_params
 

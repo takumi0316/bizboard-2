@@ -33,17 +33,17 @@ class SubcontractorDivisionsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '取引先一覧', path: subcontractors_path
+    add_breadcrumb '外注先一覧', path: subcontractors_path
     add_breadcrumb '部署一覧'
   end
 
   ##
   # 新規作成
-  # @version 
+  # @version
   #
   def new
 
-    add_breadcrumb '取引先一覧', path: subcontractors_path
+    add_breadcrumb '外注先一覧', path: subcontractors_path
     add_breadcrumb '部署一覧', path: subcontractor_divisions_path(subcontractor_id: subcontractor&.id)
     add_breadcrumb '新規作成'
   rescue => e
@@ -52,13 +52,13 @@ class SubcontractorDivisionsController < ApplicationController
 
   ##
   # 編集
-  # @version 
+  # @version
   #
   def edit
 
     self.subcontractor = division.subcontractor
 
-    add_breadcrumb '取引先一覧', path: subcontractors_path
+    add_breadcrumb '外注先一覧', path: subcontractors_path
     add_breadcrumb '部署一覧', path: subcontractor_divisions_path(subcontractor_id: self.subcontractor.id)
     add_breadcrumb '編集'
   rescue => e
@@ -67,7 +67,7 @@ class SubcontractorDivisionsController < ApplicationController
 
   ##
   # 更新処理
-  # @version 
+  # @version
   #
   def update
 
@@ -76,13 +76,13 @@ class SubcontractorDivisionsController < ApplicationController
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '外注先部署情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
   ##
   # 新規作成
-  # @version 
+  # @version
   #
   def create
 
@@ -91,7 +91,7 @@ class SubcontractorDivisionsController < ApplicationController
 
     redirect_to edit_subcontractor_division_path(division), flash: {notice: {message: '外注先部署情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -117,7 +117,7 @@ class SubcontractorDivisionsController < ApplicationController
 
     ##
     # パラメータの取得
-    # @version 
+    # @version
     #
     def division_params
 
