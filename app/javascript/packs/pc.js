@@ -57,6 +57,9 @@ import WorkDetails from 'components/work_editor/work_details/index.jsx'
 // 作業詳細作成
 import WorkEditor from 'components/work_editor/index.jsx'
 
+// 作業外注作成
+import SubcontractorBulk from 'components/work_editor/subcontractor_bulk'
+
 // 見積もり
 import QuoteFrom from 'components/quote_from/index.jsx'
 
@@ -74,4 +77,5 @@ WebpackerReact.setup({
   SubcontractorDivisions,
   WorkEditor,
   QuoteFrom,
+  SubcontractorBulk,
 })

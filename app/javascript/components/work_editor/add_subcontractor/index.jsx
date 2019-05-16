@@ -441,6 +441,8 @@ export default class AddSubcontractor extends React.Component {
    */
   applyClient = (client, work_subcontractor_id) => {
 
+    console.log('client: ', client)
+    console.log('work_subcontractor_id: ', work_subcontractor_id)
     let url = '/work_subcontractors/' + work_subcontractor_id;
     let field = {
       'subcontractor_division_client_id': client.id,
@@ -636,7 +638,7 @@ export default class AddSubcontractor extends React.Component {
                             }
                           </React.Fragment>
                           <div className={ 'u-mt-10 c-flex__start' } key={ 'client_search' + index }>
-                            <ClientSearch work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } />
+                            <ClientSearch prefectures={ this.props.prefectures } work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } users={ this.props.users } />
 														<div>
                             	<button className={ 'u-mt-10 c-btnMain-primaryA' } onClick={ e => this.disp(e, work_subcontractor.id, index, true) }>外注先[削除]</button>
 														</div>

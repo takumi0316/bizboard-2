@@ -32,7 +32,7 @@ class SubcontractorsController < ApplicationController
 
   ##
   # 一覧
-  # @version 
+  # @version
   #
   def index
 
@@ -41,7 +41,7 @@ class SubcontractorsController < ApplicationController
 
   ##
   # 新規作成
-  # @version 
+  # @version
   #
   def new
 
@@ -51,7 +51,7 @@ class SubcontractorsController < ApplicationController
 
   ##
   # 編集
-  # @version 
+  # @version
   #
   def edit
 
@@ -63,7 +63,7 @@ class SubcontractorsController < ApplicationController
 
   ##
   # 更新処理
-  # @version 
+  # @version
   #
   def update
 
@@ -72,13 +72,13 @@ class SubcontractorsController < ApplicationController
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
   ##
   # 新規作成
-  # @version 
+  # @version
   #
   def create
 
@@ -87,7 +87,7 @@ class SubcontractorsController < ApplicationController
 
     redirect_to edit_subcontractor_path(subcontractor), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -105,6 +105,40 @@ class SubcontractorsController < ApplicationController
     redirect_to action: :index
   end
 
+  ##
+  # 一括作成
+  #
+  #
+  def bulk
+
+    newSub = Subcontractor.find_or_initialize_by(:name => params[:companyName])
+    if newSub.id.nil?
+
+      newSub.save!
+      newSubDivision = newSub.divisions.create! :name => params[:companyDivisionName], :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1], :address2 => params[:companyAddress2]
+      newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :title => params[:companyClientNameTitle].to_i
+    else
+
+      newSubDivisions = newSub.divisions
+      newSubDivision = newSubDivisions.find_or_initialize_by(:name => params[:companyDivisionName])
+      if newSubDivision.id.nil?
+
+        newSubDivision.save! :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1], :address2 => params[:companyAddress2]
+        newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :title => params[:companyClientNameTitle].to_i
+      else
+
+        newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :title => params[:companyClientNameTitle].to_i
+      end
+    end
+
+    client = SubcontractorDivisionClient.find_or_initialize_by(:name => params[:companyClientName])
+    render json: { status: :success, client: client }
+
+    rescue => e
+
+      render json: { status: :error }
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
@@ -113,7 +147,7 @@ class SubcontractorsController < ApplicationController
 
     ##
     # パラメータの取得
-    # @version 
+    # @version
     #
     def subcontractor_params
 

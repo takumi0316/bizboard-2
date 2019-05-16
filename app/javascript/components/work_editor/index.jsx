@@ -68,7 +68,7 @@ export default class WorkEditor extends React.Component {
     return (
        <div>
          <WorkDetails work_notices={ this.props.work_notices } details={ this.props.details } category={ this.props.category } work_id={ this.props.work_id } user_id={ this.props.user_id } users={ this.props.users } applyPrice= { ::this.applyPrice } />
-         <AddSubcontractor work_subcontractors={ this.props.work_subcontractors } subcontractor_details={ this.props.subcontractor_details } work_id={ this.props.work_id } subcontractors={ this.props.subcontractors } divisions={ this.props.divisions } clients={ this.props.clients } applyPrice={ ::this.applyPrice } />
+         <AddSubcontractor work_subcontractors={ this.props.work_subcontractors } subcontractor_details={ this.props.subcontractor_details } work_id={ this.props.work_id } subcontractors={ this.props.subcontractors } divisions={ this.props.divisions } clients={ this.props.clients } applyPrice={ ::this.applyPrice } users={ this.props.users } prefectures={ this.props.prefectures } />
          <div className={ 'c-form-label u-mt-20' }>
            <label>受注/粗利</label>
          </div>
