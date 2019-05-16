@@ -51,9 +51,6 @@ import WorkStatus from 'components/work_editor/work_status/index.jsx'
 // 作業検索
 import WorksSearch from 'components/work_editor/works_search/index.jsx'
 
-// 作業詳細
-import WorkDetails from 'components/work_editor/work_details/index.jsx'
-
 // 作業詳細作成
 import WorkEditor from 'components/work_editor/index.jsx'
 
@@ -67,7 +64,6 @@ WebpackerReact.setup({
   ProjectViewer,
   CompanyDivisions,
   WorksSearch,
-  WorkDetails,
   WorkStatus,
   SubcontractorDivisions,
   WorkEditor,

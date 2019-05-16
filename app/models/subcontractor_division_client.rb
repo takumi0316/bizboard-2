@@ -40,7 +40,7 @@ class SubcontractorDivisionClient < ApplicationRecord
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
-  
+
   belongs_to :subcontractor_division
   belongs_to :user
 
@@ -60,7 +60,7 @@ class SubcontractorDivisionClient < ApplicationRecord
 
   ##
   # フリーワード検索用文字列をセットする
-  # @version 
+  # @version
   #
   def set_free_word
 
@@ -69,7 +69,7 @@ class SubcontractorDivisionClient < ApplicationRecord
 
   ##
   # 名称検索
-  # @version 
+  # @version
   #
   def self.search(word)
 
