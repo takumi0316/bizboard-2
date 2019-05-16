@@ -34,6 +34,7 @@ export default class QuoteEditor extends React.Component {
       company: props.company,
       division: props.division,
       client: props.client,
+      user_id: props.user_id,
       quote_type: props.quote_type || 'contract',
       deliver_at: props.deliver_at,
       deliver_type: props.deliver_type || 'seat',
@@ -48,6 +49,28 @@ export default class QuoteEditor extends React.Component {
 
     this.setState({
       deliver_at: datetime.datetime,
+    });
+  }
+
+  /**
+   *  見積もり作成日時を適用するcallback
+   *  @version 2018/06/10
+   */
+  setDate(datetime) {
+
+    this.setState({
+      date: datetime.datetime,
+    });
+  }
+
+  /**
+   *  見積もり期日を適用するcallback
+   *  @version 2018/06/10
+   */
+  setExpiration(datetime) {
+
+    this.setState({
+      expiration: datetime.datetime,
     });
   }
 
@@ -82,9 +105,13 @@ export default class QuoteEditor extends React.Component {
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
       'quote[channel]': this.refs.channel.value,
+      'quote[date]': this.state.date || '',
+      'quote[expiration]': this.state.expiration || '',
       'quote[deliver_at]': this.state.deliver_at || '',
       'quote[deliver_type]': this.state.deliver_type,
-      'quote[note]': this.refs.note.value,
+      'quote[remarks]': this.refs.remarks.value,
+      'quote[memo]': this.refs.memo.value,
+      'quote[price]': this.refs.price.value,
     };
 
     // 納品方法
@@ -110,7 +137,7 @@ export default class QuoteEditor extends React.Component {
       .set('X-Requested-With', 'XMLHttpRequest')
       .setCsrfToken()
       .end((error, response) => {
-        
+
         if (response.body.status == 'success' && response.body.quote.id) {
 
           // 新規作成時は編集画面はリダイレクト
@@ -156,17 +183,17 @@ export default class QuoteEditor extends React.Component {
         <h1 className='l-dashboard__heading'>見積書作成</h1>
 
         <input type='hidden' name='authenticity_token' value={'test'} />
-        
+
         <div className='c-form-label u-mt-30'>
           <label htmlFor='quote_name'>見積書タイトル</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <input placeholder='見積書タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='subject' defaultValue={this.props.quote.subject} />
-        
+
         <div className='c-form-label u-mt-30'>
           <label htmlFor='quote_company_division_client_id'>お客様情報</label>
         </div>
-        
+
         { this.state.client ?
           <div className='c-attention'>
             <div>会社名: {this.state.company.name}</div>
@@ -188,6 +215,23 @@ export default class QuoteEditor extends React.Component {
 
           <table>
             <tbody>
+
+              <tr>
+                <td className='u-fw-bold'>見積もり発行日</td>
+                <td>
+                  <span className='u-mr-30'>{ this.state.date ? Dayjs(this.state.date).format('YYYY年MM月DD日') : '未定' }</span>
+                  <DatetimePicker apply={::this.setDate} defaultDatetime={this.state.date} />
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>見積もり有効期間</td>
+                <td>
+                  <span className='u-mr-30'>{ this.state.expiration ? Dayjs(this.state.expiration).format('YYYY年MM月DD日') : '未定' }</span>
+                  <DatetimePicker apply={::this.setExpiration} defaultDatetime={this.state.expiration} />
+                </td>
+              </tr>
+
               <tr>
                 <td className='u-fw-bold'>納期</td>
                 <td>
@@ -221,7 +265,7 @@ export default class QuoteEditor extends React.Component {
                       <span>その他</span>
                     </label>
                   </div>
-                  
+
                   <div className='u-mt-15'>
                     { this.state.deliver_type == 'location' || this.state.deliver_type == 'other' ?
                       <textarea placeholder='納品方法を記入てください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='deliver_type_note' defaultValue={this.props.quote.deliver_type_note}></textarea>
@@ -230,7 +274,7 @@ export default class QuoteEditor extends React.Component {
                   </div>
                 </td>
               </tr>
-              
+
               <tr>
                 <td className='u-fw-bold'>受注経路</td>
                 <td>
@@ -264,11 +308,27 @@ export default class QuoteEditor extends React.Component {
               </tr>
 
               <tr>
-                <td className='u-fw-bold'>備考</td>
+                <td className='u-fw-bold'>合計金額</td>
                 <td>
-                  <textarea placeholder='案件に関する備考を入力してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='note' defaultValue={this.props.quote.note}></textarea>
+                  <textarea placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={this.props.quote.price}></textarea>
                 </td>
               </tr>
+
+
+              <tr>
+                <td className='u-fw-bold'>備考 ※見積もりに記載されます</td>
+                <td>
+                  <textarea placeholder='案件に関する備考を入力してください ※見積もりに記載されます' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='remarks' defaultValue={this.props.quote.remarks}></textarea>
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>メモ ※見積もりに記載されません</td>
+                <td>
+                  <textarea placeholder='案件に関するメモを入力してください ※見積もりに記載されません' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='memo' defaultValue={this.props.quote.memo}></textarea>
+                </td>
+              </tr>
+
             </tbody>
           </table>
         </div>

@@ -90,57 +90,57 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
-    token = current_user.mf_access_token
-    delete_id = quote.mf_quote_id
-    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
-    request = Net::HTTP::Delete.new(uri)
-    request["Authorization"] = "BEARER #{token}"
 
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
+      token = current_user.mf_access_token
+      delete_id = quote.mf_quote_id
+      uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
+      request = Net::HTTP::Delete.new(uri)
+      request["Authorization"] = "BEARER #{token}"
 
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
-    end
-
-
-    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
-    request = Net::HTTP::Post.new(uri)
-    request.content_type = "application/json"
-    request["Authorization"] = "BEARER #{token}"
-
-    request.body = JSON.dump({
-      "quote": {
-        "department_id": quote.client.company_division.mf_company_division_id,
-        "quote_number": quote.quote.quote_number,
-        "quote_date": quote.date.strftime('%Y-%m-%d'),
-        "expired_date": quote.expiration.strftime('%Y-%m-%d'),
-        "title": quote.subject,
-        "note": quote.remarks,
-        "memo": quote.memo,
-        "items": [
-          quote.quote_items.pluck(*[:name, :quantity, :unit_price]).map {
-            |tm| [:name, :quantity, :unit_price].zip(tm).to_h
-          }
-        ]
+      req_options = {
+        use_ssl: uri.scheme == "https",
       }
-    })
+
+      response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+        http.request(request)
+      end
 
 
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
+      uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
+      request = Net::HTTP::Post.new(uri)
+      request.content_type = "application/json"
+      request["Authorization"] = "BEARER #{token}"
 
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
-    end
+      request.body = JSON.dump({
+        "quote": {
+          "department_id": quote.client.company_division.mf_company_division_id,
+          "quote_number": quote.quote.quote_number,
+          "quote_date": quote.date.strftime('%Y-%m-%d'),
+          "expired_date": quote.expiration.strftime('%Y-%m-%d'),
+          "title": quote.subject,
+          "note": quote.remarks,
+          "memo": quote.memo,
+          "items": [
+            quote.quote_items.pluck(*[:name, :quantity, :unit_price]).map {
+              |tm| [:name, :quantity, :unit_price].zip(tm).to_h
+            }
+          ]
+        }
+      })
 
-    data = JSON.parse(response.body)
 
-    quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
-    quote.update_columns(:mf_quote_id => data['data']['id'])
+      req_options = {
+        use_ssl: uri.scheme == "https",
+      }
 
+      response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+        http.request(request)
+      end
+
+      data = JSON.parse(response.body)
+
+      quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
+      quote.update_columns(:mf_quote_id => data['data']['id'])
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを更新しました'}}
   rescue => e
@@ -261,6 +261,7 @@ class QuotesController < ApplicationController
 
   end
 
+
   ##
   # ステータスを更新する
   # @version 2018/06/10
@@ -287,7 +288,8 @@ class QuotesController < ApplicationController
 
   def quote_params
 
-    params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :mf_quote_id,
+    params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :mf_quote_id, :user_id, :status, :quote_number,
+      :quote_type, :channel, :deliver_at, :deliver_type, :deliver_type_note,
       quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
   end
 
