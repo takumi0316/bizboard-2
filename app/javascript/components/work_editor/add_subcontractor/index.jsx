@@ -441,8 +441,6 @@ export default class AddSubcontractor extends React.Component {
    */
   applyClient = (client, work_subcontractor_id) => {
 
-    console.log('client: ', client)
-    console.log('work_subcontractor_id: ', work_subcontractor_id)
     let url = '/work_subcontractors/' + work_subcontractor_id;
     let field = {
       'subcontractor_division_client_id': client.id,

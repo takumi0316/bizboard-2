@@ -122,7 +122,6 @@ export default class SubcontractorBulk extends React.Component {
       companyClientName: this.refs.companyClientName.value,
       companyClientNameTitle: this.refs.companyClientNameTitle.value,
     }
-    console.log('field: ', field)
     Request.post(url)
       .set('X-Requested-With', 'XMLHttpRequest')
       .field(field)
@@ -131,14 +130,13 @@ export default class SubcontractorBulk extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          alert('いけてんで');
+          alert('正常に作成できました。')
           this.props.closeBulk();
-          console.log('clinet_id: ', res.body.client)
           this.props.applyClient(res.body.client, this.props.work_subcontractor_id);
           this.props.close();
         } else if (err && res.body.status === 'error') {
 
-          alert('いけてないで');
+          alert('正常に作成できませんでした。');
         }
       });
   }
