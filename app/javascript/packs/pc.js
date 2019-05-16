@@ -67,7 +67,6 @@ WebpackerReact.setup({
   ProjectViewer,
   CompanyDivisions,
   WorksSearch,
-  WorkDetails,
   WorkStatus,
   SubcontractorDivisions,
   WorkEditor,
