@@ -88,7 +88,7 @@ class Project < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.user&.name} #{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
+    self.free_word = "#{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
   end
 
   ##
