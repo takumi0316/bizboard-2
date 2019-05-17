@@ -63,6 +63,9 @@ class Quote < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :client, optional: true, class_name: 'CompanyDivisionClient', foreign_key: :company_division_client_id
 
+  #部署
+  belongs_to :division, optional: true
+
   has_many :quote_projects, dependent: :destroy
   has_many :projects, through: :quote_projects
 

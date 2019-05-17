@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_10_085931) do
+ActiveRecord::Schema.define(version: 2019_05_17_063616) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -319,6 +319,8 @@ ActiveRecord::Schema.define(version: 2019_05_10_085931) do
     t.datetime "deliver_at"
     t.integer "deliver_type"
     t.text "deliver_type_note"
+    t.bigint "division_id"
+    t.index ["division_id"], name: "index_quotes_on_division_id"
   end
 
   create_table "scheduler_stats", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -480,8 +482,12 @@ ActiveRecord::Schema.define(version: 2019_05_10_085931) do
     t.datetime "updated_at", null: false
     t.text "free_word"
     t.text "notices"
+    t.bigint "division_id"
+    t.index ["division_id"], name: "index_works_on_division_id"
     t.index ["quote_id"], name: "index_works_on_quote_id"
   end
 
+  add_foreign_key "quotes", "divisions"
   add_foreign_key "work_details", "works"
+  add_foreign_key "works", "divisions"
 end

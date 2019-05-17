@@ -10,7 +10,7 @@ require('superagent-rails-csrf')(Request);
  *  @version 2018/06/10
  */
 export default class ClientSearch extends React.Component {
-  
+
   /**
    *  コンストラクタ
    *  @version 2018/06/10
@@ -22,9 +22,9 @@ export default class ClientSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    this.state = { show: false, clients: [], body: null };
+    this.state = { show: false, clients: [], body: null, type: false };
   }
-  
+
 
   /**
    *  モーダルを表示する
@@ -97,7 +97,7 @@ export default class ClientSearch extends React.Component {
 
     event.stopPropagation();
   }
-  
+
   /**
    *  選択時
    *  @version 2018/06/10
@@ -108,22 +108,6 @@ export default class ClientSearch extends React.Component {
 
     this.props.applyClient(client);
     this._close();
-  }
-
-  /**
-   *  担当者作成
-   *  @version 2018/06/10
-   */
-  createView() {
-
-    Request.get(`/company_division_clients/new`)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .end((error, response) => {
-        console.log('response', response);
-
-        this.setState({body: response.text});
-      });
-
   }
 
   /**
@@ -142,9 +126,8 @@ export default class ClientSearch extends React.Component {
               <div className={Style.ClientSearch__form}>
                 <input type='text' className={Style.ClientSearch__input} placeholder='お客様情報で検索' ref='word' onChange={::this._onChange}/>
                 <div onClick={::this._onChange} className='c-btnMain-standard u-ml-10'>検索</div>
-                { true ? null : <div onClick={::this.createView} className='c-btnMain-standard c-btn-blue u-ml-50'>お客様情報を作成する</div> }
               </div>
-              
+
               { this.state.clients.length > 0 ?
 
                 <ul className={Style.ClientSearch__list}>

@@ -40,6 +40,9 @@ class Work < ApplicationRecord
 
   belongs_to :quote
 
+  #部署
+  belongs_to :division, optional: true
+
   has_many :work_details, class_name: 'WorkDetail', dependent: :destroy
 
   has_many :subcontractor, class_name: 'WorkSubcontractor', dependent: :destroy
