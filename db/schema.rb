@@ -373,6 +373,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_063616) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "free_word"
     t.index ["subcontractor_id"], name: "index_subcontractor_divisions_on_subcontractor_id"
   end
 

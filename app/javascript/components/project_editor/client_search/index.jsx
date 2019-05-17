@@ -1,7 +1,6 @@
 import React from 'react'
 import Style from './style.sass'
 import Icon  from 'react-evil-icons'
-import CompanyBulk from '../company_bulk/index.jsx'
 
 // Ajax
 import Request from 'superagent'
