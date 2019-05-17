@@ -112,7 +112,6 @@ class SubcontractorsController < ApplicationController
   def bulk
 
     newSub = Subcontractor.find_or_initialize_by(:name => params[:companyName])
-    binding.pry
     if newSub.id.nil?
 
       newSub.save!
