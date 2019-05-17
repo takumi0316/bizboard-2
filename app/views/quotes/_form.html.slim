@@ -2,6 +2,7 @@
 = react_component('QuoteEditor',
   { action: action,
   quote: quote,
+  user: quote.user,
   company: quote.client&.company_division&.company,
   division: quote.client&.company_division,
   client: quote.client })

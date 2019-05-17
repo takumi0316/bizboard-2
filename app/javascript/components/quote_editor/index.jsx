@@ -30,14 +30,18 @@ export default class QuoteEditor extends React.Component {
 
     super(props);
 
+    console.log('quote', props.quote);
+
     this.state = {
       company: props.company,
       division: props.division,
       client: props.client,
       user_id: props.user_id,
       quote_type: props.quote_type || 'contract',
-      deliver_at: props.deliver_at,
+      deliver_at: props.quote.deliver_at,
       deliver_type: props.deliver_type || 'seat',
+      date: props.quote.date,
+
     }
   }
 
@@ -112,6 +116,7 @@ export default class QuoteEditor extends React.Component {
       'quote[remarks]': this.refs.remarks.value,
       'quote[memo]': this.refs.memo.value,
       'quote[price]': this.refs.price.value,
+      'quote[user_id]': this.refs.user_id.value,
     };
 
     // 納品方法
@@ -176,6 +181,7 @@ export default class QuoteEditor extends React.Component {
   render() {
 
     const { quote } = this.props;
+    const items = ['あああ', 'いいい', 'ううう', 'えええ'];
 
     return (
       <div className={Style.QuoteEditor}>
@@ -207,6 +213,8 @@ export default class QuoteEditor extends React.Component {
 
         <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.quote.company_division_client_id} />
 
+        <input type='hidden' ref='user_id' value={this.state.client ? this.state.client.user_id: this.props.quote.user_id} />
+
         <div className='u-mt-15'>
           <ClientSearch applyClient={::this.applyClient} />
         </div>
@@ -220,7 +228,7 @@ export default class QuoteEditor extends React.Component {
                 <td className='u-fw-bold'>見積もり発行日</td>
                 <td>
                   <span className='u-mr-30'>{ this.state.date ? Dayjs(this.state.date).format('YYYY年MM月DD日') : '未定' }</span>
-                  <DatetimePicker apply={::this.setDate} defaultDatetime={this.state.date} />
+                  <DatetimePicker apply={::this.setDate} defaultDatetime={this.props.quote.date} />
                 </td>
               </tr>
 
@@ -228,7 +236,7 @@ export default class QuoteEditor extends React.Component {
                 <td className='u-fw-bold'>見積もり有効期間</td>
                 <td>
                   <span className='u-mr-30'>{ this.state.expiration ? Dayjs(this.state.expiration).format('YYYY年MM月DD日') : '未定' }</span>
-                  <DatetimePicker apply={::this.setExpiration} defaultDatetime={this.state.expiration} />
+                  <DatetimePicker apply={::this.setExpiration} defaultDatetime={this.props.quote.expiration} />
                 </td>
               </tr>
 
@@ -236,7 +244,7 @@ export default class QuoteEditor extends React.Component {
                 <td className='u-fw-bold'>納期</td>
                 <td>
                   <span className='u-mr-30'>{ this.state.deliver_at ? Dayjs(this.state.deliver_at).format('YYYY年MM月DD日 HH時mm分') : '未定' }</span>
-                  <DatetimePicker apply={::this.setDeliverAt} defaultDatetime={this.state.deliver_at} />
+                  <DatetimePicker apply={::this.setDeliverAt} defaultDatetime={this.props.quote.deliver_at} />
                 </td>
               </tr>
 
@@ -245,22 +253,22 @@ export default class QuoteEditor extends React.Component {
                 <td>
                   <div className='u-mt-15'>
                     <label className='c-form-radioLabel'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.props.quote.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>席まで配達</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'location'} onChange={() => this.setState({deliver_type: 'location'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.props.quote.deliver_type == 'location'} onChange={() => this.setState({deliver_type: 'location'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>指定場所に配達</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'pickup'} onChange={() => this.setState({deliver_type: 'pickup'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.props.quote.deliver_type == 'pickup'} onChange={() => this.setState({deliver_type: 'pickup'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>引取り</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.props.quote.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>その他</span>
                     </label>
@@ -307,13 +315,44 @@ export default class QuoteEditor extends React.Component {
                 </td>
               </tr>
 
+            </tbody>
+          </table>
+
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  品目
+                </th>
+                <th>
+                  単価
+                </th>
+                <th>
+                  数量
+                </th>
+                <th>
+                  価格
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              { items.map(d => {
+                return <tr><td><input placeholder='品目' className='c-form-text' type='text' defaultValue={d} /></td>
+                <td><input placeholder='品目' className='c-form-text' type='text' defaultValue={d} /></td>
+                <td><input placeholder='品目' className='c-form-text' type='text' defaultValue={d} /></td>
+                <td><input placeholder='品目' className='c-form-text' type='text' defaultValue={d} /></td></tr>
+              }) }
+            </tbody>
+          </table>
+
+          <table>
+            <tbody>
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
                   <textarea placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={this.props.quote.price}></textarea>
                 </td>
               </tr>
-
 
               <tr>
                 <td className='u-fw-bold'>備考 ※見積もりに記載されます</td>
@@ -328,9 +367,9 @@ export default class QuoteEditor extends React.Component {
                   <textarea placeholder='案件に関するメモを入力してください ※見積もりに記載されません' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='memo' defaultValue={this.props.quote.memo}></textarea>
                 </td>
               </tr>
-
             </tbody>
           </table>
+
         </div>
 
         <div className='c-overlay-submit'>
