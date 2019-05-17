@@ -22,7 +22,7 @@ export default class ProjectSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    this.state = { show: false, clients: [], body: null };
+    this.state = { show: false, projects: [], body: null };
   }
 
 
@@ -45,14 +45,14 @@ export default class ProjectSearch extends React.Component {
    */
   _close() {
 
-    this.setState({ show: false, clients: [] });
+    this.setState({ show: false, projects: [] });
   }
 
   _onChange() {
 
     if (this.refs.word.value == '') {
 
-      this.setState({clients: []});
+      this.setState({projects: []});
       return false
     }
 
@@ -66,11 +66,11 @@ export default class ProjectSearch extends React.Component {
   _search(search) {
 
     // 記事内容を送信
-    Request.get('/projects.json?search=' + search)
+    Request.get('/projects.json?free_word=' + search)
       .end((error, response) => {
 
         if (error) return false;
-        this.setState({clients: response.body.clients});
+        this.setState({projects: response.body.projects});
       });
   }
 
@@ -84,7 +84,7 @@ export default class ProjectSearch extends React.Component {
 
     let client = {};
 
-    this.props.apply({ client: client });
+    this.props.apply({ project: project });
 
     this.setState({ show: false });
   }
@@ -104,9 +104,9 @@ export default class ProjectSearch extends React.Component {
    */
   _onSelect(e) {
 
-    const client = this.state.clients[e.target.dataset.number];
+    const project = this.state.projects[e.target.dataset.number];
 
-    this.props.applyClient(client);
+    this.props.applyProject(project);
     this._close();
   }
 
@@ -117,25 +117,25 @@ export default class ProjectSearch extends React.Component {
   render () {
 
     return (this.state.show ?
-      <div className={Style.ClientSearch} onClick={::this._close}>
+      <div className={Style.ProjectSearch} onClick={::this._close}>
 
-        <div className={Style.ClientSearch__inner} onClick={this._stopPropagation}>
+        <div className={Style.ProjectSearch__inner} onClick={this._stopPropagation}>
 
           { this.state.body == null ?
             <div>
-              <div className={Style.ClientSearch__form}>
-                <input type='text' className={Style.ClientSearch__input} placeholder='品目名で検索' ref='word' onChange={::this._onChange}/>
+              <div className={Style.ProjectSearch__form}>
+                <input type='text' className={Style.ProjectSearch__input} placeholder='品目名で検索' ref='word' onChange={::this._onChange}/>
                 <div onClick={::this._onChange} className='c-btnMain-standard u-ml-10'>検索</div>
               </div>
 
-              { this.state.clients.length > 0 ?
+              { this.state.projects.length > 0 ?
 
-                <ul className={Style.ClientSearch__list}>
-                  {this.state.clients.map((client, i) => {
-                    var key = `clients-${i}`;
+                <ul className={Style.ProjectSearch__list}>
+                  {this.state.projects.map((project, i) => {
+                    var key = `projects-${i}`;
                     return (
-                      <li {...{key}} className={Style.ClientSearch__item}>
-                        <h2 className={Style.ClientSearch__itemName} data-number={i} onClick={::this._onSelect}>{client.company.name} {client.division.name} {client.name} 様</h2>
+                      <li {...{key}} className={Style.ProjectSearch__item}>
+                        <h2 className={Style.ProjectSearch__itemName} data-number={i} onClick={::this._onSelect}>{project.name}：{project.price}円</h2>
                       </li>
                     );
                   })}
@@ -147,7 +147,7 @@ export default class ProjectSearch extends React.Component {
             :
             <div dangerouslySetInnerHTML={{__html : this.state.body}} />
           }
-          <div onClick={::this._close} className={Style.ClientSearch__closeIcon}>×</div>
+          <div onClick={::this._close} className={Style.ProjectSearch__closeIcon}>×</div>
         </div>
       </div>
       :

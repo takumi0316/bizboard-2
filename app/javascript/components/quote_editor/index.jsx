@@ -37,6 +37,7 @@ export default class QuoteEditor extends React.Component {
       company: props.company,
       division: props.division,
       client: props.client,
+      project: props.project,
       user_id: props.user_id,
       quote_type: props.quote_type || 'contract',
       deliver_at: props.quote.deliver_at,
@@ -183,9 +184,7 @@ export default class QuoteEditor extends React.Component {
 
     console.log('applyProject', project);
     this.setState({
-      client: client,
-      company: client.company,
-      division: client.division,
+      project: project,
     });
   }
 
@@ -362,7 +361,7 @@ export default class QuoteEditor extends React.Component {
           </table>
 
           <div className='u-mt-15'>
-            <ProjectSearch applyClient={::this.applyProject} prefectures={ this.props.prefectures } />
+            <ProjectSearch applyProject={::this.applyProject} prefectures={ this.props.prefectures } />
           </div>
 
           <table>
