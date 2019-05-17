@@ -57,11 +57,7 @@ Rails.application.routes.draw do
   resources :work_subcontractor_details
 
   # 取引先
-  resources :companies do
-    collection do
-      post :bulk
-    end
-  end
+  resources :companies
   resources :company_divisions
   resources :company_division_clients
 
