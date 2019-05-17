@@ -5,8 +5,6 @@ import Style      from './style.sass'
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
 
-import ClientSearch from './client_search'
-
 import ProjectCopy from './project_copy'
 import ProjectPrint from './project_print'
 import ProjectBind from './project_bind'
@@ -204,10 +202,6 @@ export default class ProjectEditor extends React.Component {
         </div>
         <input placeholder='100' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={this.props.project.price} />
 
-        <div className='c-form-label u-mt-30'>
-          <label htmlFor='project_company_division_client_id'>お客様情報</label>
-        </div>
-
         { this.state.client ?
           <div className='c-attention'>
             <div>会社名: {this.state.company.name}</div>
@@ -220,10 +214,6 @@ export default class ProjectEditor extends React.Component {
         }
 
         <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.project.company_division_client_id} />
-
-        <div className='u-mt-15'>
-          <ClientSearch applyClient={::this.applyClient} users={ this.props.users } prefectures={ this.props.prefectures }/>
-        </div>
 
         <div className='u-mt-30'>
           <div className='c-form-label'>

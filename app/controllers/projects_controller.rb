@@ -88,6 +88,8 @@ class ProjectsController < ApplicationController
   #
   def create
 
+    binding.pry
+
     # 案件情報更新
     project.update! project_params
 
