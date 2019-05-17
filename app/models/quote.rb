@@ -91,7 +91,7 @@ class Quote < ApplicationRecord
 
   # 見積もり番号をセットする
   # after_createだとupdateで見積もり番号の登録出来ないので変えてます
-  before_validation :set_quote_number
+  after_create :set_quote_number
 
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
@@ -102,7 +102,7 @@ class Quote < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.id} #{self.subject} #{self.projects.map(&:name).join(' ')}"
+    self.free_word = "#{self.subject} #{self.projects.map(&:name).join(' ')}"
   end
 
   ##

@@ -7,6 +7,7 @@ require('superagent-rails-csrf')(Request);
 
 import DatetimePicker from './datetime_picker'
 import ClientSearch from './client_search'
+import ProjectSearch from './project_search'
 
 // datetime
 import Dayjs from 'dayjs'
@@ -173,6 +174,21 @@ export default class QuoteEditor extends React.Component {
       division: client.division,
     });
   }
+
+  /**
+   *  品目選択時
+   *  @version 2018/06/10
+   */
+  applyProject(project) {
+
+    console.log('applyProject', project);
+    this.setState({
+      client: client,
+      company: client.company,
+      division: client.division,
+    });
+  }
+
 
   /**
    *  表示処理
@@ -344,6 +360,10 @@ export default class QuoteEditor extends React.Component {
               }) }
             </tbody>
           </table>
+
+          <div className='u-mt-15'>
+            <ProjectSearch applyClient={::this.applyProject} prefectures={ this.props.prefectures } />
+          </div>
 
           <table>
             <tbody>
