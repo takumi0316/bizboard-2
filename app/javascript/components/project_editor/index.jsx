@@ -100,17 +100,17 @@ export default class ProjectEditor extends React.Component {
       field['project[binding_work]'] = 'binding_works_unnecessary';
 
       field = Object.assign(field, this.refs.project_card.getDetail());
-      
+
     // コピー案件
     } else if (this.state.project_category == 'project_copy') {
 
       field = Object.assign(field, this.refs.project_copy.getDetail());
-      
+
     // 製本のみ案件
     } else if (this.state.project_category == 'project_bind') {
 
       field = Object.assign(field, this.refs.project_bind.getDetail());
-      
+
     // スキャン案件
     } else if (this.state.project_category == 'project_scan') {
 
@@ -146,7 +146,7 @@ export default class ProjectEditor extends React.Component {
       .set('X-Requested-With', 'XMLHttpRequest')
       .setCsrfToken()
       .end((error, response) => {
-        
+
         if (response.body.status == 'success' && response.body.project.id) {
 
           // 新規作成時は編集画面はリダイレクト
@@ -170,7 +170,6 @@ export default class ProjectEditor extends React.Component {
    */
   applyClient(client) {
 
-    console.log('applyClient', client);
     this.setState({
       client: client,
       company: client.company,
@@ -192,7 +191,7 @@ export default class ProjectEditor extends React.Component {
         <h1 className='l-dashboard__heading'>案件作成</h1>
 
         <input type='hidden' name='authenticity_token' value={'test'} />
-        
+
         <div className='c-form-label u-mt-30'>
           <label htmlFor='project_name'>案件名</label>
           <span className='c-form__required u-ml-10'>必須</span>
@@ -204,11 +203,11 @@ export default class ProjectEditor extends React.Component {
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <input placeholder='100' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={this.props.project.price} />
-        
+
         <div className='c-form-label u-mt-30'>
           <label htmlFor='project_company_division_client_id'>お客様情報</label>
         </div>
-        
+
         { this.state.client ?
           <div className='c-attention'>
             <div>会社名: {this.state.company.name}</div>
@@ -223,9 +222,9 @@ export default class ProjectEditor extends React.Component {
         <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.project.company_division_client_id} />
 
         <div className='u-mt-15'>
-          <ClientSearch applyClient={::this.applyClient} />
+          <ClientSearch applyClient={::this.applyClient} users={ this.props.users } prefectures={ this.props.prefectures }/>
         </div>
-        
+
         <div className='u-mt-30'>
           <div className='c-form-label'>
             <label>案件種別</label>
@@ -275,7 +274,7 @@ export default class ProjectEditor extends React.Component {
 
         {/** 後加工 / 製本仕様 */}
         { this.state.project_category == 'project_print' || this.state.project_category == 'project_copy' || this.state.project_category == 'project_bind' ?
-          
+
           <div>
 
             <h2 className={Style.ProjectEditor__heading}>後加工仕様</h2>

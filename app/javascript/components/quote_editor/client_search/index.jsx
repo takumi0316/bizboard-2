@@ -1,6 +1,7 @@
 import React from 'react'
 import Style from './style.sass'
 import Icon  from 'react-evil-icons'
+import CompanyBulk from '../company_bulk/index.jsx'
 
 // Ajax
 import Request from 'superagent'
@@ -10,7 +11,7 @@ require('superagent-rails-csrf')(Request);
  *  @version 2018/06/10
  */
 export default class ClientSearch extends React.Component {
-  
+
   /**
    *  コンストラクタ
    *  @version 2018/06/10
@@ -22,9 +23,9 @@ export default class ClientSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    this.state = { show: false, clients: [], body: null };
+    this.state = { show: false, clients: [], body: null, type: false };
   }
-  
+
 
   /**
    *  モーダルを表示する
@@ -97,7 +98,7 @@ export default class ClientSearch extends React.Component {
 
     event.stopPropagation();
   }
-  
+
   /**
    *  選択時
    *  @version 2018/06/10
@@ -110,20 +111,22 @@ export default class ClientSearch extends React.Component {
     this._close();
   }
 
-  /**
-   *  担当者作成
+   /**
+   *  担当者作成を表示
    *  @version 2018/06/10
    */
-  createView() {
+  _openBulk = () => {
 
-    Request.get(`/company_division_clients/new`)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .end((error, response) => {
-        console.log('response', response);
+    this.setState({ type: true });
+  }
 
-        this.setState({body: response.text});
-      });
+  /**
+   * 担当者作成を閉じる
+   *
+   */
+  _closeBulk = () => {
 
+    this.setState({ type: false });
   }
 
   /**
@@ -135,6 +138,7 @@ export default class ClientSearch extends React.Component {
     return (this.state.show ?
       <div className={Style.ClientSearch} onClick={::this._close}>
 
+        { this.state.type ? <CompanyBulk closeBulk={ e => this._closeBulk() } users={ this.props.users } prefectures={ this.props.prefectures } applyClient={ ::this.props.applyClient } close={ e => this._close() } /> : null}
         <div className={Style.ClientSearch__inner} onClick={this._stopPropagation}>
 
           { this.state.body == null ?
@@ -142,9 +146,9 @@ export default class ClientSearch extends React.Component {
               <div className={Style.ClientSearch__form}>
                 <input type='text' className={Style.ClientSearch__input} placeholder='お客様情報で検索' ref='word' onChange={::this._onChange}/>
                 <div onClick={::this._onChange} className='c-btnMain-standard u-ml-10'>検索</div>
-                { true ? null : <div onClick={::this.createView} className='c-btnMain-standard c-btn-blue u-ml-50'>お客様情報を作成する</div> }
+                <div onClick={ e => this._openBulk() } className='c-btnMain-standard c-btn-blue u-ml-50'>外注先情報を作成する</div>
               </div>
-              
+
               { this.state.clients.length > 0 ?
 
                 <ul className={Style.ClientSearch__list}>
