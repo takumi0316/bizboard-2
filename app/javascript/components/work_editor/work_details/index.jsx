@@ -216,7 +216,7 @@ export default class AddDetails extends React.Component {
 
 	  onConfirm = (e, detail_id, index) => {
 
-    window.confirm('削除します。') ? this.onWorkDetailDestroy(e, detail_id, index) : window.confirm('キャンセルしました。')
+    window.confirm('削除します。') ? this.onWorkDetailDestroy(e, detail_id, index) : alert('キャンセルしました。')
   }
 
   contentNotices = (work_notices) => {
