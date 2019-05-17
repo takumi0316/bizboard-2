@@ -90,7 +90,6 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
-
       token = current_user.mf_access_token
       delete_id = quote.mf_quote_id
       uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
@@ -114,16 +113,18 @@ class QuotesController < ApplicationController
       request.body = JSON.dump({
         "quote": {
           "department_id": quote.client.company_division.mf_company_division_id,
-          "quote_number": quote.quote.quote_number,
+          "quote_number": quote.quote_number,
           "quote_date": quote.date.strftime('%Y-%m-%d'),
           "expired_date": quote.expiration.strftime('%Y-%m-%d'),
           "title": quote.subject,
           "note": quote.remarks,
           "memo": quote.memo,
           "items": [
-            quote.quote_items.pluck(*[:name, :quantity, :unit_price]).map {
-              |tm| [:name, :quantity, :unit_price].zip(tm).to_h
-            }
+            {
+              “name”: "商品A",
+              “quantity”: 10,
+              “unit_price”: 100,
+            },
           ]
         }
       })
@@ -136,11 +137,6 @@ class QuotesController < ApplicationController
       response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
         http.request(request)
       end
-
-      data = JSON.parse(response.body)
-
-      quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
-      quote.update_columns(:mf_quote_id => data['data']['id'])
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを更新しました'}}
   rescue => e
