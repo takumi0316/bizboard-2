@@ -75,7 +75,7 @@ class CompaniesController < ApplicationController
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -90,7 +90,7 @@ class CompaniesController < ApplicationController
 
     redirect_to edit_company_path(company), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -108,6 +108,40 @@ class CompaniesController < ApplicationController
     flash[:warning] = { message: e.message }
   ensure
     redirect_to action: :index
+  end
+
+  ##
+  # 一括作成
+  #
+  #
+  def bulk
+
+   newSub = Company.find_or_initialize_by(:name => params[:companyName])
+    if newSub.id.nil?
+
+      newSub.save!
+      newSubDivision = newSub.divisions.create! :name => params[:companyDivisionName], :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
+      newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
+    else
+
+      newSubDivisions = newSub.divisions
+      newSubDivision = newSubDivisions.find_or_initialize_by(:name => params[:companyDivisionName])
+      if newSubDivision.id.nil?
+
+        newSubDivision.save! :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
+        newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
+      else
+
+        newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
+      end
+    end
+
+    client = CompanyDivisionClient.find_or_initialize_by(:name => params[:companyClientName])
+    render json: { status: :success, client: client, division: client.company_division, company: client.company_division.company }
+
+  rescue => e
+
+    render json: { status: :error }
   end
 
   #----------------------------------------

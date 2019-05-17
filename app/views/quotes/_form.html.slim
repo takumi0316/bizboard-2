@@ -5,4 +5,7 @@
   user: quote.user,
   company: quote.client&.company_division&.company,
   division: quote.client&.company_division,
-  client: quote.client })
+  client: quote.client,
+  users: User.all,
+  prefectures: Prefecture.all,
+  })

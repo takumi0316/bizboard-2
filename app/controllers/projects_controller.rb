@@ -95,7 +95,7 @@ class ProjectsController < ApplicationController
 
     render json: { status: :success, project: project }
   rescue => e
-    
+
     render json: { status: :error, project: project }
   end
 
