@@ -89,15 +89,21 @@ export default class SubcontractorBulk extends React.Component {
       exit
     }
 
-    if ( this.refs.companyAddress2.value === '' ) {
-
-      alert('住所2を入力してください！！！！！！！！！！！！！');
-      exit
-    }
-
     if ( this.refs.companyClientName.value === '' ) {
 
       alert('担当者を入力するのが一番大事！！！！！！！！！！！！！');
+      exit
+    }
+
+    if ( this.refs.companyClientTel.value === '' ) {
+
+      alert('電話番号を入力してください！！！！！！！！！！！！！');
+      exit
+    }
+
+    if ( this.refs.companyClientEmail.value === '' ) {
+
+      alert('メールアドレスを入力してください！！！！！！！！！！！！！');
       exit
     }
   }
@@ -117,10 +123,10 @@ export default class SubcontractorBulk extends React.Component {
       companyPost: this.refs.companyPost.value,
       companyPrefecture: this.refs.companyPrefecture.value,
       companyAddress1: this.refs.companyAddress1.value,
-      companyAddress2: this.refs.companyAddress2.value,
       currentClientName: this.refs.currentClientName.value,
       companyClientName: this.refs.companyClientName.value,
-      companyClientNameTitle: this.refs.companyClientNameTitle.value,
+      companyClientTel: this.refs.companyClientTel.value,
+      companyClientEmail: this.refs.companyClientEmail.value,
     }
     Request.post(url)
       .set('X-Requested-With', 'XMLHttpRequest')
@@ -152,22 +158,22 @@ export default class SubcontractorBulk extends React.Component {
       <React.Fragment>
           <div className={ Style.SubcontractorBulk }>
             <div className={ Style.SubcontractorBulk__inner } onClick={ e => this._stopPropagation(e) } >
-              <h1 className={ 'l-dashboard__heading' }>外注先担当者</h1>
+              <h1 className={ 'l-dashboard__heading-jsx' }>外注先担当者</h1>
               <div className={ 'c-form-label' } >
                 <label>会社名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyName' ref='companyName' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input id='companyName' placeholder='会社名' ref='companyName' className={ Style.SubcontractorBulk__input } /></div>
               <div className={ 'c-form-label' } >
                 <label>部署名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyDivisionName' ref='companyDivisionName' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' className={ Style.SubcontractorBulk__input } /></div>
               <div className={ 'c-form-label' } >
                 <label>郵便番号</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input onChange={ e => this._formatCheck('companyPost') } id='companyPost' ref='companyPost' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input onChange={ e => this._formatCheck('companyPost') } id='companyPost' placeholder='郵便番号' ref='companyPost' className={ Style.SubcontractorBulk__input } /></div>
               <div className={ 'c-form-label' } >
                 <label>都道府県</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
@@ -186,12 +192,7 @@ export default class SubcontractorBulk extends React.Component {
                 <label>住所1</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='commpanyAddress1' ref='companyAddress1' className={ Style.SubcontractorBulk__input } /></div>
-              <div className={ 'c-form-label' } >
-                <label>住所2</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div><input id='companyAddress2' ref='companyAddress2' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input id='commpanyAddress1' placeholder='住所' ref='companyAddress1' className={ Style.SubcontractorBulk__input } /></div>
               <div className={ 'c-form-label' } >
                 <label>自社担当者</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
@@ -210,21 +211,17 @@ export default class SubcontractorBulk extends React.Component {
                 <label>担当者</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyClientName' ref='companyClientName' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input id='companyClientName' placeholder='担当者名' ref='companyClientName' className={ Style.SubcontractorBulk__input } /></div>
               <div className={ 'c-form-label' } >
-                <label>敬称</label>
+                <label>電話番号</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div>
-                <select defaultValue={ this.state.title_id } ref='companyClientNameTitle' className={ 'c-form-select' } >
-                  { [0, 10, 20].map((title, index) => {
-                    const key = 'title-' + index;
-                    return (
-                      <option {...{key}} value={ title }>{ TITLES[title] }</option>
-                    );
-                  }) }
-                </select>
+              <div><input placeholder='電話番号' ref='companyClientTel' className={ Style.SubcontractorBulk__input } /></div>
+<div className={ 'c-form-label' } >
+                <label>メールアドレス</label>
+                <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
+              <div><input placeholder='メールアドレス' ref='companyClientEmail' className={ Style.SubcontractorBulk__input } /></div>
               <div className={ 'u-ta-center' }>
                 <button onClick={ e => this._onBulkCreate() } className={ 'c-btnMain-standard c-btn-blue u-mt-20' }>作成</button>
               </div>

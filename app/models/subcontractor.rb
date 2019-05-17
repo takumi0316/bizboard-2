@@ -45,7 +45,7 @@ class Subcontractor < ApplicationRecord
 
   ##
   # 名称検索
-  # @version 
+  # @version
   #
   def self.search(word)
 
