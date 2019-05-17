@@ -24,6 +24,8 @@ defaults: &defaults
   # 請求額振込先
   payment_condition: '三菱UFJ銀行 神田支店 当座 0001776 カ）ニホンコウギョウシャ'
 
+  consumption_tax: 1.08
+
 development:
   <<: *defaults
 

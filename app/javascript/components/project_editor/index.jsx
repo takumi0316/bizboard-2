@@ -252,7 +252,7 @@ export default class ProjectEditor extends React.Component {
         </div>
 
         { this.state.project_category != 'project_other' ?
-          <h2 className={Style.ProjectEditor__heading}>{PROJECT_NAMES[this.state.project_category]}仕様</h2>
+          <h2 className={Style.ProjectEditor__heading}>概要</h2>
           : null
         }
 

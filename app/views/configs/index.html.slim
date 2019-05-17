@@ -47,6 +47,9 @@ h2.l-dashboard__heading.u-mt-30 サイト管理設定
           th 値
       tbody
         tr
+          td 消費税
+          td = f.text_field :consumption_tax, value: site_configs[:consumption_tax], placeholder: '1.08', class: 'c-form-text'
+        tr
           td 未承認ユーザーのログインを許可
           td
             .c-form-selectWrap = f.select(:allow_inactive_user, allow_inactive_users, {selected: site_configs[:allow_inactive_user]}, { class: 'c-form-select' })

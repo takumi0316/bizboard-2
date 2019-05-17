@@ -46,6 +46,7 @@ class Project < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  belongs_to :user, optional: true
   belongs_to :client, optional: true, class_name: 'CompanyDivisionClient', foreign_key: :company_division_client_id
 
   has_one  :bind,    class_name: 'ProjectBind',    dependent: :destroy
