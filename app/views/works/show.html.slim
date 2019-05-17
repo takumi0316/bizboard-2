@@ -463,6 +463,7 @@
     work_id: params[:id],
     work_notices: works.find(params[:id]).notices,
     user_id: current_user.id,
+    division_id: current_user.division_id,
     users: User.all,
     work_subcontractors: works.find(params[:id]).subcontractor,
     subcontractor_details: works.find(params[:id]).subcontractor_detail,
