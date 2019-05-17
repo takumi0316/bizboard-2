@@ -216,7 +216,7 @@ export default class QuoteEditor extends React.Component {
         <input type='hidden' ref='user_id' value={this.state.client ? this.state.client.user_id: this.props.quote.user_id} />
 
         <div className='u-mt-15'>
-          <ClientSearch applyClient={::this.applyClient} />
+          <ClientSearch applyClient={::this.applyClient} users={ this.props.users } prefectures={ this.props.prefectures } />
         </div>
 
         <div className='u-mt-30 c-table'>
