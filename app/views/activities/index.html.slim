@@ -29,7 +29,7 @@
           td = r.status_i18n
           td = r.quote.quote_number
           td = r.quote.subject
-          td = r.user.name
+          td 
           td = r.memo.truncate(30)
           td
             - if r.attachment.present?

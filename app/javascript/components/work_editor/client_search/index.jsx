@@ -1,6 +1,7 @@
 import React from 'react'
 import Style from './style.sass'
 import Icon  from 'react-evil-icons'
+import SubcontractorBulk from '../subcontractor_bulk/index.jsx'
 
 // Ajax
 import Request from 'superagent'
@@ -22,7 +23,7 @@ export default class ClientSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    this.state = { show: false, clients: [], body: null };
+    this.state = { show: false, clients: [], body: null, type: false};
   }
 
 
@@ -48,7 +49,7 @@ export default class ClientSearch extends React.Component {
     this.setState({ show: false, clients: [] });
   }
 
-  _onChange() {
+  _onChange(e) {
 
     if (this.refs.word.value == '') {
 
@@ -111,18 +112,21 @@ export default class ClientSearch extends React.Component {
   }
 
   /**
-   *  担当者作成
+   *  担当者作成を表示
    *  @version 2018/06/10
    */
-  createView() {
+  _openBulk = () => {
 
-    Request.get(`/subcontractor_division_clients/new`)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .end((error, response) => {
+    this.setState({ type: true });
+  }
 
-        this.setState({body: response.text});
-      });
+  /**
+   * 担当者作成を閉じる
+   *
+   */
+  _closeBulk = () => {
 
+    this.setState({ type: false });
   }
 
   /**
@@ -134,14 +138,15 @@ export default class ClientSearch extends React.Component {
     return (this.state.show ?
       <div className={Style.ClientSearch} onClick={::this._close}>
 
+          { this.state.type ? <SubcontractorBulk closeBulk={ e => this._closeBulk() } users={ this.props.users } prefectures={ this.props.prefectures } applyClient={ ::this.props.applyClient } work_subcontractor_id={ this.props.work_subcontractor_id } close={ e => this._close() } /> : null}
         <div className={Style.ClientSearch__inner} onClick={this._stopPropagation}>
 
           { this.state.body == null ?
             <div>
               <div className={Style.ClientSearch__form}>
                 <input type='text' className={Style.ClientSearch__input} placeholder='お客様情報で検索' ref='word' onChange={::this._onChange}/>
-                <div onClick={::this._onChange} className='c-btnMain-standard u-ml-10'>検索</div>
-                { true ? null : <div onClick={::this.createView} className='c-btnMain-standard c-btn-blue u-ml-50'>外注先情報を作成する</div> }
+                <div onClick={ e => this._onChange()} className='c-btnMain-standard u-ml-10'>検索</div>
+                <div onClick={ e => this._openBulk() } className='c-btnMain-standard c-btn-blue u-ml-50'>外注先情報を作成する</div>
               </div>
 
               { this.state.clients.length > 0 ?

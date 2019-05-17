@@ -45,8 +45,11 @@ Rails.application.routes.draw do
   resources :activities
 
   # 作業進捗
-  resources :works
-  get 'works/:id/directions' => 'works#directions'
+  resources :works do
+    member do
+      get :directions
+    end
+  end
 
   # 作業詳細
   resources :work_details
@@ -59,7 +62,11 @@ Rails.application.routes.draw do
   resources :company_division_clients
 
   # 外注先
-  resources :subcontractors
+  resources :subcontractors do
+    collection do
+      post :bulk
+    end
+  end
   resources :subcontractor_divisions
   resources :subcontractor_division_clients
 

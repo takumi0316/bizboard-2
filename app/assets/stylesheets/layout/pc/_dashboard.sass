@@ -58,6 +58,16 @@
     background-image: linear-gradient(-45deg, rgba(map-get($layoutColors, 'core'), .1) 25%, transparent 25%, transparent 50%, rgba(map-get($layoutColors, 'core'), .1) 50%, rgba(map-get($layoutColors, 'core'), .1) 75%, transparent 75%, transparent )
     background-size: 5px 5px
 
+  &__heading-jsx
+    display: flex
+    align-items: center
+    position: relative
+    font-size: map-get($fontSize, 'title')
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 10px
+    background-image: linear-gradient(-45deg, rgba(map-get($layoutColors, 'core'), .1) 25%, transparent 25%, transparent 50%, rgba(map-get($layoutColors, 'core'), .1) 50%, rgba(map-get($layoutColors, 'core'), .1) 75%, transparent 75%, transparent )
+    background-size: 5px 5px
+
   // メニューボタン
   //-----------------------
   &-trigger

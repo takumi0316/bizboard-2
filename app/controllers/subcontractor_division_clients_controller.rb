@@ -34,7 +34,7 @@ class SubcontractorDivisionClientsController < ApplicationController
 
   ##
   # 一覧
-  # @version 
+  # @version
   #
   def index
 
@@ -48,7 +48,7 @@ class SubcontractorDivisionClientsController < ApplicationController
 
   ##
   # 新規作成
-  # @version 
+  # @version
   #
   def new
 
@@ -78,7 +78,7 @@ class SubcontractorDivisionClientsController < ApplicationController
 
   ##
   # 更新処理
-  # @version 
+  # @version
   #
   def update
 
@@ -87,13 +87,13 @@ class SubcontractorDivisionClientsController < ApplicationController
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '担当者情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
   ##
   # 新規作成
-  # @version 
+  # @version
   #
   def create
 
@@ -102,7 +102,7 @@ class SubcontractorDivisionClientsController < ApplicationController
 
     redirect_to edit_subcontractor_division_client_path(client), flash: {notice: {message: '担当者情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
