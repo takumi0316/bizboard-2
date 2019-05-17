@@ -45,7 +45,7 @@ class Division < ApplicationRecord
   has_many :works
 
   #見積り
-  hasmany :quotes
+  has_many :quotes
 
   # 都道府県
   belongs_to_active_hash :prefecture
