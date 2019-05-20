@@ -96,7 +96,7 @@ class QuotesController < ApplicationController
   def create
 
     # 情報更新
-    quote.update! quote_params
+    quote.update! quote_params.merge(division_id: current_user.division_id)
 
 
     redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
@@ -165,7 +165,7 @@ class QuotesController < ApplicationController
 
     if quote.working? && quote.work.blank?
 
-      quote.build_work.save!
+      quote.build_work(division_id: current_user.division_id).save!
 
       redirect_to work_path(quote.work), flash: {notice: {message: '作業書を作成しました'}} and return
     end
@@ -182,7 +182,7 @@ class QuotesController < ApplicationController
   def quote_params
 
     params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :mf_quote_id, :user_id, :status, :quote_number,
-      :quote_type, :channel, :deliver_at, :deliver_type, :deliver_type_note,
+      :quote_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :division_id,
       quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
   end
 
