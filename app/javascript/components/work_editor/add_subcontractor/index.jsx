@@ -3,6 +3,7 @@ import SubcontractorStatus from '../subcontractor_status/index.jsx'
 import ReadSubcontractorStatus from '../read-subcontractor_status/index.jsx'
 import ClientSearch from '../client_search/index.jsx'
 import Style from './style.sass'
+
 // Ajax
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);

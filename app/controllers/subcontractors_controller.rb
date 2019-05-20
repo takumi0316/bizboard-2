@@ -10,10 +10,7 @@ class SubcontractorsController < ApplicationController
 
   # 外注先一覧
   expose_with_pagination(:subcontractors) {
-    Subcontractor
-      .search(params[:name])
-      .all
-      .reverse_order
+    params[:name] ? Subcontractor.search(params[:name]).all.reverse_order : Subcontractor.search(params[:search]).all.reverse_order
   }
   # 外注先
   expose(:subcontractor) { Subcontractor.find_or_initialize_by id: params[:id] || params[:subcontractor_id] }

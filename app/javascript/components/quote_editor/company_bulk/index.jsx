@@ -18,7 +18,16 @@ export default class CompanyBulk extends React.Component {
   constructor(props) {
 
     super(props);
-    this.state = { prefecture_id: null, user_id: null }
+    this.state = {
+      prefecture_id: null,
+      user_id: null,
+      companies: [],
+      divisions: [],
+      company_name: null,
+      companyDivision: [],
+      company_type: false,
+      division_type: false,
+    }
   }
 
 
@@ -142,7 +151,6 @@ export default class CompanyBulk extends React.Component {
             division: res.body.division,
             company: res.body.company,
           }
-          console.log('client: ', client)
           this.props.closeBulk();
           this.props.applyClient(client);
           this.props.close();
@@ -153,15 +161,69 @@ export default class CompanyBulk extends React.Component {
       });
   }
 
+ /**
+   *  フリーワード検索
+   *  @version 2018/06/10
+   */
+  _companySearch = () => {
+
+    const search = this.refs.companyName.value;
+    // 記事内容を送信
+    Request.get('/companies.json?search=' + search)
+      .end((err, res) => {
+
+        if (err) return false;
+        this.setState({companies: res.body.companies});
+      });
+  }
+
+  componentWillMount = () => {
+
+    // 記事内容を送信
+    Request.get('/companies.json?search=')
+      .end((err, res) => {
+
+        if (err) return false;
+        this.setState({companies: res.body.companies});
+      });
+  }
+
+  _keyUp = () => {
+
+    this.setState({ companies: []});
+  }
+
+  _openCompany = () => {
+
+    this.setState({ company_type: true });
+  }
+
+  _onSelectCompany = (companyName, companyDivisions) => {
+
+    this.setState({ company_name: companyName, companies: [], divisions: companyDivisions, company_type: false });
+  }
+
+  _onSelectDivision = (division) => {
+
+    this.setState({ companyDivision: division, division_type: false });
+  }
+  _openDivision = () => {
+
+    this.setState({ division_type: true });
+  }
+
+  _closeDivision = () => {
+
+    this.setState({ division_type: false });
+  }
   /**
    * 表示処理
    *
    */
   render() {
-
     return (
 
-      <React.Fragment>
+      <React.Fragment key={'bulk'}>
           <div className={ Style.SubcontractorBulk }>
             <div className={ Style.SubcontractorBulk__inner } onClick={ e => this._stopPropagation(e) } >
               <h1 className={ 'l-dashboard__heading-jsx' }>取引先担当者</h1>
@@ -169,23 +231,60 @@ export default class CompanyBulk extends React.Component {
                 <label>会社名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyName' placeholder='会社名' ref='companyName' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input id='companyName' placeholder='会社名' ref='companyName' className={ Style.SubcontractorBulk__input } onChange={::this._companySearch} onFocus={ ::this._openCompany } defaultValue={ this.state.company_name } /></div>
+
+              { this.state.companies.length > 0 && this.state.company_type ?
+
+                <div className={ Style.SubcontractorBulk__candidateCompany__modal }>
+                  <ul className={ Style.SubcontractorBulk__candidateCompany }>
+                    { this.state.companies.map((company, index) => {
+
+                      const key = 'company-' + index;
+                      return(
+                        <li {...{key}} className={ Style.SubcontractorBulk__item }>
+                          <h2 className={ Style.SubcontractorBulk__itemName } onClick={ e => this._onSelectCompany(company.name, company.divisions) }>{ company.name }</h2>
+                        </li>
+                      )
+                    }) }
+                  </ul>
+                </div>
+                :
+                null
+              }
               <div className={ 'c-form-label' } >
                 <label>部署名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } defaultValue={ this.state.companyDivision.name } /></div>
+              { this.state.divisions.length > 0 && this.state.division_type ?
+
+                <div className={ Style.SubcontractorBulk__candidateDivisions__modal }>
+                  <ul className={ Style.SubcontractorBulk__candidateDivisions }>
+                    { this.state.divisions.map((division, index) => {
+
+                      const key = 'divisoion-' + index;
+                      return(
+                        <li {...{key}} className={ Style.SubcontractorBulk__item }>
+                          <h2 className={ Style.SubcontractorBulk__itemName } onClick={ e => this._onSelectDivision(division) } >{ division.name }</h2>
+                        </li>
+                      )
+                    }) }
+                  </ul>
+                </div>
+                :
+                null
+              }
               <div className={ 'c-form-label' } >
                 <label>郵便番号</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input onChange={ e => this._formatCheck('companyPost') } id='companyPost' placeholder='郵便番号' ref='companyPost' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input onChange={ e => this._formatCheck('companyPost') } id='companyPost' placeholder='郵便番号' ref='companyPost' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.zip } /></div>
               <div className={ 'c-form-label' } >
                 <label>都道府県</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
               <div className={ 'c-form-selectWrap' }>
-                <select defaultValue={ this.state.prefecture_id } ref='companyPrefecture' className={ 'c-form-select' }>
+                <select defaultValue={ this.state.companyDivision.prefecture_id } ref='companyPrefecture' className={ 'c-form-select' }>
                   { this.props.prefectures.map((prefecture, index) => {
                     const key = 'prefecture-' + index;
                     return (
@@ -198,7 +297,7 @@ export default class CompanyBulk extends React.Component {
                 <label>住所1</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='commpanyAddress1' placeholder='住所' ref='companyAddress1' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input id='commpanyAddress1' placeholder='住所' ref='companyAddress1' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.address1 } /></div>
               <div className={ 'c-form-label' } >
                 <label>自社担当者</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>

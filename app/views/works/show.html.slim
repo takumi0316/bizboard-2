@@ -8,9 +8,9 @@
   span.u-ml-20
     | 受付日:
     span.u-ml-10 = works.find(params[:id]).quote&.created_at.to_s
-  /span.u-ml-20
+  span.u-ml-20
     | 担当者:
-    span.u-ml-10 = works.find(params[:id]).quote.user.name
+    span.u-ml-10 = works.find(params[:id]).quote&.user&.name
   span.u-ml-30
     /= link_to '編集する', edit_quote_path(works.find(params[:id]).quote), class: 'u-td-underline'
   br

@@ -13,10 +13,7 @@ class CompaniesController < ApplicationController
 
   # 取引先一覧
   expose_with_pagination(:companies) {
-    Company
-      .search(params[:name])
-      .all
-      .reverse_order
+    params[:name] ? Company.search(params[:name]).all.reverse_order : Company.search(params[:search]).all.reverse_order
   }
   # 取引先
   expose(:company) { Company.find_or_initialize_by id: params[:id] || params[:company_id] }
@@ -39,7 +36,10 @@ class CompaniesController < ApplicationController
   #
   def index
 
-    add_breadcrumb '取引先一覧'
+    unless request.xhr?
+
+      add_breadcrumb '取引先一覧'
+    end
   end
 
   ##

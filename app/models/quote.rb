@@ -15,6 +15,7 @@
 #  attention                  :integer
 #  pdf_url                    :text(65535)
 #  mf_quote_id                :text(65535)
+#  user_id                    :integer
 #  status                     :integer          default("draft")
 #  quote_number               :string(191)
 #  company_division_client_id :integer
@@ -23,6 +24,7 @@
 #  deliver_at                 :datetime
 #  deliver_type               :integer
 #  deliver_type_note          :text(65535)
+#  division_id                :bigint(8)
 #
 
 class Quote < ApplicationRecord

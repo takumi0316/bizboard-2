@@ -18,6 +18,51 @@
     height: 720px
     margin-top: 30px
     overflow-y: scroll
+  &__candidateCompany
+    width: 825px
+    padding: 10px
+    height: 100px
+    overflow-y: scroll
+    font: bold
+    &__modal
+      position: fixed
+      display: flex
+      top: 158px
+      left: 280px
+      right: 335px
+      bottom: 500px
+      //background-color: rgba(map-get($layoutColors, 'black'), .3)
+      background-color: black
+      z-index: $layerLevel-overlay
+      justify-content: right
+  &__candidateDivisions
+    width: 825px
+    padding: 10px
+    height: 100px
+    overflow-y: scroll
+    font: bold
+    &__modal
+      position: fixed
+      display: flex
+      top: 230px
+      left: 280px
+      right: 335px
+      bottom: 470px
+      //background-color: rgba(map-get($layoutColors, 'black'), .3)
+      background-color: black
+      z-index: $layerLevel-overlay
+      justify-content: right
+  &__list
+    margin-top: 10px
+  &__item
+    display: block
+    cursor: pointer
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 10px
+    &Name
+      font-size: map-get($fontSize, 'small')
+      font-weight: bold
+      color: white
   &__input
     border: solid 1px map-get($layoutColors, 'lightGray')
     outline: none

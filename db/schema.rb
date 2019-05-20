@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_17_063616) do
+ActiveRecord::Schema.define(version: 2019_05_17_102058) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_063616) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "mf_company_id"
+    t.text "free_word"
   end
 
   create_table "company_division_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -95,6 +96,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_063616) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "mf_company_division_id"
+    t.text "free_word"
     t.index ["company_id"], name: "index_company_divisions_on_company_id"
   end
 
@@ -263,9 +265,9 @@ ActiveRecord::Schema.define(version: 2019_05_17_063616) do
     t.integer "binding_work", limit: 1, default: 0
     t.integer "after_process", limit: 1, default: 0
     t.text "note"
+    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", limit: 1, default: 0
     t.text "free_word"
     t.bigint "project_number"
     t.integer "price", default: 0
@@ -373,6 +375,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_063616) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "free_word"
     t.index ["subcontractor_id"], name: "index_subcontractor_divisions_on_subcontractor_id"
   end
 
@@ -382,6 +385,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_063616) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "free_word"
   end
 
   create_table "uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

@@ -9,6 +9,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  mf_company_id :string(191)
+#  free_word     :text(65535)
 #
 
 class Company < ApplicationRecord
@@ -43,6 +44,19 @@ class Company < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
+
+  # フリーワード検索用文字列をセットする
+  before_validation :set_free_word
+
+  ##
+  # フリーワード検索用文字列をセットする
+  # @version 2018/06/10
+  #
+  def set_free_word
+
+    self.free_word = "#{self.name} #{self.kana}"
+  end
 
   ##
   # 名称検索

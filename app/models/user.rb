@@ -39,7 +39,7 @@ class User < ApplicationRecord
   has_secure_password
   # MD5
   include GenerateKey
-  
+
   devise :trackable, :rememberable, :omniauthable, :timeoutable, :confirmable
 
   #----------------------------------------

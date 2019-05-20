@@ -2,15 +2,16 @@
 #
 # Table name: works
 #
-#  id         :bigint(8)        not null, primary key
-#  quote_id   :bigint(8)
-#  price      :integer          default(0)
-#  cost       :integer          default(0)
-#  status     :integer          default("draft")
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  free_word  :text(65535)
-#  notices    :text(65535)
+#  id          :bigint(8)        not null, primary key
+#  quote_id    :bigint(8)
+#  price       :integer          default(0)
+#  cost        :integer          default(0)
+#  status      :integer          default("draft")
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  free_word   :text(65535)
+#  notices     :text(65535)
+#  division_id :bigint(8)
 #
 
 class Work < ApplicationRecord
@@ -66,7 +67,7 @@ class Work < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.quote.client&.company_division&.company&.name} #{self.quote.client&.name} #{self.quote.subject} #{self.status} #{self.quote.deliver_at}"
+    self.free_word = "#{self.quote&.client&.company_division&.company&.name} #{self.quote&.client&.name} #{self.quote&.subject} #{self.status} #{self.quote&.deliver_at}"
   end
 
   ##

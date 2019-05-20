@@ -1,0 +1,11 @@
+json = { status: :success }
+
+json[:companies] = companies.map do |r|
+
+  {
+    name: r.name,
+    divisions: r.divisions,
+  }
+end
+
+json

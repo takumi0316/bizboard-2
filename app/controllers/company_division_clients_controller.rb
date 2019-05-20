@@ -87,7 +87,7 @@ class CompanyDivisionClientsController < ApplicationController
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '担当者情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -102,7 +102,7 @@ class CompanyDivisionClientsController < ApplicationController
 
     redirect_to edit_company_division_client_path(client), flash: {notice: {message: '担当者情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
