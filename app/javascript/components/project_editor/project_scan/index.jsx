@@ -32,6 +32,7 @@ export default class ProjectScan extends React.Component {
     super(props);
 
     this.state = {
+      posting_state: props.project_scan.posting_state || 'stapler',
       back_cut: props.project_scan.back_cut || 'back_cut_unnecessary',
     };
   }
@@ -45,6 +46,7 @@ export default class ProjectScan extends React.Component {
     let result = {
       'project[scan_attributes][print_size]': this.refs.print_size.value,
       'project[scan_attributes][posting_state]': this.refs.posting_state.value,
+      'project[scan_attributes][posting_state_note]': '',
       'project[scan_attributes][draft_split]': this.refs.draft_split.value,
       'project[scan_attributes][draft_restore]': this.refs.draft_restore.value,
       'project[scan_attributes][back_cut]': this.state.back_cut,
@@ -60,8 +62,11 @@ export default class ProjectScan extends React.Component {
     };
 
     if (this.state.back_cut == 'back_cut_necessary') {
-      
       result['project[scan_attributes][back_cut_note]'] = this.refs.back_cut_note.value;
+    }
+
+    if (this.refs.posting_state.value == 'other_state') {
+      result['project[scan_attributes][posting_state_note]'] = this.refs.posting_state_note.value;
     }
 
     return result;
@@ -98,7 +103,7 @@ export default class ProjectScan extends React.Component {
                 <td className='u-fw-bold'>入稿状態</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='posting_state' defaultValue={this.props.project_scan.posting_state}>
+                    <select className='c-form-select' ref='posting_state' defaultValue={this.props.project_scan.posting_state} onChange={(e) => this.setState({posting_state: e.target.value})}>
                       { Object.keys(POSTING_STATES).map((item, index) => {
                         const key = 'posting_state-'+index;
                         return (
@@ -107,6 +112,12 @@ export default class ProjectScan extends React.Component {
                       })}
                     </select>
                   </div>
+
+                  { this.state.posting_state == 'other_state' ?
+
+                    <textarea placeholder='入稿状態を入力してください' className='c-form-textarea u-mt-10' row={5} autoComplete='off' spellCheck='false' type='text' ref='posting_state_note' defaultValue={this.props.project_scan.posting_state_note}></textarea>
+                    : null
+                  }
                 </td>
               </tr>
               <tr>

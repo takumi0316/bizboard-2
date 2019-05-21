@@ -28,8 +28,9 @@ export default class ProjectPrint extends React.Component {
 
     this.state = {
       work_process: props.project_print.work_process || 'work_process_unnecessary',
-      print_work: props.project_print.print_work || 'print_work_unnecessary',
+      print_work: props.project_print.print_work || 'print_work_necessary',
       surface: props.project_print.surface || 'both_side',
+      print_size: props.project_print.print_size || 'original_size',
     };
   }
 
@@ -49,6 +50,7 @@ export default class ProjectPrint extends React.Component {
       'project[print_attributes][work_time]': '',
       'project[print_attributes][color]': '',
       'project[print_attributes][print_size]': '',
+      'project[print_attributes][print_size_note]': '',
       'project[print_attributes][surface]': '',
       'project[print_attributes][open_type]': '',
     };
@@ -65,6 +67,10 @@ export default class ProjectPrint extends React.Component {
       result['project[print_attributes][color]'] = this.refs.color.value;
       result['project[print_attributes][print_size]'] = this.refs.print_size.value;
       result['project[print_attributes][surface]'] = this.state.surface;
+
+      if (this.refs.print_size.value == 'print_size_other') {
+        result['project[print_attributes][print_size_note]'] = this.refs.print_size_note.value;
+      }
 
       if (this.state.surface == 'both_side') {
         result['project[print_attributes][open_type]'] = this.refs.open_type.value;
@@ -218,7 +224,7 @@ export default class ProjectPrint extends React.Component {
                   <td className='u-fw-bold'>サイズ</td>
                   <td>
                     <div className='c-form-selectWrap'>
-                      <select className='c-form-select' ref='print_size' defaultValue={this.props.project_print.print_size}>
+                      <select className='c-form-select' ref='print_size' defaultValue={this.props.project_print.print_size} onChange={(e) => this.setState({print_size: e.target.value})}>
                         { Object.keys(PRINT_SIZES).map((item, index) => {
                           const key = 'print_size-'+index;
                           return (
@@ -227,11 +233,17 @@ export default class ProjectPrint extends React.Component {
                         })}
                       </select>
                     </div>
+
+                    { this.state.print_size == 'print_size_other' ?
+
+                      <textarea placeholder='サイズを入力してください' className='c-form-textarea u-mt-10' row={5} autoComplete='off' spellCheck='false' type='text' ref='print_size_note' defaultValue={this.props.project_print.print_size_note}></textarea>
+                      : null
+                    }
                   </td>
                 </tr>
                 : null
               }
-              
+
               { this.state.print_work == 'print_work_necessary' ?
                 <tr>
                   <td className='u-fw-bold'>面付け</td>

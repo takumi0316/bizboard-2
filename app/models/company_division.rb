@@ -15,6 +15,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  mf_company_division_id :string(191)
+#  free_word              :text(65535)
 #
 
 class CompanyDivision < ApplicationRecord

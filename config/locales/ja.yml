@@ -99,6 +99,7 @@ ja:
         double_door_bind_type: 観音
         gold_letter_bind_type: 金文字
         no_bind_type: なし
+        other_bind_type: その他
       cross_color:
         black_cross: 黒
         white_cross: 白
@@ -141,7 +142,8 @@ ja:
         no_stapler: なし
       hole:
         original_hole: 現行通り
-        hole_necessary: なし
+        hole_unnecessary: なし
+        hole_necessary: あり
         hole_other: その他
       clip:
         clip_unnecessary: なし
@@ -219,6 +221,7 @@ ja:
         bara: バラ
         bind: 製本
         file: ファイル
+        other_state: その他
       draft_split:
         split_available: 可能
         split_unavailable: 不可
@@ -278,6 +281,7 @@ ja:
         bara: バラ
         bind: 製本
         file: ファイル
+        other_state: その他
       draft_split:
         split_available: 可能
         split_unavailable: 不可

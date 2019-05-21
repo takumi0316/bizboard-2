@@ -15,6 +15,7 @@
 #  back_text_note :text(65535)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  note           :text(65535)
 #
 
 class ProjectAfterProcess < ApplicationRecord

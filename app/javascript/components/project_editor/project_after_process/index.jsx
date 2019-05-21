@@ -182,7 +182,7 @@ export default class ProjectAfterProcess extends React.Component {
                     </select>
                   </div>
 
-                  { this.state.bind == 'king_file' || this.state.bind == 'other_file' ?
+                  { this.state.bind == 'king_file' || this.state.bind == 'other_file' || this.state.bind == 'flat_file' ?
                     <div className='u-mt-15'>
                       <textarea placeholder='大きさ等を指定してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='bind_note' defaultValue={this.props.project_after_process.bind_note}></textarea>
                     </div>

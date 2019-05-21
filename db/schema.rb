@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_17_122028) do
+ActiveRecord::Schema.define(version: 2019_05_21_100012) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -142,6 +142,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_122028) do
     t.text "back_text_note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "note"
     t.index ["project_id"], name: "index_project_after_processes_on_project_id"
   end
 
@@ -163,6 +164,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_122028) do
     t.text "gold_letter"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "note"
     t.index ["project_id"], name: "index_project_binding_works_on_project_id"
   end
 
@@ -204,6 +206,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_122028) do
     t.integer "open_type", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "posting_state_note"
     t.index ["project_id"], name: "index_project_copies_on_project_id"
   end
 
@@ -252,6 +255,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_122028) do
     t.integer "edit_file_name", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "posting_state_note"
     t.index ["project_id"], name: "index_project_scans_on_project_id"
   end
 

@@ -48,6 +48,7 @@ export default class ProjectBindingWork extends React.Component {
       'project[project_binding_work_attributes][radio_stitch]': '',
       'project[project_binding_work_attributes][radio_cut]': '',
       'project[project_binding_work_attributes][radio_cut_note]': '',
+      'project[project_binding_work_attributes][note]': '',
     };
 
     if (this.state.bind_type == 'cross_bind_type') {
@@ -79,6 +80,11 @@ export default class ProjectBindingWork extends React.Component {
       result['project[project_binding_work_attributes][radio_stitch]'] =  this.refs.radio_stitch.value;
       result['project[project_binding_work_attributes][radio_cut]'] =  this.refs.radio_cut.value;
       result['project[project_binding_work_attributes][radio_cut_note]'] =  this.refs.radio_cut_note.value;
+    }
+
+    if (this.state.bind_type == 'other_bind_type') {
+
+      result['project[project_binding_work_attributes][note]'] =  this.refs.note.value;
     }
 
     return result;
@@ -146,6 +152,11 @@ export default class ProjectBindingWork extends React.Component {
                       <input name='bind_type' type='radio' defaultChecked={this.state.bind_type == 'no_bind_type'} onChange={() => this.setState({bind_type: 'no_bind_type'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>なし</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='bind_type' type='radio' defaultChecked={this.state.bind_type == 'other_bind_type'} onChange={() => this.setState({bind_type: 'other_bind_type'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>その他</span>
                     </label>
                   </div>
                 </td>
@@ -338,7 +349,25 @@ export default class ProjectBindingWork extends React.Component {
         </div>
         : null 
       }
-      
+
+      { this.state.bind_type == 'other_bind_type' ?
+        <div className='u-mt-30'>
+          <h2 className={Style.ProjectEditor__heading}>その他</h2>
+          <div className='u-mt-30 c-table'>
+            <table>
+              <tbody>
+                <tr>
+                  <td className='u-fw-bold'>備考</td>
+                  <td>
+                    <textarea placeholder='内容を入力してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='note' defaultValue={this.props.project_binding_work.note}></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        : null 
+      }
 
       </div>
     );
