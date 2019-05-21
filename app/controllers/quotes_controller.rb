@@ -96,11 +96,19 @@ class QuotesController < ApplicationController
         http.request(request)
       end
 
-
       uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
       request = Net::HTTP::Post.new(uri)
       request.content_type = "application/json"
       request["Authorization"] = "BEARER #{token}"
+
+      # 品目を整形する
+      items = quote.quote_projects.each_with_object([]) do |r, result|
+        result.push({
+          name: r.project.name,
+          quantity: r.unit,
+          unit_price: r.price,
+        })
+      end
 
       request.body = JSON.dump({
         "quote": {
@@ -111,11 +119,7 @@ class QuotesController < ApplicationController
           "title": quote.subject,
           "note": quote.remarks,
           "memo": quote.memo,
-          "items": [
-            quote.quote_items.pluck(*[:name, :quantity, :unit_price]).map {
-              |tm| [:name, :quantity, :unit_price].zip(tm).to_h
-            }
-          ]
+          "items": items,
         }
       })
 
@@ -152,6 +156,15 @@ class QuotesController < ApplicationController
     request.content_type = "application/json"
     request["Authorization"] = "BEARER #{token}"
 
+    # 品目を整形する
+    items = quote.quote_projects.each_with_object([]) do |r, result|
+      result.push({
+        name: r.project.name,
+        quantity: r.unit,
+        unit_price: r.price,
+      })
+    end
+
     request.body = JSON.dump({
       "quote": {
         "department_id": quote.client.company_division.mf_company_division_id,
@@ -161,11 +174,7 @@ class QuotesController < ApplicationController
         "title": quote.subject,
         "note": quote.remarks,
         "memo": quote.memo,
-        "items": [
-          quote.quote_items.pluck(*[:name, :quantity, :unit_price]).map {
-            |tm| [:name, :quantity, :unit_price].zip(tm).to_h
-          }
-        ]
+        "items": items,
       }
     })
 

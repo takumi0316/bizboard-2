@@ -265,9 +265,9 @@ ActiveRecord::Schema.define(version: 2019_05_17_122028) do
     t.integer "binding_work", limit: 1, default: 0
     t.integer "after_process", limit: 1, default: 0
     t.text "note"
-    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", limit: 1, default: 0
     t.text "free_word"
     t.bigint "project_number"
     t.integer "price", default: 0
