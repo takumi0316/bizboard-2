@@ -41,7 +41,9 @@ export default class QuoteEditor extends React.Component {
       deliver_at: props.quote.deliver_at,
       deliver_type: props.deliver_type || 'seat',
       date: props.quote.date,
-
+      count: 1,
+      cost: 1,
+      project_type: false,
     }
   }
 
@@ -180,10 +182,32 @@ export default class QuoteEditor extends React.Component {
 
     this.setState({
       project: project,
+      project_type: true,
     });
   }
 
+  _changePrice = () => {
 
+    let project = Object.assign({}, this.state.project);
+    project.price = this.refs.projectPrice.value;
+    const count = this.refs.projectCount.value;
+    const cost = project.price * count;
+    this.setState({ project: project, cost: cost });
+  }
+
+  _changeCount = () => {
+
+    const price = this.refs.projectPrice.value;
+    const count = this.refs.projectCount.value;
+    const cost = price * count;
+    this.setState({ count: count, cost: cost });
+  }
+
+  _changeCost = () => {
+
+    const cost = this.refs.projectCost.value;
+    this.setState({ cost: cost });
+  }
   /**
    *  表示処理
    *  @version 2018/06/10
@@ -333,28 +357,15 @@ export default class QuoteEditor extends React.Component {
               </tr>
             </thead>
             <tbody>
-              { this.state.project.length > 0 ?
-
-                <React.Fragment>
-                  { this.state.project.map((p, index) => {
-                    const key = 'project-' + index;
-                    return (
-                      <tr {...{key}}>
-                        <td>{ p.name }</td>
-                        <td>{ p.price }</td>
-                        <td>smaple</td>
-                        <td>sample</td>
-                      </tr>
-                    )
-                  }) }
-                </React.Fragment>
-                :
+              { this.state.project_type ?
                 <tr>
-                  <td><input placeholder='品目' className='c-form-text' type='text' ref='project-name' defaultValue={ this.state.project.name } /></td>
-                  <td><input placeholder='単価' className='c-form-text' type='text' ref='project-price' defaultValue={ this.state.project.price } /></td>
-                  <td><input placeholder='数量' className='c-form-text' type='text' ref='project-count' defaultValue={ 1 } /></td>
-                  <td><input placeholder='価格' className='c-form-text' type='text' ref='project-cost' defaultValue={ '' } /></td>
+                  <td><input placeholder='品目' className='c-form-text' type='text' ref='projectName' defaultValue={ this.state.project.name } /></td>
+                  <td><input placeholder='単価' className='c-form-text' type='text' ref='projectPrice' onBlur={ ::this._changePrice } defaultValue={ this.state.project.price } /></td>
+                  <td><input placeholder='数量' className='c-form-text' type='text' ref='projectCount' onBlur={ ::this._changeCount } defaultValue={ this.state.count } /></td>
+                  <td><input readOnly placeholder='価格' className='c-form-text' type='text' ref='projectCost' onChagne={ ::this._changeCost } value={ this.state.project.price * this.state.count } /></td>
                 </tr>
+                :
+                null
               }
             </tbody>
           </table>
