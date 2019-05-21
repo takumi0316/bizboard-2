@@ -36,6 +36,7 @@ export default class QuoteEditor extends React.Component {
       division: props.division,
       client: props.client,
       projects: [],
+      projects_unit: [1],
       user_id: props.user_id,
       quote_type: props.quote_type || 'contract',
       deliver_at: props.quote.deliver_at,
@@ -44,6 +45,7 @@ export default class QuoteEditor extends React.Component {
       count: 1,
       cost: 1,
       project_type: false,
+      project_map: false,
       discount: props.quote.discount,
       show: false,
     }
@@ -183,8 +185,7 @@ export default class QuoteEditor extends React.Component {
    */
   applyProject(project) {
 
-    console.log(this.state.projects)
-    if (this.state.projects.length < 0) {
+    if (this.state.projects.length == 0) {
 
       this.setState({
         projects: project,
@@ -192,33 +193,67 @@ export default class QuoteEditor extends React.Component {
       });
     } else {
 
-      let stateProject = Object.assign({}, this.state.project);
-      stateProject.push(project);
-      this.setState({ project: stateProject });
+      let array = [];
+      const stateProjects = Object.assign({}, this.state.projects);
+      const argumentProject = project;
+      if (this.state.project_map === true) {
+
+        Object.keys(stateProjects).map((project, index) => {
+
+          array.push(project)
+        })
+        array.push(argumentProject)
+      } else {
+
+        array.push(stateProjects);
+        array.push(argumentProject);
+      }
+      this.setState({ projects: array, project_map: true });
     }
   }
 
-  _changePrice = () => {
+  /**
+   * 数量を変える
+   *
+   */
+  _changePrice = (typeName, mapIndex) => {
 
-    let project = Object.assign({}, this.state.project);
-    project.price = this.refs.projectPrice.value;
-    const count = this.refs.projectCount.value;
-    const cost = project.price * count;
-    this.setState({ project: project, cost: cost });
+    if(typeName === 'notMap') {
+
+      let project = Object.assign({}, this.state.projects);
+      project.price = document.getElementById('projectsPrice0').value;
+      this.setState({ projects: project });
+    } else if(typeName === 'yesMap') {
+
+      const stateProjects = this.state.projects;
+      let array = [];
+      stateProjects.forEach((project, index) => {
+
+        if(mapIndex === index) {
+
+          project.price = document.getElementById('projectsPrice' + mapIndex).value
+          array.push(project);
+        } else {
+
+          array.push(project);
+        }
+      })
+      this.setState({ projects: array });
+    }
+
   }
 
-  _changeCount = () => {
+  /**
+   * 数量を変える
+   *
+   */
+  _changeUnit = (typeName) => {
 
-    const price = this.refs.projectPrice.value;
-    const count = this.refs.projectCount.value;
-    const cost = price * count;
-    this.setState({ count: count, cost: cost });
-  }
+    if(typeName === 'notMap') {
 
-  _changeCost = () => {
-
-    const cost = this.refs.projectCost.value;
-    this.setState({ cost: cost });
+      const count = document.getElementById('projectsUnit0').value;
+      this.setState({ projects_unit: [count] });
+    }
   }
 
   /**
@@ -239,15 +274,59 @@ export default class QuoteEditor extends React.Component {
     this.setState({ show: false});
   }
 
+  componentDidUpdate = () => {
+
+  }
+
+  /**
+   * projectを消して、テーブルをnullにする
+   *
+   */
+  _projectsEmpty = () => {
+
+    if(window.confirm('消す？')) {
+
+      this.setState({ projects: [], project_type: false, projects_unit: [1] });
+    }
+  }
+
+  /**
+   * 指定されたprojectを消す
+   *
+   */
+  _projectsDestroy = (argumentIndex) => {
+
+    const stateProjects = this.state.projects;
+    let array = [];
+    if(window.confirm('消す？')){
+
+      if(Object.keys(stateProjects).length === 1) {
+
+        this.setState({ projects: [], project_type: false, project_map: false});
+      } else {
+
+        Object.keys(stateProjects).map((project, index) => {
+
+          if(argumentIndex != index) {
+
+            array.push(project);
+          }
+        })
+
+        this.setState({ projects: array });
+      }
+    } else {
+
+      alert('消さんかったで')
+    }
+  }
 
   /**
    *  表示処理
    *  @version 2018/06/10
    */
   render() {
-
     const total_price = this.state.discount * gon.consumption_tax;
-
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
@@ -373,6 +452,7 @@ export default class QuoteEditor extends React.Component {
                 <th>単価</th>
                 <th>数量</th>
                 <th>価格</th>
+                <th>消します</th>
               </tr>
             </thead>
             <tbody>
@@ -380,17 +460,30 @@ export default class QuoteEditor extends React.Component {
                 <React.Fragment>
                   { this.state.project_type ?
                     <React.Fragment>
-                      { this.state.projects.map((project, index) => {
-                        const key = 'project-' + index;
-                        return(
-                          <tr {...{key}}>
-                            <td><input placeholder='品目' className='c-form-text' type='text' ref='projectName' defaultValue={ project.name } /></td>
-                            <td><input placeholder='単価' className='c-form-text' type='text' ref='projectPrice' onBlur={ ::this._changePrice } defaultValue={ project.price } /></td>
-                            <td><input placeholder='数量' className='c-form-text' type='text' ref='projectCount' onBlur={ ::this._changeCount } defaultValue={ '1' } /></td>
-                            <td><input readOnly placeholder='価格' className='c-form-text' type='text' ref='projectCost' onChagne={ ::this._changeCost } value={ project.price * 1 } /></td>
-                          </tr>
-                        )
-                      }) }
+                      { this.state.project_map ?
+                         <React.Fragment>
+                          { this.state.projects.map((project, index) => {
+                            const key = 'project-' + index;
+                            return(
+                              <tr {...{key}}>
+                                <td><input placeholder='品目' className='c-form-text' type='text' id={ 'projectsName' + index } defaultValue={ project.name } /></td>
+                                <td><input placeholder='単価' className='c-form-text' type='text' id={ 'projectsPrice' + index } defaultValue={ project.price } onChange={ e => this._changePrice('yesMap', index) } /></td>
+                                <td><input placeholder='数量' className='c-form-text' type='text' id={ 'projectsUnit' + index } defaultValue={ 1 } /></td>
+                                <td><input readOnly placeholder='価格' className='c-form-text' type='text' id={'projectsCost' + index } value={ project.price * 1 } /></td>
+                                <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectsDestroy(index) }>−</button></td>
+                              </tr>
+                            )
+                          }) }
+                        </React.Fragment>
+                        :
+                        <tr>
+                          <td><input placeholder='品目' className={ 'c-form-text' } type='text' id={ 'projectsName0' } defaultValue={ this.state.projects.name } /></td>
+                          <td><input placeholder='単価' className={ 'c-form-text' } type='text' id={ 'projectsPrice0' } defaultValue={ this.state.projects.price } onChange={ e => this._changePrice('notMap') }/></td>
+                          <td><input placeholder='数量' className={ 'c-form-text' } type='text' id={ 'projectsUnit0' } defaultValue={ this.state.projects_unit[0] } onChange={ e => this._changeUnit('notMap') } /></td>
+                          <td><input readOnly placeholder='価格' className={ 'c-form-text' } type='text' id={ 'projectsCost0' } value={  this.state.projects.price * this.state.projects_unit[0] }/></td>
+                          <td><button className={ 'c-btnMain2-primaryA' } onClick={ ::this._projectsEmpty }>−</button></td>
+                        </tr>
+                      }
                     </React.Fragment>
                     :
                     null
@@ -398,15 +491,15 @@ export default class QuoteEditor extends React.Component {
                 </React.Fragment>
                 :
                 <React.Fragment>
-                  { console.log(this.props.quote) }
                   {this.props.quote.map((project, index) => {
                     const key = 'quote-' + index;
                     return (
-                      <tr>
-                        <td><input placeholder='品目' className='c-form-text' type='text' ref='projectName' defaultValue={ project.name } /></td>
-                        <td><input placeholder='単価' className='c-form-text' type='text' ref='projectPrice' onBlur={ ::this._changePrice } defaultValue={ project.price } /></td>
-                        <td><input placeholder='数量' className='c-form-text' type='text' ref='projectCount' onBlur={ ::this._changeCount } defaultValue={ '1' } /></td>
-                        <td><input readOnly placeholder='価格' className='c-form-text' type='text' ref='projectCost' onChagne={ ::this._changeCost } value={ project.price * 1 } /></td>
+                      <tr {...{key}}>
+                        <td><input placeholder='品目' className='c-form-text' type='text' id={ 'projectsName' + index } defaultValue={ project.name } /></td>
+                        <td><input placeholder='単価' className='c-form-text' type='text' id={ 'projectsPrice' + index } defaultValue={ project.price } /></td>
+                        <td><input placeholder='数量' className='c-form-text' type='text' id={ 'projectsUnit' + index } defaultValue={ 1 } /></td>
+                        <td><input readOnly placeholder='価格' className='c-form-text' type='text' id={ 'projectsCost' + index } value={ project.price * 1 } /></td>
+                        <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectsDestroy(index) }>−</button></td>
                       </tr>
                     )
                   }) }
