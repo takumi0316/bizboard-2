@@ -182,7 +182,7 @@ class QuotesController < ApplicationController
   def quote_params
 
     params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :mf_quote_id, :user_id, :status, :quote_number,
-      :quote_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :division_id,
+      :quote_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :division_id, :discount,
       quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
   end
 

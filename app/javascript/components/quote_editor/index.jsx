@@ -44,6 +44,8 @@ export default class QuoteEditor extends React.Component {
       count: 1,
       cost: 1,
       project_type: false,
+      discount: props.quote.discount,
+      show: false,
     }
   }
 
@@ -119,6 +121,7 @@ export default class QuoteEditor extends React.Component {
       'quote[memo]': this.refs.memo.value,
       'quote[price]': this.refs.price.value,
       'quote[user_id]': this.refs.user_id.value,
+      'quote[discount]': this.refs.discount.value,
     };
 
     // 納品方法
@@ -208,11 +211,33 @@ export default class QuoteEditor extends React.Component {
     const cost = this.refs.projectCost.value;
     this.setState({ cost: cost });
   }
+
+  /**
+   *  モーダルを表示する
+   *  @version 2018/06/10
+   */
+  discount_from_open() {
+
+    this.setState({ show: true });
+  }
+
+  /**
+   *  モーダルを表示する
+   *  @version 2018/06/10
+   */
+  discount_from_close() {
+
+    this.setState({ show: false});
+  }
+
+
   /**
    *  表示処理
    *  @version 2018/06/10
    */
   render() {
+
+    const total_price = this.state.discount * gon.consumption_tax;
 
     return (
       <div className={Style.QuoteEditor}>
@@ -375,10 +400,36 @@ export default class QuoteEditor extends React.Component {
 
           <table>
             <tbody>
+
+              <tr>
+                <td className='u-fw-bold'>値引き
+                </td>
+                <td>
+                  <div className='u-mt-15'>
+                    <label className='c-form-radioLabel'>
+                      <input name='discount_from_button' type='radio' onChange={::this.discount_from_close} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>値引きなし</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='discount_from_button' type='radio' onChange={::this.discount_from_open} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>値引きあり</span>
+                    </label>
+                  </div>
+                  <div className='u-mt-15'>
+                    { this.state.show ?
+                      <textarea placeholder='-200 (※ 半角のマイナスを必ず付けてください)' className='c-form-textarea' onChange={ e  => {this.setState({discount: e.target.value})}} type='text' ref='discount' defaultValue={this.props.quote.discount}></textarea>
+                      : null
+                    }
+                  </div>
+                </td>
+              </tr>
+
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
-                  <textarea placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={this.props.quote.price}></textarea>
+                  <textarea placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={total_price}></textarea>
                 </td>
               </tr>
 
