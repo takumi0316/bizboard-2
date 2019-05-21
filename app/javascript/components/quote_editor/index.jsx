@@ -304,22 +304,22 @@ export default class QuoteEditor extends React.Component {
                 <td>
                   <div className='u-mt-15'>
                     <label className='c-form-radioLabel'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.props.quote.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>席まで配達</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.props.quote.deliver_type == 'location'} onChange={() => this.setState({deliver_type: 'location'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'location'} onChange={() => this.setState({deliver_type: 'location'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>指定場所に配達</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.props.quote.deliver_type == 'pickup'} onChange={() => this.setState({deliver_type: 'pickup'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'pickup'} onChange={() => this.setState({deliver_type: 'pickup'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>引取り</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.props.quote.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>その他</span>
                     </label>
@@ -435,16 +435,15 @@ export default class QuoteEditor extends React.Component {
                       <input name='discount_from_button' type='radio' onChange={::this.discount_from_open} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>値引きあり</span>
-                   </label>
-                 </div>
-                 <div className='u-mt-15'>
-                   { this.state.show ?
-                     <textarea placeholder='-200 (※ 半角のマイナスを必ず付けてください)' className='c-form-textarea' onChange={ e  => {this.setState({discount: e.target.value})}} type='text' ref='discount' defaultValue={this.props.quote.discount}></textarea>
-                     :
-                     null
-                   }
-                </div>
-               </td>
+                    </label>
+                  </div>
+                  <div className='u-mt-15'>
+                    { this.state.show ?
+                      <textarea placeholder='2000' className='c-form-textarea' onChange={ e  => {this.setState({discount: e.target.value})}} type='text' ref='discount' defaultValue={this.props.quote.discount}></textarea>
+                      : null
+                    }
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
