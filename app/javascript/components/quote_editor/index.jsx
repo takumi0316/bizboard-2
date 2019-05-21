@@ -35,7 +35,7 @@ export default class QuoteEditor extends React.Component {
       company: props.company,
       division: props.division,
       client: props.client,
-      project: [],
+      projects: [],
       user_id: props.user_id,
       quote_type: props.quote_type || 'contract',
       deliver_at: props.quote.deliver_at,
@@ -183,10 +183,19 @@ export default class QuoteEditor extends React.Component {
    */
   applyProject(project) {
 
-    this.setState({
-      project: project,
-      project_type: true,
-    });
+    console.log(this.state.projects)
+    if (this.state.projects.length < 0) {
+
+      this.setState({
+        projects: project,
+        project_type: true,
+      });
+    } else {
+
+      let stateProject = Object.assign({}, this.state.project);
+      stateProject.push(project);
+      this.setState({ project: stateProject });
+    }
   }
 
   _changePrice = () => {
@@ -240,22 +249,17 @@ export default class QuoteEditor extends React.Component {
     const total_price = this.state.discount * gon.consumption_tax;
 
     return (
-      <div className={Style.QuoteEditor}>
-
+      <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
-
         <input type='hidden' name='authenticity_token' value={'test'} />
-
         <div className='c-form-label u-mt-30'>
           <label htmlFor='quote_name'>見積書タイトル</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <input placeholder='見積書タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='subject' defaultValue={this.props.quote.subject} />
-
         <div className='c-form-label u-mt-30'>
           <label htmlFor='quote_company_division_client_id'>お客様情報</label>
         </div>
-
         { this.state.client ?
           <div className='c-attention'>
             <div>会社名: {this.state.company.name}</div>
@@ -266,20 +270,14 @@ export default class QuoteEditor extends React.Component {
           </div>
           : null
         }
-
         <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.quote.company_division_client_id} />
-
         <input type='hidden' ref='user_id' value={this.state.client ? this.state.client.user_id: this.props.quote.user_id} />
-
         <div className='u-mt-15'>
           <ClientSearch applyClient={::this.applyClient} users={ this.props.users } prefectures={ this.props.prefectures } />
         </div>
-
         <div className='u-mt-30 c-table'>
-
           <table>
             <tbody>
-
               <tr>
                 <td className='u-fw-bold'>見積もり発行日</td>
                 <td>
@@ -287,7 +285,6 @@ export default class QuoteEditor extends React.Component {
                   <DatetimePicker apply={::this.setDate} defaultDatetime={this.props.quote.date} />
                 </td>
               </tr>
-
               <tr>
                 <td className='u-fw-bold'>見積もり有効期間</td>
                 <td>
@@ -295,7 +292,6 @@ export default class QuoteEditor extends React.Component {
                   <DatetimePicker apply={::this.setExpiration} defaultDatetime={this.props.quote.expiration} />
                 </td>
               </tr>
-
               <tr>
                 <td className='u-fw-bold'>納期</td>
                 <td>
@@ -303,7 +299,6 @@ export default class QuoteEditor extends React.Component {
                   <DatetimePicker apply={::this.setDeliverAt} defaultDatetime={this.props.quote.deliver_at} />
                 </td>
               </tr>
-
               <tr>
                 <td className='u-fw-bold'>納品方法</td>
                 <td>
@@ -329,7 +324,6 @@ export default class QuoteEditor extends React.Component {
                       <span>その他</span>
                     </label>
                   </div>
-
                   <div className='u-mt-15'>
                     { this.state.deliver_type == 'location' || this.state.deliver_type == 'other' ?
                       <textarea placeholder='納品方法を記入てください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='deliver_type_note' defaultValue={this.props.quote.deliver_type_note}></textarea>
@@ -338,7 +332,6 @@ export default class QuoteEditor extends React.Component {
                   </div>
                 </td>
               </tr>
-
               <tr>
                 <td className='u-fw-bold'>受注経路</td>
                 <td>
@@ -354,7 +347,6 @@ export default class QuoteEditor extends React.Component {
                   </div>
                 </td>
               </tr>
-
               <tr>
                 <td className='u-fw-bold'>受注区分</td>
                 <td>
@@ -372,6 +364,8 @@ export default class QuoteEditor extends React.Component {
               </tr>
             </tbody>
           </table>
+        </div>
+        <div className={ 'c-table u-mt-30' }>
           <table>
             <thead>
               <tr>
@@ -382,25 +376,51 @@ export default class QuoteEditor extends React.Component {
               </tr>
             </thead>
             <tbody>
-              { this.state.project_type ?
-                <tr>
-                  <td><input placeholder='品目' className='c-form-text' type='text' ref='projectName' defaultValue={ this.state.project.name } /></td>
-                  <td><input placeholder='単価' className='c-form-text' type='text' ref='projectPrice' onBlur={ ::this._changePrice } defaultValue={ this.state.project.price } /></td>
-                  <td><input placeholder='数量' className='c-form-text' type='text' ref='projectCount' onBlur={ ::this._changeCount } defaultValue={ this.state.count } /></td>
-                  <td><input readOnly placeholder='価格' className='c-form-text' type='text' ref='projectCost' onChagne={ ::this._changeCost } value={ this.state.project.price * this.state.count } /></td>
-                </tr>
+              { this.props.quote.id === null ?
+                <React.Fragment>
+                  { this.state.project_type ?
+                    <React.Fragment>
+                      { this.state.projects.map((project, index) => {
+                        const key = 'project-' + index;
+                        return(
+                          <tr {...{key}}>
+                            <td><input placeholder='品目' className='c-form-text' type='text' ref='projectName' defaultValue={ project.name } /></td>
+                            <td><input placeholder='単価' className='c-form-text' type='text' ref='projectPrice' onBlur={ ::this._changePrice } defaultValue={ project.price } /></td>
+                            <td><input placeholder='数量' className='c-form-text' type='text' ref='projectCount' onBlur={ ::this._changeCount } defaultValue={ '1' } /></td>
+                            <td><input readOnly placeholder='価格' className='c-form-text' type='text' ref='projectCost' onChagne={ ::this._changeCost } value={ project.price * 1 } /></td>
+                          </tr>
+                        )
+                      }) }
+                    </React.Fragment>
+                    :
+                    null
+                  }
+                </React.Fragment>
                 :
-                null
+                <React.Fragment>
+                  { console.log(this.props.quote) }
+                  {this.props.quote.map((project, index) => {
+                    const key = 'quote-' + index;
+                    return (
+                      <tr>
+                        <td><input placeholder='品目' className='c-form-text' type='text' ref='projectName' defaultValue={ project.name } /></td>
+                        <td><input placeholder='単価' className='c-form-text' type='text' ref='projectPrice' onBlur={ ::this._changePrice } defaultValue={ project.price } /></td>
+                        <td><input placeholder='数量' className='c-form-text' type='text' ref='projectCount' onBlur={ ::this._changeCount } defaultValue={ '1' } /></td>
+                        <td><input readOnly placeholder='価格' className='c-form-text' type='text' ref='projectCost' onChagne={ ::this._changeCost } value={ project.price * 1 } /></td>
+                      </tr>
+                    )
+                  }) }
+                </React.Fragment>
               }
             </tbody>
           </table>
-          <div className='u-mt-15'>
-            <ProjectSearch applyProject={::this.applyProject} prefectures={ this.props.prefectures } />
-          </div>
-
+        </div>
+        <div className='u-mt-15'>
+          <ProjectSearch applyProject={::this.applyProject} prefectures={ this.props.prefectures } />
+        </div>
+        <div className={ 'c-table u-mt-10' }>
           <table>
             <tbody>
-
               <tr>
                 <td className='u-fw-bold'>値引き
                 </td>
@@ -415,24 +435,23 @@ export default class QuoteEditor extends React.Component {
                       <input name='discount_from_button' type='radio' onChange={::this.discount_from_open} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>値引きあり</span>
-                    </label>
-                  </div>
-                  <div className='u-mt-15'>
-                    { this.state.show ?
-                      <textarea placeholder='-200 (※ 半角のマイナスを必ず付けてください)' className='c-form-textarea' onChange={ e  => {this.setState({discount: e.target.value})}} type='text' ref='discount' defaultValue={this.props.quote.discount}></textarea>
-                      : null
-                    }
-                  </div>
-                </td>
+                   </label>
+                 </div>
+                 <div className='u-mt-15'>
+                   { this.state.show ?
+                     <textarea placeholder='-200 (※ 半角のマイナスを必ず付けてください)' className='c-form-textarea' onChange={ e  => {this.setState({discount: e.target.value})}} type='text' ref='discount' defaultValue={this.props.quote.discount}></textarea>
+                     :
+                     null
+                   }
+                </div>
+               </td>
               </tr>
-
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
                   <textarea placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={total_price}></textarea>
                 </td>
               </tr>
-
               <tr>
                 <td className='u-fw-bold'>備考 ※見積もりに記載されます</td>
                 <td>
@@ -448,9 +467,7 @@ export default class QuoteEditor extends React.Component {
               </tr>
             </tbody>
           </table>
-
         </div>
-
         <div className='c-overlay-submit'>
           <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>{this.props.quote.id ? '更新する' : '作成する'}</div>
         </div>
