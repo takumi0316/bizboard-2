@@ -194,7 +194,7 @@ export default class CompanyBulk extends React.Component {
    */
   _closeCompany = () => {
 
-    setTimeout(() => { this.setState({ companies: []}) }, 5000);
+    setTimeout(() => { this.setState({ companies: []}) }, 500);
   }
 
   /**
@@ -239,7 +239,7 @@ export default class CompanyBulk extends React.Component {
    */
   _closeDivision = () => {
 
-    setTimeout(() => { this.setState({ division_type: false }) }, 5000);
+    setTimeout(() => { this.setState({ division_type: false }) }, 500);
   }
 
   /**

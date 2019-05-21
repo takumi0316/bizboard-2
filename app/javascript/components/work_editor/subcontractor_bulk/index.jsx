@@ -188,7 +188,7 @@ export default class SubcontractorBulk extends React.Component {
 
   _closeSubcontractor = () => {
 
-    setTimeout(() => { this.setState({ subcontractors: []}) }, 5000);
+    setTimeout(() => { this.setState({ subcontractors: []}) }, 500);
   }
 
   _openSubcontractor = () => {
@@ -212,7 +212,7 @@ export default class SubcontractorBulk extends React.Component {
 
   _closeDivision = () => {
 
-    setTimeout(() => { this.setState({ division_type: false }) }, 5000);
+    setTimeout(() => { this.setState({ division_type: false }) }, 500);
   }
 
   /**
