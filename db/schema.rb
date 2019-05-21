@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_17_102058) do
+ActiveRecord::Schema.define(version: 2019_05_17_122028) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -322,6 +322,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_102058) do
     t.integer "deliver_type"
     t.text "deliver_type_note"
     t.bigint "division_id"
+    t.integer "discount"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end
 

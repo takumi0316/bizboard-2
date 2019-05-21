@@ -283,8 +283,8 @@ export default class SubcontractorBulk extends React.Component {
                 <label>都道府県</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div className={ 'c-form-selectWrap' }>
-                <select defaultValue={ this.state.subcontractorDivision.prefecture_id } ref='companyPrefecture' className={ 'c-form-select' }>
+              <div>
+                <select defaultValue={ this.state.subcontractorDivision.prefecture_id } ref='companyPrefecture' className={ 'c-form-select__bulk-jsx' }>
                   { this.props.prefectures.map((prefecture, index) => {
                     const key = 'prefecture-' + index;
                     return (
@@ -303,7 +303,7 @@ export default class SubcontractorBulk extends React.Component {
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
               <div>
-                <select defaultValue={ this.state.user_id } ref='currentClientName' className={ 'c-form-select' }>
+                <select defaultValue={ this.state.user_id } ref='currentClientName' className={ 'c-form-select__bulk-jsx' }>
                   { this.props.users.map((user, index) => {
                     const key = 'user-' + index;
                     return (

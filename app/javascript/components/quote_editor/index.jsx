@@ -31,13 +31,11 @@ export default class QuoteEditor extends React.Component {
 
     super(props);
 
-    console.log('quote', props.quote);
-
     this.state = {
       company: props.company,
       division: props.division,
       client: props.client,
-      project: props.project,
+      project: [],
       user_id: props.user_id,
       quote_type: props.quote_type || 'contract',
       deliver_at: props.quote.deliver_at,
@@ -136,7 +134,6 @@ export default class QuoteEditor extends React.Component {
       return false;
     }
 
-    console.log('field', field);
 
     // 記事内容を送信
     request
@@ -168,7 +165,6 @@ export default class QuoteEditor extends React.Component {
    */
   applyClient(client) {
 
-    console.log('applyClient', client);
     this.setState({
       client: client,
       company: client.company,
@@ -182,7 +178,6 @@ export default class QuoteEditor extends React.Component {
    */
   applyProject(project) {
 
-    console.log('applyProject', project);
     this.setState({
       project: project,
     });
@@ -194,9 +189,6 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
-
-    const { quote } = this.props;
-    const items = ['あああ', 'いいい', 'ううう', 'えええ'];
 
     return (
       <div className={Style.QuoteEditor}>
@@ -329,37 +321,43 @@ export default class QuoteEditor extends React.Component {
                   </div>
                 </td>
               </tr>
-
             </tbody>
           </table>
-
           <table>
             <thead>
               <tr>
-                <th>
-                  品目
-                </th>
-                <th>
-                  単価
-                </th>
-                <th>
-                  数量
-                </th>
-                <th>
-                  価格
-                </th>
+                <th>品目</th>
+                <th>単価</th>
+                <th>数量</th>
+                <th>価格</th>
               </tr>
             </thead>
             <tbody>
-              { items.map(d => {
-                return <tr><td><input placeholder='品目' className='c-form-text' type='text' defaultValue={d} /></td>
-                <td><input placeholder='品目' className='c-form-text' type='text' defaultValue={d} /></td>
-                <td><input placeholder='品目' className='c-form-text' type='text' defaultValue={d} /></td>
-                <td><input placeholder='品目' className='c-form-text' type='text' defaultValue={d} /></td></tr>
-              }) }
+              { this.state.project.length > 0 ?
+
+                <React.Fragment>
+                  { this.state.project.map((p, index) => {
+                    const key = 'project-' + index;
+                    return (
+                      <tr {...{key}}>
+                        <td>{ p.name }</td>
+                        <td>{ p.price }</td>
+                        <td>smaple</td>
+                        <td>sample</td>
+                      </tr>
+                    )
+                  }) }
+                </React.Fragment>
+                :
+                <tr>
+                  <td><input placeholder='品目' className='c-form-text' type='text' ref='project-name' defaultValue={ this.state.project.name } /></td>
+                  <td><input placeholder='単価' className='c-form-text' type='text' ref='project-price' defaultValue={ this.state.project.price } /></td>
+                  <td><input placeholder='数量' className='c-form-text' type='text' ref='project-count' defaultValue={ 1 } /></td>
+                  <td><input placeholder='価格' className='c-form-text' type='text' ref='project-cost' defaultValue={ '' } /></td>
+                </tr>
+              }
             </tbody>
           </table>
-
           <div className='u-mt-15'>
             <ProjectSearch applyProject={::this.applyProject} prefectures={ this.props.prefectures } />
           </div>
