@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 案件一覧
+  # 品目一覧
   expose_with_pagination(:projects) {
     Project
       .search(params[:free_word])
@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
       .reverse_order
   }
 
-  # 案件
+  # 品目
   expose(:project) { Project.find_or_initialize_by id: params[:id] || params[:project_id] }
 
   #----------------------------------------
@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '案件一覧'
+    add_breadcrumb '品目一覧'
   end
 
   ##
@@ -49,8 +49,8 @@ class ProjectsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '案件一覧', path: projects_path
-    add_breadcrumb '案件作成'
+    add_breadcrumb '品目一覧', path: projects_path
+    add_breadcrumb '品目作成'
   end
 
   ##
@@ -59,8 +59,8 @@ class ProjectsController < ApplicationController
   #
   def edit
 
-    add_breadcrumb '案件一覧', path: projects_path
-    add_breadcrumb '案件編集'
+    add_breadcrumb '品目一覧', path: projects_path
+    add_breadcrumb '品目編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
@@ -71,10 +71,10 @@ class ProjectsController < ApplicationController
   #
   def update
 
-    # 案件情報更新
+    # 品目情報更新
     project.update! project_params
 
-    project.histories.create!(note: "#{current_user.name}さんが案件を編集しました。")
+    project.histories.create!(note: "#{current_user.name}さんが品目を編集しました。")
 
     render json: { status: :success, project: project }
   rescue => e
@@ -88,10 +88,10 @@ class ProjectsController < ApplicationController
   #
   def create
 
-    # 案件情報更新
+    # 品目情報更新
     project.update! project_params
 
-    project.histories.create!(note: "#{current_user.name}さんが案件を作成しました。")
+    project.histories.create!(note: "#{current_user.name}さんが品目を作成しました。")
 
     render json: { status: :success, project: project }
   rescue => e

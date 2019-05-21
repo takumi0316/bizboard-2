@@ -54,7 +54,7 @@ export default class ProjectEditor extends React.Component {
     let message = [];
 
     if (this.refs.name.value == '') {
-      message.push('案件名を入力してください。');
+      message.push('品目名を入力してください。');
     }
 
     return message;
@@ -149,15 +149,15 @@ export default class ProjectEditor extends React.Component {
 
           // 新規作成時は編集画面はリダイレクト
           if (!this.props.project.id) {
-            alert('案件情報を作成しました');
+            alert('品目情報を作成しました');
             location.href = `${response.body.project.id}/edit`;
           } else {
-            alert('案件情報を更新しました');
+            alert('品目情報を更新しました');
           }
 
         } else {
 
-          alert('案件情報の保存に失敗しました。');
+          alert('品目情報の保存に失敗しました。');
         }
       });
   }
@@ -186,15 +186,15 @@ export default class ProjectEditor extends React.Component {
     return (
       <div className={Style.ProjectEditor}>
 
-        <h1 className='l-dashboard__heading'>案件作成</h1>
+        <h1 className='l-dashboard__heading'>品目作成</h1>
 
         <input type='hidden' name='authenticity_token' value={'test'} />
 
         <div className='c-form-label u-mt-30'>
-          <label htmlFor='project_name'>案件名</label>
+          <label htmlFor='project_name'>品目名</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
-        <input placeholder='案件名' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='name' defaultValue={this.props.project.name} />
+        <input placeholder='品目名' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='name' defaultValue={this.props.project.name} />
 
         <div className='c-form-label u-mt-30'>
           <label htmlFor='project_name'>単価</label>
@@ -217,7 +217,7 @@ export default class ProjectEditor extends React.Component {
 
         <div className='u-mt-30'>
           <div className='c-form-label'>
-            <label>案件種別</label>
+            <label>品目種別</label>
           </div>
           <label className='c-form-radioLabel'>
             <input name='project_category' type='radio' defaultChecked={this.state.project_category == 'project_print'} onChange={() => this.setState({project_category: 'project_print'})} className='c-form-radio' />
