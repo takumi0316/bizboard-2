@@ -69,6 +69,8 @@ class ApplicationController < ActionController::Base
 
       ActiveStorage::Current.host = request.base_url
       request.variant = :sp if request.user_agent =~ /iPhone|Android/
+
+      gon.consumption_tax = SiteConfig.consumption_tax
     end
 
     ##
