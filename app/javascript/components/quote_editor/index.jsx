@@ -325,6 +325,7 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
+    console.log(this.state.projects)
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
@@ -456,7 +457,7 @@ export default class QuoteEditor extends React.Component {
             <tbody>
               { this.props.quote.id === null ?
                 <React.Fragment>
-                  { this.state.projects === undefined ?
+                  { this.state.projects.length < 0 ?
                     null
                     :
                     <React.Fragment>
