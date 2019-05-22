@@ -59,6 +59,7 @@ export default class ProjectScan extends React.Component {
       'project[scan_attributes][bookmark]': this.refs.bookmark.value,
       'project[scan_attributes][edit_filename]': this.refs.edit_filename.value,
       'project[scan_attributes][back_cut_note]': '',
+      'project[scan_attributes][price]': this.refs.price.value,
     };
 
     if (this.state.back_cut == 'back_cut_necessary') {
@@ -301,6 +302,13 @@ export default class ProjectScan extends React.Component {
                       })}
                     </select>
                   </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>金額</td>
+                <td>
+                <input className='c-form-text' ref='price' type='text' defaultValue={this.props.project_scan.price || 0} />
                 </td>
               </tr>
 

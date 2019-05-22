@@ -49,6 +49,7 @@ export default class ProjectBindingWork extends React.Component {
       'project[project_binding_work_attributes][radio_cut]': '',
       'project[project_binding_work_attributes][radio_cut_note]': '',
       'project[project_binding_work_attributes][note]': '',
+      'project[project_binding_work_attributes][price]': this.refs.price.value,
     };
 
     if (this.state.bind_type == 'cross_bind_type') {
@@ -366,8 +367,23 @@ export default class ProjectBindingWork extends React.Component {
             </table>
           </div>
         </div>
-        : null 
+        : null
       }
+
+      <div className=''>
+        <div className='c-table'>
+          <table>
+            <tbody>
+              <tr>
+                <td className='u-fw-bold'>製本仕様代金</td>
+                <td>
+                <input className='c-form-text' ref='price' type='text' defaultValue={this.props.project_binding_work.price || 0} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       </div>
     );

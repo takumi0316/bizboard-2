@@ -33,12 +33,11 @@ export default class ProjectEditor extends React.Component {
 
     super(props);
 
-    console.log('props', props);
-
     this.state = {
       company: props.company,
       division: props.division,
       client: props.client,
+      price: props.project.price || 0,
       project_category: props.project.project_category || 'project_print',
       after_process: props.project.after_process || 'after_process_unnecessary',
       binding_work: props.project.binding_work || 'binding_works_unnecessary',
@@ -71,6 +70,9 @@ export default class ProjectEditor extends React.Component {
     // 新規登録時、更新時とでmethodを分ける
     const request = this.props.project.id ? Request.put(this.props.action) : Request.post(this.props.action);
 
+    // 品目価格
+    let price = 0;
+
     let field = {
       'project[company_division_client_id]': this.refs.company_division_client_id.value,
       'project[name]': this.refs.name.value,
@@ -91,6 +93,8 @@ export default class ProjectEditor extends React.Component {
 
       field = Object.assign(field, this.refs.project_print.getDetail());
 
+      price += Number(field['project[print_attributes][price]']);
+
     // 名刺案件
     } else if (this.state.project_category == 'project_card') {
 
@@ -99,15 +103,21 @@ export default class ProjectEditor extends React.Component {
 
       field = Object.assign(field, this.refs.project_card.getDetail());
 
+      price += Number(field['project[card_attributes][price]']);
+
     // コピー案件
     } else if (this.state.project_category == 'project_copy') {
 
       field = Object.assign(field, this.refs.project_copy.getDetail());
 
+      price += Number(field['project[copy_attributes][price]']);
+
     // 製本のみ案件
     } else if (this.state.project_category == 'project_bind') {
 
       field = Object.assign(field, this.refs.project_bind.getDetail());
+
+      price += Number(field['project[bind_attributes][price]']);
 
     // スキャン案件
     } else if (this.state.project_category == 'project_scan') {
@@ -116,6 +126,8 @@ export default class ProjectEditor extends React.Component {
       field['project[binding_work]'] = 'binding_works_unnecessary';
 
       field = Object.assign(field, this.refs.project_scan.getDetail());
+
+      price += Number(field['project[scan_attributes][price]']);
     }
 
     // 後加工
@@ -123,12 +135,16 @@ export default class ProjectEditor extends React.Component {
 
       messages = messages.concat(this.refs.project_after_process.validation());
       field = Object.assign(field, this.refs.project_after_process.getDetail());
+
+      price += Number(field['project[project_after_process_attributes][price]']);
     }
 
     // 製本作業
     if (field['project[binding_work]'] == 'binding_works_necessary') {
 
       field = Object.assign(field, this.refs.project_binding_work.getDetail());
+
+      price += Number(field['project[project_binding_work_attributes][price]']);
     }
 
     // エラーが存在する場合
@@ -138,8 +154,12 @@ export default class ProjectEditor extends React.Component {
       return false;
     }
 
-    // 記事内容を送信
-    request
+    // 価格の適用
+    field['project[price]'] = price;
+    this.setState({ price: price }, () => {
+
+      // 記事内容を送信
+      request
       .field(field)
       .set('X-Requested-With', 'XMLHttpRequest')
       .setCsrfToken()
@@ -160,6 +180,7 @@ export default class ProjectEditor extends React.Component {
           alert('品目情報の保存に失敗しました。');
         }
       });
+    });
   }
 
   /**
@@ -188,8 +209,6 @@ export default class ProjectEditor extends React.Component {
 
         <h1 className='l-dashboard__heading'>品目作成</h1>
 
-        <input type='hidden' name='authenticity_token' value={'test'} />
-
         <div className='c-form-label u-mt-30'>
           <label htmlFor='project_name'>品目名</label>
           <span className='c-form__required u-ml-10'>必須</span>
@@ -197,10 +216,9 @@ export default class ProjectEditor extends React.Component {
         <input placeholder='品目名' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='name' defaultValue={this.props.project.name} />
 
         <div className='c-form-label u-mt-30'>
-          <label htmlFor='project_name'>単価</label>
-          <span className='c-form__required u-ml-10'>必須</span>
+          <label htmlFor='project_name'>品目単価 <span className='u-fs-small u-fc-thinBlack'>※更新時に価格が自動計算されます</span></label>
         </div>
-        <input placeholder='100' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' defaultValue={this.props.project.price} />
+        <input placeholder='※更新時に価格が自動計算されます' readOnly={true} className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' value={this.state.price} />
 
         { this.state.client ?
           <div className='c-attention'>
@@ -213,7 +231,7 @@ export default class ProjectEditor extends React.Component {
           : null
         }
 
-        <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.project.company_division_client_id} />
+        <input type='hidden' ref='company_division_client_id' defaultValue={this.state.client ? this.state.client.id : this.props.project.company_division_client_id} />
 
         <div className='u-mt-30'>
           <div className='c-form-label'>

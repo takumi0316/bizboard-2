@@ -53,6 +53,7 @@ export default class ProjectPrint extends React.Component {
       'project[print_attributes][print_size_note]': '',
       'project[print_attributes][surface]': '',
       'project[print_attributes][open_type]': '',
+      'project[print_attributes][price]': this.refs.price.value,
     };
 
     if (this.state.work_process == 'work_process_necessary') {
@@ -281,6 +282,13 @@ export default class ProjectPrint extends React.Component {
                 </tr>
                 : null
               }
+
+              <tr>
+                <td className='u-fw-bold'>金額</td>
+                <td>
+                <input className='c-form-text' ref='price' type='text' defaultValue={this.props.project_print.price || 0} />
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

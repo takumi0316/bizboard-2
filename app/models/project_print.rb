@@ -18,6 +18,7 @@
 #  open_type       :integer          default("side_open")
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  price           :integer
 #
 
 class ProjectPrint < ApplicationRecord
