@@ -15,6 +15,7 @@
 #  emboss     :integer          default("emboss_necessary")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  price      :integer
 #
 
 class ProjectCard < ApplicationRecord

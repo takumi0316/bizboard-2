@@ -48,6 +48,7 @@ export default class ProjectCopy extends React.Component {
       'project[copy_attributes][print_size_note]': '',
       'project[copy_attributes][surface]': this.state.surface,
       'project[copy_attributes][open_type]': '',
+      'project[copy_attributes][price]': this.refs.price.value,
     };
 
     if (this.state.surface == 'both_side') {
@@ -208,6 +209,13 @@ export default class ProjectCopy extends React.Component {
                 </tr>
                 : null
               }
+
+              <tr>
+                <td className='u-fw-bold'>金額</td>
+                <td>
+                <input className='c-form-text' ref='price' type='text' defaultValue={this.props.project_copy.price || 0} />
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

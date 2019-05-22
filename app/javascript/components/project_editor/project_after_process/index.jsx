@@ -70,10 +70,11 @@ export default class ProjectAfterProcess extends React.Component {
       'project[project_after_process_attributes][hole_note]': '',
       'project[project_after_process_attributes][bind_note]': '',
       'project[project_after_process_attributes][back_text_note]': '',
+      'project[project_after_process_attributes][price]': this.refs.price.value,
     };
 
     if (this.state.hole == 'hole_other') {
-      
+
       result['project[project_after_process_attributes][hole_note]'] = this.refs.hole_note.value;
     }
 
@@ -210,6 +211,13 @@ export default class ProjectAfterProcess extends React.Component {
                     </div>
                     : null
                   }
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>後加工代金</td>
+                <td>
+                <input className='c-form-text' ref='price' type='text' defaultValue={this.props.project_after_process.price || 0} />
                 </td>
               </tr>
             </tbody>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_21_100012) do
+ActiveRecord::Schema.define(version: 2019_05_22_041852) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_100012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "note"
+    t.integer "price"
     t.index ["project_id"], name: "index_project_after_processes_on_project_id"
   end
 
@@ -165,6 +166,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_100012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "note"
+    t.integer "price"
     t.index ["project_id"], name: "index_project_binding_works_on_project_id"
   end
 
@@ -175,6 +177,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_100012) do
     t.text "print_size_note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "price"
     t.index ["project_id"], name: "index_project_binds_on_project_id"
   end
 
@@ -191,6 +194,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_100012) do
     t.integer "emboss", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "price"
     t.index ["project_id"], name: "index_project_cards_on_project_id"
   end
 
@@ -207,6 +211,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_100012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "posting_state_note"
+    t.integer "price"
     t.index ["project_id"], name: "index_project_copies_on_project_id"
   end
 
@@ -234,6 +239,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_100012) do
     t.integer "open_type", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "price"
     t.index ["project_id"], name: "index_project_prints_on_project_id"
   end
 
@@ -256,6 +262,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_100012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "posting_state_note"
+    t.integer "price"
     t.index ["project_id"], name: "index_project_scans_on_project_id"
   end
 

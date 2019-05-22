@@ -46,6 +46,7 @@ export default class ProjectCard extends React.Component {
       'project[card_attributes][emboss]': this.refs.emboss.value,
       'project[card_attributes][work_type]': '',
       'project[card_attributes][work_time]': '',
+      'project[card_attributes][price]': this.refs.price.value,
     };
 
     if (this.state.card_type == 'special') {
@@ -200,6 +201,12 @@ export default class ProjectCard extends React.Component {
                       })}
                     </select>
                   </div>
+                </td>
+              </tr>
+              <tr>
+                <td className='u-fw-bold'>金額</td>
+                <td>
+                <input className='c-form-text' ref='price' type='text' defaultValue={this.props.project_card.price || 0} />
                 </td>
               </tr>
             </tbody>

@@ -15,6 +15,7 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  posting_state_note :text(65535)
+#  price              :integer
 #
 
 class ProjectCopy < ApplicationRecord

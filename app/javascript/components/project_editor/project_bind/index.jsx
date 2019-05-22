@@ -32,6 +32,7 @@ export default class ProjectBind extends React.Component {
     return {
       'project[bind_attributes][print_size]': this.refs.print_size.value,
       'project[bind_attributes][posting_state]': this.refs.posting_state.value,
+      'project[bind_attributes][price]': this.refs.price.value,
     };
   }
 
@@ -75,6 +76,13 @@ export default class ProjectBind extends React.Component {
                       })}
                     </select>
                   </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>金額</td>
+                <td>
+                <input className='c-form-text' ref='price' type='text' defaultValue={this.props.project_bind.price || 0} />
                 </td>
               </tr>
             </tbody>

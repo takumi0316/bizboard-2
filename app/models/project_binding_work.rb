@@ -21,6 +21,7 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  note                :text(65535)
+#  price               :integer
 #
 
 class ProjectBindingWork < ApplicationRecord
