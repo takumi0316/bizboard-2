@@ -165,6 +165,8 @@ class QuotesController < ApplicationController
       })
     end
 
+    discount = quote.discount
+
     request.body = JSON.dump({
       "quote": {
         "department_id": quote.client.company_division.mf_company_division_id,

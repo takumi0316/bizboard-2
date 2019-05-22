@@ -27,12 +27,10 @@
     &__modal
       position: fixed
       display: flex
-      top: 158px
-      left: 280px
-      right: 335px
-      bottom: 500px
+      max-width: 600px
+      min-width: 600px
       //background-color: rgba(map-get($layoutColors, 'black'), .3)
-      background-color: black
+      background-color: lightGray
       z-index: $layerLevel-overlay
       justify-content: right
   &__candidateDivisions
@@ -57,12 +55,12 @@
   &__item
     display: block
     cursor: pointer
-    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    border-bottom: solid 1px map-get($layoutColors, 'black')
     padding: 10px
     &Name
       font-size: map-get($fontSize, 'small')
       font-weight: bold
-      color: white
+      color: black
   &__input
     border: solid 1px map-get($layoutColors, 'lightGray')
     outline: none
