@@ -456,7 +456,7 @@ export default class QuoteEditor extends React.Component {
             <tbody>
               { this.props.quote.id === null ?
                 <React.Fragment>
-                  { this.state.projects.length < 0 ?
+                  { Object.keys(this.state.projects).length < 0 ?
                     null
                     :
                     <React.Fragment>
