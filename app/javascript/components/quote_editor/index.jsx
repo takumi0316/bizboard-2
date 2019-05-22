@@ -243,13 +243,19 @@ export default class QuoteEditor extends React.Component {
   _projectDestroy = (passIndex) => {
 
     let pushProjects = [];
+    let field = {};
     let totalCost = 0;
     this.state.projects.map((project, index) => {
 
       if ( passIndex !== index ) {
 
-        pushProjects.push(project);
-        totalCost = totalCost + (Number(project.price) * Number(document.getElementById('projectUnit' + index).value));
+        field = {
+          'id': document.getElementById('projectId' + index).value,
+          'name': document.getElementById('projectName' + index).value,
+          'price': Number(document.getElementById('projectPrice' + index).value),
+        }
+        totalCost = totalCost + (Number(document.getElementById('projectPrice' + index).value) * Number(document.getElementById('projectUnit' + index).value));
+        pushProjects.push(field);
       }
     })
     this.state.discount !== null ? totalCost = totalCost - this.state.discount : null
@@ -458,8 +464,8 @@ export default class QuoteEditor extends React.Component {
 
                         const key = 'project-' + index;
                         return (
-                          <tr {...{key}}>
-                            <td><input className={ 'c-form-text' } type='text' id={ 'projectName' + index } defaultValue={ project.name } /></td>
+                          <tr key={ key }>
+                            <td><input className={ 'c-form-text' } type='text' id={ 'projectName' + index } defaultValue={ project.name } /><input type='hidden' id={ 'projectId' + index } defaultValue={ project.id } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectPrice' + index } defaultValue={ project.price } onChange={ e => this._changePrice(index) } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectUnit' + index } defaultValue={ this.state.project_unit[index] } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectTotalPrice' + index } value={ project.price * this.state.project_unit[index] } /></td>
