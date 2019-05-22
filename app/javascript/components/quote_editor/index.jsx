@@ -456,10 +456,6 @@ export default class QuoteEditor extends React.Component {
             <tbody>
               { this.props.quote.id === null ?
                 <React.Fragment>
-                  { Object.keys(this.state.projects).length < 0 ?
-                    null
-                    :
-                    <React.Fragment>
                       { this.state.projects.map((project, index) => {
 
                         const key = 'project-' + index;
@@ -473,8 +469,6 @@ export default class QuoteEditor extends React.Component {
                           </tr>
                         )
                       }) }
-                    </React.Fragment>
-                  }
                 </React.Fragment>
                 :
                 <React.Fragment>
