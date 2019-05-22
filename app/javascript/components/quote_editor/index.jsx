@@ -457,7 +457,7 @@ export default class QuoteEditor extends React.Component {
             <tbody>
               { this.props.quote.id === null ?
                 <React.Fragment>
-                  { this.state.projects.length < 0 ?
+                  { this.state.projects === undefined ?
                     null
                     :
                     <React.Fragment>
@@ -479,7 +479,7 @@ export default class QuoteEditor extends React.Component {
                 </React.Fragment>
                 :
                 <React.Fragment>
-                  { this.state.projects.length < 0 ?
+                  { this.state.projects === undefined ?
                     null
                     :
                     <React.Fragment>
