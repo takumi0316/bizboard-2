@@ -33,7 +33,7 @@ export default class QuoteEditor extends React.Component {
 
     this.state = {
       quotes: props.quote,
-      projects: props.projects.length > 0 ? props.quote.projects : [],
+      projects: Object.keys(props.projects).length > 0 ? props.quote.projects : [],
       project_unit: {},
       company: props.company,
       division: props.division,
