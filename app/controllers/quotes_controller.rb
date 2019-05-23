@@ -82,6 +82,110 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを更新しました'}}
+  rescue => e
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+  end
+
+  ##
+  # 新規作成
+  # @version 2018/06/10
+  #
+  def create
+
+    # 情報更新
+    quote.update! quote_params.merge(division_id: current_user.division_id)
+
+    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
+  rescue => e
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+  end
+
+  ##
+  # 削除
+  # @version 2018/06/10
+  #
+  def destroy
+
+    quote.destroy
+
+    token = current_user.mf_access_token
+    delete_id = quote.mf_quote_id
+    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
+    request = Net::HTTP::Delete.new(uri)
+    request["Authorization"] = "BEARER #{token}"
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+  rescue => e
+
+    flash[:warning] = { message: e.message }
+  ensure
+    redirect_to action: :index
+  end
+
+  def api_post
+
+    token = current_user.mf_access_token
+    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
+    request = Net::HTTP::Post.new(uri)
+    request.content_type = "application/json"
+    request["Authorization"] = "BEARER #{token}"
+
+    # 品目を整形する
+    items = quote.quote_projects.each_with_object([]) do |r, result|
+      result.push({
+        name: r.project.name,
+        quantity: r.unit,
+        unit_price: r.price,
+      })
+    end
+
+    discount = quote.discount
+
+    request.body = JSON.dump({
+      "quote": {
+        "department_id": quote.client.company_division.mf_company_division_id,
+        "quote_number": quote.quote_number,
+        "quote_date": quote.date.strftime('%Y-%m-%d'),
+        "expired_date": quote.expiration.strftime('%Y-%m-%d'),
+        "title": quote.subject,
+        "note": quote.remarks,
+        "memo": quote.memo,
+        "items": items,
+      }
+    })
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    data = JSON.parse(response.body)
+
+    quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
+    quote.update_columns(:mf_quote_id => data['data']['id'])
+
+    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFに見積もりを作成しました'}}
+  rescue => e
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+
+  end
+
+  def api_update
+
     token = current_user.mf_access_token
       delete_id = quote.mf_quote_id
       uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
@@ -135,98 +239,11 @@ class QuotesController < ApplicationController
       quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
       quote.update_columns(:mf_quote_id => data['data']['id'])
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを更新しました'}}
-  rescue => e
+      redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFの見積もりを更新しました'}}
+    rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-  end
+      redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
 
-  ##
-  # 新規作成
-  # @version 2018/06/10
-  #
-  def create
-
-    # 情報更新
-    quote.update! quote_params.merge(division_id: current_user.division_id)
-
-    token = current_user.mf_access_token
-    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
-    request = Net::HTTP::Post.new(uri)
-    request.content_type = "application/json"
-    request["Authorization"] = "BEARER #{token}"
-
-    # 品目を整形する
-    items = quote.quote_projects.each_with_object([]) do |r, result|
-      result.push({
-        name: r.project.name,
-        quantity: r.unit,
-        unit_price: r.price,
-      })
-    end
-
-    discount = quote.discount
-
-    request.body = JSON.dump({
-      "quote": {
-        "department_id": quote.client.company_division.mf_company_division_id,
-        "quote_number": quote.quote_number,
-        "quote_date": quote.date.strftime('%Y-%m-%d'),
-        "expired_date": quote.expiration.strftime('%Y-%m-%d'),
-        "title": quote.subject,
-        "note": quote.remarks,
-        "memo": quote.memo,
-        "items": items,
-      }
-    })
-
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
-
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
-    end
-
-    data = JSON.parse(response.body)
-
-    quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
-    quote.update_columns(:mf_quote_id => data['data']['id'])
-
-
-    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
-  rescue => e
-
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-  end
-
-  ##
-  # 削除
-  # @version 2018/06/10
-  #
-  def destroy
-
-    quote.destroy
-
-    token = current_user.mf_access_token
-    delete_id = quote.mf_quote_id
-    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
-    request = Net::HTTP::Delete.new(uri)
-    request["Authorization"] = "BEARER #{token}"
-
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
-
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
-    end
-
-  rescue => e
-
-    flash[:warning] = { message: e.message }
-  ensure
-    redirect_to action: :index
   end
 
   def pdf_dl
@@ -246,6 +263,11 @@ class QuotesController < ApplicationController
     end
 
     send_data response.body
+
+    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もり書をダウンロードしました'}}
+  rescue => e
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
 
   end
 

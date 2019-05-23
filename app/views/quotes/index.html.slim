@@ -35,15 +35,20 @@
           td = r.deliver_at.to_s
           td = r.date
           td
-            - if r.pdf_url.present?
-              = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
-            -else
-              p MFに見積もり書がないですよ
-          td
             - if r.draft?
               = link_to '作業書を作成する', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
             - else
               = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
+          td
+            - if r.pdf_url.present?
+              = link_to 'MFの見積書を更新', quotes_api_update_path(id: r), class: 'c-btnSub-standard'
+            - else
+              = link_to 'MFに見積書を作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
+          td
+            - if r.pdf_url.present?
+              = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
+            -else
+              p MFに見積もり書がないですよ
           td
             - if r.invoicing? && r.invoice.present?
               = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
