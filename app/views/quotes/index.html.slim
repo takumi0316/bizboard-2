@@ -19,12 +19,13 @@
         th ステータス
         th 件名
         th 納期
-        th 見積書発行日
-        th PDFダウンロード
+        th 案件作成日
         th 作業書
+        th 見積もり作成・更新
+        th PDFダウンロード
         th 請求書
         th 活動履歴
-        th colspan=3
+        th colspan=4
     tbody
       - quotes.each do |r|
         tr
@@ -41,7 +42,7 @@
               = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
           td
             - if r.pdf_url.present?
-              = link_to 'MFの見積書を更新', quotes_api_update_path(id: r), class: 'c-btnSub-standard'
+              = link_to 'MFの見積書を更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
             - else
               = link_to 'MFに見積書を作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
           td
@@ -58,6 +59,7 @@
               | 未発行
           td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
           td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
+          td = link_to '複製', quotes_copy_path(id: r), class: 'c-btnMain-standard c-btn-orange'
           td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

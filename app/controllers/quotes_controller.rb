@@ -177,7 +177,7 @@ class QuotesController < ApplicationController
     quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
     quote.update_columns(:mf_quote_id => data['data']['id'])
 
-    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFに見積もりを作成しました'}}
+    redirect_to quotes_path, flash: {notice: {message: 'MFに見積もりを作成しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -236,10 +236,12 @@ class QuotesController < ApplicationController
         http.request(request)
       end
 
+      data = JSON.parse(response.body)
+
       quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
       quote.update_columns(:mf_quote_id => data['data']['id'])
 
-      redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFの見積もりを更新しました'}}
+      redirect_to quotes_path, flash: {notice: {message: 'MFの見積もりを更新しました'}}
     rescue => e
 
       redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -263,12 +265,11 @@ class QuotesController < ApplicationController
     end
 
     send_data response.body
+  end
 
-    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もり書をダウンロードしました'}}
-  rescue => e
+  def copy
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-
+    redirect_to quote_path
   end
 
 
