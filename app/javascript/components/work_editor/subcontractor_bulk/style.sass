@@ -24,32 +24,56 @@
     height: 100px
     overflow-y: scroll
     font: bold
+    //スクロールバーの設定
+    &::-webkit-scrollbar
+      width: 10px
+    &::-webkit-scrollbar-track
+      background: map-get($layoutColors, 'gray')
+      border-radius: 10px
+    &::-webkit-scrollbar-thumb
+      background: map-get($layoutColors, 'vivid')
+      border-radius: 10px
     &__modal
       position: fixed
       display: flex
       max-width: 600px
       min-width: 600px
       //background-color: rgba(map-get($layoutColors, 'black'), .3)
-      background-color: lightGray
+      background-color: map-get($layoutColors, 'white')
       z-index: $layerLevel-overlay
       justify-content: right
+      filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.2))
+      padding: 5px 5px 5px 0
   &__candidateDivisions
     width: 825px
     padding: 10px
     height: 100px
     overflow-y: scroll
     font: bold
+    //スクロールバーの設定
+    &::-webkit-scrollbar
+      width: 10px
+    &::-webkit-scrollbar-track
+      background: map-get($layoutColors, 'gray')
+      border-radius: 10px
+    &::-webkit-scrollbar-thumb
+      background: map-get($layoutColors, 'vivid')
+      border-radius: 10px
     &__modal
       position: fixed
       display: flex
-      top: 230px
+      max-width: 600px
+      min-width: 600px
+      //top: 230px
       left: 280px
       right: 335px
-      bottom: 470px
+      //bottom: 200px
       //background-color: rgba(map-get($layoutColors, 'black'), .3)
-      background-color: black
+      background-color: map-get($layoutColors, 'white')
       z-index: $layerLevel-overlay
       justify-content: right
+      filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.2))
+      padding: 5px 5px 5px 0
   &__list
     margin-top: 10px
   &__item
