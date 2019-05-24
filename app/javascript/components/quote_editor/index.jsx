@@ -209,6 +209,7 @@ export default class QuoteEditor extends React.Component {
    */
   applyProject(project) {
 
+    console.log(project)
     // StateのProjectオブジェクトをコピー
     let copyProjects = Object.assign([], this.state.projects);
     // applyProjectに代入された引数を追加
@@ -242,24 +243,17 @@ export default class QuoteEditor extends React.Component {
    */
   _projectDestroy = (passIndex) => {
 
-    let pushProjects = [];
-    let field = {};
+    let copyProjects = Object.assign([], this.state.projects);
+    delete copyProjects[passIndex];
     let totalCost = 0;
-    this.state.projects.map((project, index) => {
+    let copyProjectUnit = Object.assign({}, this.state.project_unit);
+    delete copyProjectUnit[passIndex];
+    copyProjects.map((project, index) => {
 
-      if ( passIndex !== index ) {
-
-        field = {
-          'id': document.getElementById('projectId' + index).value,
-          'name': document.getElementById('projectName' + index).value,
-          'price': Number(document.getElementById('projectPrice' + index).value),
-        }
-        totalCost = totalCost + (Number(document.getElementById('projectPrice' + index).value) * Number(document.getElementById('projectUnit' + index).value));
-        pushProjects.push(field);
-      }
+      totalCost = totalCost + (Number(document.getElementById('projectPrice' + index).value) * Number(document.getElementById('projectUnit' + index).value));
     })
     this.state.discount !== null ? totalCost = totalCost - this.state.discount : null
-    this.setState({ projects: pushProjects, total_cost: totalCost });
+    this.setState({ projects: copyProjects, total_cost: totalCost, project_unit: copyProjectUnit });
   }
 
   /**
@@ -325,7 +319,6 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
-    console.log(this.state.projects)
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
