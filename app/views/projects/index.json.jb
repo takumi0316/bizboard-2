@@ -8,7 +8,7 @@ json[:projects] = projects.map do |r|
     specifications = []
     after_process = {'bool': false, 'name': '後加工仕様', 'price': 0, 'project_id': 0, 'id': 0, }
     binding_work = {'bool': false, 'name': '製本仕様', 'price': 0, 'project_id': 0, 'id': 0, }
-    print = {'bool': true, 'name': 'プリント仕様', 'price': r.print.price.nil? ? 0 : r.print.price}
+    print = {'bool': true, 'name': 'プリント仕様', 'price': r.print.price.nil? ? 0 : r.print.price, 'project_id': r.print.project_id, 'id': r.print.id}
     count = []
     if r.after_process == 'after_process_necessary'
 
@@ -54,6 +54,8 @@ json[:projects] = projects.map do |r|
     specifications = []
     after_process = {'bool': false, 'name': '後加工仕様', 'price': 0, 'project_id': 0, 'id': 0, }
     binding_work = {'bool': false, 'name': '製本仕様', 'price': 0, 'project_id': 0, 'id': 0, }
+    copy = {'bool': true, 'name': '複写仕様', 'price': r.copy.price.nil? ? 0 : r.copy.price, 'project_id': r.copy.project_id, 'id': r.copy.id}
+
     count = []
     if r.after_process == 'after_process_necessary'
 
@@ -87,6 +89,7 @@ json[:projects] = projects.map do |r|
 
     specifications.push(after_process)
     specifications.push(binding_work)
+    specifications.push(copy)
     {
       id: r.id,
       name: r.name,
