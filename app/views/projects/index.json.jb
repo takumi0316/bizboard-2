@@ -40,13 +40,14 @@ json[:projects] = projects.map do |r|
       end
     end
 
-    specifications.push(after_process)
-    specifications.push(binding_work)
+    after_process['bool'] == true ? specifications.push(after_process) : nil
+    binding_work['bool'] == true ? specifications.push(binding_work) : nil
     specifications.push(print)
     {
       id: r.id,
       name: r.name,
       price: r.price,
+      type: true,
       specifications: specifications,
     }
   when 'project_copy'
@@ -77,6 +78,7 @@ json[:projects] = projects.map do |r|
           after_process['price'] = r.project_after_process.price.nil? ? 0 : r.project_after_process.price
           after_process['project_id'] = r.project_after_process.project_id
           after_process['id'] = r.project_after_process.id
+          after_process['none'] = 'none'
         when 'binding_works'
 
           binding_work['bool'] = true
@@ -87,13 +89,14 @@ json[:projects] = projects.map do |r|
       end
     end
 
-    specifications.push(after_process)
-    specifications.push(binding_work)
+    after_process['bool'] == true ? specifications.push(after_process) : nil
+    binding_work['bool'] == true ? specifications.push(binding_work) : nil
     specifications.push(copy)
     {
       id: r.id,
       name: r.name,
       price: r.price,
+      type: true,
       specifications: specifications,
     }
     when 'project_card'
@@ -105,6 +108,7 @@ json[:projects] = projects.map do |r|
       id: r.id,
       name: r.name,
       price: r.price,
+      type: true,
       specifications: specifications,
     }
 
@@ -117,11 +121,14 @@ json[:projects] = projects.map do |r|
       id: r.id,
       name: r.name,
       price: r.price,
+      type: true,
       specifications: specifications,
     }
   when 'project_bind'
 
     specifications = []
+    type = false
+    other = {'bool': false}
     after_process = {'bool': false, 'name': '後加工仕様', 'price': 0, 'project_id': 0, 'id': 0, }
     binding_work = {'bool': false, 'name': '製本仕様', 'price': 0, 'project_id': 0, 'id': 0, }
     count = []
@@ -155,12 +162,14 @@ json[:projects] = projects.map do |r|
       end
     end
 
-    specifications.push(after_process)
-    specifications.push(binding_work)
+    after_process['bool'] == true ? specifications.push(after_process) : nil
+    binding_work['bool'] == true ? specifications.push(binding_work) : nil
+    specifications.length == 0 ? specifications.push(other) : type = true
     {
       id: r.id,
       name: r.name,
       price: r.price,
+      type: type,
       specifications: specifications,
     }
   when 'project_other'
@@ -173,6 +182,7 @@ json[:projects] = projects.map do |r|
       id: r.id,
       name: r.name,
       price: r.price,
+      type: false,
       specifications: specifications,
     }
   end
