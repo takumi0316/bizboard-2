@@ -8,6 +8,6 @@ class AddPriceColumToProjects < ActiveRecord::Migration[5.2]
     add_column :project_copies, :price, :integer
     add_column :project_prints, :price, :integer
     add_column :project_scans, :price, :integer
-    
+
   end
 end

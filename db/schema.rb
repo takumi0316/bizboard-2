@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_22_041852) do
+ActiveRecord::Schema.define(version: 2019_05_24_082313) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -111,38 +111,6 @@ ActiveRecord::Schema.define(version: 2019_05_22_041852) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "estimate_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "estimate_id"
-    t.bigint "item_id"
-    t.integer "cost", comment: "原価"
-    t.integer "gross_profit", comment: "粗利"
-    t.text "detail", comment: "詳細"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["estimate_id"], name: "index_estimate_items_on_estimate_id"
-    t.index ["item_id"], name: "index_estimate_items_on_item_id"
-  end
-
-  create_table "estimates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "project_id"
-    t.string "estimat_number", comment: "見積もり番号"
-    t.date "date", comment: "発行日"
-    t.date "expiration", comment: "有効期限"
-    t.string "subject", comment: "件名"
-    t.string "item", comment: "品目"
-    t.integer "unit_price", comment: "単価"
-    t.integer "quantity", comment: "数量"
-    t.integer "cost", comment: "原価"
-    t.integer "gross_profit", comment: "粗利"
-    t.text "detail", comment: "詳細"
-    t.text "remarks", comment: "備考"
-    t.string "tag", comment: "タグ"
-    t.text "memo", comment: "メモ"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_estimates_on_project_id"
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -338,6 +306,8 @@ ActiveRecord::Schema.define(version: 2019_05_22_041852) do
     t.integer "unit", limit: 1, default: 10
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.integer "unit_price"
     t.index ["project_id"], name: "index_quote_projects_on_project_id"
     t.index ["quote_id"], name: "index_quote_projects_on_quote_id"
   end
