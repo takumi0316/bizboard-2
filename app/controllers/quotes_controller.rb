@@ -100,7 +100,6 @@ class QuotesController < ApplicationController
     if params[:id] == 'null'
 
       Quote.create!(date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
-      binding.pry
       params[:specifications].each do |specification|
 
         parse_json = JSON.parse(specification)
@@ -117,7 +116,6 @@ class QuotesController < ApplicationController
         puts "#{specification}"
         findQuoteProject = QuoteProject.find_or_initialize_by(id: parse_json['projectSpecificationId'])
         puts "sinderude"
-        binding.pry
         if findQuoteProject.id == nil
 
           findQuoteProject.quote_id = params[:id]
