@@ -70,7 +70,7 @@ class Quote < ApplicationRecord
   belongs_to :division, optional: true
 
   has_many :quote_projects, dependent: :destroy
-  has_many :projects, through: :quote_projects
+  #has_many :projects, through: :quote_projects
 
   has_many :quote_items
   accepts_nested_attributes_for :quote_items
@@ -108,7 +108,7 @@ class Quote < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.subject} #{self.projects.map(&:name).join(' ')}"
+    self.free_word = "#{self.subject}"
   end
 
   ##

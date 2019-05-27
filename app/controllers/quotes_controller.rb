@@ -89,18 +89,49 @@ class QuotesController < ApplicationController
   end
 
   ##
-  # 新規作成
+  # 新規作成 / 更新
   # @version 2018/06/10
   #
   def create
 
     # 情報更新
-    quote.update! quote_params.merge(division_id: current_user.division_id)
+    # quote.update! quote_params.merge(division_id: current_user.division_id)
 
-    redirect_to fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを作成しました'}}
+    if params[:id] == 'null'
+
+      Quote.create!(date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
+      binding.pry
+      params[:specifications].each do |specification|
+
+        parse_json = JSON.parse(specification)
+        Quote.last.quote_projects.create!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecficationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'].to_i)
+      end
+      render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
+    else
+
+      findQuote = Quote.find(params[:id])
+      findQuote.update!(date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
+      params[:specifications].each do |specification|
+
+        parse_json = JSON.parse(specification)
+        puts "#{specification}"
+        findQuoteProject = QuoteProject.find_or_initialize_by(id: parse_json['projectSpecificationId'])
+        puts "sinderude"
+        binding.pry
+        if findQuoteProject.id == nil
+
+          findQuoteProject.quote_id = params[:id]
+          findQuoteProject.save!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecificationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'])
+        else
+
+          findQuoteProject.update!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecficationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'].to_i)
+        end
+      end
+      render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
+    end
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    render json: { status: :error }
   end
 
   ##

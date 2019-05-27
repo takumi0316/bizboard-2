@@ -100,14 +100,43 @@ export default class QuoteEditor extends React.Component {
    *  登録処理
    *  @version 2018/06/10
    */
-  onSubmit() {
+  onSubmit = () => {
+
+    let arrayRails = [];
+    let field = {};
+    let quoteProjectsCount = Object.keys(this.state.quote_projects).length;
+    let quoteProjects = Object.assign([], this.state.quote_projects);
+    if (quoteProjectsCount === 0) {
+
+      alert('品目を選択してください！！！！！！！！！！！')
+      return
+    }
 
     let messages = this.validation();
 
-    // 新規登録時、更新時とでmethodを分ける
-    const request = this.props.quote.id ? Request.put(this.props.action) : Request.post(this.props.action);
+    // エラーが存在する場合
+    if (messages.length > 0) {
 
-    let field = {
+      alert(messages.join('\n'));
+      return false;
+    }
+
+    // 新規登録時、更新時とでmethodを分ける
+    //const request = this.props.quote.id ? Request.put(this.props.action) : Request.post(this.props.action);
+
+    for (let i = 0; i < quoteProjectsCount; i++) {
+
+      // 品目を連想配列に入れる
+      arrayRails.push(JSON.stringify({
+        'projectSpecificationId': quoteProjects[i].id === null ? 'null' : Number(quoteProjects[i].id),
+        'projectSpecificationName': document.getElementById('projectSpecificationName' + i).value,
+        'projectSpecificationUnitPrice': Number(document.getElementById('projectSpecificationUnitPrice' + i).value),
+        'projectSpecificationUnit': Number(document.getElementById('projectSpecificationUnit' + i).value),
+        'projectSpecificationPrice': Number(document.getElementById('projectSpecificationPrice' + i).value),
+      }));
+    }
+    field = {
+      'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
       'quote[company_division_client_id]': this.refs.company_division_client_id.value,
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
@@ -118,9 +147,10 @@ export default class QuoteEditor extends React.Component {
       'quote[deliver_type]': this.state.deliver_type,
       'quote[remarks]': this.refs.remarks.value,
       'quote[memo]': this.refs.memo.value,
-      'quote[price]': this.refs.price.value,
       'quote[user_id]': this.refs.user_id.value,
-      'quote[discount]': this.refs.discount.value,
+      'quote[discount]': this.state.discount === null ? 0 : this.state.discount,
+      'quote[total_cost]': this.refs.total_cost.value,
+      'specifications[]': arrayRails,
     };
 
     // 納品方法
@@ -131,31 +161,28 @@ export default class QuoteEditor extends React.Component {
       field['quote[deliver_type_note]'] = this.refs.deliver_type_note.value;
     }
 
-    // エラーが存在する場合
-    if (messages.length > 0) {
-
-      alert(messages.join('\n'));
-      return false;
-    }
-
-
+    // quote-url
+    let url = '/quotes';
     // 記事内容を送信
-    request
+    Request
+      .post(url)
       .field(field)
       .set('X-Requested-With', 'XMLHttpRequest')
       .setCsrfToken()
-      .end((error, response) => {
-
-        if (response.body.status == 'success' && response.body.quote.id) {
-
-          // 新規作成時は編集画面はリダイレクト
+      .end((err, res) => {
+        if (  !err && res.body.status == 'success'  ) {
           if (!this.props.quote.id) {
-            alert('見積り情報を作成しました');
-            location.href = `${response.body.quote.id}/edit`;
-          } else {
-            alert('見積り情報を更新しました');
-          }
 
+            alert('見積り情報を作成しました');
+            console.log(res.body.quote)
+            console.log(res.body.quote_projects)
+            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
+          } else {
+
+            alert('見積り情報を更新しました');
+            console.log('quote_projects: ', res.body.quote_projects)
+            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
+          }
         } else {
 
           alert('見積り情報の保存に失敗しました。');
@@ -232,15 +259,45 @@ export default class QuoteEditor extends React.Component {
    */
   _projectDestroy = (passIndex) => {
 
-    let copyProjects = Object.assign([], this.state.quote_projects);
-    delete copyProjects[passIndex];
-    let totalCost = 0;
-    copyProjects.map((project, index) => {
+    console.log(this.state.quote_projects[passIndex])
+    if ( this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null ) {
 
-      totalCost = totalCost + Number(project.price);
-    })
-    this.state.discount !== null ? totalCost = Number(totalCost) - Number(this.state.discount) : null
-    this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+      let url = '/quote_projects/' + this.state.quote_projects[passIndex].id;
+      let field = { 'quote_id': this.state.quote.id };
+      Request
+      .del(url)
+      .field(field)
+      .set('X-Requested-With', 'XMLHttpRequest')
+      .setCsrfToken()
+      .end((err, res) => {
+        if ( !err && res.body.status === 'success' ) {
+
+          let totalCost = 0;
+          res.body.quote_projects.map((project, index) => {
+
+            totalCost = totalCost + Number(project.price);
+          })
+          this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects, total_cost: totalCost });
+        } else {
+
+          alert('正常に削除できませんでした')
+        }
+      });
+    } else {
+
+      let copyProjects = [];
+      let totalCost = 0;
+      this.state.quote_projects.map((project, index) => {
+
+        if ( index !== passIndex ) {
+
+          copyProjects.push(project)
+          totalCost = totalCost + Number(project.price);
+        }
+      })
+      this.state.discount !== null ? totalCost = Number(totalCost) - Number(this.state.discount) : null
+      this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+    }
   }
 
   /**
@@ -429,7 +486,7 @@ export default class QuoteEditor extends React.Component {
                 </React.Fragment>
                 :
                 <React.Fragment>
-                  { this.state.projects === undefined ?
+                  { this.state.quote_projects === undefined ?
                     null
                     :
                     <React.Fragment>

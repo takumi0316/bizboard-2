@@ -60,8 +60,8 @@ class Project < ApplicationRecord
 
   has_many :histories, class_name: 'ProjectHistory',    dependent: :destroy
 
-  has_many :quote_projects, dependent: :destroy
-  has_many :quotes, through: :quote_projects
+  #has_many :quote_projects, dependent: :destroy
+  #has_many :quotes, through: :quote_projects
 
   accepts_nested_attributes_for :bind
   accepts_nested_attributes_for :card

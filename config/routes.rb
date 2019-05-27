@@ -36,6 +36,8 @@ Rails.application.routes.draw do
     post :status
   end
 
+  resources :quote_projects, only: [:destroy]
+
   # 案件
   namespace :invoices do
     post :apipost
