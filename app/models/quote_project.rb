@@ -9,6 +9,8 @@
 #  unit       :integer          default(10)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  name       :string(191)
+#  unit_price :integer
 #
 
 class QuoteProject < ApplicationRecord

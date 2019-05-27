@@ -6,9 +6,9 @@ json[:projects] = projects.map do |r|
   when 'project_print'
 
     specifications = []
-    after_process = {'bool': false, 'name': '後加工仕様', 'price': 0, 'project_id': 0, 'id': 0, }
-    binding_work = {'bool': false, 'name': '製本仕様', 'price': 0, 'project_id': 0, 'id': 0, }
-    print = {'bool': true, 'name': 'プリント仕様', 'price': r.print.price.nil? ? 0 : r.print.price, 'project_id': r.print.project_id, 'id': r.print.id}
+    after_process = {'bool': false, 'name': "#{r.name} 後加工仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': 0, }
+    binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': 0, }
+    print = {'bool': true, 'name': "#{r.name} プリント仕様", 'unit_price': r.print.price.nil? ? 0 : r.print.price, 'unit': 1, 'price': r.print.price.nil? ? 0 : r.print.price, 'id': r.print.id, }
     count = []
     if r.after_process == 'after_process_necessary'
 
@@ -27,14 +27,16 @@ json[:projects] = projects.map do |r|
         when 'after_process'
 
           after_process['bool'] = true
+          after_process['unit_price'] = r.project_after_process.price.nil? ? 0 : r.project_after_process.price
+          after_process['unit'] = 1
           after_process['price'] = r.project_after_process.price.nil? ? 0 : r.project_after_process.price
-          after_process['project_id'] = r.project_after_process.project_id
           after_process['id'] = r.project_after_process.id
         when 'binding_works'
 
           binding_work['bool'] = true
+          binding_work['unit_price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+          binding_work['unit'] = 1
           binding_work['price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
-          binding_work['project_id'] = r.project_binding_work.project_id
           binding_work['id'] = r.project_binding_work.id
         end
       end
@@ -53,9 +55,9 @@ json[:projects] = projects.map do |r|
   when 'project_copy'
 
     specifications = []
-    after_process = {'bool': false, 'name': '後加工仕様', 'price': 0, 'project_id': 0, 'id': 0, }
-    binding_work = {'bool': false, 'name': '製本仕様', 'price': 0, 'project_id': 0, 'id': 0, }
-    copy = {'bool': true, 'name': '複写仕様', 'price': r.copy.price.nil? ? 0 : r.copy.price, 'project_id': r.copy.project_id, 'id': r.copy.id}
+    after_process = {'bool': false, 'name': "#{r.name} 後加工仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': 0, }
+    binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': 0, }
+    copy = {'bool': true, 'name': "#{r.name} 複写仕様", 'unit_price': r.copy.price.nil? ? 0 : r.copy.price, 'unit': 1, 'price': r.copy.price.nil? ? 0 : r.copy.price, 'id': r.copy.id, }
 
     count = []
     if r.after_process == 'after_process_necessary'
@@ -75,15 +77,16 @@ json[:projects] = projects.map do |r|
         when 'after_process'
 
           after_process['bool'] = true
+          after_process['unit_price'] = r.project_after_process.price.nil? ? 0 : r.project_after_process.price
+          after_process['unit'] = 1
           after_process['price'] = r.project_after_process.price.nil? ? 0 : r.project_after_process.price
-          after_process['project_id'] = r.project_after_process.project_id
           after_process['id'] = r.project_after_process.id
-          after_process['none'] = 'none'
         when 'binding_works'
 
           binding_work['bool'] = true
+          binding_work['unit_price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+          binding_work['unit'] = 1
           binding_work['price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
-          binding_work['project_id'] = r.project_binding_work.project_id
           binding_work['id'] = r.project_binding_work.id
         end
       end
@@ -102,7 +105,7 @@ json[:projects] = projects.map do |r|
     when 'project_card'
 
     specifications = []
-    card = {'bool': true, 'name': 'プリント仕様', 'price': r.card.price.nil? ? 0 : r.card.price, 'project_id': r.card.project_id, 'id': r.card.id}
+    card = {'bool': true, 'name': "#{r.name} プリント仕様", 'unit_price': r.card.price.nil? ? 0 : r.card.price, 'unit': 1, 'price': r.card.price.nil? ? 0 : r.card.price, 'id': r.card.id, }
     specifications.push(card)
     {
       id: r.id,
@@ -114,7 +117,7 @@ json[:projects] = projects.map do |r|
 
   when 'project_scan'
 
-    scan = {'bool': true, 'name': '複写仕様', 'price': r.scan.price.nil? ? 0 : r.scan.price, 'project_id': r.scan.project_id, 'id': r.scan.id}
+    scan = {'bool': true, 'name': "#{r.name} 複写仕様", 'unit_price': r.scan.price.nil? ? 0 : r.scan.price, 'unit': 1, 'price': r.scan.price.nil? ? 0 : r.scan.price, 'id': r.scan.id}
     specifications = []
     specifications.push(scan)
     {
@@ -127,9 +130,9 @@ json[:projects] = projects.map do |r|
   when 'project_bind'
 
     specifications = []
-    after_process = {'bool': false, 'name': '後加工仕様', 'price': 0, 'project_id': 0, 'id': 0, }
-    binding_work = {'bool': false, 'name': '製本仕様', 'price': 0, 'project_id': 0, 'id': 0, }
-    bind = {'bool': false, 'name': '概要', 'price': r.bind.price.nil? ? 0 : r.bind.price, 'project_id': r.bind.project_id, 'id': r.id}
+    after_process = {'bool': false, 'name': "#{r.name} 後加工仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': 0, }
+    binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': 0, }
+    bind = {'bool': true, 'name': "#{r.name} 概要", 'unit_price': r.bind.price.nil? ? 0 : r.bind.price, 'unit': 1, 'price': r.bind.price.nil? ? 0 : r.bind.price, 'id': r.id, }
     count = []
     if r.after_process == 'after_process_necessary'
 
@@ -148,14 +151,16 @@ json[:projects] = projects.map do |r|
         when 'after_process'
 
           after_process['bool'] = true
+          after_process['unit_price'] = r.project_after_process.price.nil? ? 0 : r.project_after_process.price
+          after_process['unit'] = 1
           after_process['price'] = r.project_after_process.price.nil? ? 0 : r.project_after_process.price
-          after_process['project_id'] = r.project_after_process.project_id
           after_process['id'] = r.project_after_process.id
         when 'binding_works'
 
           binding_work['bool'] = true
+          binding_work['unit_price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+          binding_work['price'] = 1
           binding_work['price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
-          binding_work['project_id'] = r.project_binding_work.project_id
           binding_work['id'] = r.project_binding_work.id
         end
       end
@@ -174,7 +179,7 @@ json[:projects] = projects.map do |r|
   when 'project_other'
 
     specifications = []
-    other = {'bool': false}
+    other = {'bool': false, }
 
     specifications.push(other)
     {
