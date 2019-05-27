@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_24_082313) do
+ActiveRecord::Schema.define(version: 2019_05_27_050349) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -132,18 +132,23 @@ ActiveRecord::Schema.define(version: 2019_05_24_082313) do
   create_table "project_after_processes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "project_id"
     t.integer "folding", limit: 1, default: 0
+    t.integer "folding_price", default: 0
     t.integer "stapler", limit: 1, default: 0
+    t.integer "stapler_price", default: 0
     t.integer "hole", limit: 1, default: 0
+    t.integer "hole_price", default: 0
     t.text "hole_note"
     t.integer "clip", limit: 1, default: 0
+    t.integer "clip_price", default: 0
     t.integer "bind", limit: 1, default: 0
+    t.integer "bind_price", default: 0
     t.text "bind_note"
     t.integer "back_text", limit: 1, default: 0
+    t.integer "back_text_price", default: 0
     t.text "back_text_note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "note"
-    t.integer "price"
     t.index ["project_id"], name: "index_project_after_processes_on_project_id"
   end
 

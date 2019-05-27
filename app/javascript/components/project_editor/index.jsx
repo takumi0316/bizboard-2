@@ -136,7 +136,12 @@ export default class ProjectEditor extends React.Component {
       messages = messages.concat(this.refs.project_after_process.validation());
       field = Object.assign(field, this.refs.project_after_process.getDetail());
 
-      price += Number(field['project[project_after_process_attributes][price]']);
+      price += Number(field['project[project_after_process_attributes][folding_price]']);
+      price += Number(field['project[project_after_process_attributes][stapler_price]']);
+      price += Number(field['project[project_after_process_attributes][hole_price]']);
+      price += Number(field['project[project_after_process_attributes][clip_price]']);
+      price += Number(field['project[project_after_process_attributes][bind_price]']);
+      price += Number(field['project[project_after_process_attributes][back_text_price]']);
     }
 
     // 製本作業
@@ -158,7 +163,7 @@ export default class ProjectEditor extends React.Component {
     field['project[price]'] = price;
     this.setState({ price: price }, () => {
 
-      // 記事内容を送信
+      // 品目内容を送信
       request
       .field(field)
       .set('X-Requested-With', 'XMLHttpRequest')
