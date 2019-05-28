@@ -31,18 +31,23 @@ export default class QuoteEditor extends React.Component {
 
     super(props);
 
+    console.log(props.user)
     this.state = {
       quote: props.quote,
       quote_projects: props.quote_projects,
       company: props.company,
       division: props.division,
       client: props.client,
-      user_id: props.user_id,
-      quote_type: props.quote_type || 'contract',
-      deliver_type: props.deliver_type || 'seat',
+      user_id: props.user === null ? null : props.user.id,
+      quote_type: props.quote.quote_type || 'contract',
+      deliver_type: props.quote.deliver_type || 'seat',
       deliver_at: props.quote.deliver_at,
       discount: props.quote.discount,
-      total_cost: 0,
+      date: props.quote.date,
+      channel: props.quote.channel,
+      quote_type: props.quote.quote_type,
+      expiration: props.quote.expiration,
+      total_cost: props.quote.price === null ? 0 : props.quote.price,
       date: props.quote.date,
       show: false,
     }
@@ -106,11 +111,11 @@ export default class QuoteEditor extends React.Component {
     let field = {};
     let quoteProjectsCount = Object.keys(this.state.quote_projects).length;
     let quoteProjects = Object.assign([], this.state.quote_projects);
-    if (quoteProjectsCount === 0) {
+    //if (quoteProjectsCount === 0) {
 
-      alert('品目を選択してください！！！！！！！！！！！')
-      return
-    }
+      //alert('品目を選択してください！！！！！！！！！！！')
+      //return
+    //}
 
     let messages = this.validation();
 
@@ -161,6 +166,7 @@ export default class QuoteEditor extends React.Component {
       field['quote[deliver_type_note]'] = this.refs.deliver_type_note.value;
     }
 
+    console.log(field)
     // quote-url
     let url = '/quotes';
     // 記事内容を送信
@@ -181,7 +187,6 @@ export default class QuoteEditor extends React.Component {
           } else {
 
             alert('見積り情報を更新しました');
-            console.log('quote_projects: ', res.body.quote_projects)
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           }
         } else {
@@ -335,6 +340,7 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
+    { console.log(this.state.expiration) }
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
@@ -391,7 +397,7 @@ export default class QuoteEditor extends React.Component {
                 <td>
                   <div className='u-mt-15'>
                     <label className='c-form-radioLabel'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.quote.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>席まで配達</span>
                     </label>
@@ -423,7 +429,7 @@ export default class QuoteEditor extends React.Component {
                 <td className='u-fw-bold'>受注経路</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='channel' defaultValue={this.props.channel}>
+                    <select className='c-form-select' ref='channel' defaultValue={this.state.channel}>
                       { Object.keys(CHANNELS).map((item, index) => {
                         const key = 'channel-'+index;
                         return (
@@ -438,7 +444,7 @@ export default class QuoteEditor extends React.Component {
                 <td className='u-fw-bold'>受注区分</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='quote_type' defaultValue={this.props.quote_type}>
+                    <select className='c-form-select' ref='quote_type' defaultValue={this.state.quote_type}>
                       { Object.keys(QUOTE_TYPES).map((item, index) => {
                         const key = 'quote_type-'+index;
                         return (
