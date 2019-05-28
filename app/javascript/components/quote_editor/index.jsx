@@ -31,7 +31,6 @@ export default class QuoteEditor extends React.Component {
 
     super(props);
 
-    console.log(props.user)
     this.state = {
       quote: props.quote,
       quote_projects: props.quote_projects,
@@ -211,13 +210,8 @@ export default class QuoteEditor extends React.Component {
    */
   discount_from_close() {
 
-    let copyProjects = Object.assign([], this.state.projects);
-    let totalCost = 0;
-    copyProjects.map((project, index) => {
-
-      totalCost = totalCost + (Number(document.getElementById('projectPrice' + index).value) * Number(document.getElementById('projectUnit' + index).value))
-    })
-    this.setState({ show: false, discount: 0, total_cost: totalCost});
+    { console.log(this.refs.total_cost.value === null ? null : this.refs.total_cost.value) }
+    this.setState({ show: false, discount: 0});
   }
 
   /**
@@ -330,9 +324,7 @@ export default class QuoteEditor extends React.Component {
   _changeDiscount = () => {
 
     const refDiscount = Number(this.refs.discount.value);
-    let totalCost = Number(this.refs.total_cost.value);
-    totalCost = totalCost - refDiscount;
-    this.setState({ discount: refDiscount, total_cost: totalCost });
+    this.setState({ discount: refDiscount });
   }
 
   /**
@@ -340,7 +332,6 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
-    { console.log(this.state.expiration) }
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
@@ -550,7 +541,7 @@ export default class QuoteEditor extends React.Component {
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
-                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost * gon.consumption_tax }></textarea>
+                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ (this.state.total_cost - this.state.discount) * gon.consumption_tax }></textarea>
                 </td>
               </tr>
               <tr>
