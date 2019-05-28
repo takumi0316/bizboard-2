@@ -41,7 +41,7 @@ export default class QuoteEditor extends React.Component {
       quote_type: props.quote.quote_type || 'contract',
       deliver_type: props.quote.deliver_type || 'seat',
       deliver_at: props.quote.deliver_at,
-      discount: props.quote.discount,
+      discount: props.quote.discount === null ? 0 : props.discount,
       date: props.quote.date,
       channel: props.quote.channel,
       quote_type: props.quote.quote_type,
@@ -141,6 +141,7 @@ export default class QuoteEditor extends React.Component {
     }
     field = {
       'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
+      'quote[user_id]': this.state.user_id,
       'quote[company_division_client_id]': this.refs.company_division_client_id.value,
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
@@ -153,7 +154,7 @@ export default class QuoteEditor extends React.Component {
       'quote[memo]': this.refs.memo.value,
       'quote[user_id]': this.refs.user_id.value,
       'quote[discount]': this.state.discount === null ? 0 : this.state.discount,
-      'quote[total_cost]': Number(this.state.total_cost) - Number(this.state.discount),
+      'quote[total_cost]': Number(this.state.total_cost),
       'specifications[]': arrayRails,
     };
 
@@ -277,6 +278,7 @@ export default class QuoteEditor extends React.Component {
             index !== passIndex ? pushProjects.push(project) : null
             index !== passIndex ? totalCost = totalCost + Number(project.price) : null
           })
+          this.state.discount !== null ? totalCost = Number(totalCost) - Number(this.state.discount) : null
           this.setState({ quote_projects: pushProjects, total_cost: totalCost });
         } else {
 
@@ -310,6 +312,7 @@ export default class QuoteEditor extends React.Component {
       passIndex === index ? project.price = Number(project.unit_price) * project.unit : null
       totalCost = totalCost + Number(project.price);
     })
+      totalCost = totalCost - Number(this.state.discount);
     this.setState({ quote_projects: copyProjects, total_cost: totalCost });
   }
 
@@ -328,6 +331,7 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
+    { console.log(this.props.user_id) }
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
@@ -537,7 +541,7 @@ export default class QuoteEditor extends React.Component {
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
-                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ (this.state.total_cost - this.state.discount) * gon.consumption_tax }></textarea>
+                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost * gon.consumption_tax }></textarea>
                 </td>
               </tr>
               <tr>
