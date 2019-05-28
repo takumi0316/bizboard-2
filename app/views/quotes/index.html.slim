@@ -18,6 +18,7 @@
         th 見積番号
         th ステータス
         th 件名
+        th お客様
         th 納期
         th 案件作成日
         th 作業書
@@ -33,6 +34,11 @@
           td = r.quote_number
           td = r.status_i18n
           td = r.subject
+          td
+            = r.client.company_division.company.name
+            |&nbsp;
+            |&nbsp;
+            = r.client.name
           td = r.deliver_at.to_s
           td = r.date
           td
