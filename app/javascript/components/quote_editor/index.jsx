@@ -153,7 +153,7 @@ export default class QuoteEditor extends React.Component {
       'quote[memo]': this.refs.memo.value,
       'quote[user_id]': this.refs.user_id.value,
       'quote[discount]': this.state.discount === null ? 0 : this.state.discount,
-      'quote[total_cost]': Number(this.state.total_cost) - Number(this.satate.discount),
+      'quote[total_cost]': Number(this.state.total_cost) - Number(this.state.discount),
       'specifications[]': arrayRails,
     };
 
