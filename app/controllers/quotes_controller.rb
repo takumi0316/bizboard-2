@@ -300,7 +300,7 @@ class QuotesController < ApplicationController
     token = current_user.mf_access_token
     pdf_url = quote.pdf_url
 
-    filename = "#{quote.date.strftime('%Y%m%d')}-#{quote.client.company_division.company.name}#{quote.client.name}様お見積書"
+    filename = "お見積書-#{quote.quote_number}"
 
     uri = URI.parse("#{pdf_url}")
     request = Net::HTTP::Get.new(uri)
