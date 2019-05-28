@@ -35,10 +35,13 @@
           td = r.status_i18n
           td = r.subject
           td
-            = r.client.company_division.company.name
-            |&nbsp;
-            |&nbsp;
-            = r.client.name
+            - if r.company_division_client_id.present?
+              = r.client.company_division.company.name
+              |&nbsp;
+              |&nbsp;
+              = r.client.name
+            - else
+              | お客様情報なし
           td = r.deliver_at.to_s
           td = r.date
           td
@@ -55,7 +58,7 @@
             - if r.pdf_url.present?
               = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
             -else
-              p MFに見積もり書がないですよ
+              | MFに見積もり書がないですよ
           td
             - if r.invoicing? && r.invoice.present?
               = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
