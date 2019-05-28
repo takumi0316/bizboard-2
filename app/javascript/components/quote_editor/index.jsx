@@ -165,6 +165,7 @@ export default class QuoteEditor extends React.Component {
       field['quote[deliver_type_note]'] = this.refs.deliver_type_note.value;
     }
 
+    console.log(field)
     // quote-url
     let url = '/quotes';
     // 記事内容を送信
@@ -257,7 +258,6 @@ export default class QuoteEditor extends React.Component {
    */
   _projectDestroy = (passIndex) => {
 
-    console.log(this.state.quote_projects[passIndex])
     if ( this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null ) {
 
       let url = '/quote_projects/' + this.state.quote_projects[passIndex].id;

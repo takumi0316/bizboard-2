@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_27_050349) do
+ActiveRecord::Schema.define(version: 2019_05_28_060308) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -307,12 +307,12 @@ ActiveRecord::Schema.define(version: 2019_05_27_050349) do
   create_table "quote_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "quote_id"
     t.bigint "project_id"
-    t.integer "price", limit: 1, default: 10
-    t.integer "unit", limit: 1, default: 10
+    t.string "price", default: "10"
+    t.string "unit", default: "10"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.integer "unit_price"
+    t.string "unit_price"
     t.index ["project_id"], name: "index_quote_projects_on_project_id"
     t.index ["quote_id"], name: "index_quote_projects_on_quote_id"
   end

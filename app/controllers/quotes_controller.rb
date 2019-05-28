@@ -105,6 +105,10 @@ class QuotesController < ApplicationController
 
           parse_json = JSON.parse(specification)
           createQuote = Quote.last
+          binding.pry
+          puts "#{parse_json['projectSpecificationUnitPrice']}"
+          puts "#{parse_json['projectSpecificationUnit']}"
+          puts "#{parse_json['projectSpecificationPrice']}"
           createQuote.quote_projects.create!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecficationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'].to_i)
         end
       end

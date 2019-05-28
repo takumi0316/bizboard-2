@@ -5,12 +5,12 @@
 #  id         :bigint(8)        not null, primary key
 #  quote_id   :bigint(8)
 #  project_id :bigint(8)
-#  price      :integer          default(10)
-#  unit       :integer          default(10)
+#  price      :string(191)      default("10")
+#  unit       :string(191)      default("10")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  name       :string(191)
-#  unit_price :integer
+#  unit_price :string(191)
 #
 
 class QuoteProject < ApplicationRecord
