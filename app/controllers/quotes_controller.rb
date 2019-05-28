@@ -104,11 +104,11 @@ class QuotesController < ApplicationController
         params[:specifications].each do |specification|
 
           parse_json = JSON.parse(specification)
-          binding.pry
-          Quote.last.quote_projects.create!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecficationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'].to_i)
+          createQuote = Quote.last
+          createQuote.quote_projects.create!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecficationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'].to_i)
         end
-        render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
       end
+      puts "#{Quote.last.quote_projects}"
       render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
     else
 
