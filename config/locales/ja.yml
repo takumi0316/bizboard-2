@@ -90,7 +90,7 @@ ja:
 
     project_binding_work:
       bind_type:
-        original_bind_type: 現行通り
+        original_bind_type: 原稿通り
         cross_bind_type: クロス巻き
         wrap_bind_type: くるみ
         stitching_bind_type: 中綴じ
@@ -127,21 +127,21 @@ ja:
 
     project_after_process:
       folding:
-        original_folding: 現行通り
+        original_folding: 原稿通り
         z_folding: Z折り
         beta_folding: ベタ折り
         three_folding: 三つ折り
         file_folding: ファイル折り
         no_folding: なし
       stapler:
-        original_stapler: 現行通り
+        original_stapler: 原稿通り
         upper_left_stapler: 左上
         upper_right_stapler: 右上
         left_double_stapler: 左2箇所
         right_double_stapler: 右2箇所
         no_stapler: なし
       hole:
-        original_hole: 現行通り
+        original_hole: 原稿通り
         hole_unnecessary: なし
         hole_necessary: あり
         hole_other: その他
@@ -187,7 +187,7 @@ ja:
         create_data: データ作成
         edit_data: データ修正
       color:
-        original_print: 現行通り
+        original_print: 原稿通り
         color_print: カラー
         monochrome_print: モノクロ
       paper:
@@ -229,16 +229,16 @@ ja:
         restore_necessary: 必要
         restore_unnecessary: 不要
       color:
-        original_print: 現行通り
+        original_print: 原稿通り
         color_print: カラー
         monochrome_print: モノクロ
       print_size:
-        original_size: 現行通り
+        original_size: 原稿通り
         a3: A3
         a4: A4
         print_size_other: その他
       surface:
-        original_surface: 現行通り
+        original_surface: 原稿通り
         one_side: 片面→両面
         both_side: 両面→片面
       open_type:
@@ -256,16 +256,16 @@ ja:
         create_data: データ作成
         edit_data: データ修正
       color:
-        original_print: 現行通り
+        original_print: 原稿通り
         color_print: カラー
         monochrome_print: モノクロ
       print_size:
-        original_size: 現行通り
+        original_size: 原稿通り
         a3: A3
         a4: A4
         print_size_other: その他
       surface:
-        original_surface: 現行通り
+        original_surface: 原稿通り
         one_side: 片面→両面
         both_side: 両面→片面
       open_type:

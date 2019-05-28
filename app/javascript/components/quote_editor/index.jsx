@@ -165,7 +165,6 @@ export default class QuoteEditor extends React.Component {
       field['quote[deliver_type_note]'] = this.refs.deliver_type_note.value;
     }
 
-    console.log(field)
     // quote-url
     let url = '/quotes';
     // 記事内容を送信
@@ -187,9 +186,9 @@ export default class QuoteEditor extends React.Component {
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           }
         } else {
-            console.log(res.body.quote)
-            console.log(res.body.quote_projects)
+
           alert('見積り情報の保存に失敗しました。');
+          this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
         }
       });
   }

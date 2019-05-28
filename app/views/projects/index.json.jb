@@ -6,12 +6,12 @@ json[:projects] = projects.map do |r|
   when 'project_print'
 
     specifications = []
-    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 折り #{r.project_after_process.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 ホチキス留め #{r.project_after_process.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 穴あけ #{r.project_after_process.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 クリップ留め #{r.project_after_process.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 ファイル綴じ #{r.project_after_process.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 背文字 #{r.project_after_process.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
     binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
     print = {'bool': true, 'name': "#{r.name} プリント仕様", 'unit_price': r.print.price.nil? ? 0 : r.print.price, 'unit': 1, 'price': r.print.price.nil? ? 0 : r.print.price, 'id': nil, }
     count = []
@@ -118,12 +118,12 @@ json[:projects] = projects.map do |r|
   when 'project_copy'
 
     specifications = []
-    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 折り #{r.project_after_process.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 ホチキス留め #{r.project_after_process.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 穴あけ #{r.project_after_process.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 クリップ留め #{r.project_after_process.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 ファイル綴じ #{r.project_after_process.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 背文字 #{r.project_after_process.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
     binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
     copy = {'bool': true, 'name': "#{r.name} 複写仕様", 'unit_price': r.copy.price.nil? ? 0 : r.copy.price, 'unit': 1, 'price': r.copy.price.nil? ? 0 : r.copy.price, 'id': nil, }
 
@@ -255,12 +255,12 @@ json[:projects] = projects.map do |r|
   when 'project_bind'
 
     specifications = []
-    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
-    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 #{r.project_after_process.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 折り #{r.project_after_process.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 ホチキス留め #{r.project_after_process.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 穴あけ #{r.project_after_process.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 クリップ留め #{r.project_after_process.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 ファイル綴じ #{r.project_after_process.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
+    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 背文字 #{r.project_after_process.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
     binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, }
     bind = {'bool': true, 'name': "#{r.name} 概要", 'unit_price': r.bind.price.nil? ? 0 : r.bind.price, 'unit': 1, 'price': r.bind.price.nil? ? 0 : r.bind.price, 'id': nil, }
     count = []

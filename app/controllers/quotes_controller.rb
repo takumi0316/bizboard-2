@@ -105,13 +105,9 @@ class QuotesController < ApplicationController
 
           parse_json = JSON.parse(specification)
           createQuote = Quote.last
-          puts "#{parse_json['projectSpecificationUnitPrice']}"
-          puts "#{parse_json['projectSpecificationUnit']}"
-          puts "#{parse_json['projectSpecificationPrice']}"
           createQuote.quote_projects.create!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecficationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'].to_i)
         end
       end
-      puts "#{Quote.last.quote_projects}"
       render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
     else
 
@@ -122,22 +118,27 @@ class QuotesController < ApplicationController
 
           parse_json = JSON.parse(specification)
           findQuoteProject = QuoteProject.find_or_initialize_by(id: parse_json['projectSpecificationId'])
-          if findQuoteProject.id == nil
+          if findQuoteProject.id == 0
 
-            findQuoteProject.quote_id = params[:id]
-            findQuoteProject.save!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecificationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], quote_id: params[:id])
+            QuoteProject.create!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecificationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], quote_id: params[:id])
           else
 
-            findQuoteProject.update!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecficationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'].to_i)
+            findQuoteProject.update!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'], price: parse_json['projectSpecificationPrice'])
           end
         end
-        render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
       end
       render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
     end
   rescue => e
 
-    render json: { status: :error }
+    if params[:id] == 'null'
+
+      Quote.last.destroy!
+      render json: { status: :error, quote: Quote.new, quote_projects: [] }
+    else
+
+      render json: { status: :error, quote: Quote.find(params[:id].to_i), quote_projects: Quote.find(params[:id].to_i).quote_projects }
+    end
   end
 
   ##
