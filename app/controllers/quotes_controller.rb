@@ -116,10 +116,11 @@ class QuotesController < ApplicationController
         puts "#{specification}"
         findQuoteProject = QuoteProject.find_or_initialize_by(id: parse_json['projectSpecificationId'])
         puts "sinderude"
+        binding.pry
         if findQuoteProject.id == nil
 
           findQuoteProject.quote_id = params[:id]
-          findQuoteProject.save!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecificationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'])
+          findQuoteProject.save!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecificationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], quote_id: params[:id])
         else
 
           findQuoteProject.update!(name: parse_json['projectSpecificationName'], unit_price: parse_json['projectSpecficationUnitPrice'].to_i, unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'].to_i)

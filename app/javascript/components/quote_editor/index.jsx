@@ -174,6 +174,7 @@ export default class QuoteEditor extends React.Component {
           if (!this.props.quote.id) {
 
             alert('見積り情報を作成しました');
+            location.href = `${res.body.quote.id}/edit`;
             console.log(res.body.quote)
             console.log(res.body.quote_projects)
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
