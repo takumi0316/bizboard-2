@@ -41,7 +41,7 @@ export default class QuoteEditor extends React.Component {
       quote_type: props.quote.quote_type || 'contract',
       deliver_type: props.quote.deliver_type || 'seat',
       deliver_at: props.quote.deliver_at,
-      discount: props.quote.discount === null ? 0 : props.discount,
+      discount: props.quote.discount === null ? 0 : props.quote.discount,
       date: props.quote.date,
       channel: props.quote.channel,
       quote_type: props.quote.quote_type,
@@ -141,7 +141,6 @@ export default class QuoteEditor extends React.Component {
     }
     field = {
       'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
-      'quote[user_id]': this.state.user_id,
       'quote[company_division_client_id]': this.refs.company_division_client_id.value,
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
@@ -153,7 +152,7 @@ export default class QuoteEditor extends React.Component {
       'quote[remarks]': this.refs.remarks.value,
       'quote[memo]': this.refs.memo.value,
       'quote[user_id]': this.refs.user_id.value,
-      'quote[discount]': this.state.discount === null ? 0 : this.state.discount,
+      'quote[discount]': this.state.discount,
       'quote[total_cost]': Number(this.state.total_cost),
       'specifications[]': arrayRails,
     };
@@ -291,7 +290,6 @@ export default class QuoteEditor extends React.Component {
 
         index !== passIndex ? pushProjects.push(project) : null
         index !== passIndex ? totalCost = totalCost + Number(project.price) : null
-        console.log('puts')
       })
       this.state.discount !== null ? totalCost = Number(totalCost) - Number(this.state.discount) : null
       this.setState({ quote_projects: pushProjects, total_cost: totalCost });
@@ -331,7 +329,6 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
-    { console.log(this.props.user_id) }
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
@@ -532,7 +529,7 @@ export default class QuoteEditor extends React.Component {
                   </div>
                   <div className='u-mt-15'>
                     { this.state.show ?
-                      <textarea placeholder='2000' className='c-form-textarea' onChange={ e  => this._changeDiscount() } type='text' ref='discount' defaultValue={ this.state.discount === null ? 0 : this.state.discount }></textarea>
+                      <textarea placeholder='2000' className='c-form-textarea' onChange={ e  => this._changeDiscount() } type='text' ref='discount' defaultValue={ this.state.discount }></textarea>
                       : null
                     }
                   </div>
