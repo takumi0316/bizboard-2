@@ -184,13 +184,20 @@ class QuotesController < ApplicationController
         # 品目を整形する
         items = quote.quote_projects.each_with_object([]) do |r, result|
           result.push({
-            name: r.project.name,
+            name: r.name,
             quantity: r.unit,
             unit_price: r.price,
           })
         end
 
-        discount = quote.discount
+        #値引きが０より大きければ品目に値引き追加
+        if quote.discount > 0
+          items << {
+            name: '値引き',
+            quantity: 1,
+            unit_price: "-#{quote.discount}",
+          }
+        end
 
         request.body = JSON.dump({
           "quote": {
@@ -256,10 +263,19 @@ class QuotesController < ApplicationController
         # 品目を整形する
         items = quote.quote_projects.each_with_object([]) do |r, result|
           result.push({
-            name: r.project.name,
+            name: r.name,
             quantity: r.unit,
             unit_price: r.price,
           })
+        end
+
+        #値引きが０より大きければ品目に値引き追加
+        if quote.discount > 0
+          items << {
+            name: '値引き',
+            quantity: 1,
+            unit_price: "-#{quote.discount}",
+          }
         end
 
         request.body = JSON.dump({
