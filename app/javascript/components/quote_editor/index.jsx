@@ -153,7 +153,7 @@ export default class QuoteEditor extends React.Component {
       'quote[memo]': this.refs.memo.value,
       'quote[user_id]': this.refs.user_id.value,
       'quote[discount]': this.state.discount === null ? 0 : this.state.discount,
-      'quote[total_cost]': this.refs.total_cost.value,
+      'quote[total_cost]': Number(this.state.total_cost) - Number(this.satate.discount),
       'specifications[]': arrayRails,
     };
 
@@ -208,7 +208,6 @@ export default class QuoteEditor extends React.Component {
    */
   discount_from_close() {
 
-    { console.log(this.refs.total_cost.value === null ? null : this.refs.total_cost.value) }
     this.setState({ show: false, discount: 0});
   }
 
@@ -258,6 +257,9 @@ export default class QuoteEditor extends React.Component {
   _projectDestroy = (passIndex) => {
 
     let delProjectPrice = Number(this.state.quote_projects[passIndex].price);
+    let copyProjects = Object.assign([], this.state.quote_projects);
+    let totalCost = 0;
+    let pushProjects = [];
     if ( this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null ) {
 
       let url = '/quote_projects/' + this.state.quote_projects[passIndex].id;
@@ -270,14 +272,12 @@ export default class QuoteEditor extends React.Component {
       .end((err, res) => {
         if ( !err && res.body.status === 'success' ) {
 
-          let copyProjects = [];
-          let totalCost = 0;
-          this.state.quote_projects.map((project, index) => {
+          copyProjects.map((project, index) => {
 
-            index !== passIndex ? copyProjects.push(project) : null
+            index !== passIndex ? pushProjects.push(project) : null
             index !== passIndex ? totalCost = totalCost + Number(project.price) : null
           })
-          this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+          this.setState({ quote_projects: pushProjects, total_cost: totalCost });
         } else {
 
           alert('正常に削除できませんでした')
@@ -285,15 +285,14 @@ export default class QuoteEditor extends React.Component {
       });
     } else {
 
-      let copyProjects = [];
-      let totalCost = 0;
-      this.state.quote_projects.map((project, index) => {
+      copyProjects.map((project, index) => {
 
-        index !== passIndex ? copyProjects.push(project) : null
+        index !== passIndex ? pushProjects.push(project) : null
         index !== passIndex ? totalCost = totalCost + Number(project.price) : null
+        console.log('puts')
       })
       this.state.discount !== null ? totalCost = Number(totalCost) - Number(this.state.discount) : null
-      this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+      this.setState({ quote_projects: pushProjects, total_cost: totalCost });
     }
   }
 
