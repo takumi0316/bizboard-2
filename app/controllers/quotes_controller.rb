@@ -168,124 +168,139 @@ class QuotesController < ApplicationController
 
   def api_post
 
-    token = current_user.mf_access_token
-    uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
-    request = Net::HTTP::Post.new(uri)
-    request.content_type = "application/json"
-    request["Authorization"] = "BEARER #{token}"
+    if quote.quote_projects.present?
 
-    # 品目を整形する
-    items = quote.quote_projects.each_with_object([]) do |r, result|
-      result.push({
-        name: r.project.name,
-        quantity: r.unit,
-        unit_price: r.price,
-      })
+      begin
+        token = current_user.mf_access_token
+        uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
+        request = Net::HTTP::Post.new(uri)
+        request.content_type = "application/json"
+        request["Authorization"] = "BEARER #{token}"
+
+        # 品目を整形する
+        items = quote.quote_projects.each_with_object([]) do |r, result|
+          result.push({
+            name: r.project.name,
+            quantity: r.unit,
+            unit_price: r.price,
+          })
+        end
+
+        discount = quote.discount
+
+        request.body = JSON.dump({
+          "quote": {
+            "department_id": quote.client.company_division.mf_company_division_id,
+            "quote_number": quote.quote_number,
+            "quote_date": quote.date.strftime('%Y-%m-%d'),
+            "expired_date": quote.expiration.strftime('%Y-%m-%d'),
+            "title": quote.subject,
+            "note": quote.remarks,
+            "memo": quote.memo,
+            "items": items,
+          }
+        })
+
+        req_options = {
+          use_ssl: uri.scheme == "https",
+        }
+
+        response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+
+        quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
+        quote.update_columns(:mf_quote_id => data['data']['id'])
+
+        redirect_to quotes_path, flash: {notice: {message: 'MFに見積もりを作成しました'}}
+      rescue => e
+        redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+      end
+
+    else
+      redirect_to quotes_path, flash: {notice: {message: '品目が紐づいていない為MFに保存ができません'}}
     end
-
-    discount = quote.discount
-
-    request.body = JSON.dump({
-      "quote": {
-        "department_id": quote.client.company_division.mf_company_division_id,
-        "quote_number": quote.quote_number,
-        "quote_date": quote.date.strftime('%Y-%m-%d'),
-        "expired_date": quote.expiration.strftime('%Y-%m-%d'),
-        "title": quote.subject,
-        "note": quote.remarks,
-        "memo": quote.memo,
-        "items": items,
-      }
-    })
-
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
-
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
-    end
-
-    data = JSON.parse(response.body)
-
-    quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
-    quote.update_columns(:mf_quote_id => data['data']['id'])
-
-    redirect_to quotes_path, flash: {notice: {message: 'MFに見積もりを作成しました'}}
-  rescue => e
-
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
 
   end
 
   def api_update
 
-    token = current_user.mf_access_token
-      delete_id = quote.mf_quote_id
-      uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
-      request = Net::HTTP::Delete.new(uri)
-      request["Authorization"] = "BEARER #{token}"
+    if quote.quote_projects.present?
 
-      req_options = {
-        use_ssl: uri.scheme == "https",
-      }
+      begin
+        token = current_user.mf_access_token
+        delete_id = quote.mf_quote_id
+        uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes/#{delete_id}.json")
+        request = Net::HTTP::Delete.new(uri)
+        request["Authorization"] = "BEARER #{token}"
 
-      response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-        http.request(request)
-      end
-
-      uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
-      request = Net::HTTP::Post.new(uri)
-      request.content_type = "application/json"
-      request["Authorization"] = "BEARER #{token}"
-
-      # 品目を整形する
-      items = quote.quote_projects.each_with_object([]) do |r, result|
-        result.push({
-          name: r.project.name,
-          quantity: r.unit,
-          unit_price: r.price,
-        })
-      end
-
-      request.body = JSON.dump({
-        "quote": {
-          "department_id": quote.client.company_division.mf_company_division_id,
-          "quote_number": quote.quote_number,
-          "quote_date": quote.date.strftime('%Y-%m-%d'),
-          "expired_date": quote.expiration.strftime('%Y-%m-%d'),
-          "title": quote.subject,
-          "note": quote.remarks,
-          "memo": quote.memo,
-          "items": items,
+        req_options = {
+          use_ssl: uri.scheme == "https",
         }
-      })
+
+        response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+          http.request(request)
+        end
+
+        uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
+        request = Net::HTTP::Post.new(uri)
+        request.content_type = "application/json"
+        request["Authorization"] = "BEARER #{token}"
+
+        # 品目を整形する
+        items = quote.quote_projects.each_with_object([]) do |r, result|
+          result.push({
+            name: r.project.name,
+            quantity: r.unit,
+            unit_price: r.price,
+          })
+        end
+
+        request.body = JSON.dump({
+          "quote": {
+            "department_id": quote.client.company_division.mf_company_division_id,
+            "quote_number": quote.quote_number,
+            "quote_date": quote.date.strftime('%Y-%m-%d'),
+            "expired_date": quote.expiration.strftime('%Y-%m-%d'),
+            "title": quote.subject,
+            "note": quote.remarks,
+            "memo": quote.memo,
+            "items": items,
+          }
+        })
 
 
-      req_options = {
-        use_ssl: uri.scheme == "https",
-      }
+        req_options = {
+          use_ssl: uri.scheme == "https",
+        }
 
-      response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-        http.request(request)
+        response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+
+        quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
+        quote.update_columns(:mf_quote_id => data['data']['id'])
+
+        redirect_to quotes_path, flash: {notice: {message: 'MFの見積もりを更新しました'}}
+      rescue => e
+        redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
       end
 
-      data = JSON.parse(response.body)
-
-      quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
-      quote.update_columns(:mf_quote_id => data['data']['id'])
-
-      redirect_to quotes_path, flash: {notice: {message: 'MFの見積もりを更新しました'}}
-    rescue => e
-
-      redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-
+    else
+      redirect_to quotes_path, flash: {notice: {message: '品目が紐づいていない為MFの見積もり更新ができません'}}
+    end
   end
 
   def pdf_dl
 
     token = current_user.mf_access_token
     pdf_url = quote.pdf_url
+
+    filename = "#{quote.date.strftime('%Y%m%d')}-#{quote.client.company_division.company.name}#{quote.client.name}様お見積書"
 
     uri = URI.parse("#{pdf_url}")
     request = Net::HTTP::Get.new(uri)
@@ -298,7 +313,7 @@ class QuotesController < ApplicationController
       http.request(request)
     end
 
-    send_data response.body
+    send_data response.body, filename: "#{filename}.pdf"
   end
 
   def copy
