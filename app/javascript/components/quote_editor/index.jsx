@@ -257,6 +257,7 @@ export default class QuoteEditor extends React.Component {
    */
   _projectDestroy = (passIndex) => {
 
+    let delProjectPrice = Number(this.state.quote_projects[passIndex].price);
     if ( this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null ) {
 
       let url = '/quote_projects/' + this.state.quote_projects[passIndex].id;
@@ -269,12 +270,14 @@ export default class QuoteEditor extends React.Component {
       .end((err, res) => {
         if ( !err && res.body.status === 'success' ) {
 
+          let copyProjects = [];
           let totalCost = 0;
-          res.body.quote_projects.map((project, index) => {
+          this.state.quote_projects.map((project, index) => {
 
-            totalCost = totalCost + Number(project.price);
+            index !== passIndex ? copyProjects.push(project) : null
+            index !== passIndex ? totalCost = totalCost + Number(project.price) : null
           })
-          this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects, total_cost: totalCost });
+          this.setState({ quote_projects: copyProjects, total_cost: totalCost });
         } else {
 
           alert('正常に削除できませんでした')
@@ -286,11 +289,8 @@ export default class QuoteEditor extends React.Component {
       let totalCost = 0;
       this.state.quote_projects.map((project, index) => {
 
-        if ( index !== passIndex ) {
-
-          copyProjects.push(project)
-          totalCost = totalCost + Number(project.price);
-        }
+        index !== passIndex ? copyProjects.push(project) : null
+        index !== passIndex ? totalCost = totalCost + Number(project.price) : null
       })
       this.state.discount !== null ? totalCost = Number(totalCost) - Number(this.state.discount) : null
       this.setState({ quote_projects: copyProjects, total_cost: totalCost });
