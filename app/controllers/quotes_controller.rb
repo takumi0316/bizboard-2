@@ -46,7 +46,7 @@ class QuotesController < ApplicationController
   #
   def index
 
-    add_breadcrumb '見積もり'
+    add_breadcrumb '案件一覧'
   end
 
   ##
@@ -55,7 +55,7 @@ class QuotesController < ApplicationController
   #
   def new
 
-    add_breadcrumb '見積もり', path: quotes_path
+    add_breadcrumb '案件一覧', path: quotes_path
     add_breadcrumb '新規作成'
     @quote = Quote.new
     quote.quote_items.build
@@ -67,7 +67,7 @@ class QuotesController < ApplicationController
   #
   def edit
 
-    add_breadcrumb '見積もり', path: quotes_path
+    add_breadcrumb '案件一覧', path: quotes_path
     add_breadcrumb '編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -401,7 +401,7 @@ class QuotesController < ApplicationController
     token = current_user.mf_access_token
     pdf_url = quote.pdf_url
 
-    filename = "お見積書-#{quote.quote_number}"
+    filename = "見積書_#{quote.quote_number}"
 
     uri = URI.parse("#{pdf_url}")
     request = Net::HTTP::Get.new(uri)
