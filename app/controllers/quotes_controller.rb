@@ -47,6 +47,7 @@ class QuotesController < ApplicationController
   def index
 
     add_breadcrumb '案件'
+    current_user.division.name = @id
   end
 
   ##

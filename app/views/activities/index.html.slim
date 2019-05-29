@@ -30,8 +30,8 @@
           td = r.quote.quote_number
           td = r.quote.subject
           td
-            - if r.quote.company_division_client_id.present?
-              = r.quote.client.user.name
+            - if r.quote.user_id.present?
+              = r.quote.user.name
             - else
               |担当者不明
           td = r.memo.truncate(30)
