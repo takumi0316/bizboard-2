@@ -151,7 +151,7 @@ export default class QuoteEditor extends React.Component {
       'quote[deliver_type]': this.state.deliver_type,
       'quote[remarks]': this.refs.remarks.value,
       'quote[memo]': this.refs.memo.value,
-      'quote[user_id]': this.refs.user_id.value,
+      'quote[user_id]': this.props.user_id,
       'quote[discount]': this.state.discount,
       'quote[total_cost]': Number(this.state.total_cost),
       'specifications[]': arrayRails,
@@ -358,6 +358,7 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
+    { console.log(this.props.user_id) }
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
