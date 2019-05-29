@@ -46,7 +46,7 @@ class QuotesController < ApplicationController
   #
   def index
 
-    add_breadcrumb '案件一覧'
+    add_breadcrumb '案件'
   end
 
   ##
@@ -55,7 +55,7 @@ class QuotesController < ApplicationController
   #
   def new
 
-    add_breadcrumb '案件一覧', path: quotes_path
+    add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '新規作成'
     @quote = Quote.new
     quote.quote_items.build
@@ -67,7 +67,7 @@ class QuotesController < ApplicationController
   #
   def edit
 
-    add_breadcrumb '案件一覧', path: quotes_path
+    add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
