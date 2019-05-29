@@ -14,13 +14,13 @@
   table
     thead
       tr
-        th ID
-        th 見積番号
+        th 案件番号
         th ステータス
         th 件名
         th お客様
         th 納期
-        th 案件作成日
+        th 更新者
+        th 更新日
         th 作業書
         th 見積もり作成・更新
         th PDFダウンロード
@@ -30,10 +30,9 @@
     tbody
       - quotes.each do |r|
         tr
-          td = r.id
           td = r.quote_number
           td = r.status_i18n
-          td = r.subject
+          td = r.subject.truncate(25)
           td
             - if r.company_division_client_id.present?
               = r.client.company_division.company.name
@@ -42,28 +41,33 @@
               = r.client.name
             - else
               | お客様情報なし
-          td = r.deliver_at.to_s
-          td = r.date
+          td = r.deliver_at
+          td
+            - if r.user_id.present?
+              = r.user.name
+            - else
+              |更新者不明
+          td = r.updated_at
           td
             - if r.draft?
-              = link_to '作業書を作成する', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+              = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
             - else
               = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
           td
             - if r.pdf_url.present?
-              = link_to 'MFの見積書を更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
+              = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
             - else
-              = link_to 'MFに見積書を作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
+              = link_to '見積書作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
           td
             - if r.pdf_url.present?
               = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
             -else
-              | MFに見積もり書がないですよ
+              | 未発行
           td
             - if r.invoicing? && r.invoice.present?
               = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
             - elsif r.end_work?
-              = link_to '請求書を作成する', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+              = link_to '請求書作成', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
             - else
               | 未発行
           td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'

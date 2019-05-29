@@ -1,6 +1,6 @@
 Date::DATE_FORMATS[:default]    = '%Y年%-m月%-d日'
 Date::DATE_FORMATS[:date]       = '%Y年%-m月%-d日'
 Date::DATE_FORMATS[:system]     = '%Y%-m%-d'
-Time::DATE_FORMATS[:default]    = '%Y年%-m月%-d日 %H:%M:%S'
+Time::DATE_FORMATS[:default]    = '%Y年%-m月%-d日 %H:%M'
 Time::DATE_FORMATS[:date]       = '%Y年%-m月%-d日'
 Time::DATE_FORMATS[:system]     = '%Y-%m-%dT%H:%M'
