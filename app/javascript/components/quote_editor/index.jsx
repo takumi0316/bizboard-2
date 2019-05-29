@@ -358,7 +358,6 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
-    { console.log(this.props.user_id) }
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>

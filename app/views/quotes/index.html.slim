@@ -30,21 +30,21 @@
     tbody
       - quotes.each do |r|
         tr
-          td = r.quote_number
-          td = r.status_i18n
-          td = r.subject.truncate(25)
+          td = r&.quote_number
+          td = r&.status_i18n
+          td = r&.subject&.truncate(25)
           td
-            - if r.company_division_client_id.present?
-              = r.client.company_division.company.name
+            - if r.company_division_client_id&.present?
+              = r.client&.company_division&.company&.name
               |&nbsp;
               |&nbsp;
-              = r.client.name
+              = r&.client&.name
             - else
               | お客様情報なし
           td = r.deliver_at
           td
-            - if r.user_id.present?
-              = r.user.name
+            - if r&.user_id&.present?
+              = r&.user&.name
             - else
               |更新者不明
           td = r.updated_at
