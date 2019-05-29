@@ -38,8 +38,8 @@ export default class QuoteEditor extends React.Component {
       division: props.division,
       client: props.client,
       user_id: props.user === null ? null : props.user.id,
-      quote_type: props.quote.quote_type || 'contract',
-      deliver_type: props.quote.deliver_type || 'seat',
+      quote_type: props.quote.quote_type === null ? 'contract' : props.quote.quote_type,
+      deliver_type: props.quote.deliver_type === null ? 'seat' : props.quote.deliver_type,
       deliver_at: props.quote.deliver_at,
       discount: props.quote.discount === null ? 0 : props.quote.discount,
       date: props.quote.date,
@@ -48,7 +48,7 @@ export default class QuoteEditor extends React.Component {
       expiration: props.quote.expiration,
       total_cost: props.quote.price === null ? 0 : props.quote.price,
       date: props.quote.date,
-      show: false,
+      show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
     }
   }
 
@@ -254,16 +254,17 @@ export default class QuoteEditor extends React.Component {
    * 指定されたprojectを消す
    *
    */
-  _projectDestroy = (passIndex) => {
+  _projectDestroy = (passIndex, passName) => {
 
-    let delProjectPrice = Number(this.state.quote_projects[passIndex].price);
+    const delProjectPrice = Number(this.state.quote_projects[passIndex].price);
     let copyProjects = Object.assign([], this.state.quote_projects);
+    let minusCost = (Number(this.state.total_cost) - delProjectPrice) * gon.consumption_tax;
     let totalCost = 0;
     let pushProjects = [];
     if ( this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null ) {
 
       let url = '/quote_projects/' + this.state.quote_projects[passIndex].id;
-      let field = { 'quote_id': this.state.quote.id };
+      let field = { 'quote_id': this.state.quote.id, 'quote_price': Math.floor(minusCost) };
       Request
       .del(url)
       .field(field)
@@ -276,9 +277,13 @@ export default class QuoteEditor extends React.Component {
 
             index !== passIndex ? pushProjects.push(project) : null
             index !== passIndex ? totalCost = totalCost + Number(project.price) : null
+            if ( index !== passIndex && project.id === null ) {
+
+              res.body.quote_projects.push(project)
+            }
           })
           this.state.discount !== null ? totalCost = Number(totalCost) - Number(this.state.discount) : null
-          this.setState({ quote_projects: pushProjects, total_cost: totalCost });
+          this.setState({ quote_projects: res.body.quote_projects, total_cost: totalCost });
         } else {
 
           alert('正常に削除できませんでした')
@@ -288,8 +293,11 @@ export default class QuoteEditor extends React.Component {
 
       copyProjects.map((project, index) => {
 
-        index !== passIndex ? pushProjects.push(project) : null
-        index !== passIndex ? totalCost = totalCost + Number(project.price) : null
+        if ( project.name != passName ) {
+
+          pushProjects.push(project);
+          totalCost = totalCost + Number(project.price);
+       }
       })
       this.state.discount !== null ? totalCost = Number(totalCost) - Number(this.state.discount) : null
       this.setState({ quote_projects: pushProjects, total_cost: totalCost });
@@ -315,13 +323,34 @@ export default class QuoteEditor extends React.Component {
   }
 
   /**
+   *
+   *
+   */
+  _changeName = (passIndex) => {
+
+    let copyProjects = Object.assign([], this.state.quote_projects);
+    copyProjects.forEach((project, index) => {
+
+      passIndex === index ? project.name = document.getElementById('projectSpecificationName' + passIndex).value : null
+    })
+    this.setState({ quote_projects: copyProjects });
+  }
+
+  /**
    * 値引き金額を変更
    *
    */
   _changeDiscount = () => {
 
     const refDiscount = Number(this.refs.discount.value);
-    this.setState({ discount: refDiscount });
+    let copyProjects = Object.assign([], this.state.quote_projects);
+    let totalCost = 0;
+    copyProjects.map((project) => {
+
+      totalCost = totalCost + Number(project.price);
+    });
+    totalCost = totalCost - refDiscount;
+    this.setState({ discount: refDiscount, total_cost: totalCost });
   }
 
   /**
@@ -385,7 +414,7 @@ export default class QuoteEditor extends React.Component {
                 <td>
                   <div className='u-mt-15'>
                     <label className='c-form-radioLabel'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.quote.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.quote.deliver_type == 'seat' || this.state.quote.deliver_type === null} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>席まで配達</span>
                     </label>
@@ -468,11 +497,11 @@ export default class QuoteEditor extends React.Component {
                         const key = 'specification-' + index;
                         return (
                           <tr {...{key}}>
-                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationName' + index } defaultValue={ specification.name } /></td>
+                            <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } /></td>
-                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } defaultValue={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
+                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
-                            <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index) }>ー</button></td>
+                            <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index, specification.name) }>ー</button></td>
                           </tr>
                          )
                       }) }
@@ -490,9 +519,9 @@ export default class QuoteEditor extends React.Component {
                         const key = 'project-' + index;
                         return (
                           <tr {...{key}}>
-                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationName' + index } defaultValue={ specification.name } /></td>
+                            <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='text' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } /></td>
-                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } defaultValue={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
+                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
                             <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index) }>ー</button></td>
                           </tr>
@@ -517,12 +546,12 @@ export default class QuoteEditor extends React.Component {
                 <td>
                   <div className='u-mt-15'>
                     <label className='c-form-radioLabel'>
-                      <input name='discount_from_button' type='radio' onChange={::this.discount_from_close} className='c-form-radio' />
+                      <input name='discount_from_button' type='radio' defaultChecked={ this.state.discount === 0 || this.state.discount === null } onChange={::this.discount_from_close} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>値引きなし</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
-                      <input name='discount_from_button' type='radio' onChange={::this.discount_from_open} className='c-form-radio' />
+                      <input name='discount_from_button' type='radio' defaultChecked={ this.state.discount > 0 } onChange={::this.discount_from_open} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>値引きあり</span>
                     </label>
@@ -538,7 +567,7 @@ export default class QuoteEditor extends React.Component {
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
-                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost * gon.consumption_tax }></textarea>
+                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ Math.floor(this.state.total_cost * gon.consumption_tax) }></textarea>
                 </td>
               </tr>
               <tr>

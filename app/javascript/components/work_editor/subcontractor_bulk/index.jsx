@@ -174,13 +174,17 @@ export default class SubcontractorBulk extends React.Component {
       });
   }
 
+  _changeName = () => {
+
+    let subcontractorName = this.refs.companyName.value;
+    this.setState({ subcontractor_name: subcontractorName }, this._subcontractorSearch())
+  }
   componentWillMount = () => {
 
     // 記事内容を送信
     Request.get('/subcontractors.json?search=')
       .end((err, res) => {
 
-        console.log(res.body.subcontractors)
         if (err) return false;
         this.setState({subcontractors: res.body.subcontractors});
       });
@@ -231,7 +235,7 @@ export default class SubcontractorBulk extends React.Component {
                 <label>会社名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onChange={ ::this._subcontractorSearch } onFocus={ ::this._openSubcontractor } onBlur={ ::this._closeSubcontractor } defaultValue={ this.state.subcontractor_name }/></div>
+              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onChange={ ::this._changeName } onFocus={ ::this._openSubcontractor } onBlur={ ::this._closeSubcontractor } value={ this.state.subcontractor_name }/></div>
 
               { this.state.subcontractors.length > 0 && this.state.subcontractor_type ?
 

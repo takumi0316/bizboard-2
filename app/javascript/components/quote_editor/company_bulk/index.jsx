@@ -23,7 +23,7 @@ export default class CompanyBulk extends React.Component {
       user_id: null,
       companies: [],
       divisions: [],
-      company_name: null,
+      company_name: '',
       companyDivision: [],
       company_type: false,
       division_type: false,
@@ -173,7 +173,8 @@ export default class CompanyBulk extends React.Component {
       .end((err, res) => {
 
         if (err) return false;
-        this.setState({companies: res.body.companies});
+        let companyName = this.refs.companyName.value;
+        this.setState({companies: res.body.companies, company_name: companyName});
       });
   }
 
@@ -195,6 +196,12 @@ export default class CompanyBulk extends React.Component {
   _closeCompany = () => {
 
     setTimeout(() => { this.setState({ companies: []}) }, 500);
+  }
+
+  _changeCompany = () => {
+
+    let companyName = this.refs.companyName.value;
+    this.setState({ company_name: companyName }, this._companySearch());
   }
 
   /**
@@ -266,7 +273,7 @@ export default class CompanyBulk extends React.Component {
                 <label>会社名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onChange={::this._companySearch} onFocus={ ::this._openCompany } onBlur={ ::this._closeCompany } defaultValue={ this.state.company_name } /></div>
+              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onChange={::this._changeCompany} onFocus={ ::this._openCompany } onBlur={ ::this._closeCompany } value={ this.state.company_name } /></div>
 
               { this.state.companies.length > 0 && this.state.company_type ?
 
