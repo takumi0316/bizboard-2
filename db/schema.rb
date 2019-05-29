@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_28_060308) do
+ActiveRecord::Schema.define(version: 2019_05_29_060008) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -465,6 +465,13 @@ ActiveRecord::Schema.define(version: 2019_05_28_060308) do
     t.index ["work_id"], name: "index_work_details_on_work_id"
   end
 
+  create_table "work_divisions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "division_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_work_divisions_on_division_id"
+  end
+
   create_table "work_subcontractor_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "work_subcontractor_id"
     t.string "order_contents"
@@ -512,5 +519,6 @@ ActiveRecord::Schema.define(version: 2019_05_28_060308) do
 
   add_foreign_key "quotes", "divisions"
   add_foreign_key "work_details", "works"
+  add_foreign_key "work_divisions", "divisions"
   add_foreign_key "works", "divisions"
 end
