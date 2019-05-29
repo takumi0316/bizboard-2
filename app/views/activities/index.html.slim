@@ -18,7 +18,7 @@
         th 対応内容
         th 案件番号
         th 案件名
-        th 対応者
+        th 担当者
         th メモ
         th 添付
         th colspan= 3
@@ -29,7 +29,11 @@
           td = r.status_i18n
           td = r.quote.quote_number
           td = r.quote.subject
-          td = r.quote.client.user.name
+          td
+            - if r.quote.company_division_client_id.present?
+              = r.quote.client.user.name
+            - else
+              |担当者不明
           td = r.memo.truncate(30)
           td
             - if r.attachment.present?
