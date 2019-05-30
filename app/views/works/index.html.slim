@@ -36,7 +36,7 @@
             td.u-ta-right  = r.updated_at
         - else
           - if @count.blank?
-            - if r.quote.division_id == @division
+            - if r.division_id == @division
               tr
                 td.u-ta-center = r.quote.quote_number if r.quote&.quote_number.present?
                 td.u-ta-center = link_to '詳細', work_path(r), class: 'c-btnMain-standard'
