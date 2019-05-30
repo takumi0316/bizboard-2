@@ -117,9 +117,9 @@ export default class ProjectSearch extends React.Component {
   render () {
 
     return (this.state.show ?
-      <div className={Style.ProjectSearch} onClick={::this._close}>
+      <div className={Style.ProjectSearch} onMouseDown={::this._close}>
 
-        <div className={Style.ProjectSearch__inner} onClick={this._stopPropagation}>
+        <div className={Style.ProjectSearch__inner} onMouseDown={this._stopPropagation}>
 
           { this.state.body == null ?
             <div>

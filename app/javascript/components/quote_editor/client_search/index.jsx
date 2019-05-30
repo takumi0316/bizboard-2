@@ -136,10 +136,10 @@ export default class ClientSearch extends React.Component {
   render () {
 
     return (this.state.show ?
-      <div className={Style.ClientSearch} onClick={::this._close}>
+      <div className={Style.ClientSearch} onMouseDown={::this._close}>
 
         { this.state.type ? <CompanyBulk closeBulk={ e => this._closeBulk() } users={ this.props.users } prefectures={ this.props.prefectures } applyClient={ ::this.props.applyClient } close={ e => this._close() } /> : null}
-        <div className={Style.ClientSearch__inner} onClick={this._stopPropagation}>
+        <div className={Style.ClientSearch__inner} onMouseDown={this._stopPropagation}>
 
           { this.state.body == null ?
             <div>

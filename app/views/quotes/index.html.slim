@@ -67,7 +67,7 @@
                 | 未発行
             td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
             td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-            td = link_to '複製', quotes_copy_path(id: r), class: 'c-btnMain-standard c-btn-orange'
+            td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
             td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
         -else
           - if @count.blank?
@@ -115,7 +115,7 @@
                     | 未発行
                 td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
                 td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-                td = link_to '複製', quotes_copy_path(id: r), class: 'c-btnMain-standard c-btn-orange'
+                td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
                 td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
           - else
             tr
@@ -161,7 +161,7 @@
                   | 未発行
               td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
               td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-              td = link_to '複製', quotes_copy_path(id: r), class: 'c-btnMain-standard c-btn-orange'
+              td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
               td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'
