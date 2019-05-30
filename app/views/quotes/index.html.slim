@@ -2,13 +2,7 @@
 
 = link_to '案件を作成する', new_quote_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
-= form_with url: quotes_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
-
-  .c-search__item
-    = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '案件番号/案件名/件名'
-
-  = f.submit '検索', class: 'c-btnMain-standard'
+= react_component('QuoteSearch',{division: current_user.division.name})
 
 .c-table.u-mt-30
   table
@@ -29,50 +23,145 @@
         th colspan=4
     tbody
       - quotes.each do |r|
-        tr
-          td = r&.quote_number
-          td = r&.status_i18n
-          td = r&.subject&.truncate(25)
-          td
-            - if r.company_division_client_id&.present?
-              = r.client&.company_division&.company&.name
-              |&nbsp;
-              |&nbsp;
-              = r&.client&.name
-            - else
-              | お客様情報なし
-          td = r.deliver_at
-          td
-            - if r&.user_id&.present?
-              = r&.user&.name
-            - else
-              |更新者不明
-          td = r.updated_at
-          td
-            - if r.draft?
-              = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
-            - else
-              = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
-          td
-            - if r.pdf_url.present?
-              = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
-            - else
-              = link_to '見積書作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
-          td
-            - if r.pdf_url.present?
-              = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
-            -else
-              | 未発行
-          td
-            - if r.invoicing? && r.invoice.present?
-              = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
-            - elsif r.end_work?
-              = link_to '請求書作成', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
-            - else
-              | 未発行
-          td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-          td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-          td = link_to '複製', quotes_copy_path(id: r), class: 'c-btnMain-standard c-btn-orange'
-          td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+        - if @division == 3
+          tr
+            td = r&.quote_number
+            td = r&.status_i18n
+            td = r&.subject&.truncate(25)
+            td
+              - if r.company_division_client_id&.present?
+                = r.client&.company_division&.company&.name
+                |&nbsp;
+                |&nbsp;
+                = r&.client&.name
+              - else
+                | お客様情報なし
+            td = r.deliver_at
+            td
+              - if r&.user_id&.present?
+                = r&.user&.name
+              - else
+                |更新者不明
+            td = r.updated_at
+            td
+              - if r.draft?
+                = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+              - else
+                = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
+            td
+              - if r.pdf_url.present?
+                = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
+              - else
+                = link_to '見積書作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
+            td
+              - if r.pdf_url.present?
+                = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
+              -else
+                | 未発行
+            td
+              - if r.invoicing? && r.invoice.present?
+                = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
+              - elsif r.end_work?
+                = link_to '請求書作成', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+              - else
+                | 未発行
+            td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+            td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
+            td = link_to '複製', quotes_copy_path(id: r), class: 'c-btnMain-standard c-btn-orange'
+            td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+        -else
+          - if @count.blank?
+            - if r.user.division.id == @division
+              tr
+                td = r&.quote_number
+                td = r&.status_i18n
+                td = r&.subject&.truncate(25)
+                td
+                  - if r.company_division_client_id&.present?
+                    = r.client&.company_division&.company&.name
+                    |&nbsp;
+                    |&nbsp;
+                    = r&.client&.name
+                  - else
+                    | お客様情報なし
+                td = r.deliver_at
+                td
+                  - if r&.user_id&.present?
+                    = r&.user&.name
+                  - else
+                    |更新者不明
+                td = r.updated_at
+                td
+                  - if r.draft?
+                    = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                  - else
+                    = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
+                td
+                  - if r.pdf_url.present?
+                    = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
+                  - else
+                    = link_to '見積書作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
+                td
+                  - if r.pdf_url.present?
+                    = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
+                  -else
+                    | 未発行
+                td
+                  - if r.invoicing? && r.invoice.present?
+                    = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
+                  - elsif r.end_work?
+                    = link_to '請求書作成', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+                  - else
+                    | 未発行
+                td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+                td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
+                td = link_to '複製', quotes_copy_path(id: r), class: 'c-btnMain-standard c-btn-orange'
+                td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+          - else
+            tr
+              td = r&.quote_number
+              td = r&.status_i18n
+              td = r&.subject&.truncate(25)
+              td
+                - if r.company_division_client_id&.present?
+                  = r.client&.company_division&.company&.name
+                  |&nbsp;
+                  |&nbsp;
+                  = r&.client&.name
+                - else
+                  | お客様情報なし
+              td = r.deliver_at
+              td
+                - if r&.user_id&.present?
+                  = r&.user&.name
+                - else
+                  |更新者不明
+              td = r.updated_at
+              td
+                - if r.draft?
+                  = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                - else
+                  = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
+              td
+                - if r.pdf_url.present?
+                  = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
+                - else
+                  = link_to '見積書作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
+              td
+                - if r.pdf_url.present?
+                  = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
+                -else
+                  | 未発行
+              td
+                - if r.invoicing? && r.invoice.present?
+                  = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
+                - elsif r.end_work?
+                  = link_to '請求書作成', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+                - else
+                  | 未発行
+              td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+              td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
+              td = link_to '複製', quotes_copy_path(id: r), class: 'c-btnMain-standard c-btn-orange'
+              td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

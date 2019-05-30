@@ -47,7 +47,8 @@ class QuotesController < ApplicationController
   def index
 
     add_breadcrumb '案件'
-    current_user.division&.name = @id
+    @division = current_user.division.id
+    @count = params[:count]
   end
 
   ##
@@ -59,7 +60,6 @@ class QuotesController < ApplicationController
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '新規作成'
     @quote = Quote.new
-    quote.quote_items.build
   end
 
   ##
@@ -452,6 +452,11 @@ class QuotesController < ApplicationController
     params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :mf_quote_id, :user_id, :status, :quote_number,
       :quote_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :division_id, :discount,
       quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
+  end
+
+  def count_params
+
+    params :count
   end
 
 end

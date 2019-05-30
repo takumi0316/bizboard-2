@@ -36,6 +36,9 @@ import ProjectEditor from 'components/project_editor'
 // 見積り作成
 import QuoteEditor from 'components/quote_editor'
 
+//見積もり検索
+import QuoteSearch from 'components/quote_search'
+
 // 案件詳細
 import ProjectViewer from 'components/project_viewer'
 
@@ -61,6 +64,7 @@ WebpackerReact.setup({
   LogoEditor,
   ProjectEditor,
   QuoteEditor,
+  QuoteSearch,
   ProjectViewer,
   CompanyDivisions,
   WorksSearch,

@@ -42,6 +42,8 @@ class WorksController < ApplicationController
 
     add_breadcrumb '作業進捗一覧'
 
+    @division = current_user.division.id
+    @count = params[:count]
   end
 
   ##
@@ -119,5 +121,9 @@ class WorksController < ApplicationController
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
+  def count_params
+    params :count
+  end
 
 end
