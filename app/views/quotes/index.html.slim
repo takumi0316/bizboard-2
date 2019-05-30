@@ -44,7 +44,7 @@
                 |更新者不明
             td = r.updated_at
             td
-              - if r.draft?
+              - if r.work.nil?
                 = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
               - else
                 = link_to '作業書', work_path(id: r.work&.id), class: 'c-btnMain-standard c-btn-blue'
@@ -92,7 +92,7 @@
                     |更新者不明
                 td = r.updated_at
                 td
-                  - if r.draft?
+                  - if r.work.nil?
                     = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
                   - else
                     = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
