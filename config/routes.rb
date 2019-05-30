@@ -30,10 +30,10 @@ Rails.application.routes.draw do
     get  :api_post
     get  :api_update
     get  :pdf_dl
-    get  :copy
   end
   resources :quotes do
     post :status
+    post :copy
   end
 
   resources :quote_projects, only: [:destroy]

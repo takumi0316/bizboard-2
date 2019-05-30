@@ -99,9 +99,9 @@ export default class DatetimePicker extends React.Component {
   render () {
 
     return (this.state.show ?
-      <div className={Style.DatetimePicker} onClick={::this._close}>
+      <div className={Style.DatetimePicker} onMouseDown={::this._close}>
 
-        <div className={Style.DatetimePicker__inner} onClick={this._stopPropagation}>
+        <div className={Style.DatetimePicker__inner} onMouseDown={this._stopPropagation}>
 
           { /* 年 */ }
           <div className={Style.DatetimePicker__year}>

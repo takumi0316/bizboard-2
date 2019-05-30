@@ -417,12 +417,6 @@ class QuotesController < ApplicationController
     send_data response.body, filename: "#{filename}.pdf"
   end
 
-  def copy
-
-    redirect_to quote_path
-  end
-
-
   ##
   # ステータスを更新する
   # @version 2018/06/10
@@ -439,6 +433,17 @@ class QuotesController < ApplicationController
     end
 
     redirect_to quotes_path, flash: {notice: {message: 'ステータスを更新しました'}}
+  end
+
+  ##
+  # 見積書を複製する
+  # @version 2018/06/10
+  #
+  def copy
+
+    quote.deep_clone(:quote_projects, :quote_items).save!
+
+    redirect_to quotes_path, flash: {notice: {message: '見積書を複製しました'}}
   end
 
   #----------------------------------------

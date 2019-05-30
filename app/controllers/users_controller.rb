@@ -84,6 +84,8 @@ class UsersController < ApplicationController
   #
   def destroy
 
+    raise '己です。' if user.id = current_user.id
+
     raise '対象のユーザーは見積りに紐付きがあります' if user.quotes.exists?
 
     user.destroy!

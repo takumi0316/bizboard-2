@@ -25,10 +25,10 @@ export default class ProjectAfterProcess extends React.Component {
     super(props);
 
     this.state = {
-      stapler: this.props.project_after_process.stapler || 'original_stapler',
-      folding: this.props.project_after_process.folding || 'original_folding',
+      stapler: this.props.project_after_process.stapler || 'no_stapler',
+      folding: this.props.project_after_process.folding || 'no_folding',
       clip: this.props.project_after_process.clip || 'clip_unnecessary',
-      hole: this.props.project_after_process.hole || 'original_hole',
+      hole: this.props.project_after_process.hole || 'hole_unnecessary',
       bind: this.props.project_after_process.bind || 'file_unnecessary',
       back_text: this.props.project_after_process.back_text || 'back_text_unnecessary',
     };

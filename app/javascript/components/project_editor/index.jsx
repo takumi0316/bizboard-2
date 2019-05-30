@@ -82,14 +82,8 @@ export default class ProjectEditor extends React.Component {
       'project[binding_work]': this.state.binding_work,
     };
 
-    // その他案件
-    if (this.state.project_category == 'project_other') {
-
-      field['project[after_process]'] = 'after_process_unnecessary';
-      field['project[binding_work]'] = 'binding_works_unnecessary';
-
     // プリント案件
-    } else if (this.state.project_category == 'project_print') {
+    if (this.state.project_category == 'project_print') {
 
       field = Object.assign(field, this.refs.project_print.getDetail());
 
@@ -128,6 +122,15 @@ export default class ProjectEditor extends React.Component {
       field = Object.assign(field, this.refs.project_scan.getDetail());
 
       price += Number(field['project[scan_attributes][price]']);
+
+    // その他
+    } else if (this.state.project_category == 'project_other') {
+
+      field['project[after_process]'] = 'after_process_unnecessary';
+      field['project[binding_work]'] = 'binding_works_unnecessary';
+      field['project[note]'] = this.refs.note.value;
+
+      price += Number(this.refs.other_price.value);
     }
 
     // 後加工
@@ -158,6 +161,9 @@ export default class ProjectEditor extends React.Component {
       alert(messages.join('\n'));
       return false;
     }
+
+    console.log('price', price);
+    console.log('field', field);
 
     // 価格の適用
     field['project[price]'] = price;
@@ -223,7 +229,7 @@ export default class ProjectEditor extends React.Component {
         <div className='c-form-label u-mt-30'>
           <label htmlFor='project_name'>品目単価 <span className='u-fs-small u-fc-thinBlack'>※更新時に価格が自動計算されます</span></label>
         </div>
-        <input placeholder='※更新時に価格が自動計算されます' readOnly={true} className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' value={this.state.price} />
+        <input placeholder='※更新時に価格が自動計算されます' readOnly={true} className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' value={Utilities.numberWithDelimiter(this.state.price)} />
 
         { this.state.client ?
           <div className='c-attention'>
@@ -284,6 +290,32 @@ export default class ProjectEditor extends React.Component {
         { this.state.project_category == 'project_card'  ? <ProjectCard  ref='project_card'  {...{project}}  project_card={project_card   || {}}  /> : null }
         { this.state.project_category == 'project_scan'  ? <ProjectScan  ref='project_scan'  {...{project}}  project_scan={project_scan   || {}}  /> : null }
         { this.state.project_category == 'project_bind'  ? <ProjectBind  ref='project_bind'  {...{project}}  project_bind={project_bind   || {}}  /> : null }
+
+        {/** その他の場合 */}
+        { this.state.project_category == 'project_other'  ?
+
+          <div className={Style.ProjectEditor}>
+            <div className='u-mt-30 c-table'>
+              <table>
+                <tbody>
+                  <tr>
+                    <td className='u-fw-bold'>備考</td>
+                    <td>
+                      <textarea placeholder='内容を入力してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='note' defaultValue={this.props.project.note}></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className='u-fw-bold'>金額</td>
+                    <td>
+                      <input className='c-form-text' ref='other_price' type='text' defaultValue={this.props.project.price || 0} />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          : null
+        }
 
         {/** 後加工 / 製本仕様 */}
         { this.state.project_category == 'project_print' || this.state.project_category == 'project_copy' || this.state.project_category == 'project_bind' ?
