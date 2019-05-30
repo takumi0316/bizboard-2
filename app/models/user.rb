@@ -76,6 +76,7 @@ class User < ApplicationRecord
 
   # 案件
   has_many :projects
+  has_many :quotes
 
   # 画像
   has_one_attached :image, dependent: :detach
