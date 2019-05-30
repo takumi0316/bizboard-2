@@ -125,7 +125,7 @@ class Quote < ApplicationRecord
   # @version 2018/06/10
   #
   def self.search(word)
-    
+
     # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
     terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
     query = (['free_word like ?'] * terms.size).join(' and ')
