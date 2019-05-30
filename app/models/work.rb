@@ -67,7 +67,7 @@ class Work < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.quote&.client&.company_division&.company&.name} #{self.quote&.client&.name} #{self.quote&.subject} #{self.status} #{self.quote&.deliver_at}"
+    self.free_word = "#{self.quote&.client&.company_division&.company&.name} #{self.quote&.client&.name} #{self.quote&.subject} #{self.status} #{self.quote&.deliver_at} #{self.division&.name}"
   end
 
   ##

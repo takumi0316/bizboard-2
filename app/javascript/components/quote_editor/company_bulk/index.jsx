@@ -24,7 +24,7 @@ export default class CompanyBulk extends React.Component {
       companies: [],
       divisions: [],
       company_name: '',
-      companyDivision: [],
+      companyDivision: {},
       company_type: false,
       division_type: false,
     }
@@ -178,17 +178,6 @@ export default class CompanyBulk extends React.Component {
       });
   }
 
-  componentWillMount = () => {
-
-    // 記事内容を送信
-    Request.get('/companies.json?search=')
-      .end((err, res) => {
-
-        if (err) return false;
-        this.setState({companies: res.body.companies});
-      });
-  }
-
   /**
    *
    *
@@ -204,6 +193,20 @@ export default class CompanyBulk extends React.Component {
     this.setState({ company_name: companyName }, this._companySearch());
   }
 
+  _changeDivision = () => {
+
+    if (this.state.companyDivision.length > 0) {
+
+      let copyDivision = Object.assign([], this.state.companyDivision);
+      copyDivision.name = this.refs.companyDivisionName.value;
+      console.log(copyDivision)
+      this.setState({ companyDivision: copyDivision });
+    } else {
+
+      let copyDivision = { 'name': this.refs.companyDivisionName.value };
+      this.setState({ companyDivision: copyDivision });
+    }
+  }
   /**
    *
    *
@@ -273,7 +276,7 @@ export default class CompanyBulk extends React.Component {
                 <label>会社名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onChange={::this._changeCompany} onFocus={ ::this._openCompany } onBlur={ ::this._closeCompany } value={ this.state.company_name } /></div>
+              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onChange={::this._changeCompany} onFocus={ ::this._openCompany } onBlur={ ::this._closeCompany } onClick={ ::this._companySearch } value={ this.state.company_name } /></div>
 
               { this.state.companies.length > 0 && this.state.company_type ?
 
@@ -297,7 +300,7 @@ export default class CompanyBulk extends React.Component {
                 <label>部署名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' autoComplete='off' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } onBlur={ ::this._closeDivision } defaultValue={ this.state.companyDivision.name } /></div>
+              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' autoComplete='off' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } onBlur={ ::this._closeDivision } value={ this.state.companyDivision.name } onChange={ ::this._changeDivision }/></div>
               { this.state.divisions.length > 0 && this.state.division_type ?
 
                 <div className={ Style.SubcontractorBulk__candidateDivisions__modal }>

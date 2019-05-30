@@ -23,7 +23,7 @@ export default class ClientSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    this.state = { show: false, clients: [], body: null, type: false};
+    this.state = { show: false, clients: [], body: null, type: false, companies: [], };
   }
 
 
@@ -117,7 +117,13 @@ export default class ClientSearch extends React.Component {
    */
   _openBulk = () => {
 
-    this.setState({ type: true });
+    Request.get('/companies.json?search=')
+      .end((err, res) => {
+
+      if (err) return false;
+      this.setState({companies: res.body.companies, type: true});
+    });
+    this.setState({ companies: [], type: true });
   }
 
   /**
@@ -138,7 +144,7 @@ export default class ClientSearch extends React.Component {
     return (this.state.show ?
       <div className={Style.ClientSearch} onClick={::this._close}>
 
-          { this.state.type ? <SubcontractorBulk closeBulk={ e => this._closeBulk() } users={ this.props.users } prefectures={ this.props.prefectures } applyClient={ ::this.props.applyClient } work_subcontractor_id={ this.props.work_subcontractor_id } close={ e => this._close() } /> : null}
+          { this.state.type ? <SubcontractorBulk closeBulk={ e => this._closeBulk() } users={ this.props.users } prefectures={ this.props.prefectures } applyClient={ ::this.props.applyClient } work_subcontractor_id={ this.props.work_subcontractor_id } close={ e => this._close() } companies={ this.state.companies } /> : null}
         <div className={Style.ClientSearch__inner} onClick={this._stopPropagation}>
 
           { this.state.body == null ?

@@ -179,15 +179,19 @@ export default class SubcontractorBulk extends React.Component {
     let subcontractorName = this.refs.companyName.value;
     this.setState({ subcontractor_name: subcontractorName }, this._subcontractorSearch())
   }
-  componentWillMount = () => {
 
-    // 記事内容を送信
-    Request.get('/subcontractors.json?search=')
-      .end((err, res) => {
+  _changeDivision = () => {
 
-        if (err) return false;
-        this.setState({subcontractors: res.body.subcontractors});
-      });
+    if (this.state.subcontractorDivision.length > 0) {
+
+      let copyDivision = Object.assign([], this.state.subcontractorDivision);
+      copyDivision.name = this.refs.companyDivisionName.value;
+      this.setState({ subcontractorDivision: copyDivision });
+    } else {
+
+      let copyDivision = { 'name': this.refs.companyDivisionName.value };
+      this.setState({ subcontractorDivision: copyDivision });
+    }
   }
 
   _closeSubcontractor = () => {
@@ -235,7 +239,7 @@ export default class SubcontractorBulk extends React.Component {
                 <label>会社名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onChange={ ::this._changeName } onFocus={ ::this._openSubcontractor } onBlur={ ::this._closeSubcontractor } value={ this.state.subcontractor_name }/></div>
+              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onClick={ ::this._subcontractorSearch } onChange={ ::this._changeName } onFocus={ ::this._openSubcontractor } onBlur={ ::this._closeSubcontractor } value={ this.state.subcontractor_name }/></div>
 
               { this.state.subcontractors.length > 0 && this.state.subcontractor_type ?
 
@@ -259,7 +263,7 @@ export default class SubcontractorBulk extends React.Component {
                 <label>部署名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' autoComplete='off' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } onBlur={ ::this._closeDivision } defaultValue={ this.state.subcontractorDivision.name } /></div>
+              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' autoComplete='off' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } onBlur={ ::this._closeDivision } value={ this.state.subcontractorDivision.name } onChange={ ::this._changeDivision } /></div>
               { this.state.divisions.length > 0 && this.state.division_type ?
 
                 <div className={ Style.SubcontractorBulk__candidateDivisions__modal }>

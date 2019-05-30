@@ -23,7 +23,7 @@ export default class ClientSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    this.state = { show: false, clients: [], body: null, type: false };
+    this.state = { show: false, clients: [], body: null, type: false, };
   }
 
 
@@ -146,7 +146,7 @@ export default class ClientSearch extends React.Component {
               <div className={Style.ClientSearch__form}>
                 <input type='text' className={Style.ClientSearch__input} placeholder='お客様情報で検索' ref='word' onChange={::this._onChange}/>
                 <div onClick={::this._onChange} className='c-btnMain-standard u-ml-10'>検索</div>
-                <div onClick={ e => this._openBulk() } className='c-btnMain-standard c-btn-blue u-ml-50'>外注先情報を作成する</div>
+                <div onClick={ e => this._openBulk() } className='c-btnMain-standard c-btn-blue u-ml-50'>お客様情報を作成する</div>
               </div>
 
               { this.state.clients.length > 0 ?
