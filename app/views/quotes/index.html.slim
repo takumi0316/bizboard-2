@@ -47,7 +47,7 @@
               - if r.draft?
                 = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
               - else
-                = link_to '作業書', work_path(id: r.work.id), class: 'c-btnMain-standard c-btn-blue'
+                = link_to '作業書', work_path(id: r.work&.id), class: 'c-btnMain-standard c-btn-blue'
             td
               - if r.pdf_url.present?
                 = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
