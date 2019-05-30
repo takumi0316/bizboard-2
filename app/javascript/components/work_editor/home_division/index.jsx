@@ -106,7 +106,7 @@ export default class HomeDivision extends React.Component {
 
     const division = this.state.divisions[e.target.dataset.number];
 
-    this.props.applyHomeDivision(division);
+    this.props.applyDivision(division);
     this._close();
   }
 

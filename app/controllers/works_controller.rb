@@ -42,7 +42,7 @@ class WorksController < ApplicationController
 
     add_breadcrumb '作業進捗一覧'
 
-    @division = current_user.division.id
+    @division = current_user.division&.id
     @count = params[:count]
   end
 
@@ -68,6 +68,11 @@ class WorksController < ApplicationController
 
       work.update! notices: params[:work_notices]
       render json: { status: :success, notices: work.notices }
+
+    elsif params[:status] === 'division'
+
+      work.update! division_id: params[:division_id]
+      render json: { status: :success, division: work.division }
     end
 
     rescue => e
@@ -82,6 +87,9 @@ class WorksController < ApplicationController
 
         work.update! notices: params[:work_notices]
         render json: { status: :success, notices: work.notices }
+      elsif params[:division]
+
+        render json: { status: :error, division: work.division }
       end
   end
 

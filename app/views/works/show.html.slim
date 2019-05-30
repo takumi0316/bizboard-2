@@ -12,43 +12,80 @@
     | 担当者:
     span.u-ml-10 = works.find(params[:id]).quote&.user&.name
   span.u-ml-30
-    /= link_to '編集する', edit_quote_path(works.find(params[:id]).quote), class: 'u-td-underline'
-  br
+    = link_to '編集する', edit_quote_path(work.quote), class: 'u-td-underline'
+  .u-mt-10
   | お客様情報
   br
-  - if works.find(params[:id]).quote&.client&.company_division&.company&.name&.present? && works.find(params[:id]).quote&.client&.name&.present? && works.find(params[:id]).quote&.client&.company_division&.company&.name&.present? && works.find(params[:id]).quote&.client&.company_division&.name&.present?
-    span
-      | 会社名:
-      span.u-ml-10 = works.find(params[:id]).quote&.client&.company_division&.company&.name
-    span.u-ml-20
-      | 部署名:
-      span.u-ml-10 = works.find(params[:id]).quote&.client&.company_division&.name
-    span.u-ml-20
-      | 担当者名:
-      span.u-ml-10 = works.find(params[:id]).quote&.client&.name if works.find(params[:id]).quote&.client&.name&.present?
-      | 樣
-    br
-    span
-      | 請求先情報
-      br
-      span
-        | 会社名:
-        span.u-ml-10 = works.find(params[:id]).quote.client&.company_division&.company&.name
-      span.u-ml-20
-        | 部署名:
-        span.u-ml-10 = works.find(params[:id]).quote&.client&.company_division&.name
-  - else
-    span
-      | 請求先情報
-  br
+  span
+    | 会社名:
+    span.u-ml-10 = work.quote&.client&.company_division&.company&.name
+  span.u-ml-20
+    | 部署名:
+    span.u-ml-10 = work.quote&.client&.company_division&.name
+  span.u-ml-20
+    | 担当者名:
+    span.u-ml-10 = work.quote&.client&.name
+    | 樣
+  .u-mt-10
     | 納期:
-    span.u-ml-1p = works.find(params[:id]).quote&.deliver_at&.present? ? works.find(params[:id]).quote&.deliver_at&.to_s : '未定'
+    span.u-ml-10 = work.quote&.deliver_at&.present? ? work.quote&.deliver_at&.to_s : '未定'
     span.u-ml-20
       | 納品方法:
     span.u-ml-10
-      = works.find(params[:id]).quote&.deliver_type_i18n
-      = " (#{works.find(params[:id]).quote.deliver_type_note})" if works.find(params[:id]).quote&.deliver_type_note&.present?
+      = work.quote&.deliver_type_i18n
+      = " (#{work.quote.deliver_type_note})" if work.quote&.deliver_type_note&.present?
 
+  .u-mt-10
+    | 品目:
+    br
+    - work.quote.quote_projects.each do |r|
+
+      - if r&.project_name == 'プリント'
+
+        .u-mt-10
+          | 案件種別
+          span.u-ml-10 = r&.project_name
+          span.u-ml-10 = r&.name
+          br
+          span.u-ml-10 部数:
+          span.u-ml-10 = r&.unit
+      - elsif r&.project_name == 'コピー'
+
+        .u-mt-10
+          | 案件種別
+          span.u-ml-10 = r&.project_name
+          span.u-ml-10 = r&.name
+          br
+          span.u-ml-10 部数:
+          span.u-ml-10 = r&.unit
+      - elsif r&.project_name == '名刺'
+
+        .u-mt-10
+          | 案件種別
+          span.u-ml-10 = r&.project_name
+          span.u-ml-10 = r&.name
+          br
+          span.u-ml-10 部数:
+          span.u-ml-10 = r&.unit
+      - elsif r&.project_name == 'スキャン'
+
+        .u-mt-10
+          | 案件種別
+          span.u-ml-10 = r&.project_name
+          span.u-ml-10 = r&.name
+          br
+          span.u-ml-10 部数:
+          span.u-ml-10 = r&.unit
+      - elsif r&.project_name == '製本'
+
+        .u-mt-10
+          | 案件種別
+          span.u-ml-10 = r&.project_name
+          span.u-ml-10 = r&.name
+          br
+          span.u-mt-10 部数:
+          span.u-ml-10 = r&.unit
+      - elsif r&.project_name == 'その他'
 
   / - if works.find(params[:id]).quote.project_category_i18n === 'プリント'
 
@@ -475,4 +512,5 @@
     work_detail_actual_cost: (works.find(params[:id]).work_details.sum(:actual_cost)).to_i,
     subcontractor_detail_actual_cost: (works.find(params[:id]).subcontractor_detail.sum(:actual_cost)).to_i,
     prefectures: Prefecture.all,
+    division: works.find(params[:id]).division,
   })
