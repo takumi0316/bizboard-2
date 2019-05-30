@@ -71,7 +71,7 @@
             td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
         -else
           - if @count.blank?
-            - if r.user.division.id == @division
+            - if r.division_id == @division
               tr
                 td = r&.quote_number
                 td = r&.status_i18n
