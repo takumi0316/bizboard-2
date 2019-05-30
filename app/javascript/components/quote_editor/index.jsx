@@ -8,6 +8,7 @@ require('superagent-rails-csrf')(Request);
 import DatetimePicker from './datetime_picker'
 import ClientSearch from './client_search'
 import ProjectSearch from './project_search'
+import HomeDivision from './home_division'
 
 // datetime
 import Dayjs from 'dayjs'
@@ -36,6 +37,7 @@ export default class QuoteEditor extends React.Component {
       quote_projects: props.quote_projects,
       company: props.company,
       division: props.division,
+      home_division: props.home_division,
       client: props.client,
       user_id: props.user === null ? null : props.user.id,
       quote_type: props.quote.quote_type === null ? 'contract' : props.quote.quote_type,
@@ -137,10 +139,13 @@ export default class QuoteEditor extends React.Component {
         'projectSpecificationUnitPrice': Number(document.getElementById('projectSpecificationUnitPrice' + i).value),
         'projectSpecificationUnit': Number(document.getElementById('projectSpecificationUnit' + i).value),
         'projectSpecificationPrice': Number(document.getElementById('projectSpecificationPrice' + i).value),
+        'projectName': quoteProjects[i].project_name,
       }));
+      console.log('projectName: ', quoteProjects[i].project_name)
     }
     field = {
       'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
+      'quote[division_id]': this.state.home_division === null ? 'null' : this.state.home_division.id,
       'quote[company_division_client_id]': this.refs.company_division_client_id.value,
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
@@ -222,6 +227,11 @@ export default class QuoteEditor extends React.Component {
       company: client.company,
       division: client.division,
     });
+  }
+
+  applyHomeDivision = (division) => {
+
+    this.setState({ home_division: division })
   }
 
   /**
@@ -361,12 +371,24 @@ export default class QuoteEditor extends React.Component {
     return (
       <div>
         <h1 className='l-dashboard__heading'>見積書作成</h1>
-        <input type='hidden' name='authenticity_token' value={'test'} />
         <div className='c-form-label u-mt-30'>
           <label htmlFor='quote_name'>見積書タイトル</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <input placeholder='見積書タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='subject' defaultValue={this.props.quote.subject} />
+        <div className={ 'c-form-label u-mt-30' }>
+          <label>作業部署情報</label>
+        </div>
+        { this.state.home_division !== null ?
+          <div className={ 'c-attention' }>
+            <div className={ 'u-mt-10' }>部署名:{ this.state.home_division.name }</div>
+          </div>
+          :
+          null
+        }
+        <div className={ 'u-mt-10' }>
+          <HomeDivision applyHomeDivision={ ::this.applyHomeDivision } />
+        </div>
         <div className='c-form-label u-mt-30'>
           <label htmlFor='quote_company_division_client_id'>お客様情報</label>
         </div>

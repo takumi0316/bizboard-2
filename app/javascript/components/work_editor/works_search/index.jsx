@@ -87,7 +87,7 @@ export default class WorksSearch extends Component {
     return (
       <div className={ 'c-search__work-index u-mt-20' }>
         <div className={ Style.Search }>
-          <form method='get' action='/works' >
+          <form method='get' action='/works?count=' >
             <div>
               <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
             </div>
@@ -119,6 +119,7 @@ export default class WorksSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
+              <input type='hidden' name='count' value='1' />
               <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
               <a className={ 'c-btnMain-standard' } href={ '/works' } >元に戻す</a>
             </div>

@@ -1,0 +1,11 @@
+json = { status: :success }
+
+json[:divisions] = divisions.map do |r|
+
+  {
+    id: r.id,
+    name: r.name,
+  }
+end
+
+json
