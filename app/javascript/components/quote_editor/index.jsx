@@ -94,7 +94,7 @@ export default class QuoteEditor extends React.Component {
     let message = [];
 
     if (this.refs.subject.value == '') {
-      message.push('見積りタイトルを入力してください。');
+      message.push('案件タイトルを入力してください。');
     }
 
     return message;
@@ -179,17 +179,17 @@ export default class QuoteEditor extends React.Component {
         if (  !err && res.body.status == 'success'  ) {
           if (!this.props.quote.id) {
 
-            alert('見積り情報を作成しました');
+            alert('案件情報を作成しました');
             location.href = `${res.body.quote.id}/edit`;
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           } else {
 
-            alert('見積り情報を更新しました');
+            alert('案件情報を更新しました');
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           }
         } else {
 
-          alert('見積り情報の保存に失敗しました。');
+          alert('案件情報の保存に失敗しました。');
           this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
         }
       });
@@ -367,12 +367,12 @@ export default class QuoteEditor extends React.Component {
   render() {
     return (
       <div>
-        <h1 className='l-dashboard__heading'>見積書作成</h1>
+        <h1 className='l-dashboard__heading'>案件作成</h1>
         <div className='c-form-label u-mt-30'>
-          <label htmlFor='quote_name'>見積書タイトル</label>
+          <label htmlFor='quote_name'>案件タイトル</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
-        <input placeholder='見積書タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='subject' defaultValue={this.props.quote.subject} />
+        <input placeholder='案件タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='subject' defaultValue={this.props.quote.subject} />
         <div className='c-form-label u-mt-30'>
           <label htmlFor='quote_company_division_client_id'>お客様情報</label>
         </div>
@@ -395,7 +395,7 @@ export default class QuoteEditor extends React.Component {
           <table>
             <tbody>
               <tr>
-                <td className='u-fw-bold'>見積もり発行日</td>
+                <td className='u-fw-bold'>案件作成日</td>
                 <td>
                   <span className='u-mr-30'>{ this.state.date ? Dayjs(this.state.date).format('YYYY年MM月DD日') : '未定' }</span>
                   <DatetimePicker apply={::this.setDate} defaultDatetime={this.props.quote.date} />
