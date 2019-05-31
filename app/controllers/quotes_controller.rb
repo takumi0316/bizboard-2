@@ -47,6 +47,7 @@ class QuotesController < ApplicationController
   def index
 
     add_breadcrumb '案件'
+    
     @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
