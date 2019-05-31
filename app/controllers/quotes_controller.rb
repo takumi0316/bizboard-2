@@ -14,7 +14,7 @@ class QuotesController < ApplicationController
   # 見積もり
   expose(:quotes) {
     Quote
-    .search(params[:name])
+    .search(name: params[:name], date1: params[:date1], date2: params[:date2])
     .all
     .includes(:quote_items)
     .order(date: 'DESC')
@@ -168,72 +168,6 @@ class QuotesController < ApplicationController
     flash[:warning] = { message: e.message }
   ensure
     redirect_to action: :index
-  end
-
-  def api_post
-
-    if quote.quote_projects.present?
-
-      begin
-        token = current_user.mf_access_token
-        uri = URI.parse("https://invoice.moneyforward.com/api/v2/quotes.json")
-        request = Net::HTTP::Post.new(uri)
-        request.content_type = "application/json"
-        request["Authorization"] = "BEARER #{token}"
-
-        # 品目を整形する
-        items = quote.quote_projects.each_with_object([]) do |r, result|
-          result.push({
-            name: r.name,
-            quantity: r.unit,
-            unit_price: r.price,
-          })
-        end
-
-        #値引きが０より大きければ品目に値引き追加
-        if quote.discount > 0
-          items << {
-            name: '値引き',
-            quantity: 1,
-            unit_price: "-#{quote.discount}",
-          }
-        end
-
-        request.body = JSON.dump({
-          "quote": {
-            "department_id": quote.client.company_division.mf_company_division_id,
-            "quote_number": quote.quote_number,
-            "quote_date": quote.date.strftime('%Y-%m-%d'),
-            "expired_date": quote.expiration.strftime('%Y-%m-%d'),
-            "title": quote.subject,
-            "note": quote.remarks,
-            "memo": quote.memo,
-            "items": items,
-          }
-        })
-
-        req_options = {
-          use_ssl: uri.scheme == "https",
-        }
-
-        response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-          http.request(request)
-        end
-
-        data = JSON.parse(response.body)
-
-        quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
-        quote.update_columns(:mf_quote_id => data['data']['id'])
-
-        redirect_to quotes_path, flash: {notice: {message: 'MFに見積もりを作成しました'}}
-      rescue => e
-        redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-      end
-
-    else
-      redirect_to quotes_path, flash: {notice: {message: '品目が紐づいていない為MFに保存ができません'}}
-    end
-
   end
 
   def api_post
