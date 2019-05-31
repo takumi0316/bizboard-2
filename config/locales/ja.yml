@@ -29,6 +29,7 @@ ja:
         active: アクティブ
       user_type:
         general: 一般
+        manager: マネージャー
         admin: 管理者
     company_division_client:
       title:
