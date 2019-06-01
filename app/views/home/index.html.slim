@@ -1,1 +1,15 @@
-h1.l-dashboard__heading JII Factory
+//変更の時はstylesheets/layout/pc/_pikachu.sassを消すのを忘れずに！
+link[href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" type="text/css"]
+.title
+  | Choose your Starter
+  br
+  | 目標管理準備中 ちょっと待ってね
+input#bulbasaur[type="radio" name="pokemonSelect"]
+input#charmander[type="radio" name="pokemonSelect"]
+input#squirtle[type="radio" name="pokemonSelect"]
+.pokeball-container
+  label.pokeball.bulbasaur[for="bulbasaur"]
+  label.pokeball.charmander[for="charmander"]
+  label.pokeball.squirtle[for="squirtle"]
+.poke-container
+  .poke
