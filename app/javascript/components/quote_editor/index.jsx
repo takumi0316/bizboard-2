@@ -130,6 +130,7 @@ export default class QuoteEditor extends React.Component {
 
     for (let i = 0; i < quoteProjectsCount; i++) {
 
+      console.log(quoteProjects[i].project_id)
       // 品目を連想配列に入れる
       arrayRails.push(JSON.stringify({
         'projectSpecificationId': quoteProjects[i].id === null ? 'null' : Number(quoteProjects[i].id),
@@ -138,6 +139,7 @@ export default class QuoteEditor extends React.Component {
         'projectSpecificationUnit': Number(document.getElementById('projectSpecificationUnit' + i).value),
         'projectSpecificationPrice': Number(document.getElementById('projectSpecificationPrice' + i).value),
         'projectName': quoteProjects[i].project_name,
+        'projectId': quoteProjects[i].project_id,
       }));
     }
     field = {
