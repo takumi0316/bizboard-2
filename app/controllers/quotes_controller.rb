@@ -12,7 +12,7 @@ class QuotesController < ApplicationController
   #----------------------------------------
 
   # 見積もり
-  expose(:quotes) {
+  expose_with_pagination(:quotes) {
     Quote
     .search(name: params[:name], date1: params[:date1], date2: params[:date2])
     .all
