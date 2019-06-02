@@ -69,26 +69,28 @@ class InvoicesController < ApplicationController
   #
   def update
 
+    self.invoice = Invoice.find(params[:id])
+
+    # 情報更新
+    self.invoice.update! invoice_params
+
     client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
 
     request_params = {
-      department_id: invoice.quote.client.company_division.mf_company_division_id,
-      title: invoice.subject,
-      billing_number: invoice.quote.quote_number,
+      department_id: self.invoice.quote.client.company_division.mf_company_division_id,
+      title: self.invoice.subject,
+      billing_number: self.invoice.quote.quote_number,
       payment_condition: SiteConfig.payment_condition,
-      note: invoice.remarks,
-      billing_date: invoice.date.to_s(:system),
-      due_date: invoice.expiration.to_s(:system),
-      document_name: invoice.quote.quote_number,
+      note: self.invoice.remarks,
+      billing_date: self.invoice.date.to_s(:system),
+      due_date: self.invoice.expiration.to_s(:system),
+      document_name: '請求書',
     }
 
     # 請求書の発行
-    result = client.billings.update(invoice.mf_invoice_id, request_params)
+    result = client.billings.update(self.invoice.mf_invoice_id, request_params)
 
-    invoice.update!(pdf_url: result.pdf_url)
-
-    # 情報更新
-    invoice.update! invoice_params
+    self.invoice.update!(pdf_url: result.pdf_url)
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '請求書情報を更新しました'}}
   rescue => e
@@ -107,6 +109,24 @@ class InvoicesController < ApplicationController
 
     client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
 
+    # 品目を整形する
+    items_params = invoice.quote.quote_projects.each_with_object([]) do |r, result|
+      result.push({
+        name: r.name,
+        quantity: r.unit,
+        unit_price: r.price,
+      })
+    end
+
+    #値引きが０より大きければ品目に値引き追加
+    if invoice.quote.discount > 0
+      items_params << {
+        name: '値引き',
+        quantity: 1,
+        unit_price: "-#{invoice.quote.discount}",
+      }
+    end
+
     request_params = {
       department_id: invoice.quote.client.company_division.mf_company_division_id,
       title: invoice.subject,
@@ -116,6 +136,7 @@ class InvoicesController < ApplicationController
       billing_date: invoice.date.to_s(:system),
       due_date: invoice.expiration.to_s(:system),
       document_name: invoice.quote.quote_number,
+      items: items_params,
     }
 
     # 請求書の発行
