@@ -47,7 +47,7 @@ class QuotesController < ApplicationController
   def index
 
     add_breadcrumb '案件'
-    
+
     @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
@@ -378,6 +378,12 @@ class QuotesController < ApplicationController
   def copy
 
     quote.deep_clone(:quote_projects, :quote_items).draft!
+
+    if quote.mf_quote_id.present?
+
+      quote.update_columns(:pdf_url => nil)
+      quote.update_columns(:mf_quote_id => nil)
+    end
 
     redirect_to quotes_path, flash: {notice: {message: '見積書を複製しました'}}
   end
