@@ -57,9 +57,9 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
         - invoice.quote.quote_projects.each do |r|
           tr
             td = r.name
-            td = r.price
+            td = r.price.to_i
             td = r.unit
-            td = r.price * r.unit
+            td = r.price.to_i * r.unit.to_i
 
   .c-form-label
     label 合計金額
