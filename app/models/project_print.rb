@@ -35,10 +35,10 @@ class ProjectPrint < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
+  enum draft_data: { data_available: 0, data_unavailable: 10 }
   enum work_process: { work_process_unnecessary: 0, work_process_necessary: 10 }
   enum print_work: { print_work_unnecessary: 0, print_work_necessary: 10 }
   enum work_type: { create_data: 0, edit_data: 10 }
-
   enum color: { original_print: 0, color_print: 10, monochrome_print: 20 }
   enum print_size: { original_size: 0, a3: 10, a4: 20, print_size_other: 30 }
   enum surface: { original_surface: 0, one_side: 10, both_side: 20 }
