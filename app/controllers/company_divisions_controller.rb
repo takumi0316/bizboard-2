@@ -77,9 +77,33 @@ class CompanyDivisionsController < ApplicationController
     # 取引先情報更新
     division.update! division_params
 
+    mf_client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
+
+    partners_params = {
+      name: division.company.name,
+      name_kana: division.company.kana,
+      memo: division.company.note,
+      zip: division.zip,
+      tel: division.tel,
+      prefecture: division.prefecture.name,
+      address1: division.address1,
+      address2: division.address2,
+      department_name: division.name,
+    }
+
+    if division.company.mf_company_id?
+
+      result = mf_client.partners.update(division.company.mf_company_id, partners_params)
+    else
+
+      result = mf_client.partners.create(partners_params)
+      division.company.update!(mf_company_id: result.id)
+      division.update!(mf_company_division_id: result.departments.first.id)
+    end
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先部署情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -92,9 +116,33 @@ class CompanyDivisionsController < ApplicationController
     # 取引先情報更新
     division.update! division_params
 
+    mf_client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
+
+    partners_params = {
+      name: division.company.name,
+      name_kana: division.company.kana,
+      memo: division.company.note,
+      zip: division.zip,
+      tel: division.tel,
+      prefecture: division.prefecture.name,
+      address1: division.address1,
+      address2: division.address2,
+      department_name: division.name,
+    }
+
+    if division.company.mf_company_id?
+
+      result = mf_client.partners.update(division.company.mf_company_id, partners_params)
+    else
+
+      result = mf_client.partners.create(partners_params)
+      division.company.update!(mf_company_id: result.id)
+      division.update!(mf_company_division_id: result.departments.first.id)
+    end
+
     redirect_to edit_company_division_path(division), flash: {notice: {message: '取引先部署情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
