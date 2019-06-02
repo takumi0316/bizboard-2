@@ -18,6 +18,6 @@ test:
 
 production:
   google:
-    key: 69788129908-27u9a5p2c64d538mc4tjgbb3oj9q6if1.apps.googleusercontent.com
-    secret: fAs7g2o3HdNpdOpFg58adm4l
-    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.me'
+    key: 69788129908-b08cvqhm0cq191592o7uj6h39mbcp3rh.apps.googleusercontent.com
+    secret: RDLCvH0Ep7QcPMaK7eMi6HDQ
+    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
