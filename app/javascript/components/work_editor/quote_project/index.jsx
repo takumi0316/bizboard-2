@@ -12,6 +12,7 @@ export default class QuoteProject extends React.Component {
 
     super(props);
 
+    console.log(props.project)
     this.state = {
       project: props.project,
       project_category: props.project_category,
