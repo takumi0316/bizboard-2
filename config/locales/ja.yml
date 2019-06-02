@@ -29,6 +29,7 @@ ja:
         active: アクティブ
       user_type:
         general: 一般
+        manager: マネージャー
         admin: 管理者
     company_division_client:
       title:
@@ -246,6 +247,9 @@ ja:
         upper_open: 上開き
 
     project_print:
+      draft_data:
+        data_available: あり
+        data_unavailable: なし
       work_process:
         work_process_unnecessary: なし
         work_process_necessary: あり

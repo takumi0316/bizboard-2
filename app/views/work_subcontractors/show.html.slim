@@ -123,7 +123,7 @@ javascript:
           th.u-va-middle 案件管理番号
           td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.quote_number if WorkSubcontractor.find(params[:id]).work.quote.quote_number
           th.u-va-middle 営業担当
-          td.u-va-middle.u-ta-left
+          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.user.name
 
   .u-mt-20.c-flex__between
     .div

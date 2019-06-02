@@ -46,13 +46,15 @@ export default class ProjectCard extends React.Component {
       'project[card_attributes][emboss]': this.refs.emboss.value,
       'project[card_attributes][work_type]': '',
       'project[card_attributes][work_time]': '',
+      'project[card_attributes][work_price]': 0,
       'project[card_attributes][price]': this.refs.price.value,
     };
 
     if (this.state.card_type == 'special') {
-      
+
       result['project[card_attributes][work_type]'] = this.refs.work_type.value;
       result['project[card_attributes][work_time]'] = this.refs.work_time.value;
+      result['project[card_attributes][work_price]'] = this.refs.work_price.value;
     }
 
     return result;
@@ -130,6 +132,15 @@ export default class ProjectCard extends React.Component {
                   <td className='u-fw-bold'>想定作業時間</td>
                   <td>
                     <input placeholder='2' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='work_time' defaultValue={this.props.project_card.work_time} />
+                  </td>
+                </tr>
+                : null
+              }
+              { this.state.card_type == 'special' ?
+                <tr>
+                  <td className='u-fw-bold'>データ作成金額</td>
+                  <td>
+                    <input placeholder='2' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='work_price' defaultValue={this.props.project_card.work_price || 0} />
                   </td>
                 </tr>
                 : null

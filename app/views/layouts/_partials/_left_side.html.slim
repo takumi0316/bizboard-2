@@ -3,12 +3,12 @@
   #js-drawerOpen.js-drawerOpen.l-dashboard-trigger
     .l-dashboard-trigger__icon
     .l-dashboard-trigger__text
-  
+
   h1.l-dashboard__logo
     = link_to root_path do
 
       - if SiteConfig.logo
-        
+
         = image_tag SiteConfig.logo, width: 170, alt: "#{SiteConfig.site_title}|#{SiteConfig.site_name}"
 
       - else
@@ -29,17 +29,17 @@
         = link_to quotes_path do
           = evil_icon 'ei-plus', size: :s
           span.u-ml-10 案件管理
-      
+
       li.l-dashboard__menuItem
         = link_to works_path do
           = evil_icon 'ei-calendar', size: :s
           span.u-ml-10 作業管理
-      
+
       li.l-dashboard__menuItem
         = link_to companies_path do
           = evil_icon 'ei-link', size: :s
           span.u-ml-10 取引先
-      
+
       li.l-dashboard__menuItem
         = link_to subcontractors_path do
           = evil_icon 'ei-user', size: :s
@@ -49,7 +49,7 @@
 
       .u-mt-50
         ul.l-dashboard__menuList
-        
+
           li.l-dashboard__menuItem
             = link_to root_path do
               = evil_icon 'ei-chart', size: :s
@@ -59,7 +59,7 @@
             = link_to users_path do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 ユーザー一覧
-          
+
           li.l-dashboard__menuItem
             = link_to divisions_path do
               = evil_icon 'ei-user', size: :s
@@ -78,6 +78,11 @@
     .u-mt-50
       ul.l-dashboard__menuList
 
+      li.l-dashboard__menuItem
+        = link_to "https://docs.google.com/presentation/d/1nRhmFxYAJv6JluvdpRNuxGVB3lCeS7UY_MUIlU-f91w/edit?usp=sharing", target: :_blank do
+          = evil_icon 'ei-archive', size: :s
+          span.u-ml-10 マニュアル
+
         li.l-dashboard__menuItem
           = link_to edit_user_path(current_user) do
             = evil_icon 'ei-pencil', size: :s
@@ -89,7 +94,7 @@
             span.u-ml-10 ログアウト
 
 javascript:
-      
+
   // 左サイドメニューの開閉
   document.querySelectorAll('.js-drawerOpen').forEach(trigger => trigger.onclick = () => {
 

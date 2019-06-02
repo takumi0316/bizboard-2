@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_30_020437) do
+ActiveRecord::Schema.define(version: 2019_06_02_160639) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(version: 2019_05_30_020437) do
     t.integer "card_type", limit: 1, default: 0
     t.integer "work_type", limit: 1, default: 0
     t.integer "work_time", default: 0
+    t.integer "work_price", default: 0
     t.integer "color", limit: 1, default: 0
     t.integer "paper", limit: 1, default: 0
     t.integer "surface", limit: 1, default: 0
@@ -236,6 +237,7 @@ ActiveRecord::Schema.define(version: 2019_05_30_020437) do
     t.integer "work_type", limit: 1, default: 0
     t.text "work_note"
     t.integer "work_time", default: 0
+    t.integer "work_price", default: 0
     t.integer "print_work", limit: 1, default: 0
     t.integer "color", limit: 1, default: 0
     t.integer "print_size", limit: 1, default: 0

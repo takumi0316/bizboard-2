@@ -84,12 +84,12 @@ export default class QuoteSearch extends Component {
     return (
       <div className={ 'c-search__work-index u-mt-20' }>
         <div className={ Style.Search }>
-          <form method='get' action='/quotes' >
+          <form method='get' action='/quotes?count=' >
             <div>
               <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
             </div>
             <div className={ Style.Search__SideBySide }>
-              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='件名/担当者名/自社部署名/作成日' />
+              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='件名/担当者名/自社部署名/納期' />
               <DatePicker
                 selected={ this.state.startDate }
                 onChange={ ::this.handleChange }

@@ -87,6 +87,7 @@ export default class ProjectEditor extends React.Component {
 
       field = Object.assign(field, this.refs.project_print.getDetail());
 
+      price += Number(field['project[print_attributes][work_price]']);
       price += Number(field['project[print_attributes][price]']);
 
     // 名刺案件
@@ -97,6 +98,7 @@ export default class ProjectEditor extends React.Component {
 
       field = Object.assign(field, this.refs.project_card.getDetail());
 
+      price += Number(field['project[card_attributes][work_price]']);
       price += Number(field['project[card_attributes][price]']);
 
     // コピー案件

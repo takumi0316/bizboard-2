@@ -48,6 +48,7 @@ export default class ProjectPrint extends React.Component {
       'project[print_attributes][work_type]': '',
       'project[print_attributes][work_note]': '',
       'project[print_attributes][work_time]': '',
+      'project[print_attributes][work_price]': 0,
       'project[print_attributes][color]': '',
       'project[print_attributes][print_size]': '',
       'project[print_attributes][print_size_note]': '',
@@ -61,6 +62,7 @@ export default class ProjectPrint extends React.Component {
       result['project[print_attributes][work_type]'] = this.refs.work_type.value;
       result['project[print_attributes][work_note]'] = this.refs.work_note.value;
       result['project[print_attributes][work_time]'] = this.refs.work_time.value;
+      result['project[print_attributes][work_price]'] = this.refs.work_price.value;
     }
 
     if (this.state.print_work == 'print_work_necessary') {
@@ -172,6 +174,15 @@ export default class ProjectPrint extends React.Component {
                   <td className='u-fw-bold'>作業想定時間</td>
                   <td>
                     <input placeholder='2' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='work_time' defaultValue={this.props.project_print.work_time} />
+                  </td>
+                </tr>
+                : null
+              }
+              { this.state.work_process == 'work_process_necessary' ?
+                <tr>
+                  <td className='u-fw-bold'>データ作成金額</td>
+                  <td>
+                    <input placeholder='200' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='work_price' defaultValue={this.props.project_print.work_price || 0} />
                   </td>
                 </tr>
                 : null

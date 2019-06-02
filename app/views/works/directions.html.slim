@@ -21,7 +21,7 @@ javascript:
           td = Work.find(params[:id]).quote.quote_number
         tr
           th 発注先部署
-          td CS
+          td = Work.find(params[:id]).quote.user.division&.name
         tr
           th 担当者
           td = @clients.present? ? @clients : @client

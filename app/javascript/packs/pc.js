@@ -57,6 +57,8 @@ import WorksSearch from 'components/work_editor/works_search/index.jsx'
 // 作業詳細作成
 import WorkEditor from 'components/work_editor/index.jsx'
 
+// 見積もり品目表示
+import QuoteProject from 'components/work_editor/quote_project'
 
 WebpackerReact.setup({
   Alert,
@@ -71,4 +73,5 @@ WebpackerReact.setup({
   WorkStatus,
   SubcontractorDivisions,
   WorkEditor,
+  QuoteProject,
 })

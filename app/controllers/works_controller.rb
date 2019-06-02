@@ -43,6 +43,7 @@ class WorksController < ApplicationController
     add_breadcrumb '作業進捗一覧'
 
     @division = current_user.division&.id
+    @user_type = current_user.user_type
     @count = params[:count]
   end
 
