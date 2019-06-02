@@ -106,6 +106,8 @@ class CompaniesController < ApplicationController
 
     company.update!({mf_company_id: result.id})
 
+    company.divisions.create!(mf_company_division_id: result.departments.first.id, name: '部門名称を付与してください')
+
     redirect_to edit_company_path(company), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
 
@@ -137,38 +139,42 @@ class CompaniesController < ApplicationController
     newSub = Company.find_or_initialize_by(:name => params[:companyName])
     newSubDivision = nil
 
+    mf_client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
+
     if newSub.id.nil?
 
       newSub.save!
-      newSubDivision = newSub.divisions.create! :name => params[:companyDivisionName], :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
+      newSubDivision = newSub.divisions.create :name => params[:companyDivisionName], :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
 
-      mf_client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
-
-      newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
+      newSubDivision.clients.create :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
     else
 
       newSubDivisions = newSub.divisions
       newSubDivision = newSubDivisions.find_or_initialize_by(:name => params[:companyDivisionName])
-      if newSubDivision.id.nil?
 
-        newSubDivision.save! :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
-        newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
-      else
-
-        newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
-      end
+      newSubDivision.update! :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
+      newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
     end
 
+    # 部署更新用
+    divisions_params = newSubDivision.company.divisions.each_with_object([]) do |r, result|
+      result.push({
+        name: r.name,
+        id: r.mf_company_division_id,
+        zip: r.zip,
+        tel: r.tel,
+        prefecture: r.prefecture&.name,
+        address1: r.address1,
+        address2: r.address2,
+      })
+    end
+
+    # 会社情報更新用
     partners_params = {
       name: newSubDivision.company.name,
       name_kana: newSubDivision.company.kana,
       memo: newSubDivision.company.note,
-      zip: newSubDivision.zip,
-      tel: newSubDivision.tel,
-      prefecture: newSubDivision.prefecture.name,
-      address1: newSubDivision.address1,
-      address2: newSubDivision.address2,
-      department_name: newSubDivision.name,
+      departments: divisions_params,
     }
 
     if newSubDivision.company.mf_company_id?
@@ -178,15 +184,16 @@ class CompaniesController < ApplicationController
 
       result = mf_client.partners.create(partners_params)
       newSubDivision.company.update!(mf_company_id: result.id)
-      newSubDivision.update!(mf_company_division_id: result.departments.first.id)
+    end
+
+    # MFのIDを登録する
+    result.departments.each do |r|
+      newSubDivision.update!(mf_company_division_id: r.id) if newSubDivision.name == r.name
     end
 
     client = CompanyDivisionClient.find_or_initialize_by(:name => params[:companyClientName])
     render json: { status: :success, client: client, division: client.company_division, company: client.company_division.company }
 
-  rescue => e
-
-    render json: { status: :error }
   end
 
   #----------------------------------------
