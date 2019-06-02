@@ -377,13 +377,14 @@ class QuotesController < ApplicationController
   #
   def copy
 
-    quote.deep_clone(:quote_projects, :quote_items).draft!
+    clone_quote = quote.deep_clone(:quote_projects, :quote_items)
 
-    if quote.mf_quote_id.present?
+    clone_quote.save
 
-      quote.update_columns(:pdf_url => nil)
-      quote.update_columns(:mf_quote_id => nil)
-    end
+    clone_quote.update_columns(:pdf_url => nil, :mf_quote_id => nil)
+
+    clone_quote.draft!
+
 
     redirect_to quotes_path, flash: {notice: {message: '見積書を複製しました'}}
   end
