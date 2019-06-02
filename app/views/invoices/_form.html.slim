@@ -52,21 +52,14 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
           th 単価
           th 数量
           th 価格
-          th 原価
-          th 粗利
-          th 詳細
       tbody
 
-        /- invoice.quote.quote_items.each do |r|
+        - invoice.quote.quote_projects.each do |r|
           tr
             td = r.name
             td = r.price
-            td = r.number_of_amount
-            td = r.amount
-            td = r.cost
-            td = r.gross_profit
-            td = r.amount
-            td = r.detail
+            td = r.unit
+            td = r.price * r.unit
 
   .c-form-label
     label 合計金額

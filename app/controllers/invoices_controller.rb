@@ -76,6 +76,24 @@ class InvoicesController < ApplicationController
 
     client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
 
+    # 品目を整形する
+    items_params = self.invoice.quote.quote_projects.each_with_object([]) do |r, result|
+      result.push({
+        name: r.name,
+        quantity: r.unit,
+        unit_price: r.price,
+      })
+    end
+
+    #値引きが０より大きければ品目に値引き追加
+    if self.invoice.quote.discount > 0
+      items_params << {
+        name: '値引き',
+        quantity: 1,
+        unit_price: "-#{self.invoice.quote.discount}",
+      }
+    end
+
     request_params = {
       department_id: self.invoice.quote.client.company_division.mf_company_division_id,
       title: self.invoice.subject,
@@ -85,6 +103,7 @@ class InvoicesController < ApplicationController
       billing_date: self.invoice.date.to_s(:system),
       due_date: self.invoice.expiration.to_s(:system),
       document_name: '請求書',
+      items: items_params,
     }
 
     # 請求書の発行
@@ -135,7 +154,7 @@ class InvoicesController < ApplicationController
       note: invoice.remarks,
       billing_date: invoice.date.to_s(:system),
       due_date: invoice.expiration.to_s(:system),
-      document_name: invoice.quote.quote_number,
+      document_name: '請求書',
       items: items_params,
     }
 
