@@ -110,14 +110,7 @@ export default class QuoteEditor extends React.Component {
     let field = {};
     let quoteProjectsCount = Object.keys(this.state.quote_projects).length;
     let quoteProjects = Object.assign([], this.state.quote_projects);
-    //if (quoteProjectsCount === 0) {
-
-      //alert('品目を選択してください！！！！！！！！！！！')
-      //return
-    //}
-
     let messages = this.validation();
-
     // エラーが存在する場合
     if (messages.length > 0) {
 
@@ -367,6 +360,9 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
+    { console.log('StateQuote: ', this.state.quote) }
+    { console.log('StateQuoteProjects: ', this.state.quote_projects) }
+    { console.log('StateQuote: ', this.state.quote) }
     return (
       <div>
         <h1 className='l-dashboard__heading'>案件作成</h1>

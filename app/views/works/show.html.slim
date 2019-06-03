@@ -39,15 +39,15 @@
     - if work.quote.quote_projects.pluck(:project_id).uniq!.nil?
 
         - puts "Work.Quote.QuoteProjects.Pluck(:ProjectId).Uniq!.Nil!"
-        - puts "QuoteName: #{work.quote.name}"
-        - puts "QuoteProject-ProjectId: #{work.quote.quote_projects.project_id}"
-        - puts "QuoteProject-ProjectId: #{work.quote.quote_projects.pluck(:project_id).uniq}"
+        - puts "QuoteName: #{work&.quote&.name}"
+        - puts "QuoteProject-ProjectId: #{work&.quote&.quote_projects&.project_id}"
+        - puts "QuoteProject-ProjectId: #{work&.quote&.quote_projects&.pluck(:project_id).uniq}"
     - else
         - work.quote.quote_projects.pluck(:project_id).uniq!.each do |r|
 
             - puts "Work.Quote.QuoteProjects.Pluck(:ProjectId).Uniq!.Present!"
-            - puts "QuoteProject-Name: #{Project.find(r).name}"
-            - puts "QuoteProject-ProjectId: #{work.quote.quote_projects.pluck(:project_id).uniq}"
+            - puts "QuoteProject-Name: #{Project.find(r)&.name}"
+            - puts "QuoteProject-ProjectId: #{work.quote&.quote_projects&.pluck(:project_id)&.uniq}"
             - if Project.find(r).project_category_i18n === 'プリント'
 
                 = react_component('QuoteProject',
