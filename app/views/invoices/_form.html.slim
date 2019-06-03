@@ -36,7 +36,7 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
 
   .c-form-label
     = f.label :attention, '請求書フォーマット'
-  = f.select :attention, {"請求書" => "請求書", "納品・請求書" => "納品・請求書"}, {}, { class: 'c-form-textarea' }
+  = f.select :attention, {"請求書" => "請求書", "納品・請求書" => "納品・請求書"}, {}, { class: 'c-form-select' }
 
   - invoice.subject ||= invoice.quote.subject
 

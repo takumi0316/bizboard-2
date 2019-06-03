@@ -16,6 +16,7 @@
         th 請求番号
         th 件名
         th 請求先
+        th 合計金額
         th 請求日
         th PDFダウンロード
         th colspan=3
@@ -28,6 +29,7 @@
           td
             - if r.quote.company_division_client_id?
               = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
+          td = "#{r.quote.price}円"
           td = r.date
           td
             - if r.pdf_url.present?
