@@ -12,6 +12,7 @@ export default class QuoteProject extends React.Component {
 
     super(props);
 
+    console.log('props.bindingWork: ', props.project_binding_work_bind_type);
     this.state = {
       project: props.project,
       project_category: props.project_category,
@@ -238,7 +239,15 @@ export default class QuoteProject extends React.Component {
               <span className={ 'u-ml-10' }>製本仕様</span>
               <br />
               <span className={ 'u-ml-10' }>製本作業: </span>
-              <span className={ 'u-ml-10' }>{ this.state.project_binding_work_bind_type }</span>
+              <span className={ 'u-ml-10' }>{ this.state.project_binding_work }</span>
+              { this.state.project_binding_work === 'あり' ?
+                <React.Fragment>
+                  <span className={ 'u-ml-10' }>製本方法: </span>
+                  <span className={ 'u-ml-10' }>{ this.state.project_binding_work_bind_type }</span>
+                </React.Fragment>
+                :
+                null
+              }
               { this.state.project_binding_work_bind_type === 'クロス巻き' ?
                 <React.Fragment>
                   <br />
@@ -480,7 +489,16 @@ export default class QuoteProject extends React.Component {
               <span className={ 'u-ml-10' }>製本仕様</span>
               <br />
               <span className={ 'u-ml-10' }>製本作業: </span>
-              <span className={ 'u-ml-10' }>{ this.state.project_binding_work_bind_type }</span>
+              <span className={ 'u-ml-10' }>{ this.state.project_binding_work }</span>
+              { this.state.project_binding_work === 'あり' ?
+                <React.Fragment>
+                  <span className={ 'u-ml-10' }>製本方法: </span>
+                  <span className={ 'u-ml-10' }>{ this.state.project_binding_work_bind_type }</span>
+                </React.Fragment>
+                :
+                null
+              }
+              <span className={ 'u-ml-10' }>{ this.state.project_binding_work }</span>
               { this.state.project_binding_work_bind_type === 'クロス巻き' ?
                 <React.Fragment>
                   <br />
@@ -639,10 +657,11 @@ export default class QuoteProject extends React.Component {
               <span className={ 'u-ml-10' }>製本仕様</span>
               <br />
               <span className={ 'u-ml-10' }>製本作業: </span>
-              <span className={ 'u-ml-10' }>{ this.state.project_binding_work_bind_type }</span>
-              { this.state.project_binding_work_bind_type === 'クロス巻き' || this.state.project_binding_work_bind_type === 'くるみ' || this.state.project_binding_work_bind_type === '中綴じ' || this.state.project_binding_work_bind_type === '袋綴じ' || this.state.project_binding_work_bind_type === '無線綴じ' || this.state.project_binding_work_bind_type === 'その他' ?
+              <span className={ 'u-ml-10' }>{ this.state.project_binding_work }</span>
+              { this.state.project_binding_work === 'あり' ?
                 <React.Fragment>
-                  <br />
+                  <span className={ 'u-ml-10' }>製本方法: </span>
+                  <span className={ 'u-ml-10' }>{ this.state.project_binding_work_bind_type }</span>
                 </React.Fragment>
                 :
                 null
