@@ -162,11 +162,10 @@ class CompaniesController < ApplicationController
         name: r.name,
         id: r.mf_company_division_id,
         zip: r.zip,
-        tel: r.tel,
         prefecture: r.prefecture&.name,
         address1: r.address1,
         address2: r.address2,
-      })
+      }) if r.mf_company_division_id?
     end
 
     # 会社情報更新用
@@ -174,8 +173,19 @@ class CompaniesController < ApplicationController
       name: newSubDivision.company.name,
       name_kana: newSubDivision.company.kana,
       memo: newSubDivision.company.note,
-      departments: divisions_params,
     }
+
+    if divisions_params.blank?
+
+      partners_params[:department_name] = newSubDivision.name
+      partners_params[:zip] = newSubDivision.zip
+      partners_params[:prefecture] = newSubDivision.prefecture&.name
+      partners_params[:address1] = newSubDivision.address1
+      partners_params[:address2] = newSubDivision.address2
+    else
+
+      partners_params[:departments] = divisions_params
+    end
 
     if newSubDivision.company.mf_company_id?
 

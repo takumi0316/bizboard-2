@@ -385,8 +385,7 @@ class QuotesController < ApplicationController
 
     clone_quote.draft!
 
-
-    redirect_to quotes_path, flash: {notice: {message: '見積書を複製しました'}}
+    redirect_to edit_quote_path(clone_quote), flash: {notice: {message: '見積書を複製しました'}}
   end
 
   #----------------------------------------
