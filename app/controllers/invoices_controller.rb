@@ -106,8 +106,11 @@ class InvoicesController < ApplicationController
       items: items_params,
     }
 
+    # MF側の請求書を削除する
+    client.billings.delete self.invoice.mf_invoice_id
+
     # 請求書の発行
-    result = client.billings.update(self.invoice.mf_invoice_id, request_params)
+    result = client.billings.create(request_params)
 
     self.invoice.update!(pdf_url: result.pdf_url)
 
