@@ -13,6 +13,7 @@ json[:projects] = projects.map do |r|
     after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 ファイル綴じ #{r.project_after_process&.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id,}
     after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 背文字 #{r.project_after_process&.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id,}
     binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id,}
+    data = {'bool': true, 'name': "#{r.name} データ仕様 #{r.print.work_type_i18n}", 'unit_price': r.print.work_price.nil? ? 0 : r.print.work_price, 'unit': 1, 'price': r.print.work_price.nil? ? 0 : r.print.work_price, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id,}
     print = {'bool': true, 'name': "#{r.name} プリント仕様", 'unit_price': r.print.price.nil? ? 0 : r.print.price, 'unit': 1, 'price': r.print.price.nil? ? 0 : r.print.price, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id,}
     count = []
 
@@ -100,7 +101,8 @@ json[:projects] = projects.map do |r|
       end
     end
 
-    specifications.push(print)
+    r.print.work_process === 'work_process_necessary' ? specifications.push(data) : nil
+    r.print.print_work === 'print_work_necessary' ? specifications.push(print) : nil
     after_process_folding['bool'] == true ? specifications.push(after_process_folding) : nil
     after_process_stapler['bool'] == true ? specifications.push(after_process_stapler) : nil
     after_process_hole['bool'] == true ? specifications.push(after_process_hole) : nil
