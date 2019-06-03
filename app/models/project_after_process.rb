@@ -40,7 +40,7 @@ class ProjectAfterProcess < ApplicationRecord
 
   enum folding: { original_folding: 0, z_folding: 10, beta_folding: 20, three_folding: 30, file_folding: 40, no_folding: 50 }
   enum stapler: { original_stapler: 0, upper_left_stapler: 10, upper_right_stapler: 20, left_double_stapler: 30, right_double_stapler: 40, no_stapler: 50 }
-  enum hole: { original_hole: 0, hole_necessary: 10, hole_other: 20 }
+  enum hole: { hole_unnecessary: 0, original_hole: 10, hole_necessary: 20, hole_other: 30 }
   enum clip: { clip_unnecessary: 0, clip_necessary: 10, no_clip: 20 }
   enum bind: { file_unnecessary: 0, king_file: 10, flat_file: 20, other_file: 30 }
   enum back_text: { back_text_unnecessary: 0, back_text_necessary: 10 }
