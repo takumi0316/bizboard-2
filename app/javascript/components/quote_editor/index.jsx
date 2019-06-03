@@ -312,6 +312,12 @@ export default class QuoteEditor extends React.Component {
    */
   _changeUnit = (passIndex) => {
 
+    const vali_unit = document.getElementById('projectSpecificationUnit' + passIndex).value;
+    if ( vali_unit.match(/[^0-9]+/) ) {
+
+      alert('全角は基本的にダメなので、半角で入力するんやで。');
+      exit
+    }
     let copyProjects = Object.assign([], this.state.quote_projects);
     let totalCost = 0;
     copyProjects.forEach((project, index) => {
@@ -431,6 +437,11 @@ export default class QuoteEditor extends React.Component {
                       <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'pickup'} onChange={() => this.setState({deliver_type: 'pickup'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>引取り</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'bizstant'} onChange={() => this.setState({deliver_type: 'bizstant'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>ビジスタント部</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
                       <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />

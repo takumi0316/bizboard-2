@@ -69,6 +69,7 @@ ja:
         seat: 席まで
         location: 指定場所
         pickup: 引取り
+        bizstant: ビジスタント部
         other: その他
     project:
       project_category:

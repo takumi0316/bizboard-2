@@ -52,7 +52,7 @@ class Quote < ApplicationRecord
 
   enum quote_type: { contract: 0, sales: 10 }
   enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
-  enum deliver_type: { seat: 0, location: 10, pickup: 20, other: 30 }
+  enum deliver_type: { seat: 0, location: 10, pickup: 20, bizstant: 30, other: 40 }
 
 
   #----------------------------------------

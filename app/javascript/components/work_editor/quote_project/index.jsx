@@ -12,7 +12,6 @@ export default class QuoteProject extends React.Component {
 
     super(props);
 
-    console.log('props.bindingWork: ', props.project_binding_work_bind_type);
     this.state = {
       project: props.project,
       project_category: props.project_category,
@@ -117,7 +116,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === 'プリント' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる!!!!!!!!!!!!!!!!!!!!</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//))</div>
             <br />
             <div>
               <span className={ 'u-ml-10 u-mt-10' }>品目名: </span>
@@ -337,7 +336,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === '名刺' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる!!!!!!!!!!!!!!!!!!!!</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
             <br />
             <div>
               <span className={ 'u-ml-10 u-mt-10' }>品目名: </span>
@@ -588,7 +587,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === '製本' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる！！！！！！！！！！！！！！！！！</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
             <br />
             <div>
               <span className={ 'u-ml-10' }>品目名: </span>
@@ -752,7 +751,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === 'スキャン' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる！！！！！！！！！！！！！！！！！</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
             <br />
             <div>
               <span className={ 'u-ml-10' }>品目名: </span>
@@ -814,7 +813,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === 'その他' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold' }>
-            <div className={ 'c-ml-10 c-mt-10' } onClick={ ::this._changeShow }>品目を閉じる！！！！！！！！！！！！！！！！！！</div>
+            <div className={ 'c-ml-10 c-mt-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
             <span className={ 'c-ml-10' }>品目名: </span>
             <span className={ 'c-ml-10' }>{ this.state.project.name }</span>
             <span className={ 'c-ml-10' }>案件種別: </span>
