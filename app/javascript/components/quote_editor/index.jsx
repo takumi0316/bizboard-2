@@ -439,6 +439,11 @@ export default class QuoteEditor extends React.Component {
                       <span>引取り</span>
                     </label>
                     <label className='c-form-radioLabel u-ml-15'>
+                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'bizstant'} onChange={() => this.setState({deliver_type: 'bizstant'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>ビジスタント部</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
                       <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />
                       <i className='c-form-radioIcon' />
                       <span>その他</span>
