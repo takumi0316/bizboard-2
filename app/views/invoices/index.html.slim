@@ -29,7 +29,7 @@
           td
             - if r.quote.company_division_client_id?
               = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
-          td = "#{r.quote.price}円"
+          td = "¥ #{r.quote.price.to_s(:delimited)}"
           td = r.date
           td
             - if r.pdf_url.present?

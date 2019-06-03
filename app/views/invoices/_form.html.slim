@@ -57,18 +57,20 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
         - invoice.quote.quote_projects.each do |r|
           tr
             td = r.name
-            td = r.price.to_i
+            td = r.price.to_s(:delimited)
             td = r.unit
-            td = r.price.to_i * r.unit.to_i
+            td = (r.price.to_i * r.unit.to_i).to_s(:delimited)
 
   .c-table.u-mt-30
     table
       tbody
         tr
           td 合計金額 (税込)
-          td = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).floor.to_s(:delimited)
+          td
+            |¥ 
+            = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).floor.to_s(:delimited)
 
-  .c-form-label
+  .c-form-label.u-mt-30
     = f.label :remarks, '備考　※請求書に記載されます'
   = f.text_area :remarks, placeholder: '備考を入力してください', class: 'c-form-textarea', rows: 4
 
