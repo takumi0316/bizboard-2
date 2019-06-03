@@ -44,10 +44,6 @@ ja:
         estimate: 見積もり
         workshop: セミナー
         other: その他
-    invoice:
-      attention:
-        messrs: 御中
-        dear: 様
     quote:
       attention:
         messrs: 御中

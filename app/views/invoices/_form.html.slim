@@ -2,15 +2,15 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
 
 .u-mt-15.c-attention
   p
-    | 会社名: 
+    | 会社名:
     = invoice.quote.client&.company_division&.company&.name
   p
-    | 部署名: 
+    | 部署名:
     = invoice.quote.client&.company_division&.name
   p
-    | 担当者名: 
+    | 担当者名:
     = invoice.quote.client&.name
-  
+
 = form_for invoice, html: { class: 'u-mt-30'} do |f|
 
   = f.hidden_field :quote_id
@@ -35,8 +35,8 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
         = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
 
   .c-form-label
-    = f.label :attention, '御中・様'
-  = f.select :attention, Invoice.attentions_i18n.invert, {}, { class: 'c-form-dateselect' }
+    = f.label :attention, '請求書フォーマット'
+  = f.select :attention, {"請求書" => "請求書", "納品・請求書" => "納品・請求書"}, {}, { class: 'c-form-textarea' }
 
   - invoice.subject ||= invoice.quote.subject
 

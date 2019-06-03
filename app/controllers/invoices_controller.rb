@@ -96,13 +96,13 @@ class InvoicesController < ApplicationController
 
     request_params = {
       department_id: self.invoice.quote.client.company_division.mf_company_division_id,
-      title: self.invoice.subject,
+      title: self.invoice.attention,
       billing_number: self.invoice.quote.quote_number,
       payment_condition: SiteConfig.payment_condition,
       note: self.invoice.remarks,
       billing_date: self.invoice.date.to_s(:system),
       due_date: self.invoice.expiration.to_s(:system),
-      document_name: '請求書',
+      document_name: invoice.attention,
       items: items_params,
     }
 
@@ -148,13 +148,13 @@ class InvoicesController < ApplicationController
 
     request_params = {
       department_id: invoice.quote.client.company_division.mf_company_division_id,
-      title: invoice.subject,
+      title: invoice.attention,
       billing_number: invoice.quote.quote_number,
       payment_condition: SiteConfig.payment_condition,
       note: invoice.remarks,
       billing_date: invoice.date.to_s(:system),
       due_date: invoice.expiration.to_s(:system),
-      document_name: '請求書',
+      document_name: invoice.attention,
       items: items_params,
     }
 
@@ -185,6 +185,27 @@ class InvoicesController < ApplicationController
     redirect_to action: :index
   end
 
+  def pdf_dl
+
+    token = current_user.mf_access_token
+    pdf_url = invoice.pdf_url
+
+    filename = "請求書_#{invoice.quote.quote_number}"
+
+    uri = URI.parse("#{pdf_url}")
+    request = Net::HTTP::Get.new(uri)
+    request["Authorization"] = "BEARER #{token}"
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    send_data response.body, filename: "#{filename}.pdf"
+  end
+
 
   #----------------------------------------
   #  ** Methods **
@@ -194,7 +215,7 @@ class InvoicesController < ApplicationController
 
   def invoice_params
 
-    params.require(:invoice).permit :quote_id, :date, :expiration, :subject, :remarks, :memo
+    params.require(:invoice).permit :quote_id, :date, :expiration, :attention, :subject, :remarks, :memo
   end
 
 end

@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   # 案件
   namespace :invoices do
     post :apipost
+    get :pdf_dl
   end
   resources :invoices
 
