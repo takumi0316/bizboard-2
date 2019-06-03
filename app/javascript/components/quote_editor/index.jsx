@@ -312,6 +312,12 @@ export default class QuoteEditor extends React.Component {
    */
   _changeUnit = (passIndex) => {
 
+    const vali_unit = document.getElementById('projectSpecificationUnit' + passIndex).value;
+    if ( vali_unit.match(/[^0-9]+/) ) {
+
+      alert('全角は基本的にダメなので、半角で入力するんやで。');
+      exit
+    }
     let copyProjects = Object.assign([], this.state.quote_projects);
     let totalCost = 0;
     copyProjects.forEach((project, index) => {
