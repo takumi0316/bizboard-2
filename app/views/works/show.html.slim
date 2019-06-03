@@ -36,9 +36,9 @@
       = " (#{work.quote.deliver_type_note})" if work.quote&.deliver_type_note&.present?
 
 .u-mt-10
-    - unless work.quote.quote_projects.pluck(:project_id).uniq!.nil?
+    - if work.quote.quote_projects.pluck(:project_id).uniq.present?
 
-        - work.quote.quote_projects.pluck(:project_id).uniq!.each do |r|
+        - work.quote.quote_projects.pluck(:project_id).uniq.each do |r|
 
             - if Project.find(r).project_category_i18n === 'プリント'
 
