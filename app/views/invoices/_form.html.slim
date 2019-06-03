@@ -65,8 +65,8 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
     table
       tbody
         tr
-          td 合計金額
-          td = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).to_s(:delimited)
+          td 合計金額 (税込)
+          td = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).floor.to_s(:delimited)
 
   .c-form-label
     = f.label :remarks, '備考　※請求書に記載されます'
