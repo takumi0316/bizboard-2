@@ -1,16 +1,25 @@
 script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"
 script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"
 
-a.u-mt-10.c-btnMain-primaryB#ss(href='', download="#{@directions}.png") スクショをダウンロードするよ
+a.u-mt-10.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
 javascript:
-  window.onload = function() {
+  function downloadImage() {
     html2canvas(document.getElementById('captcha'), {
-     onrendered: function(canvas) {
-        let dataURI = canvas.toDataURL();
-        document.getElementById('ss').href = dataURI;
-      }
+      onrendered: function(canvas) {
+            let wid = canvas.width + 1500;
+            let hgt = canvas.height + 1000;
+            let img = canvas.toDataURL("image/tiff", 1.0);
+            let hratio = hgt/wid
+            let doc = new jsPDF('l','mm', [wid, hgt]);
+            let width = doc.internal.pageSize.width;
+            let height = width * hratio
+            doc.addImage(img,'JPEG',55,25, 800, 500);
+            let downloadName = '作業指示書(社内)' + document.getElementById('project_name').innerHTML;
+            doc.save(downloadName);
+          }
     });
   }
+
 #captcha
   .u-mt-10.c-flex__between
     .c-table-work_subcontractors1

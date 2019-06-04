@@ -133,13 +133,14 @@ class Quote < ApplicationRecord
         return self
     else
 
-      binding.pry
+      _self = self
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
-      where(query, *terms.map { |term| "%#{term}%" })
+      _self = where(query, *terms.map { |term| "%#{term}%" })
       # 日付検索
-      self.joins(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      _self.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      return _self
     end
 
   end
