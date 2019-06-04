@@ -126,44 +126,22 @@ class Quote < ApplicationRecord
   #
   def self.search(**parameters)
 
-    _self = self
-    # フリーワードが入っていて、ステータスが未選択
-    if parameters[:name].present? && parameters[:status] == 'ステータス'
+    #binding.pry
 
+    if parameters[:date1].nil?
+
+        return self
+    else
+
+      binding.pry
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       where(query, *terms.map { |term| "%#{term}%" })
       # 日付検索
-      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
-      return _self
-    # フリーワードが入っていて、ステータスが選択されている
-    elsif parameters[:name].present? && parameters[:status] != 'ステータス'
-
-      # 名称検索
-      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-      query = (['free_word like ?'] * terms.size).join(' and ')
-      where(query, *terms.map { |term| "%#{term}%" })
-      # ステータス検索
-      _self = _self.where(status: parameters[:status])
-      # 日付検索
-      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
-      return _self
-
-    # フリーワードが空で、ステータスが未選択
-    elsif parameters[:name].blank? && parameters[:status] == 'ステータス'
-
-      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
-      return _self
-    # フリーワードが空で、ステータスが入力されている
-    elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != 'ステータス'
-
-      _self = _self.where(status: parameters[:status])
-      # 日付検索
-      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
-      return _self
+      self.joins(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
     end
-     return _self
+
   end
 
 
