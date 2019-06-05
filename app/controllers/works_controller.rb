@@ -105,7 +105,7 @@ class WorksController < ApplicationController
 
      if work_detail_clients.length == 1
 
-       @client = work_detail_clients
+       @client = work_detail_clients[0]
        return @client
      else
 
