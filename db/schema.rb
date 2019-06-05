@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_03_035031) do
+ActiveRecord::Schema.define(version: 2019_06_05_022340) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2019_06_03_035031) do
   create_table "activities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.date "date", comment: "対応日時"
     t.integer "status", comment: "対応内容"
-    t.string "memo", comment: "メモ"
+    t.text "memo", comment: "メモ"
     t.text "attachment", comment: "添付"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
