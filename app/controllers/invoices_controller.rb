@@ -96,7 +96,7 @@ class InvoicesController < ApplicationController
 
     request_params = {
       department_id: self.invoice.quote.client.company_division.mf_company_division_id,
-      title: self.invoice.quote.subject,
+      title: self.invoice.subject,
       billing_number: self.invoice.quote.quote_number,
       payment_condition: SiteConfig.payment_condition,
       note: self.invoice.remarks,
