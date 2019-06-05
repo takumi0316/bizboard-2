@@ -816,10 +816,13 @@ export default class QuoteProject extends React.Component {
             <div className={ 'c-ml-10 c-mt-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
             <span className={ 'c-ml-10' }>品目名: </span>
             <span className={ 'c-ml-10' }>{ this.state.project.name }</span>
-            <span className={ 'c-ml-10' }>案件種別: </span>
-            <span className={ 'c-ml-10' }>{ this.state.project_category }</span>
-            <span className={ 'c-ml-10' }>備考: </span>
-            <span className={ 'c-ml-10' }>{ this.state.project_other_note }</span>
+            <div>
+              <br />
+              <span className={ 'c-ml-10' }>案件種別: </span>
+              <span className={ 'c-ml-10' }>{ this.state.project_category }</span>
+              <span className={ 'c-ml-10' }>備考: </span>
+              <span className={ 'c-ml-10' }>{ this.state.project_other_note }</span>
+            </div>
           </div>
           :
           null
