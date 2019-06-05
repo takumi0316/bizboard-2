@@ -276,7 +276,7 @@ export default class CompanyBulk extends React.Component {
                 <label>会社名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='off' className={ Style.SubcontractorBulk__input } onChange={::this._changeCompany} onFocus={ ::this._openCompany } onBlur={ ::this._closeCompany } onClick={ ::this._companySearch } value={ this.state.company_name } /></div>
+              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='nooe' className={ Style.SubcontractorBulk__input } onChange={::this._changeCompany} onFocus={ ::this._openCompany } onBlur={ ::this._closeCompany } onClick={ ::this._companySearch } value={ this.state.company_name } /></div>
 
               { this.state.companies.length > 0 && this.state.company_type ?
 
@@ -300,7 +300,7 @@ export default class CompanyBulk extends React.Component {
                 <label>部署名</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' autoComplete='off' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } onBlur={ ::this._closeDivision } value={ this.state.companyDivision.name } onChange={ ::this._changeDivision }/></div>
+              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' autoComplete='nope' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } onBlur={ ::this._closeDivision } value={ this.state.companyDivision.name } onChange={ ::this._changeDivision }/></div>
               { this.state.divisions.length > 0 && this.state.division_type ?
 
                 <div className={ Style.SubcontractorBulk__candidateDivisions__modal }>
@@ -323,7 +323,7 @@ export default class CompanyBulk extends React.Component {
                 <label>郵便番号</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input onChange={ e => this._formatCheck('companyPost') } id='companyPost' placeholder='郵便番号' ref='companyPost' autoComplete='off' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.zip } /></div>
+              <div><input onChange={ e => this._formatCheck('companyPost') } id='companyPost' placeholder='郵便番号' ref='companyPost' autoComplete='nope' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.zip } /></div>
               <div className={ 'c-form-label' } >
                 <label>都道府県</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
@@ -342,13 +342,13 @@ export default class CompanyBulk extends React.Component {
                 <label>住所1</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='commpanyAddress1' placeholder='住所' ref='companyAddress1' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.address1 } /></div>
+              <div><input id='commpanyAddress1' placeholder='住所' ref='companyAddress1' autoComplete='nope' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.address1 } /></div>
               <div className={ 'c-form-label' } >
                 <label>自社担当者</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
               <div>
-                <select defaultValue={ this.state.user_id } ref='currentClientName' className={ 'c-form-select__bulk-jsx' }>
+                <select defaultValue={ this.state.user_id } ref='currentClientName' autoComplete='nope' className={ 'c-form-select__bulk-jsx' }>
                   { this.props.users.map((user, index) => {
                     const key = 'user-' + index;
                     return (
@@ -361,17 +361,17 @@ export default class CompanyBulk extends React.Component {
                 <label>担当者</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input id='companyClientName' placeholder='担当者名' ref='companyClientName' autoComplete='off' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input id='companyClientName' placeholder='担当者名' ref='companyClientName' autoComplete='nope' className={ Style.SubcontractorBulk__input } /></div>
               <div className={ 'c-form-label' } >
                 <label>電話番号</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input placeholder='電話番号' ref='companyClientTel' autoComplete='off' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input placeholder='電話番号' ref='companyClientTel' autoComplete='nope' className={ Style.SubcontractorBulk__input } /></div>
 <div className={ 'c-form-label' } >
                 <label>メールアドレス</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
-              <div><input placeholder='メールアドレス' ref='companyClientEmail' autoComplete='off' className={ Style.SubcontractorBulk__input } /></div>
+              <div><input placeholder='メールアドレス' ref='companyClientEmail' autoComplete='nope' className={ Style.SubcontractorBulk__input } /></div>
               <div className={ 'u-ta-center' }>
                 <button onClick={ e => this._onBulkCreate() } className={ 'c-btnMain-standard c-btn-blue u-mt-20' }>作成</button>
               </div>
