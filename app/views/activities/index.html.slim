@@ -18,7 +18,8 @@
         th 対応内容
         th 案件番号
         th 案件名
-        th 担当者
+        th お客様
+        th 弊社担当
         th メモ
         th 添付
         th colspan= 3
@@ -29,6 +30,11 @@
           td = r.status_i18n
           td = r.quote.quote_number
           td = r.quote.subject
+          td
+            - if r.quote.company_division_client_id?
+              = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
+            - else
+              p お客様情報が存在しません
           td
             - if r.quote.user_id.present?
               = r.quote.user.name
