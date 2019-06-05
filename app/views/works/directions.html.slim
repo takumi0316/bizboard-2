@@ -114,7 +114,7 @@ javascript:
       table
         tr
           th.u-va-middle 発注部署
-          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.division if  Work.find(params[:id]).quote.user.division.present?
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.division.name if  Work.find(params[:id]).quote.user.division.present?
           th.u-va-middle 発注担当
           td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.name
 
