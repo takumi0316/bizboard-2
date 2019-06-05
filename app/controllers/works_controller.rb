@@ -100,12 +100,12 @@ class WorksController < ApplicationController
     work_detail_clients = work_detail_clients.reject{ |client| client == '' }
     @client = String.new
     @clients = String.new
-    #@directions = (Date.today).to_s + works.find(params[:id]).quote.subject
+    @directions = (Date.today).to_s + works.find(params[:id]).quote.subject
     if work_detail_clients.present?
 
      if work_detail_clients.length == 1
 
-       @client = @client_name[0]
+       @client = work_detail_clients
        return @client
      else
 
