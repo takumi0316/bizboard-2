@@ -8,7 +8,7 @@
 #  folding_price   :integer          default(0)
 #  stapler         :integer          default("original_stapler")
 #  stapler_price   :integer          default(0)
-#  hole            :integer          default("original_hole")
+#  hole            :integer          default("hole_unnecessary")
 #  hole_price      :integer          default(0)
 #  hole_note       :text(65535)
 #  clip            :integer          default("clip_unnecessary")

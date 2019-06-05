@@ -12,7 +12,7 @@
 #  free_word     :text(65535)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  attention     :integer
+#  attention     :text(65535)
 #  mf_invoice_id :string(191)
 #  pdf_url       :string(191)
 #

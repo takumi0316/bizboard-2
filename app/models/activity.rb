@@ -5,7 +5,7 @@
 #  id         :bigint(8)        not null, primary key
 #  date       :date
 #  status     :integer
-#  memo       :string(191)
+#  memo       :text(65535)
 #  attachment :text(65535)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
