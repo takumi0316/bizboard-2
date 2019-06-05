@@ -157,6 +157,7 @@ class CompaniesController < ApplicationController
     end
 
     # 部署更新用
+    divisions_params = nil
     divisions_params = newSubDivision.company.divisions.each_with_object([]) do |r, result|
       result.push({
         name: r.name,
@@ -165,8 +166,8 @@ class CompaniesController < ApplicationController
         prefecture: r.prefecture&.name,
         address1: r.address1,
         address2: r.address2,
-      }) if r.mf_company_division_id?
-    end
+      })
+    end if newSubDivision.company.mf_company_id?
 
     # 会社情報更新用
     partners_params = {
