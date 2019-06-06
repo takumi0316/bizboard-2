@@ -128,7 +128,11 @@ class Quote < ApplicationRecord
     _self = self
 
     #そもそも日付選択されてんのか
-    if parameters[:date1].nil?
+    if parameters[:date1] = "InvalidDate"
+
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      _self = where(query, *terms.map { |term| "%#{term}%" })
 
       return _self
     else

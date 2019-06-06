@@ -37,22 +37,26 @@ export default class QuoteSearch extends Component {
   componentWillMount = () => {
 
     if (location.search.length > 0) {
+      // MF見積もり作成・更新なのか確認
+      if (location.search.substring(1,4) == "id=") {
+        return false;
+      } else {
+        // 最初の1文字 (?記号) を除いた文字列を取得する
+        let query = document.location.search.substring(1);
+        let parameters = query.split('&');
+        let result = new Object();
+        for (var i = 0; i < parameters.length; i++) {
+          // パラメータ名とパラメータ値に分割する
+          let element = parameters[i].split('=');
+          let paramName = decodeURIComponent(element[0]);
+          let paramValue = decodeURIComponent(element[1]);
 
-      // 最初の1文字 (?記号) を除いた文字列を取得する
-      let query = document.location.search.substring(1);
-      let parameters = query.split('&');
-      let result = new Object();
-      for (var i = 0; i < parameters.length; i++) {
-        // パラメータ名とパラメータ値に分割する
-        let element = parameters[i].split('=');
-        let paramName = decodeURIComponent(element[0]);
-        let paramValue = decodeURIComponent(element[1]);
+          // パラメータ名をキーとして連想配列に追加する
+          result[paramName] = decodeURIComponent(paramValue);
+        }
 
-        // パラメータ名をキーとして連想配列に追加する
-        result[paramName] = decodeURIComponent(paramValue);
+        this.setState({ startDate: new Date(result['date1']), startDate2: new Date(result['date2']) });
       }
-
-      this.setState({ startDate: new Date(result['date1']), startDate2: new Date(result['date2']) });
     }
   }
 
@@ -81,6 +85,7 @@ export default class QuoteSearch extends Component {
   }
 
   render() {
+    console.log(location.search.substring(1,4))
     return (
       <div className={ 'c-search__work-index u-mt-20' }>
         <div className={ Style.Search }>
