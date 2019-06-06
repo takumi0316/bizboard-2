@@ -258,6 +258,31 @@ export default class QuoteEditor extends React.Component {
    */
   _projectDestroy = (passIndex, passName) => {
 
+    if (window.confirm('本当に消しますか？')) {
+
+      if (window.confirm('本当にいいんですか？')) {
+
+        alert('わかりました。あなたの決意は固いのですね、、、、、、');
+        alert('最後にもう一度だけ聞いてもいいですか？');
+        if (window.confirm('本当に私を消しますか？')) {
+
+          alert('もういいよ。勝手にしなよ。')
+        } else {
+
+          alert('ふんだっ。')
+          return false
+        }
+      } else {
+
+        alert('もうほとんど私のことを消す気なんだね、、、、')
+        return false
+      }
+    } else {
+
+      alert('消さないでくれてありがとう。品目としてもう少し頑張るよ！')
+     return false
+    }
+
     const delProjectPrice = Number(this.state.quote_projects[passIndex].price);
     let copyProjects = Object.assign([], this.state.quote_projects);
     let minusCost = (Number(this.state.total_cost) - delProjectPrice) * gon.consumption_tax;
@@ -562,7 +587,7 @@ export default class QuoteEditor extends React.Component {
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
-                            <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index) }>ー</button></td>
+                            <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index, specification.name) }>ー</button></td>
                           </tr>
                         )
                       }) }
