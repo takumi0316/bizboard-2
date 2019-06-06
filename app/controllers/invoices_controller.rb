@@ -96,7 +96,7 @@ class InvoicesController < ApplicationController
 
     request_params = {
       department_id: self.invoice.quote.client.company_division.mf_company_division_id,
-      title: self.invoice.attention,
+      title: self.invoice.subject,
       billing_number: self.invoice.quote.quote_number,
       payment_condition: SiteConfig.payment_condition,
       note: self.invoice.remarks,
@@ -112,7 +112,7 @@ class InvoicesController < ApplicationController
     # 請求書の発行
     result = client.billings.create(request_params)
 
-    self.invoice.update!(pdf_url: result.pdf_url)
+    self.invoice.update!(mf_invoice_id: result.id, pdf_url: result.pdf_url)
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '請求書情報を更新しました'}}
   rescue => e
