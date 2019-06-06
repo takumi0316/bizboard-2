@@ -134,6 +134,8 @@ export default class QuoteEditor extends React.Component {
         'projectName': quoteProjects[i].project_name,
         'projectId': quoteProjects[i].project_id,
       }));
+      console.log(Number(document.getElementById('projectSpecificationUnitPrice' + i).value))
+      console.log(Number(document.getElementById('projectSpecificationPrice' + i).value))
     }
     field = {
       'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
@@ -180,7 +182,6 @@ export default class QuoteEditor extends React.Component {
           } else {
 
             alert('案件情報を更新しました');
-            console.log(res.body.quote_projects)
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           }
         } else {
@@ -557,7 +558,7 @@ export default class QuoteEditor extends React.Component {
                           <tr {...{key}}>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } value={ specification.remarks } onChange={ e => this._changeRemarks(index)} /></td>
-                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } onChange={ e => this._changeUnitPrice(index) } /></td>
+                            <td><input className={ 'c-form-text' } type='number' step='0.1' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } onChange={ e => this._changeUnitPrice(index) } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
                             <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index, specification.name) }>ー</button></td>
@@ -580,7 +581,7 @@ export default class QuoteEditor extends React.Component {
                           <tr {...{key}}>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='text' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } value={ specification.remarks } onChange={ e => this._changeRemarks(index)} /></td>
-                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } onChange={ e => this._changeUnitPrice(index) } /></td>
+                            <td><input className={ 'c-form-text' } type='number' step='0.1' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } onChange={ e => this._changeUnitPrice(index) } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
                             <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index, specification.name) }>ー</button></td>
