@@ -194,6 +194,7 @@ class QuotesController < ApplicationController
                         name: r.name,
                         quantity: r.unit,
                         unit_price: r.unit_price,
+                        detail: r.remarks,
                       })
                     end
 
@@ -283,6 +284,7 @@ class QuotesController < ApplicationController
             name: r.name,
             quantity: r.unit,
             unit_price: r.unit_price,
+            detail: r.remarks,
           })
         end
 

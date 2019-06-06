@@ -60,6 +60,8 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
             td = r.price.to_i.to_s(:delimited)
             td = r.unit
             td = (r.price.to_i * r.unit.to_i).to_s(:delimited)
+          tr
+            td colspan=4 = r.remarks
 
   .c-table.u-mt-30
     table
@@ -67,7 +69,7 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
         tr
           td 合計金額 (税込)
           td
-            |¥ 
+            |¥
             = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).floor.to_s(:delimited)
 
   .c-form-label.u-mt-30
