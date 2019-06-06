@@ -82,6 +82,7 @@ class InvoicesController < ApplicationController
         name: r.name,
         quantity: r.unit,
         unit_price: r.price,
+        detail: r.remarks,
       })
     end
 
@@ -137,6 +138,7 @@ class InvoicesController < ApplicationController
         name: r.name,
         quantity: r.unit,
         unit_price: r.price,
+        detail: r.remarks,
       })
     end
 
