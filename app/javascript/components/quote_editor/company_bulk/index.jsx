@@ -85,31 +85,31 @@ export default class CompanyBulk extends React.Component {
 
     if ( this.refs.companyPost.value === '' ) {
 
-      alert('郵便番号を入力してください！！！！！！！！！！！！');
+      alert('郵便番号は配達員の人は優秀やから無くてもわかるけど、やっぱり入れて欲しいかな。');
       exit
     }
 
     if ( this.refs.companyAddress1.value === '' ) {
 
-      alert('住所1を入力してください！！！！！！！！！！！！！');
+      alert('住所はまぁ入れんでええとは思うねんけどなぁ。');
       exit
     }
 
     if ( this.refs.companyClientName.value === '' ) {
 
-      alert('担当者を入力するのが一番大事！！！！！！！！！！！！！');
+      alert('担当者は入力してくれなあかんよ。');
       exit
     }
 
     if ( this.refs.companyClientTel.value === '' ) {
 
-      alert('電話番号を入力してください！！！！！！！！！！！！！');
+      alert('電話番号を入力してくや。');
       exit
     }
 
     if ( this.refs.companyClientEmail.value === '' ) {
 
-      alert('メールアドレスを入力してください！！！！！！！！！！！！！');
+      alert('メールアドレスを入力してや。');
       exit
     }
   }
@@ -339,7 +339,7 @@ export default class CompanyBulk extends React.Component {
                 </select>
               </div>
               <div className={ 'c-form-label' } >
-                <label>住所1</label>
+                <label>住所</label>
                 <span className={ 'c-form__required u-ml-10' }>必須</span>
               </div>
               <div><input id='commpanyAddress1' placeholder='住所' ref='companyAddress1' autoComplete='nope' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.address1 } /></div>
