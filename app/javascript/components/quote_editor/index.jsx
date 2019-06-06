@@ -175,8 +175,8 @@ export default class QuoteEditor extends React.Component {
           if (!this.props.quote.id) {
 
             alert('案件情報を作成しました');
-            console.log(res.body.quote_projects)
-            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects }, this._letsGo(res.body.quote.id))
+            location.href = `${res.body.quote.id}/edit`;
+            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           } else {
 
             alert('案件情報を更新しました');
@@ -191,10 +191,6 @@ export default class QuoteEditor extends React.Component {
       });
   }
 
-  _letsGo = (quote_id) => {
-
-    location.href = `${quote_id}/edit`;
-  }
   /**
    *  モーダルを表示する
    *  @version 2018/06/10
@@ -578,7 +574,7 @@ export default class QuoteEditor extends React.Component {
                     :
                     <React.Fragment>
                       { this.state.quote_projects.map((specification, index) => {
-
+                        console.log(specification)
                         const key = 'project-' + index;
                         return (
                           <tr {...{key}}>
