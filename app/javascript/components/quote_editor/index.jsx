@@ -123,11 +123,11 @@ export default class QuoteEditor extends React.Component {
 
     for (let i = 0; i < quoteProjectsCount; i++) {
 
-      console.log(quoteProjects[i].project_id)
       // 品目を連想配列に入れる
       arrayRails.push(JSON.stringify({
         'projectSpecificationId': quoteProjects[i].id === null ? 'null' : Number(quoteProjects[i].id),
         'projectSpecificationName': document.getElementById('projectSpecificationName' + i).value,
+        'projectSpecificationRemarks': document.getElementById('projectSpecificationRemarks' + i).value,
         'projectSpecificationUnitPrice': Number(document.getElementById('projectSpecificationUnitPrice' + i).value),
         'projectSpecificationUnit': Number(document.getElementById('projectSpecificationUnit' + i).value),
         'projectSpecificationPrice': Number(document.getElementById('projectSpecificationPrice' + i).value),
@@ -310,13 +310,37 @@ export default class QuoteEditor extends React.Component {
    * Unitを変更する
    *
    */
-  _changeUnit = (passIndex) => {
+  _changeUnitPrice = (passIndex) => {
 
-    const vali_unit = document.getElementById('projectSpecificationUnit' + passIndex).value;
-    if ( vali_unit.match(/[^0-9]+/) ) {
+    const vali_unit = document.getElementById('projectSpecificationUnitPrice' + passIndex).value;
+    if ( !vali_unit.match(/^[0-9\.]+$/) ) {
 
       alert('全角は基本的にダメなので、半角で入力するんやで。');
       exit
+    }
+    let copyProjects = Object.assign([], this.state.quote_projects);
+    let totalCost = 0;
+    copyProjects.forEach((project, index) => {
+
+      passIndex === index ? project.unit_price = Number(document.getElementById('projectSpecificationUnitPrice' + passIndex).value) : null
+      passIndex === index ? project.price = Number(project.unit_price) * Number(project.unit) : null
+      totalCost = totalCost + Number(project.price);
+    })
+      totalCost = totalCost - Number(this.state.discount);
+    this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+  }
+
+  /**
+   * Unitを変更する
+   *
+   */
+  _changeUnit = (passIndex) => {
+
+    const vali_unit = document.getElementById('projectSpecificationUnit' + passIndex).value;
+    if ( !vali_unit.match(/^[0-9]+$/) ) {
+
+      alert('全角は基本的にダメなので、半角で入力するんやで。');
+      return false
     }
     let copyProjects = Object.assign([], this.state.quote_projects);
     let totalCost = 0;
@@ -366,9 +390,6 @@ export default class QuoteEditor extends React.Component {
    *  @version 2018/06/10
    */
   render() {
-    { console.log('StateQuote: ', this.state.quote) }
-    { console.log('StateQuoteProjects: ', this.state.quote_projects) }
-    { console.log('StateQuote: ', this.state.quote) }
     return (
       <div>
         <h1 className='l-dashboard__heading'>案件作成</h1>
@@ -495,6 +516,7 @@ export default class QuoteEditor extends React.Component {
             <thead>
               <tr>
                 <th>品目</th>
+                <th>備考</th>
                 <th>単価</th>
                 <th>数量</th>
                 <th>価格</th>
@@ -513,7 +535,8 @@ export default class QuoteEditor extends React.Component {
                         return (
                           <tr {...{key}}>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
-                            <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } /></td>
+                            <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } defaultValue={ specification.remarks } /></td>
+                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } onChange={ e => this._changeUnitPrice(index) } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
                             <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index, specification.name) }>ー</button></td>
@@ -535,7 +558,8 @@ export default class QuoteEditor extends React.Component {
                         return (
                           <tr {...{key}}>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='text' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
-                            <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } /></td>
+                            <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } defaultValue={ specification.remarks } /></td>
+                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
                             <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index) }>ー</button></td>

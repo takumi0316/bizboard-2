@@ -12,6 +12,7 @@
 #  name         :string(191)
 #  unit_price   :string(191)
 #  project_name :string(191)
+#  remarks      :text(65535)
 #
 
 class QuoteProject < ApplicationRecord
