@@ -260,27 +260,7 @@ export default class QuoteEditor extends React.Component {
 
     if (window.confirm('本当に消しますか？')) {
 
-      if (window.confirm('本当にいいんですか？')) {
-
-        alert('わかりました。あなたの決意は固いのですね、、、、、、');
-        alert('最後にもう一度だけ聞いてもいいですか？');
-        if (window.confirm('本当に私を消しますか？')) {
-
-          alert('もういいよ。勝手にしなよ。')
-        } else {
-
-          alert('ふんだっ。')
-          return false
-        }
-      } else {
-
-        alert('もうほとんど私のことを消す気なんだね、、、、')
-        return false
-      }
-    } else {
-
-      alert('消さないでくれてありがとう。品目としてもう少し頑張るよ！')
-     return false
+      alert('消します！')
     }
 
     const delProjectPrice = Number(this.state.quote_projects[passIndex].price);
@@ -560,7 +540,7 @@ export default class QuoteEditor extends React.Component {
                         return (
                           <tr {...{key}}>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
-                            <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } defaultValue={ specification.remarks } /></td>
+                            <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } value={ specification.remarks } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } onChange={ e => this._changeUnitPrice(index) } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
@@ -583,7 +563,7 @@ export default class QuoteEditor extends React.Component {
                         return (
                           <tr {...{key}}>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='text' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
-                            <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } defaultValue={ specification.remarks } /></td>
+                            <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } value={ specification.remarks } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } /></td>
                             <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
