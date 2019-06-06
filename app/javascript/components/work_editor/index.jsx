@@ -116,7 +116,7 @@ export default class WorkEditor extends React.Component {
             <thead>
               <tr>
                 <th>受注額</th>
-                <th>単価</th>
+                <th>原価</th>
                 <th>粗利</th>
                 <th>粗利率</th>
               </tr>
@@ -126,7 +126,7 @@ export default class WorkEditor extends React.Component {
                 <td>{ this.state.project_price }円</td>
                 <td>{ this.state.work_price }円</td>
                 <td>{ this.state.project_price - this.state.work_price }円</td>
-                <td>{ this.state.work_price / this.state.project_price }%</td>
+                <td>{ (Number(this.state.work_price) / Number(this.state.project_price)) * 100 }%</td>
               </tr>
             </tbody>
           </table>
