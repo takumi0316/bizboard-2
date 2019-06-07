@@ -320,22 +320,36 @@ export default class QuoteEditor extends React.Component {
   _changeUnitPrice = (passIndex) => {
 
     const vali_unit = document.getElementById('projectSpecificationUnitPrice' + passIndex).value;
+    if (vali_unit != 0) {
 
-    if ( !vali_unit.match(/^[0-9\.]+$/) ) {
+      if ( !vali_unit.match(/^[0-9\.]+$/) ) {
 
-      alert('全角は基本的にダメなので、半角で入力するんやで。');
-      return false
-    }
-    let copyProjects = Object.assign([], this.state.quote_projects);
-    let totalCost = 0;
-    copyProjects.forEach((project, index) => {
+        alert('全角は基本的にあかんから、半角で入力するんやで。');
+        return false
+      }
+      let copyProjects = Object.assign([], this.state.quote_projects);
+      let totalCost = 0;
+      copyProjects.forEach((project, index) => {
 
-      passIndex === index ? project.unit_price = Number(document.getElementById('projectSpecificationUnitPrice' + passIndex).value) : null
-      passIndex === index ? project.price = Number(project.unit_price) * Number(project.unit) : null
-      totalCost = totalCost + Number(project.price);
-    })
+        passIndex === index ? project.unit_price = Number(document.getElementById('projectSpecificationUnitPrice' + passIndex).value) : null
+        passIndex === index ? project.price = Number(project.unit_price) * Number(project.unit) : null
+        totalCost = totalCost + Number(project.price);
+      })
       totalCost = totalCost - Number(this.state.discount);
-    this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+      this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+    } else {
+
+      let copyProjects = Object.assign([], this.state.quote_projects);
+      let totalCost = 0;
+      copyProjects.forEach((project, index) => {
+
+        passIndex === index ? project.unit_price = '' : null
+        passIndex === index ? project.price = Number(project.unit_price) * 0 : null
+        totalCost = totalCost + Number(project.price);
+      })
+      totalCost = totalCost - Number(this.state.discount);
+      this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+    }
   }
 
   /**
@@ -345,23 +359,38 @@ export default class QuoteEditor extends React.Component {
   _changeUnit = (passIndex) => {
 
     const vali_unit = document.getElementById('projectSpecificationUnit' + passIndex).value;
-    if ( !vali_unit.match(/^[0-9]+$/) ) {
+    if (vali_unit != 0) {
 
-      alert('全角は基本的にダメなので、半角で入力するんやで。');
-      return false
+      if ( !vali_unit.match(/^[0-9]+$/) ) {
+
+        alert('全角は基本的にあかんから、半角で入力するんやで。');
+        return false
+      }
+      let copyProjects = Object.assign([], this.state.quote_projects);
+      let totalCost = 0;
+      copyProjects.forEach((project, index) => {
+
+        passIndex === index ? project.unit = Number(document.getElementById('projectSpecificationUnit' + passIndex).value) : null
+        passIndex === index ? project.price = Number(project.unit_price) * project.unit : null
+        totalCost = totalCost + Number(project.price);
+      })
+        totalCost = totalCost - Number(this.state.discount);
+      this.setState({ quote_projects: copyProjects, total_cost: totalCost });
+    } else {
+
+      let copyProjects = Object.assign([], this.state.quote_projects);
+      let totalCost = 0;
+      copyProjects.forEach((project, index) => {
+
+        passIndex === index ? project.unit = '' : null
+        passIndex === index ? project.price = Number(project.unit_price) * 0 : null
+        totalCost = totalCost + Number(project.price);
+      })
+        totalCost = totalCost - Number(this.state.discount);
+      this.setState({ quote_projects: copyProjects, total_cost: totalCost });
     }
-    let copyProjects = Object.assign([], this.state.quote_projects);
-    let totalCost = 0;
-    copyProjects.forEach((project, index) => {
 
-      passIndex === index ? project.unit = Number(document.getElementById('projectSpecificationUnit' + passIndex).value) : null
-      passIndex === index ? project.price = Number(project.unit_price) * project.unit : null
-      totalCost = totalCost + Number(project.price);
-    })
-      totalCost = totalCost - Number(this.state.discount);
-    this.setState({ quote_projects: copyProjects, total_cost: totalCost });
   }
-
   /**
    *
    *
