@@ -252,6 +252,18 @@ json[:projects] = projects.map do |r|
       type: true,
       specifications: specifications,
     }
+
+  when 'project_scan'
+
+    scan = {'bool': true, 'name': "#{r.name} 複写仕様", 'unit_price': r.scan.price.nil? ? 0 : r.scan.price, 'unit': 1, 'price': r.scan.price.nil? ? 0 : r.scan.price, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n,  'project_id': r.id, }
+    specifications = []
+    specifications.push(scan)
+    {
+      id: r.id,
+      name: r.name,
+      price: r.price,
+      specifications: specifications,
+    }
   when 'project_bind'
 
     specifications = []
