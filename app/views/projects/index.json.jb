@@ -235,29 +235,7 @@ json[:projects] = projects.map do |r|
     card = {'bool': false, 'name': "#{r.name} 特別名刺(作業あり)", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_id': r.id, 'remarks': nil, }
     card_print = {'bool': true, 'name': "#{r.name} プリント仕様", 'unit_price': r.card.price.nil? ? 0 : r.card.price, 'unit': 1, 'price': r.card.price.nil? ? 0 : r.card.price, 'id': nil, 'quote_id': nil, 'project_id': r.id, 'remarks': nil, }
 
-    count = []
-    if r.card.card_type == 'special'
-
-        count.push('card')
-    end
-
-    countLength = count.length
-    if countLength != 0
-
-      countLength.times do |i|
-        case count[i]
-        when 'card'
-
-          card['bool'] = true
-          card['unit_price'] = r.card.work_price.nil? ? 0 : r.card.work_price
-          card['unit'] = 1
-          card['price'] = r.card.work_price.nil? ? 0 : r.card.work_price
-        end
-      end
-    end
-
     specifications.push(card_print)
-    card['bool'] == true ? specifications.push(card) : nil
     {
       id: r.id,
       name: r.name,
