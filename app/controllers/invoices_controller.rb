@@ -12,7 +12,7 @@ class InvoicesController < ApplicationController
   #----------------------------------------
 
   # 請求書一覧
-  expose_with_pagination(:invoices) { Invoice.search(params[:free_word]).all.order(date: :desc) }
+  expose_with_pagination(:invoices) { Invoice.search(name: params[:name], date1: params[:date1], date2: params[:date2]).all.order(date: :desc) }
 
   # 請求書
   expose(:invoice) { params[:quote_id].present?? Invoice.new(quote_id: params[:quote_id]) : Invoice.find_or_initialize_by(id: params[:id] || params[:invoice_id]) }

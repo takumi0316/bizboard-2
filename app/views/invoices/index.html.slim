@@ -1,12 +1,6 @@
 = render 'layouts/_partials/tabmenu'
 
-= form_with url: invoices_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
-
-  .c-search__item
-    = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '件名/請求先/備考'
-
-  = f.submit '検索', class: 'c-btnMain-standard'
+= react_component('InvoiceSearch')
 
 .c-table.u-mt-30
   table

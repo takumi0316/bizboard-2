@@ -8,7 +8,7 @@ import Request from "superagent"
 require("superagent-rails-csrf")(Request);
 
 
-export default class QuoteSearch extends Component {
+export default class InvoiceSearch extends Component {
   constructor(props) {
     super(props)
     const date = new Date()
@@ -38,7 +38,7 @@ export default class QuoteSearch extends Component {
 
     if (location.search.length > 0) {
       // MF見積もり作成・更新なのか確認
-      if (location.search.substring(1,4) == "id=") {
+      if (location.search.substring(1,4) == "fal") {
         return false;
       } else {
         // 最初の1文字 (?記号) を除いた文字列を取得する
@@ -88,12 +88,12 @@ export default class QuoteSearch extends Component {
     return (
       <div className={ 'c-search__work-index u-mt-20' }>
         <div className={ Style.Search }>
-          <form method='get' action='/quotes?count=' >
+          <form method='get' action='/invoices?' >
             <div>
               <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
             </div>
             <div className={ Style.Search__SideBySide }>
-              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='件名/担当者名/自社部署名/納期' />
+              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='件名/請求先/自社部署名/納期' />
               <DatePicker
                 selected={ this.state.startDate }
                 onChange={ ::this.handleChange }
@@ -108,9 +108,8 @@ export default class QuoteSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
-              <input type='hidden' name='count' value='1'/>
               <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
-              <a className={ 'c-btnMain-standard' } href={ '/quotes' } >元に戻す</a>
+              <a className={ 'c-btnMain-standard' } href={ '/invoices' } >元に戻す</a>
             </div>
           </form>
         </div>

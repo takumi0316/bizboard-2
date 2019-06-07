@@ -60,6 +60,9 @@ import WorkEditor from 'components/work_editor/index.jsx'
 // 見積もり品目表示
 import QuoteProject from 'components/work_editor/quote_project'
 
+// 請求書検索
+import InvoiceSearch from 'components/invoice_search/index.jsx'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -74,4 +77,5 @@ WebpackerReact.setup({
   SubcontractorDivisions,
   WorkEditor,
   QuoteProject,
+  InvoiceSearch,
 })
