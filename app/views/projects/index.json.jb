@@ -235,6 +235,17 @@ json[:projects] = projects.map do |r|
     card = {'bool': false, 'name': "#{r.name} 特別名刺(作業あり)", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_id': r.id, 'remarks': nil, }
     card_print = {'bool': true, 'name': "#{r.name} プリント仕様", 'unit_price': r.card.price.nil? ? 0 : r.card.price, 'unit': 1, 'price': r.card.price.nil? ? 0 : r.card.price, 'id': nil, 'quote_id': nil, 'project_id': r.id, 'remarks': nil, }
 
+<<<<<<< HEAD
+    if r.card.card_type == 'special'
+
+      card['bool'] = true
+      card['unit_price'] = r.card.work_price.nil? ? 0 : r.card.work_price
+      card['unit'] = 1
+      card['price'] = r.card.work_price.nil? ? 0 : r.card.work_price
+    end
+
+    card['bool'] == true ? specifications.push(card) : nil
+>>>>>>> 802d09728552794a11aa671e377a3dd6a46b6c99
     specifications.push(card_print)
     {
       id: r.id,
