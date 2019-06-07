@@ -9,6 +9,9 @@
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
 #  notices                          :text(65535)
+#  order_date                       :datetime
+#  delivery_date                    :datetime
+#  delivery_destination             :string(191)
 #
 
 class WorkSubcontractor < ApplicationRecord

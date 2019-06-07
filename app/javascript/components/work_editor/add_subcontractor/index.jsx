@@ -85,9 +85,6 @@ export default class AddSubcontractor extends React.Component {
 			case 'onChangeSpecification':
 				this.onChangeSpecification(index, subcontractorDetailId);
 				break;
-			case 'onChangeDeliverAt':
-				this.onChangeDeliverAt(index, subcontractorDetailId);
-				break;
 			case 'onChangeNumberOfCopies':
 				this.onChangeNumberOfCopies(index, subcontractorDetailId);
 				break;
@@ -134,25 +131,6 @@ export default class AddSubcontractor extends React.Component {
       if ( detail.id === subcontractorDetailId ) {
 
         detail.specification = document.getElementById('specification' + index).value
-      }
-    });
-		this.setState({ subcontractor_details: subcontractorDetails });
-	}
-
-	onChangeDeliverAt = (index, subcontractorDetailId) => {
-
-    let subcontractorDetails = this.state.subcontractor_details.slice();
-    subcontractorDetails.forEach((detail) => {
-
-      if ( detail.id === subcontractorDetailId ) {
-
-        let replace_datetime =  document.getElementById('deliver_at' + index).value;
-   			replace_datetime = replace_datetime.replace(/年/g, '/');
-   			replace_datetime = replace_datetime.replace(/月/g, '/');
-   			replace_datetime = replace_datetime.replace(/日/g, '');
-   			replace_datetime = replace_datetime.replace(/時/g, ':');
-   			replace_datetime = replace_datetime.replace(/分/g, '');
-				detail.deliver_at = replace_datetime
       }
     });
 		this.setState({ subcontractor_details: subcontractorDetails });
@@ -259,12 +237,6 @@ export default class AddSubcontractor extends React.Component {
     })
     if( subcontractor_value_count.length !== 0 ) {
       for(var i = 0; i < subcontractor_value_count.length; i++) {
-        let replace_datetime =  document.getElementById('deliver_at' + subcontractor_value_count[i]).value;
-        replace_datetime = replace_datetime.replace(/年/g, '/');
-        replace_datetime = replace_datetime.replace(/月/g, '/');
-        replace_datetime = replace_datetime.replace(/日/g, '');
-        replace_datetime = replace_datetime.replace(/時/g, ':');
-        replace_datetime = replace_datetime.replace(/分/g, '');
         array_rails.push(JSON.stringify({
           'id': Number(document.getElementById('work_subcontractor_detail_id' + subcontractor_value_count[i]).value),
           'order_contents': document.getElementById('order_contents' + subcontractor_value_count[i]).value,
@@ -272,7 +244,6 @@ export default class AddSubcontractor extends React.Component {
           'specification': document.getElementById('specification' + subcontractor_value_count[i]).value,
           'count': document.getElementById('test-count' + subcontractor_value_count[i]).value,
           'number_of_copies': document.getElementById('number_of_copies' + subcontractor_value_count[i]).value,
-          'deliver_at': replace_datetime,
           'actual_cost': document.getElementById('actual_cost' + subcontractor_value_count[i]).value,
         }));
         actual_cost = actual_cost + Number(document.getElementById('actual_cost' + subcontractor_value_count[i]).value);
@@ -326,9 +297,24 @@ export default class AddSubcontractor extends React.Component {
     let url = '/work_subcontractors'
     for(let i = 0; i < work_subcontractor_length; i++) {
 
+      let replace_order =  document.getElementById('orderDate' + i).value;
+      replace_order = replace_order.replace(/年/g, '/');
+      replace_order = replace_order.replace(/月/g, '/');
+      replace_order = replace_order.replace(/日/g, '');
+      replace_order = replace_order.replace(/時/g, ':');
+      replace_order = replace_order.replace(/分/g, '');
+      let replace_delivery =  document.getElementById('deliveryDate' + i).value;
+      replace_delivery = replace_delivery.replace(/年/g, '/');
+      replace_delivery = replace_delivery.replace(/月/g, '/');
+      replace_delivery = replace_delivery.replace(/日/g, '');
+      replace_delivery = replace_delivery.replace(/時/g, ':');
+      replace_delivery = replace_delivery.replace(/分/g, '');
       array_rails.push(JSON.stringify({
 
         'id': Number(document.getElementById('work_subcontractor_id' + i).value),
+        'order_date': replace_order,
+        'delivery_date': replace_delivery,
+        'delivery_destination': document.getElementById('deliveryDestination' + i).value,
         'notices': document.getElementById('notices' + i).value,
       }));
     }
@@ -385,12 +371,6 @@ export default class AddSubcontractor extends React.Component {
 
 						if(i != index){
 
-							let replace_datetime =  document.getElementById('deliver_at' + i).value;
-        			replace_datetime = replace_datetime.replace(/年/g, '/');
-        			replace_datetime = replace_datetime.replace(/月/g, '/');
-        			replace_datetime = replace_datetime.replace(/日/g, '');
-        			replace_datetime = replace_datetime.replace(/時/g, ':');
-        			replace_datetime = replace_datetime.replace(/分/g, '');
               field = {
                 'id': Number(document.getElementById('work_subcontractor_detail_id' + subcontractor_value_count[i]).value),
                 'work_subcontractor_id': Number(document.getElementById('work_subcontractor_id' + subcontractor_value_count[i]).value),
@@ -400,7 +380,6 @@ export default class AddSubcontractor extends React.Component {
                 'specification': document.getElementById('specification' + subcontractor_value_count[i]).value,
                 'count': document.getElementById('test-count' + subcontractor_value_count[i]).value,
                 'number_of_copies': document.getElementById('number_of_copies' + subcontractor_value_count[i]).value,
-                'deliver_at': replace_datetime,
                 'actual_cost': document.getElementById('actual_cost' + subcontractor_value_count[i]).value,
  							};
 							detail_array.push(field);
@@ -653,7 +632,6 @@ export default class AddSubcontractor extends React.Component {
                                   <th className={ 'u-va-middle' }>仕様</th>
                                   <th>原稿<br />数量</th>
                                   <th>部数<br />数量</th>
-                                  <th className={ 'u-va-middle' }>工程期日</th>
                                   <th className={ 'u-va-middle' }>実績原価</th>
                                 </tr>
                               </thead>
@@ -674,7 +652,6 @@ export default class AddSubcontractor extends React.Component {
 																									<td><textarea key={ subcontractor_detail.specification } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index1, subcontractor_detail.id) } id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
                                                   <td className={ 'u-va-top' }><input key={ subcontractor_detail.count } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'count') } onBlur={ e => this.onSetStateBlur('onChangeCount', index1, subcontractor_detail.id) } id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
                                                   <td className={ 'u-va-top' }><input key={ subcontractor_detail.number_of_copies } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'number_of_copies') } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index1, subcontractor_detail.id) } id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
-                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.deliver_at } className={ 'c-form-text__work-show-input1' } type='text' onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index1, subcontractor_detail.id) } id={ 'deliver_at' + index1 } defaultValue={ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日') }></input></td>
                                                   <td className={ 'u-va-top' }><input key={ subcontractor_detail.actual_cost } className={ 'c-form-text__work-show-input2' } type='text' onChange={ e => this.onIntCheck(e, index1, 'actual_cost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index1, subcontractor_detail.id) } id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
                                               </tr>
                                               :
@@ -689,10 +666,28 @@ export default class AddSubcontractor extends React.Component {
                                   }
                                 </React.Fragment>
                                <tr>
-                                  <td id={ 'onCreate-td' + index } colSpan='12'><button className={ 'c-btnMain2-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
+                                  <td id={ 'onCreate-td' + index } colSpan='8'><button className={ 'c-btnMain2-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
                                 </tr>
                               </tbody>
                             </table>
+                            </div>
+                             <div className={ 'c-table' }>
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>発注日</th>
+                                    <th>納期</th>
+                                    <th>納品先</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'orderDate' + index } defaultValue={ Dayjs(work_subcontractor.order_date).format('YYYY年MM月DD日') }></input></td>
+                                    <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliveryDate' + index } defaultValue={ Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }></input></td>
+                                    <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input7' } type='text' id={ 'deliveryDestination' + index } defaultValue={ work_subcontractor.delivery_destination }></input></td>
+                                  </tr>
+                                </tbody>
+                              </table>
                             </div>
                             <div className={ 'c-table' }>
                               <table>
@@ -703,7 +698,7 @@ export default class AddSubcontractor extends React.Component {
                                 </thead>
                                 <tbody>
                                   <tr>
-                                    <td colSpan='13'><textarea id={ 'notices' + index } rows='3' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ work_subcontractor.notices }></textarea></td>
+                                    <td colSpan='8'><textarea id={ 'notices' + index } rows='3' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ work_subcontractor.notices }></textarea></td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -803,7 +798,6 @@ export default class AddSubcontractor extends React.Component {
                                   <th className={ 'u-va-middle' }>仕様</th>
                                   <th>原稿<br />数量</th>
                                   <th>部数<br />数量</th>
-                                  <th className={ 'u-va-middle' }>期日</th>
                                   <th className={ 'u-va-middle' }>実績原価</th>
                                 </tr>
                               </thead>
@@ -823,7 +817,6 @@ export default class AddSubcontractor extends React.Component {
                                                 { this.contentSpecification(subcontractor_detail.specification) }
                                                 <td className={ 'u-va-top u-ta-right' }>{ subcontractor_detail.count }</td>
                                                 <td className={ 'u-va-top u-ta-right' }>{ subcontractor_detail.number_of_copies }</td>
-                                                <td className={ 'u-va-top u-ta-center' }>{ Dayjs(subcontractor_detail.deliver_at).format('YYYY年MM月DD日') }</td>
                                                 <td className={ 'u-va-top u-ta-right' }>{ subcontractor_detail.actual_cost }円</td>
                                               </tr>
                                               :
@@ -837,6 +830,24 @@ export default class AddSubcontractor extends React.Component {
                                     null
                                   }
                                 </React.Fragment>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div className={ 'c-table' }>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>発注日</th>
+                                  <th>納期</th>
+                                  <th>納品先</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td className={ 'u-ta-center' }>{ Dayjs(work_subcontractor.order_date).format('YYYY年MM月DD日') }</td>
+                                  <td className={ 'u-ta-center' }>{ Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }</td>
+                                  <td className={ 'u-ta-left' }>{ work_subcontractor.delivery_destination }</td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>

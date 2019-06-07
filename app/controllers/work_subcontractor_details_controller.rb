@@ -52,7 +52,6 @@ class WorkSubcontractorDetailsController < ApplicationController
             specification: parse_json['specification'],
             count: parse_json['count'],
             number_of_copies: parse_json['number_of_copies'],
-            deliver_at: parse_json['deliver_at'],
             cost_unit_price: parse_json['cost_unit_price'],
             estimated_cost: parse_json['estimated_cost'],
             actual_count: parse_json['actual_count'],

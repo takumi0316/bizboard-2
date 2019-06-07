@@ -8,14 +8,14 @@ class WorkSubcontractorsController < ApplicationController
 
     if params[:contents] === 'create'
 
-      Work.find(params[:work_subcontractors][:work_id]).subcontractor.create!
+      Work.find(params[:work_subcontractors][:work_id]).subcontractor.create!(order_date: DateTime.now, delivery_date: DateTime.now)
       render json: { status: :success, subcontractors: Work.find(params[:work_subcontractors][:work_id]).subcontractor }
     elsif params[:contents] === 'notices'
 
       params.require(:work_subcontractor_notices_update).each do |subcontractors|
 
         parse_json = JSON.parse(subcontractors)
-        WorkSubcontractor.find(parse_json['id']).update!(notices: parse_json['notices'])
+        WorkSubcontractor.find(parse_json['id']).update!(notices: parse_json['notices'], order_date: parse_json['order_date'], delivery_date: parse_json['delivery_date'], delivery_destination: parse_json['delivery_destination'])
       end
       render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor }
     end

@@ -45,34 +45,19 @@ javascript:
         tr
           th TEL
           td = WorkSubcontractor.find(params[:id]).client.present? ? WorkSubcontractor.find(params[:id]).client.tel : nil
-          th FAX
-          td
-    .c-table-work_subcontractors2
+
+    .c-table-work_subcontractors1
       table
         tr
           th.u-va-middle 発注日
-          td.u-va-middle.u-ta-left
+          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).order_date.strftime('%Y年%m月%d日')
         tr
           th.u-va-middle 納期
-          td.u-va-middle.u-ta-left
+          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).delivery_date.strftime('%Y年%m月%d日')
         tr
           th.u-va-middle 納品先
-          td.u-va-middle.u-ta-left
-        tr
-          th.u-va-middle 納品方法
-          td.u-va-middle.u-ta-left
-    .c-table-work_subcontractors3
-      table
-        tr
-          th 受注区分
-        tr
-          td.u-ta-center
-        tr
-          th 受注担当者
-        tr
-          td.u-ta-center
-    .u-fs-smal
-      span →
+          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).delivery_destination
+
     .c-table-work_subcontractors3
       table
         tr
@@ -93,20 +78,18 @@ javascript:
           th No.
           th 発注内容
           th 納品物(支給品含む)
-          th 返却
           th 仕様(用紙種類、面付、サイズなど)
           th 原稿枚数
           th 部数数量
       tbody
         - WorkSubcontractor.find(params[:id]).detail.each_with_index do |r, index|
           tr
-            td.u-va-top.u-ta-right = index
+            td.u-va-top.u-ta-right = index + 1
             td.u-va-top.u-ta-left = r.order_contents
             td.u-va-top.u-ta-left = simple_format(r.deliver_method)
-            td.u-va-top.u-ta-center □
             td.u-va-top.u-ta-left = simple_format(r.specification)
-            td.u-va-top.u-ta-right = "#{r.count}枚"
-            td.u-va-top.u-ta-right = "#{r.number_of_copies}冊"
+            td.u-va-top.u-ta-right = r.count
+            td.u-va-top.u-ta-right = r.number_of_copies
   .c-table
     table
       thead
