@@ -554,7 +554,7 @@ export default class AddDetails extends React.Component {
                   <tr>
                     <th className={ 'u-va-middle' }>No.</th>
                     <th className={ 'u-va-middle' }>発注内容</th>
-                    <th className={ 'u-va-middle' }>納品物</th>
+                    <th className={ 'u-va-middle' }>入稿物</th>
                     <th className={ 'u-va-middle' }>仕様</th>
                     <th className={ 'u-va-middle' }>期日</th>
                     <th className={ 'u-va-middle' }>担当者</th>
