@@ -63,7 +63,7 @@ export default class AddDetails extends React.Component {
 				break;
 			case 'onChangeCost':
 
-				if (document.getElementById('estimated_cost' + index).value.match(/[^0-9]+/)) {
+				if (document.getElementById('estimated_cost' + index).value.match(/[^0-9\.]+$/)) {
 
 					window.confirm('半角数字以外を入力しないで下さい。')
 				} else {
