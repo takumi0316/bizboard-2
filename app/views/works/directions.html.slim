@@ -30,7 +30,7 @@ javascript:
           td = Work.find(params[:id]).quote.quote_number
         tr
           th 発注先部署
-          td = Work.find(params[:id]).quote.user.division&.name
+          td = Work.find(params[:id]).division&.name
         tr
           th 担当者
           td = @clients.present? ? @clients : @client
@@ -87,7 +87,7 @@ javascript:
       tbody
          - Work.find(params[:id]).work_details.each_with_index do |r, index|
           tr
-            td.u-va-top.u-ta-right = index
+            td.u-va-top.u-ta-right = index + 1
             td.u-va-top.u-ta-left = r.order_contents
             td.u-va-top.u-ta-left = simple_format(r.deliver_method)
             td.u-va-top.u-ta-center □
