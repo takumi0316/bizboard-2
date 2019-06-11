@@ -520,7 +520,7 @@ export default class AddDetails extends React.Component {
 													<td className={ 'u-va-top' }><input key={ detail.number_of_copies + index } type='text' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
 													<td className={ 'u-va-top' }><input key={ detail.count + index } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, 'onChangeCount') } onBlur={ e => this.onSetStateBlur('onChangeCount', index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
 													<td className={ 'u-va-top' }><input key={ detail.estimated_cost + index } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(index, 'onChangeCost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
-                        	<td className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } defaultValue={ detail.count * detail.estimated_cost }>{ detail.count * detail.estimated_cost }</td>
+                        	<td className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } defaultValue={ (detail.number_of_copies * detail.count) * detail.estimated_cost }>{ (detail.number_of_copies * detail.count) * detail.estimated_cost }</td>
                       	</tr>
 											</React.Fragment>
                     );
