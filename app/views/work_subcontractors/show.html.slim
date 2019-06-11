@@ -21,16 +21,14 @@ javascript:
   }
 
 #captcha
-
-  h1.l-dashboard__heading
+  h1.u-mt-50.l-dashboard__heading
     | 発注・指示書(外注用)
     label.u-fs-x-small
       | ※納品時は必ず、本発注番号を明記した納品書、もしくはこの発注・
       br
       |　指示書の「納品日・署名」欄に納品日、署名を記入した上、お返し下さい。
 
-  .u-mt-10.c-flex__between
-
+  .u-mt-40.c-flex__between
     .c-table-work_subcontractors1
       table
         tr
@@ -71,7 +69,7 @@ javascript:
       label.u-fs-x-small
         | マネージャーもしくは部門長
 
-  .c-table.u-mt-10
+  .c-table.u-mt-40
     table
       thead
         tr
@@ -99,7 +97,7 @@ javascript:
         tr
           td.u-va-top.u-ta-left = simple_format(WorkSubcontractor.find(params[:id]).notices)
 
-  .u-mt-10
+  .u-mt-40
     .u-fs-title
       | (弊社使用欄)
 
@@ -117,7 +115,7 @@ javascript:
           th.u-va-middle 営業担当
           td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.user.name
 
-  .u-mt-20.c-flex__between
+  .u-mt-40.c-flex__between
     .div
       | 株式会社 日本工業社
       br

@@ -21,7 +21,7 @@ javascript:
   }
 
 #captcha
-  .u-mt-10.c-flex__between
+  .u-mt-50.c-flex__between
     .c-table-work_subcontractors1
       .u-fs-x-large.u-fw-bold 発注・指示書(社内用)
       table
@@ -72,7 +72,7 @@ javascript:
       label.u-fs-x-small
         | 部門長
 
-  .c-table.u-mt-10
+  .c-table.u-mt-40
     table
       thead
         tr
@@ -104,7 +104,7 @@ javascript:
         tr
           td.u-va-top.u-ta-left = simple_format(Work.find(params[:id]).notices)
 
-  .u-mt-10
+  .u-mt-50
     .c-table-work_subcontractors4
       table
         tr
@@ -118,7 +118,7 @@ javascript:
           th.u-va-middle 発注担当
           td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.name
 
-  .u-mt-30.c-flex__between
+  .u-mt-50.c-flex__between
     .div
       | 株式会社 日本工業社
       br
