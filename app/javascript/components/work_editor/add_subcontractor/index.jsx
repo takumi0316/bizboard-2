@@ -304,14 +304,16 @@ export default class AddSubcontractor extends React.Component {
       replace_order = replace_order.replace(/時/g, ':');
       replace_order = replace_order.replace(/分/g, '');
       let replace_delivery =  document.getElementById('deliveryDate' + i).value;
-      if ( replace_delivery === '' ) {
+      if ( replace_delivery !== '' ) {
 
+        console.log(replace_delivery)
         replace_delivery = replace_delivery.replace(/年/g, '/');
         replace_delivery = replace_delivery.replace(/月/g, '/');
         replace_delivery = replace_delivery.replace(/日/g, '');
         replace_delivery = replace_delivery.replace(/時/g, ':');
         replace_delivery = replace_delivery.replace(/分/g, '');
       }
+      console.log(replace_delivery)
       array_rails.push(JSON.stringify({
 
         'id': Number(document.getElementById('work_subcontractor_id' + i).value),
@@ -847,6 +849,7 @@ export default class AddSubcontractor extends React.Component {
                               </thead>
                               <tbody>
                                 <tr>
+                                  { console.log(work_subcontractor.delivery_date) }
                                   <td className={ 'u-ta-center' }>{ Dayjs(work_subcontractor.order_date).format('YYYY年MM月DD日') }</td>
                                   <td className={ 'u-ta-center' }>{ work_subcontractor.delivery_date === null ? null : Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }</td>
                                   <td className={ 'u-ta-left' }>{ work_subcontractor.delivery_destination }</td>
