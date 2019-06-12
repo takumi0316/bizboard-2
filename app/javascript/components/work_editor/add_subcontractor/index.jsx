@@ -304,11 +304,14 @@ export default class AddSubcontractor extends React.Component {
       replace_order = replace_order.replace(/時/g, ':');
       replace_order = replace_order.replace(/分/g, '');
       let replace_delivery =  document.getElementById('deliveryDate' + i).value;
-      replace_delivery = replace_delivery.replace(/年/g, '/');
-      replace_delivery = replace_delivery.replace(/月/g, '/');
-      replace_delivery = replace_delivery.replace(/日/g, '');
-      replace_delivery = replace_delivery.replace(/時/g, ':');
-      replace_delivery = replace_delivery.replace(/分/g, '');
+      if ( replace_delivery === '' ) {
+
+        replace_delivery = replace_delivery.replace(/年/g, '/');
+        replace_delivery = replace_delivery.replace(/月/g, '/');
+        replace_delivery = replace_delivery.replace(/日/g, '');
+        replace_delivery = replace_delivery.replace(/時/g, ':');
+        replace_delivery = replace_delivery.replace(/分/g, '');
+      }
       array_rails.push(JSON.stringify({
 
         'id': Number(document.getElementById('work_subcontractor_id' + i).value),
@@ -683,7 +686,7 @@ export default class AddSubcontractor extends React.Component {
                                 <tbody>
                                   <tr>
                                     <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'orderDate' + index } defaultValue={ Dayjs(work_subcontractor.order_date).format('YYYY年MM月DD日') }></input></td>
-                                    <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliveryDate' + index } defaultValue={ Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }></input></td>
+                                    <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliveryDate' + index } defaultValue={ work_subcontractor.delivery_date === null ? null : Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }></input></td>
                                     <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input7' } type='text' id={ 'deliveryDestination' + index } defaultValue={ work_subcontractor.delivery_destination }></input></td>
                                   </tr>
                                 </tbody>
@@ -845,7 +848,7 @@ export default class AddSubcontractor extends React.Component {
                               <tbody>
                                 <tr>
                                   <td className={ 'u-ta-center' }>{ Dayjs(work_subcontractor.order_date).format('YYYY年MM月DD日') }</td>
-                                  <td className={ 'u-ta-center' }>{ Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }</td>
+                                  <td className={ 'u-ta-center' }>{ work_subcontractor.delivery_date === null ? null : Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }</td>
                                   <td className={ 'u-ta-left' }>{ work_subcontractor.delivery_destination }</td>
                                 </tr>
                               </tbody>
