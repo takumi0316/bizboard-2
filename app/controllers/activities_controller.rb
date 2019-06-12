@@ -54,7 +54,7 @@ class ActivitiesController < ApplicationController
     add_breadcrumb '新規作成'
     @id = params[:quote_id]
     @activity = Activity.new(:quote_id => @id)
-
+    @quote = Quote.find(@id) rescue @quote = Quote.find_by(@id)      
   end
 
   ##
@@ -62,9 +62,10 @@ class ActivitiesController < ApplicationController
   # @version 2018/06/10
   #
   def edit
-
     add_breadcrumb '活動履歴', path: activities_path
     add_breadcrumb '編集'
+    @id = activity.quote_id
+    @quote = Quote.find(@id)
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
