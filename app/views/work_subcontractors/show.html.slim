@@ -51,7 +51,7 @@ javascript:
           td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).order_date.strftime('%Y年%m月%d日')
         tr
           th.u-va-middle 納期
-          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).delivery_date.strftime('%Y年%m月%d日')
+          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).delivery_date.present? ? WorkSubcontractor.find(params[:id]).delivery_date.strftime('%Y年%m月%d日') : nil
         tr
           th.u-va-middle 納品先
           td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).delivery_destination
