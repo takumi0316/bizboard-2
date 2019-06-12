@@ -11,9 +11,13 @@
   = f.select :status, Activity.statuses_i18n.invert, {prompt: '対応ステータス'}, { class: 'c-form-dateselect' }
 
   .c-form-label
-    = f.label :quote_id, '見積番号'
+    = f.label :quote_id, '案件番号'
     span.c-form__required.u-ml-10 必須
   = f.select :quote_id, Quote.all.pluck(:quote_number, :id),{},{:class=>'c-form-dateselect'}
+
+  .c-form-label
+    = f.label :quote_id, '案件名'
+
 
   .c-form-label
     = f.label :memo, 'メモ'

@@ -32,7 +32,7 @@ class Activity < ApplicationRecord
 
   #種類のenum
   enum status: { meeting: 0, mail: 10, tell: 20,
-   estimate: 30, workshop: 40, other: 50
+   estimate: 30, workshop: 40, lost: 50, other: 60
   }
 
   #----------------------------------------

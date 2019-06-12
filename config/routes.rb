@@ -78,6 +78,12 @@ Rails.application.routes.draw do
   resources :subcontractor_divisions
   resources :subcontractor_division_clients
 
+  #外注先支払い情報
+  resources :payments
+
+  #請求情報
+  resources :bills
+
   # 自社部署
   resources :divisions
 
