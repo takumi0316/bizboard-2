@@ -112,14 +112,14 @@ javascript:
         tr
           th.u-va-middle 案件管理番号
           td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.quote_number if WorkSubcontractor.find(params[:id]).work.quote.quote_number
-          th.u-va-middle 営業担当
+          th.u-va-middle 発注担当
           td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.user.name
 
   .u-mt-40.c-flex__between
     .div
       | 株式会社 日本工業社
       br
-      | 営業部
+      | 本社
       br
       | 〒104-0033 中央区新川2-26-3 住友不動産茅場町ビル
       br
@@ -173,4 +173,3 @@ javascript:
           tr.u-ta-center
             td.u-va-middle
               | /
-
