@@ -43,6 +43,7 @@ ja:
         tell: 電話
         estimate: 見積もり
         workshop: セミナー
+        lost: 失注
         other: その他
     quote:
       attention:

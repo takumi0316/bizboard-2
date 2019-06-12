@@ -56,6 +56,16 @@
               span.u-ml-10 目標管理
 
           li.l-dashboard__menuItem
+            = link_to root_path do
+              = evil_icon 'ei-credit-card', size: :s
+              span.u-ml-10 支払い管理
+
+          li.l-dashboard__menuItem
+            = link_to root_path do
+              = evil_icon 'ei-cart', size: :s
+              span.u-ml-10 請求情報
+
+          li.l-dashboard__menuItem
             = link_to users_path do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 ユーザー一覧
