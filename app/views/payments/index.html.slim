@@ -1,0 +1,17 @@
+h1.l-dashboard__heading 外注企業 支払い情報一覧
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 会社名
+        th 金額
+    tbody
+      - @subcontractor.each do |r|
+        tr
+          td = r.name
+          - r.payments.each do |rt|
+            td = rt.price
+
+
+= render 'layouts/_partials/pagination'

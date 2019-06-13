@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_07_024057) do
+ActiveRecord::Schema.define(version: 2019_06_12_053912) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -159,6 +159,17 @@ ActiveRecord::Schema.define(version: 2019_06_07_024057) do
     t.string "mf_invoice_id"
     t.string "pdf_url"
     t.index ["quote_id"], name: "index_invoices_on_quote_id"
+  end
+
+  create_table "payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "subcontractor_id"
+    t.bigint "work_subcontractor_detail_id"
+    t.integer "price", default: 0
+    t.date "date", comment: "支払日"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subcontractor_id"], name: "index_payments_on_subcontractor_id"
+    t.index ["work_subcontractor_detail_id"], name: "index_payments_on_work_subcontractor_detail_id"
   end
 
   create_table "project_after_processes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

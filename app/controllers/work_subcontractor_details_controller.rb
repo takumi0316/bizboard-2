@@ -57,7 +57,20 @@ class WorkSubcontractorDetailsController < ApplicationController
             actual_count: parse_json['actual_count'],
             actual_cost: parse_json['actual_cost'],
           )
+
+          #外注金額保存
+          detail_id = Payment.find_by(work_subcontractor_detail_id: parse_json['id'])&.work_subcontractor_detail_id
+          if detail_id == parse_json['id']
+
+            payment = Payment.find_by(work_subcontractor_detail_id: parse_json['id']).update(price: parse_json['actual_cost'])
+
+          else
+
+            payment = Payment.create!(subcontractor_id: subcontractor_detail.work_subcontractor.client.subcontractor_division_id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: Date.today.to_time)
+            payment.save!
+          end
         end
+
         render json: { status: :success, detail: Work.find(params[:work_id]).subcontractor_detail }
       elsif params[:token] === 'empty'
 
@@ -78,7 +91,12 @@ class WorkSubcontractorDetailsController < ApplicationController
   #
   def destroy
 
+    #外注金額の削除
+    detail_id = WorkSubcontractorDetail.find(params[:id]).id
+    payment = Payment.find_by(work_subcontractor_detail_id: detail_id).destroy!
+
     WorkSubcontractorDetail.find(params[:id]).destroy!
+
     render json: { status: :success }
 
   rescue => e

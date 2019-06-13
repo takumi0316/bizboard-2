@@ -44,6 +44,9 @@ class WorkSubcontractorDetail < ApplicationRecord
 
   belongs_to :work_subcontractor
 
+  #請求情報
+  has_many :payments
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

@@ -81,7 +81,7 @@ class InvoicesController < ApplicationController
       result.push({
         name: r.name,
         quantity: r.unit,
-        unit_price: r.price,
+        unit_price: r.unit_price,
         detail: r.remarks,
       })
     end
@@ -137,7 +137,7 @@ class InvoicesController < ApplicationController
       result.push({
         name: r.name,
         quantity: r.unit,
-        unit_price: r.price,
+        unit_price: r.unit_price,
         detail: r.remarks,
       })
     end

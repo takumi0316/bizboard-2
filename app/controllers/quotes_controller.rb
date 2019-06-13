@@ -383,7 +383,7 @@ class QuotesController < ApplicationController
 
     clone_quote.save
 
-    clone_quote.update_columns(:pdf_url => nil, :mf_quote_id => nil)
+    clone_quote.update_columns(pdf_url: nil, mf_quote_id: nil)
 
     clone_quote.draft!
 
