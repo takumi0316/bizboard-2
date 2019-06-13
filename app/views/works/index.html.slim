@@ -19,7 +19,7 @@
         th 更新日
     tbody
       - works.each_with_index do |r, index|
-        - unless @user_type == 'general'
+        - unless @user_type == 'general' || r.status == 'completed'
           tr
             td.u-ta-center = r.quote.quote_number if r.quote&.quote_number.present?
             td.u-ta-center = link_to '詳細', work_path(r), class: 'c-btnMain-standard'
@@ -36,7 +36,7 @@
             td.u-ta-right  = r.updated_at
         - else
           - if @count.blank?
-            - if r.division_id == @division
+            - if r.division_id == @division && r.status != 'completed'
               tr
                 td.u-ta-center = r.quote.quote_number if r.quote&.quote_number.present?
                 td.u-ta-center = link_to '詳細', work_path(r), class: 'c-btnMain-standard'
