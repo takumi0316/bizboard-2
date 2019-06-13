@@ -16,7 +16,8 @@ class WorksController < ApplicationController
     Work
       .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
       .all
-      .reverse_order
+      #.eager_load(:quote)
+      .order('quotes.deliver_at')
   }
 
   # 案件
