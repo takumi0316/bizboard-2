@@ -1,0 +1,38 @@
+h1.l-dashboard__heading 目標
+
+= form_for target, html: { class: 'u-mt-30'} do |f|
+
+  .c-form-label
+    = f.label :division_id, '名称'
+    span.c-form__required.u-ml-10 必須
+  .c-form-selectWrap.u-mt-10
+    = f.select :division_id, Division.all.pluck(:name, :id), {}, { class: 'c-form-select' }
+
+  .c-form-label
+    = f.label :target_year, '年'
+    span.c-form__required.u-ml-10 必須
+  .c-form-selectWrap.u-mt-10
+    = f.select :target_year, [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030], {}, { class: 'c-form-select' }
+
+  .c-form-label
+    = f.label :target_month, '月'
+    span.c-form__required.u-ml-10 必須
+  .c-form-selectWrap.u-mt-10
+    = f.select :target_month, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], {}, { class: 'c-form-select' }
+
+  .c-form-label
+    = f.label :sales, '売上'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :sales, placeholder: '10000', class: 'c-form-text', required: :true
+
+  .c-form-label
+    = f.label :profit, '利益'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :profit, placeholder: '10000', class: 'c-form-text', required: :true
+
+  .c-form-label
+    = f.label :cost, '原価'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :cost, placeholder: '10000', class: 'c-form-text', required: :true
+
+  .u-ta-center.u-mt-30 = f.submit target.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

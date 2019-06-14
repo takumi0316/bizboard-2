@@ -33,7 +33,7 @@ class Payment < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :subcontractor
+  belongs_to :subcontractor, foreign_key: 'subcontractor_id'  
 
   #----------------------------------------
   #  ** Scopes **
