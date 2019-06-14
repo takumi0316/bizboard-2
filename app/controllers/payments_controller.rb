@@ -42,7 +42,13 @@ class PaymentsController < ApplicationController
 
     add_breadcrumb '支払い管理'
     @subcontractor = Subcontractor.all
-    @price = Payment.all.select(:subcontractor_id, :price)
+    if params[:date1].present?
+      @date1 = params[:date1]
+      @date2 = params[:date2]
+    else
+      @date1 = Time.current.beginning_of_month
+      @date2 = Time.current.end_of_month
+    end
   end
 
 
