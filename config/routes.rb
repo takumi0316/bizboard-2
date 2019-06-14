@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   end
   resources :masters
 
+  # 目標管理
+  resources :targets
+
   # 案件
   resources :projects
 

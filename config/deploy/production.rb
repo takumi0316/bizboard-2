@@ -13,7 +13,7 @@ set :assets_roles, [:assets]
 
 # rails
 set :rails_env, 'production'
-set :branch, 'beta'
+set :branch, 'master'
 set :deploy_to, '/home/jii/factory'
 set :log_level, :debug
 set :default_shell, '/bin/bash -l'
