@@ -491,7 +491,7 @@ export default class AddDetails extends React.Component {
                     <th>担当者</th>
                     <th>原稿<br />枚数</th>
                     <th>部数<br />数量</th>
-                    <th>想定原価(税抜)</th>
+                    <th>原単価(税抜)</th>
                     <th>実績原価(税抜)</th>
                   </tr>
                 </thead>
@@ -560,7 +560,7 @@ export default class AddDetails extends React.Component {
                     <th className={ 'u-va-middle' }>担当者</th>
                     <th>原稿<br />枚数</th>
                     <th>部数<br />数量</th>
-                    <th className={ 'u-va-middle' }>想定原価(税抜)</th>
+                    <th className={ 'u-va-middle' }>原単価(税抜)</th>
                     <th className={ 'u-va-middle' }>実績原価(税抜)</th>
                   </tr>
                 </thead>
