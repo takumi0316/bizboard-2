@@ -1,7 +1,7 @@
 ##
-# Target Controller
+# Targets Controller
 #
-class TargetController < ApplicationController
+class TargetsController < ApplicationController
 
   #----------------------------------------
   #  ** Includes **

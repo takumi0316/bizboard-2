@@ -35,6 +35,8 @@ class Target < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  belongs_to :division
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------
