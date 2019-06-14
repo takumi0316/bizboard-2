@@ -63,6 +63,9 @@ import QuoteProject from 'components/work_editor/quote_project'
 // 請求書検索
 import InvoiceSearch from 'components/invoice_search/index.jsx'
 
+// 外注金額検索
+import PaymentSearch from 'components/payment_search/index.jsx'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -78,4 +81,5 @@ WebpackerReact.setup({
   WorkEditor,
   QuoteProject,
   InvoiceSearch,
+  PaymentSearch,
 })

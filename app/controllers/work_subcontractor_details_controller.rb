@@ -65,8 +65,8 @@ class WorkSubcontractorDetailsController < ApplicationController
             payment = Payment.find_by(work_subcontractor_detail_id: parse_json['id']).update(price: parse_json['actual_cost'])
 
           else
-
-            payment = Payment.create!(subcontractor_id: subcontractor_detail.work_subcontractor.client.subcontractor_division_id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: Date.today.to_time)
+            
+            payment = Payment.create!(subcontractor_id: subcontractor_detail&.work_subcontractor&.client.subcontractor_division_id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: Date.today.to_time)
             payment.save!
           end
         end
