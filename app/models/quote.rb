@@ -77,7 +77,7 @@ class Quote < ApplicationRecord
 
   has_one  :invoice,    dependent: :destroy
 
-  has_one  :work, lambda { order(deliver_at: 'ASC') }, dependent: :destroy
+  has_one  :work, dependent: :destroy
 
   has_one  :activity, dependent: :destroy
 
