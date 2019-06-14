@@ -113,8 +113,6 @@ export default class ProjectEditor extends React.Component {
 
       field = Object.assign(field, this.refs.project_bind.getDetail());
 
-      price += Number(field['project[bind_attributes][price]']);
-
     // スキャン案件
     } else if (this.state.project_category == 'project_scan') {
 
