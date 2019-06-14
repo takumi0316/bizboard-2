@@ -1,0 +1,36 @@
+h1.l-dashboard__heading.u-mt-30 外注先一覧
+
+.u-mt-15 = link_to '外注先を作成する', new_subcontractor_path, class: 'c-btnMain-standard c-btn-blue'
+
+= form_with url: subcontractors_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+
+  .c-search__item
+    = f.label :name, '名称'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'タイトル'
+
+  = f.submit '検索', class: 'c-btnMain-standard'
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th ID
+        th 名称
+        th 部署
+        th colspan=3
+    tbody
+      - subcontractors.each do |r|
+        tr
+          td = r.id
+          td = r.name
+          td
+            - r.divisions.each do |d|
+              div
+                = link_to d.name.presence || '部門名称なし', edit_subcontractor_division_path(d), class: 'u-td-underline'
+                hr
+            .u-mt-10
+              = link_to '＋ 部署を作成する', new_subcontractor_division_path(subcontractor_id: r.id), class: 'u-td-underline u-fc-blue'
+          td = link_to '編集', edit_subcontractor_path(r), class: 'c-btnMain-standard'
+          td = link_to '削除', subcontractor_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+
+= render 'layouts/_partials/pagination'

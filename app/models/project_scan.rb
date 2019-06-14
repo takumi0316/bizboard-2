@@ -2,24 +2,26 @@
 #
 # Table name: project_scans
 #
-#  id             :bigint(8)        not null, primary key
-#  project_id     :bigint(8)
-#  posting_state  :integer          default("stapler")
-#  print_size     :integer          default("card_size")
-#  draft_split    :integer          default("split_available")
-#  draft_restore  :integer          default("restore_necessary")
-#  back_cut       :integer          default("back_cut_unnecessary")
-#  back_cut_note  :text(65535)
-#  color          :integer          default("monochrome_print")
-#  resolution     :integer          default("dpi_200")
-#  file_extension :integer          default("jpg")
-#  size_mix       :integer          default("all_same")
-#  adf            :integer          default("adf_available")
-#  odr            :integer          default("odr_available")
-#  bookmark       :integer          default("bookmark_necessary")
-#  edit_file_name :integer          default("edit_filename_necessary")
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                 :bigint(8)        not null, primary key
+#  project_id         :bigint(8)
+#  posting_state      :integer          default("stapler")
+#  print_size         :integer          default("card_size")
+#  draft_split        :integer          default("split_available")
+#  draft_restore      :integer          default("restore_necessary")
+#  back_cut           :integer          default("back_cut_unnecessary")
+#  back_cut_note      :text(65535)
+#  color              :integer          default("monochrome_print")
+#  resolution         :integer          default("dpi_200")
+#  file_extension     :integer          default("jpg")
+#  size_mix           :integer          default("all_same")
+#  adf                :integer          default("adf_available")
+#  odr                :integer          default("odr_available")
+#  bookmark           :integer          default("bookmark_necessary")
+#  edit_file_name     :integer          default("edit_filename_necessary")
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  posting_state_note :text(65535)
+#  price              :integer
 #
 
 class ProjectScan < ApplicationRecord
@@ -36,7 +38,7 @@ class ProjectScan < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum posting_state: { stapler: 0, zem: 10, wclip: 20, band: 30, bara: 40, bind: 50, file: 60 }
+  enum posting_state: { stapler: 0, zem: 10, wclip: 20, band: 30, bara: 40, bind: 50, file: 60, other_state: 70 }
   enum draft_split: { split_available: 0, split_unavailable: 10 }
   enum draft_restore: { restore_necessary: 0, restore_unnecessary: 10 }
 

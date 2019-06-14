@@ -1,0 +1,13 @@
+= react_component('QuoteEditor',
+  { action: action,
+    quote: quote,
+    quote_projects: quote&.quote_projects,
+    user: quote&.user,
+    user_id: current_user.id,
+    division_id: current_user&.division&.id,
+    company: quote&.client&.company_division&.company,
+    division: quote&.client&.company_division,
+    client: quote&.client,
+    users: User.all,
+    prefectures: Prefecture.all,
+  })

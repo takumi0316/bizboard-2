@@ -20,6 +20,8 @@
 #  gold_letter         :text(65535)
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  note                :text(65535)
+#  price               :integer
 #
 
 class ProjectBindingWork < ApplicationRecord
@@ -36,7 +38,7 @@ class ProjectBindingWork < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum bind_type: { original_bind_type: 0, cross_bind_type: 10, wrap_bind_type: 20, stitching_bind_type: 30, secret_bind_type: 40, radio_bind_type: 50, double_door_bind_type: 60, gold_letter_bind_type: 70, no_bind_type: 80 }
+  enum bind_type: { original_bind_type: 0, cross_bind_type: 10, wrap_bind_type: 20, stitching_bind_type: 30, secret_bind_type: 40, radio_bind_type: 50, double_door_bind_type: 60, gold_letter_bind_type: 70, no_bind_type: 80, other_bind_type: 90 }
   enum cross_color: { black_cross: 0, white_cross: 10 }
   enum wrap_back_text: { wrap_back_text_necessary: 0, wrap_back_text_unnecessary: 10 }
   enum secret_stitch: { normal_secret_stitch: 0, triangle_secret_stitch: 10 }

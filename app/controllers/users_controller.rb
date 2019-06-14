@@ -74,7 +74,7 @@ class UsersController < ApplicationController
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: 'ユーザー情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -84,7 +84,9 @@ class UsersController < ApplicationController
   #
   def destroy
 
-    raise '対象のユーザーは記事に紐付きがあります' if user.articles.exists?
+    raise 'じぶんをけすなんてとんでもない!' if user.id == current_user.id
+
+    raise '対象のユーザーは見積りに紐付きがあります' if user.quotes.exists?
 
     user.destroy!
   rescue => e
@@ -105,7 +107,7 @@ class UsersController < ApplicationController
     # @version 2018/06/10
     #
     def user_params
-      
+
       params.require(:user).permit :name, :email, :image, :user_type, :division_id, :comment, :password, :password_confirmation, :publish, :status
     end
 end

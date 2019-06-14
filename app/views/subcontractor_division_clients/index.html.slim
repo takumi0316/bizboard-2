@@ -1,0 +1,24 @@
+h1.l-dashboard__heading 担当者一覧
+
+.u-mt-15 = link_to '部署 - 担当者 を作成する', new_subcontractor_division_client_path(subcontractor_division_id: division&.id), class: 'c-btnMain-standard'
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 担当者ID
+        th 会社名
+        th 部署名
+        th 氏名
+        th colspan=2
+    tbody
+      - clients.each do |r|
+        tr
+          td = r.id
+          td = r.subcontractor_division.subcontractor.name
+          td = r.subcontractor_division.name || '部署名なし'
+          td = r.name
+          td = link_to '編集', edit_subcontractor_division_client_path(r), class: 'c-btnMain-standard'
+          td = link_to '削除', subcontractor_division_client_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+
+= render 'layouts/_partials/pagination'

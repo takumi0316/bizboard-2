@@ -1,0 +1,47 @@
+= form_for activity, html: { class: 'u-mt-30'} do |f|
+
+  .c-form-label
+    = f.label :date, '対応日時'
+    span.c-form__required.u-ml-10 必須
+  = f.date_select :date, {use_month_numbers: true, :start_year => Date.today.years_ago(5).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
+
+  .c-form-label
+    = f.label :status, '対応内容'
+    span.c-form__required.u-ml-10 必須
+  = f.select :status, Activity.statuses_i18n.invert, {prompt: '対応ステータス'}, { class: 'c-form-dateselect' }
+
+  .c-form-label
+    = f.label :quote_id, '案件番号'
+    span.c-form__required.u-ml-10 必須
+  = f.select :quote_id, Quote.all.pluck(:quote_number, :id),{},{:class=>'c-form-dateselect'}
+
+  .c-form-label
+    = f.label :quote_id, '案件名'
+  = @quote.subject
+
+  .c-form-label
+    = f.label :memo, 'メモ'
+  = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 8
+
+  .c-form-label
+    = f.label :attachment, '資料リンク'
+  = f.text_field :attachment, placeholder: '資料リンクを貼り付けてください', type: 'url', class: 'c-form-text'
+
+  .u-ta-center.u-mt-30 = f.submit activity.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+
+javascript:
+  window.onload = function(){
+
+  var url = document.getElementById('activity_attachment')
+  var date_y = document.getElementById('activity_date_1i')
+
+  //urlのバリデーション
+  url.addEventListener('invalid', function(e) {
+        e.target.setCustomValidity('');
+        if(url.validity.typeMismatch){
+          e.target.setCustomValidity('URLが正しくありません');
+        }
+      }, false);
+  };
+
+  //日付のバリデーション

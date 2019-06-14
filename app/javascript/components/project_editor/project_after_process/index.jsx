@@ -25,7 +25,10 @@ export default class ProjectAfterProcess extends React.Component {
     super(props);
 
     this.state = {
-      hole: this.props.project_after_process.hole || 'original_hole',
+      stapler: this.props.project_after_process.stapler || 'no_stapler',
+      folding: this.props.project_after_process.folding || 'no_folding',
+      clip: this.props.project_after_process.clip || 'clip_unnecessary',
+      hole: this.props.project_after_process.hole || 'hole_unnecessary',
       bind: this.props.project_after_process.bind || 'file_unnecessary',
       back_text: this.props.project_after_process.back_text || 'back_text_unnecessary',
     };
@@ -70,14 +73,41 @@ export default class ProjectAfterProcess extends React.Component {
       'project[project_after_process_attributes][hole_note]': '',
       'project[project_after_process_attributes][bind_note]': '',
       'project[project_after_process_attributes][back_text_note]': '',
+
+      // それぞれの価格(初期値は0円)
+      'project[project_after_process_attributes][folding_price]': 0,
+      'project[project_after_process_attributes][stapler_price]': 0,
+      'project[project_after_process_attributes][hole_price]': 0,
+      'project[project_after_process_attributes][clip_price]': 0,
+      'project[project_after_process_attributes][bind_price]': 0,
+      'project[project_after_process_attributes][back_text_price]': 0,
     };
 
+    if (this.state.folding != 'no_folding') {
+      result['project[project_after_process_attributes][folding_price]'] = this.refs.folding_price.value;
+    }
+    if (this.state.stapler != 'no_stapler') {
+      result['project[project_after_process_attributes][stapler_price]'] = this.refs.stapler_price.value;
+    }
+    if (this.state.hole != 'hole_unnecessary') {
+      result['project[project_after_process_attributes][hole_price]'] = this.refs.hole_price.value;
+    }
+    if (this.state.clip != 'clip_unnecessary') {
+      result['project[project_after_process_attributes][clip_price]'] = this.refs.clip_price.value;
+    }
+    if (this.state.bind != 'file_unnecessary') {
+      result['project[project_after_process_attributes][bind_price]'] = this.refs.bind_price.value;
+    }
+    if (this.state.back_text != 'back_text_unnecessary') {
+      result['project[project_after_process_attributes][back_text_price]'] = this.refs.back_text_price.value;
+    }
+
     if (this.state.hole == 'hole_other') {
-      
+
       result['project[project_after_process_attributes][hole_note]'] = this.refs.hole_note.value;
     }
 
-    if (this.state.bind == 'king_file' || this.state.bind == 'other_file') {
+    if (this.state.bind != 'file_unnecessary') {
 
       result['project[project_after_process_attributes][bind_note]'] = this.refs.bind_note.value;
     }
@@ -106,7 +136,7 @@ export default class ProjectAfterProcess extends React.Component {
                 <td className='u-fw-bold'>折り</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='folding' defaultValue={this.props.project_after_process.folding}>
+                    <select className='c-form-select' ref='folding' value={this.state.folding} onChange={(e) => this.setState({folding: e.target.value})}>
                       { Object.keys(FOLDINGS).map((item, index) => {
                         const key = 'folding-'+index;
                         return (
@@ -115,13 +145,19 @@ export default class ProjectAfterProcess extends React.Component {
                       })}
                     </select>
                   </div>
+                  { this.state.folding != 'no_folding' ?
+                    <div className='u-mt-15'>
+                      <input className='c-form-text' ref='folding_price' type='text' defaultValue={this.props.project_after_process.folding_price || 0} />
+                    </div>
+                    : null
+                  }
                 </td>
               </tr>
               <tr>
                 <td className='u-fw-bold'>ホチキス留</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='stapler' defaultValue={this.props.project_after_process.stapler}>
+                    <select className='c-form-select' ref='stapler' value={this.state.stapler} onChange={(e) => this.setState({stapler: e.target.value})}>
                       { Object.keys(STAPLERS).map((item, index) => {
                         const key = 'stapler-'+index;
                         return (
@@ -130,13 +166,19 @@ export default class ProjectAfterProcess extends React.Component {
                       })}
                     </select>
                   </div>
+                  { this.state.stapler != 'no_stapler' ?
+                    <div className='u-mt-15'>
+                      <input className='c-form-text' ref='stapler_price' type='text' defaultValue={this.props.project_after_process.stapler_price || 0} />
+                    </div>
+                    : null
+                  }
                 </td>
               </tr>
               <tr>
                 <td className='u-fw-bold'>穴あけ</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='hole' defaultValue={this.props.project_after_process.hole} onChange={(e) => this.setState({hole: e.target.value})}>
+                    <select className='c-form-select' ref='hole' value={this.state.hole} onChange={(e) => this.setState({hole: e.target.value})}>
                       { Object.keys(HOLES).map((item, index) => {
                         const key = 'hole-'+index;
                         return (
@@ -151,13 +193,19 @@ export default class ProjectAfterProcess extends React.Component {
                     </div>
                     : null
                   }
+                  { this.state.hole != 'hole_unnecessary' ?
+                    <div className='u-mt-15'>
+                      <input className='c-form-text' ref='hole_price' type='text' defaultValue={this.props.project_after_process.hole_price || 0} />
+                    </div>
+                    : null
+                  }
                 </td>
               </tr>
               <tr>
                 <td className='u-fw-bold'>クリップ留</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='clip' defaultValue={this.props.project_after_process.clip}>
+                    <select className='c-form-select' ref='clip' value={this.state.clip} onChange={(e) => this.setState({clip: e.target.value})}>
                       { Object.keys(CLIPS).map((item, index) => {
                         const key = 'clip-'+index;
                         return (
@@ -166,13 +214,19 @@ export default class ProjectAfterProcess extends React.Component {
                       })}
                     </select>
                   </div>
+                  { this.state.clip != 'clip_unnecessary' ?
+                    <div className='u-mt-15'>
+                      <input className='c-form-text' ref='clip_price' type='text' defaultValue={this.props.project_after_process.clip_price || 0} />
+                    </div>
+                    : null
+                  }
                 </td>
               </tr>
               <tr>
                 <td className='u-fw-bold'>ファイル綴じ</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='bind' defaultValue={this.props.project_after_process.bind} onChange={(e) => this.setState({bind: e.target.value})}>
+                    <select className='c-form-select' ref='bind' value={this.state.bind} onChange={(e) => this.setState({bind: e.target.value})}>
                       { Object.keys(BINDS).map((item, index) => {
                         const key = 'bind-'+index;
                         return (
@@ -182,9 +236,16 @@ export default class ProjectAfterProcess extends React.Component {
                     </select>
                   </div>
 
-                  { this.state.bind == 'king_file' || this.state.bind == 'other_file' ?
+                  { this.state.bind == 'king_file' || this.state.bind == 'other_file' || this.state.bind == 'flat_file' ?
                     <div className='u-mt-15'>
                       <textarea placeholder='大きさ等を指定してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='bind_note' defaultValue={this.props.project_after_process.bind_note}></textarea>
+                    </div>
+                    : null
+                  }
+
+                  { this.state.bind != 'file_unnecessary' ?
+                    <div className='u-mt-15'>
+                      <input className='c-form-text' ref='bind_price' type='text' defaultValue={this.props.project_after_process.bind_price || 0} />
                     </div>
                     : null
                   }
@@ -194,7 +255,7 @@ export default class ProjectAfterProcess extends React.Component {
                 <td className='u-fw-bold'>背文字</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='back_text' defaultValue={this.props.project_after_process.back_text} onChange={(e) => this.setState({back_text: e.target.value})}>
+                    <select className='c-form-select' ref='back_text' value={this.state.back_text} onChange={(e) => this.setState({back_text: e.target.value})}>
                       { Object.keys(BACK_TEXTS).map((item, index) => {
                         const key = 'back_text-'+index;
                         return (
@@ -207,6 +268,13 @@ export default class ProjectAfterProcess extends React.Component {
                   { this.state.back_text == 'back_text_necessary' ?
                     <div className='u-mt-15'>
                       <textarea placeholder='テキストを入力してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='back_text_note' defaultValue={this.props.project_after_process.back_text_note}></textarea>
+                    </div>
+                    : null
+                  }
+
+                  { this.state.back_text != 'back_text_unnecessary' ?
+                    <div className='u-mt-15'>
+                      <input className='c-form-text' ref='back_text_price' type='text' defaultValue={this.props.project_after_process.back_text_price || 0} />
                     </div>
                     : null
                   }

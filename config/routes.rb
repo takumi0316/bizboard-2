@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   # TOP
   root 'home#index'
 
@@ -18,26 +18,74 @@ Rails.application.routes.draw do
 
   # マスタ同期
   namespace :masters do
-    post :items
     post :pertners
   end
   resources :masters
 
+  # 目標管理
+  resources :targets
+
   # 案件
-  resources :projects do
+  resources :projects
+
+  #見積もり
+  namespace :quotes do
+    get  :api_post
+    get  :api_update
+    get  :pdf_dl
+  end
+  resources :quotes do
     post :status
+    post :copy
   end
 
+  resources :quote_projects, only: [:destroy]
+
+  # 案件
+  namespace :invoices do
+    post :apipost
+    get :pdf_dl
+  end
+  resources :invoices
+
+  #活動履歴
+  resources :activities
+
   # 作業進捗
-  resources :works
+  resources :works do
+    member do
+      get :directions
+    end
+  end
+
+  # 作業詳細
+  resources :work_details
+  resources :work_subcontractors
+  resources :work_subcontractor_details
 
   # 取引先
-  resources :companies
+  resources :companies do
+    collection do
+      post :bulk
+    end
+  end
   resources :company_divisions
   resources :company_division_clients
 
-  # 品目
-  resources :items
+  # 外注先
+  resources :subcontractors do
+    collection do
+      post :bulk
+    end
+  end
+  resources :subcontractor_divisions
+  resources :subcontractor_division_clients
+
+  #外注先支払い情報
+  resources :payments
+
+  #請求情報
+  resources :bills
 
   # 自社部署
   resources :divisions

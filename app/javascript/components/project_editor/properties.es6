@@ -11,18 +11,6 @@ export const PROJECT_NAMES = {
   project_other: 'その他',
 };
 
-export const CHANNELS = {
-  '見積もり': 'estimate',
-  'BPR/ERP': 'bpr_erp',
-  '受付':   'reception',
-  'その他': 'channel_other',
-};
-
-export const PROJECT_TYPES = {
-  '請負': 'contract',
-  '販売施工': 'sales',
-};
-
 // ------------------------------------
 // コピー仕様
 // ------------------------------------
@@ -35,6 +23,7 @@ export const POSTING_STATES = {
   'バラ': 'bara',
   '製本': 'bind',
   'ファイル': 'file',
+  'その他': 'other_state',
 };
 
 export const DRAFT_SPLITS = {
@@ -246,6 +235,7 @@ export const STAPLERS = {
 };
 
 export const HOLES = {
+  'なし': 'hole_unnecessary',
   '原稿通り': 'original_hole',
   'あり': 'hole_necessary',
   'その他': 'hole_other',
@@ -288,6 +278,7 @@ export const BIND_TYPES = {
   '観音': 'double_door_bind_type',
   '金文字': 'gold_letter_bind_type',
   'なし': 'no_bind_type',
+  'その他': 'other_bind_type',
 };
 
 export const CROSS_COLORS = {

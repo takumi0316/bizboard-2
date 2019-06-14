@@ -1,0 +1,83 @@
+h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
+
+.u-mt-15.c-attention
+  p
+    | 会社名:
+    = invoice.quote.client&.company_division&.company&.name
+  p
+    | 部署名:
+    = invoice.quote.client&.company_division&.name
+  p
+    | 担当者名:
+    = invoice.quote.client&.name
+
+= form_for invoice, html: { class: 'u-mt-30'} do |f|
+
+  = f.hidden_field :quote_id
+
+  .c-form-group
+
+    .c-form-line.u-mr-50
+      .c-form-label
+        label 請求書番号
+      = invoice.quote.quote_number
+
+    .c-form-line.u-mr-50
+      .c-form-label
+        = f.label :date, '請求日'
+      .c-form-group
+        = f.date_select :date, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+
+    .c-form-line
+      .c-form-label
+        = f.label :expiration, '支払い期限'
+      .c-form-group
+        = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
+
+  .c-form-label
+    = f.label :attention, '請求書フォーマット'
+  = f.select :attention, {"請求書" => "請求書", "納品・請求書" => "納品・請求書"}, {}, { class: 'c-form-select' }
+
+  - invoice.subject ||= invoice.quote.subject
+
+  .c-form-label
+    = f.label :subject, '件名'
+  = f.text_field :subject, placeholder: '件名を入力してください', class: 'c-form-textarea', rows: 4
+
+  .c-table.u-mt-30
+    table
+      thead
+        tr
+          th 品目
+          th 単価
+          th 数量
+          th 価格
+      tbody
+
+        - invoice.quote.quote_projects.each do |r|
+          tr
+            td = r.name
+            td = r.unit_price.to_i.to_s(:delimited)
+            td = r.unit
+            td = (r.unit_price.to_i * r.unit.to_i).to_s(:delimited)
+          tr
+            td colspan=4 = r.remarks
+
+  .c-table.u-mt-30
+    table
+      tbody
+        tr
+          td 合計金額 (税込)
+          td
+            |¥
+            = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).floor.to_s(:delimited)
+
+  .c-form-label.u-mt-30
+    = f.label :remarks, '備考　※請求書に記載されます'
+  = f.text_area :remarks, placeholder: '備考を入力してください', class: 'c-form-textarea', rows: 4
+
+  .c-form-label
+    = f.label :memo, 'メモ　※請求書に記載されません'
+  = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+
+  .c-overlay-submit = f.submit invoice.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

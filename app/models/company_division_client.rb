@@ -40,12 +40,15 @@ class CompanyDivisionClient < ApplicationRecord
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
-  
+
   belongs_to :company_division
-  belongs_to :user
+  belongs_to :user, optional: true
 
   # 案件
   has_many :projects, -> { order(id: :desc) }
+
+  # 見積
+  has_many :quotes, -> { order(id: :desc) }
 
   #----------------------------------------
   #  ** Scopes **

@@ -1,18 +1,11 @@
-.l-contents
-
-  section.l-contents__inner
-
-    h2.l-contents__heading.u-mt-30 マスター同期
-    .c-table.u-mt-10
-      table
-        thead
-          tr
-            th マスター
-            th 
-        tbody
-          tr
-            td 品目
-            td = link_to '同期する', masters_items_path, class: 'c-btnMain-standard', method: :post
-          tr
-            td 取引先
-            td = link_to '同期する', masters_pertners_path, class: 'c-btnMain-standard', method: :post
+h2.l-dashboard__heading.u-mt-30 マスター同期
+.c-table.u-mt-10
+  table
+    thead
+      tr
+        th マスター
+        th 
+    tbody
+      tr
+        td 取引先
+        td = link_to '同期する', masters_pertners_path, class: 'c-btnMain-standard', method: :post

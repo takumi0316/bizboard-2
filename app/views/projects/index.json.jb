@@ -1,0 +1,393 @@
+json = { status: :success }
+
+json[:projects] = projects.map do |r|
+
+  case r.project_category
+  when 'project_print'
+
+    specifications = []
+    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 折り #{r.project_after_process&.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil, }
+    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 ホチキス留め #{r.project_after_process&.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil, }
+    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 穴あけ #{r.project_after_process&.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 クリップ留め #{r.project_after_process&.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil, }
+    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 ファイル綴じ #{r.project_after_process&.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 背文字 #{r.project_after_process&.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    data = {'bool': true, 'name': "#{r.name} データ仕様 #{r.print.work_type_i18n}", 'unit_price': r.print.work_price.nil? ? 0 : r.print.work_price, 'unit': 1, 'price': r.print.work_price.nil? ? 0 : r.print.work_price, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    print = {'bool': true, 'name': "#{r.name} プリント仕様", 'unit_price': r.print.price.nil? ? 0 : r.print.price, 'unit': 1, 'price': r.print.price.nil? ? 0 : r.print.price, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    count = []
+
+    if r.after_process == 'after_process_necessary'
+
+      if r.project_after_process.folding != 'no_folding'
+        count.push('after_process_folding')
+      end
+
+      if r.project_after_process.stapler != 'no_stapler'
+        count.push('after_process_stapler')
+      end
+
+      if r.project_after_process.hole != 'hole_unnecessary'
+        count.push('after_process_hole')
+      end
+
+      if r.project_after_process.clip != 'clip_unnecessary'
+        count.push('after_process_clip')
+      end
+
+      if r.project_after_process.bind != 'file_unnecessary'
+        count.push('after_process_bind')
+      end
+
+      if r.project_after_process.back_text != 'back_text_unnecessary'
+        count.push('after_process_back_text')
+      end
+    end
+
+    if r.binding_work == 'binding_works_necessary'
+
+      count.push('binding_works')
+    end
+
+    countLength = count.length
+    if countLength != 0
+
+      countLength.times do |i|
+
+        case count[i]
+        when 'after_process_folding'
+
+          after_process_folding['bool'] = true
+          after_process_folding['unit_price'] = r.project_after_process.folding_price.nil? ? 0 : r.project_after_process.folding_price
+          after_process_folding['unit'] = 1
+          after_process_folding['price'] = r.project_after_process.folding_price.nil? ? 0 : r.project_after_process.folding_price
+        when 'after_process_stapler'
+
+          after_process_stapler['bool'] = true
+          after_process_stapler['unit_price'] = r.project_after_process.stapler_price.nil? ? 0 : r.project_after_process.stapler_price
+          after_process_stapler['unit'] = 1
+          after_process_stapler['price'] = r.project_after_process.stapler_price.nil? ? 0 : r.project_after_process.stapler_price
+        when 'after_process_hole'
+
+          after_process_hole['bool'] = true
+          after_process_hole['unit_price'] = r.project_after_process.hole_price.nil? ? 0 : r.project_after_process.hole_price
+          after_process_hole['unit'] = 1
+          after_process_hole['price'] = r.project_after_process.hole_price.nil? ? 0 : r.project_after_process.hole_price
+        when 'after_process_clip'
+
+          after_process_clip['bool'] = true
+          after_process_clip['unit_price'] = r.project_after_process.clip_price.nil? ? 0 : r.project_after_process.clip_price
+          after_process_clip['unit'] = 1
+          after_process_clip['price'] = r.project_after_process.clip_price.nil? ? 0 : r.project_after_process.clip_price
+        when 'after_process_bind'
+
+          after_process_bind['bool'] = true
+          after_process_bind['unit_price'] = r.project_after_process.bind_price.nil? ? 0 : r.project_after_process.bind_price
+          after_process_bind['unit'] = 1
+          after_process_bind['price'] = r.project_after_process.bind_price.nil? ? 0 : r.project_after_process.bind_price
+        when 'after_process_back_text'
+
+          after_process_back_text['bool'] = true
+          after_process_back_text['unit_price'] = r.project_after_process.back_text_price.nil? ? 0 : r.project_after_process.back_text_price
+          after_process_back_text['unit'] = 1
+          after_process_back_text['price'] = r.project_after_process.back_text_price.nil? ? 0 : r.project_after_process.back_text_price
+        when 'binding_works'
+
+          binding_work['bool'] = true
+          binding_work['unit_price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+          binding_work['unit'] = 1
+          binding_work['price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+        end
+      end
+    end
+
+    r.print.work_process === 'work_process_necessary' ? specifications.push(data) : nil
+    r.print.print_work === 'print_work_necessary' ? specifications.push(print) : nil
+    after_process_folding['bool'] == true ? specifications.push(after_process_folding) : nil
+    after_process_stapler['bool'] == true ? specifications.push(after_process_stapler) : nil
+    after_process_hole['bool'] == true ? specifications.push(after_process_hole) : nil
+    after_process_clip['bool'] == true ? specifications.push(after_process_clip) : nil
+    after_process_bind['bool'] == true ? specifications.push(after_process_bind) : nil
+    after_process_back_text['bool'] == true ? specifications.push(after_process_back_text) : nil
+    binding_work['bool'] == true ? specifications.push(binding_work) : nil
+    {
+      id: r.id,
+      name: r.name,
+      price: r.price,
+      type: true,
+      specifications: specifications,
+    }
+  when 'project_copy'
+
+    specifications = []
+    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 折り #{r.project_after_process&.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 ホチキス留め #{r.project_after_process&.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 穴あけ #{r.project_after_process&.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 クリップ留め #{r.project_after_process&.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 ファイル綴じ #{r.project_after_process&.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 背文字 #{r.project_after_process&.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    copy = {'bool': true, 'name': "#{r.name} 複写仕様", 'unit_price': r.copy.price.nil? ? 0 : r.copy.price, 'unit': 1, 'price': r.copy.price.nil? ? 0 : r.copy.price, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+
+    count = []
+    if r.after_process == 'after_process_necessary'
+
+      if r.project_after_process.folding != 'no_folding'
+        count.push('after_process_folding')
+      end
+
+      if r.project_after_process.stapler != 'no_stapler'
+        count.push('after_process_stapler')
+      end
+
+      if r.project_after_process.hole != 'hole_unnecessary'
+        count.push('after_process_hole')
+      end
+
+      if r.project_after_process.clip != 'clip_unnecessary'
+        count.push('after_process_clip')
+      end
+
+      if r.project_after_process.bind != 'file_unnecessary'
+        count.push('after_process_bind')
+      end
+
+      if r.project_after_process.back_text != 'back_text_unnecessary'
+        count.push('after_process_back_text')
+      end
+    end
+
+    if r.binding_work == 'binding_works_necessary'
+
+      count.push('binding_works')
+    end
+
+    countLength = count.length
+    if countLength != 0
+
+      countLength.times do |i|
+
+        case count[i]
+        when 'after_process_folding'
+
+          after_process_folding['bool'] = true
+          after_process_folding['unit_price'] = r.project_after_process.folding_price.nil? ? 0 : r.project_after_process.folding_price
+          after_process_folding['unit'] = 1
+          after_process_folding['price'] = r.project_after_process.folding_price.nil? ? 0 : r.project_after_process.folding_price
+        when 'after_process_stapler'
+
+          after_process_stapler['bool'] = true
+          after_process_stapler['unit_price'] = r.project_after_process.stapler_price.nil? ? 0 : r.project_after_process.stapler_price
+          after_process_stapler['unit'] = 1
+          after_process_stapler['price'] = r.project_after_process.stapler_price.nil? ? 0 : r.project_after_process.stapler_price
+        when 'after_process_hole'
+
+          after_process_hole['bool'] = true
+          after_process_hole['unit_price'] = r.project_after_process.hole_price.nil? ? 0 : r.project_after_process.hole_price
+          after_process_hole['unit'] = 1
+          after_process_hole['price'] = r.project_after_process.hole_price.nil? ? 0 : r.project_after_process.hole_price
+        when 'after_process_clip'
+
+          after_process_clip['bool'] = true
+          after_process_clip['unit_price'] = r.project_after_process.clip_price.nil? ? 0 : r.project_after_process.clip_price
+          after_process_clip['unit'] = 1
+          after_process_clip['price'] = r.project_after_process.clip_price.nil? ? 0 : r.project_after_process.clip_price
+        when 'after_process_bind'
+
+          after_process_bind['bool'] = true
+          after_process_bind['unit_price'] = r.project_after_process.bind_price.nil? ? 0 : r.project_after_process.bind_price
+          after_process_bind['unit'] = 1
+          after_process_bind['price'] = r.project_after_process.bind_price.nil? ? 0 : r.project_after_process.bind_price
+        when 'after_process_back_text'
+
+          after_process_back_text['bool'] = true
+          after_process_back_text['unit_price'] = r.project_after_process.back_text_price.nil? ? 0 : r.project_after_process.back_text_price
+          after_process_back_text['unit'] = 1
+          after_process_back_text['price'] = r.project_after_process.back_text_price.nil? ? 0 : r.project_after_process.back_text_price
+        when 'binding_works'
+
+          binding_work['bool'] = true
+          binding_work['unit_price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+          binding_work['unit'] = 1
+          binding_work['price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+        end
+      end
+    end
+
+    specifications.push(copy)
+    after_process_folding['bool'] == true ? specifications.push(after_process_folding) : nil
+    after_process_stapler['bool'] == true ? specifications.push(after_process_stapler) : nil
+    after_process_hole['bool'] == true ? specifications.push(after_process_hole) : nil
+    after_process_clip['bool'] == true ? specifications.push(after_process_clip) : nil
+    after_process_bind['bool'] == true ? specifications.push(after_process_bind) : nil
+    after_process_back_text['bool'] == true ? specifications.push(after_process_back_text) : nil
+    binding_work['bool'] == true ? specifications.push(binding_work) : nil
+    {
+      id: r.id,
+      name: r.name,
+      price: r.price,
+      type: true,
+      specifications: specifications,
+    }
+  when 'project_card'
+
+    specifications = []
+    card = {'bool': false, 'name': "#{r.name} 特別名刺(作業あり)", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_id': r.id, 'remarks': nil, }
+    card_print = {'bool': true, 'name': "#{r.name} プリント仕様", 'unit_price': r.card.price.nil? ? 0 : r.card.price, 'unit': 1, 'price': r.card.price.nil? ? 0 : r.card.price, 'id': nil, 'quote_id': nil, 'project_id': r.id, 'remarks': nil, }
+
+    if r.card.card_type == 'special'
+
+      card['bool'] = true
+      card['unit_price'] = r.card.work_price.nil? ? 0 : r.card.work_price
+      card['unit'] = 1
+      card['price'] = r.card.work_price.nil? ? 0 : r.card.work_price
+    end
+
+    card['bool'] == true ? specifications.push(card) : nil
+    specifications.push(card_print)
+    {
+      id: r.id,
+      name: r.name,
+      price: r.price,
+      type: true,
+      specifications: specifications,
+    }
+
+  when 'project_scan'
+
+    scan = {'bool': true, 'name': "#{r.name} 複写仕様", 'unit_price': r.scan.price.nil? ? 0 : r.scan.price, 'unit': 1, 'price': r.scan.price.nil? ? 0 : r.scan.price, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n,  'project_id': r.id, }
+    specifications = []
+    specifications.push(scan)
+    {
+      id: r.id,
+      name: r.name,
+      price: r.price,
+      specifications: specifications,
+    }
+  when 'project_bind'
+
+    specifications = []
+    after_process_folding = {'bool': false, 'name': "#{r.name} 後加工仕様 折り #{r.project_after_process&.folding_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_stapler = {'bool': false, 'name': "#{r.name} 後加工仕様 ホチキス留め #{r.project_after_process&.stapler_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_hole = {'bool': false, 'name': "#{r.name} 後加工仕様 穴あけ #{r.project_after_process&.hole_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_clip = {'bool': false, 'name': "#{r.name} 後加工仕様 クリップ留め #{r.project_after_process&.clip_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_bind = {'bool': false, 'name': "#{r.name} 後加工仕様 ファイル綴じ #{r.project_after_process&.bind_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    after_process_back_text = {'bool': false, 'name': "#{r.name} 後加工仕様 背文字 #{r.project_after_process&.back_text_i18n}", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    binding_work = {'bool': false, 'name': "#{r.name} 製本仕様", 'unit_price': 0, 'unit': 1, 'price': 0, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    bind = {'bool': true, 'name': "#{r.name} 概要", 'unit_price': r.bind.price.nil? ? 0 : r.bind.price, 'unit': 1, 'price': r.bind.price.nil? ? 0 : r.bind.price, 'id': nil, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    count = []
+    if r.after_process == 'after_process_necessary'
+
+      if r.project_after_process.folding != 'no_folding'
+        count.push('after_process_folding')
+      end
+
+      if r.project_after_process.stapler != 'no_stapler'
+        count.push('after_process_stapler')
+      end
+
+      if r.project_after_process.hole != 'hole_unnecessary'
+        count.push('after_process_hole')
+      end
+
+      if r.project_after_process.clip != 'clip_unnecessary'
+        count.push('after_process_clip')
+      end
+
+      if r.project_after_process.bind != 'file_unnecessary'
+        count.push('after_process_bind')
+      end
+
+      if r.project_after_process.back_text != 'back_text_unnecessary'
+        count.push('after_process_back_text')
+      end
+    end
+
+    if r.binding_work == 'binding_works_necessary'
+
+      count.push('binding_works')
+    end
+
+    countLength = count.length
+    if countLength != 0
+
+      countLength.times do |i|
+
+        case count[i]
+        when 'after_process_folding'
+
+          after_process_folding['bool'] = true
+          after_process_folding['unit_price'] = r.project_after_process.folding_price.nil? ? 0 : r.project_after_process.folding_price
+          after_process_folding['unit'] = 1
+          after_process_folding['price'] = r.project_after_process.folding_price.nil? ? 0 : r.project_after_process.folding_price
+        when 'after_process_stapler'
+
+          after_process_stapler['bool'] = true
+          after_process_stapler['unit_price'] = r.project_after_process.stapler_price.nil? ? 0 : r.project_after_process.stapler_price
+          after_process_stapler['unit'] = 1
+          after_process_stapler['price'] = r.project_after_process.stapler_price.nil? ? 0 : r.project_after_process.stapler_price
+        when 'after_process_hole'
+
+          after_process_hole['bool'] = true
+          after_process_hole['unit_price'] = r.project_after_process.hole_price.nil? ? 0 : r.project_after_process.hole_price
+          after_process_hole['unit'] = 1
+          after_process_hole['price'] = r.project_after_process.hole_price.nil? ? 0 : r.project_after_process.hole_price
+        when 'after_process_clip'
+
+          after_process_clip['bool'] = true
+          after_process_clip['unit_price'] = r.project_after_process.clip_price.nil? ? 0 : r.project_after_process.clip_price
+          after_process_clip['unit'] = 1
+          after_process_clip['price'] = r.project_after_process.clip_price.nil? ? 0 : r.project_after_process.clip_price
+        when 'after_process_bind'
+
+          after_process_bind['bool'] = true
+          after_process_bind['unit_price'] = r.project_after_process.bind_price.nil? ? 0 : r.project_after_process.bind_price
+          after_process_bind['unit'] = 1
+          after_process_bind['price'] = r.project_after_process.bind_price.nil? ? 0 : r.project_after_process.bind_price
+        when 'after_process_back_text'
+
+          after_process_back_text['bool'] = true
+          after_process_back_text['unit_price'] = r.project_after_process.back_text_price.nil? ? 0 : r.project_after_process.back_text_price
+          after_process_back_text['unit'] = 1
+          after_process_back_text['price'] = r.project_after_process.back_text_price.nil? ? 0 : r.project_after_process.back_text_price
+        when 'binding_works'
+
+          binding_work['bool'] = true
+          binding_work['unit_price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+          binding_work['price'] = r.project_binding_work.price.nil? ? 0 : r.project_binding_work.price
+        end
+      end
+    end
+
+    specifications.push(bind)
+    after_process_folding['bool'] == true ? specifications.push(after_process_folding) : nil
+    after_process_stapler['bool'] == true ? specifications.push(after_process_stapler) : nil
+    after_process_hole['bool'] == true ? specifications.push(after_process_hole) : nil
+    after_process_clip['bool'] == true ? specifications.push(after_process_clip) : nil
+    after_process_bind['bool'] == true ? specifications.push(after_process_bind) : nil
+    after_process_back_text['bool'] == true ? specifications.push(after_process_back_text) : nil
+    binding_work['bool'] == true ? specifications.push(binding_work) : nil
+    {
+      id: r.id,
+      name: r.name,
+      price: r.price,
+      type: true,
+      specifications: specifications,
+    }
+  when 'project_other'
+
+    specifications = []
+    other = {'bool': true, 'name': "#{r.name} 備考 #{r.note}", 'unit_price': r.price, 'unit': 1, 'price': r.price, 'id': nil, 'quote_id': r.id, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+
+    specifications.push(other)
+    {
+      id: r.id,
+      name: r.name,
+      price: r.price,
+      type: false,
+      specifications: specifications,
+    }
+  end
+end
+
+json

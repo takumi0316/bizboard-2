@@ -1,0 +1,176 @@
+script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"
+script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"
+
+a.u-mt-10.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
+javascript:
+  function downloadImage() {
+    html2canvas(document.getElementById('captcha'), {
+      onrendered: function(canvas) {
+            let wid = canvas.width + 1500;
+            let hgt = canvas.height + 1000;
+            let img = canvas.toDataURL("image/tiff", 1.0);
+            let hratio = hgt/wid
+            let doc = new jsPDF('l','mm', [wid, hgt]);
+            let width = doc.internal.pageSize.width;
+            let height = width * hratio
+            doc.addImage(img,'JPEG',55,25, 800, 500);
+            let downloadName = '作業指示書(社内)' + document.getElementById('project_name').innerHTML;
+            doc.save(downloadName);
+          }
+    });
+  }
+
+#captcha
+  .u-mt-50.c-flex__between
+    .c-table-work_subcontractors1
+      .u-fs-x-large.u-fw-bold 発注・指示書(社内用)
+      table
+        tr
+          th 案件管理番号
+          td = Work.find(params[:id]).quote.quote_number
+        tr
+          th 発注先部署
+          td = Work.find(params[:id]).division&.name
+        tr
+          th 担当者
+          td = @clients.present? ? @clients : @client
+    .c-table-work_subcontractors2
+      table
+        tr
+          th.u-va-middle 受注日
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.created_at
+        tr
+          th.u-va-middle 校正納期
+          td.u-va-middle.u-ta-leftd
+        tr
+          th.u-va-middle 仕上納期
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.deliver_at if Work.find(params[:id]).quote.deliver_at.present?
+        tr
+          th.u-va-middle 納品先
+          td.u-va-middle.u-ta-left
+        tr
+          th.u-va-middle 納品方法
+          td.u-va-middle.u-ta-left
+    .c-table-work_subcontractors3
+      table
+        tr
+          th 受注区分
+        tr
+          td.u-ta-center
+        tr
+          th 受注担当者
+        tr
+          td.u-ta-center
+    .u-fs-smal
+      span →
+    .c-table-work_subcontractors3
+      table
+        tr
+          th 発注決済
+        tr
+          td.u-ta-center
+      label.u-fs-x-small
+        | 部門長
+
+  .c-table.u-mt-40
+    table
+      thead
+        tr
+          th No.
+          th 発注内容
+          th 入稿物
+          th 仕様
+          th 原稿枚数
+          th 部数数量
+          th 各工程検品
+      tbody
+         - Work.find(params[:id]).work_details.each_with_index do |r, index|
+          tr
+            td.u-va-top.u-ta-right = index + 1
+            td.u-va-top.u-ta-left = r.order_contents
+            td.u-va-top.u-ta-left = simple_format(r.deliver_method)
+            td.u-va-top.u-ta-left = simple_format(r.specification)
+            td.u-va-top.u-ta-right= "#{r.number_of_copies}"
+            td.u-va-top.u-ta-right = "#{r.count}"
+            td
+  .c-table
+    table
+      thead
+        tr
+          th 特記事項
+      tbody
+        tr
+          td.u-va-top.u-ta-left = simple_format(Work.find(params[:id]).notices)
+
+  .u-mt-50
+    .c-table-work_subcontractors4
+      table
+        tr
+          th 案件名
+          td#project_name = Work.find(params[:id]).quote.subject
+    .c-table-work_subcontractors5
+      table
+        tr
+          th.u-va-middle 発注部署
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.division.name if  Work.find(params[:id]).quote.user.division.present?
+          th.u-va-middle 発注担当
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.name
+
+  .u-mt-50.c-flex__between
+    .div
+      | 株式会社 日本工業社
+      br
+      | 本社
+      br
+      | 〒104-0033 中央区新川2-26-3 住友不動産茅場町ビル
+      br
+      | TEL 03-6280-3922　　　　　　FAX 03-3537-3511
+    .c-table-work_subcontractors5
+      table
+        tr
+          th 受注金額
+        tr
+          td.u-ta-center = "#{Work.find(params[:id]).quote.price}円"
+    .c-flex
+      .c-table-work_subcontractors3
+        table
+          tr
+            th 受取確認
+          tr.u-ta-center
+            td.u-va-middle.u-fs-x-small 印/署名
+          tr.u-ta-center
+            td.u-va-middle
+              | /
+      .u-fs-smal
+        span →
+      .c-table-work_subcontractors3
+        table
+          tr
+            th 検品
+          tr.u-ta-center
+            td.u-va-middle 印/署名
+          tr.u-ta-center
+            td.u-va-middle
+              | /
+      .u-fs-smal
+        span →
+      .c-table-work_subcontractors3
+        table
+          tr
+            th 出荷前確認
+          tr.u-ta-center
+            td.u-va-middle 印/署名
+          tr.u-ta-center
+            td.u-va-middle
+              | /
+      .u-fs-smal
+        span →
+      .c-table-work_subcontractors3
+        table
+          tr
+            th 検品確認
+          tr.u-ta-center
+            td.u-fs-small.u-va-middle 印/署名
+          tr.u-ta-center
+            td.u-va-middle
+              | /

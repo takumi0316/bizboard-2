@@ -87,7 +87,7 @@ class CompanyDivisionClientsController < ApplicationController
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '担当者情報を更新しました'}}
   rescue => e
-    
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -100,18 +100,10 @@ class CompanyDivisionClientsController < ApplicationController
     # 担当者情報更新
     client.update! client_params
 
-    if request.xhr?
-      render json: { status: :success, client: client, division: client.company_division, company: client.client.company_division.company }
-    else
-      redirect_to edit_company_division_client_path(client), flash: {notice: {message: '担当者情報を更新しました'}}
-    end
+    redirect_to edit_company_division_client_path(client), flash: {notice: {message: '担当者情報を更新しました'}}
   rescue => e
 
-    if request.xhr?
-      render json: { status: :error, message: e.message }
-    else
-      redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-    end
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
   ##
@@ -119,6 +111,8 @@ class CompanyDivisionClientsController < ApplicationController
   # @version 2018/06/10
   #
   def destroy
+
+    raise '対象のクライアントは見積り情報とのひも付きがあるため削除できません' if client.quotes.exists?
 
     client.destroy!
   rescue => e

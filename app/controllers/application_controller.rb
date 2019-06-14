@@ -69,6 +69,8 @@ class ApplicationController < ActionController::Base
 
       ActiveStorage::Current.host = request.base_url
       request.variant = :sp if request.user_agent =~ /iPhone|Android/
+
+      gon.consumption_tax = SiteConfig.consumption_tax
     end
 
     ##
@@ -178,7 +180,7 @@ class ApplicationController < ActionController::Base
       end
 
       # MFクラウドの認証切れの場合
-      if current_user.mf_token_expires_in < 30.days.ago
+      if current_user.mf_token_expires_in <= Time.now
 
         uri = URI.parse('https://invoice.moneyforward.com/oauth/token')
         http = Net::HTTP.new(uri.host, uri.port)

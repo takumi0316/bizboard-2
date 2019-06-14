@@ -41,41 +41,6 @@ class MastersController < ApplicationController
   end
 
   ##
-  # 品目同期
-  # @version 2018/06/10
-  #
-  def items
-
-    client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
-    items = client.items
-    meta = items.all.meta
-
-    (1..meta.total_pages).each do |page|
-
-      collection = items.all(page: page).collection
-
-      break if collection.blank?
-
-      collection.each do |item|
-
-        next if Item.exists?(mf_item_id: item.id)
-
-        Item.create!(
-          mf_item_id: item.id,
-          name: item.name,
-          note: item.detail,
-          unit_price: item.unit_price.to_i,
-          unit: item.unit,
-          quantity: item.quantity.to_i,
-          excise: item.excise,
-        )
-      end
-    end
-
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '品目を同期しました'}}
-  end
-
-  ##
   # 取引先同期
   # @version 2018/06/10
   #
@@ -114,6 +79,13 @@ class MastersController < ApplicationController
           company_division.tel = department.tel
           company_division.zip = department.zip
           company_division.save!
+
+          # 担当者が紐づく場合
+          if department.person_name.present?
+
+            client = CompanyDivisionClient.find_or_initialize_by(company_division_id: company_division.id, name: department.person_name)
+            client.save!
+          end
         end
       end
     end

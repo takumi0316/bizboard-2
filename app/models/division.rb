@@ -41,6 +41,12 @@ class Division < ApplicationRecord
 
   has_many :users
 
+  #作業管理
+  has_many :works
+
+  #見積り
+  has_many :quotes
+
   # 都道府県
   belongs_to_active_hash :prefecture
 

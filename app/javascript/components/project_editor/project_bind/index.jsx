@@ -30,7 +30,6 @@ export default class ProjectBind extends React.Component {
   getDetail() {
 
     return {
-      'project[project_count]': this.refs.project_count.value,
       'project[bind_attributes][print_size]': this.refs.print_size.value,
       'project[bind_attributes][posting_state]': this.refs.posting_state.value,
     };
@@ -48,12 +47,6 @@ export default class ProjectBind extends React.Component {
         <div className='u-mt-30 c-table'>
           <table>
             <tbody>
-              <tr>
-                <td className='u-fw-bold'>原稿箱数</td>
-                <td>
-                  <input placeholder='2' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='project_count' defaultValue={this.props.project.project_count || 0} />
-                </td>
-              </tr>
               <tr>
                 <td className='u-fw-bold'>原稿サイズ</td>
                 <td>

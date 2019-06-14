@@ -34,6 +34,11 @@
     color: map-get($fontColors, 'red')
     font-weight: bold
     font-size: map-get($fontSize, 'small')
+  &-group
+    display: flex
+  &-line
+    display: flex
+    flex-direction: column
   // テキスト・テキストエリア
   // ------------------------------------
   &-text, &-textarea
@@ -48,6 +53,105 @@
       background-color: map-get($layoutColors, 'gray')
     &::placeholder
       color: map-get($fontColors, 'midBlack')
+    &__work-index
+      @extend %formStyle
+      width: 350px
+      line-height: 2rem
+      min-height: 40px
+
+      &__datepicker
+        @extend %formStyle
+        width: 120px
+        line-height: 2rem
+        min-height: 40px
+        height: 46px
+
+    &__quote-projects
+
+      @extend %formStyle
+      width: 100%
+      line-height: 2rem
+      min-height: 40px
+      vertical-align: bottom
+      -webkit-outer-spin-button
+      -webkit-inner-spin-button
+        -webkit-appearance: none
+        -moz-appearance: none
+        appearance: none
+        margin: 0
+
+    &__work-show-input
+      &1
+        @extend %formStyle
+        width: 150px
+        line-height: 2rem
+        min-height: 40px
+        text-align: right
+
+      &2
+        @extend %formStyle
+        width: 100px
+        line-height: 2rem
+        min-height: 40px
+        text-align: right
+        font-size: 1.6rem
+
+      &3
+        &-left
+            @extend %formStyle
+            width: 75px
+            line-height: 2rem
+            min-height: 40px
+            text-align: left
+
+        &-right
+            @extend %formStyle
+            width: 75px
+            line-height: 2rem
+            min-height: 40px
+            text-align: right
+
+      &4
+        @extend %formStyle
+        width: 300px
+        line-height: 2rem
+        min-height: 40px
+        text-align: left
+
+      &5
+        @extend %formStyle
+        width: 300px
+        line-height: 2rem
+        min-height: 40px
+        text-align: left
+
+      &6
+        @extend %formStyle
+        width: 65px
+        line-height: 2rem
+        min-height: 40px
+        text-align: right
+        font-size: 1.6rem
+
+      &7
+        @extend %formStyle
+        width: 300px
+        line-height: 2rem
+        min-height: 40px
+        text-align: left
+        font-size: 1.6rem
+
+      &__textarea
+        @extend %formStyle
+        line-height: 2rem
+        min-height: 40px
+
+      &__textarea2
+        @extend %formStyle
+        line-height: 2rem
+        min-height: 40px
+        width: 100%
+
 
   // チェックボックス
   // ------------------------------------
@@ -199,6 +303,46 @@
     background: none
     background-color: map-get($layoutColors, 'white')
     width: 100%
+    line-height: 2rem
+
+    &::-ms-expand
+      display: none
+
+    &__work-index
+      @extend %formStyle
+      cursor: pointer
+      padding-right: 33px
+      background: none
+      background-color: map-get($layoutColors, 'white')
+      width: 125px
+      line-height: 2rem
+
+    &__work-show
+      @extend %formStyle
+      cursor: pointer
+      padding-right: 33px
+      background: none
+      background-color: map-get($layoutColors, 'white')
+      width: 140px
+      line-height: 2rem
+
+    &__bulk-jsx
+      @extend %formStyle
+      cursor: pointer
+      padding-right: 33px
+      background: none
+      background-color: map-get($layoutColors, 'white')
+      width: 825px
+      line-height: 2rem
+
+  // 日付セレクトボックス 岡田追加しました
+  // ------------------------------------
+  &-dateselect
+    @extend %formStyle
+    cursor: pointer
+    padding-right: 33px
+    background: none
+    background-color: map-get($layoutColors, 'white')
     line-height: 2rem
     &::-ms-expand
       display: none

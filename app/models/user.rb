@@ -39,7 +39,7 @@ class User < ApplicationRecord
   has_secure_password
   # MD5
   include GenerateKey
-  
+
   devise :trackable, :rememberable, :omniauthable, :timeoutable, :confirmable
 
   #----------------------------------------
@@ -56,7 +56,7 @@ class User < ApplicationRecord
   enum status: { inactive: 0, active: 10 }
 
   # ユーザー区分
-  enum user_type: { general: 0, admin: 10 }
+  enum user_type: { general: 0, manager: 10, admin: 20 }
 
   #----------------------------------------
   #  ** Validations **
@@ -74,8 +74,9 @@ class User < ApplicationRecord
   # 自社部署
   belongs_to :division, optional: true
 
-  # 記事
-  has_many :articles, -> { order(id: :desc) }
+  # 案件
+  has_many :projects
+  has_many :quotes
 
   # 画像
   has_one_attached :image, dependent: :detach

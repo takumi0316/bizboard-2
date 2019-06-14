@@ -2,7 +2,7 @@ doctype html
 html lang='ja'
   head
     meta charset='utf-8'
-    
+
     / meta
     = display_meta_tags application_meta_tags
 
@@ -30,7 +30,7 @@ html lang='ja'
     = javascript_pack_tag 'pc', async: true
     = stylesheet_pack_tag 'pc', async: true
 
-  body.l-body
+  body.l-dashboard data-menu-open='true'
 
     / SVG
     = render_asset 'application.svg'
@@ -39,29 +39,27 @@ html lang='ja'
     = evil_icons_sprite
 
     / ----------------------------------------------
-    / header
+    / 左サイドメニュー
     / ----------------------------------------------
-    = render 'layouts/_partials/header'
-
-    / ----------------------------------------------
-    / ナビゲーション
-    / ----------------------------------------------
-    = render 'layouts/_partials/navigation'
-
-    / ----------------------------------------------
-    / パンくず
-    / ----------------------------------------------
-    = render 'layouts/_partials/breadcrumbs'
+    = render 'layouts/_partials/left_side'
 
     / ----------------------------------------------
     / main
     / ----------------------------------------------
-    main.l-main = yield
+    main.l-dashboard__main
 
-    / ----------------------------------------------
-    / footer
-    / ----------------------------------------------
-    = render 'layouts/_partials/footer'
+      / ----------------------------------------------
+      / header
+      / ----------------------------------------------
+      /= render 'layouts/_partials/header'
+
+      / ----------------------------------------------
+      / パンくず
+      / ----------------------------------------------
+      = render 'layouts/_partials/breadcrumbs'
+
+
+      .u-px-30 = yield
 
     / ----------------------------------------------
     / flash messages

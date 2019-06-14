@@ -32,6 +32,7 @@ export default class ProjectScan extends React.Component {
     super(props);
 
     this.state = {
+      posting_state: props.project_scan.posting_state || 'stapler',
       back_cut: props.project_scan.back_cut || 'back_cut_unnecessary',
     };
   }
@@ -43,9 +44,9 @@ export default class ProjectScan extends React.Component {
   getDetail() {
 
     let result = {
-      'project[project_count]': this.refs.project_count.value,
       'project[scan_attributes][print_size]': this.refs.print_size.value,
       'project[scan_attributes][posting_state]': this.refs.posting_state.value,
+      'project[scan_attributes][posting_state_note]': '',
       'project[scan_attributes][draft_split]': this.refs.draft_split.value,
       'project[scan_attributes][draft_restore]': this.refs.draft_restore.value,
       'project[scan_attributes][back_cut]': this.state.back_cut,
@@ -58,11 +59,15 @@ export default class ProjectScan extends React.Component {
       'project[scan_attributes][bookmark]': this.refs.bookmark.value,
       'project[scan_attributes][edit_filename]': this.refs.edit_filename.value,
       'project[scan_attributes][back_cut_note]': '',
+      'project[scan_attributes][price]': this.refs.price.value,
     };
 
     if (this.state.back_cut == 'back_cut_necessary') {
-      
       result['project[scan_attributes][back_cut_note]'] = this.refs.back_cut_note.value;
+    }
+
+    if (this.refs.posting_state.value == 'other_state') {
+      result['project[scan_attributes][posting_state_note]'] = this.refs.posting_state_note.value;
     }
 
     return result;
@@ -80,12 +85,6 @@ export default class ProjectScan extends React.Component {
         <div className='u-mt-30 c-table'>
           <table>
             <tbody>
-              <tr>
-                <td className='u-fw-bold'>原稿箱数</td>
-                <td>
-                  <input placeholder='2' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='project_count' defaultValue={this.props.project.project_count} />
-                </td>
-              </tr>
               <tr>
                 <td className='u-fw-bold'>原稿サイズ</td>
                 <td>
@@ -105,7 +104,7 @@ export default class ProjectScan extends React.Component {
                 <td className='u-fw-bold'>入稿状態</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='posting_state' defaultValue={this.props.project_scan.posting_state}>
+                    <select className='c-form-select' ref='posting_state' defaultValue={this.props.project_scan.posting_state} onChange={(e) => this.setState({posting_state: e.target.value})}>
                       { Object.keys(POSTING_STATES).map((item, index) => {
                         const key = 'posting_state-'+index;
                         return (
@@ -114,6 +113,12 @@ export default class ProjectScan extends React.Component {
                       })}
                     </select>
                   </div>
+
+                  { this.state.posting_state == 'other_state' ?
+
+                    <textarea placeholder='入稿状態を入力してください' className='c-form-textarea u-mt-10' row={5} autoComplete='off' spellCheck='false' type='text' ref='posting_state_note' defaultValue={this.props.project_scan.posting_state_note}></textarea>
+                    : null
+                  }
                 </td>
               </tr>
               <tr>
@@ -297,6 +302,13 @@ export default class ProjectScan extends React.Component {
                       })}
                     </select>
                   </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td className='u-fw-bold'>金額</td>
+                <td>
+                <input className='c-form-text' ref='price' type='text' defaultValue={this.props.project_scan.price || 0} />
                 </td>
               </tr>
 

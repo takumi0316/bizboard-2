@@ -9,12 +9,14 @@
 #  card_type  :integer          default("template")
 #  work_type  :integer          default("create_design")
 #  work_time  :integer          default(0)
+#  work_price :integer          default(0)
 #  color      :integer          default("original_print")
 #  paper      :integer          default("coc_413")
 #  surface    :integer          default("both_side")
 #  emboss     :integer          default("emboss_necessary")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  price      :integer
 #
 
 class ProjectCard < ApplicationRecord

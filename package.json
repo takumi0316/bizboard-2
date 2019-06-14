@@ -11,16 +11,17 @@
     "draft-js": "^0.10.5",
     "draft-js-export-html": "^1.2.0",
     "draft-js-import-html": "^1.2.1",
-    "eruda": "^1.5.4",
     "lozad": "^1.7.0",
     "moveto": "^1.7.4",
     "prop-types": "^15.6.2",
     "rails-ujs": "^5.2.1",
     "react": "^16.6.3",
+    "react-datepicker": "^2.1.0",
     "react-dom": "^16.6.3",
     "react-dropzone": "^7.0.1",
     "react-evil-icons": "^0.5.0",
     "react-kawaii": "^0.10.0",
+    "recharts": "^1.6.2",
     "superagent": "^4.0.0-beta.5",
     "superagent-rails-csrf": "^0.0.2",
     "turbolinks": "^5.2.0",
@@ -29,5 +30,6 @@
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"
-  }
+  },
+  "version": "11.10.1"
 }

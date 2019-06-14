@@ -5,9 +5,6 @@ import Style      from './style.sass'
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
 
-import DatetimePicker from './datetime_picker'
-import ClientSearch from './client_search'
-
 import ProjectCopy from './project_copy'
 import ProjectPrint from './project_print'
 import ProjectBind from './project_bind'
@@ -16,13 +13,8 @@ import ProjectScan from './project_scan'
 import ProjectAfterProcess from './project_after_process'
 import ProjectBindingWork from './project_binding_work'
 
-// datetime
-import Dayjs from 'dayjs'
-
 import {
   PROJECT_NAMES,
-  PROJECT_TYPES,
-  CHANNELS,
   BINDING_WORKS,
   AFTER_PROCESSES,
 } from './properties.es6'
@@ -45,24 +37,11 @@ export default class ProjectEditor extends React.Component {
       company: props.company,
       division: props.division,
       client: props.client,
+      price: props.project.price || 0,
       project_category: props.project.project_category || 'project_print',
-      project_type: props.project.project_type || 'contract',
-      deliver_at: props.project.deliver_at,
-      deliver_type: props.project.deliver_type || 'seat',
       after_process: props.project.after_process || 'after_process_unnecessary',
       binding_work: props.project.binding_work || 'binding_works_unnecessary',
     }
-  }
-
-  /**
-   *  公開日時を適用するcallback
-   *  @version 2018/06/10
-   */
-  setDeliverAt(datetime) {
-
-    this.setState({
-      deliver_at: datetime.datetime,
-    });
   }
 
   /**
@@ -74,7 +53,7 @@ export default class ProjectEditor extends React.Component {
     let message = [];
 
     if (this.refs.name.value == '') {
-      message.push('案件名を入力してください。');
+      message.push('品目名を入力してください。');
     }
 
     return message;
@@ -91,38 +70,25 @@ export default class ProjectEditor extends React.Component {
     // 新規登録時、更新時とでmethodを分ける
     const request = this.props.project.id ? Request.put(this.props.action) : Request.post(this.props.action);
 
+    // 品目価格
+    let price = 0;
+
     let field = {
       'project[company_division_client_id]': this.refs.company_division_client_id.value,
       'project[name]': this.refs.name.value,
+      'project[price]': this.refs.price.value,
       'project[project_category]': this.state.project_category,
-      'project[project_type]': this.refs.project_type.value,
-      'project[channel]': this.refs.channel.value,
-      'project[deliver_at]': this.state.deliver_at || '',
-      'project[deliver_type]': this.state.deliver_type,
-      'project[note]': this.refs.note.value,
       'project[after_process]': this.state.after_process,
       'project[binding_work]': this.state.binding_work,
     };
 
-    // 納品方法
-    if (this.state.deliver_type == 'location' || this.state.deliver_type == 'other') {
-
-      if (this.refs.deliver_type_note.value == '') messages.push('納品方法を記入してください');
-
-      field['project[deliver_type_note]'] = this.refs.deliver_type_note.value;
-    }
-
-    // その他案件
-    if (this.state.project_category == 'project_other') {
-
-      field['project[project_count]'] = 1;
-      field['project[after_process]'] = 'after_process_unnecessary';
-      field['project[binding_work]'] = 'binding_works_unnecessary';
-
     // プリント案件
-    } else if (this.state.project_category == 'project_print') {
+    if (this.state.project_category == 'project_print') {
 
       field = Object.assign(field, this.refs.project_print.getDetail());
+
+      price += Number(field['project[print_attributes][work_price]']);
+      price += Number(field['project[print_attributes][price]']);
 
     // 名刺案件
     } else if (this.state.project_category == 'project_card') {
@@ -131,17 +97,24 @@ export default class ProjectEditor extends React.Component {
       field['project[binding_work]'] = 'binding_works_unnecessary';
 
       field = Object.assign(field, this.refs.project_card.getDetail());
-      
+
+      price += Number(field['project[card_attributes][work_price]']);
+      price += Number(field['project[card_attributes][price]']);
+
     // コピー案件
     } else if (this.state.project_category == 'project_copy') {
 
       field = Object.assign(field, this.refs.project_copy.getDetail());
-      
+
+      price += Number(field['project[copy_attributes][price]']);
+
     // 製本のみ案件
     } else if (this.state.project_category == 'project_bind') {
 
       field = Object.assign(field, this.refs.project_bind.getDetail());
-      
+
+      price += Number(field['project[bind_attributes][price]']);
+
     // スキャン案件
     } else if (this.state.project_category == 'project_scan') {
 
@@ -149,6 +122,17 @@ export default class ProjectEditor extends React.Component {
       field['project[binding_work]'] = 'binding_works_unnecessary';
 
       field = Object.assign(field, this.refs.project_scan.getDetail());
+
+      price += Number(field['project[scan_attributes][price]']);
+
+    // その他
+    } else if (this.state.project_category == 'project_other') {
+
+      field['project[after_process]'] = 'after_process_unnecessary';
+      field['project[binding_work]'] = 'binding_works_unnecessary';
+      field['project[note]'] = this.refs.note.value;
+
+      price += Number(this.refs.other_price.value);
     }
 
     // 後加工
@@ -156,12 +140,21 @@ export default class ProjectEditor extends React.Component {
 
       messages = messages.concat(this.refs.project_after_process.validation());
       field = Object.assign(field, this.refs.project_after_process.getDetail());
+
+      price += Number(field['project[project_after_process_attributes][folding_price]']);
+      price += Number(field['project[project_after_process_attributes][stapler_price]']);
+      price += Number(field['project[project_after_process_attributes][hole_price]']);
+      price += Number(field['project[project_after_process_attributes][clip_price]']);
+      price += Number(field['project[project_after_process_attributes][bind_price]']);
+      price += Number(field['project[project_after_process_attributes][back_text_price]']);
     }
 
     // 製本作業
     if (field['project[binding_work]'] == 'binding_works_necessary') {
 
       field = Object.assign(field, this.refs.project_binding_work.getDetail());
+
+      price += Number(field['project[project_binding_work_attributes][price]']);
     }
 
     // エラーが存在する場合
@@ -171,28 +164,36 @@ export default class ProjectEditor extends React.Component {
       return false;
     }
 
-    // 記事内容を送信
-    request
+    console.log('price', price);
+    console.log('field', field);
+
+    // 価格の適用
+    field['project[price]'] = price;
+    this.setState({ price: price }, () => {
+
+      // 品目内容を送信
+      request
       .field(field)
       .set('X-Requested-With', 'XMLHttpRequest')
       .setCsrfToken()
       .end((error, response) => {
-        
+
         if (response.body.status == 'success' && response.body.project.id) {
 
           // 新規作成時は編集画面はリダイレクト
           if (!this.props.project.id) {
-            alert('案件情報を作成しました');
+            alert('品目情報を作成しました');
             location.href = `${response.body.project.id}/edit`;
           } else {
-            alert('案件情報を更新しました');
+            alert('品目情報を更新しました');
           }
 
         } else {
 
-          alert('案件情報の保存に失敗しました。');
+          alert('品目情報の保存に失敗しました。');
         }
       });
+    });
   }
 
   /**
@@ -219,20 +220,19 @@ export default class ProjectEditor extends React.Component {
     return (
       <div className={Style.ProjectEditor}>
 
-        <h1 className='l-contents__heading'>案件作成</h1>
+        <h1 className='l-dashboard__heading'>品目作成</h1>
 
-        <input type='hidden' name='authenticity_token' value={'test'} />
-        
-        <div className='c-form-label'>
-          <label htmlFor='project_name'>案件名</label>
+        <div className='c-form-label u-mt-30'>
+          <label htmlFor='project_name'>品目名</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
-        <input placeholder='案件名' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='name' defaultValue={this.props.project.name} />
-        
-        <div className='c-form-label'>
-          <label htmlFor='project_company_division_client_id'>お客様情報</label>
+        <input placeholder='品目名' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='name' defaultValue={this.props.project.name} />
+
+        <div className='c-form-label u-mt-30'>
+          <label htmlFor='project_name'>品目単価 <span className='u-fs-small u-fc-thinBlack'>※更新時に価格が自動計算されます</span></label>
         </div>
-        
+        <input placeholder='※更新時に価格が自動計算されます' readOnly={true} className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' value={Utilities.numberWithDelimiter(this.state.price)} />
+
         { this.state.client ?
           <div className='c-attention'>
             <div>会社名: {this.state.company.name}</div>
@@ -244,15 +244,11 @@ export default class ProjectEditor extends React.Component {
           : null
         }
 
-        <input type='hidden' ref='company_division_client_id' value={this.state.client ? this.state.client.id : this.props.project.company_division_client_id} />
+        <input type='hidden' ref='company_division_client_id' defaultValue={this.state.client ? this.state.client.id : this.props.project.company_division_client_id} />
 
-        <div className='u-mt-15'>
-          <ClientSearch applyClient={::this.applyClient} companies={this.props.companies} users={this.props.users}/>
-        </div>
-        
         <div className='u-mt-30'>
           <div className='c-form-label'>
-            <label>案件種別</label>
+            <label>品目種別</label>
           </div>
           <label className='c-form-radioLabel'>
             <input name='project_category' type='radio' defaultChecked={this.state.project_category == 'project_print'} onChange={() => this.setState({project_category: 'project_print'})} className='c-form-radio' />
@@ -286,99 +282,8 @@ export default class ProjectEditor extends React.Component {
           </label>
         </div>
 
-        <h2 className={Style.ProjectEditor__heading}>案件情報 ({PROJECT_NAMES[this.state.project_category]})</h2>
-
-        <div className='u-mt-30 c-table'>
-
-          <table>
-            <tbody>
-              <tr>
-                <td className='u-fw-bold'>納期</td>
-                <td>
-                  <span className='u-mr-30'>{ this.state.deliver_at ? Dayjs(this.state.deliver_at).format('YYYY年MM月DD日 HH時mm分') : '未定' }</span>
-                  <DatetimePicker apply={::this.setDeliverAt} defaultDatetime={this.state.deliver_at} />
-                </td>
-              </tr>
-
-              <tr>
-                <td className='u-fw-bold'>納品方法</td>
-                <td>
-                  <div className='u-mt-15'>
-                    <label className='c-form-radioLabel'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'seat'} onChange={() => this.setState({deliver_type: 'seat'})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>席まで配達</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'location'} onChange={() => this.setState({deliver_type: 'location'})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>指定場所に配達</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'pickup'} onChange={() => this.setState({deliver_type: 'pickup'})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>引取り</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input name='deliver_type' type='radio' defaultChecked={this.state.deliver_type == 'other'} onChange={() => this.setState({deliver_type: 'other'})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>その他</span>
-                    </label>
-                  </div>
-                  
-                  <div className='u-mt-15'>
-                    { this.state.deliver_type == 'location' || this.state.deliver_type == 'other' ?
-                      <textarea placeholder='納品方法を記入てください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='deliver_type_note' defaultValue={this.props.project.deliver_type_note}></textarea>
-                      : null
-                    }
-                  </div>
-                </td>
-              </tr>
-              
-              <tr>
-                <td className='u-fw-bold'>受注経路</td>
-                <td>
-                  <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='channel' defaultValue={this.props.project.channel}>
-                      { Object.keys(CHANNELS).map((item, index) => {
-                        const key = 'channel-'+index;
-                        return (
-                          <option {...{key}} value={CHANNELS[item]}>{item}</option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td className='u-fw-bold'>受注区分</td>
-                <td>
-                  <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='project_type' defaultValue={this.props.project.project_type}>
-                      { Object.keys(PROJECT_TYPES).map((item, index) => {
-                        const key = 'project_type-'+index;
-                        return (
-                          <option {...{key}} value={PROJECT_TYPES[item]}>{item}</option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td className='u-fw-bold'>備考</td>
-                <td>
-                  <textarea placeholder='案件に関する備考を入力してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='note' defaultValue={this.props.project.note}></textarea>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
         { this.state.project_category != 'project_other' ?
-          <h2 className={Style.ProjectEditor__heading}>{PROJECT_NAMES[this.state.project_category]}仕様</h2>
+          <h2 className={Style.ProjectEditor__heading}>概要</h2>
           : null
         }
 
@@ -388,9 +293,35 @@ export default class ProjectEditor extends React.Component {
         { this.state.project_category == 'project_scan'  ? <ProjectScan  ref='project_scan'  {...{project}}  project_scan={project_scan   || {}}  /> : null }
         { this.state.project_category == 'project_bind'  ? <ProjectBind  ref='project_bind'  {...{project}}  project_bind={project_bind   || {}}  /> : null }
 
+        {/** その他の場合 */}
+        { this.state.project_category == 'project_other'  ?
+
+          <div className={Style.ProjectEditor}>
+            <div className='u-mt-30 c-table'>
+              <table>
+                <tbody>
+                  <tr>
+                    <td className='u-fw-bold'>備考</td>
+                    <td>
+                      <textarea placeholder='内容を入力してください' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='note' defaultValue={this.props.project.note}></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className='u-fw-bold'>金額</td>
+                    <td>
+                      <input className='c-form-text' ref='other_price' type='text' defaultValue={this.props.project.price || 0} />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          : null
+        }
+
         {/** 後加工 / 製本仕様 */}
         { this.state.project_category == 'project_print' || this.state.project_category == 'project_copy' || this.state.project_category == 'project_bind' ?
-          
+
           <div>
 
             <h2 className={Style.ProjectEditor__heading}>後加工仕様</h2>
@@ -448,7 +379,7 @@ export default class ProjectEditor extends React.Component {
           : null
         }
 
-        <div className='u-mt-30'>
+        <div className='c-overlay-submit'>
           <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>{this.props.project.id ? '更新する' : '作成する'}</div>
         </div>
       </div>

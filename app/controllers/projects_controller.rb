@@ -11,15 +11,15 @@ class ProjectsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 案件一覧
+  # 品目一覧
   expose_with_pagination(:projects) {
     Project
-      .search(params[:name])
+      .search(params[:free_word])
       .all
       .reverse_order
   }
 
-  # 案件
+  # 品目
   expose(:project) { Project.find_or_initialize_by id: params[:id] || params[:project_id] }
 
   #----------------------------------------
@@ -40,16 +40,7 @@ class ProjectsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '案件一覧'
-  end
-
-  ##
-  # 詳細
-  # @version 2018/06/10
-  #
-  def show
-
-    render :show, layout: false if request.xhr?
+    add_breadcrumb '品目一覧'
   end
 
   ##
@@ -58,8 +49,8 @@ class ProjectsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '案件一覧', path: projects_path
-    add_breadcrumb '案件作成'
+    add_breadcrumb '品目一覧', path: projects_path
+    add_breadcrumb '品目作成'
   end
 
   ##
@@ -68,8 +59,8 @@ class ProjectsController < ApplicationController
   #
   def edit
 
-    add_breadcrumb '案件一覧', path: projects_path
-    add_breadcrumb '案件編集'
+    add_breadcrumb '品目一覧', path: projects_path
+    add_breadcrumb '品目編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
@@ -80,14 +71,14 @@ class ProjectsController < ApplicationController
   #
   def update
 
-    # 案件情報更新
+    # 品目情報更新
     project.update! project_params
 
-    project.histories.create!(note: "#{current_user.name}さんが案件を編集しました。")
+    project.histories.create!(note: "#{current_user.name}さんが品目を編集しました。")
 
     render json: { status: :success, project: project }
   rescue => e
-    
+
     render json: { status: :error, project: project }
   end
 
@@ -97,14 +88,14 @@ class ProjectsController < ApplicationController
   #
   def create
 
-    # 案件情報更新
-    project.update! project_params.merge(user_id: current_user.id)
+    # 品目情報更新
+    project.update! project_params
 
-    project.histories.create!(note: "#{current_user.name}さんが案件を作成しました。")
+    project.histories.create!(note: "#{current_user.name}さんが品目を作成しました。")
 
     render json: { status: :success, project: project }
   rescue => e
-    
+
     render json: { status: :error, project: project }
   end
 
@@ -114,28 +105,14 @@ class ProjectsController < ApplicationController
   #
   def destroy
 
+    raise '対象の案件を用いた見積書が作成済みのため削除することはできません' if project.quotes.exists?
+
     project.destroy!
   rescue => e
 
     flash[:warning] = { message: e.message }
   ensure
     redirect_to action: :index
-  end
-
-  ##
-  # ステータスを更新する
-  # @version 2018/06/10
-  #
-  def status
-
-    project.update!(status: params[:status].to_sym)
-
-    if project.estimated? && project.work.blank?
-
-      project.build_work.save!
-    end
-
-    redirect_to works_path, flash: {notice: {message: '作業管理情報を作成しました'}}
   end
 
   #----------------------------------------
@@ -150,14 +127,14 @@ class ProjectsController < ApplicationController
     #
     def project_params
 
-      params.require(:project).permit(:user_id, :company_division_client_id, :name, :project_count, :project_category, :project_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :note, :after_process, :binding_work,
-        bind_attributes:  [:project_id, :posting_state, :print_size, :print_size_note],
-        card_attributes:  [:project_id, :draft_data, :url, :card_type, :work_type, :work_time, :color, :paper, :surface, :emboss],
-        copy_attributes:  [:project_id, :posting_state, :draft_split, :draft_restore, :color, :surface, :open_type, :print_size, :print_size_note],
-        print_attributes: [:project_id, :draft_data, :url, :work_process, :work_type, :work_note, :work_time, :print_work, :color, :print_size, :print_size_note, :surface, :open_type],
-        scan_attributes:  [:project_id, :posting_state, :draft_split, :draft_restore, :back_cut, :back_cut_note, :color, :resolution, :extension, :size_mix, :adf, :odr, :bookmark, :edit_file_name],
-        project_after_process_attributes: [:project_id, :folding, :stapler, :hole, :hole_note, :clip, :bind, :bind_note, :back_text, :back_text_note],
-        project_binding_work_attributes: [:project_id, :bind_type, :cross_front, :cross_back, :cross_color, :wrap_front, :wrap_back_text, :stitching_paper, :secret_stitch, :secret_stitch_paper, :radio_stitch, :radio_cut, :radio_cut_note, :double_doors, :gold_letter],
+      params.require(:project).permit(:price, :user_id, :company_division_client_id, :name, :project_category, :note, :after_process, :binding_work,
+        bind_attributes:  [:project_id, :posting_state, :print_size, :print_size_note, :price],
+        card_attributes:  [:project_id, :draft_data, :url, :card_type, :work_type, :work_time, :work_price, :color, :paper, :surface, :emboss, :price],
+        copy_attributes:  [:project_id, :posting_state, :posting_state_note, :draft_split, :draft_restore, :color, :surface, :open_type, :print_size, :print_size_note, :price],
+        print_attributes: [:project_id, :draft_data, :url, :work_process, :work_type, :work_note, :work_time, :work_price, :print_work, :color, :print_size, :print_size_note, :surface, :open_type, :price],
+        scan_attributes:  [:project_id, :posting_state, :posting_state_note, :draft_split, :draft_restore, :back_cut, :back_cut_note, :color, :resolution, :extension, :size_mix, :adf, :odr, :bookmark, :edit_file_name, :price],
+        project_after_process_attributes: [:project_id, :folding, :stapler, :hole, :hole_note, :clip, :bind, :bind_note, :back_text, :back_text_note, :note, :folding_price, :stapler_price, :hole_price, :clip_price, :bind_price, :back_text_price],
+        project_binding_work_attributes: [:project_id, :bind_type, :cross_front, :cross_back, :cross_color, :wrap_front, :wrap_back_text, :stitching_paper, :secret_stitch, :secret_stitch_paper, :radio_stitch, :radio_cut, :radio_cut_note, :double_doors, :gold_letter, :note, :price],
       )
     end
 end

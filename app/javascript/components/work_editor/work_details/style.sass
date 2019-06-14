@@ -1,0 +1,115 @@
+.AddDetails
+
+  &__WorkEdit
+    
+    margin-top: 10px
+    margin-bottom: 10px
+
+  &__finish_button
+
+    button
+
+      font-weight: bold
+      color: white
+      margin-top: 5px
+      margin-bottom: 5px
+      width: 54px
+      height: 36px
+      background: #2f4f4f
+      font: 1.5rem
+
+  &__edit_button
+
+    button
+      
+      font-weight: bold
+      color: white
+      margin-top: 5px
+      margin-bottom: 5px
+      width: 54px
+      height: 36px
+      background: #2f4f4f
+      font: 1.5rem
+
+  &__edit_table
+    overflow: auto
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) 0 0/20px 100%, linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) right/20px 100%
+    background-repeat: no-repeat
+    background-attachment: scroll
+    -webkit-overflow-scrolling: touch
+    table
+      width: 1600px
+      background: linear-gradient(to left, hsla(0,0%,100%,0), white 15px) 0 0 / 50px 100%, linear-gradient(to right, hsla(0,0%,100%,0), white 15px) right / 50px 100%
+      background-repeat: no-repeat
+      background-attachment: local
+      border-bottom: 1px solid lightgray
+      border-collapse: collapse
+      thead
+        tr
+          th
+            padding: 5px
+            background: rgba(lightgray, .1)
+            border-top: 1px solid lightgray
+            border-left: 1px solid lightgray
+            white-space: nowrap
+      tbody
+        tr
+          &:nth-child(even)
+            td
+              background: rgba(lightgray, .1)
+          td
+            padding: 20px
+            text-align: center
+            border-top: 0.5px solid lightgray
+            border-left: 0.5px solid lightgray
+            white-space: nowrap
+            background: rgba(white, 0)
+            input 
+              text-align: right
+            button
+              font-size: 20px
+              color: white
+              padding: 0
+              width: 34px
+              height: 24px
+              background-color: red
+
+
+  &__reading_table
+    overflow: auto
+    table
+      width: 1170px
+      border-collapse: separate
+      border-spacing: 0px
+      border-top: 1px solid #ccc
+      border-left: 1px solid #ccc
+
+      th
+        padding: 10px
+        width: auto
+        text-align: center
+        vertical-align: top
+        color: #444
+        background-color: rgba(204, 204, 204, 0.1)
+        border-top: 1px solid #fff
+        border-left: 1px solid #fff
+        border-right: 1px solid #ccc
+        border-bottom: 1px solid #ccc
+        white-space: nowrap
+      tr
+        &:nth-child(even)
+          td
+            background: rgba(lightgray, .1)
+        td
+          padding: 10px
+          white-space: nowrap
+          text-align: center
+          border-top: 1px solid #fff
+          border-left: 1px solid #fff
+          white-space: nowrap
+          background: rgba(white, 0)
+          border-right: 1px solid lightgray
+          border-bottom: 1px solid lightgray
+
+    
+            padding: 5px

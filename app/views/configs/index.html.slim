@@ -1,81 +1,80 @@
-.l-contents
+h2.l-dashboard__heading ロゴ設定
 
-  section.l-contents__inner
+= image_tag SiteConfig.logo, class: 'u-my-15', height: 60 if SiteConfig.logo
+= react_component 'LogoEditor'
 
-    h2.l-contents__heading ロゴ設定
-    
-    = image_tag SiteConfig.logo, class: 'u-my-15', height: 60 if SiteConfig.logo
-    = react_component 'LogoEditor'
+h2.l-dashboard__heading ファビコン設定
 
-    h2.l-contents__heading ファビコン設定
+= form_with url: configs_create_favicon_path, local: true, method: :post, class: 'u-mt-10' do |f|
+  
+  = f.file_field :favicon, accept: :image
+  = image_tag site_configs[:favicon], height: 30 if site_configs[:favicon].present?
 
-    = form_with url: configs_create_favicon_path, local: true, method: :post, class: 'u-mt-10' do |f|
-      
-      = f.file_field :favicon, accept: :image
-      = image_tag site_configs[:favicon], height: 30 if site_configs[:favicon].present?
+  .u-ta-right.u-mt-20
+    = f.submit '更新する', class: 'c-btnMain-standard'
 
-      .u-ta-right.u-mt-20
-        = f.submit '更新する', class: 'c-btnMain-standard'
+h2.l-dashboard__heading サイト設定
 
-    h2.l-contents__heading サイト設定
+= form_with url: configs_path, local: true, method: :post, class: 'u-mt-10' do |f|
+  .c-table
+    table
+      thead
+        tr
+          th width='20%' 設定
+          th 値
+      tbody
+        tr
+          td サイト名
+          td = f.text_field :site_name, value: site_configs[:site_name], placeholder: 'サイト名', class: 'c-form-text'
+        tr
+          td タイトル
+          td = f.text_field :site_title, value: site_configs[:site_title], placeholder: 'サイトタイトル', class: 'c-form-text'
+        tr
+          td 説明文
+          td = f.text_area :site_description, value: site_configs[:site_description], placeholder: 'サイトのディスクリプション', class: 'c-form-textarea'
 
-    = form_with url: configs_path, local: true, method: :post, class: 'u-mt-10' do |f|
-      .c-table
-        table
-          thead
-            tr
-              th width='20%' 設定
-              th 値
-          tbody
-            tr
-              td サイト名
-              td = f.text_field :site_name, value: site_configs[:site_name], placeholder: 'サイト名', class: 'c-form-text'
-            tr
-              td タイトル
-              td = f.text_field :site_title, value: site_configs[:site_title], placeholder: 'サイトタイトル', class: 'c-form-text'
-            tr
-              td 説明文
-              td = f.text_area :site_description, value: site_configs[:site_description], placeholder: 'サイトのディスクリプション', class: 'c-form-textarea'
+  .u-ta-right.u-mt-20
+    = f.submit '更新する', class: 'c-btnMain-standard'
 
-      .u-ta-right.u-mt-20
-        = f.submit '更新する', class: 'c-btnMain-standard'
+h2.l-dashboard__heading.u-mt-30 サイト管理設定
 
-    h2.l-contents__heading.u-mt-30 サイト管理設定
+= form_with url: configs_path, local: true, method: :post, class: 'u-mt-10' do |f|
+  .c-table
+    table
+      thead
+        tr
+          th width='45%' 設定
+          th 値
+      tbody
+        tr
+          td 消費税
+          td = f.text_field :consumption_tax, value: site_configs[:consumption_tax], placeholder: '1.08', class: 'c-form-text'
+        tr
+          td 未承認ユーザーのログインを許可
+          td
+            .c-form-selectWrap = f.select(:allow_inactive_user, allow_inactive_users, {selected: site_configs[:allow_inactive_user]}, { class: 'c-form-select' })
+        tr
+          td お知らせや通知等の新着表示期限(h)
+          td
+            .c-form-selectWrap = f.select(:information_new_hours, (1..72), {selected: site_configs[:information_new_hours]}, { class: 'c-form-select' })
 
-    = form_with url: configs_path, local: true, method: :post, class: 'u-mt-10' do |f|
-      .c-table
-        table
-          thead
-            tr
-              th width='45%' 設定
-              th 値
-          tbody
-            tr
-              td 未承認ユーザーのログインを許可
-              td
-                .c-form-selectWrap = f.select(:allow_inactive_user, allow_inactive_users, {selected: site_configs[:allow_inactive_user]}, { class: 'c-form-select' })
-            tr
-              td お知らせや通知等の新着表示期限(h)
-              td
-                .c-form-selectWrap = f.select(:information_new_hours, (1..72), {selected: site_configs[:information_new_hours]}, { class: 'c-form-select' })
+  .u-ta-right.u-mt-20
+    = f.submit '更新する', class: 'c-btnMain-standard'
 
-      .u-ta-right.u-mt-20
-        = f.submit '更新する', class: 'c-btnMain-standard'
+h2.l-dashboard__heading.u-mt-30 ユーザー認証
 
-    h2.l-contents__heading.u-mt-30 ユーザー認証
+= form_with url: configs_path, local: true, method: :post, class: 'u-mt-10' do |f|
+  .c-table
+    table
+      thead
+        tr
+          th width='20%' 設定
+          th 値
+      tbody
+        tr
+          td Google認証
+          td
+            .c-form-selectWrap = f.select(:auth_google, user_authes, {selected: site_configs[:auth_google]}, { class: 'c-form-select' })
 
-    = form_with url: configs_path, local: true, method: :post, class: 'u-mt-10' do |f|
-      .c-table
-        table
-          thead
-            tr
-              th width='20%' 設定
-              th 値
-          tbody
-            tr
-              td Google認証
-              td
-                .c-form-selectWrap = f.select(:auth_google, user_authes, {selected: site_configs[:auth_google]}, { class: 'c-form-select' })
-
-      .u-ta-right.u-mt-20
-        = f.submit '更新する', class: 'c-btnMain-standard'
+  .u-ta-right.u-mt-20
+    = f.submit '更新する', class: 'c-btnMain-standard'

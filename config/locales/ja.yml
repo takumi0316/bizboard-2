@@ -29,13 +29,26 @@ ja:
         active: アクティブ
       user_type:
         general: 一般
+        manager: マネージャー
         admin: 管理者
     company_division_client:
       title:
         nothing: なし
         honorific: 様
         normal: さん
-    project:
+    activity:
+      status:
+        meeting: 商談
+        mail: メール
+        tell: 電話
+        estimate: 見積もり
+        workshop: セミナー
+        lost: 失注
+        other: その他
+    quote:
+      attention:
+        messrs: 御中
+        dear: 様
       status:
         draft: 新規
         estimated: 見積書発行済
@@ -45,15 +58,7 @@ ja:
         deliverd: 納品済
         invoicing: 請求書発行済
         complete: 完了
-
-      project_category:
-        project_print: プリント
-        project_card: 名刺
-        project_copy: コピー
-        project_bind: 製本
-        project_scan: スキャン
-        project_other: その他
-      project_type:
+      quote_type:
         contract: 請負
         sales: 販売施工
       channel:
@@ -65,17 +70,26 @@ ja:
         seat: 席まで
         location: 指定場所
         pickup: 引取り
+        bizstant: ビジスタント部
         other: その他
+    project:
+      project_category:
+        project_print: プリント
+        project_card: 名刺
+        project_copy: コピー
+        project_bind: 製本
+        project_scan: スキャン
+        project_other: その他
       after_process:
         after_process_unnecessary: なし
         after_process_necessary: あり
       binding_work:
         binding_works_unnecessary: なし
         binding_works_necessary: あり
-    
+
     project_binding_work:
       bind_type:
-        original_bind_type: 現行通り
+        original_bind_type: 原稿通り
         cross_bind_type: クロス巻き
         wrap_bind_type: くるみ
         stitching_bind_type: 中綴じ
@@ -84,6 +98,7 @@ ja:
         double_door_bind_type: 観音
         gold_letter_bind_type: 金文字
         no_bind_type: なし
+        other_bind_type: その他
       cross_color:
         black_cross: 黒
         white_cross: 白
@@ -102,25 +117,32 @@ ja:
       radio_cut:
         radio_cut_necessary: あり
         radio_cut_unnecessary: なし
+    work:
+      status:
+        draft: 未作業
+        working: 作業中
+        delivered: 発送済み
+        completed: 納品済み
 
     project_after_process:
       folding:
-        original_folding: 現行通り
+        original_folding: 原稿通り
         z_folding: Z折り
         beta_folding: ベタ折り
         three_folding: 三つ折り
         file_folding: ファイル折り
         no_folding: なし
       stapler:
-        original_stapler: 現行通り
+        original_stapler: 原稿通り
         upper_left_stapler: 左上
         upper_right_stapler: 右上
         left_double_stapler: 左2箇所
         right_double_stapler: 右2箇所
         no_stapler: なし
       hole:
-        original_hole: 現行通り
-        hole_necessary: なし
+        original_hole: 原稿通り
+        hole_unnecessary: なし
+        hole_necessary: あり
         hole_other: その他
       clip:
         clip_unnecessary: なし
@@ -164,7 +186,7 @@ ja:
         create_data: データ作成
         edit_data: データ修正
       color:
-        original_print: 現行通り
+        original_print: 原稿通り
         color_print: カラー
         monochrome_print: モノクロ
       paper:
@@ -198,6 +220,7 @@ ja:
         bara: バラ
         bind: 製本
         file: ファイル
+        other_state: その他
       draft_split:
         split_available: 可能
         split_unavailable: 不可
@@ -205,16 +228,16 @@ ja:
         restore_necessary: 必要
         restore_unnecessary: 不要
       color:
-        original_print: 現行通り
+        original_print: 原稿通り
         color_print: カラー
         monochrome_print: モノクロ
       print_size:
-        original_size: 現行通り
+        original_size: 原稿通り
         a3: A3
         a4: A4
         print_size_other: その他
       surface:
-        original_surface: 現行通り
+        original_surface: 原稿通り
         one_side: 片面→両面
         both_side: 両面→片面
       open_type:
@@ -222,6 +245,9 @@ ja:
         upper_open: 上開き
 
     project_print:
+      draft_data:
+        data_available: あり
+        data_unavailable: なし
       work_process:
         work_process_unnecessary: なし
         work_process_necessary: あり
@@ -232,22 +258,22 @@ ja:
         create_data: データ作成
         edit_data: データ修正
       color:
-        original_print: 現行通り
+        original_print: 原稿通り
         color_print: カラー
         monochrome_print: モノクロ
       print_size:
-        original_size: 現行通り
+        original_size: 原稿通り
         a3: A3
         a4: A4
         print_size_other: その他
       surface:
-        original_surface: 現行通り
+        original_surface: 原稿通り
         one_side: 片面→両面
         both_side: 両面→片面
       open_type:
         side_open: 横開き
         upper_open: 上開き
-    
+
     project_scan:
       posting_state:
         stapler: ホチキス
@@ -257,6 +283,7 @@ ja:
         bara: バラ
         bind: 製本
         file: ファイル
+        other_state: その他
       draft_split:
         split_available: 可能
         split_unavailable: 不可

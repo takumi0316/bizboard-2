@@ -9,18 +9,15 @@
 #  description                :text(65535)
 #  project_category           :integer          default("project_print")
 #  project_count              :integer          default(0)
-#  project_type               :integer          default("contract")
-#  channel                    :integer          default("estimate")
-#  deliver_at                 :datetime
-#  deliver_type               :integer          default("seat")
-#  deliver_type_note          :text(65535)
 #  binding_work               :integer          default("binding_works_unnecessary")
 #  after_process              :integer          default("after_process_unnecessary")
 #  note                       :text(65535)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
-#  status                     :integer          default("draft")
+#  status                     :integer          default(0)
 #  free_word                  :text(65535)
+#  project_number             :bigint(8)
+#  price                      :integer          default(0)
 #
 
 class Project < ApplicationRecord
@@ -38,14 +35,8 @@ class Project < ApplicationRecord
   #----------------------------------------
 
   enum project_category: { project_print: 0, project_card: 10, project_copy: 20, project_bind: 30, project_scan: 40, project_other: 50 }
-  enum project_type: { contract: 0, sales: 10 }
-  enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
-  enum deliver_type: { seat: 0, location: 10, pickup: 20, other: 30 }
-
   enum after_process: { after_process_unnecessary: 0, after_process_necessary: 10 }
   enum binding_work: { binding_works_unnecessary: 0, binding_works_necessary: 10 }
-
-  enum status: { draft: 0, estimated: 10, pre_work: 20, working: 30, end_work: 40, deliverd: 50, invoicing: 60, complete: 70 }
 
   #----------------------------------------
   #  ** Validations **
@@ -67,9 +58,10 @@ class Project < ApplicationRecord
   has_one  :project_after_process, dependent: :destroy
   has_one  :project_binding_work,  dependent: :destroy
 
-  has_one  :work,    dependent: :destroy
-
   has_many :histories, class_name: 'ProjectHistory',    dependent: :destroy
+
+  #has_many :quote_projects
+  #has_many :quotes, through: :quote_projects
 
   accepts_nested_attributes_for :bind
   accepts_nested_attributes_for :card
@@ -97,7 +89,7 @@ class Project < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.user&.name} #{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
+    self.free_word = "#{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
   end
 
   ##
