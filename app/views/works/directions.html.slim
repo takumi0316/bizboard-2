@@ -47,10 +47,10 @@ javascript:
           td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.deliver_at if Work.find(params[:id]).quote.deliver_at.present?
         tr
           th.u-va-middle 納品先
-          td.u-va-middle.u-ta-left
+          td.u-va-middle.u-ta-left = "#{Work.find(params[:id]).quote.client.company_division.company.name} #{Work.find(params[:id]).quote.client.company_division.name} #{Work.find(params[:id]).quote.client.name}"
         tr
           th.u-va-middle 納品方法
-          td.u-va-middle.u-ta-left
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.deliver_type_i18n
     .c-table-work_subcontractors3
       table
         tr

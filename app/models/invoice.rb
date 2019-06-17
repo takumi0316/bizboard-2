@@ -82,7 +82,7 @@ class Invoice < ApplicationRecord
       #検索に情報が入力されているか
       if parameters[:name].present?
 
-        _self.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+        _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
         # 名称検索
         terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
         query = (['free_word like ?'] * terms.size).join(' and ')
