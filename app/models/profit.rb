@@ -1,17 +1,4 @@
-# == Schema Information
-#
-# Table name: payments
-#
-#  id                           :bigint(8)        not null, primary key
-#  subcontractor_id             :bigint(8)
-#  work_subcontractor_detail_id :bigint(8)
-#  price                        :integer          default(0)
-#  date                         :date
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
-#
-
-class Payment < ApplicationRecord
+class Profit < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -33,7 +20,7 @@ class Payment < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :subcontractor, foreign_key: 'subcontractor_id'
+  belongs_to :company, foreign_key: 'company_id'
 
   #----------------------------------------
   #  ** Scopes **

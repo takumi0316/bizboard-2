@@ -37,6 +37,9 @@ class Company < ApplicationRecord
   # 部署
   has_many :divisions, class_name: 'CompanyDivision'
 
+  #請求情報
+  has_many :profits
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
