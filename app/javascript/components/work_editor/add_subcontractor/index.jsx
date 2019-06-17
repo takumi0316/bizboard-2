@@ -633,7 +633,7 @@ export default class AddSubcontractor extends React.Component {
                                   <th></th>
                                   <th className={ 'u-va-middle' }>No.</th>
                                   <th className={ 'u-va-middle' }>発注内容</th>
-                                  <th className={ 'u-va-middle' }>納品物</th>
+                                  <th className={ 'u-va-middle' }>入稿物</th>
                                   <th className={ 'u-va-middle' }>仕様</th>
                                   <th>原稿<br />数量</th>
                                   <th>部数<br />数量</th>
@@ -799,7 +799,7 @@ export default class AddSubcontractor extends React.Component {
                                 <tr>
                                   <th className={ 'u-va-middle' }>No.</th>
                                   <th className={ 'u-va-middle' }>発注内容</th>
-                                  <th className={ 'u-va-middle' }>納品物</th>
+                                  <th className={ 'u-va-middle' }>入稿物</th>
                                   <th className={ 'u-va-middle' }>仕様</th>
                                   <th>原稿<br />数量</th>
                                   <th>部数<br />数量</th>
