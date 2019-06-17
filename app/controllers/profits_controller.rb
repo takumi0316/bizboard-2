@@ -40,7 +40,7 @@ class ProfitsController < ApplicationController
   def index
 
     add_breadcrumb '支払い管理'
-    @company = Company.includes(:profits).order("profits.price DESC")
+    @company = Company.includes(:profits).where("profits.id is not NULL").order("profits.price DESC")
     if params[:date1].present?
       @date1 = params[:date1]
       @date2 = params[:date2]

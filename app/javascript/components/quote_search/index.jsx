@@ -7,6 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import Request from "superagent"
 require("superagent-rails-csrf")(Request);
 
+// enum_status
+import { ENUM_STATUS, } from './properties.es6'
 
 export default class QuoteSearch extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ export default class QuoteSearch extends Component {
     this.state = {
       startDate: new Date(year, last_month, day),
       startDate2: new Date(year, next_month, day),
+      status: 'ステータス',
     };
   }
 
@@ -94,6 +97,18 @@ export default class QuoteSearch extends Component {
             </div>
             <div className={ Style.Search__SideBySide }>
               <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='件名/担当者名/自社部署名/納期' />
+              <select name='status' className={ 'c-form-select__work-index' }>
+                <option value={ this.state.status }>{ this.state.status === 'ステータス' ? 'ステータス' : ENUM_STATUS[this.state.status] }</option>
+                { Object.keys(ENUM_STATUS).map((item, index) =>{
+                  const key = 'status-' + index;
+                  return (
+                    this.state.status === 'ステータス' ?
+                    <option {...{key}} value={item}>{ENUM_STATUS[item]}</option>
+                    :
+                    this.state.status === item ? <option>ステータス</option> : <option {...{key}} value={item}>{ENUM_STATUS[item]}</option>
+                  );
+                }) }
+              </select>
               <DatePicker
                 selected={ this.state.startDate }
                 onChange={ ::this.handleChange }

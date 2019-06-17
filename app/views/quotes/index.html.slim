@@ -72,7 +72,7 @@
 
         - else
           - if @count.blank?
-            - if r.division_id == @division
+            - if r.division_id == @division && r.status != 'invoicing'
               tr
                 td = r&.quote_number
                 td = r&.status_i18n
