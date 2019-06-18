@@ -69,6 +69,9 @@ import PaymentSearch from 'components/payment_search/index.jsx'
 //請求情報検索
 import ProfitSearch from 'components/profit_search/index.jsx'
 
+//経費入力
+import ExpendablesEditor from 'components/expendables_editor/index.jsx'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -86,4 +89,5 @@ WebpackerReact.setup({
   InvoiceSearch,
   PaymentSearch,
   ProfitSearch,
+  ExpendablesEditor,
 })

@@ -124,6 +124,20 @@ ja:
         delivered: 発送済み
         completed: 納品済み
 
+    expendable:
+      status:
+        copy: 複写費
+        aterial: 原材料
+        paper: 用紙
+        product: 物販仕入れ
+        expendable: 消耗品費
+        rent: 賃貸料
+        repair: 修繕費
+        communication: 通信費
+        delivery: 荷造運賃
+        maintenance: 保守料
+        cost: 外注費
+
     project_after_process:
       folding:
         original_folding: 原稿通り

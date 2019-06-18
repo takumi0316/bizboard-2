@@ -66,6 +66,11 @@
               span.u-ml-10 請求情報
 
           li.l-dashboard__menuItem
+            = link_to expendables_path do
+              = evil_icon 'ei-sc-github', size: :s
+              span.u-ml-10 経費入力
+
+          li.l-dashboard__menuItem
             = link_to users_path do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 ユーザー一覧

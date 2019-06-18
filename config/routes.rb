@@ -90,6 +90,9 @@ Rails.application.routes.draw do
   #請求情報
   resources :bills
 
+  #経費入力
+  resources :expendables
+
   # 自社部署
   resources :divisions
 
