@@ -375,7 +375,7 @@ export default class QuoteProject extends React.Component {
               <span className={ 'u-ml-10' }>{ this.state.project_card_paper }</span>
               <span className={ 'u-ml-10' }>両面:</span>
               <span className={ 'u-ml-10' }>{ this.state.project_card_surface }</span>
-              <span className={ 'u-ml-10' }>エンボンス:</span>
+              <span className={ 'u-ml-10' }>エンボス:</span>
               <span className={ 'u-ml-10' }>{ this.state.project_card_emboss }</span>
             </div>
           </div>
