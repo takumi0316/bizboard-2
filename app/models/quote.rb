@@ -143,13 +143,10 @@ class Quote < ApplicationRecord
 
       _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
 
-      # ステータス検索
-      _self = where(status: parameters[:status])
-
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
-      _self = where(query, *terms.map { |term| "%#{term}%" })
+      _self = where(query, *terms.map { |term| "%#{term}%" }).where(status: parameters[:status])
 
       # 日付検索
       return _self
