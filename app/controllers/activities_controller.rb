@@ -54,7 +54,7 @@ class ActivitiesController < ApplicationController
     add_breadcrumb '新規作成'
     @id = params[:quote_id]
     @activity = Activity.new(:quote_id => @id)
-    @quote = Quote.find(@id) rescue @quote = Quote.find_by(@id)      
+    @quote = Quote.find(@id) rescue @quote = Quote.find_by(@id)
   end
 
   ##
@@ -79,6 +79,11 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
+    if activity.status == "lost"
+      quote = Quote.find_or_initialize_by(id: activity.quote.id)
+      quote.update(status: "lost")
+    end
+
     @sort = activity.quote_id
     redirect_to activities_path+"?name=#{@sort}", flash: {notice: {message: '活動履歴を更新しました'}}
   rescue => e
@@ -94,6 +99,11 @@ class ActivitiesController < ApplicationController
 
     # 取引先情報更新
     activity.update! activity_params
+
+    if activity.status == "lost"
+      quote = Quote.find_or_initialize_by(id: activity.quote.id)
+      quote.update(status: "lost")
+    end
 
     @sort = activity.quote_id
     redirect_to activities_path+"?name=#{@sort}", flash: {notice: {message: '活動履歴を作成しました'}}

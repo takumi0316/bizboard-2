@@ -58,6 +58,7 @@ ja:
         deliverd: 納品済
         invoicing: 請求書発行済
         complete: 完了
+        lost: 失注
       quote_type:
         contract: 請負
         sales: 販売施工
