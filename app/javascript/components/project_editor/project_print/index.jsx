@@ -8,8 +8,7 @@ import {
   PRINT_WORKS,
   COLORS,
   PRINT_SIZES,
-  SURFACES,
-  OPEN_TYPES,
+  PRINT_SURFACES,
 } from '../properties.es6'
 
 /**
@@ -53,7 +52,6 @@ export default class ProjectPrint extends React.Component {
       'project[print_attributes][print_size]': '',
       'project[print_attributes][print_size_note]': '',
       'project[print_attributes][surface]': '',
-      'project[print_attributes][open_type]': '',
       'project[print_attributes][price]': this.refs.price.value,
     };
 
@@ -73,10 +71,6 @@ export default class ProjectPrint extends React.Component {
 
       if (this.refs.print_size.value == 'print_size_other') {
         result['project[print_attributes][print_size_note]'] = this.refs.print_size_note.value;
-      }
-
-      if (this.state.surface == 'both_side') {
-        result['project[print_attributes][open_type]'] = this.refs.open_type.value;
       }
     }
 
@@ -262,29 +256,10 @@ export default class ProjectPrint extends React.Component {
                   <td>
                     <div className='c-form-selectWrap'>
                       <select className='c-form-select' ref='surface' defaultValue={this.props.project_print.surface} onChange={(e) => this.setState({surface: e.target.value})}>
-                        { Object.keys(SURFACES).map((item, index) => {
+                        { Object.keys(PRINT_SURFACES).map((item, index) => {
                           const key = 'surface-'+index;
                           return (
-                            <option {...{key}} value={SURFACES[item]}>{item}</option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  </td>
-                </tr>
-                : null
-              }
-
-              { this.state.print_work == 'print_work_necessary' && this.state.surface == 'both_side' ?
-                <tr>
-                  <td className='u-fw-bold'>開き (両面の場合)</td>
-                  <td>
-                    <div className='c-form-selectWrap'>
-                      <select className='c-form-select' ref='open_type' defaultValue={this.props.project_print.open_type}>
-                        { Object.keys(OPEN_TYPES).map((item, index) => {
-                          const key = 'open_type-'+index;
-                          return (
-                            <option {...{key}} value={OPEN_TYPES[item]}>{item}</option>
+                            <option {...{key}} value={PRINT_SURFACES[item]}>{item}</option>
                           );
                         })}
                       </select>
