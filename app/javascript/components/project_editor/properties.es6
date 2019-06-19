@@ -77,12 +77,6 @@ export const PRINT_SIZES = {
   'その他': 'print_size_other',
 };
 
-export const PRINT_SURFACES = {
-  '原稿通り': 'original_surface',
-  '片面': 'one_side',
-  '両面': 'both_side',
-};
-
 export const SURFACES = {
   '原稿通り': 'original_surface',
   '片面→両面': 'one_side',
