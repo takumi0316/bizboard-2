@@ -203,8 +203,8 @@ export const CARD_SURFACES = {
 };
 
 export const EMBOSSES = {
-  'あり': 'emboss_necessary',
   'なし': 'emboss_unnecessary',
+  'あり': 'emboss_necessary',
 };
 
 // ------------------------------------
@@ -310,4 +310,3 @@ export const RADIO_CUTS = {
   'あり': 'radio_cut_necessary',
   'なし': 'radio_cut_unnecessary',
 };
-
