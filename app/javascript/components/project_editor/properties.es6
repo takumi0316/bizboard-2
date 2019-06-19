@@ -78,8 +78,8 @@ export const PRINT_SIZES = {
 };
 
 export const PRINT_SURFACES = {
-  '片面': 'one_side',
-  '両面': 'both_side',
+  '両面': 'one_side',
+  '片面': 'both_side',
 };
 
 export const SURFACES = {
