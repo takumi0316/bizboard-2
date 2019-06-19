@@ -14,7 +14,7 @@
         th お客様
         th 納期
         th 更新者
-        th 更新日
+        //th 更新日
         th 作業書
         th 見積もり作成・更新
         th PDFダウンロード
@@ -32,7 +32,6 @@
               - if r.company_division_client_id&.present?
                 = r.client&.company_division&.company&.name
                 |&nbsp;
-                |&nbsp;
                 = r&.client&.name
               - else
                 | お客様情報なし
@@ -42,12 +41,15 @@
                 = r&.user&.name
               - else
                 |更新者不明
-            td = r.updated_at
+            //td = r.updated_at
             td
-              - if r.work.nil?
-                = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+              - if r.status == "lost"
+                | 失注しました
               - else
-                = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
+                - if r.work.nil?
+                  = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                - else
+                  = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
             td
               - if r.pdf_url.present?
                 = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
@@ -91,12 +93,15 @@
                     = r&.user&.name
                   - else
                     |更新者不明
-                td = r.updated_at
+                //td = r.updated_at
                 td
-                  - if r.work.nil?
-                    = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                  - if r.status == "lost"
+                    | 失注しました
                   - else
-                    = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
+                    - if r.work.nil?
+                      = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                    - else
+                      = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
                 td
                   - if r.pdf_url.present?
                     = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
@@ -137,12 +142,15 @@
                   = r&.user&.name
                 - else
                   |更新者不明
-              td = r.updated_at
+              //td = r.updated_at
               td
-                - if r.draft?
-                  = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                - if r.status == "lost"
+                  | 失注しました
                 - else
-                  = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
+                  - if r.draft?
+                    = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                  - else
+                    = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
               td
                 - if r.pdf_url.present?
                   = link_to '見積書更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
