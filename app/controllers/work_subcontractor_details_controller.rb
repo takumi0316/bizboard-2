@@ -59,16 +59,9 @@ class WorkSubcontractorDetailsController < ApplicationController
           )
 
           #外注金額保存
-          detail_id = Payment.find_by(work_subcontractor_detail_id: parse_json['id'])&.work_subcontractor_detail_id
-          if detail_id == parse_json['id']
-
-            payment = Payment.find_by(work_subcontractor_detail_id: parse_json['id']).update(price: parse_json['actual_cost'], date: subcontractor_detail&.work_subcontractor&.delivery_date)
-
-          else
-
-            payment = Payment.create!(subcontractor_id: subcontractor_detail&.work_subcontractor&.client.subcontractor_division_id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: subcontractor_detail&.work_subcontractor&.delivery_date)
-            payment.save!
-          end
+          payment = Payment.find_or_initialize_by(work_subcontractor_detail_id: parse_json['id'])
+          payment.update(subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id,price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor&.delivery_date) if payment.present?
+          payment.save!(subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor.delivery_date) if payment.nil?
         end
 
         render json: { status: :success, detail: Work.find(params[:work_id]).subcontractor_detail }
@@ -92,9 +85,7 @@ class WorkSubcontractorDetailsController < ApplicationController
   def destroy
 
     #外注金額の削除
-    detail_id = WorkSubcontractorDetail.find(params[:id]).id
-    payment = Payment.find_by(work_subcontractor_detail_id: detail_id).destroy!
-
+    Payment.find_by(work_subcontractor_detail_id: params[:id]).destroy! if Payment.find_by(work_subcontractor_detail_id: params[:id]).present?
     WorkSubcontractorDetail.find(params[:id]).destroy!
 
     render json: { status: :success }
