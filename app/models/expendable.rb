@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: expendables
+#
+#  id                :bigint(8)        not null, primary key
+#  divisions_id      :bigint(8)
+#  subcontractors_id :bigint(8)
+#  status            :integer          default("copy")
+#  name              :string(191)
+#  price             :integer          default(0)
+#  date              :date
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
 class Expendable < ApplicationRecord
   #----------------------------------------
   #  ** Includes **
