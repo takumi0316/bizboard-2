@@ -177,11 +177,12 @@ export default class QuoteEditor extends React.Component {
           if (!this.props.quote.id) {
 
             alert('案件情報を作成しました');
-            location.href = `${res.body.quote.id}/edit`;
+            location.href = `/quotes`;
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           } else {
 
             alert('案件情報を更新しました');
+            location.href = `/quotes`;
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           }
         } else {
