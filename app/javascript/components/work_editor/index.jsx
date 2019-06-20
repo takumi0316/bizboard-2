@@ -126,7 +126,7 @@ export default class WorkEditor extends React.Component {
                 <td>{ this.state.project_price }円</td>
                 <td>{ this.state.work_price }円</td>
                 <td>{ this.state.project_price - this.state.work_price }円</td>
-                <td>{ (Number(this.state.project_price - this.state.work_price) / Number(this.state.project_price)) * 100 }%</td>
+                <td>{ Math.floor((Number(this.state.project_price - this.state.work_price) / Number(this.state.project_price)) * 100) }%</td>
               </tr>
             </tbody>
           </table>

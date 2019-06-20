@@ -33,7 +33,7 @@
             td.u-ta-right  = r.quote&.price.present? ? "#{r.quote&.price}円" : '0円'
             td.u-ta-right  = "#{r.price}円"
             td.u-ta-right  = r.quote&.price.present? ? "#{r.quote.price - r.price}" : '0円'
-            td.u-ta-right  = r.price.nonzero?? "#{r.price.to_f / r.price.to_f}%" : '0%'
+            td.u-ta-right  = r.price.nonzero?? "#{(((r.quote.price - r.price).to_f / r.quote&.price.to_f)*100).to_i}%" : '0%'
             td.u-ta-right  = r.updated_at
         - else
           - if @count.blank?
