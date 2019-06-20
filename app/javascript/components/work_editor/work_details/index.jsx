@@ -508,14 +508,14 @@ export default class AddDetails extends React.Component {
 													<td className={ 'u-va-top' }><textarea key={ detail.specification + index } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index) } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
 													<td><input key={ detail.deliver_at + index } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
                         	<td className={ 'u-va-top' }>
-                              <select key={ detail.client_name + index } onChange={ e => this.onChangeClientName(index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } defaultValue={ detail.client_name }>
-                            	{ this.props.users.map((user, index) => {
+                            <select key={ detail.client_name + index } onChange={ e => this.onChangeClientName(index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } value={ detail.client_name }>
+                              { this.props.users.map((user, index) => {
                                 const key = 'user_name' + index;
-                              	return(
-																	<option key={ key } value={ user['name'] }>{ user['name'] }</option>
-                              	);
-                            	}) }
-                          	</select>
+                                return(
+																  <option key={ key } value={ user['name'] }>{ user['name'] }</option>
+                                );
+                              }) }
+                            </select>
                         	</td>
 													<td className={ 'u-va-top' }><input key={ detail.number_of_copies + index } type='text' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
 													<td className={ 'u-va-top' }><input key={ detail.count + index } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, 'onChangeCount') } onBlur={ e => this.onSetStateBlur('onChangeCount', index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
