@@ -181,9 +181,10 @@ export default class ProjectEditor extends React.Component {
           // 新規作成時は編集画面はリダイレクト
           if (!this.props.project.id) {
             alert('品目情報を作成しました');
-            location.href = `${response.body.project.id}/edit`;
+            console.log(location.href = `/projects`);
           } else {
             alert('品目情報を更新しました');
+            console.log(location.href = `/projects`);
           }
 
         } else {
