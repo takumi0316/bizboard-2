@@ -118,11 +118,12 @@ class WorksController < ApplicationController
 
            @clients << "#{client}, "
         end
-       end
+      end
+
        return @clients
      end
     else
-
+      
       return @client
     end
   end
