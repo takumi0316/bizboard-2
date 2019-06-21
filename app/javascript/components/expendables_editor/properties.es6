@@ -2,7 +2,7 @@
 // 共通
 // ------------------------------------
 
-export const STATUS = {
+export const ENUM_STATUS = {
   '複写費': 'copy',
   '原材料': 'mterial',
   '用紙':   'reception',

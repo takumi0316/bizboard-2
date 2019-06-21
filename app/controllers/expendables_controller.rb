@@ -11,6 +11,17 @@ class ExpendablesController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
+  # 見積もり
+  expose_with_pagination(:expendables) {
+    Expendable
+    .all
+  }
+
+
+  # 見積もり
+  expose(:expendable) { Expendable.find_or_initialize_by id: params[:id] || params[:expendable_id]}
+
+
   #----------------------------------------
   #  ** Layouts **
   #----------------------------------------

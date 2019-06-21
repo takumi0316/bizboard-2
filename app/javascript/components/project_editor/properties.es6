@@ -8,6 +8,7 @@ export const PROJECT_NAMES = {
   project_card: '名刺',
   project_scan: 'スキャン',
   project_print: 'プリント',
+  project_otherprint: '印刷',
   project_other: 'その他',
 };
 

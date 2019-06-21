@@ -80,6 +80,7 @@ ja:
         project_copy: コピー
         project_bind: 製本
         project_scan: スキャン
+        project_otherprint: 印刷
         project_other: その他
       after_process:
         after_process_unnecessary: なし

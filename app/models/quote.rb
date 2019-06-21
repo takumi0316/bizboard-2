@@ -111,7 +111,7 @@ class Quote < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.subject} #{self.user&.name} #{self.user&.division&.name} #{self.created_at}"
+    self.free_word = "#{self.subject} #{self.user&.name} #{self.user&.division&.name} #{self.created_at} #{self.client.company_division.company.name} #{self.client.company_division.name} #{self.client.name}"
   end
 
   ##
