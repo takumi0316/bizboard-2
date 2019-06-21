@@ -507,7 +507,7 @@ export default class AddDetails extends React.Component {
 													<td className={ 'u-va-top' }><textarea key={ detail.deliver_method + index } id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index) } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
 													<td className={ 'u-va-top' }><textarea key={ detail.specification + index } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index) } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
 													<td><input key={ detail.deliver_at + index } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
-                        	<td className={ 'u-va-top' }>
+                        	<td className={ 'u-va-top' }>  
                             <select key={ detail.client_name + index } onChange={ e => this.onChangeClientName(index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } value={ detail.client_name }>
                               { this.props.users.map((user, index) => {
                                 const key = 'user_name' + index;
