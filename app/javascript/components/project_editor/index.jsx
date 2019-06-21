@@ -281,7 +281,7 @@ export default class ProjectEditor extends React.Component {
           <label className='c-form-radioLabel u-ml-15'>
             <input name='project_category' type='radio' defaultChecked={this.state.project_category == 'project_bind'} onChange={() => this.setState({project_category: 'project_bind'})} className='c-form-radio' />
             <i className='c-form-radioIcon' />
-            <span>製本のみ</span>
+            <span>後加工・製本</span>
           </label>
           <label className='c-form-radioLabel u-ml-15'>
             <input name='project_category' type='radio' defaultChecked={this.state.project_category == 'project_otherprint'} onChange={() => this.setState({project_category: 'project_otherprint'})} className='c-form-radio' />
@@ -359,7 +359,7 @@ export default class ProjectEditor extends React.Component {
         }
 
         {/** 後加工 / 製本仕様 */}
-        { this.state.project_category == 'project_print' || this.state.project_category == 'project_copy' || this.state.project_category == 'project_bind' ?
+        { this.state.project_category == 'project_bind' ?
 
           <div>
 
@@ -388,6 +388,7 @@ export default class ProjectEditor extends React.Component {
             </div>
 
             { this.state.after_process == 'after_process_necessary' ? <ProjectAfterProcess ref='project_after_process' {...{project}}  project_after_process={project_after_process || {}}/> : null}
+
 
             <h2 className={Style.ProjectEditor__heading}>製本仕様</h2>
 
