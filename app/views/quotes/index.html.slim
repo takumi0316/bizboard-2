@@ -57,7 +57,7 @@
                 = link_to '見積作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
             td
               - if r.pdf_url.present?
-                = link_to 'ダウンロード', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
+                = link_to 'DL', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
               -else
                 | 未発行
             td
