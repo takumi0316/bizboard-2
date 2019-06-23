@@ -209,7 +209,7 @@ class QuotesController < ApplicationController
 
                     note = "見積もり有効期：#{quote.expiration.strftime("%Y年%m月%d日")}まで
                     #{quote.remarks}"
-                    
+
                     request.body = JSON.dump({
                       "quote": {
                         "department_id": quote.client.company_division.mf_company_division_id,
