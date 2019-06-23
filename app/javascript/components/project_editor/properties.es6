@@ -3,7 +3,7 @@
 // ------------------------------------
 
 export const PROJECT_NAMES = {
-  project_bind: '製本のみ',
+  project_bind: '後加工・製本',
   project_copy: 'コピー',
   project_card: '名刺',
   project_scan: 'スキャン',
@@ -99,7 +99,7 @@ export const OPEN_TYPES = {
 // ------------------------------------
 
 export const BIND_SIZES = {
-  '名刺': 'card_size',
+  '原稿同様': 'card_size',
   'A4': 'a4',
   'A3': 'a3',
   'A2': 'a2',
@@ -112,7 +112,7 @@ export const BIND_SIZES = {
 // ------------------------------------
 
 export const SCAN_SIZES = {
-  '名刺': 'card_size',
+  '原稿同様': 'card_size',
   'A4': 'a4',
   'A3': 'a3',
   'A2': 'a2',

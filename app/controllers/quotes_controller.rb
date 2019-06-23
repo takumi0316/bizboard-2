@@ -214,7 +214,7 @@ class QuotesController < ApplicationController
                       "quote": {
                         "department_id": quote.client.company_division.mf_company_division_id,
                         "quote_number": quote.quote_number,
-                        "quote_date": quote.date.strftime('%Y-%m-%d'),
+                        "quote_date": Date.today.strftime('%Y-%m-%d'),
                         "expired_date": quote.expiration.strftime('%Y-%m-%d'),
                         "title": quote.subject,
                         "note": note,
@@ -307,7 +307,7 @@ class QuotesController < ApplicationController
           "quote": {
             "department_id": quote.client.company_division.mf_company_division_id,
             "quote_number": quote.quote_number,
-            "quote_date": quote.date.strftime('%Y-%m-%d'),
+            "quote_date": Date.today.strftime('%Y-%m-%d'),
             "expired_date": quote.expiration.strftime('%Y-%m-%d'),
             "title": quote.subject,
             "note": note,

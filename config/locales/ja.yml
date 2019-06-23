@@ -78,7 +78,7 @@ ja:
         project_print: プリント
         project_card: 名刺
         project_copy: コピー
-        project_bind: 製本
+        project_bind: 後加工・製本
         project_scan: スキャン
         project_otherprint: 印刷
         project_other: その他
@@ -182,7 +182,7 @@ ja:
         bind: 製本
         file: ファイル
       print_size:
-        card_size: 名刺
+        card_size: 原稿同様
         a4: A4
         a3: A3
         a2: A2
@@ -307,7 +307,7 @@ ja:
         restore_necessary: 必要
         restore_unnecessary: 不要
       print_size:
-        card_size: 名刺
+        card_size: 原稿同様
         a4: A4
         a3: A3
         a2: A2
