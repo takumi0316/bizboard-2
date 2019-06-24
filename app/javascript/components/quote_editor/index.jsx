@@ -139,8 +139,8 @@ export default class QuoteEditor extends React.Component {
     }
     field = {
       'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
-      'quote[division_id]': this.props.division_id === null ? 'null' : this.props.division_id,
-      'quote[company_division_client_id]': this.refs.company_division_client_id.value,
+      'quote[division_id]': this.props.division_id || '',
+      'quote[company_division_client_id]': this.refs.company_division_client_id.value || '',
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
       'quote[channel]': this.refs.channel.value,
