@@ -189,6 +189,13 @@
                         project_scan_bookmark: Project.find(r)&.scan.bookmark_i18n,
                         project_scan_edit_file_name: Project.find(r)&.scan&.edit_file_name_i18n,
                     })
+            - elsif Project.find(r).project_category_i18n === '印刷'
+
+                = react_component('QuoteProject',
+                {   project: Project.find(r),
+                    project_category: Project.find(r)&.project_category_i18n,
+                    project_otherprint_note: Project.find(r)&.note,
+                })
             - elsif Project.find(r).project_category_i18n === 'その他'
 
                 = react_component('QuoteProject',

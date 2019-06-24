@@ -92,6 +92,7 @@ export default class QuoteProject extends React.Component {
       project_scan_bookmark: props.project_scan_bookmark,
       project_scan_edit_file_name: props.project_scan_edit_file_name,
       project_other_note: props.project_other_note === null ? null : props.project_other_note,
+      project_otherprint_note: props.project_otherprint_note === null ? null : props.project_otherprint_note,
       show: false,
     }
   }
@@ -806,6 +807,22 @@ export default class QuoteProject extends React.Component {
               <span className={ 'u-ml-10' }>{ this.state.project_scan_bookmark }</span>
               <span className={ 'u-ml-10' }>ファイル名編集: </span>
               <span className={ 'u-ml-10' }>{ this.state.project_scan_edit_file_name }</span>
+            </div>
+          </div>
+          :
+          null
+        }
+        { this.state.project_category === '印刷' && this.state.show === true ?
+          <div className={ 'c-attention u-fw-bold' }>
+            <div className={ 'c-ml-10 c-mt-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
+            <span className={ 'c-ml-10' }>品目名: </span>
+            <span className={ 'c-ml-10' }>{ this.state.project.name }</span>
+            <div>
+              <br />
+              <span className={ 'c-ml-10' }>案件種別: </span>
+              <span className={ 'c-ml-10' }>{ this.state.project_category }</span>
+              <span className={ 'c-ml-10' }>備考: </span>
+              <span className={ 'c-ml-10' }>{ this.state.project_otherprint_note }</span>
             </div>
           </div>
           :

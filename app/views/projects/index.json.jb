@@ -373,6 +373,21 @@ json[:projects] = projects.map do |r|
       type: true,
       specifications: specifications,
     }
+
+
+  when 'project_otherprint'
+
+    specifications = []
+    otherprint = {'bool': true, 'name': "#{r.name} 備考 #{r.note}", 'unit_price': r.price, 'unit': 1, 'price': r.price, 'id': nil, 'quote_id': r.id, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+
+    specifications.push(otherprint)
+    {
+      id: r.id,
+      name: r.name,
+      price: r.price,
+      type: false,
+      specifications: specifications,
+    }
   when 'project_other'
 
     specifications = []
