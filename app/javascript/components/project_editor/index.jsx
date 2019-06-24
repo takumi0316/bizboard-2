@@ -283,11 +283,13 @@ export default class ProjectEditor extends React.Component {
             <i className='c-form-radioIcon' />
             <span>後加工・製本</span>
           </label>
+          {/**
           <label className='c-form-radioLabel u-ml-15'>
             <input name='project_category' type='radio' defaultChecked={this.state.project_category == 'project_otherprint'} onChange={() => this.setState({project_category: 'project_otherprint'})} className='c-form-radio' />
             <i className='c-form-radioIcon' />
             <span>印刷</span>
           </label>
+          */}
           <label className='c-form-radioLabel u-ml-15'>
             <input name='project_category' type='radio' defaultChecked={this.state.project_category == 'project_other'} onChange={() => this.setState({project_category: 'project_other'})} className='c-form-radio' />
             <i className='c-form-radioIcon' />
