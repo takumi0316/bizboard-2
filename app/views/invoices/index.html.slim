@@ -19,7 +19,7 @@
         tr
           td = r.id
           td = r.quote.quote_number
-          td = r.subject
+          td = r.subject.truncate(25)
           td
             - if r.quote.company_division_client_id?
               = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
