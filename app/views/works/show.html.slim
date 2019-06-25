@@ -1,6 +1,6 @@
 = react_component('WorkStatus', { status: works.find(params[:id]).status, id: params[:id] })
 .c-attention.u-mt-10.u-fw-bold
-  | 見積もりタイトル:
+  | 案件タイトル:
   span.u-ml-10 = works.find(params[:id]).quote&.subject
   span.u-ml-20
     | 案件番号:
