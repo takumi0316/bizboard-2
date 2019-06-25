@@ -212,7 +212,9 @@ export default class AddSubcontractor extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
-          this.setState({ subcontractor_details: res.body.detail });
+          let state_subcontractor_details = Object.assign([], this.state.subcontractor_details);
+          state_subcontractor_details.push(res.body.detail);
+          this.setState({ subcontractor_details: state_subcontractor_details });
         } else {
           this.setState({ subcontractor_details: res.body.detail });
         }
