@@ -1,5 +1,5 @@
 export const TITLES = {
-  0: 'nothing',
-  10: 'honorific',
-  20: 'normal',
+  0: 'なし',
+  10: '様',
+  20: 'さん',
 };
