@@ -26,7 +26,7 @@ export default class WorkEditor extends React.Component {
     }
   }
 
-  applyPrice = ( project_price, type) => {
+  _applyPrice = ( project_price, type) => {
 
     if ( type === 'work_detail_cost' ) {
 
@@ -35,10 +35,10 @@ export default class WorkEditor extends React.Component {
 
        this.setState({ subcontractor_detail_cost: project_price });
     }
-    this.onUpdatePrice()
+    this._updatePrice()
   }
 
-  onUpdatePrice = () => {
+  _updatePrice = () => {
 
     let url = '/works/' + this.props.work_id;
     let field = {
@@ -95,7 +95,7 @@ export default class WorkEditor extends React.Component {
       <div>
 
         <div className='c-form-label u-mt-10'>
-          <label htmlFor='quote_company_division_client_id'>作業部署情報</label>
+          <label>作業部署情報</label>
         </div>
         { this.state.division ?
           <div className='c-attention'>
@@ -106,8 +106,8 @@ export default class WorkEditor extends React.Component {
         <div className='u-mt-15'>
           <HomeDivision applyDivision={ ::this._applyDivision } />
         </div>
-        <WorkDetails work_notices={ this.props.work_notices } details={ this.props.details } category={ this.props.category } work_id={ this.props.work_id } user_id={ this.props.user_id } users={ this.props.users } applyPrice={ ::this.applyPrice } />
-        <AddSubcontractor work_subcontractors={ this.props.work_subcontractors } subcontractor_details={ this.props.subcontractor_details } work_id={ this.props.work_id } subcontractors={ this.props.subcontractors } divisions={ this.props.divisions } clients={ this.props.clients } applyPrice={ ::this.applyPrice } users={ this.props.users } prefectures={ this.props.prefectures } />
+        <WorkDetails work_notices={ this.props.work_notices } details={ this.props.details } category={ this.props.category } work_id={ this.props.work_id } user_id={ this.props.user_id } users={ this.props.users } applyPrice={ ::this._applyPrice } />
+        <AddSubcontractor work_subcontractors={ this.props.work_subcontractors } subcontractor_details={ this.props.subcontractor_details } work_id={ this.props.work_id } subcontractors={ this.props.subcontractors } divisions={ this.props.divisions } clients={ this.props.clients } applyPrice={ ::this._applyPrice } users={ this.props.users } prefectures={ this.props.prefectures } />
         <div className={ 'c-form-label u-mt-20' }>
           <label>受注/粗利</label>
         </div>
