@@ -53,22 +53,6 @@ window.Initializer = window.Initializer||{};
   };
 
   /**
-   *  ページ内リンクをスムーズスクロールへ
-   *  @version 2018/06/10
-   */
-  p.smoothScroll = function() {
-
-    this.moveTo = new MoveTo({
-      tolerance: 0,
-      duration: 500,
-    });
-    document.querySelectorAll('a[href^="#"]').forEach(trigger => {
-
-      this.moveTo.registerTrigger(trigger);
-    });
-  };
-
-  /**
    *  lazyloadを開始
    *  @version 2018/06/10
    */

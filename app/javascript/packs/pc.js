@@ -7,14 +7,11 @@ import 'scripts/image_converter';
 
   Initializer.loadWebfont();
   Initializer.lazy();
-  Initializer.smoothScroll();
-  //Initializer.turbolinksDebug();
 
   // 初期表示時や、ajaxでのリクエスト時に発動
   document.addEventListener('turbolinks:load', function() {
 
     Initializer.lazy();
-    Initializer.smoothScroll();
   });
 })();
 
