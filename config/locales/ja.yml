@@ -36,6 +36,11 @@ ja:
         nothing: なし
         honorific: 様
         normal: さん
+    subcontractor_division_client:
+      title:
+        nothing: なし
+        honorific: 様
+        normal: さん
     activity:
       status:
         meeting: 商談
@@ -58,11 +63,12 @@ ja:
         deliverd: 納品済
         invoicing: 請求書発行済
         complete: 完了
+        lost: 失注
       quote_type:
         contract: 請負
         sales: 販売施工
       channel:
-        estimate: 見積もり
+        estimate: 営業
         bpr_erp: BPR/ERP
         reception: 受付
         channel_other: その他
@@ -77,8 +83,9 @@ ja:
         project_print: プリント
         project_card: 名刺
         project_copy: コピー
-        project_bind: 製本
+        project_bind: 後加工・製本
         project_scan: スキャン
+        project_otherprint: 印刷
         project_other: その他
       after_process:
         after_process_unnecessary: なし
@@ -124,6 +131,20 @@ ja:
         delivered: 発送済み
         completed: 納品済み
 
+    expendable:
+      status:
+        copy: 複写費
+        material: 原材料
+        paper: 用紙
+        product: 物販仕入れ
+        expendable: 消耗品費
+        rent: 賃貸料
+        repair: 修繕費
+        communication: 通信費
+        delivery: 荷造運賃
+        maintenance: 保守料
+        cost: 外注費
+
     project_after_process:
       folding:
         original_folding: 原稿通り
@@ -166,7 +187,7 @@ ja:
         bind: 製本
         file: ファイル
       print_size:
-        card_size: 名刺
+        card_size: 原稿同様
         a4: A4
         a3: A3
         a2: A2
@@ -291,7 +312,7 @@ ja:
         restore_necessary: 必要
         restore_unnecessary: 不要
       print_size:
-        card_size: 名刺
+        card_size: 原稿同様
         a4: A4
         a3: A3
         a2: A2

@@ -26,6 +26,8 @@
 #  deliver_type_note          :text(65535)
 #  division_id                :bigint(8)
 #  discount                   :integer
+#  delivery_type              :integer
+#  delivery_type_note         :text(65535)
 #
 
 class Quote < ApplicationRecord
@@ -48,7 +50,7 @@ class Quote < ApplicationRecord
   #のenum
   enum attention: { messrs: 0, dear: 10}
 
-  enum status: { draft: 0, estimated: 10, working: 20, end_work: 30, invoicing: 40, complete: 50 }
+  enum status: { draft: 0, estimated: 10, working: 20, end_work: 30, invoicing: 40, complete: 50, lost: 60 }
 
   enum quote_type: { contract: 0, sales: 10 }
   enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
@@ -91,6 +93,8 @@ class Quote < ApplicationRecord
 
   scope :deliverd_in, ->(datetime) { where(deliver_at: datetime) }
 
+  scope :deliverd_at, ->{ order(:deliver_at) }
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
@@ -107,7 +111,7 @@ class Quote < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.subject} #{self.user&.name} #{self.user&.division&.name} #{self.created_at}"
+    self.free_word = "#{self.subject} #{self.user&.name} #{self.user&.division&.name} #{self.created_at} #{self.client&.company_division&.company&.name} #{self.client&.company_division&.name} #{self.client&.name}"
   end
 
   ##
@@ -126,37 +130,45 @@ class Quote < ApplicationRecord
   def self.search(**parameters)
 
     _self = self
+    # フリーワードが入っていて、ステータスが未選択
+    if parameters[:name].present? && parameters[:status] == 'ステータス'
 
-    #そもそも日付選択されてんのか
-    if parameters[:date1] = "InvalidDate"
-
+      # 名称検索
+      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = where(query, *terms.map { |term| "%#{term}%" })
-
+      # 日付検索
       return _self
-    else
-      #検索に情報が入力されているか
-      if parameters[:name].present?
+    # フリーワードが入っていて、ステータスが選択されている
+    elsif parameters[:name].present? && parameters[:status] != 'ステータス'
 
-        _self.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
-        # 名称検索
-        terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-        query = (['free_word like ?'] * terms.size).join(' and ')
-        _self = where(query, *terms.map { |term| "%#{term}%" })
+      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
 
-        return _self
-      else
+      # 名称検索
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      _self = where(query, *terms.map { |term| "%#{term}%" }).where(status: parameters[:status])
 
-        # 日付検索
-        _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      # 日付検索
+      return _self
 
-        return _self
+    # フリーワードが空で、ステータスが未選択
+    elsif parameters[:name].blank? && parameters[:status] == 'ステータス'
 
-      end
+      #日付検索
+      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      return _self
+    # フリーワードが空で、ステータスが入力されている
+    elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != 'ステータス'
+
+      #日付検索
+      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      #ステータス検索
+      _self = where(status: parameters[:status])
+      return _self
     end
-
+     return _self
   end
-
 
 end

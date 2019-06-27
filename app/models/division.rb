@@ -50,6 +50,9 @@ class Division < ApplicationRecord
   # 都道府県
   belongs_to_active_hash :prefecture
 
+  #経費入力
+  has_many :expendables
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

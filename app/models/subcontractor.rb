@@ -39,6 +39,9 @@ class Subcontractor < ApplicationRecord
   #請求情報
   has_many :payments
 
+  #経費入力
+  has_many :expendables
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

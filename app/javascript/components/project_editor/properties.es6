@@ -3,11 +3,12 @@
 // ------------------------------------
 
 export const PROJECT_NAMES = {
-  project_bind: '製本のみ',
+  project_bind: '後加工・製本',
   project_copy: 'コピー',
   project_card: '名刺',
   project_scan: 'スキャン',
   project_print: 'プリント',
+  project_otherprint: '印刷',
   project_other: 'その他',
 };
 
@@ -77,6 +78,11 @@ export const PRINT_SIZES = {
   'その他': 'print_size_other',
 };
 
+export const PRINT_SURFACES = {
+  '両面': 'one_side',
+  '片面': 'both_side',
+};
+
 export const SURFACES = {
   '原稿通り': 'original_surface',
   '片面→両面': 'one_side',
@@ -93,7 +99,7 @@ export const OPEN_TYPES = {
 // ------------------------------------
 
 export const BIND_SIZES = {
-  '名刺': 'card_size',
+  '原稿同様': 'card_size',
   'A4': 'a4',
   'A3': 'a3',
   'A2': 'a2',
@@ -106,7 +112,7 @@ export const BIND_SIZES = {
 // ------------------------------------
 
 export const SCAN_SIZES = {
-  '名刺': 'card_size',
+  '原稿同様': 'card_size',
   'A4': 'a4',
   'A3': 'a3',
   'A2': 'a2',
@@ -203,8 +209,8 @@ export const CARD_SURFACES = {
 };
 
 export const EMBOSSES = {
-  'あり': 'emboss_necessary',
   'なし': 'emboss_unnecessary',
+  'あり': 'emboss_necessary',
 };
 
 // ------------------------------------
@@ -310,4 +316,3 @@ export const RADIO_CUTS = {
   'あり': 'radio_cut_necessary',
   'なし': 'radio_cut_unnecessary',
 };
-

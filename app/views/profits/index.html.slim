@@ -1,0 +1,19 @@
+h1.l-dashboard__heading 取引先 請求情報一覧
+
+= react_component('ProfitSearch')
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 会社名
+        th 金額
+    tbody
+      - @company.each do |r|
+        tr
+          td = r.name
+          td = "#{r.profits.where(date: @date1&.to_datetime&.beginning_of_day..@date2&.to_datetime&.end_of_day)&.pluck(:price).sum}円"
+
+
+
+= render 'layouts/_partials/pagination'

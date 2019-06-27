@@ -34,7 +34,7 @@ export default class AddSubcontractor extends React.Component {
     }
   }
 
-  _editable = () => {
+  onEditable = () => {
 
     this.setState({ show: true });
   }
@@ -212,7 +212,9 @@ export default class AddSubcontractor extends React.Component {
       .setCsrfToken()
       .end((err, res) => {
         if (!err && res.body.status === "success") {
-          this.setState({ subcontractor_details: res.body.detail });
+          let state_subcontractor_details = this.state.subcontractor_details.slice();
+          state_subcontractor_details.push(res.body.detail);
+          this.setState({ subcontractor_details: state_subcontractor_details });
         } else {
           this.setState({ subcontractor_details: res.body.detail });
         }
@@ -235,7 +237,7 @@ export default class AddSubcontractor extends React.Component {
         })
       }
     })
-    if( subcontractor_value_count.length !== 0 ) {
+    if( subcontractor_value_count.length > 0 ) {
       for(var i = 0; i < subcontractor_value_count.length; i++) {
         array_rails.push(JSON.stringify({
           'id': Number(document.getElementById('work_subcontractor_detail_id' + subcontractor_value_count[i]).value),
@@ -272,7 +274,7 @@ export default class AddSubcontractor extends React.Component {
         let type = 'subcontractor_detail_cost';
         if (!err && res.body.status === "success") {
 
-          this.setState({ subcontractor_details: res.body.detail }, this.onWorkSubcontractorNoticesUpdate(actual_cost, type));
+          this.setState({ subcontractor_details: res.body.detail }, this._workSubcontractorNoticesUpdate(actual_cost, type));
         } else if (!err && res.body.status === 'nothing') {
 
           if ( res.body.work_subcontractor.length === 0 ) {
@@ -280,16 +282,17 @@ export default class AddSubcontractor extends React.Component {
             this.setState({ show: false });
           } else {
 
-            this.onWorkSubcontractorNoticesUpdate(actual_cost, type);
+            this._workSubcontractorNoticesUpdate(actual_cost, type);
           }
         } else {
 
+          console.log('kokoyae')
           this.setState({ subcontractor_details: res.body.detail });
         }
       });
   }
 
-  onWorkSubcontractorNoticesUpdate = (actual_cost, type) => {
+  _workSubcontractorNoticesUpdate = (actual_cost, type) => {
 
     let array_rails = [];
     let field = {};
@@ -306,14 +309,12 @@ export default class AddSubcontractor extends React.Component {
       let replace_delivery =  document.getElementById('deliveryDate' + i).value;
       if ( replace_delivery !== '' ) {
 
-        console.log(replace_delivery)
         replace_delivery = replace_delivery.replace(/年/g, '/');
         replace_delivery = replace_delivery.replace(/月/g, '/');
         replace_delivery = replace_delivery.replace(/日/g, '');
         replace_delivery = replace_delivery.replace(/時/g, ':');
         replace_delivery = replace_delivery.replace(/分/g, '');
       }
-      console.log(replace_delivery)
       array_rails.push(JSON.stringify({
 
         'id': Number(document.getElementById('work_subcontractor_id' + i).value),
@@ -345,7 +346,7 @@ export default class AddSubcontractor extends React.Component {
       });
   }
 
-    onWorkSubcontractorDetailDestroy = (e, id, index) => {
+  _workSubcontractorDetailDestroy = (e, id, index) => {
 
     let url = '/work_subcontractor_details/' + id;
     let field = { 'work_id': this.props.work_id };
@@ -398,7 +399,7 @@ export default class AddSubcontractor extends React.Component {
       });
   }
 
-  onWorkSubcontractorDestroy = (e, id) => {
+  _workSubcontractorDestroy = (e, id) => {
 
     let url = '/work_subcontractors/' + id;
     let field = { 'work_id': this.props.work_id };
@@ -424,7 +425,7 @@ export default class AddSubcontractor extends React.Component {
    *  お客様選択時
    *  @version
    */
-  applyClient = (client, work_subcontractor_id) => {
+  _applyClient = (client, work_subcontractor_id) => {
 
     let url = '/work_subcontractors/' + work_subcontractor_id;
     let field = {
@@ -448,33 +449,16 @@ export default class AddSubcontractor extends React.Component {
       });
   }
 
-  /**
-   * WorkSubcontractorStatus更新時
-   *
-   */
-  applyStatus = (work_subcontractors) => {
-
-    let workSubcontractors = this.state.work_subcontractors;
-    workSubcontractors.forEach((state_subcontractor) => {
-      work_subcontractors.map((props_subcontractor) => {
-        if( state_subcontractor.id === props_subcontractor.id && state_subcontractor.status !== props_subcontractor.status ){
-          state_subcontractor.status = props_subcontractor.status
-        }
-      })
-    })
-    this.setState({ work_subcontractors: workSubcontractors });
-  }
-
-  disp(e, id, index, type) {
+  onDel = (e, id, index, type) => {
 
     if (window.confirm('削除します。')){
 
       if (type) {
 
-        this.onWorkSubcontractorDestroy(e, id);
+        this._workSubcontractorDestroy(e, id);
       } else {
 
-        this.onWorkSubcontractorDetailDestroy(e, id, index);
+        this._workSubcontractorDetailDestroy(e, id, index);
       }
     } else {
 
@@ -563,52 +547,97 @@ export default class AddSubcontractor extends React.Component {
             <div className={ Style.AddSubcontractor__EditButton }>
               <button className={ 'c-btnMain-standard' } onClick={ this.onWorkSubcontractorDetailUpdate }>作業外注先[編集終了]</button>
             </div>
-            { this.state.work_subcontractors.length > 0 ?
+            { this.state.work_subcontractors ?
               <React.Fragment>
                 { this.state.work_subcontractors.map((work_subcontractor, index) => {
 									const key = 'work_subcontractor' + index;
                   return(
                     <React.Fragment key={ key }>
-                      { this.props.work_id == work_subcontractor.work_id ?
-                        <React.Fragment>
-                          <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label u-mt-20' }>
-                            <label htmlFor='work_subcontractor_division_client_id'>外注先情報</label>
-                          </div>
+                      <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label u-mt-20' }>
+                        <label htmlFor='work_subcontractor_division_client_id'>外注先情報</label>
+                      </div>
+                        { this.state.clients ?
                           <React.Fragment>
-                            { this.state.clients.length > 0 ?
+                            { this.state.clients.map((client, index) => {
+															const key = 'client' + index;
+                              return(
+                                <React.Fragment key={ key }>
+                                  { work_subcontractor.subcontractor_division_client_id === client.id ?
+                                    <React.Fragment>
+                                      { this.state.divisions.map((division, index) => {
+																				const key = 'division' + index;
+                                        return (
+                                          <React.Fragment key={ key }>
+                                            { this.state.subcontractors.map((subcontractor, index) => {
+																							const key = 'subcontractor' + index;
+                                              return (
+                                                <React.Fragment key={ key }>
+                                                  { client.subcontractor_division_id === division.id && division.subcontractor_id === subcontractor.id  ?
+                                                    <div key={ 'client' + index } className={ 'c-attention' }>
+                                                      <div className={ 'u-mt-10' }>会社名: { subcontractor.name || '部署名なし' }</div>
+                                                      <div className={ 'u-mt-10' }>部署名: { division.name }</div>
+                                                      <div className={ 'u-mt-10' }>担当者名: { client.name }</div>
+                                                      <div className={ 'u-mt-10' }>担当者TEL: { client.tel }</div>
+                                                      <div className={ 'u-mt-10' }>担当者email: { client.email }</div>
+                                                    </div>
+                                                    :
+                                                    null
+                                                  }
+                                                </React.Fragment>
+                                              );
+                                            }) }
+                                          </React.Fragment>
+                                        );
+                                      }) }
+                                    </React.Fragment>
+                                    :
+                                    null
+                                  }
+                                </React.Fragment>
+                              );
+                            }) }
+                          </React.Fragment>
+                          :
+                          null
+                        }
+                      <div className={ 'u-mt-10 c-flex__start' } key={ 'client_search' + index }>
+                        <ClientSearch prefectures={ this.props.prefectures } work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this._applyClient } users={ this.props.users } />
+												<div>
+                          <button className={ 'u-mt-10 c-btnMain-primaryA' } onClick={ e => this.onDel(e, work_subcontractor.id, index, true) }>外注先[削除]</button>
+												</div>
+                      </div>
+                      <div key={ 'table' + index } className={ 'c-table2 u-mt-10' }>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th className={ 'u-va-middle' }>No.</th>
+                              <th className={ 'u-va-middle' }>発注内容</th>
+                              <th className={ 'u-va-middle' }>入稿物</th>
+                              <th className={ 'u-va-middle' }>仕様</th>
+                              <th>原稿<br />数量</th>
+                              <th>部数<br />数量</th>
+                              <th className={ 'u-va-middle' }>実績原価</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            { this.state.subcontractor_details ?
                               <React.Fragment>
-                                { this.state.clients.map((client, index) => {
-																	const key = 'client' + index;
-                                  return(
+                                { this.state.subcontractor_details.map((subcontractor_detail, index1) => {
+																	const key = 'subcontractor_detail' + index1;
+                                  return (
                                     <React.Fragment key={ key }>
-                                      { work_subcontractor.subcontractor_division_client_id === client.id ?
-                                        <React.Fragment>
-                                          { this.state.divisions.map((division, index) => {
-																						const key = 'division' + index;
-                                            return (
-                                              <React.Fragment key={ key }>
-                                                { this.state.subcontractors.map((subcontractor, index) => {
-																									const key = 'subcontractor' + index;
-                                                  return (
-                                                    <React.Fragment key={ key }>
-                                                      { client.subcontractor_division_id === division.id && division.subcontractor_id === subcontractor.id  ?
-                                                        <div key={ 'client' + index } className={ 'c-attention' }>
-                                                          <div className={ 'u-mt-10' }>会社名: { subcontractor.name || '部署名なし' }</div>
-                                                          <div className={ 'u-mt-10' }>部署名: { division.name }</div>
-                                                          <div className={ 'u-mt-10' }>担当者名: { client.name }</div>
-                                                          <div className={ 'u-mt-10' }>担当者TEL: { client.tel }</div>
-                                                          <div className={ 'u-mt-10' }>担当者email: { client.email }</div>
-                                                        </div>
-                                                        :
-                                                        null
-                                                      }
-                                                    </React.Fragment>
-                                                  );
-                                                }) }
-                                              </React.Fragment>
-                                            );
-                                          }) }
-                                        </React.Fragment>
+                                      { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
+                                        <tr key={ 'tr' + index }>
+                                          <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.onDel(e, subcontractor_detail.id, index1, false) }>ー</button></td>
+																					<td className={ 'u-va-top' }>{ index1 + 1 }  <input key={ 'input-work_subcontractor_id' + index } type='hidden' id={ 'work_subcontractor_id' + index1 } defaultValue={ subcontractor_detail.work_subcontractor_id } /> <input type='hidden' id={ 'work_subcontractor_detail_id' + index1} defaultValue={ subcontractor_detail.id } /></td>
+                                          <td className={ 'u-va-top' }><textarea key={ subcontractor_detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index1, subcontractor_detail.id) } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
+																					<td><textarea key={ subcontractor_detail.deliver_method + index1 } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index1, subcontractor_detail.id) } id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
+																					<td><textarea key={ subcontractor_detail.specification } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index1, subcontractor_detail.id) } id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
+                                          <td className={ 'u-va-top' }><input key={ subcontractor_detail.count } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'count') } onBlur={ e => this.onSetStateBlur('onChangeCount', index1, subcontractor_detail.id) } id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
+                                          <td className={ 'u-va-top' }><input key={ subcontractor_detail.number_of_copies } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'number_of_copies') } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index1, subcontractor_detail.id) } id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
+                                          <td className={ 'u-va-top' }><input key={ subcontractor_detail.actual_cost } className={ 'c-form-text__work-show-input2' } type='text' onChange={ e => this.onIntCheck(e, index1, 'actual_cost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index1, subcontractor_detail.id) } id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
+                                        </tr>
                                         :
                                         null
                                       }
@@ -619,100 +648,45 @@ export default class AddSubcontractor extends React.Component {
                               :
                               null
                             }
-                          </React.Fragment>
-                          <div className={ 'u-mt-10 c-flex__start' } key={ 'client_search' + index }>
-                            <ClientSearch prefectures={ this.props.prefectures } work_subcontractor_id={ work_subcontractor.id } applyClient={ ::this.applyClient } users={ this.props.users } />
-														<div>
-                            	<button className={ 'u-mt-10 c-btnMain-primaryA' } onClick={ e => this.disp(e, work_subcontractor.id, index, true) }>外注先[削除]</button>
-														</div>
-                          </div>
-                          <div key={ 'table' + index } className={ 'c-table2 u-mt-10' }>
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th></th>
-                                  <th className={ 'u-va-middle' }>No.</th>
-                                  <th className={ 'u-va-middle' }>発注内容</th>
-                                  <th className={ 'u-va-middle' }>納品物</th>
-                                  <th className={ 'u-va-middle' }>仕様</th>
-                                  <th>原稿<br />数量</th>
-                                  <th>部数<br />数量</th>
-                                  <th className={ 'u-va-middle' }>実績原価</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <React.Fragment>
-                                  { this.state.subcontractor_details.length > 0 ?
-                                    <React.Fragment>
-                                      { this.state.subcontractor_details.map((subcontractor_detail, index1) => {
-																				const key = 'subcontractor_detail' + index1;
-                                        return (
-                                          <React.Fragment key={ key }>
-                                            { work_subcontractor.id === subcontractor_detail.work_subcontractor_id ?
-                                              <tr key={ 'tr' + index }>
-                                                  <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this.disp(e, subcontractor_detail.id, index1, false) }>ー</button></td>
-																									<td className={ 'u-va-top' }>{ index1 + 1 }  <input key={ 'input-work_subcontractor_id' + index } type='hidden' id={ 'work_subcontractor_id' + index1 } defaultValue={ subcontractor_detail.work_subcontractor_id } /> <input type='hidden' id={ 'work_subcontractor_detail_id' + index1} defaultValue={ subcontractor_detail.id } /></td>
-                                                  <td className={ 'u-va-top' }><textarea key={ subcontractor_detail.order_contents } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index1, subcontractor_detail.id) } id={ 'order_contents' + index1 } defaultValue={ subcontractor_detail.order_contents } placeholder={ '図面製本' } /></td>
-																									<td><textarea key={ subcontractor_detail.deliver_method + index1 } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index1, subcontractor_detail.id) } id={ 'deliver_method' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ subcontractor_detail.deliver_method } /></td>
-																									<td><textarea key={ subcontractor_detail.specification } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index1, subcontractor_detail.id) } id={ 'specification' + index1 } className={ 'c-form-textarea__work-show-input__textarea' } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ subcontractor_detail.specification } /></td>
-                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.count } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'count') } onBlur={ e => this.onSetStateBlur('onChangeCount', index1, subcontractor_detail.id) } id={ 'test-count' + index1 } defaultValue={ subcontractor_detail.count }></input></td>
-                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.number_of_copies } className={ 'c-form-text__work-show-input6' } type='text' onChange={ e => this.onIntCheck(e, index1, 'number_of_copies') } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index1, subcontractor_detail.id) } id={ 'number_of_copies' + index1 } defaultValue={ subcontractor_detail.number_of_copies }></input></td>
-                                                  <td className={ 'u-va-top' }><input key={ subcontractor_detail.actual_cost } className={ 'c-form-text__work-show-input2' } type='text' onChange={ e => this.onIntCheck(e, index1, 'actual_cost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index1, subcontractor_detail.id) } id={ 'actual_cost' + index1 } defaultValue={ subcontractor_detail.actual_cost } ></input></td>
-                                              </tr>
-                                              :
-                                              null
-                                            }
-                                          </React.Fragment>
-                                        );
-                                      }) }
-                                    </React.Fragment>
-                                    :
-                                    null
-                                  }
-                                </React.Fragment>
-                               <tr>
-                                  <td id={ 'onCreate-td' + index } colSpan='8'><button className={ 'c-btnMain2-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            </div>
-                             <div className={ 'c-table' }>
-                              <table>
-                                <thead>
-                                  <tr>
-                                    <th>発注日</th>
-                                    <th>納期</th>
-                                    <th>納品先</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'orderDate' + index } defaultValue={ Dayjs(work_subcontractor.order_date).format('YYYY年MM月DD日') }></input></td>
-                                    <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliveryDate' + index } defaultValue={ work_subcontractor.delivery_date === null ? null : Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }></input></td>
-                                    <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input7' } type='text' id={ 'deliveryDestination' + index } defaultValue={ work_subcontractor.delivery_destination }></input></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div className={ 'c-table' }>
-                              <table>
-                                <thead>
-                                  <tr>
-                                    <th>特記事項</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td colSpan='8'><textarea id={ 'notices' + index } rows='3' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ work_subcontractor.notices }></textarea></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <input type='hidden' id={ 'work_subcontractor_id' + index } value={ work_subcontractor.id } />
-                        </React.Fragment>
-                        :
-                        null
-                      }
+                            <tr>
+                              <td id={ 'onCreate-td' + index } colSpan='8'><button className={ 'c-btnMain2-primaryB' } onClick={ e => this.onWorkSubcontractorDetailCreate(e, work_subcontractor.id) }>＋</button></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className={ 'c-table' }>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>発注日</th>
+                              <th>納期</th>
+                              <th>納品先</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'orderDate' + index } defaultValue={ Dayjs(work_subcontractor.order_date).format('YYYY年MM月DD日') }></input></td>
+                              <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input1' } type='text' id={ 'deliveryDate' + index } defaultValue={ work_subcontractor.delivery_date === null ? null : Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }></input></td>
+                              <td className={ 'u-ta-center' }><input className={ 'c-form-text__work-show-input7' } type='text' id={ 'deliveryDestination' + index } defaultValue={ work_subcontractor.delivery_destination }></input></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className={ 'c-table' }>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>特記事項</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td colSpan='8'><textarea id={ 'notices' + index } rows='3' className={ 'c-form-textarea__work-show-input__textarea2' } defaultValue={ work_subcontractor.notices }></textarea></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <input type='hidden' id={ 'work_subcontractor_id' + index } value={ work_subcontractor.id } />
                     </React.Fragment>
                   );
                 }) }
@@ -727,7 +701,7 @@ export default class AddSubcontractor extends React.Component {
           :
           <div>
             <div className={ Style.AddSubcontractor__EditButton }>
-              <button className={ 'c-btnMain-standard' } onClick={ this._editable }>外注先[編集]</button>
+              <button className={ 'c-btnMain-standard' } onClick={ this.onEditable }>外注先[編集]</button>
             </div>
             { this.state.work_subcontractors.length > 0 ?
               <React.Fragment>
@@ -737,18 +711,18 @@ export default class AddSubcontractor extends React.Component {
                     <React.Fragment key={ key }>
                       { this.props.work_id == work_subcontractor.work_id ?
                         <React.Fragment>
-													{ work_subcontractor.subcontractor_division_client_id === null ?
-                          	null
+													{ work_subcontractor.subcontractor_division_client_id ?
+                            <a className={ 'c-btnMain-primaryB u-mt-20' } href={ '/work_subcontractors/' + work_subcontractor.id } target='_blank'>外注指示書発行</a>
                           	:
-                          	<a className={ 'c-btnMain-primaryB u-mt-20' } href={ '/work_subcontractors/' + work_subcontractor.id } target='_blank'>外注指示書発行</a>
+                          	null
                         	}
                           <div className={ Style.AddSubcontractor__ReadOnly }>
                             <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label u-mt-20' }>
-                              <label htmlFor='work_subcontractor_division_client_id'>外注先情報</label>
+                              <label>外注先情報</label>
                             </div>
                           </div>
                           <React.Fragment>
-                            { this.state.clients.length > 0 ?
+                            { this.state.clients ?
                               <React.Fragment>
                                 { this.state.clients.map((client, index) => {
 																	const key = 'client' + index;
@@ -799,7 +773,7 @@ export default class AddSubcontractor extends React.Component {
                                 <tr>
                                   <th className={ 'u-va-middle' }>No.</th>
                                   <th className={ 'u-va-middle' }>発注内容</th>
-                                  <th className={ 'u-va-middle' }>納品物</th>
+                                  <th className={ 'u-va-middle' }>入稿物</th>
                                   <th className={ 'u-va-middle' }>仕様</th>
                                   <th>原稿<br />数量</th>
                                   <th>部数<br />数量</th>
@@ -808,7 +782,7 @@ export default class AddSubcontractor extends React.Component {
                               </thead>
                               <tbody>
                                 <React.Fragment>
-                                  { this.state.subcontractor_details.length > 0 ?
+                                  { this.state.subcontractor_details ?
                                     <React.Fragment>
                                       { this.state.subcontractor_details.map((subcontractor_detail, index) => {
 																				const key = 'subcontractor' + index;
@@ -849,7 +823,6 @@ export default class AddSubcontractor extends React.Component {
                               </thead>
                               <tbody>
                                 <tr>
-                                  { console.log(work_subcontractor.delivery_date) }
                                   <td className={ 'u-ta-center' }>{ Dayjs(work_subcontractor.order_date).format('YYYY年MM月DD日') }</td>
                                   <td className={ 'u-ta-center' }>{ work_subcontractor.delivery_date === null ? null : Dayjs(work_subcontractor.delivery_date).format('YYYY年MM月DD日') }</td>
                                   <td className={ 'u-ta-left' }>{ work_subcontractor.delivery_destination }</td>

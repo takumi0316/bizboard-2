@@ -14,7 +14,7 @@ class QuotesController < ApplicationController
   # 見積もり
   expose_with_pagination(:quotes) {
     Quote
-    .search(name: params[:name], date1: params[:date1], date2: params[:date2])
+    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .all
     .includes(:quote_items)
     .order(date: 'DESC')
@@ -101,7 +101,7 @@ class QuotesController < ApplicationController
     # quote.update! quote_params.merge(division_id: current_user.division_id)
 
     if params[:id] == 'null'
-      Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id] == 'null' ? nil : params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
+      Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
       unless params[:specifications].nil?
         params[:specifications].each do |specification|
 
@@ -207,14 +207,17 @@ class QuotesController < ApplicationController
                       }
                     end
 
+                    note = "見積もり有効期：#{quote.expiration.strftime("%Y年%m月%d日")}まで
+                    #{quote.remarks}"
+
                     request.body = JSON.dump({
                       "quote": {
                         "department_id": quote.client.company_division.mf_company_division_id,
                         "quote_number": quote.quote_number,
-                        "quote_date": quote.date.strftime('%Y-%m-%d'),
+                        "quote_date": Date.today.strftime('%Y-%m-%d'),
                         "expired_date": quote.expiration.strftime('%Y-%m-%d'),
                         "title": quote.subject,
-                        "note": quote.remarks,
+                        "note": note,
                         "memo": quote.memo,
                         "items": items,
                       }
@@ -297,14 +300,17 @@ class QuotesController < ApplicationController
           }
         end
 
+        note = "見積もり有効期：#{quote.expiration.strftime("%Y年%m月%d日")}まで
+        #{quote.remarks}"
+
         request.body = JSON.dump({
           "quote": {
             "department_id": quote.client.company_division.mf_company_division_id,
             "quote_number": quote.quote_number,
-            "quote_date": quote.date.strftime('%Y-%m-%d'),
+            "quote_date": Date.today.strftime('%Y-%m-%d'),
             "expired_date": quote.expiration.strftime('%Y-%m-%d'),
             "title": quote.subject,
-            "note": quote.remarks,
+            "note": note,
             "memo": quote.memo,
             "items": items,
           }

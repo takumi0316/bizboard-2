@@ -40,7 +40,7 @@ class PaymentsController < ApplicationController
   def index
 
     add_breadcrumb '支払い管理'
-    @subcontractor = Subcontractor.includes(:payments).order("payments.price DESC")
+    @subcontractor = Subcontractor.includes(:payments).where("payments.id is not null").order("payments.price DESC")
     if params[:date1].present?
       @date1 = params[:date1]
       @date2 = params[:date2]

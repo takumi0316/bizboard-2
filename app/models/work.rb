@@ -53,6 +53,8 @@ class Work < ApplicationRecord
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
+  #Quoteのdeliverd_atを使えるように
+  scope :asc_deliverd_at, -> {joins(:quote).merge(Quote.deliverd_at)}
 
   #----------------------------------------
   #  ** Methods **
@@ -83,7 +85,7 @@ class Work < ApplicationRecord
       # 名称検索
       _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-      query = (['free_word like ?'] * terms.size).join(' and ')
+      query = (['works.free_word like ?'] * terms.size).join(' and ')
       _self = where(query, *terms.map { |term| "%#{term}%" })
       # 日付検索
       return _self
@@ -91,12 +93,13 @@ class Work < ApplicationRecord
     elsif parameters[:name].present? && parameters[:status] != 'ステータス'
 
       _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+
+
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-      query = (['free_word like ?'] * terms.size).join(' and ')
-      _self = where(query, *terms.map { |term| "%#{term}%" })
-      # ステータス検索
-      _self = where(status: parameters[:status])
+      query = (['works.free_word like ?'] * terms.size).join(' and ')
+      _self = where(query, *terms.map { |term| "%#{term}%" }).where(status: parameters[:status])
+
       # 日付検索
       return _self
 

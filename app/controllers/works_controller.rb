@@ -14,10 +14,9 @@ class WorksController < ApplicationController
   # 作業進捗一覧
   expose_with_pagination(:works) {
     Work
-      .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-      .all
-      .eager_load(:quote)
-      .reverse_order
+    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
+    .all
+    .asc_deliverd_at
   }
 
   # 案件
@@ -119,11 +118,12 @@ class WorksController < ApplicationController
 
            @clients << "#{client}, "
         end
-       end
+      end
+
        return @clients
      end
     else
-
+      
       return @client
     end
   end

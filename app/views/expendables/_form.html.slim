@@ -1,0 +1,6 @@
+= react_component('ExpendablesEditor',
+  { action: action,
+    expendable: expendable,
+    division_id: current_user&.division&.id,
+    users: User.all,
+  })

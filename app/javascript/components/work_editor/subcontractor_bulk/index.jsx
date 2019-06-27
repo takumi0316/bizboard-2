@@ -21,6 +21,7 @@ export default class SubcontractorBulk extends React.Component {
   constructor(props) {
 
     super(props);
+    this.previousKeyDownEvent = null;
     this.state = {
       prefecture_id: null,
       user_id: null,
@@ -232,8 +233,8 @@ export default class SubcontractorBulk extends React.Component {
     return (
 
       <React.Fragment>
-          <div className={ Style.SubcontractorBulk }>
-            <div className={ Style.SubcontractorBulk__inner } onClick={ e => this._stopPropagation(e) } >
+          <div className={ Style.SubcontractorBulk } onClick={this._stopPropagation}>
+            <div className={ Style.SubcontractorBulk__inner }>
               <h1 className={ 'l-dashboard__heading-jsx' }>外注先担当者</h1>
               <div className={ 'c-form-label' } >
                 <label>会社名</label>

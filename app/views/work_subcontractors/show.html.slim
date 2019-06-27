@@ -4,31 +4,41 @@ script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas
 a.u-mt-10.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
 javascript:
   function downloadImage() {
+    var scaleBy = 5;
+    var w = 2000;
+    var h = 2000;
+    var div = document.querySelector('#captcha');
+    var canvas = document.createElement('canvas');
+    canvas.width = w * scaleBy;
+    canvas.height = h * scaleBy;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    var context = canvas.getContext('2d');
+    context.scale(scaleBy, scaleBy);
     html2canvas(document.getElementById('captcha'), {
+      canvas: canvas,
       onrendered: function(canvas) {
-            let wid = canvas.width + 1500;
-            let hgt = canvas.height + 1000;
-            let img = canvas.toDataURL("image/jpg", 1.0);
-            let hratio = hgt/wid
-            let doc = new jsPDF('l','mm', [wid, hgt]);
-            let width = doc.internal.pageSize.width;
-            let height = width * hratio
-            doc.addImage(img,'JPEG',55,25, 800, 500);
-            let downloadName = '作業指示書(外注)' + document.getElementById('project_name').innerHTML;
-            doc.save(downloadName);
-          }
+        theCanvas = canvas;
+        document.body.appendChild(canvas);
+        let wid = canvas.width * 0.78;
+        let hgt = canvas.height * 0.78;
+        let doc = new jsPDF('l','mm', [wid, hgt]);
+        doc.addImage(theCanvas,'JPEG',3,3);
+        let downloadName = '作業指示書(外注用)' + document.getElementById('project_name').innerHTML;
+        doc.save(downloadName);
+      }
     });
   }
 
 #captcha
-  h1.u-mt-50.l-dashboard__heading
+  h1.u-mt-10.l-dashboard__heading
     | 発注・指示書(外注用)
     label.u-fs-x-small
       | ※納品時は必ず、本発注番号を明記した納品書、もしくはこの発注・
       br
       |　指示書の「納品日・署名」欄に納品日、署名を記入した上、お返し下さい。
 
-  .u-mt-40.c-flex__between
+  .u-mt-10.c-flex__between
     .c-table-work_subcontractors1
       table
         tr
@@ -69,13 +79,13 @@ javascript:
       label.u-fs-x-small
         | マネージャーもしくは部門長
 
-  .c-table.u-mt-40
+  .c-table.u-mt-10
     table
       thead
         tr
           th No.
           th 発注内容
-          th 納品物(支給品含む)
+          th 入稿物(支給品含む)
           th 仕様(用紙種類、面付、サイズなど)
           th 原稿枚数
           th 部数数量
@@ -97,7 +107,7 @@ javascript:
         tr
           td.u-va-top.u-ta-left = simple_format(WorkSubcontractor.find(params[:id]).notices)
 
-  .u-mt-40
+  .u-mt-10
     .u-fs-title
       | (弊社使用欄)
 
@@ -115,7 +125,7 @@ javascript:
           th.u-va-middle 発注担当
           td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.user.name
 
-  .u-mt-40.c-flex__between
+  .u-mt-10.c-flex__between
     .div
       | 株式会社 日本工業社
       br

@@ -33,9 +33,14 @@ export default class AddDetails extends React.Component {
 
   }
 
-  _editable = () => {
+  onEditable = () => {
 
     this.setState({ show: true });
+  }
+
+  onConfirm = (e, detail_id, index) => {
+
+    window.confirm('削除します。') ? this.onWorkDetailDestroy(e, detail_id, index) : alert('キャンセルしました。')
   }
 
   onIntCheck = (index, funcName) => {
@@ -51,7 +56,7 @@ export default class AddDetails extends React.Component {
 					return
 				}
 				break;
-			case 'onChangeCount':
+			case '_changeCount':
 
 				if (document.getElementById('count' + index).value.match(/[^0-9]+/)) {
 
@@ -61,7 +66,7 @@ export default class AddDetails extends React.Component {
 					return
 				}
 				break;
-			case 'onChangeCost':
+			case '_changeCost':
 
 				if (document.getElementById('estimated_cost' + index).value.match(/[^0-9\.]+$/)) {
 
@@ -77,89 +82,28 @@ export default class AddDetails extends React.Component {
 	onSetStateBlur = (funcName, index) => {
 
 		switch (funcName) {
-			case 'onChangeOrderContents':
-				this.onChangeOrderContents(index);
+			case '_changeOrderContents':
+				this._changeOrderContents(index);
 				break;
-			case 'onChangeDeliverMethod':
-				this.onChangeDeliverMethod(index);
+			case '_changeDeliverMethod':
+				this._changeDeliverMethod(index);
 				break;
-			case 'onChangeSpecification':
-				this.onChangeSpecification(index);
+			case '_changeSpecification':
+				this._changeSpecification(index);
 				break;
-			case 'onChangeDeliverAt':
-				this.onChangeDeliverAt(index);
+			case '_changeDeliverAt':
+				this._changeDeliverAt(index);
 				break;
-			case 'onChangeClientName':
-				this.onChangeClientName(index);
+			case '_changeNumberOfCopies':
+				this._changeNumberOfCopies(index);
 				break;
-			case 'onChangeNumberOfCopies':
-				this.onChangeNumberOfCopies(index);
-				break;
-			case 'onChangeCost':
-				this.onChangeCost(index);
-				break;
-    	case 'onChangeCount':
-				this.onChangeCount(index);
+      case '_changeCount':
+        this._changeCount(index);
+        break;
+			case '_changeCost':
+				this._changeCost(index);
 				break;
 		}
-	}
-
-	onChangeOrderContents = (index) => {
-
-		let arrayWorkDetails = this.state.work_details.slice();
-		arrayWorkDetails.forEach((detail, i) => {
-
-			if ( i === index ) {
-
-				detail.order_contents = document.getElementById('order_contents' + index).value
-			}
-		});
-		this.setState({ work_details: arrayWorkDetails })
-	}
-
-	onChangeDeliverMethod = (index) => {
-
-		let arrayWorkDetails = this.state.work_details.slice();
-		arrayWorkDetails.forEach((detail, i) => {
-
-			if ( i === index ) {
-
-				detail.deliver_method = document.getElementById('deliver_method' + index).value
-			}
-		});
-		this.setState({ work_details: arrayWorkDetails })
-	}
-
-	onChangeSpecification = (index) => {
-
-		let arrayWorkDetails = this.state.work_details.slice();
-		arrayWorkDetails.forEach((detail, i) => {
-
-			if ( i === index ) {
-
-				detail.specification = document.getElementById('specification' + index).value
-			}
-		});
-		this.setState({ work_details: arrayWorkDetails })
-	}
-
-	onChangeDeliverAt = (index) => {
-
-		let arrayWorkDetails = this.state.work_details.slice();
-		arrayWorkDetails.forEach((detail, i) => {
-
-			if ( i === index ) {
-
-				let replace_datetime =  document.getElementById('deliver_at' + index).value;
-   			replace_datetime = replace_datetime.replace(/年/g, '/');
-   			replace_datetime = replace_datetime.replace(/月/g, '/');
-   			replace_datetime = replace_datetime.replace(/日/g, '');
-   			replace_datetime = replace_datetime.replace(/時/g, ':');
-   			replace_datetime = replace_datetime.replace(/分/g, '');
-				detail.deliver_at = replace_datetime
-			}
-		});
-		this.setState({ work_details: arrayWorkDetails })
 	}
 
 	onChangeClientName = (index) => {
@@ -174,98 +118,6 @@ export default class AddDetails extends React.Component {
 		});
 		this.setState({ work_details: arrayWorkDetails })
 	}
-
-	onChangeNumberOfCopies = (index) => {
-
-		let arrayWorkDetails = this.state.work_details.slice();
-		arrayWorkDetails.forEach((detail, i) => {
-
-			if ( i === index ) {
-
-				detail.number_of_copies = document.getElementById('number_of_copies' + index).value
-			}
-		});
-		this.setState({ work_details: arrayWorkDetails });
-  }
-
-	onChangeCost = (index) => {
-
-		let arrayWorkDetails = this.state.work_details.slice();
-		arrayWorkDetails.forEach((detail, i) => {
-
-			if ( i === index ) {
-
-				detail.estimated_cost = document.getElementById('estimated_cost' + index).value
-			}
-		});
-		this.setState({ work_details: arrayWorkDetails });
-  }
-
-	onChangeCount = (index) => {
-
-		let arrayWorkDetails = this.state.work_details.slice();
-		arrayWorkDetails.forEach((detail, i) => {
-
-			if ( i === index ) {
-
-				detail.count = Number(document.getElementById('count' + index).value)
-			}
-		});
-		this.setState({ work_details: arrayWorkDetails });
-  }
-
-	  onConfirm = (e, detail_id, index) => {
-
-    window.confirm('削除します。') ? this.onWorkDetailDestroy(e, detail_id, index) : alert('キャンセルしました。')
-  }
-
-  contentNotices = (work_notices) => {
-
-    let replace_work_notices = '';
-    work_notices !== null ? replace_work_notices = work_notices.replace(/\n/g, '<br />') : replace_work_notices = work_notices
-
-    return (
-      <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: replace_work_notices }} />
-      </React.Fragment>
-    );
-  }
-
-  contentOrder = (order_content) => {
-
-    let replace_order_content = '';
-    order_content !== null ? replace_order_content = order_content.replace(/\n/g, '<br />') : replace_order_content = order_content
-
-    return (
-      <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: replace_order_content }} />
-      </React.Fragment>
-    );
-  }
-
-  contentDeliver = (deliver_method) => {
-
-    let replace_deliver_method = '';
-    deliver_method !== null ? replace_deliver_method = deliver_method.replace(/\n/g, '<br />') : replace_deliver_method = deliver_method
-
-    return (
-      <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: replace_deliver_method }} />
-      </React.Fragment>
-    );
-  }
-
-  contentSpecification = (specification) => {
-
-    let replace_specification = '';
-    specification !== null ? replace_specification = specification.replace(/\n/g, '<br />') : replace_specification = specification
-
-    return (
-      <React.Fragment>
-        <td dangerouslySetInnerHTML={{ __html: replace_specification }} />
-      </React.Fragment>
-    );
-  }
 
   onWorkDetailCreate = () => {
 
@@ -456,6 +308,147 @@ export default class AddDetails extends React.Component {
       });
   }
 
+  _changeOrderContents = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.order_contents = document.getElementById('order_contents' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+	_changeDeliverMethod = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.deliver_method = document.getElementById('deliver_method' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+	_changeSpecification = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.specification = document.getElementById('specification' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+	_changeDeliverAt = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				let replace_datetime =  document.getElementById('deliver_at' + index).value;
+   			replace_datetime = replace_datetime.replace(/年/g, '/');
+   			replace_datetime = replace_datetime.replace(/月/g, '/');
+   			replace_datetime = replace_datetime.replace(/日/g, '');
+   			replace_datetime = replace_datetime.replace(/時/g, ':');
+   			replace_datetime = replace_datetime.replace(/分/g, '');
+				detail.deliver_at = replace_datetime
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails })
+	}
+
+  _changeNumberOfCopies = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.number_of_copies = document.getElementById('number_of_copies' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails });
+  }
+
+	_changeCost = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.estimated_cost = document.getElementById('estimated_cost' + index).value
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails });
+  }
+
+	_changeCount = (index) => {
+
+		let arrayWorkDetails = this.state.work_details.slice();
+		arrayWorkDetails.forEach((detail, i) => {
+
+			if ( i === index ) {
+
+				detail.count = Number(document.getElementById('count' + index).value)
+			}
+		});
+		this.setState({ work_details: arrayWorkDetails });
+  }
+
+  contentNotices = (work_notices) => {
+
+    let replace_work_notices = '';
+    work_notices !== null ? replace_work_notices = work_notices.replace(/\n/g, '<br />') : replace_work_notices = work_notices
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_work_notices }} />
+      </React.Fragment>
+    );
+  }
+
+  contentOrder = (order_content) => {
+
+    let replace_order_content = '';
+    order_content !== null ? replace_order_content = order_content.replace(/\n/g, '<br />') : replace_order_content = order_content
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_order_content }} />
+      </React.Fragment>
+    );
+  }
+
+  contentDeliver = (deliver_method) => {
+
+    let replace_deliver_method = '';
+    deliver_method !== null ? replace_deliver_method = deliver_method.replace(/\n/g, '<br />') : replace_deliver_method = deliver_method
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_deliver_method }} />
+      </React.Fragment>
+    );
+  }
+
+  contentSpecification = (specification) => {
+
+    let replace_specification = '';
+    specification !== null ? replace_specification = specification.replace(/\n/g, '<br />') : replace_specification = specification
+    return (
+      <React.Fragment>
+        <td dangerouslySetInnerHTML={{ __html: replace_specification }} />
+      </React.Fragment>
+    );
+  }
+
   /**
    *  表示処理
    *  @version
@@ -471,7 +464,7 @@ export default class AddDetails extends React.Component {
           </div>
           :
           <div className={ 'u-mt-10' }>
-            <button className={ 'c-btnMain-standard u-mr-10' } id='editable' onClick={ this._editable }>作業詳細[編集]</button>
+            <button className={ 'c-btnMain-standard u-mr-10' } id='editable' onClick={ this.onEditable }>作業詳細[編集]</button>
             <a className={ 'c-btnMain-primaryB' } href={ '/works/' + this.props.work_id + '/directions'   } target='_blank'>指示書発行[社内用]</a>
           </div>
         }
@@ -491,7 +484,7 @@ export default class AddDetails extends React.Component {
                     <th>担当者</th>
                     <th>原稿<br />枚数</th>
                     <th>部数<br />数量</th>
-                    <th>想定原価(税抜)</th>
+                    <th>原単価(税抜)</th>
                     <th>実績原価(税抜)</th>
                   </tr>
                 </thead>
@@ -503,23 +496,23 @@ export default class AddDetails extends React.Component {
                       	<tr>
                         	<td className={ 'u-va-top' }><button key={ 'button' + index } className={ 'c-btnMain2-primaryA' } onClick={ e => this.onConfirm(e, detail.id, index) }>−</button></td>
                         	<td className={ 'u-va-top' }>{ index + 1 }<input key={ detail.id + index } type='hidden' id={ 'detail_id' + index } defaultValue={ detail.id }/></td>
-													<td className={ 'u-va-top' }><textarea key={ detail.order_contents + index } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeOrderContents', index) } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
-													<td className={ 'u-va-top' }><textarea key={ detail.deliver_method + index } id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeDeliverMethod', index) } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
-													<td className={ 'u-va-top' }><textarea key={ detail.specification + index } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('onChangeSpecification', index) } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
-													<td><input key={ detail.deliver_at + index } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('onChangeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
+													<td className={ 'u-va-top' }><textarea key={ detail.order_contents + index } rows='3' cols='30' className={ 'c-form-text__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('_changeOrderContents', index) } type='text' id={ 'order_contents' + index } defaultValue={ detail.order_contents } placeholder={ '図面製本' } /></td>
+													<td className={ 'u-va-top' }><textarea key={ detail.deliver_method + index } id={ 'deliver_method' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('_changeDeliverMethod', index) } rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method } /></td>
+													<td className={ 'u-va-top' }><textarea key={ detail.specification + index } id={ 'specification' + index } className={ 'c-form-textarea__work-show-input__textarea' } onBlur={ e => this.onSetStateBlur('_changeSpecification', index) } rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification } /></td>
+													<td><input key={ detail.deliver_at + index } className={ 'c-form-text__work-show-input1' } onBlur={ e => this.onSetStateBlur('_changeDeliverAt', index) } type='text' id={ 'deliver_at' + index } defaultValue={ Dayjs(detail.deliver_at).format('YYYY年MM月DD日') }/></td>
                         	<td className={ 'u-va-top' }>
-                              <select key={ detail.client_name + index } onChange={ e => this.onChangeClientName(index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } defaultValue={ detail.client_name }>
-                            	{ this.props.users.map((user, index) => {
+                            <select key={ detail.client_name + index } onChange={ e => this.onChangeClientName(index) } className={ 'c-form-select__work-show' } id={ 'client_name' + index } value={ detail.client_name }>
+                              { this.props.users.map((user, index) => {
                                 const key = 'user_name' + index;
-                              	return(
-																	<option key={ key } value={ user['name'] }>{ user['name'] }</option>
-                              	);
-                            	}) }
-                          	</select>
+                                return(
+																  <option key={ key } value={ user['name'] }>{ user['name'] }</option>
+                                );
+                              }) }
+                            </select>
                         	</td>
-													<td className={ 'u-va-top' }><input key={ detail.number_of_copies + index } type='text' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('onChangeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
-													<td className={ 'u-va-top' }><input key={ detail.count + index } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, 'onChangeCount') } onBlur={ e => this.onSetStateBlur('onChangeCount', index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-													<td className={ 'u-va-top' }><input key={ detail.estimated_cost + index } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(index, 'onChangeCost') } onBlur={ e => this.onSetStateBlur('onChangeCost', index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+													<td className={ 'u-va-top' }><input key={ detail.number_of_copies + index } type='text' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('_changeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
+													<td className={ 'u-va-top' }><input key={ detail.count + index } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, '_changeCount') } onBlur={ e => this.onSetStateBlur('_changeCount', index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
+													<td className={ 'u-va-top' }><input key={ detail.estimated_cost + index } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(index, '_changeCost') } onBlur={ e => this.onSetStateBlur('_changeCost', index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
                         	<td className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } defaultValue={ (detail.number_of_copies * detail.count) * detail.estimated_cost }>{ (detail.number_of_copies * detail.count) * detail.estimated_cost }</td>
                       	</tr>
 											</React.Fragment>
@@ -560,7 +553,7 @@ export default class AddDetails extends React.Component {
                     <th className={ 'u-va-middle' }>担当者</th>
                     <th>原稿<br />枚数</th>
                     <th>部数<br />数量</th>
-                    <th className={ 'u-va-middle' }>想定原価(税抜)</th>
+                    <th className={ 'u-va-middle' }>原単価(税抜)</th>
                     <th className={ 'u-va-middle' }>実績原価(税抜)</th>
                   </tr>
                 </thead>

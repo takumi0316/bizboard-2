@@ -7,7 +7,7 @@
 
   .c-search__item
     = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '担当者名/品目名/備考'
+    = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '仕様/品目名/備考'
 
   = f.submit '検索', class: 'c-btnMain-standard'
 

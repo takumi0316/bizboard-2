@@ -34,7 +34,7 @@ class Project < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum project_category: { project_print: 0, project_card: 10, project_copy: 20, project_bind: 30, project_scan: 40, project_other: 50 }
+  enum project_category: { project_print: 0, project_card: 10, project_copy: 20, project_bind: 30, project_scan: 40, project_otherprint: 50, project_other: 60}
   enum after_process: { after_process_unnecessary: 0, after_process_necessary: 10 }
   enum binding_work: { binding_works_unnecessary: 0, binding_works_necessary: 10 }
 
@@ -89,7 +89,7 @@ class Project < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.client&.name} #{self.client&.company_division&.company&.name} #{self.name} #{self.description} #{self.note}"
+    self.free_word = "#{self.name} #{self.project_category_i18n} #{self.note}"
   end
 
   ##

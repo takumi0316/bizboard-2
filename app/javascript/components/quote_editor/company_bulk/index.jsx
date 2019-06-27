@@ -18,6 +18,7 @@ export default class CompanyBulk extends React.Component {
   constructor(props) {
 
     super(props);
+    this.previousKeyDownEvent = null;
     this.state = {
       prefecture_id: null,
       user_id: null,

@@ -1,27 +1,38 @@
 script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"
 script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"
+script src="https://superal.github.io/canvas2image/canvas2image.js"
 
 a.u-mt-10.c-btnMain-primaryB(onclick="downloadImage()") PDF化するよ
 javascript:
   function downloadImage() {
-    html2canvas(document.getElementById('captcha'), {
+    var scaleBy = 5;
+    var w = 2000;
+    var h = 2000;
+    var div = document.querySelector('#captcha');
+    var canvas = document.createElement('canvas');
+    canvas.width = w * scaleBy;
+    canvas.height = h * scaleBy;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    var context = canvas.getContext('2d');
+    context.scale(scaleBy, scaleBy);
+    html2canvas(div, {
+      canvas: canvas,
       onrendered: function(canvas) {
-            let wid = canvas.width + 1500;
-            let hgt = canvas.height + 1000;
-            let img = canvas.toDataURL("image/tiff", 1.0);
-            let hratio = hgt/wid
+            theCanvas = canvas;
+            document.body.appendChild(canvas);
+            let wid = canvas.width * 0.78;
+            let hgt = canvas.height * 0.78;
             let doc = new jsPDF('l','mm', [wid, hgt]);
-            let width = doc.internal.pageSize.width;
-            let height = width * hratio
-            doc.addImage(img,'JPEG',55,25, 800, 500);
+            doc.addImage(theCanvas,'JPEG',3,3);
             let downloadName = '作業指示書(社内)' + document.getElementById('project_name').innerHTML;
             doc.save(downloadName);
-          }
+      }
     });
   }
 
 #captcha
-  .u-mt-50.c-flex__between
+  .u-mt-10.c-flex__between
     .c-table-work_subcontractors1
       .u-fs-x-large.u-fw-bold 発注・指示書(社内用)
       table
@@ -47,10 +58,10 @@ javascript:
           td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.deliver_at if Work.find(params[:id]).quote.deliver_at.present?
         tr
           th.u-va-middle 納品先
-          td.u-va-middle.u-ta-left
+          td.u-va-middle.u-ta-left = "#{Work.find(params[:id]).quote.client.company_division.company.name} #{Work.find(params[:id]).quote.client.company_division.name} #{Work.find(params[:id]).quote.client.name}様"
         tr
           th.u-va-middle 納品方法
-          td.u-va-middle.u-ta-left
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.deliver_type_i18n
     .c-table-work_subcontractors3
       table
         tr
@@ -72,7 +83,7 @@ javascript:
       label.u-fs-x-small
         | 部門長
 
-  .c-table.u-mt-40
+  .c-table.u-mt-10
     table
       thead
         tr
@@ -102,7 +113,7 @@ javascript:
         tr
           td.u-va-top.u-ta-left = simple_format(Work.find(params[:id]).notices)
 
-  .u-mt-50
+  .u-mt-10
     .c-table-work_subcontractors4
       table
         tr
@@ -116,7 +127,7 @@ javascript:
           th.u-va-middle 発注担当
           td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.name
 
-  .u-mt-50.c-flex__between
+  .u-mt-10.c-flex__between
     .div
       | 株式会社 日本工業社
       br

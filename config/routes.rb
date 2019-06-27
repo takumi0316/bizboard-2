@@ -84,8 +84,14 @@ Rails.application.routes.draw do
   #外注先支払い情報
   resources :payments
 
+  #取引先請求情報
+  resources :profits
+
   #請求情報
   resources :bills
+
+  #経費入力
+  resources :expendables
 
   # 自社部署
   resources :divisions

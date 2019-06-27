@@ -37,7 +37,7 @@ class ProjectCard < ApplicationRecord
   enum card_type: { template: 0, special: 10 }
   enum work_type: { create_design: 0, edit_design: 10, create_data: 20, edit_data: 30 }
   enum color: { original_print: 0, color_print: 10, monochrome_print: 20 }
-  enum paper: { coc_413: 0, noble: 10, r_55: 20, white_prince: 30, nouveau: 40, snow: 50, top130: 60, prince: 70, cream: 80, colorcopy200g: 90, colorcopy250g: 100, elite: 110, prince_coc: 120, ltg: 130 }
+  enum paper: { coc_413: 0, noble: 10, r_55: 20, white_prince: 30, nouveau: 40, snow: 50, top130: 60, prince: 70, cream: 80, colorcopy200g: 90, colorcopy250g: 100, elite: 110, prince_coc: 120, ltg: 121 }
   enum surface: { both_side: 0, one_side: 10 }
   enum emboss: { emboss_necessary: 0, emboss_unnecessary: 10 }
 

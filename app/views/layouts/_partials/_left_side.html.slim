@@ -61,9 +61,14 @@
               span.u-ml-10 支払い管理
 
           li.l-dashboard__menuItem
-            = link_to root_path do
+            = link_to profits_path do
               = evil_icon 'ei-cart', size: :s
               span.u-ml-10 請求情報
+
+          li.l-dashboard__menuItem
+            = link_to expendables_path do
+              = evil_icon 'ei-sc-github', size: :s
+              span.u-ml-10 経費入力
 
           li.l-dashboard__menuItem
             = link_to users_path do

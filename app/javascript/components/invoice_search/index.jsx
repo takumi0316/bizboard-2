@@ -93,7 +93,7 @@ export default class InvoiceSearch extends Component {
               <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
             </div>
             <div className={ Style.Search__SideBySide }>
-              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='件名/請求先/自社部署名/請求日' />
+              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='案件番号/件名/請求先/自社部署名/請求日' />
               <DatePicker
                 selected={ this.state.startDate }
                 onChange={ ::this.handleChange }
