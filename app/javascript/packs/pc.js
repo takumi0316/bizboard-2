@@ -69,6 +69,9 @@ import ProfitSearch from 'components/profit_search/index.jsx'
 //経費入力
 import ExpendablesEditor from 'components/expendables_editor/index.jsx'
 
+//目標管理グラフ
+import Target from 'components/target'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -87,4 +90,5 @@ WebpackerReact.setup({
   PaymentSearch,
   ProfitSearch,
   ExpendablesEditor,
+  Target,
 })
