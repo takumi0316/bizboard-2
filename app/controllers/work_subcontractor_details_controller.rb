@@ -67,9 +67,23 @@ class WorkSubcontractorDetailsController < ApplicationController
           expendable = Expendable.find_or_initialize_by(work_subcontractor_detail_id: parse_json['id'])
           if expendable.present?
             expendable.update(division_id: subcontractor_detail.work_subcontractor.work.quote.division.id, subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id,price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor&.delivery_date)
-            if  subcontractor_detail.work_subcontractor.work.quote.subcontractor_detail.work_subcontractor.work.quote.quote_type
+            if  subcontractor_detail.work_subcontractor.work.quote.subcontractor_detail.work_subcontractor.work.quote.quote_type = 'contract'
+              expendable.update(status: 100)
+            elsif subcontractor_detail.work_subcontractor.work.quote.subcontractor_detail.work_subcontractor.work.quote.quote_type = 'sales'
+              expendable.update(status: 100)
+            elsif subcontractor_detail.work_subcontractor.work.quote.subcontractor_detail.work_subcontractor.work.quote.quote_type = 'copy'
+              expendable.update(status: 10)
+            end
           elsif expendable.nil?
             expendable.save!(division_id: subcontractor_detail.work_subcontractor.work.quote.division.id, subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor.delivery_date)
+            if  subcontractor_detail.work_subcontractor.work.quote.subcontractor_detail.work_subcontractor.work.quote.quote_type = 'contract'
+              expendable.update(status: 100)
+            elsif subcontractor_detail.work_subcontractor.work.quote.subcontractor_detail.work_subcontractor.work.quote.quote_type = 'sales'
+              expendable.update(status: 100)
+            elsif subcontractor_detail.work_subcontractor.work.quote.subcontractor_detail.work_subcontractor.work.quote.quote_type = 'copy'
+              expendable.update(status: 10)
+            end
+          end
         end
 
         render json: { status: :success, detail: Work.find(params[:work_id]).subcontractor_detail }
