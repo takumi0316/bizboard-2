@@ -57,11 +57,19 @@ class WorkSubcontractorDetailsController < ApplicationController
             actual_count: parse_json['actual_count'],
             actual_cost: parse_json['actual_cost'],
           )
+          binding.pry
 
           #外注金額保存
           payment = Payment.find_or_initialize_by(work_subcontractor_detail_id: parse_json['id'])
           payment.update(subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id,price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor&.delivery_date) if payment.present?
           payment.save!(subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor.delivery_date) if payment.nil?
+          #製造経費保存
+          expendable = Expendable.find_or_initialize_by(work_subcontractor_detail_id: parse_json['id'])
+          if expendable.present?
+            expendable.update(division_id: subcontractor_detail.work_subcontractor.work.quote.division.id, subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id,price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor&.delivery_date)
+            if  subcontractor_detail.work_subcontractor.work.quote.subcontractor_detail.work_subcontractor.work.quote.quote_type
+          elsif expendable.nil?
+            expendable.save!(division_id: subcontractor_detail.work_subcontractor.work.quote.division.id, subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor.delivery_date)
         end
 
         render json: { status: :success, detail: Work.find(params[:work_id]).subcontractor_detail }
@@ -85,7 +93,7 @@ class WorkSubcontractorDetailsController < ApplicationController
   def destroy
 
     #外注金額の削除
-    Payment.find_by(work_subcontractor_detail_id: params[:id]).destroy! if Payment.find_by(work_subcontractor_detail_id: params[:id]).present?
+    Payment.find_by(work_subcontractor_detail_id: params[:id]).destroy! if Payment.find_by(work_subcontractor_detail_id: params[:id]).present? && Expendable.find_or_initialize_by(work_subcontractor_detail_id: parse_json['id'])
     WorkSubcontractorDetail.find(params[:id]).destroy!
 
     render json: { status: :success }

@@ -1,3 +1,30 @@
-h1.l-dashboard__heading 経費情報一覧
+h1.l-dashboard__heading 製造経費情報一覧
 
-= link_to '案件を作成する', new_expendable_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
+= link_to '製造経費を入力する', new_expendable_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
+
+= react_component('ExpendablesSearch',{subcontractor: Subcontractor.all, division: Division.all,})
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 申請日
+        th 負担部署
+        th 仕入先
+        th 勘定科目
+        th 金額(税抜き)
+        th 備考
+        th colspan= 2
+    tbody
+      - expendables.each do |r|
+        tr
+          td = r.date
+          td = r.division.name
+          td = r.subcontractor.name
+          td = r.status_i18n
+          td = r.price.to_s(:delimited)
+          td = r.memo
+          td = link_to '編集', edit_expendable_path(r), class: 'c-btnMain-standard'
+          td = link_to '削除', expendable_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+
+= render 'layouts/_partials/pagination'

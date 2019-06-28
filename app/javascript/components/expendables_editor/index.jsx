@@ -523,12 +523,16 @@ export default class ExpendablesEditor extends React.Component {
               <table>
                 <thead>
                   <tr>
-                    <th></th>
-                    <th>No.</th>
-                    <th>ステータス</th>
-                    <th>名前</th>
-                    <th>金額</th>
-                    <th>日付</th>
+                    <th className={ 'u-va-middle' }>No.</th>
+                    <th className={ 'u-va-middle' }>発注内容</th>
+                    <th className={ 'u-va-middle' }>入稿物</th>
+                    <th className={ 'u-va-middle' }>仕様</th>
+                    <th className={ 'u-va-middle' }>期日</th>
+                    <th className={ 'u-va-middle' }>担当者</th>
+                    <th>原稿<br />枚数</th>
+                    <th>部数<br />数量</th>
+                    <th className={ 'u-va-middle' }>原単価(税抜)</th>
+                    <th className={ 'u-va-middle' }>実績原価(税抜)</th>
                   </tr>
                 </thead>
                 <tbody>

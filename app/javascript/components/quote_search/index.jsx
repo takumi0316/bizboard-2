@@ -38,12 +38,15 @@ export default class QuoteSearch extends Component {
   }
 
   componentWillMount = () => {
-
     if (location.search.length > 0) {
       // MF見積もり作成・更新なのか確認
       if (location.search.substring(1,4) == "id=") {
         return false;
-      } else {
+      }
+      else if (location.search.substring(1,6) == "page=") {
+        return false;
+      }
+      else {
         // 最初の1文字 (?記号) を除いた文字列を取得する
         let query = document.location.search.substring(1);
         let parameters = query.split('&');

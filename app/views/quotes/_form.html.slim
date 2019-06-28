@@ -5,6 +5,7 @@
     user: quote&.user,
     user_id: current_user.id,
     division_id: current_user&.division&.id,
+    home_division: quote&.division,
     company: quote&.client&.company_division&.company,
     division: quote&.client&.company_division,
     client: quote&.client,
