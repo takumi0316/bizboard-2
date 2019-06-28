@@ -1,21 +1,24 @@
-h1.l-dashboard__heading HOME
+- current_date = params[:current].present?? Date.parse(params[:current]) : Date.today
+- targets = Target.where(target_year: current_date.year, target_month: current_date.month)
 
-= link_to '前月', ''
-= link_to '次月', ''
+.l-dashboard__month
+  = link_to '<< 前月', root_path(current: params[:current] ? (Date.parse(params[:current]) - 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthPrev'
+  span = "#{current_date.year}年#{current_date.month}月"
+  = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
 
 - targets.each do |r|
-  h2.l-dashboard__title = r.division.name
+  h2.l-dashboard__heading = r.division.name
 
   / 形状範囲
-  - range = Time.now.beginning_of_month.beginning_of_day..Time.now.end_of_month.end_of_day
+  - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
   / 売上
   - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.invoiced_in(range))
-  - sales = quotes.map(&:price).inject(:+)
+  - sales = quotes.map(&:price).inject(:+).to_i
 
   / 原価
   - expendables = Expendable.where(division_id: r.division.id).date_in(range)
-  - cost = expendables.map(&:price).inject(:+)
+  - cost = expendables.map(&:price).inject(:+).to_i
 
   .l-dashboard__graphs
     .l-dashboard__graph
