@@ -84,7 +84,7 @@ class ExpendablesController < ApplicationController
     payment.update(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.present?
     payment.save!(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.nil?
 
-    redirect_to expendables_path, flash: {notice: {message: '経費を更新しました'}}
+    redirect_to expendables_path, flash: {notice: {message: '製造経費を更新しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
@@ -105,7 +105,7 @@ class ExpendablesController < ApplicationController
     payment.update(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.present?
     payment.save!(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.nil?
 
-    redirect_to expendables_path, flash: {notice: {message: '経費を作成しました'}}
+    redirect_to expendables_path, flash: {notice: {message: '製造経費を登録しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}

@@ -45,11 +45,11 @@ class Expendable < ApplicationRecord
 
   belongs_to :division
 
+  belongs_to :work_subcontractor_detail, optional: true
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
-
-  scope :date_in, ->(datetime) { where(date: datetime) }
 
   #----------------------------------------
   #  ** Methods **
