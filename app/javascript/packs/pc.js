@@ -69,6 +69,9 @@ import ProfitSearch from 'components/profit_search/index.jsx'
 //経費入力
 import ExpendablesEditor from 'components/expendables_editor/index.jsx'
 
+//経費検索
+import ExpendablesSearch from 'components/expendables_search/index.jsx'
+
 //目標管理グラフ
 import Target from 'components/target'
 
@@ -90,5 +93,6 @@ WebpackerReact.setup({
   PaymentSearch,
   ProfitSearch,
   ExpendablesEditor,
+  ExpendablesSearch,
   Target,
 })

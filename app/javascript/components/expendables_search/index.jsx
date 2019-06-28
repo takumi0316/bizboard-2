@@ -7,8 +7,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import Request from "superagent"
 require("superagent-rails-csrf")(Request);
 
+// enum_status
+import { ENUM_STATUS, } from './properties.es6'
 
-export default class PaymentSearch extends Component {
+export default class ExpendablesSearch extends Component {
   constructor(props) {
     super(props)
     const date = new Date()
@@ -21,6 +23,9 @@ export default class PaymentSearch extends Component {
     this.state = {
       startDate: new Date(year, month, start_day),
       startDate2: new Date(year, month, end_day),
+      division: '負担部署',
+      subcontractor: '仕入先',
+      status: '勘定科目',
     };
   }
 
@@ -40,7 +45,7 @@ export default class PaymentSearch extends Component {
 
     if (location.search.length > 0) {
       // MF見積もり作成・更新なのか確認
-      if (location.search.substring(1,4) == "fal") {
+      if (location.search.substring(1,4) == "id=") {
         return false;
       }
       else if (location.search.substring(1,6) == "page=") {
@@ -94,11 +99,44 @@ export default class PaymentSearch extends Component {
     return (
       <div className={ 'c-search__work-index u-mt-20' }>
         <div className={ Style.Search }>
-          <form method='get' action='/payments?' >
-            <div>
-              <label for='name'>日付検索 ※外注書に登録された時の日付が検索されます</label>
-            </div>
+          <form method='get' action='/expendables?' >
             <div className={ Style.Search__SideBySide }>
+            <select name='division' className={ 'c-form-select__expendable-index' }>
+              <option value={ this.state.division }>{ this.state.division === '負担部署' ? '負担部署' : [this.state.division] }</option>
+              { this.props.division.map((division, index) => {
+                const key = 'division' + index;
+                return(
+                  this.state.division === '負担部署' ?
+                  <option key={ key } value={ division['id'] }>{ division['name'] }</option>
+                  :
+                  this.state.division === division ? <option>負担部署</option> : <option {...{key}} value={ division['id'] }>{ division['name'] }</option>
+                );
+              }) }
+            </select>
+            <select name='subcontractor' className={ 'c-form-select__expendable-index' }>
+              <option value={ this.state.subcontractor }>{ this.state.subcontractor === '仕入先' ? '仕入先' : [this.state.subcontractor] }</option>
+              { this.props.subcontractor.map((subcontractor, index) => {
+                const key = 'subcontractor' + index;
+                return(
+                  this.state.subcontractor === '仕入先' ?
+                  <option key={ key } value={ subcontractor['id'] }>{ subcontractor['name'] }</option>
+                  :
+                  this.state.subcontractor === subcontractor ? <option>仕入先</option> : <option {...{key}} value={ subcontractor['id'] }>{ subcontractor['name'] }</option>
+                );
+              }) }
+            </select>
+              <select name='status' className={ 'c-form-select__work-index' }>
+                <option value={ this.state.status }>{ this.state.status === '勘定科目' ? '勘定科目' : ENUM_STATUS[this.state.status] }</option>
+                { Object.keys(ENUM_STATUS).map((item, index) =>{
+                  const key = 'status-' + index;
+                  return (
+                    this.state.status === '勘定科目' ?
+                    <option {...{key}} value={item}>{ENUM_STATUS[item]}</option>
+                    :
+                    this.state.status === item ? <option>勘定科目</option> : <option {...{key}} value={item}>{ENUM_STATUS[item]}</option>
+                  );
+                }) }
+              </select>
               <DatePicker
                 selected={ this.state.startDate }
                 onChange={ ::this.handleChange }
@@ -114,7 +152,7 @@ export default class PaymentSearch extends Component {
                 className={ 'c-form-text__work-index__datepicker' }
               />
               <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
-              <a className={ 'c-btnMain-standard' } href={ '/payments' } >元に戻す</a>
+              <a className={ 'c-btnMain-standard' } href={ '/expendables' } >元に戻す</a>
             </div>
           </form>
         </div>

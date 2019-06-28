@@ -8,6 +8,8 @@ require('superagent-rails-csrf')(Request);
 import DatetimePicker from './datetime_picker'
 import ClientSearch from './client_search'
 import ProjectSearch from './project_search'
+import HomeDivision from './home_division'
+
 
 // datetime
 import Dayjs from 'dayjs'
@@ -36,6 +38,7 @@ export default class QuoteEditor extends React.Component {
       quote_projects: props.quote_projects,
       company: props.company,
       division: props.division,
+      home_division: props.home_division,
       client: props.client,
       user_id: props.user === null ? null : props.user.id,
       quote_type: props.quote.quote_type === null ? 'contract' : props.quote.quote_type,
@@ -139,7 +142,7 @@ export default class QuoteEditor extends React.Component {
     }
     field = {
       'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
-      'quote[division_id]': this.props.division_id || '',
+      'quote[division_id]': this.state.home_division === null ? 'null' : this.state.home_division.id,
       'quote[company_division_client_id]': this.refs.company_division_client_id.value || '',
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
@@ -228,6 +231,7 @@ export default class QuoteEditor extends React.Component {
 
     this.setState({ home_division: division })
   }
+
 
   /**
    *  品目選択時
@@ -325,7 +329,7 @@ export default class QuoteEditor extends React.Component {
 
       if ( !vali_unit.match(/^[0-9\.]+$/) ) {
 
-        alert('全角は基本的にあかんから、半角で入力するんやで。');
+        alert('半角数字以外を入力しないで下さい。');
         return false
       }
       let copyProjects = Object.assign([], this.state.quote_projects);
@@ -364,7 +368,7 @@ export default class QuoteEditor extends React.Component {
 
       if ( !vali_unit.match(/^[0-9]+$/) ) {
 
-        alert('全角は基本的にあかんから、半角で入力するんやで。');
+        alert('半角数字以外を入力しないで下さい。');
         return false
       }
       let copyProjects = Object.assign([], this.state.quote_projects);
@@ -468,6 +472,20 @@ export default class QuoteEditor extends React.Component {
         <input type='hidden' ref='user_id' value={this.state.client ? this.state.client.user_id: this.props.quote.user_id} />
         <div className='u-mt-15'>
           <ClientSearch applyClient={::this.applyClient} users={ this.props.users } prefectures={ this.props.prefectures } />
+        </div>
+        <div className={ 'c-form-label u-mt-30' }>
+          <label>売り上げ部署情報</label>
+          <span className='c-form__required u-ml-10'>必須</span>
+        </div>
+        { this.state.home_division !== null ?
+          <div className={ 'c-attention' }>
+            <div className={ 'u-mt-10' }>部署名:{ this.state.home_division.name }</div>
+          </div>
+          :
+          null
+        }
+        <div className={ 'u-mt-10' }>
+          <HomeDivision applyHomeDivision={ ::this.applyHomeDivision } />
         </div>
         <div className='u-mt-30 c-table'>
           <table>
@@ -590,7 +608,7 @@ export default class QuoteEditor extends React.Component {
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } value={ specification.remarks } onChange={ e => this._changeRemarks(index)} /></td>
                             <td><input className={ 'c-form-text' } type='number' step='0.1' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } onChange={ e => this._changeUnitPrice(index) } /></td>
-                            <td><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
+                            <td><input className={ 'c-form-text' } type='number' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
                             <td><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index, specification.name) }>ー</button></td>
                           </tr>
@@ -613,7 +631,7 @@ export default class QuoteEditor extends React.Component {
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='text' id={ 'projectSpecificationName' + index } value={ specification.name } onChange={ e => this._changeName(index) } /></td>
                             <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' id={ 'projectSpecificationRemarks' + index } value={ specification.remarks } onChange={ e => this._changeRemarks(index)} /></td>
                             <td className={ 'u-va-top' }><input className={ 'c-form-text' } type='number' step='0.1' id={ 'projectSpecificationUnitPrice' + index } value={ specification.unit_price } onChange={ e => this._changeUnitPrice(index) } /></td>
-                            <td className={ 'u-va-top' }><input className={ 'c-form-text' } type='text' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
+                            <td className={ 'u-va-top' }><input className={ 'c-form-text' } type='number' id={ 'projectSpecificationUnit' + index } value={ specification.unit } onChange={ e => this._changeUnit(index) } /></td>
                             <td className={ 'u-va-top' }><input readOnly className={ 'c-form-text' } type='text' id={ 'projectSpecificationPrice' + index } value={ specification.price } /></td>
                             <td className={ 'u-va-top' }><button className={ 'c-btnMain2-primaryA' } onClick={ e => this._projectDestroy(index, specification.name) }>ー</button></td>
                           </tr>

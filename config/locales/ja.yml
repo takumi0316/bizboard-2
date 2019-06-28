@@ -67,6 +67,7 @@ ja:
       quote_type:
         contract: 請負
         sales: 販売施工
+        copy: 分散機
       channel:
         estimate: 営業
         bpr_erp: BPR/ERP

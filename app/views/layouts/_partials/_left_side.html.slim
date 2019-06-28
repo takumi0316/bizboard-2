@@ -68,7 +68,7 @@
           li.l-dashboard__menuItem
             = link_to expendables_path do
               = evil_icon 'ei-sc-github', size: :s
-              span.u-ml-10 経費入力
+              span.u-ml-10 製造経費入力
 
           li.l-dashboard__menuItem
             = link_to users_path do
@@ -93,20 +93,20 @@
     .u-mt-50
       ul.l-dashboard__menuList
 
-      li.l-dashboard__menuItem
-        = link_to "https://docs.google.com/presentation/d/1nRhmFxYAJv6JluvdpRNuxGVB3lCeS7UY_MUIlU-f91w/edit?usp=sharing", target: :_blank do
-          = evil_icon 'ei-archive', size: :s
-          span.u-ml-10 マニュアル
-
         li.l-dashboard__menuItem
-          = link_to edit_user_path(current_user) do
-            = evil_icon 'ei-pencil', size: :s
-            span.u-ml-10 プロフィール編集
+          = link_to "https://docs.google.com/presentation/d/1nRhmFxYAJv6JluvdpRNuxGVB3lCeS7UY_MUIlU-f91w/edit?usp=sharing", target: :_blank do
+            = evil_icon 'ei-archive', size: :s
+            span.u-ml-10 マニュアル
 
-        li.l-dashboard__menuItem
-          = link_to sign_out_path, method: :delete do
-            = evil_icon 'ei-close-o', size: :s
-            span.u-ml-10 ログアウト
+          li.l-dashboard__menuItem
+            = link_to edit_user_path(current_user) do
+              = evil_icon 'ei-pencil', size: :s
+              span.u-ml-10 プロフィール編集
+
+          li.l-dashboard__menuItem
+            = link_to sign_out_path, method: :delete do
+              = evil_icon 'ei-close-o', size: :s
+              span.u-ml-10 ログアウト
 
 javascript:
 
