@@ -26,7 +26,7 @@ class WorkSubcontractor < ApplicationRecord
 
   #----------------------------------------
   #  ** Enums **
-  #----------------------------------------  
+  #----------------------------------------
 
   #----------------------------------------
   #  ** Validations **
@@ -38,7 +38,7 @@ class WorkSubcontractor < ApplicationRecord
 
   belongs_to :work
 
-  has_many :detail, class_name: 'WorkSubcontractorDetail', dependent: :destroy 
+  has_many :detail, class_name: 'WorkSubcontractorDetail', dependent: :destroy
 
   belongs_to :client, optional: true, class_name: 'SubcontractorDivisionClient', foreign_key: :subcontractor_division_client_id
 

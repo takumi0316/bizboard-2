@@ -68,8 +68,12 @@ module DeepCloneable
 
       # 保存可能にするため外部キーをnilにする
       send(options[:association]).map do |object|
-        object.send("#{foreign_key}=", nil)
-        object
+        deep_object = object.deep_dup
+        deep_object.save!
+        deep_object.send("#{foreign_key}=", nil)
+        deep_object
+        # object.send("#{foreign_key}=", nil)
+        # object
       end
     end
 end

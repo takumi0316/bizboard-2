@@ -385,13 +385,58 @@ class QuotesController < ApplicationController
   #
   def copy
 
-    clone_quote = quote.deep_clone(:quote_projects, :quote_items)
+    # deep_quote = quote.fake_deep_clone
+
+    # deep_quote.save!
+
+    # if quote.quote_projects.present?
+
+      # quote.quote_projects.each do |r|
+
+        # deep_quote.quote_projects.create!(quote_id: deep_quote.id, project_id: r.project_id, price: r.price, unit: r.unit, name: r.name, unit_price: r.unit_price, project_name: r.project_name, remarks: r.remarks)
+      # end
+    # end
+
+    # if quote.quote_items.present?
+
+      # quote.quote_items.each do |r|
+
+        # deep_clone.quote_items.create!(quote_id: deep_quote.id, cost: r.cost, gross_profit: r.gross_profit, detail: r.detail, name: r.name, unit_price: r.unit_price, quantity: r.quantity)
+      # end
+    # end
+
+
+    clone_quote = quote.deep_clone(:quote_projects)
 
     clone_quote.save
 
-    clone_quote.update_columns(pdf_url: nil, mf_quote_id: nil)
+    clone_quote.update_columns(pdf_url: nil, mf_quote_id: nil, user_id: current_user.id)
 
     clone_quote.draft!
+
+    if quote.work.present?
+      # , :subcontractor, :subcontractor_detail
+      clone_work = quote.work.deep_clone(:work_details)
+      clone_work.quote_id = clone_quote.id
+      clone_work.save!
+      clone_work.working!
+      quote.work.subcontractor.each do |subcontractor|
+
+        deep_subcontractor = subcontractor.deep_dup
+        deep_subcontractor.work_id = clone_work.id
+        deep_subcontractor.save!
+        quote.work.subcontractor_detail.each do |sub_detail|
+
+          if subcontractor.id == sub_detail.work_subcontractor_id
+
+            deep_sub_detail = sub_detail.deep_dup
+            deep_sub_detail.work_id = clone_work.id
+            deep_sub_detail.work_subcontractor_id = deep_subcontractor.id
+            deep_sub_detail.save!
+          end
+        end
+      end
+    end
 
     redirect_to edit_quote_path(clone_quote), flash: {notice: {message: '見積書を複製しました'}}
   end

@@ -36,9 +36,9 @@
       = " (#{work.quote.deliver_type_note})" if work.quote&.deliver_type_note&.present?
 
 .u-mt-10
-    - if work.quote.quote_projects.pluck(:project_id).uniq.present?
+    - if Work.find(params[:id]).quote.quote_projects.pluck(:project_id).uniq.present?
 
-        - work.quote.quote_projects.pluck(:project_id).uniq.each do |r|
+        - Work.find(params[:id]).quote.quote_projects.pluck(:project_id).uniq.each do |r|
 
             - if Project.find(r).project_category_i18n === 'プリント'
 
@@ -196,13 +196,14 @@
                     project_category: Project.find(r)&.project_category_i18n,
                     project_otherprint_note: Project.find(r)&.note,
                 })
+
             - elsif Project.find(r).project_category_i18n === 'その他'
 
                 = react_component('QuoteProject',
-                {   project: Project.find(r),
+                  {   project: Project.find(r),
                     project_category: Project.find(r)&.project_category_i18n,
                     project_other_note: Project.find(r)&.note,
-                })
+                  })
 
 = react_component('WorkEditor',
   { details: works.find(params[:id]).work_details,

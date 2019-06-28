@@ -49,7 +49,7 @@ javascript:
       table
         tr
           th.u-va-middle 受注日
-          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.created_at
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.created_at.strftime("%Y年%m月%d日")
         tr
           th.u-va-middle 校正納期
           td.u-va-middle.u-ta-leftd
