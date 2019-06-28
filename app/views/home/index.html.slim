@@ -1,1 +1,26 @@
-= react_component 'Target'
+h1.l-dashboard__heading HOME
+
+= link_to '前月', ''
+= link_to '次月', ''
+
+- targets.each do |r|
+  h2.l-dashboard__title = r.division.name
+
+  / 形状範囲
+  - range = Time.now.beginning_of_month.beginning_of_day..Time.now.end_of_month.end_of_day
+
+  / 売上
+  - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.invoiced_in(range))
+  - sales = quotes.map(&:price).inject(:+)
+
+  / 原価
+  - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+  - cost = expendables.map(&:price).inject(:+)
+
+  .l-dashboard__graphs
+    .l-dashboard__graph
+      = react_component 'Target', target: r.sales, label: '売上', value: sales, color: 'rgba(34, 80, 162, 0.6)'
+    .l-dashboard__graph
+      = react_component 'Target', target: r.profit, label: '利益', value: (sales - cost), color: 'rgba(64, 127, 94, 0.6)'
+    .l-dashboard__graph
+      = react_component 'Target', target: r.cost, label: '原価', value: cost, color: 'rgba(0, 204, 204, 0.6)'

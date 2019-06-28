@@ -11,6 +11,13 @@ class HomeController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
+  # 目標管理
+  expose(:targets) {
+
+    Target.where(target_year: Time.now.year, target_month: Time.now.month)
+  }
+
+
   #----------------------------------------
   #  ** Layouts **
   #----------------------------------------

@@ -46,6 +46,8 @@ class Invoice < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
+  scope :invoiced_in, ->(datetime) { where(created_at: datetime) }
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

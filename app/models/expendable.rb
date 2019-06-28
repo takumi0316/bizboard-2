@@ -44,6 +44,8 @@ class Expendable < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
+  scope :date_in, ->(datetime) { where(date: datetime) }
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
