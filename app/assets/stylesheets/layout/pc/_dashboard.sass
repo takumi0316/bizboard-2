@@ -146,3 +146,18 @@
       @extend #{$self}
       color: map-get($layoutColors, 'core')
       border-bottom: solid 3px map-get($layoutColors, 'blue')
+
+  &__graphs
+    display: flex
+    margin-top: 30px
+  &__graph
+  &__month
+    font-weight: bold
+    font-size: 1.8rem
+    margin: 15px 0
+    &Next
+      margin-left: 100px
+      color: map-get($fontColors, 'thinBlack')
+    &Prev
+      margin-right: 100px
+      color: map-get($fontColors, 'thinBlack')

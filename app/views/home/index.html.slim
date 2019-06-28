@@ -1,1 +1,29 @@
-= react_component 'Target'
+- current_date = params[:current].present?? Date.parse(params[:current]) : Date.today
+- targets = Target.where(target_year: current_date.year, target_month: current_date.month)
+
+.l-dashboard__month
+  = link_to '<< 前月', root_path(current: params[:current] ? (Date.parse(params[:current]) - 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthPrev'
+  span = "#{current_date.year}年#{current_date.month}月"
+  = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
+
+- targets.each do |r|
+  h2.l-dashboard__heading = r.division.name
+
+  / 形状範囲
+  - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+  / 売上
+  - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.invoiced_in(range))
+  - sales = quotes.map(&:price).inject(:+).to_i
+
+  / 原価
+  - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+  - cost = expendables.map(&:price).inject(:+).to_i
+
+  .l-dashboard__graphs
+    .l-dashboard__graph
+      = react_component 'Target', target: r.sales, label: '売上', value: sales, color: 'rgba(34, 80, 162, 0.6)'
+    .l-dashboard__graph
+      = react_component 'Target', target: r.profit, label: '利益', value: (sales - cost), color: 'rgba(64, 127, 94, 0.6)'
+    .l-dashboard__graph
+      = react_component 'Target', target: r.cost, label: '原価', value: cost, color: 'rgba(0, 204, 204, 0.6)'
