@@ -47,6 +47,9 @@ class WorkSubcontractorDetail < ApplicationRecord
   #請求情報
   has_many :payments, dependent: :destroy
 
+  #製造原価
+  has_many :expendables, dependent: :destroy
+
 
   #----------------------------------------
   #  ** Scopes **
