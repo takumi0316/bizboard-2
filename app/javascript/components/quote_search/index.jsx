@@ -96,7 +96,7 @@ export default class QuoteSearch extends Component {
         <div className={ Style.Search }>
           <form method='get' action='/quotes?count=' >
             <div>
-              <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
+              <label for='name'>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
             </div>
             <div className={ Style.Search__SideBySide }>
               <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='件名/お客様/自社部署名/納期' />
