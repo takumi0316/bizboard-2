@@ -6,7 +6,7 @@
       tr
         th 案件No.
         th
-        //th 顧客名
+        th 顧客名
         th 作業内容
         th 担当者
         th 作業担当者
@@ -23,7 +23,7 @@
           tr
             td.u-ta-center = r.quote.quote_number if r.quote&.quote_number.present?
             td.u-ta-center = link_to '詳細', work_path(r), class: 'c-btnMain-standard'
-            //td.u-ta-center = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
+            td.u-ta-center = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
             td.u-ta-center = r.quote.subject.truncate(25) if r.quote&.subject.present?
             td.u-ta-center = r.quote.user&.name if r.quote&.user&.name.present?
             td.u-ta-left = r.work_details.limit(1).pluck(:client_name)[0] if r.work_details&.limit(1).pluck(:client_name).present?
@@ -40,7 +40,7 @@
               tr
                 td.u-ta-center = r.quote.quote_number if r.quote&.quote_number.present?
                 td.u-ta-center = link_to '詳細', work_path(r), class: 'c-btnMain-standard'
-                //td.u-ta-center = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
+                td.u-ta-center = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
                 td.u-ta-center = r.quote.subject.truncate(25) if r.quote&.subject.present?
                 td.u-ta-center = r.quote.user&.name if r.quote&.user&.name.present?
                 td.u-ta-left = r.work_details.limit(1).pluck(:client_name)[0] if r.work_details&.limit(1).pluck(:client_name).present?
@@ -55,7 +55,7 @@
             tr
               td.u-ta-center = r.quote.quote_number if r.quote&.quote_number.present?
               td.u-ta-center = link_to '詳細', work_path(r), class: 'c-btnMain-standard'
-              //td.u-ta-center = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
+              td.u-ta-center = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
               td.u-ta-center = r.quote.subject.truncate(25) if r.quote&.subject.present?
               td.u-ta-center = r.quote.user&.name if r.quote&.user&.name.present?
               td.u-ta-left = r.work_details.limit(1).pluck(:client_name)[0] if r.work_details&.limit(1).pluck(:client_name).present?

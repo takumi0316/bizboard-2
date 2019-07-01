@@ -545,7 +545,7 @@ export default class AddSubcontractor extends React.Component {
         { this.state.show ?
           <div>
             <div className={ Style.AddSubcontractor__EditButton }>
-              <button className={ 'c-btnMain-standard' } onClick={ this.onWorkSubcontractorDetailUpdate }>作業外注先[編集終了]</button>
+              <button className={ 'c-btnMain-standard c-btn-red' } onClick={ this.onWorkSubcontractorDetailUpdate }>作業外注先[編集終了]</button>
             </div>
             { this.state.work_subcontractors ?
               <React.Fragment>
