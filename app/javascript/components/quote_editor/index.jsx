@@ -272,7 +272,7 @@ export default class QuoteEditor extends React.Component {
 
     const delProjectPrice = Number(this.state.quote_projects[passIndex].price);
     let copyProjects = Object.assign([], this.state.quote_projects);
-    let minusCost = (Number(this.state.total_cost) - delProjectPrice) * gon.consumption_tax;
+    let minusCost = Number(this.state.total_cost) - delProjectPrice;
     let totalCost = 0;
     let pushProjects = [];
     if ( this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null ) {
@@ -676,7 +676,7 @@ export default class QuoteEditor extends React.Component {
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
-                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ Math.floor(this.state.total_cost * gon.consumption_tax) }></textarea>
+                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost }></textarea>
                 </td>
               </tr>
               <tr>
