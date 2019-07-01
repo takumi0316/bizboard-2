@@ -460,7 +460,7 @@ export default class AddDetails extends React.Component {
         { this.state.show ?
 
           <div className={ 'u-mt-10' }>
-            <button className={ 'c-btnMain-standard' } id='finish' onClick={ this.onWorkDetailUpdate }>作業詳細[編集終了]</button>
+            <button className={ 'c-btnMain-standard c-btn-red' } id='finish' onClick={ this.onWorkDetailUpdate }>作業詳細[編集終了]</button>
           </div>
           :
           <div className={ 'u-mt-10' }>
