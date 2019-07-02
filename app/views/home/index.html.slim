@@ -18,7 +18,10 @@
 
   / 原価
   - expendables = Expendable.where(division_id: r.division.id).date_in(range)
-  - cost = expendables.map(&:price).inject(:+).to_i
+  - labors = Labor.where(division_id: r.division.id).date_in(range)
+  - expendable_cost = expendables.map(&:price).inject(:+).to_i
+  - labor_cost = labors.map(&:price).inject(:+).to_i
+  - cost = expendable_cost + labor_cost
 
   .l-dashboard__graphs
     .l-dashboard__graph

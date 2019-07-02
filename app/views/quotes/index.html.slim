@@ -47,7 +47,7 @@
                 | 失注しました
               - else
                 - if r.work.nil?
-                  = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                  = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
                 - else
                   = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
             td
@@ -65,7 +65,7 @@
               - if r.invoicing? && r.invoice.present?
                 = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
               - elsif r.end_work?
-                = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-blue'
+                = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
               - else
                 | 未発行
             td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
@@ -100,7 +100,7 @@
                     | 失注しました
                   - else
                     - if r.work.nil?
-                      = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                      = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
                     - else
                       = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
                 td
@@ -118,7 +118,7 @@
                   - if r.invoicing? && r.invoice.present?
                     = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
                   - elsif r.end_work?
-                    = link_to '請求書作成', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+                    = link_to '請求書作成', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-orange'
                   - else
                     | 未発行
                 td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
@@ -150,7 +150,7 @@
                   | 失注しました
                 - else
                   - if r.draft?
-                    = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-blue', method: :post
+                    = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
                   - else
                     = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
               td
@@ -168,7 +168,7 @@
                 - if r.invoicing? && r.invoice.present?
                   = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
                 - elsif r.end_work?
-                  = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-blue'
+                  = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
                 - else
                   | 未発行
               td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'

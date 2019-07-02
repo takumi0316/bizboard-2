@@ -510,9 +510,9 @@ export default class AddDetails extends React.Component {
                               }) }
                             </select>
                         	</td>
-													<td className={ 'u-va-top' }><input key={ detail.number_of_copies + index } type='text' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('_changeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
-													<td className={ 'u-va-top' }><input key={ detail.count + index } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, '_changeCount') } onBlur={ e => this.onSetStateBlur('_changeCount', index) } type='text' id={ 'count' + index } defaultValue={ detail.count } /></td>
-													<td className={ 'u-va-top' }><input key={ detail.estimated_cost + index } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(index, '_changeCost') } onBlur={ e => this.onSetStateBlur('_changeCost', index) } type='text' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
+													<td className={ 'u-va-top' }><input key={ detail.number_of_copies + index } type='number' className={ 'c-form-text__work-show-input6' } onBlur={ e => this.onSetStateBlur('_changeNumberOfCopies', index) } onChange={ e => this.onIntCheck(index, 'number_of_copies') } id={ 'number_of_copies' + index } defaultValue={ detail.number_of_copies } /></td>
+													<td className={ 'u-va-top' }><input key={ detail.count + index } className={ 'c-form-text__work-show-input6' } onChange={ e => this.onIntCheck(index, '_changeCount') } onBlur={ e => this.onSetStateBlur('_changeCount', index) } type='number' id={ 'count' + index } defaultValue={ detail.count } /></td>
+													<td className={ 'u-va-top' }><input key={ detail.estimated_cost + index } className={ 'c-form-text__work-show-input2' } onChange={ e => this.onIntCheck(index, '_changeCost') } onBlur={ e => this.onSetStateBlur('_changeCost', index) } type='number' id={ 'estimated_cost' + index } defaultValue={ detail.estimated_cost } /></td>
                         	<td className={ 'u-va-top u-ta-right' } id={ 'actual_cost' + index } defaultValue={ (detail.number_of_copies * detail.count) * detail.estimated_cost }>{ (detail.number_of_copies * detail.count) * detail.estimated_cost }</td>
                       	</tr>
 											</React.Fragment>
