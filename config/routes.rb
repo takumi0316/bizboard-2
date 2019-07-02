@@ -93,6 +93,9 @@ Rails.application.routes.draw do
   #経費入力
   resources :expendables
 
+  #労務費入力
+  resources :labors
+
   # 自社部署
   resources :divisions
 

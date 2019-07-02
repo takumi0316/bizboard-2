@@ -1,0 +1,21 @@
+= form_for labor, html: { class: 'u-mt-30'} do |f|
+
+  .c-form-label
+    = f.label :date, '申請日時'
+    span.c-form__required.u-ml-10 必須
+  = f.date_select :date, {use_month_numbers: true, :start_year => Date.today.years_ago(2).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
+
+  .c-form-label
+    = f.label :division_id, '負担部署'
+  = f.select :division_id, Division.all.pluck(:name, :id), {selected: @user.division_id},{:class=>'c-form-dateselect'}
+
+  .c-form-label
+    = f.label :price, '金額(税抜き)'
+    span.c-form__required.u-ml-10 必須 (半角数字)
+  = f.number_field :price, placeholder: '1000', class: 'c-form-text'
+
+  .c-form-label
+    = f.label :memo, '備考'
+  = f.text_area :memo, placeholder: '何かあれば入力してください', class: 'c-form-textarea', rows: 3
+
+  .u-ta-center.u-mt-30 = f.submit labor.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

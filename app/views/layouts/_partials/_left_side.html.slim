@@ -67,8 +67,13 @@
 
           li.l-dashboard__menuItem
             = link_to expendables_path do
-              = evil_icon 'ei-sc-github', size: :s
+              = evil_icon 'ei-eye', size: :s
               span.u-ml-10 製造経費入力
+
+          li.l-dashboard__menuItem
+            = link_to labors_path do
+              = evil_icon 'ei-clock', size: :s
+              span.u-ml-10 労務費入力
 
           li.l-dashboard__menuItem
             = link_to users_path do
@@ -80,10 +85,10 @@
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 自社部署一覧
 
-          li.l-dashboard__menuItem
-            = link_to masters_path do
-              = evil_icon 'ei-gear', size: :s
-              span.u-ml-10 マスタ同期
+          //li.l-dashboard__menuItem
+            //= link_to masters_path do
+              //= evil_icon 'ei-gear', size: :s
+              //span.u-ml-10 マスタ同期
 
           li.l-dashboard__menuItem
             = link_to configs_path do

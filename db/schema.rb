@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_28_103242) do
+ActiveRecord::Schema.define(version: 2019_07_02_024417) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -113,6 +113,38 @@ ActiveRecord::Schema.define(version: 2019_06_28_103242) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "estimate_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
+    t.bigint "item_id"
+    t.integer "cost", comment: "原価"
+    t.integer "gross_profit", comment: "粗利"
+    t.text "detail", comment: "詳細"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["estimate_id"], name: "index_estimate_items_on_estimate_id"
+    t.index ["item_id"], name: "index_estimate_items_on_item_id"
+  end
+
+  create_table "estimates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "project_id"
+    t.string "estimat_number", comment: "見積もり番号"
+    t.date "date", comment: "発行日"
+    t.date "expiration", comment: "有効期限"
+    t.string "subject", comment: "件名"
+    t.string "item", comment: "品目"
+    t.integer "unit_price", comment: "単価"
+    t.integer "quantity", comment: "数量"
+    t.integer "cost", comment: "原価"
+    t.integer "gross_profit", comment: "粗利"
+    t.text "detail", comment: "詳細"
+    t.text "remarks", comment: "備考"
+    t.string "tag", comment: "タグ"
+    t.text "memo", comment: "メモ"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_estimates_on_project_id"
+  end
+
   create_table "expendables", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "division_id"
     t.bigint "subcontractor_id"
@@ -143,6 +175,16 @@ ActiveRecord::Schema.define(version: 2019_06_28_103242) do
     t.string "mf_invoice_id"
     t.string "pdf_url"
     t.index ["quote_id"], name: "index_invoices_on_quote_id"
+  end
+
+  create_table "labors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "division_id"
+    t.text "memo"
+    t.integer "price", default: 0
+    t.date "date", comment: "申請日"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_labors_on_division_id"
   end
 
   create_table "payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -385,6 +427,8 @@ ActiveRecord::Schema.define(version: 2019_06_28_103242) do
     t.text "deliver_type_note"
     t.bigint "division_id"
     t.integer "discount"
+    t.integer "delivery_type"
+    t.text "delivery_type_note"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end
 
