@@ -46,7 +46,12 @@ Rails.application.routes.draw do
     post :apipost
     get :pdf_dl
   end
-  resources :invoices
+  resources :invoices do
+    member do
+      get 'wicked_pdf'
+    end
+  end
+  #get 'invoices/:id/wicked_pdf' => 'invoices#wicked_pdf'
 
   #活動履歴
   resources :activities
