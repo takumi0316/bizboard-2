@@ -60,6 +60,7 @@
                 = link_to 'DL', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
               -else
                 | 未発行
+              /a.u-mt-10.c-btnMain-primaryB(href='invoices/#{r.id}/wicked_pdf') PDF化するよ
             td
               - if r.invoicing? && r.invoice.present?
                 = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
@@ -109,9 +110,10 @@
                     = link_to '見積作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
                 td
                   - if r.pdf_url.present?
-                    = link_to 'DL', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
+                   = link_to 'DL', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
                   -else
                     | 未発行
+                  /
                 td
                   - if r.invoicing? && r.invoice.present?
                     = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
@@ -161,6 +163,7 @@
                   = link_to 'DL', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
                 -else
                   | 未発行
+                /a.u-mt-10.c-btnMain-primaryB(href='invoices/#{r.id}/wicked_pdf') PDF化するよ
               td
                 - if r.invoicing? && r.invoice.present?
                   = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
