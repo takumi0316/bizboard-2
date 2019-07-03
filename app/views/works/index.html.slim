@@ -67,5 +67,4 @@
               td.u-ta-right  = r.price.nonzero?? "#{(((r.quote.price - r.price).to_f / r.quote&.price.to_f)*100).floor}%" : '0%'
               //td.u-ta-right  = r.updated_at
 
-
-  = render 'layouts/_partials/pagination'
+= render 'layouts/_partials/pagination'
