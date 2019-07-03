@@ -61,7 +61,7 @@ class Invoice < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.quote.quote_number} #{self.subject} #{self.date} #{self.quote&.client&.company_division&.name} #{self.quote&.client&.name} #{self.quote&.user&.division&.name}"
+    self.free_word = "#{self.quote.quote_number} #{self.subject} #{self.date} #{self.quote&.client&.company_division&.company&.name} #{self.quote&.client&.name} #{self.quote&.user&.division&.name}"
   end
 
   ##

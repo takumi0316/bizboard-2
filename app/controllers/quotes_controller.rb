@@ -236,24 +236,24 @@ class QuotesController < ApplicationController
                     quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
                     quote.update_columns(:mf_quote_id => data['data']['id'])
 
-                    redirect_to quotes_path, flash: {notice: {message: 'MFに見積もりを作成しました'}}
+                    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFの見積もりを作成しました'}}
                   rescue => e
                     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
                   end
                 else
-                  redirect_to quotes_path, flash: {notice: {message: '見積もり有効期限が選択されていません'}}
+                  redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もり有効期限が選択されていません'}}
                 end
               end
             else
-              redirect_to quotes_path, flash: {notice: {message: '見積もりの日付が選択されていません'}}
+              redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりの日付が選択されていません'}}
             end
           end
         else
-          redirect_to quotes_path, flash: {notice: {message: 'お客様情報が選択されていません'}}
+          redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: 'お客様情報が選択されていません'}}
         end
       end
     else
-      redirect_to quotes_path, flash: {notice: {message: '品目が紐づいていない為MFに保存ができません'}}
+      redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '品目が紐づいていない為MFに保存ができません'}}
     end
   end
 
@@ -330,7 +330,8 @@ class QuotesController < ApplicationController
         quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
         quote.update_columns(:mf_quote_id => data['data']['id'])
 
-        redirect_to quotes_path, flash: {notice: {message: 'MFの見積もりを更新しました'}}
+        redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFの見積もりを更新しました'}}
+
       rescue => e
         redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
       end
@@ -376,7 +377,7 @@ class QuotesController < ApplicationController
       redirect_to work_path(quote.work), flash: {notice: {message: '作業書を作成しました'}} and return
     end
 
-    redirect_to quotes_path, flash: {notice: {message: 'ステータスを更新しました'}}
+    redirect_to :back, flash: {notice: {message: 'ステータスを更新しました'}}
   end
 
   ##
