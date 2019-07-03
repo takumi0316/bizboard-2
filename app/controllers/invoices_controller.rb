@@ -21,6 +21,8 @@ class InvoicesController < ApplicationController
   #  ** Layouts **
   #----------------------------------------
 
+  #layout 'layouts/pdf'
+
   #----------------------------------------
   #  ** Request cycles **
   #----------------------------------------
@@ -219,6 +221,18 @@ class InvoicesController < ApplicationController
     send_data response.body, filename: "#{filename}.pdf"
   end
 
+  def wicked_pdf
+
+    respond_to do |format|
+      format.html do
+        render  pdf: '請求書・見積書・納品書ソフト | Jiiフォワード クラウド請求書', #pdfファイルの名前。これがないとエラーが出ます
+                encoding: 'UTF-8',
+                layout: 'layouts/pdf.html.slim',
+                template: 'invoices/wicked_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
+                show_as_html: params.key?('debug')
+      end
+    end
+  end
 
   #----------------------------------------
   #  ** Methods **

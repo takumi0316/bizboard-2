@@ -9,6 +9,7 @@
 #  date                         :date
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
+#  expendable_id                :bigint(8)
 #
 
 class Payment < ApplicationRecord

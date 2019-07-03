@@ -26,8 +26,6 @@
 #  deliver_type_note          :text(65535)
 #  division_id                :bigint(8)
 #  discount                   :integer
-#  delivery_type              :integer
-#  delivery_type_note         :text(65535)
 #
 
 class Quote < ApplicationRecord
