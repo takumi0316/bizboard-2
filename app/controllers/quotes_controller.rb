@@ -101,13 +101,12 @@ class QuotesController < ApplicationController
     # quote.update! quote_params.merge(division_id: current_user.division_id)
 
     if params[:id] == 'null'
-      new_quote = Quote.new
-      new_quote.save!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
+      new_quote = Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
       unless params[:specifications].nil?
         params[:specifications].each do |specification|
 
           parse_json = JSON.parse(specification)
-          createQuote = Quote.last
+          createQuote = new_quote
           createQuote.quote_projects.create!(name: parse_json['projectSpecificationName'], remarks: parse_json['projectSpecificationRemarks'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], project_id: parse_json['projectSpecificationId'], project_name: parse_json['projectName'], project_id: parse_json['projectId'].to_i)
         end
       end
