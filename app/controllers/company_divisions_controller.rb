@@ -126,6 +126,7 @@ class CompanyDivisionsController < ApplicationController
   #
   def create
 
+    binding.pry
     # 取引先情報更新
     division.update! division_params
 
