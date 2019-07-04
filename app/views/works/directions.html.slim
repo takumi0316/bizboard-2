@@ -58,7 +58,7 @@ javascript:
           td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.deliver_at if Work.find(params[:id]).quote.deliver_at.present?
         tr
           th.u-va-middle 納品先
-          td.u-va-middle.u-ta-left = "#{Work.find(params[:id]).quote.client.company_division.company.name} #{Work.find(params[:id]).quote.client.company_division.name} #{Work.find(params[:id]).quote.client.name}様"
+          td.u-va-middle.u-ta-left = "#{Work.find(params[:id]).quote.client&.company_division&.company&.name} #{Work.find(params[:id]).quote.client&.company_division&.name} #{Work.find(params[:id]).quote.client&.name}様"
         tr
           th.u-va-middle 納品方法
           td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.deliver_type_i18n
@@ -93,7 +93,7 @@ javascript:
       table
         tr
           th.u-va-middle 発注部署
-          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.division.name if  Work.find(params[:id]).quote.user.division.present?
+          td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.division&.name if  Work.find(params[:id]).quote.user.division&.present?
           th.u-va-middle 発注担当
           td.u-va-middle.u-ta-left = Work.find(params[:id]).quote.user.name
 
