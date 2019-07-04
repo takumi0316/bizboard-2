@@ -12,5 +12,5 @@ export const CHANNELS = {
 export const QUOTE_TYPES = {
   '請負': 'contract',
   //'販売施工': 'sales',
-  '分散機': '分散機'
+  '分散機': 'copy'
 };

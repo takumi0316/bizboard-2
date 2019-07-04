@@ -50,7 +50,7 @@ class Quote < ApplicationRecord
 
   enum status: { draft: 0, estimated: 10, working: 20, end_work: 30, invoicing: 40, complete: 50, lost: 60 }
 
-  enum quote_type: { contract: 0, sales: 10,  copy: 20}
+  enum quote_type: { contract: 0, copy: 10 }
   enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
   enum deliver_type: { seat: 0, location: 10, pickup: 20, bizstant: 30, other: 40 }
 
