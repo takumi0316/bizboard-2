@@ -419,7 +419,7 @@ class QuotesController < ApplicationController
       clone_work = quote.work.deep_clone(:work_details)
       clone_work.quote_id = clone_quote.id
       clone_work.save!
-      clone_work.working!
+      clone_work.draft!
       quote.work.subcontractor.each do |subcontractor|
 
         deep_subcontractor = subcontractor.deep_dup
