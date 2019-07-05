@@ -10,11 +10,11 @@ timeout 30
 
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 2)
 working_directory "#{@app_path}"
-pid "#{@app_path}/tmp/pids/unicorn_staging.pid"
+pid "#{@app_path}/tmp/pids/unicorn.pid"
 
 # This is where we specify the socket.
 # We will point the upstream Nginx module to this socket later on
-listen "#{@app_path}/tmp/sockets/unicorn_staging.sock", backlog: 64
+listen "#{@app_path}/tmp/sockets/unicorn.sock", backlog: 64
 #listen "/tmp/unicorn.sock", :backlog => 64
 
 # use correct Gemfile on restarts
