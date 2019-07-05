@@ -1,10 +1,10 @@
 .c-box
   .u-ta-center
-    h1.u-fw-lignt.u-fs-pdf-title 請求書
+    h1.u-fw-lignt.u-fs-title 請求書
 
   .u-mt-50.c-box.c-box__height-250
     .c-float__left
-      .u-fs-pdf-inside
+      .u-fs-base
         = "#{invoice.quote.client.company_division.company.name}　御中"
     .c-float__right
       = wicked_pdf_image_tag 'jii-log', {size: "525x75"}
@@ -14,7 +14,7 @@
       = wicked_pdf_image_tag 'electronic-seal', {size: "150x175"}
     .c-float__right
       .c-box__width-850.c-float__left
-        p.u-fs-pdf-proof.u-fw-light 株式会社日本工業社
+        p.u-fs-base.u-fw-light 株式会社日本工業社
         .u-mt-50
           p.u-fs-base.u-fw-light 東京都中央区新川2-26-3
           p.u-fs-base.u-fw-light 住友不動産茅場町ビル2号館 5F
@@ -23,7 +23,7 @@
   .c-box__height-250
     .c-float__right
       .c-box__width-1150.c-float__left
-        p.u-fs-pdf-proof.u-fw-light 株式会社日本工業社
+        p.u-fs-base.u-fw-light 株式会社日本工業社
         .u-mt-10
           p.u-fs-base.u-fw-light 請求書番号：S#{Invoice.find(params[:id]).quote.quote_number}
           p.u-fs-base.u-fw-light 請求日：　　#{Invoice.find(params[:id]).date}
@@ -33,7 +33,7 @@
 
   .c-box__height-250
 
-  p.u-fs-base 件名:　#{invoice.quote.subject}
+  p.u-fs-small.u-fw-bold 件名:　#{invoice.quote.subject}
 
   .c-box__height-100
 
@@ -61,17 +61,17 @@
   .c-box__height-250
 
   .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-base.u-fw-bold 小計
-    p.c-float__right.u-fs-base.u-fw-bold.u-mr-50 #{invoice.quote.price}　円
+    p.c-float__left.u-fs-base 小計
+    p.c-float__right.u-fs-base.u-mr-50 #{invoice.quote.price}　円
 
   .c-box__height-100
 
   .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-base.u-fw-bold 消費税
-    p.c-float__right.u-fs-base.u-fw-bold.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price}　円
+    p.c-float__left.u-fs-base 消費税
+    p.c-float__right.u-fs-base.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price}　円
 
   .c-box__height-100
 
   .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-base.u-fw-bold 合計
-    p.c-float__right.u-fs-base.u-fw-bold.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor}　円
+    p.c-float__left.u-fs-base 合計
+    p.c-float__right.u-fs-base.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor}　円
