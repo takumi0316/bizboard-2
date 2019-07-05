@@ -15,7 +15,7 @@ defaults: &defaults
 development:
   <<: *defaults
 
-production:
+staging:
   <<: *defaults
   url: https://staging.factory.jiinet.co.jp
   host: staging.factory.jiinet.co.jp
