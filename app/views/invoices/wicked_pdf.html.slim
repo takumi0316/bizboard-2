@@ -16,62 +16,62 @@
       .c-box__width-850.c-float__left
         p.u-fs-pdf-proof.u-fw-light 株式会社日本工業社
         .u-mt-50
-          p.u-fs-pdf-proof.u-fw-light 東京都中央区新川2-26-3
-          p.u-fs-pdf-proof.u-fw-light 住友不動産茅場町ビル2号館 5F
-          p.u-fs-pdf-proof.u-fw-light TEL: 03-6280-5510
+          p.u-fs-base.u-fw-light 東京都中央区新川2-26-3
+          p.u-fs-base.u-fw-light 住友不動産茅場町ビル2号館 5F
+          p.u-fs-base.u-fw-light TEL: 03-6280-5510
 
   .c-box__height-250
     .c-float__right
       .c-box__width-1150.c-float__left
         p.u-fs-pdf-proof.u-fw-light 株式会社日本工業社
         .u-mt-10
-          p.u-fs-pdf-proof.u-fw-light 請求書番号：S#{Invoice.find(params[:id]).quote.quote_number}
-          p.u-fs-pdf-proof.u-fw-light 請求日：　　#{Invoice.find(params[:id]).date}
-          p.u-fs-pdf-proof.u-fw-light お支払期限：#{Invoice.find(params[:id]).expiration}
+          p.u-fs-base.u-fw-light 請求書番号：S#{Invoice.find(params[:id]).quote.quote_number}
+          p.u-fs-base.u-fw-light 請求日：　　#{Invoice.find(params[:id]).date}
+          p.u-fs-base.u-fw-light お支払期限：#{Invoice.find(params[:id]).expiration}
     .c-float__right
       .c-box__width-300
 
   .c-box__height-250
 
-  p.u-fs-pdf-proof 件名:　#{invoice.quote.subject}
+  p.u-fs-base 件名:　#{invoice.quote.subject}
 
   .c-box__height-100
 
   .c-border
-    p.u-fs-pdf-proof ご請求金額　#{Invoice.find(params[:id]).quote.price}円
+    p.u-fs-base ご請求金額　#{Invoice.find(params[:id]).quote.price}円
 
   .c-box__height-100
 
-  p.c-box__width-1750.c-float__left.c-border.u-fs-pdf-proof 品目
-  p.c-box__width-350.c-float__right.c-border.u-fs-pdf-proof.u-ta-left 価格
-  p.c-box__width-300.c-float__right.c-border.u-fs-pdf-proof.u-ta-left 数量
-  p.c-box__width-400.c-float__right.c-border.u-fs-pdf-proof.u-ta-left 単価
+  p.c-box__width-1750.c-float__left.c-border.u-fs-base 品目
+  p.c-box__width-350.c-float__right.c-border.u-fs-base.u-ta-left 価格
+  p.c-box__width-300.c-float__right.c-border.u-fs-base.u-ta-left 数量
+  p.c-box__width-400.c-float__right.c-border.u-fs-base.u-ta-left 単価
 
   - invoice.quote.quote_projects.each do |r|
 
     .c-box__height-100
-    p.c-box__width-1750.c-box__height-100.c-float__left.u-fs-pdf-proof #{r.name}
-    p.c-box__width-350.c-box__height-100.c-float__right.u-fs-pdf-proof.u-ta-center #{r.price}
-    p.c-box__width-300.c-box__height-100.c-float__right.u-fs-pdf-proof.u-ta-center #{r.unit}
-    p.c-box__width-400.c-box__height-100.c-float__right.u-fs-pdf-proof.u-ta-center #{r.unit_price}
+    p.c-box__width-1750.c-box__height-100.c-float__left.u-fs-base #{r.name}
+    p.c-box__width-350.c-box__height-100.c-float__right.u-fs-base.u-ta-center #{r.price}
+    p.c-box__width-300.c-box__height-100.c-float__right.u-fs-base.u-ta-center #{r.unit}
+    p.c-box__width-400.c-box__height-100.c-float__right.u-fs-base.u-ta-center #{r.unit_price}
     - if r.remarks.present?
-      p.c-box.c-box__height-100.u-fs-pdf-remarks #{r.remarks}
+      p.c-box.c-box__height-100.u-fs-light #{r.remarks}
   end
 
   .c-box__height-250
 
   .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-pdf-proof.u-fw-bold 小計
-    p.c-float__right.u-fs-pdf-proof.u-fw-bold.u-mr-50 #{invoice.quote.price}　円
+    p.c-float__left.u-fs-base.u-fw-bold 小計
+    p.c-float__right.u-fs-base.u-fw-bold.u-mr-50 #{invoice.quote.price}　円
 
   .c-box__height-100
 
   .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-pdf-proof.u-fw-bold 消費税
-    p.c-float__right.u-fs-pdf-proof.u-fw-bold.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price}　円
+    p.c-float__left.u-fs-base.u-fw-bold 消費税
+    p.c-float__right.u-fs-base.u-fw-bold.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price}　円
 
   .c-box__height-100
 
   .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-pdf-proof.u-fw-bold 合計
-    p.c-float__right.u-fs-pdf-proof.u-fw-bold.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor}　円
+    p.c-float__left.u-fs-base.u-fw-bold 合計
+    p.c-float__right.u-fs-base.u-fw-bold.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor}　円
