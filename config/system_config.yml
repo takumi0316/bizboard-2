@@ -15,6 +15,13 @@ defaults: &defaults
 development:
   <<: *defaults
 
+staging:
+  <<: *defaults
+  url: https://staging.factory.jiinet.co.jp
+  host: staging.factory.jiinet.co.jp
+  redis_host: localhost
+  redis_port: 6379
+
 production:
   <<: *defaults
   url: https://factory.jiinet.co.jp
