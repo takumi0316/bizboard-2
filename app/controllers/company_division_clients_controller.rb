@@ -111,7 +111,6 @@ class CompanyDivisionClientsController < ApplicationController
   # @version 2018/06/10
   #
   def destroy
-    binding.pry
 
     raise '対象のクライアントは見積り情報とのひも付きがあるため削除できません' if client.quotes.exists?
 
