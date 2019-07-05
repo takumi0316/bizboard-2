@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module JiiFactory
   class Application < Rails::Application
-    
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
@@ -39,7 +39,7 @@ module JiiFactory
       driver: :hiredis,
       namespace: :jii_factory,
       compress: true,
-      url: "redis://#{config.x.system['redis_host']}:#{config.x.system['redis_port']}/0/"
+      url: "redis://#{config.x.system['redis_host']}:#{config.x.system['redis_port']}/#{Rails.env.production?? 0 : 2}/"
     }
 
     # アクセス制限
@@ -52,7 +52,7 @@ module JiiFactory
     end
 
     # default form builder
-    config.action_view.default_form_builder = 'ApplicationFormBuilder' 
+    config.action_view.default_form_builder = 'ApplicationFormBuilder'
 
     # field_with_errors wrapper
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| html_tag.html_safe }

@@ -23,6 +23,13 @@ default: &default
 development:
   <<: *default
 
+staging:
+  <<: *default
+  database: factory_staging
+  username: factory
+  password: factoryfactory_2018
+  host: localhost
+
 production:
   <<: *default
   database: factory
