@@ -115,11 +115,11 @@ class CompanyDivisionClientsController < ApplicationController
     raise '対象のクライアントは見積り情報とのひも付きがあるため削除できません' if client.quotes.exists?
 
     client.destroy!
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '担当者情報を削除しました'}}
   rescue => e
 
-    flash[:warning] = { message: e.message }
-  ensure
-    redirect_to action: :index
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
   #----------------------------------------
