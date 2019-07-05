@@ -2,15 +2,17 @@
 #
 # Table name: expendables
 #
-#  id                :bigint(8)        not null, primary key
-#  divisions_id      :bigint(8)
-#  subcontractors_id :bigint(8)
-#  status            :integer          default("copy")
-#  name              :string(191)
-#  price             :integer          default(0)
-#  date              :date
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                           :bigint(8)        not null, primary key
+#  division_id                  :bigint(8)
+#  subcontractor_id             :bigint(8)
+#  status                       :integer          default("copy")
+#  name                         :string(191)
+#  price                        :integer          default(0)
+#  date                         :date
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  memo                         :text(65535)
+#  work_subcontractor_detail_id :bigint(8)
 #
 
 class Expendable < ApplicationRecord
@@ -44,6 +46,8 @@ class Expendable < ApplicationRecord
   belongs_to :subcontractor
 
   belongs_to :division
+
+  belongs_to :work_subcontractor_detail, optional: true
 
   #----------------------------------------
   #  ** Scopes **

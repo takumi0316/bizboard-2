@@ -1,19 +1,17 @@
 # == Schema Information
 #
-# Table name: payments
+# Table name: labors
 #
-#  id                           :bigint(8)        not null, primary key
-#  subcontractor_id             :bigint(8)
-#  work_subcontractor_detail_id :bigint(8)
-#  price                        :integer          default(0)
-#  date                         :date
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
-#  expendable_id                :bigint(8)
+#  id          :bigint(8)        not null, primary key
+#  division_id :bigint(8)
+#  memo        :text(65535)
+#  price       :integer          default(0)
+#  date        :date
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
-class Payment < ApplicationRecord
-
+class Labor < ApplicationRecord
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
@@ -34,15 +32,16 @@ class Payment < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :subcontractor, foreign_key: 'subcontractor_id'
+  belongs_to :division
 
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
 
+  scope :date_in, ->(datetime) { where(date: datetime) }
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-
 
 end

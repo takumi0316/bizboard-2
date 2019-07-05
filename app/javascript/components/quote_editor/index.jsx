@@ -142,7 +142,7 @@ export default class QuoteEditor extends React.Component {
     }
     field = {
       'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
-      'quote[division_id]': this.state.home_division === null ? 'null' : this.state.home_division.id,
+      'quote[division_id]': this.state.home_division === null ? this.props.division_id : this.state.home_division.id,
       'quote[company_division_client_id]': this.refs.company_division_client_id.value || '',
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
@@ -272,7 +272,7 @@ export default class QuoteEditor extends React.Component {
 
     const delProjectPrice = Number(this.state.quote_projects[passIndex].price);
     let copyProjects = Object.assign([], this.state.quote_projects);
-    let minusCost = (Number(this.state.total_cost) - delProjectPrice) * gon.consumption_tax;
+    let minusCost = Number(this.state.total_cost) - delProjectPrice;
     let totalCost = 0;
     let pushProjects = [];
     if ( this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null ) {
@@ -307,7 +307,11 @@ export default class QuoteEditor extends React.Component {
 
       copyProjects.map((project, index) => {
 
-        if ( project.name != passName ) {
+        // 条件文をproject.nameではなく、project.id != this.state.quote_projects[passIndex].idにする
+        //if ( project.name != passName ) {
+        console.log('project: ', project)
+        console.log('quote_projects', this.state.quote_projects[passIndex])
+        if ( index != passIndex ) { 
 
           pushProjects.push(project);
           totalCost = totalCost + Number(project.price);
@@ -475,7 +479,6 @@ export default class QuoteEditor extends React.Component {
         </div>
         <div className={ 'c-form-label u-mt-30' }>
           <label>売り上げ部署情報</label>
-          <span className='c-form__required u-ml-10'>必須</span>
         </div>
         { this.state.home_division !== null ?
           <div className={ 'c-attention' }>
@@ -677,7 +680,7 @@ export default class QuoteEditor extends React.Component {
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
-                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ Math.floor(this.state.total_cost * gon.consumption_tax) }></textarea>
+                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost }></textarea>
                 </td>
               </tr>
               <tr>

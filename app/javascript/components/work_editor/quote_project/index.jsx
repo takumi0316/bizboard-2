@@ -106,18 +106,19 @@ export default class QuoteProject extends React.Component {
    * 表示処理
    */
   render() {
+    console.log(this.state.quote_project)
     return (
       <div>
         { this.state.show === false ?
           <div className={ 'c-attention u-fw-bold u-mt-10' } onClick={ ::this._changeShow }>
-            品目を表示(ここをクリックしてねΣ（・□・；）)
+            品目を表示
           </div>
           :
           null
         }
         { this.state.project_category === 'プリント' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//))</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる</div>
             <br />
             <div>
               <span className={ 'u-ml-10 u-mt-10' }>品目名: </span>
@@ -337,7 +338,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === '名刺' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる</div>
             <br />
             <div>
               <span className={ 'u-ml-10 u-mt-10' }>品目名: </span>
@@ -385,7 +386,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === 'コピー' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる！！！！！！！！！！！！！！！！！</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる</div>
             <br />
             <div>
               <span className={ 'u-ml-10' }>品目名: </span>
@@ -588,7 +589,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === '製本' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる</div>
             <br />
             <div>
               <span className={ 'u-ml-10' }>品目名: </span>
@@ -752,7 +753,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === 'スキャン' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold u-mt-10' }>
-            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
+            <div className={ 'u-ml-10' } onClick={ ::this._changeShow }>品目を閉じる</div>
             <br />
             <div>
               <span className={ 'u-ml-10' }>品目名: </span>
@@ -814,7 +815,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === '印刷' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold' }>
-            <div className={ 'c-ml-10 c-mt-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
+            <div className={ 'c-ml-10 c-mt-10' } onClick={ ::this._changeShow }>品目を閉じる</div>
             <span className={ 'c-ml-10' }>品目名: </span>
             <span className={ 'c-ml-10' }>{ this.state.project.name }</span>
             <div>
@@ -830,7 +831,7 @@ export default class QuoteProject extends React.Component {
         }
         { this.state.project_category === 'その他' && this.state.show === true ?
           <div className={ 'c-attention u-fw-bold' }>
-            <div className={ 'c-ml-10 c-mt-10' } onClick={ ::this._changeShow }>品目を閉じる(ここをクリックしてね(//∇//)</div>
+            <div className={ 'c-ml-10 c-mt-10' } onClick={ ::this._changeShow }>品目を閉じる</div>
             <span className={ 'c-ml-10' }>品目名: </span>
             <span className={ 'c-ml-10' }>{ this.state.project.name }</span>
             <div>

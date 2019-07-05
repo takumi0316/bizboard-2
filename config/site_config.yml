@@ -11,6 +11,9 @@ defaults: &defaults
   webclip:
   og_image:
 
+  # home
+  home: home
+
   # 未承認ユーザーのログインの許可設定 true: 許可する false: 許可しない
   allow_inactive_user: false
   # お知らせや通知等の新着表示期限(h)

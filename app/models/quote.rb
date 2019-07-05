@@ -26,8 +26,6 @@
 #  deliver_type_note          :text(65535)
 #  division_id                :bigint(8)
 #  discount                   :integer
-#  delivery_type              :integer
-#  delivery_type_note         :text(65535)
 #
 
 class Quote < ApplicationRecord
@@ -52,7 +50,7 @@ class Quote < ApplicationRecord
 
   enum status: { draft: 0, estimated: 10, working: 20, end_work: 30, invoicing: 40, complete: 50, lost: 60 }
 
-  enum quote_type: { contract: 0, sales: 10,  copy: 20}
+  enum quote_type: { contract: 0, copy: 10 }
   enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
   enum deliver_type: { seat: 0, location: 10, pickup: 20, bizstant: 30, other: 40 }
 
@@ -111,7 +109,7 @@ class Quote < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.subject} #{self.user&.name} #{self.division&.name} #{self.created_at} #{self.client&.company_division&.company&.name} #{self.client&.company_division&.name} #{self.client&.name}"
+    self.free_word = "#{self.quote_number} #{self.subject} #{self.user&.name} #{self.division&.name} #{self.created_at} #{self.client&.company_division&.company&.name} #{self.client&.company_division&.name} #{self.client&.name}"
   end
 
   ##

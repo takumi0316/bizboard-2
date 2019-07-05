@@ -101,12 +101,12 @@ class QuotesController < ApplicationController
     # quote.update! quote_params.merge(division_id: current_user.division_id)
 
     if params[:id] == 'null'
-      Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
+      new_quote = Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount])
       unless params[:specifications].nil?
         params[:specifications].each do |specification|
 
           parse_json = JSON.parse(specification)
-          createQuote = Quote.last
+          createQuote = new_quote
           createQuote.quote_projects.create!(name: parse_json['projectSpecificationName'], remarks: parse_json['projectSpecificationRemarks'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], project_id: parse_json['projectSpecificationId'], project_name: parse_json['projectName'], project_id: parse_json['projectId'].to_i)
         end
       end
@@ -135,7 +135,6 @@ class QuotesController < ApplicationController
 
     if params[:id] == 'null'
 
-      Quote.last.destroy!
       render json: { status: :error, quote: Quote.new, quote_projects: [] }
     else
 
@@ -236,24 +235,24 @@ class QuotesController < ApplicationController
                     quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
                     quote.update_columns(:mf_quote_id => data['data']['id'])
 
-                    redirect_to quotes_path, flash: {notice: {message: 'MFに見積もりを作成しました'}}
+                    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFの見積もりを作成しました'}}
                   rescue => e
                     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
                   end
                 else
-                  redirect_to quotes_path, flash: {notice: {message: '見積もり有効期限が選択されていません'}}
+                  redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もり有効期限が選択されていません'}}
                 end
               end
             else
-              redirect_to quotes_path, flash: {notice: {message: '見積もりの日付が選択されていません'}}
+              redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりの日付が選択されていません'}}
             end
           end
         else
-          redirect_to quotes_path, flash: {notice: {message: 'お客様情報が選択されていません'}}
+          redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: 'お客様情報が選択されていません'}}
         end
       end
     else
-      redirect_to quotes_path, flash: {notice: {message: '品目が紐づいていない為MFに保存ができません'}}
+      redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '品目が紐づいていない為MFに保存ができません'}}
     end
   end
 
@@ -330,7 +329,8 @@ class QuotesController < ApplicationController
         quote.update_columns(:pdf_url => data['data']['attributes']['pdf_url'])
         quote.update_columns(:mf_quote_id => data['data']['id'])
 
-        redirect_to quotes_path, flash: {notice: {message: 'MFの見積もりを更新しました'}}
+        redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: 'MFの見積もりを更新しました'}}
+
       rescue => e
         redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
       end
@@ -376,7 +376,7 @@ class QuotesController < ApplicationController
       redirect_to work_path(quote.work), flash: {notice: {message: '作業書を作成しました'}} and return
     end
 
-    redirect_to quotes_path, flash: {notice: {message: 'ステータスを更新しました'}}
+    redirect_to :back, flash: {notice: {message: 'ステータスを更新しました'}}
   end
 
   ##
