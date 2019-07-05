@@ -1,35 +1,39 @@
 .c-box
   .u-ta-center
-    h1.u-fw-lignt.u-fs-title 請求書
+    h1.u-fw-lignt.u-fs-base 請求書
 
-  .c-box.c-box__height-200
+  .c-box.c-box__height-200.u-mt-30
     .c-float__left
       .u-fs-base
         = "#{invoice.quote.client.company_division.company.name}　御中"
     .c-float__right
-      = wicked_pdf_image_tag 'jii-log', {size: "70x37.5"}
+      = wicked_pdf_image_tag 'jii-log', {size: "50x17.5"}
 
   .c-box__height-250
     .c-float__right
       = wicked_pdf_image_tag 'electronic-seal', {size: "75x87"}
     .c-float__right
-      .c-box__width-850.c-float__left
+      .c-box__width-375.c-float__left
         p.u-fs-base.u-fw-light 株式会社日本工業社
         p.u-fs-base.u-fw-light 東京都中央区新川2-26-3
         p.u-fs-base.u-fw-light 住友不動産茅場町ビル2号館 5F
         p.u-fs-base.u-fw-light TEL: 03-6280-5510
+    .c-float__left
+      p.u-fs-base.u-fw-light 〒#{invoice.quote.client.company_division.zip}
+      p.u-fs-base.u-fw-light.u-mt-10 #{invoice.quote.client.company_division.address1}
+      p.u-fs-base.u-fw-light.u-mt-10 #{invoice.quote.client.company_division.address2}
+      p.u-fs-base.u-fw-light.u-mt-10 #{invoice.quote.client.company_division.name}
 
   .c-box__height-250
     .c-float__right
-      .c-box__width-850.c-float__left
+      .c-box__width-375
         p.u-fs-base.u-fw-light 株式会社日本工業社
         .u-mt-10
-          p.u-fs-base.u-fw-light 請求書番号：S#{Invoice.find(params[:id]).quote.quote_number}
-          p.u-fs-base.u-fw-light 請求日：　　#{Invoice.find(params[:id]).date}
-          p.u-fs-base.u-fw-light お支払期限：#{Invoice.find(params[:id]).expiration}
-
+          p.u-fs-base.u-fw-light 請求書番号：S#{invoice.quote.quote_number}
+          p.u-fs-base.u-fw-light 請求日：　　#{invoice.date}
+          p.u-fs-base.u-fw-light お支払期限：#{invoice.expiration}
     .c-float__right
-      .c-box__width-200
+      .c-box__width-750
 
   .c-box__height-250
 
@@ -38,14 +42,9 @@
   .c-box__height-100
 
   .c-border
-    p.u-fs-base ご請求金額　#{Invoice.find(params[:id]).quote.price}円
+    p.u-fs-base ご請求金額　#{invoice.quote.price}円
 
   .c-box__height-100
-
-  /p.c-box__width-1750.c-float__left.c-border.u-fs-base 品目
-  /p.c-box__width-350.c-float__right.c-border.u-fs-base.u-ta-left 価格
-  /p.c-box__width-300.c-float__right.c-border.u-fs-base.u-ta-left 数量
-  /p.c-box__width-400.c-float__right.c-border.u-fs-base.u-ta-left 単価
 
   .c-table-pdf
     table
@@ -66,30 +65,29 @@
                 tr
                   td(colspan='4').u-ta-left #{r.remarks}
 
-  /- invoice.quote.quote_projects.each do |r|
-
-  /  .c-box__height-100
-  /  p.c-box__width-1750.c-box__height-100.c-float__left.u-fs-base #{r.name}
-  /  p.c-box__width-350.c-box__height-100.c-float__right.u-fs-base.u-ta-center #{r.price}
-  /  p.c-box__width-300.c-box__height-100.c-float__right.u-fs-base.u-ta-center #{r.unit}
-  /  p.c-box__width-400.c-box__height-100.c-float__right.u-fs-base.u-ta-center #{r.unit_price}
-  /  - if r.remarks.present?
-  /    p.c-box.c-box__height-100.u-fs-light #{r.remarks}
-
   .c-box__height-250
 
-  .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-base 小計
-    p.c-float__right.u-fs-base.u-mr-50 #{invoice.quote.price}　円
+  .c-float__right
+    .c-table-pdf__price
+      table
+        tr
+          th.u-ta-left 小計
+          td.u-ta-right #{invoice.quote.price} 円
 
   .c-box__height-100
 
-  .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-base 消費税
-    p.c-float__right.u-fs-base.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price}　円
+  .c-float__right
+    .c-table-pdf__price
+      table
+        tr
+          th.u-ta-left 消費税
+          td.u-ta-right #{(invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price} 円
 
   .c-box__height-100
 
-  .c-float__right.c-box__width-1150.c-border
-    p.c-float__left.u-fs-base 合計
-    p.c-float__right.u-fs-base.u-mr-50 #{(invoice.quote.price * SiteConfig.consumption_tax).floor}　円
+  .c-float__right
+    .c-table-pdf__price
+      table
+        tr
+          th.u-ta-left 合計
+          td.u-ta-right #{(invoice.quote.price * SiteConfig.consumption_tax).floor} 円
