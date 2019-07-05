@@ -2,34 +2,34 @@
   .u-ta-center
     h1.u-fw-lignt.u-fs-title 請求書
 
-  .u-mt-50.c-box.c-box__height-250
+  .c-box.c-box__height-200
     .c-float__left
       .u-fs-base
         = "#{invoice.quote.client.company_division.company.name}　御中"
     .c-float__right
-      = wicked_pdf_image_tag 'jii-log', {size: "462.5x37.5"}
+      = wicked_pdf_image_tag 'jii-log', {size: "70x37.5"}
 
-  .c-box__height-425
+  .c-box__height-250
     .c-float__right
       = wicked_pdf_image_tag 'electronic-seal', {size: "75x87"}
     .c-float__right
       .c-box__width-850.c-float__left
         p.u-fs-base.u-fw-light 株式会社日本工業社
-        .u-mt-50
-          p.u-fs-base.u-fw-light 東京都中央区新川2-26-3
-          p.u-fs-base.u-fw-light 住友不動産茅場町ビル2号館 5F
-          p.u-fs-base.u-fw-light TEL: 03-6280-5510
+        p.u-fs-base.u-fw-light 東京都中央区新川2-26-3
+        p.u-fs-base.u-fw-light 住友不動産茅場町ビル2号館 5F
+        p.u-fs-base.u-fw-light TEL: 03-6280-5510
 
   .c-box__height-250
     .c-float__right
-      .c-box__width-1150.c-float__left
+      .c-box__width-850.c-float__left
         p.u-fs-base.u-fw-light 株式会社日本工業社
         .u-mt-10
           p.u-fs-base.u-fw-light 請求書番号：S#{Invoice.find(params[:id]).quote.quote_number}
           p.u-fs-base.u-fw-light 請求日：　　#{Invoice.find(params[:id]).date}
           p.u-fs-base.u-fw-light お支払期限：#{Invoice.find(params[:id]).expiration}
+
     .c-float__right
-      .c-box__width-300
+      .c-box__width-200
 
   .c-box__height-250
 
@@ -47,23 +47,24 @@
   /p.c-box__width-300.c-float__right.c-border.u-fs-base.u-ta-left 数量
   /p.c-box__width-400.c-float__right.c-border.u-fs-base.u-ta-left 単価
 
-  .c-table.c-box
+  .c-table-pdf
     table
-      tr.c-border
-        th.u-ta-left 品目
-        th.u-ta-left 単価
-        th.u-ta-left 数量
-        th.u-ta-left 価格
-      - invoice.quote.quote_projects.each do |r|
-        tr
-          td.u-ta-left #{r.name}
-          td.u-ta-right #{r.unit_price}
-          td.u-ta-right #{r.unit}
-          td.u-ta-right #{r.price}
-          - if r.remarks.present?
-            table
-              tr
-                td.u-ta-left #{r.remarks}
+      thead
+        tr.c-border
+          th.u-ta-left 品目
+          th.u-ta-left 単価
+          th.u-ta-left 数量
+          th.u-ta-left 価格
+        tbody
+          - invoice.quote.quote_projects.each do |r|
+            tr
+              td.u-ta-left #{r.name}
+              td.u-ta-right #{r.unit_price}
+              td.u-ta-right #{r.unit}
+              td.u-ta-right #{r.price}
+              - if r.remarks.present?
+                tr
+                  td(colspan='4').u-ta-left #{r.remarks}
 
   /- invoice.quote.quote_projects.each do |r|
 

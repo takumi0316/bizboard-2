@@ -58,6 +58,34 @@
             object-position: center
             vertical-align: middle
 
+.c-table-pdf
+
+  table
+    width: 100%
+    thead
+      tr
+        th
+          padding: 5px
+          white-space: nowrap
+          font-weight: bold
+          font-size: 1.2rem
+    tbody
+      tr
+        &:nth-child(even)
+          td
+            background: rgba(map-get($layoutColors, 'lightGray'), .1)
+        td
+          padding: 10px
+          white-space: nowrap
+          background: rgba(map-get($layoutColors, 'white'), .6)
+          font-size: 1.2rem
+          font-weight: bold
+        td#deliver_at#client_name
+          padding: 10px
+          white-space: nowrap
+          background: rgba(map-get($layoutColors, 'white'), .6)
+          width: 100px
+
 .c-table2
 
   overflow: auto
