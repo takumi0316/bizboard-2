@@ -13,8 +13,14 @@ $ sidekiqctl stop ./tmp/pids/sidekiq.pid
 
 ## デプロイ
 
+# production
 ```
 $ bundle exec cap production deploy
+```
+
+# staging
+```
+$ bundle exec cap staging deploy
 ```
 
 ## 本番でのcacheクリア
@@ -47,7 +53,7 @@ $ RAILS_ENV=production ruby console.rb
 
 ## 秘匿情報の追加/更新
 ```
-EDITOR=vi rails credentials:edit
+$ EDITOR=vi rails credentials:edit
 ```
 
 ## SVGスプライト作成
