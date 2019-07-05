@@ -307,7 +307,11 @@ export default class QuoteEditor extends React.Component {
 
       copyProjects.map((project, index) => {
 
-        if ( project.name != passName ) {
+        // 条件文をproject.nameではなく、project.id != this.state.quote_projects[passIndex].idにする
+        //if ( project.name != passName ) {
+        console.log('project: ', project)
+        console.log('quote_projects', this.state.quote_projects[passIndex])
+        if ( index != passIndex ) { 
 
           pushProjects.push(project);
           totalCost = totalCost + Number(project.price);
