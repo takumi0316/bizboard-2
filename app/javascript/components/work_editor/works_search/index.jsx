@@ -38,26 +38,34 @@ export default class WorksSearch extends Component {
   }
 
   componentWillMount = () => {
-
     if (location.search.length > 0) {
-
-      // 最初の1文字 (?記号) を除いた文字列を取得する
-      let query = document.location.search.substring(1);
-      let parameters = query.split('&');
-      let result = new Object();
-      for (var i = 0; i < parameters.length; i++) {
-        // パラメータ名とパラメータ値に分割する
-        let element = parameters[i].split('=');
-        let paramName = decodeURIComponent(element[0]);
-        let paramValue = decodeURIComponent(element[1]);
-
-        // パラメータ名をキーとして連想配列に追加する
-        result[paramName] = decodeURIComponent(paramValue);
+      // MF見積もり作成・更新なのか確認
+      if (location.search.substring(1,4) == "id=") {
+        return false;
       }
+      else if (location.search.substring(1,6) == "page=") {
+        return false;
+      }
+      else {
+        // 最初の1文字 (?記号) を除いた文字列を取得する
+        let query = document.location.search.substring(1);
+        let parameters = query.split('&');
+        let result = new Object();
+        for (var i = 0; i < parameters.length; i++) {
+          // パラメータ名とパラメータ値に分割する
+          let element = parameters[i].split('=');
+          let paramName = decodeURIComponent(element[0]);
+          let paramValue = decodeURIComponent(element[1]);
 
-      this.setState({ status: result['status'], startDate: new Date(result['date1']), startDate2: new Date(result['date2']) });
+          // パラメータ名をキーとして連想配列に追加する
+          result[paramName] = decodeURIComponent(paramValue);
+        }
+
+        this.setState({ startDate: new Date(result['date1']), startDate2: new Date(result['date2']) });
+      }
     }
   }
+
 
   onSearchParams = (params) => {
 
