@@ -16,8 +16,7 @@
         th 更新者
         //th 更新日
         th 作業書
-        th 見積作成･更新
-        th PDF
+        th 見積書
         th 請求書
         th 活動履歴
         th colspan=4
@@ -51,15 +50,6 @@
                 - else
                   = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
             td
-              - if r.pdf_url.present?
-                = link_to '見積更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
-              - else
-                = link_to '見積作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
-            td
-              - if r.pdf_url.present?
-                = link_to 'DL', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
-              -else
-                | 未発行
               /a.u-mt-10.c-btnMain-primaryB(href='invoices/#{r.id}/wicked_pdf') PDF化するよ
             td
               - if r.invoicing? && r.invoice.present?
@@ -104,15 +94,7 @@
                     - else
                       = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
                 td
-                  - if r.pdf_url.present?
-                    = link_to '見積更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
-                  - else
-                    = link_to '見積作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
                 td
-                  - if r.pdf_url.present?
-                   = link_to 'DL', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
-                  -else
-                    | 未発行
                   /
                 td
                   - if r.invoicing? && r.invoice.present?
@@ -154,15 +136,7 @@
                   - else
                     = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
               td
-                - if r.pdf_url.present?
-                  = link_to '見積更新', quotes_api_update_path(id: r), class: 'c-btnMain-standard c-btn-red'
-                - else
-                  = link_to '見積作成', quotes_api_post_path(id: r), class: 'c-btnSub-standard'
               td
-                - if r.pdf_url.present?
-                  = link_to 'DL', quotes_pdf_dl_path(id: r), class: 'c-btnSub-standard'
-                -else
-                  | 未発行
                 /a.u-mt-10.c-btnMain-primaryB(href='invoices/#{r.id}/wicked_pdf') PDF化するよ
               td
                 - if r.invoicing? && r.invoice.present?

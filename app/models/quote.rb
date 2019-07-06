@@ -14,7 +14,6 @@
 #  price                      :integer
 #  attention                  :integer
 #  pdf_url                    :text(65535)
-#  mf_quote_id                :text(65535)
 #  user_id                    :integer
 #  status                     :integer          default("draft")
 #  quote_number               :string(191)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_02_024417) do
+ActiveRecord::Schema.define(version: 2019_07_05_091731) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -63,7 +63,6 @@ ActiveRecord::Schema.define(version: 2019_07_02_024417) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "mf_company_id"
     t.text "free_word"
   end
 
@@ -95,7 +94,6 @@ ActiveRecord::Schema.define(version: 2019_07_02_024417) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "mf_company_division_id"
     t.text "free_word"
     t.index ["company_id"], name: "index_company_divisions_on_company_id"
   end
@@ -140,7 +138,6 @@ ActiveRecord::Schema.define(version: 2019_07_02_024417) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "attention"
-    t.string "mf_invoice_id"
     t.string "pdf_url"
     t.index ["quote_id"], name: "index_invoices_on_quote_id"
   end
@@ -383,7 +380,6 @@ ActiveRecord::Schema.define(version: 2019_07_02_024417) do
     t.integer "price"
     t.integer "attention"
     t.text "pdf_url"
-    t.text "mf_quote_id"
     t.integer "user_id"
     t.integer "status", default: 0
     t.string "quote_number"
@@ -504,9 +500,6 @@ ActiveRecord::Schema.define(version: 2019_07_02_024417) do
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "mf_access_token"
-    t.datetime "mf_token_expires_in"
-    t.string "mf_refresh_token"
     t.index ["division_id"], name: "index_users_on_division_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["password_digest"], name: "index_users_on_password_digest"

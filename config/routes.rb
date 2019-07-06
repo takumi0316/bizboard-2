@@ -16,12 +16,6 @@ Rails.application.routes.draw do
   end
   resources :configs
 
-  # マスタ同期
-  namespace :masters do
-    post :pertners
-  end
-  resources :masters
-
   # 目標管理
   resources :targets
 
@@ -29,11 +23,6 @@ Rails.application.routes.draw do
   resources :projects
 
   #見積もり
-  namespace :quotes do
-    get  :api_post
-    get  :api_update
-    get  :pdf_dl
-  end
   resources :quotes do
     post :status
     post :copy
@@ -44,7 +33,6 @@ Rails.application.routes.draw do
   # 案件
   namespace :invoices do
     post :apipost
-    get :pdf_dl
   end
   resources :invoices do
     member do
@@ -106,11 +94,6 @@ Rails.application.routes.draw do
 
   # ユーザー管理
   resources :users, only: [:index, :edit, :update, :destroy]
-
-  # サイト設定
-  namespace :webhooks do
-    get :mfcloud
-  end
 
   # 認証
   devise_scope :user do

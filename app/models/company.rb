@@ -2,14 +2,13 @@
 #
 # Table name: companies
 #
-#  id            :bigint(8)        not null, primary key
-#  name          :string(191)
-#  kana          :string(191)
-#  note          :text(65535)
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  mf_company_id :string(191)
-#  free_word     :text(65535)
+#  id         :bigint(8)        not null, primary key
+#  name       :string(191)
+#  kana       :string(191)
+#  note       :text(65535)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  free_word  :text(65535)
 #
 
 class Company < ApplicationRecord
