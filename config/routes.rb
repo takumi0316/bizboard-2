@@ -33,10 +33,14 @@ Rails.application.routes.draw do
     get  :api_post
     get  :api_update
     get  :pdf_dl
+
   end
   resources :quotes do
     post :status
     post :copy
+    member do
+      get 'wicked_pdf'
+    end
   end
 
   resources :quote_projects, only: [:destroy]
