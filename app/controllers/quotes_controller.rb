@@ -234,6 +234,19 @@ class QuotesController < ApplicationController
     redirect_to edit_quote_path(clone_quote), flash: {notice: {message: '見積書を複製しました'}}
   end
 
+  def wicked_pdf
+    
+    respond_to do |format|
+      format.html do
+        render  pdf: '請求書・見積書・納品書ソフト | Jiiフォワード クラウド請求書', #pdfファイルの名前。これがないとエラーが出ます
+                encoding: 'UTF-8',
+                layout: 'layouts/pdf.html.slim',
+                template: 'quotes/wicked_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
+                show_as_html: params.key?('debug')
+      end
+    end
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

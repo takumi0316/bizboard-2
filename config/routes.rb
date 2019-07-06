@@ -23,9 +23,15 @@ Rails.application.routes.draw do
   resources :projects
 
   #見積もり
+  namespace :quotes do
+    get  :pdf_dl
+  end
   resources :quotes do
     post :status
     post :copy
+    member do
+      get 'wicked_pdf'
+    end
   end
 
   resources :quote_projects, only: [:destroy]
