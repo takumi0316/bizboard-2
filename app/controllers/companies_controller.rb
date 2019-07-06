@@ -73,14 +73,6 @@ class CompaniesController < ApplicationController
     # 取引先情報更新
     company.update! company_params
 
-    mf_client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
-
-    result = mf_client.partners.update(company.mf_company_id, {
-      name: company.name,
-      name_kana: company.kana,
-      memo: company.note,
-    })
-
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
 
@@ -95,18 +87,6 @@ class CompaniesController < ApplicationController
 
     # 取引先情報更新
     company.update! company_params
-
-    mf_client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
-
-    result = mf_client.partners.create({
-      name: company.name,
-      name_kana: company.kana,
-      memo: company.note,
-    })
-
-    company.update!({mf_company_id: result.id})
-
-    company.divisions.create!(mf_company_division_id: result.departments.first.id, name: '部門名称を付与してください')
 
     redirect_to edit_company_path(company), flash: {notice: {message: '取引先情報を更新しました'}}
   rescue => e
@@ -139,8 +119,6 @@ class CompaniesController < ApplicationController
     newSub = Company.find_or_initialize_by(:name => params[:companyName])
     newSubDivision = nil
 
-    mf_client = MfCloud::Invoice::Client.new(access_token: current_user.mf_access_token)
-
     if newSub.id.nil?
 
       newSub.save!
@@ -154,52 +132,6 @@ class CompaniesController < ApplicationController
 
       newSubDivision.update! :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
       newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
-    end
-
-    # 部署更新用
-    divisions_params = nil
-    divisions_params = newSubDivision.company.divisions.each_with_object([]) do |r, result|
-      result.push({
-        name: r.name,
-        id: r.mf_company_division_id,
-        zip: r.zip,
-        prefecture: r.prefecture&.name,
-        address1: r.address1,
-        address2: r.address2,
-      })
-    end if newSubDivision.company.mf_company_id?
-
-    # 会社情報更新用
-    partners_params = {
-      name: newSubDivision.company.name,
-      name_kana: newSubDivision.company.kana,
-      memo: newSubDivision.company.note,
-    }
-
-    if divisions_params.blank?
-
-      partners_params[:department_name] = newSubDivision.name
-      partners_params[:zip] = newSubDivision.zip
-      partners_params[:prefecture] = newSubDivision.prefecture&.name
-      partners_params[:address1] = newSubDivision.address1
-      partners_params[:address2] = newSubDivision.address2
-    else
-
-      partners_params[:departments] = divisions_params
-    end
-
-    if newSubDivision.company.mf_company_id?
-
-      result = mf_client.partners.update(newSubDivision.company.mf_company_id, partners_params)
-    else
-
-      result = mf_client.partners.create(partners_params)
-      newSubDivision.company.update!(mf_company_id: result.id)
-    end
-
-    # MFのIDを登録する
-    result.departments.each do |r|
-      newSubDivision.update!(mf_company_division_id: r.id) if newSubDivision.name == r.name
     end
 
     client = CompanyDivisionClient.find_or_initialize_by(:name => params[:companyClientName])

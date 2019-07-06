@@ -19,11 +19,6 @@ defaults: &defaults
   # お知らせや通知等の新着表示期限(h)
   information_new_hours: 24
 
-  mfcloud_client_id: bfc749bad67cd5d265ec2bcc2266a0486168da64c722d0a14d9b453e44a5dbfe
-  mfcloud_client_secret: 1de0fd721bdb3a911b488bf79f1db0262a8d986e89622a5d1da010d85b45d714
-  mfcloud_scope: write
-  mfcloud_redirect_uri: https://factory.jiinet.co.jp/webhooks/mfcloud
-
   # 請求額振込先
   payment_condition: '三菱UFJ銀行 神田支店 当座 0001776 カ）ニホンコウギョウシャ'
 

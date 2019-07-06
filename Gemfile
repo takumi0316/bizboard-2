@@ -86,9 +86,6 @@ gem 'enum_help'
 # pagination
 gem 'pagy'
 
-# moneyforward
-gem 'mf_cloud-invoice'
-
 # auth
 gem 'devise'
 gem 'omniauth'
