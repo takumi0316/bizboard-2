@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   # ユーザー認証
   before_action :authenticate
 
-  before_action :judgment_browser, unless: -> { params[:controller].include? SiteConfig.home }
+  #before_action :judgment_browser, unless: -> { params[:controller].include? SiteConfig.home }
 
   # bulletの停止
   around_action :skip_bullet, if: -> { Rails.env.development? }
