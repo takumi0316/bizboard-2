@@ -29,7 +29,8 @@
         p.u-fs-small 請求書番号：S#{quote.quote_number}
         p.u-fs-small 請求日：　　#{quote.created_at.strftime("%Y-%m-%d")}
         p.u-fs-small 有効期限：#{quote.expiration&.strftime("%Y-%m-%d")}
-        .c-box__width-670
+        .c-float__right
+          .c-box__width-670
 
   .c-box__height-100
 
