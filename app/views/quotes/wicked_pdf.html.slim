@@ -5,11 +5,11 @@
   .c-box.c-box__height-200.u-mt-30
     .c-float__left
       .u-fs-small = "#{quote.client.company_division.company.name}　御中"
-    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "46x17.5"}
+    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "46x17"}
 
   .c-box__height-250
     .c-float__right
-      = wicked_pdf_image_tag 'electronic-seal', {size: "55x76"}
+      = wicked_pdf_image_tag 'electronic-seal', {size: "65x76"}
     .c-float__right
       .c-box__width-375.c-float__left
         p.u-fs-small 株式会社日本工業社
@@ -18,19 +18,17 @@
         p.u-fs-small TEL: 03-6280-5510
     .c-float__left
       - if quote.client.company_division.zip.present?
-        p.u-fs-samll 〒#{quote.client.company_division.zip}
+        p.u-fs-samll.u-mt-10 〒#{quote.client.company_division.zip}
       p.u-fs-small.u-mt-10 #{quote.client.company_division.address1}
       p.u-fs-small.u-mt-10 #{quote.client.company_division.address2}
       p.u-fs-small.u-mt-10 #{quote.client.company_division.name}
 
-  .c-box__height-250
+  .c-box__height-200
     .c-float__right
       .c-box__width-375
-        p.u-fs-small
-        .u-mt-10
-          p.u-fs-small 請求書番号：S#{quote.quote_number}
-          p.u-fs-small 請求日：　　#{quote.created_at.strftime("%Y-%m-%d")}
-          p.u-fs-small 有効期限：#{quote.expiration.strftime("%Y-%m-%d")}
+        p.u-fs-small 請求書番号：S#{quote.quote_number}
+        p.u-fs-small 請求日：　　#{quote.created_at.strftime("%Y-%m-%d")}
+        p.u-fs-small 有効期限：#{quote.expiration.strftime("%Y-%m-%d")}
     .c-float__right
       .c-box__width-850
 
