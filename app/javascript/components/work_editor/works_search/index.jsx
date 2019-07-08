@@ -100,7 +100,7 @@ export default class WorksSearch extends Component {
               <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
             </div>
             <div className={ Style.Search__SideBySide }>
-              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='顧客名/担当者名/作業内容' />
+              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='案件No./顧客名/担当者名/作業内容' />
               <select name='status' className={ 'c-form-select__work-index' }>
                 <option value={ this.state.status }>{ this.state.status === 'ステータス' ? 'ステータス' : ENUM_STATUS[this.state.status] }</option>
                 { Object.keys(ENUM_STATUS).map((item, index) =>{
