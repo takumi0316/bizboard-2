@@ -9,7 +9,7 @@
 
   .c-box__height-250
     .c-float__right
-      = wicked_pdf_image_tag 'electronic-seal', {size: "75x87"}
+      = wicked_pdf_image_tag 'electronic-seal', {size: "55x67"}
     .c-float__right
       .c-box__width-375.c-float__left
         p.u-fs-small 株式会社日本工業社
@@ -18,7 +18,7 @@
         p.u-fs-smalll TEL: 03-6280-5510
     .c-float__left
       - if invoice.quote.client.company_division.zip.present?
-        p.u-fs-base.u-fw-light 〒#{invoice.quote.client.company_division.zip}
+        p.u-fs-small.u-fw-light 〒#{invoice.quote.client.company_division.zip}
       p.u-fs-small.u-mt-10 #{invoice.quote.client.company_division.address1}
       p.u-fs-small.u-mt-10 #{invoice.quote.client.company_division.address2}
       p.u-fs-small.u-mt-10 #{invoice.quote.client.company_division.name}
@@ -26,7 +26,7 @@
   .c-box__height-250
     .c-float__right
       .c-box__width-375
-        p.u-fs-base.u-fw-light 株式会社日本工業社
+        p.u-fs-small
         .u-mt-10
           p.u-fs-small 請求書番号：S#{invoice.quote.quote_number}
           p.u-fs-small 請求日：　　#{invoice.date.strftime("%Y-%m-%d")}

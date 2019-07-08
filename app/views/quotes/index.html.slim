@@ -48,7 +48,10 @@
                 - else
                   = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
             td
-              /a.u-mt-10.c-btnMain-primaryB(href='invoices/#{r.id}/wicked_pdf') PDF化するよ
+              - if r.quote_projects.nil?
+                = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
+              - else
+                = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
             td
               - if r.invoicing? && r.invoice.present?
                 = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
@@ -91,8 +94,10 @@
                     - else
                       = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
                 td
-                td
-                  /
+                  - if r.quote_projects.nil?
+                    = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
+                  - else
+                    = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
                 td
                   - if r.invoicing? && r.invoice.present?
                     = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
@@ -132,8 +137,10 @@
                   - else
                     = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
               td
-              td
-                /a.u-mt-10.c-btnMain-primaryB(href='invoices/#{r.id}/wicked_pdf') PDF化するよ
+                - if r.quote_projects.nil?
+                  = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
+                - else
+                  = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
               td
                 - if r.invoicing? && r.invoice.present?
                   = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
