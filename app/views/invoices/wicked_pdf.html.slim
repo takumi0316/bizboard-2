@@ -2,20 +2,20 @@
   .u-ta-center
     p.u-fw-lignt.u-fs-base 請求書
 
-  .c-box.c-box__height-200.u-mt-30
+  .c-box.c-box__height-100.u-mt-30
     .c-float__left
       .u-fs-small = "#{invoice.quote.client.company_division.company.name}　御中"
-    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "46x17"}
+    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "100x50"}
 
   .c-box__height-250
     .c-float__right
-      = wicked_pdf_image_tag 'electronic-seal', {size: "65x67"}
+      = wicked_pdf_image_tag 'electronic-seal', {size: "65x125"}
     .c-float__right
       .c-box__width-375.c-float__left
         p.u-fs-small 株式会社日本工業社
         p.u-fs-small 東京都中央区新川2-26-3
         p.u-fs-small 住友不動産茅場町ビル2号館 5F
-        p.u-fs-smalll TEL: 03-6280-5510
+        p.u-fs-small TEL: 03-6280-5510
     .c-float__left
       - if invoice.quote.client.company_division.zip.present?
         p.u-fs-small.u-mt-10 〒#{invoice.quote.client.company_division.zip}
@@ -23,7 +23,7 @@
       p.u-fs-small.u-mt-10 #{invoice.quote.client.company_division.address2}
       p.u-fs-small.u-mt-10 #{invoice.quote.client.company_division.name}
 
-  .c-box__height-200
+  .c-box__height-100
     .c-float__right
       .c-box__width-375
         p.u-fs-small 請求書番号：S#{invoice.quote.quote_number}
