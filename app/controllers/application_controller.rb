@@ -36,6 +36,8 @@ class ApplicationController < ActionController::Base
   # ユーザー認証
   before_action :authenticate
 
+  before_action :judgment_browser, unless: -> { params[:controller].include? SiteConfig.home }
+
   # bulletの停止
   around_action :skip_bullet, if: -> { Rails.env.development? }
 
@@ -60,6 +62,19 @@ class ApplicationController < ActionController::Base
   helper_method :sp?
 
   private
+
+    ##
+    # ブラウザ判定
+    # @version 2019/06/25
+    #
+    def judgment_browser
+
+      # IEの場合にアラートを表示させる
+      if request.env['HTTP_USER_AGENT'].include? "MSIE"
+
+        redirect_to root_path, flash: {notice: {message: 'IEでは使わないでください！'}} and return
+      end
+    end
 
     ##
     # リクエスト情報の取得
