@@ -103,6 +103,11 @@ export default class QuoteEditor extends React.Component {
     return message;
   }
 
+  onPDF = (passQuoteId) => {
+
+    location.href = `/quotes/` + passQuoteId + '/wicked_pdf';
+  }
+
   /**
    *  登録処理
    *  @version 2018/06/10
@@ -311,7 +316,7 @@ export default class QuoteEditor extends React.Component {
         //if ( project.name != passName ) {
         console.log('project: ', project)
         console.log('quote_projects', this.state.quote_projects[passIndex])
-        if ( index != passIndex ) { 
+        if ( index != passIndex ) {
 
           pushProjects.push(project);
           totalCost = totalCost + Number(project.price);
@@ -699,9 +704,18 @@ export default class QuoteEditor extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className='c-overlay-submit'>
-          <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>{this.props.quote.id ? '更新する' : '作成する'}</div>
-        </div>
+        <React.Fragment>
+          <div className='c-overlay-submit'>
+            { this.props.quote.id ?
+              <div>
+                <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>更新する</div>
+                <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={e => this.onPDF(this.props.quote.id)}>PDF</div>
+              </div>
+              :
+              <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>作成する</div>
+            }
+          </div>
+        </React.Fragment>
       </div>
     );
   }
