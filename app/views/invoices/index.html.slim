@@ -26,7 +26,7 @@
           td = "¥ #{r.quote.price.to_s(:delimited)}"
           td = r.date
           td
-            = link_to 'PDF', wicked_pdf_invoice_path(r), class: 'c-btnMain-standard'
+            = link_to 'PDF', wicked_pdf_invoice_path(r), target: :_blank, class: 'c-btnMain-standard'
           td = link_to '編集', edit_invoice_path(r), class: 'c-btnMain-standard'
           td = link_to '削除', invoice_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 

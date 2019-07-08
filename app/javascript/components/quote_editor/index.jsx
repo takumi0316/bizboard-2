@@ -709,7 +709,7 @@ export default class QuoteEditor extends React.Component {
             { this.props.quote.id ?
               <div>
                 <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>更新する</div>
-                <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={e => this.onPDF(this.props.quote.id)}>PDF</div>
+                <a className='c-btnMain-standard c-btn-blue u-ml-30' href={'/quotes/' + this.props.quote.id + '/wicked_pdf'} target="_blank">PDF</a>
               </div>
               :
               <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>作成する</div>

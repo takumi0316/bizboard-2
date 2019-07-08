@@ -1,37 +1,36 @@
 .c-box
   .u-ta-center
-    h1.u-fw-lignt.u-fs-base 見積書
+    p.u-fw-lignt.u-fs-base 見積書
 
   .c-box.c-box__height-200.u-mt-30
     .c-float__left
-      .u-fs-base
-        = "#{quote.client.company_division.company.name}　御中"
-    .c-float__right
-      = wicked_pdf_image_tag 'jii-log', {size: "50x17.5"}
+      .u-fs-small = "#{quote.client.company_division.company.name}　御中"
+    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "46x17.5"}
 
   .c-box__height-250
     .c-float__right
-      = wicked_pdf_image_tag 'electronic-seal', {size: "75x87"}
+      = wicked_pdf_image_tag 'electronic-seal', {size: "55x76"}
     .c-float__right
       .c-box__width-375.c-float__left
-        p.u-fs-base.u-fw-light 株式会社日本工業社
-        p.u-fs-base.u-fw-light 東京都中央区新川2-26-3
-        p.u-fs-base.u-fw-light 住友不動産茅場町ビル2号館 5F
-        p.u-fs-base.u-fw-light TEL: 03-6280-5510
+        p.u-fs-small 株式会社日本工業社
+        p.u-fs-small 東京都中央区新川2-26-3
+        p.u-fs-small 住友不動産茅場町ビル2号館 5F
+        p.u-fs-small TEL: 03-6280-5510
     .c-float__left
-      p.u-fs-base.u-fw-light 〒#{quote.client.company_division.zip}
-      p.u-fs-base.u-fw-light.u-mt-10 #{quote.client.company_division.address1}
-      p.u-fs-base.u-fw-light.u-mt-10 #{quote.client.company_division.address2}
-      p.u-fs-base.u-fw-light.u-mt-10 #{quote.client.company_division.name}
+      - if quote.client.company_division.zip.present?
+        p.u-fs-samll 〒#{quote.client.company_division.zip}
+      p.u-fs-small.u-mt-10 #{quote.client.company_division.address1}
+      p.u-fs-small.u-mt-10 #{quote.client.company_division.address2}
+      p.u-fs-small.u-mt-10 #{quote.client.company_division.name}
 
   .c-box__height-250
     .c-float__right
       .c-box__width-375
-        p.u-fs-base.u-fw-light 株式会社日本工業社
+        p.u-fs-small 株式会社日本工業社
         .u-mt-10
-          p.u-fs-base.u-fw-light 請求書番号：S#{quote.quote_number}
-          p.u-fs-base.u-fw-light 請求日：　　#{quote.created_at}
-          p.u-fs-base.u-fw-light お支払期限：#{quote.deliver_at}
+          p.u-fs-small 請求書番号：S#{quote.quote_number}
+          p.u-fs-small 請求日：　　#{quote.created_at.strftime("%Y-%m-%d")}
+          p.u-fs-small お支払期限：#{quote.deliver_at.strftime("%Y-%m-%d")}
     .c-float__right
       .c-box__width-850
 
@@ -63,7 +62,7 @@
               td.u-ta-right #{r.price}
               - if r.remarks.present?
                 tr
-                  td(colspan='4').u-ta-left #{r.remarks}
+                  td.u-ta-left(colspan='4') #{r.remarks}
 
   .c-box__height-250
 
