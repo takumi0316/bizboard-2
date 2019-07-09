@@ -7,7 +7,7 @@
       .u-fs-small = "#{quote.client&.company_division&.company&.name}　御中"
     .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "377x40"}
 
-  .c-box__height-150
+  .c-box__height-250
     .c-float__right.u-ml-10
       = wicked_pdf_image_tag 'electronic-seal', {size: "100x90"}
     .c-float__right
@@ -23,7 +23,7 @@
       p.u-fs-small #{quote.client&.company_division&.address2}
       p.u-fs-small #{quote.client&.company_division&.name}
 
-  .c-box__height-150.u-mt-20
+  .c-box__height-150
     .c-float__right
       .c-box__width-377
         p.u-fs-small 見積書番号：　S#{quote.quote_number}
