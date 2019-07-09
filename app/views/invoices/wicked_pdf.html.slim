@@ -37,7 +37,7 @@
   .c-box__height-100
 
   .c-border
-    p.u-fs-small.u-fw-bold ご請求金額　#{(invoice.quote.price).to_s(:delimited)}円
+    p.u-fs-small.u-fw-bold ご請求金額　#{((invoice.quote.price).to_i).to_s(:delimited)}円
 
   .c-box__height-100
 
@@ -53,9 +53,9 @@
           - invoice.quote.quote_projects.each do |r|
             tr
               td.u-ta-left #{r.name}
-              td.u-ta-right #{(r.unit_price).to_s(:delimited)}
-              td.u-ta-right #{(r.unit).to_s(:delimited)}
-              td.u-ta-right #{(r.price).to_s(:delimited)}
+              td.u-ta-right #{((r.unit_price).to_i).to_s(:delimited)}
+              td.u-ta-right #{((r.unit).to_i).to_s(:delimited)}
+              td.u-ta-right #{((r.price).to_i).to_s(:delimited)}
               - if r.remarks.present?
                 tr
                   td.u-ta-left(colspan='4') #{r.remarks}
@@ -67,7 +67,7 @@
       table
         tr
           th.u-ta-left 小計
-          td.u-ta-right #{(invoice.quote.price).to_s(:delimited)} 円
+          td.u-ta-right #{((invoice.quote.price).to_i).to_s(:delimited)} 円
 
   .c-box__height-100
 
