@@ -5,17 +5,17 @@
   .c-box.c-box__height-100.u-mt-30
     .c-float__left
       .u-fs-small = "#{invoice.quote.client&.company_division&.company&.name}　御中"
-    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "380x40"}
+    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "377x40"}
 
   .c-box__height-150
     .c-float__right.u-ml-10
       = wicked_pdf_image_tag 'electronic-seal', {size: "100x90"}
     .c-float__right
       .c-box__width-375.c-float__left
-        p.u-fs-small 株式会社日本工業社
-        p.u-fs-small 東京都中央区新川2-26-3
-        p.u-fs-small 住友不動産茅場町ビル2号館 5F
-        p.u-fs-small TEL: 03-6280-5510
+        p.u-fs-small.u-mt-10 株式会社日本工業社
+        p.u-fs-small.u-mt-10 東京都中央区新川2-26-3
+        p.u-fs-small.u-mt-10 住友不動産茅場町ビル2号館 5F
+        p.u-fs-small.u-mt-10 TEL: 03-6280-5510
     .c-float__left
       - if invoice.quote.client.company_division.zip.present?
         p.u-fs-small 〒#{invoice.quote.client&.company_division&.zip}
@@ -25,7 +25,7 @@
 
   .c-box__height-150.u-mt-20
     .c-float__right
-      .c-box__width-333
+      .c-box__width-377
         p.u-fs-small 請求書番号：　S#{invoice.quote.quote_number}
         p.u-fs-small 請求日：　　　#{invoice.date&.strftime("%Y-%m-%d")}
         p.u-fs-small お支払期限：　#{invoice.expiration&.strftime("%Y-%m-%d")}
