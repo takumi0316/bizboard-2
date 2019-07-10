@@ -471,7 +471,7 @@ export default class QuoteEditor extends React.Component {
           <div className='c-attention'>
             <div>会社名: {this.state.company.name}</div>
             <div className='u-mt-10'>部署名: {this.state.division.name || '部署名なし'}</div>
-            <div className='u-mt-10'>担当者名: {this.state.client.name}</div>
+            <div className='u-mt-10'>担当者名: {this.state.client.name || '担当者なし'}</div>
             <div className='u-mt-10'>担当者TEL: {this.state.client.tel}</div>
             <div className='u-mt-10'>担当者email: {this.state.client.email}</div>
           </div>
