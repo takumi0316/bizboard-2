@@ -212,7 +212,7 @@ export default class ClientSearch extends React.Component {
                   {this.state.clients.map((client, i) => {
                     var key = `clients-${i}`;
                     { console.log('client: ', client.company.name) }
-                    { console.log('client: ', client.division.division.name) }
+                    { console.log('client: ', client.division.name) }
                     { console.log('client: ', client.name) }
                     return (
                       <li {...{key}} className={Style.ClientSearch__item}>
