@@ -56,7 +56,7 @@
                 .u-fw-light #{r.name}
                 br
                 - if r.remarks.present?
-                  .u-ta-left.u-mt-10.u-fw-light(colspan='4' style="font-size: 13px;") #{simple_format(r.remarks)}
+                  .u-ta-left.u-mt-5.u-fw-light(colspan='4' style="font-size: 13px;") #{simple_format(r.remarks)}
               td.u-ta-right
                 .u-fw-light #{((r.unit_price).to_i).to_s(:delimited)}
               td.u-ta-right
@@ -90,3 +90,11 @@
         tr
           th.u-ta-left 合計
           td.u-ta-right #{((quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+
+  .c-box__height-100
+
+  p 備考
+  .c-box__height-200.c-border-left.c-border-right.c-border-top.c-border
+
+    .u-mt-10.u-ml-10
+      p #{simple_format(quote.remarks)}

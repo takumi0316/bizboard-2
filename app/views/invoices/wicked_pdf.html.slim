@@ -55,7 +55,7 @@
               td.u-ta-left
                 .u-fw-light #{r.name}
                 - if r.remarks.present?
-                  .u-ta-left.u-mt-10.u-fw-light(colspan='4' style="font-size: 12px;") #{simple_format(r.remarks)}
+                  .u-ta-left.u-mt-5.u-fw-light(colspan='4' style="font-size: 12px;") #{simple_format(r.remarks)}
               td.u-ta-right
                 .u-fw-light #{((r.unit_price).to_i).to_s(:delimited)}
               td.u-ta-right
@@ -73,7 +73,7 @@
           th.u-ta-left 小計
           td.u-ta-right #{((invoice.quote.price).to_i).to_s(:delimited)} 円
 
-  .c-box__height-100
+  .c-box__height-150
 
   .c-float__right
     .c-table-pdf__price
@@ -90,3 +90,19 @@
         tr
           th.u-ta-left 合計
           td.u-ta-right #{((invoice.quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+
+  .c-box__height-100
+
+  p 振込先
+  .c-box__height-200.c-border-left.c-border-right.c-border-top.c-border
+
+    .u-ml-10.u-mt-40
+      p 三菱UFJ銀行 神田支店 当座 0001776 カ）ニホンコウギョウシャ
+
+  .c-box__height-100
+
+  p 備考
+  .c-box__height-200.c-border-left.c-border-right.c-border-top.c-border
+
+    .u-mt-10.u-ml-10
+      p #{simple_format(invoice.remarks)}
