@@ -53,12 +53,12 @@
           - invoice.quote.quote_projects.each do |r|
             tr
               td.u-ta-left #{r.name}
-              td.u-ta-right #{((r.unit_price).to_i).to_s(:delimited)}
-              td.u-ta-right #{((r.unit).to_i).to_s(:delimited)}
-              td.u-ta-right #{((r.price).to_i).to_s(:delimited)}
+              td.u-ta-right.u-fw-light #{((r.unit_price).to_i).to_s(:delimited)}
+              td.u-ta-right.u-fw-light #{((r.unit).to_i).to_s(:delimited)}
+              td.u-ta-right.u-fw-light #{((r.price).to_i).to_s(:delimited)}
               - if r.remarks.present?
                 tr
-                  td.u-ta-left.u-fs-max-small(colspan='4', style="font-size: 5px;") #{simple_format(r.remarks)}
+                  td.u-ta-left(colspan='4', style="font-size: 7px;") #{simple_format(r.remarks)}
 
   .c-box__height-250
 
