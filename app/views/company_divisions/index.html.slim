@@ -14,9 +14,9 @@ h1.l-dashboard__heading 部署一覧
     tbody
       - divisions.each do |r|
         tr
-          td = r.id
-          td = r.company.name
-          td = r.name || '部署名なし'
+          td = r&.id
+          td = r&.company&.name
+          td = r&.name || '部署名なし'
           td
             - r.clients.each do |c|
               div

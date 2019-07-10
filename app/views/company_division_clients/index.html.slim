@@ -14,10 +14,10 @@ h1.l-dashboard__heading 担当者一覧
     tbody
       - clients.each do |r|
         tr
-          td = r.id
-          td = r.company_division.company.name
-          td = r.company_division.name || '部署名なし'
-          td = r.name
+          td = r&.id
+          td = r&.company_division&.company&.name
+          td = r&.company_division&.name || '部署名なし'
+          td = r&.name
           td = link_to '編集', edit_company_division_client_path(r), class: 'c-btnMain-standard'
           td = link_to '削除', company_division_client_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
