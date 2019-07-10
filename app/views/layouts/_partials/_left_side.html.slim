@@ -41,6 +41,11 @@
           = evil_icon 'ei-user', size: :s
           span.u-ml-10 外注先
 
+      li.l-dashboard__menuItem
+        = link_to expendables_path do
+          = evil_icon 'ei-eye', size: :s
+          span.u-ml-10 製造経費入力
+
     - if current_user.admin?
 
       .u-mt-15
@@ -60,11 +65,6 @@
             = link_to profits_path do
               = evil_icon 'ei-cart', size: :s
               span.u-ml-10 請求情報
-
-          li.l-dashboard__menuItem
-            = link_to expendables_path do
-              = evil_icon 'ei-eye', size: :s
-              span.u-ml-10 製造経費入力
 
           li.l-dashboard__menuItem
             = link_to labors_path do
