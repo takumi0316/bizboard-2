@@ -213,7 +213,7 @@ export default class ClientSearch extends React.Component {
                     var key = `clients-${i}`;
                     return (
                       <li {...{key}} className={Style.ClientSearch__item}>
-                        <h2 className={Style.ClientSearch__itemName} data-number={i} onClick={::this._onSelect}>{client.company.name || '会社名なし'} {client.division.name || ’部署名なし’} {client.name || '担当者なし'} 様</h2>
+                        <h2 className={Style.ClientSearch__itemName} data-number={i} onClick={::this._onSelect}>{client.company.name || '会社名なし'} {client.division.name || '部署名なし'} {client.name || '担当者なし'} 様</h2>
                       </li>
                     );
                   })}
