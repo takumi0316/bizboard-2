@@ -39,7 +39,7 @@
   .c-border
     p.u-fs-small.u-fw-bold お見積金額　#{((quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
 
-  .c-box__height-100
+  .u-mt-50
 
   .c-table-pdf
     table
@@ -64,7 +64,7 @@
               td.u-ta-right
                 .u-fw-light #{((r.price).to_i).to_s(:delimited)}
 
-  .c-box__height-250
+  .u-mt-50
 
   .c-float__right
     .c-table-pdf__price
@@ -82,7 +82,7 @@
           th.u-ta-left 消費税
           td.u-ta-right #{((quote.price * SiteConfig.consumption_tax).floor - quote.price).to_s(:delimited)} 円
 
-  .c-box__height-100
+  .u-mt-50
 
   .c-float__right
     .c-table-pdf__price
