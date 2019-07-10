@@ -55,7 +55,7 @@
               td.u-ta-left
                 | #{r.name}
                 - if r.remarks.present?
-                  .u-ta-left.u-mt-10(colspan='4', style="font-size: 7px;") #{simple_format(r.remarks)}
+                  .u-ta-left.u-mt-10.u-fw-light(colspan='4', style="font-size: 12px;") #{simple_format(r.remarks)}
               td.u-ta-right.u-fw-light #{((r.unit_price).to_i).to_s(:delimited)}
               td.u-ta-right.u-fw-light #{((r.unit).to_i).to_s(:delimited)}
               td.u-ta-right.u-fw-light #{((r.price).to_i).to_s(:delimited)}
