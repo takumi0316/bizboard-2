@@ -163,7 +163,7 @@ export default class ClientSearch extends React.Component {
                 <span className='c-form__required u-ml-10'>必須</span>
               </div>
               <input ref='name' placeholder='氏名' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' defaultValue='' />
-            
+
               <div className='c-form-label'>
                 <label htmlFor='company_division_client_kana'>氏名(カナ)</label>
                 <span className='c-form__required u-ml-10'>必須</span>
@@ -183,7 +183,7 @@ export default class ClientSearch extends React.Component {
                 <label htmlFor='company_division_client_tel'>電話番号</label>
               </div>
               <input ref='tel' placeholder='電話番号' className='c-form-text' autoComplete='off' spellCheck='false' type='text' defaultValue='' />
-              
+
               <div className='c-form-label'>
                 <label htmlFor='company_division_client_email'>メールアドレス</label>
               </div>
@@ -193,7 +193,7 @@ export default class ClientSearch extends React.Component {
                 <label htmlFor='company_division_client_note'>メモ</label>
               </div>
               <textarea ref='note' placeholder='メモを入力してください' className='c-form-textarea' rows='4' autoComplete='off' spellCheck='false' ></textarea>
-              
+
               <div className='u-ta-center u-mt-30'>
                 <div className='c-btnMain-standard c-btn-blue' onClick={::this.createClient}>作成する</div>
               </div>
@@ -213,7 +213,7 @@ export default class ClientSearch extends React.Component {
                     var key = `clients-${i}`;
                     return (
                       <li {...{key}} className={Style.ClientSearch__item}>
-                        <h2 className={Style.ClientSearch__itemName} data-number={i} onClick={::this._onSelect}>{client.company.name} {client.division.name} {client.name} 様</h2>
+                        <h2 className={Style.ClientSearch__itemName} data-number={i} onClick={::this._onSelect}>{client.company.name || '会社名なし'} {client.division.name || ’部署名なし’} {client.name || '担当者なし'} 様</h2>
                       </li>
                     );
                   })}
