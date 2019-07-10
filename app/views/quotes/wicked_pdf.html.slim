@@ -53,7 +53,7 @@
           - quote.quote_projects.each do |r|
             tr
               td.u-ta-left
-                | #{r.name}
+                .u-fw-light #{r.name}
                 br
                 - if r.remarks.present?
                   .u-ta-left.u-mt-10.u-fw-light(colspan='4' style="font-size: 13px;") #{simple_format(r.remarks)}
