@@ -30,16 +30,16 @@
         p.u-fs-small 請求日：　　　#{invoice.date&.strftime("%Y-%m-%d")}
         p.u-fs-small お支払期限：　#{invoice.expiration&.strftime("%Y-%m-%d")}
 
-  .c-box__height-100
+  .u-mt-50
 
   p.u-fs-small.u-fw-bold 件名:　#{invoice.quote.subject}
 
-  .u-mt-50
+  .u-mt-30
 
   .c-border
     p.u-fs-small.u-fw-bold ご請求金額　#{((invoice.quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
 
-  .c-box__height-100
+  .u-mt-30
 
   .c-table-pdf
     table
@@ -73,7 +73,7 @@
           th.u-ta-left 小計
           td.u-ta-right #{((invoice.quote.price).to_i).to_s(:delimited)} 円
 
-  .c-box__height-100
+  .u-mt-50
 
   .c-float__right
     .c-table-pdf__price
@@ -82,7 +82,7 @@
           th.u-ta-left 消費税
           td.u-ta-right #{((invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price).to_s(:delimited)} 円
 
-  .c-box__height-100
+  .u-mt-50
 
   .c-float__right
     .c-table-pdf__price
