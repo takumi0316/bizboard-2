@@ -20,137 +20,47 @@
         th 活動履歴
         th colspan=4
     tbody
-      - quotes.each do |r|
-        - unless @user_type == 'general'
-          tr
-            td = r&.quote_number
-            td = r&.status_i18n
-            td = r&.subject&.truncate(25)
-            td
-              - if r.company_division_client_id&.present?
-                = r.client&.company_division&.company&.name
-                |&nbsp;
-                = r&.client&.name
+      - @quotes.each do |r|
+        tr
+          td = r&.quote_number
+          td = r&.status_i18n
+          td = r&.subject&.truncate(25)
+          td
+            - if r.company_division_client_id&.present?
+              = r.client&.company_division&.company&.name
+              |&nbsp;
+              = r&.client&.name
+            - else
+              | お客様情報なし
+          td = r.deliver_at&.to_date
+          td
+            - if r&.user_id&.present?
+              = r&.user&.name
+            - else
+              |更新者不明
+          td
+            - if r.status == "lost"
+              | 失注しました
+            - else
+              - if r.work.nil?
+                = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
               - else
-                | お客様情報なし
-            td = r.deliver_at&.to_date
-            td
-              - if r&.user_id&.present?
-                = r&.user&.name
-              - else
-                |更新者不明
-            td
-              - if r.status == "lost"
-                | 失注しました
-              - else
-                - if r.work.nil?
-                  = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
-                - else
-                  = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
-            td
-              - if r.quote_projects.nil?
-                = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
-              - else
-                = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
-            td
-              - if r.invoicing? && r.invoice.present?
-                = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
-              - elsif r.end_work?
-                = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
-              - else
-                | 未発行
-            td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-            td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-            td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-            td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
-
-        - else
-          - if @count.blank?
-            - if r.division_id == @division && r.status != 'invoicing'
-              tr
-                td = r&.quote_number
-                td = r&.status_i18n
-                td = r&.subject&.truncate(25)
-                td
-                  - if r.company_division_client_id&.present?
-                    = r.client&.company_division&.company&.name
-                    |&nbsp;
-                    |&nbsp;
-                    = r&.client&.name
-                  - else
-                    | お客様情報なし
-                td = r.deliver_at&.to_date
-                td
-                  - if r&.user_id&.present?
-                    = r&.user&.name
-                  - else
-                    |更新者不明
-                td
-                  - if r.status == "lost"
-                    | 失注しました
-                  - else
-                    - if r.work.nil?
-                      = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
-                    - else
-                      = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
-                td
-                  - if r.quote_projects.nil?
-                    = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
-                  - else
-                    = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
-                td
-                  - if r.invoicing? && r.invoice.present?
-                    = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
-                  - elsif r.end_work?
-                    = link_to '請求書作成', new_invoice_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-orange'
-                  - else
-                    | 未発行
-                td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-                td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-                td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-                td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
-          - else
-            tr
-              td = r&.quote_number
-              td = r&.status_i18n
-              td = r&.subject&.truncate(25)
-              td
-                - if r.company_division_client_id&.present?
-                  = r.client&.company_division&.company&.name
-                  |&nbsp;
-                  |&nbsp;
-                  = r&.client&.name
-                - else
-                  | お客様情報なし
-              td = r.deliver_at&.to_date
-              td
-                - if r&.user_id&.present?
-                  = r&.user&.name
-                - else
-                  |更新者不明
-              td
-                - if r.status == "lost"
-                  | 失注しました
-                - else
-                  - if r.draft?
-                    = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
-                  - else
-                    = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
-              td
-                - if r.quote_projects.nil?
-                  = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
-                - else
-                  = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
-              td
-                - if r.invoicing? && r.invoice.present?
-                  = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
-                - elsif r.end_work?
-                  = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
-                - else
-                  | 未発行
-              td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-              td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-              td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-              td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+                = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
+          td
+            - if r.quote_projects.nil?
+              = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
+            - else
+              = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
+          td
+            - if r.invoicing? && r.invoice.present?
+              = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
+            - elsif r.end_work?
+              = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
+            - else
+              | 未発行
+          td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
+          td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
+          td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
+          td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'
