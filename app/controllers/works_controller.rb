@@ -19,6 +19,15 @@ class WorksController < ApplicationController
     .asc_deliverd_at
   }
 
+  # 作業進捗一覧
+  expose_with_pagination(:work_general) {
+    Work
+    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
+    .where(division_id: current_user.division.id)
+    .where.not(status: 'completed')
+    .asc_deliverd_at
+  }
+
   # 案件
   expose(:work) { Work.find_or_initialize_by id: params[:id] }
 
@@ -45,6 +54,13 @@ class WorksController < ApplicationController
     @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
+    if @user_type == 'general' && @count.present?
+      @works = works
+    elsif @user_type == 'general'
+      @works = work_general
+    elsif @user_type != 'general'
+      @works = works
+    end
   end
 
   ##
@@ -123,7 +139,7 @@ class WorksController < ApplicationController
        return @clients
      end
     else
-      
+
       return @client
     end
   end
