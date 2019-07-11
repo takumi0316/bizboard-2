@@ -378,7 +378,7 @@ json[:projects] = projects.map do |r|
   when 'project_otherprint'
 
     specifications = []
-    otherprint = {'bool': true, 'name': "#{r.name} 備考 #{r.note}", 'unit_price': r.price, 'unit': 1, 'price': r.price, 'id': nil, 'quote_id': r.id, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    otherprint = {'bool': true, 'name': "#{r.name}", 'unit_price': r.price, 'unit': 1, 'price': r.price, 'id': nil, 'quote_id': r.id, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
 
     specifications.push(otherprint)
     {
@@ -391,7 +391,7 @@ json[:projects] = projects.map do |r|
   when 'project_other'
 
     specifications = []
-    other = {'bool': true, 'name': "#{r.name} 備考 #{r.note}", 'unit_price': r.price, 'unit': 1, 'price': r.price, 'id': nil, 'quote_id': r.id, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
+    other = {'bool': true, 'name': "#{r.name}", 'unit_price': r.price, 'unit': 1, 'price': r.price, 'id': nil, 'quote_id': r.id, 'quote_id': nil, 'project_name': r.project_category_i18n, 'project_id': r.id, 'remarks': nil,}
 
     specifications.push(other)
     {

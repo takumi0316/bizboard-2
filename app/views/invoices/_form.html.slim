@@ -32,8 +32,7 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
       .c-form-label
         = f.label :expiration, '支払い期限'
       .c-form-group
-        = f.date_select :expiration, {use_month_numbers: true}, {class: 'c-form-dateselect'}
-
+        = f.date_select :expiration, {use_month_numbers: true, selected: Date.current.next_month.end_of_month}, {class: 'c-form-dateselect'}
   .c-form-label
     = f.label :attention, '請求書フォーマット'
   = f.select :attention, {"請求書" => "請求書", "納品・請求書" => "納品・請求書"}, {}, { class: 'c-form-select' }
