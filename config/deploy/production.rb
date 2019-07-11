@@ -40,4 +40,12 @@ namespace :deploy do
       end
     end
   end
+
+  # migration前にmysql再起動
+  before :db_create, :mysql_restart do
+    on roles(:db), in: :sequence, wait: 5 do
+      info 'restarting mysql server...'
+      sudo '/etc/init.d/mysqld restart'
+    end
+  end
 end
