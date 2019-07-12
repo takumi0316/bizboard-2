@@ -61,6 +61,10 @@ class WorksController < ApplicationController
     elsif @user_type != 'general'
       @works = works
     end
+    @draft = Work.all.draft.where(division_id: current_user.division.id)
+    @working = Work.all.working.where(division_id: current_user.division.id)
+    @count_draft = @draft.size
+    @count_working = @working.size
   end
 
   ##

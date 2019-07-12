@@ -98,6 +98,8 @@ export default class WorksSearch extends Component {
           <form method='get' action='/works?count=' >
             <div>
               <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
+              <span className={ 'c-form__recommend u-ml-10' }>現在{this.props.count_draft}件未着手です</span>
+              <span className={ 'c-form__required u-ml-10' }>現在{this.props.count_working}件作業中です</span>
             </div>
             <div className={ Style.Search__SideBySide }>
               <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='案件No./顧客名/担当者名/作業内容' />
