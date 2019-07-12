@@ -160,6 +160,51 @@
         min-height: 40px
         width: 100%
 
+  // トグル
+  &-toggle
+    user-select: none
+    font-size: map-get($fontSize, 'small')
+    input[type='checkbox']
+      display: none
+
+    & > input + span
+      min-width: 60px
+      height: 30px
+      background: map-get($layoutColors, 'gray')
+      position: relative
+      display: inline-block
+      border-radius: 40px
+      transition: ease all .2s
+      cursor: pointer
+      padding: 0 15px 0 40px
+      line-height: 30px
+      font-weight: bold
+      &:before
+        content: attr(data-off)''
+      &:after
+        content: ''
+        position: absolute
+        width: 22px
+        height: 22px
+        border-radius: 50%
+        left: 4px
+        top: 4px
+        z-index: 1
+        background: map-get($layoutColors, 'white')
+        box-shadow: 0 0 5px rgba(map-get($layoutColors, 'black'), 0.4)
+        transition: .2s
+    & > input:checked + span
+      background: #53BC9F
+      padding: 0 40px 0 15px
+      color: map-get($fontColors, 'white')
+      &:before
+        content: attr(data-on)''
+      &:after
+        left: calc(100% - 26px)
+    &:hover > input + span
+      opacity: .8
+
+
 
   // チェックボックス
   // ------------------------------------

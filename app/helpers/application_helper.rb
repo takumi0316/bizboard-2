@@ -89,7 +89,7 @@ module ApplicationHelper
   #
   def title_with_page_number(title)
 
-    return title if !defined?(pagination) || pagination.prev.nil?
+    return title if !defined?(pagination) || pagination.nil? || pagination.prev.nil?
 
     "#{title} (#{pagination.page}ページ目)"
   end

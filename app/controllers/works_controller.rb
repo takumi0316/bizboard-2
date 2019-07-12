@@ -64,6 +64,16 @@ class WorksController < ApplicationController
   end
 
   ##
+  # 詳細
+  # @version 2018/06/10
+  #
+  def show
+
+    add_breadcrumb '作業進捗一覧', path: works_path
+    add_breadcrumb '編集'
+  end
+
+  ##
   # 更新
   #
   #
@@ -92,22 +102,22 @@ class WorksController < ApplicationController
       render json: { status: :success, division: work.division }
     end
 
-    rescue => e
+  rescue => e
 
-      if params[:status] === 'status'
+    if params[:status] === 'status'
 
-        render json: { status: :error, work: work.status }
-      elsif params[:status] === 'price'
+      render json: { status: :error, work: work.status }
+    elsif params[:status] === 'price'
 
-        render json: { status: :error, price: work.price }
-      elsif params[:status] === 'notices'
+      render json: { status: :error, price: work.price }
+    elsif params[:status] === 'notices'
 
-        work.update! notices: params[:work_notices]
-        render json: { status: :success, notices: work.notices }
-      elsif params[:division]
+      work.update! notices: params[:work_notices]
+      render json: { status: :success, notices: work.notices }
+    elsif params[:division]
 
-        render json: { status: :error, division: work.division }
-      end
+      render json: { status: :error, division: work.division }
+    end
   end
 
   def directions

@@ -15,7 +15,7 @@ export default class Target extends Component {
 
   render() {
     const data_event = [
-      { name: this.props.label, "金額": this.props.value },
+      { name: this.props.label, '金額': this.props.value },
     ];
 
     return (
@@ -26,12 +26,18 @@ export default class Target extends Component {
           layout="vertical"
           data={data_event}
         >
-          <XAxis type="number" domain={[0, this.props.target]} tickFormatter={val => val.toLocaleString()}/>
-          <YAxis type="category" dataKey="name" />
+=======
+          <XAxis
+            type='number'
+            domain={[0, this.props.target]}
+            tickFormatter={val => val.toLocaleString()}
+          />
+          <YAxis type='category' dataKey='name' />
+>>>>>>> ea54e27e8b6760ca70597b2b071888e696ca9c80
           <Tooltip />
           <CartesianGrid stroke="#f5f5f5" />
           <Bar
-            dataKey="金額"
+            dataKey='金額'
             barSize={20}
             stroke={this.props.color}
             background={{ fill: '#eee' }}
