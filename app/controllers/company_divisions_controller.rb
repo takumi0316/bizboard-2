@@ -107,11 +107,11 @@ class CompanyDivisionsController < ApplicationController
     raise '対象の部署にはクライアントが情報が登録されているため削除できません' if division.clients.exists?
 
     division.destroy!
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先部署情報を削除しました'}}
   rescue => e
 
-    flash[:warning] = { message: e.message }
-  ensure
-    redirect_to action: :index
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
   #----------------------------------------

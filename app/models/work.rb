@@ -67,12 +67,12 @@ class Work < ApplicationRecord
   before_validation :set_free_word
 
   ##
-  # フリーワード検索用文字列をセットする(顧客、自社担当者、案件名、案件番号、期日、自部署名)
+  # フリーワード検索用文字列をセットする(顧客、自社担当者、案件名、案件番号、期日、自部署名、作業担当者)
   #
   #
   def set_free_word
 
-    self.free_word = "#{self.quote&.client&.company_division&.company&.name} #{self.quote&.user&.name} #{self.quote&.subject} #{self.quote&.quote_number} #{self.quote&.deliver_at} #{self.division&.name}"
+    self.free_word = "#{self.quote&.client&.company_division&.company&.name} #{self.quote&.user&.name} #{self.quote&.subject} #{self.quote&.quote_number} #{self.quote&.deliver_at} #{self.division&.name} #{self.work_details&.pluck(:client_name).join(' ')}"
   end
 
   ##
