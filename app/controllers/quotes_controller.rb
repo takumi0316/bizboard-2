@@ -63,6 +63,8 @@ class QuotesController < ApplicationController
     elsif @user_type != 'general'
       @quotes = quotes
     end
+    @count_number = @quotes.size
+
   end
 
   ##
