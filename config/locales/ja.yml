@@ -55,6 +55,7 @@ ja:
         messrs: 御中
         dear: 様
       status:
+        unworked: 未作業
         draft: 新規
         estimated: 見積書発行済
         pre_work: 作業依頼済

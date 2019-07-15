@@ -75,6 +75,9 @@ import ExpendablesSearch from 'components/expendables_search/index.jsx'
 //目標管理グラフ
 import Target from 'components/target'
 
+//試し活動履歴グラフ
+import ActivityGraph from 'components/activity_graph'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -95,4 +98,5 @@ WebpackerReact.setup({
   ExpendablesEditor,
   ExpendablesSearch,
   Target,
+  ActivityGraph,
 })
