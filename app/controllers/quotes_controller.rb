@@ -215,9 +215,6 @@ class QuotesController < ApplicationController
       # end
     # end
 
-    binding.pry
-
-
     clone_quote = quote.deep_clone(:quote_projects)
 
     clone_quote.save
