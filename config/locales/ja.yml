@@ -30,6 +30,7 @@ ja:
       user_type:
         general: 一般
         manager: マネージャー
+        sales: 営業
         admin: 管理者
     company_division_client:
       title:

@@ -1,50 +1,48 @@
-import React, { Component } from 'react'
-import Style from './style.sass'
-
+import React, { PureComponent } from 'react';
 import {
-  ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  Legend,
-} from 'recharts'
+  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+} from 'recharts';
 
-export default class ActivityGraph extends Component {
+const data = [
+  {
+    name: 'ビジスタント', uv: 4000, pv: 2400
+  },
+  {
+    name: '新川', uv: 3000, pv: 1398
+  },
+  {
+    name: '丸の内', uv: 2000, pv: 9800
+  },
+  {
+    name: '大崎', uv: 2780, pv: 3908
+  },
+  {
+    name: 'JX', uv: 1890, pv: 4800
+  },
+  {
+    name: 'カスタマーサービス', uv: 2390, pv: 3800
+  },
+];
 
-  constructor(props) {
-
-    super(props)
-  }
-
+export default class Example extends PureComponent {
   render() {
-
-    const data_event = [
-      { name: this.props.label, '金額': this.props.value },
-    ];
-
     return (
-      <div className={Style.ActivityGraph}>
-        <ComposedChart
-          width={380}
-          height={80}
-          layout="vertical"
-          data={data_event}
-        >
-          <XAxis
-            type='number'
-            domain={[0, this.props.target]}
-            tickFormatter={val => val.toLocaleString()}
-          />
-          <YAxis type='category' dataKey='name' />
-          <Tooltip />
-          <CartesianGrid stroke="#f5f5f5" />
-          <Bar
-            dataKey='金額'
-            barSize={20}
-            stroke={this.props.color}
-            background={{ fill: '#eee' }}
-            fillOpacity={1}
-            fill={this.props.color}
-          />
-        </ComposedChart>
-      </div>
+      <BarChart
+        width={500}
+        height={300}
+        data={data}
+        margin={{
+          top: 5, right: 30, left: 20, bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="pv" fill="#8884d8" />
+        <Bar dataKey="uv" fill="#82ca9d" />
+      </BarChart>
     );
   }
 }
