@@ -20,6 +20,15 @@ class QuotesController < ApplicationController
     .order(date: 'DESC')
   }
 
+  # 見積もり
+  expose_with_pagination(:quote_manager) {
+    Quote
+    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
+    .where(division_id: current_user.division.id)
+    .order(date: 'DESC')
+  }
+
+  # 見積もり
   expose_with_pagination(:quote_general) {
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
@@ -56,8 +65,10 @@ class QuotesController < ApplicationController
     @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
-    if @user_type == 'general' && @count.present?
+    if @user_type == 'general' && @count.present? || @user_type == 'manager' && @count.present?
       @quotes = quotes
+    elsif @user_type == 'manager'
+      @quotes = quote_manager
     elsif @user_type == 'general'
       @quotes = quote_general
     elsif @user_type != 'general'

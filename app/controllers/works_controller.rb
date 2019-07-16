@@ -20,6 +20,14 @@ class WorksController < ApplicationController
   }
 
   # 作業進捗一覧
+  expose_with_pagination(:work_manager) {
+    Work
+    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
+    .where(division_id: current_user.division.id)
+    .asc_deliverd_at
+  }
+
+  # 作業進捗一覧
   expose_with_pagination(:work_general) {
     Work
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
@@ -54,8 +62,10 @@ class WorksController < ApplicationController
     @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
-    if @user_type == 'general' && @count.present?
+    if @user_type == 'general' && @count.present? || @user_type == 'manager' && @count.present?
       @works = works
+    elsif @user_type == 'manager'
+      @works = work_manager
     elsif @user_type == 'general'
       @works = work_general
     elsif @user_type != 'general'
@@ -84,7 +94,7 @@ class WorksController < ApplicationController
   def update
 
     if params[:status] === 'status'
-      
+
       work.update! status: params[:work][:status]
 
       work.quote.working! if work.working?

@@ -97,7 +97,7 @@ export default class WorksSearch extends Component {
         <div className={ Style.Search }>
           <form method='get' action='/works?count=' >
             <div>
-              <label for='name'>フリーワード検索 ※スペース区切り単語2つまで</label>
+              <label for='name'>フリーワード検索 ※スペース区切り単語2つまで 日付検索は案件の納期で検索されます</label>
               <span className={ 'c-form__recommend u-ml-10' }>現在{this.props.count_draft}件未着手です</span>
               <span className={ 'c-form__required u-ml-10' }>現在{this.props.count_working}件作業中です</span>
             </div>
