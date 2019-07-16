@@ -84,8 +84,10 @@ class WorksController < ApplicationController
   def update
 
     if params[:status] === 'status'
-
+      
       work.update! status: params[:work][:status]
+
+      work.quote.working! if work.working?
 
       work.quote.end_work! if work.delivered? || work.completed?
 

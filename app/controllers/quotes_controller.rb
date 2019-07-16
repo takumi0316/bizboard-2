@@ -177,11 +177,11 @@ class QuotesController < ApplicationController
   #
   def status
 
-    quote.update!(status: params[:status].to_sym)
-
-    if quote.working? && quote.work.blank?
+    if quote.unworked? && quote.work.blank? || quote.draft? && quote.work.blank?
 
       quote.build_work(division_id: current_user.division_id).save!
+
+      quote.unworked!
 
       redirect_to work_path(quote.work), flash: {notice: {message: '作業書を作成しました'}} and return
     end
