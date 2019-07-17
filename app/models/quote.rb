@@ -78,7 +78,7 @@ class Quote < ApplicationRecord
 
   has_one  :work, dependent: :destroy
 
-  has_one  :activity, dependent: :destroy
+  has_one  :activity, -> { order(created_at: :desc) }, dependent: :destroy
 
   #----------------------------------------
   #  ** Delegates **
