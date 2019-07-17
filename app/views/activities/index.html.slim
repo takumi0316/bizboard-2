@@ -16,6 +16,9 @@
       tr
         th 対応日時
         th 対応内容
+        th 確度
+        th 次回アクション
+        th 次回アクション期日
         th 案件番号
         th 案件名
         th お客様
@@ -28,6 +31,9 @@
         tr
           td = r.date
           td = r.status_i18n
+          td = r.accurary_i18n
+          td = r.next_action_i18n
+          td = r.next_action_date
           td = r.quote.quote_number
           td = r.quote.subject
           td

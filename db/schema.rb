@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_05_091731) do
+ActiveRecord::Schema.define(version: 2019_07_17_030241) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -42,6 +42,10 @@ ActiveRecord::Schema.define(version: 2019_07_05_091731) do
     t.datetime "updated_at", null: false
     t.text "free_word"
     t.bigint "quote_id"
+    t.integer "accurary", comment: "確度"
+    t.integer "next_action", comment: "次回アクション"
+    t.date "next_action_date", comment: "次回アクション期日"
+    t.date "scheduled_date", comment: "受注予定日"
     t.index ["quote_id"], name: "index_activities_on_quote_id"
   end
 
@@ -244,7 +248,7 @@ ActiveRecord::Schema.define(version: 2019_07_05_091731) do
     t.integer "color", limit: 1, default: 0
     t.integer "paper", limit: 1, default: 0
     t.integer "surface", limit: 1, default: 0
-    t.integer "emboss", limit: 1, default: 0
+    t.integer "emboss", limit: 1, default: 10
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price"

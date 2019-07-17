@@ -134,7 +134,7 @@ class ActivitiesController < ApplicationController
 
   def activity_params
 
-    params.require(:activity).permit :name, :date, :status, :memo, :attachment, :quote_id
+    params.require(:activity).permit :name, :date, :status, :memo, :attachment, :quote_id, :accurary, :next_action, :next_action_date, :scheduled_date
   end
 
 end
