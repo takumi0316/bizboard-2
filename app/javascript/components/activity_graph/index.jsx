@@ -1,36 +1,27 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react'
+import Style from './style.sass'
+
 import {
   BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-} from 'recharts';
+} from 'recharts'
 
-const data = [
-  {
-    name: 'ビジスタント', uv: 4000, pv: 2400
-  },
-  {
-    name: '新川', uv: 3000, pv: 1398
-  },
-  {
-    name: '丸の内', uv: 2000, pv: 9800
-  },
-  {
-    name: '大崎', uv: 2780, pv: 3908
-  },
-  {
-    name: 'JX', uv: 1890, pv: 4800
-  },
-  {
-    name: 'カスタマーサービス', uv: 2390, pv: 3800
-  },
-];
+export default class ActivityGraph extends Component {
 
-export default class Example extends PureComponent {
+  constructor(props) {
+
+    super(props)
+  }
+
   render() {
+    const data_event = [
+      { name: this.props.label, '目標': this.props.target, '金額': this.props.value},
+    ];
+
     return (
       <BarChart
-        width={500}
+        width={250}
         height={300}
-        data={data}
+        data={data_event}
         margin={{
           top: 5, right: 30, left: 20, bottom: 5,
         }}
@@ -40,8 +31,8 @@ export default class Example extends PureComponent {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="pv" fill="#8884d8" />
-        <Bar dataKey="uv" fill="#82ca9d" />
+        <Bar dataKey="目標" fill="rgba(0,153,255,1)" />
+        <Bar dataKey="金額" fill={this.props.color} />
       </BarChart>
     );
   }
