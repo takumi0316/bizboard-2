@@ -1,0 +1,73 @@
+- current_date = params[:current].present?? Date.parse(params[:current]) : Date.today
+- targets = Target.where(target_year: current_date.year, target_month: current_date.month)
+
+.l-dashboard__month
+  = link_to '<< 前月', activity_path(current: params[:current] ? (Date.parse(params[:current]) - 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthPrev'
+  span = "#{current_date.year}年#{current_date.month}月"
+  = link_to '次月 >>', activity_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
+
+  h2.l-dashboard__heading 売り上げ
+  .l-dashboard__graphs
+    .l-dashboard__graph
+    - targets.each do |r|
+
+
+      / 形状範囲
+      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+      / 売上
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
+
+      / 原価
+      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - expendable_cost = expendables.map(&:price).inject(:+).to_i
+      - labor_cost = labors.map(&:price).inject(:+).to_i
+      - cost = expendable_cost + labor_cost
+
+      = react_component 'ActivityGraph', target: r.sales, label: r.division.name, value: sales, color: 'rgba(34, 80, 162, 0.6)'
+
+  h2.l-dashboard__heading 原価
+  .l-dashboard__graphs
+    .l-dashboard__graph
+    - targets.each do |r|
+
+
+      / 形状範囲
+      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+      / 売上
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
+
+      / 原価
+      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - expendable_cost = expendables.map(&:price).inject(:+).to_i
+      - labor_cost = labors.map(&:price).inject(:+).to_i
+      - cost = expendable_cost + labor_cost
+
+      = react_component 'ActivityGraph', target: r.cost, label: r.division.name, value: cost, color: 'rgba(0, 204, 204, 0.6)'
+
+  h2.l-dashboard__heading 利益
+  .l-dashboard__graphs
+    .l-dashboard__graph
+    - targets.each do |r|
+
+
+      / 形状範囲
+      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+      / 売上
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
+
+      / 原価
+      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - expendable_cost = expendables.map(&:price).inject(:+).to_i
+      - labor_cost = labors.map(&:price).inject(:+).to_i
+      - cost = expendable_cost + labor_cost
+
+      = react_component 'ActivityGraph', target: r.profit, label: r.division.name, value: (sales - cost), color: (sales - cost) >= 0 ? 'rgba(64, 127, 94, 0.6)' : 'rgba(209, 60, 90, 0.6)'
