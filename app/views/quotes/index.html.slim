@@ -10,6 +10,7 @@
       tr
         th 案件No.
         th ステータス
+        th 確度
         th 件名
         th お客様
         th 納期
@@ -23,7 +24,13 @@
       - @quotes.each do |r|
         tr
           td = r&.quote_number
-          td = r&.status_i18n
+          //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
+          td
+            - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
+              = r&.status_i18n
+            - else
+              = r&.activity&.status_i18n
+          td = r&.activity&.accurary_i18n
           td = r&.subject&.truncate(25)
           td
             - if r.company_division_client_id&.present?
