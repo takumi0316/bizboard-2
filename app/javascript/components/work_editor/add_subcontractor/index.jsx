@@ -248,6 +248,11 @@ export default class AddSubcontractor extends React.Component {
           'number_of_copies': document.getElementById('number_of_copies' + subcontractor_value_count[i]).value,
           'actual_cost': document.getElementById('actual_cost' + subcontractor_value_count[i]).value,
         }));
+        //実績原価が空欄だったらリテイク
+        if(document.getElementById('actual_cost' + subcontractor_value_count[i]).value == ""){
+          window.confirm('空欄の実績原価が存在しています。半角数字を入力しなおしてください。')
+          return false;
+        }
         actual_cost = actual_cost + Number(document.getElementById('actual_cost' + subcontractor_value_count[i]).value);
       }
       field = {
