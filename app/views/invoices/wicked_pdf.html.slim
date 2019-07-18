@@ -26,7 +26,7 @@
   .c-box__height-150
     .c-float__right
       .c-box__width-377
-        p.u-fs-small 請求書番号：　S#{invoice.quote.quote_number}
+        p.u-fs-small 請求書番号：　#{invoice.quote.quote_number}
         p.u-fs-small 請求日：　　　#{invoice.date&.strftime("%Y-%m-%d")}
         p.u-fs-small お支払期限：　#{invoice.expiration&.strftime("%Y-%m-%d")}
 
