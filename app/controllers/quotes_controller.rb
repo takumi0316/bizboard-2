@@ -232,7 +232,7 @@ class QuotesController < ApplicationController
 
     clone_quote.update_columns(pdf_url: nil, user_id: current_user.id)
 
-    clone_quote.draft!
+    clone_quote.unworked!
 
     if quote.work.present?
       # , :subcontractor, :subcontractor_detail
