@@ -78,6 +78,9 @@ import Target from 'components/target'
 //試し活動履歴グラフ
 import ActivityGraph from 'components/activity_graph'
 
+//試し活動履歴グラフ
+import ProspectGraph from 'components/prospect_graph'
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -99,4 +102,5 @@ WebpackerReact.setup({
   ExpendablesSearch,
   Target,
   ActivityGraph,
+  ProspectGraph,
 })

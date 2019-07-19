@@ -33,7 +33,7 @@ class Activity < ApplicationRecord
   #種類のenum
   # enum status: { meeting: 0, mail: 10, tell: 20,
   #  estimate: 30, workshop: 40, lost: 50, other: 60 }
-  
+
   enum status: {contact: 0, hearing: 10, proposal: 20, estimate: 30,
     closing: 40, order: 50, lost: 60, rejection: 70, other: 90
   }, _prefix: true
@@ -61,6 +61,8 @@ class Activity < ApplicationRecord
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
+
+  scope :date_in, ->(datetime) { where(scheduled_date: datetime) }
 
   #----------------------------------------
   #  ** Methods **

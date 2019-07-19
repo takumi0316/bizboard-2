@@ -26,14 +26,12 @@ export default class Target extends Component {
           layout="vertical"
           data={data_event}
         >
-=======
           <XAxis
             type='number'
             domain={[0, this.props.target]}
             tickFormatter={val => val.toLocaleString()}
           />
           <YAxis type='category' dataKey='name' />
->>>>>>> ea54e27e8b6760ca70597b2b071888e696ca9c80
           <Tooltip />
           <CartesianGrid stroke="#f5f5f5" />
           <Bar
