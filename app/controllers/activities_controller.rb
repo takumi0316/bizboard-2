@@ -44,12 +44,6 @@ class ActivitiesController < ApplicationController
     @id = params[:name]
   end
 
-  def show
-
-    add_breadcrumb '活動履歴', path: activities_path
-    add_breadcrumb 'ひみつグラフ'
-  end
-
   ##
   # 新規作成
   # @version 2018/06/10

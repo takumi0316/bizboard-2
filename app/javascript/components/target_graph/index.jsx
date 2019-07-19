@@ -5,7 +5,7 @@ import {
   BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 
-export default class ActivityGraph extends Component {
+export default class TargetGraph extends Component {
 
   render() {
     var data = [
@@ -17,7 +17,7 @@ export default class ActivityGraph extends Component {
     return (
       <div>
         <BarChart
-          width={250}
+          width={200}
           height={300}
           data={data}
           margin={{
@@ -25,11 +25,12 @@ export default class ActivityGraph extends Component {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type='category' dataKey='name' />
+          <XAxis type='category' dataKey='name' style={{fontSize: '15px'}} />
           <YAxis
             type='number'
             domain={[0, this.props.target]}
             tickFormatter={val => val.toLocaleString()}
+            style={{fontSize: '15px'}}
           />
           <Tooltip />
           <Legend />

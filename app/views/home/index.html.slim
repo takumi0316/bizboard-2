@@ -6,27 +6,119 @@
   span = "#{current_date.year}年#{current_date.month}月"
   = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
 
-- targets.each do |r|
-  h2.l-dashboard__heading = r.division.name
-
-  / 形状範囲
-  - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
-
-  / 売上
-  - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
-  - sales = quotes.map(&:price).inject(:+).to_i
-
-  / 原価
-  - expendables = Expendable.where(division_id: r.division.id).date_in(range)
-  - labors = Labor.where(division_id: r.division.id).date_in(range)
-  - expendable_cost = expendables.map(&:price).inject(:+).to_i
-  - labor_cost = labors.map(&:price).inject(:+).to_i
-  - cost = expendable_cost + labor_cost
-
+  h2.l-dashboard__heading 売り上げ
   .l-dashboard__graphs
     .l-dashboard__graph
-      = react_component 'Target', target: r.sales, label: '売上', value: sales, color: 'rgba(34, 80, 162, 0.6)'
+
+    - targets.each do |r|
+
+
+      / 形状範囲
+      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+      / 売上
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
+
+      / 原価
+      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - expendable_cost = expendables.map(&:price).inject(:+).to_i
+      - labor_cost = labors.map(&:price).inject(:+).to_i
+      - cost = expendable_cost + labor_cost
+
+      = react_component 'TargetGraph', target: r.sales, label: r.division.name, value: sales, color: 'rgba(34, 80, 162, 0.6)'
+
+  h2.l-dashboard__heading 原価
+  .l-dashboard__graphs
     .l-dashboard__graph
-      = react_component 'Target', target: r.profit, label: '利益', value: (sales - cost), color: (sales - cost) >= 0 ? 'rgba(64, 127, 94, 0.6)' : 'rgba(209, 60, 90, 0.6)'
+
+    - targets.each do |r|
+
+      / 形状範囲
+      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+      / 売上
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
+
+      / 原価
+      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - expendable_cost = expendables.map(&:price).inject(:+).to_i
+      - labor_cost = labors.map(&:price).inject(:+).to_i
+      - cost = expendable_cost + labor_cost
+
+      = react_component 'TargetGraph', target: r.cost, label: r.division.name, value: cost, color: 'rgba(0, 204, 204, 0.6)'
+
+  h2.l-dashboard__heading 利益
+  .l-dashboard__graphs
     .l-dashboard__graph
-      = react_component 'Target', target: r.cost, label: '原価', value: cost, color: 'rgba(0, 204, 204, 0.6)'
+
+    - targets.each do |r|
+
+      / 形状範囲
+      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+      / 売上
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
+
+      / 原価
+      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - expendable_cost = expendables.map(&:price).inject(:+).to_i
+      - labor_cost = labors.map(&:price).inject(:+).to_i
+      - cost = expendable_cost + labor_cost
+
+      = react_component 'TargetGraph', target: r.profit, label: r.division.name, value: (sales - cost), color: (sales - cost) >= 0 ? 'rgba(64, 127, 94, 0.6)' : 'rgba(209, 60, 90, 0.6)'
+
+  h2.l-dashboard__heading 見込み
+  .l-dashboard__graphs
+    .l-dashboard__graph
+    - divisions = Division.all
+
+    - divisions.each do |r|
+
+      / 形状範囲
+      - range = current_date.beginning_of_month..current_date.end_of_month
+
+      / 見込み
+      / 活動履歴と案件を組み合わせて受注予定日と合う物を取得
+      - activity = Activity.joins(:quote).merge(Quote.where(division_id: r.id))
+      / 活動履歴から同じquote_idを持つのから最新の作成日を取得
+      - hash = activity.group(:quote_id).having('count(*) >= 2').maximum(:created_at)
+      /取得した作成日以前の活動履歴のidを取得
+      - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
+
+      - quotes = Quote.where(division_id: r.id).joins(:activity).merge(Activity.date_in(range)).merge(Activity.where.not(id: activity_ids))
+
+      / 確度
+      - accurary_a = quotes.merge(Activity.where(accurary: 0)).map(&:price).inject(:+).to_i
+      - accurary_b = quotes.merge(Activity.where(accurary: 10)).map(&:price).inject(:+).to_i
+      - accurary_c = quotes.merge(Activity.where(accurary: 20)).map(&:price).inject(:+).to_i
+      / ステータス
+      - status_contact = quotes.merge(Activity.where(status: 0)).map(&:price).inject(:+).to_i
+      - status_hearing = quotes.merge(Activity.where(status: 10)).map(&:price).inject(:+).to_i
+      - status_proposal = quotes.merge(Activity.where(status: 20)).map(&:price).inject(:+).to_i
+      - status_estimate = quotes.merge(Activity.where(status: 30)).map(&:price).inject(:+).to_i
+      - status_closing = quotes.merge(Activity.where(status: 40)).map(&:price).inject(:+).to_i
+      - status_order = quotes.merge(Activity.where(status: 50)).map(&:price).inject(:+).to_i
+
+      = react_component('ProspectGraph',
+        { quotes: quotes,
+          range: range,
+          activity: activity,
+          activity_ids: activity_ids,
+          hash: hash,
+          label: r.name,
+          accurary_a: accurary_a,
+          accurary_b: accurary_b,
+          accurary_c: accurary_c,
+          status_contact: status_contact,
+          status_hearing: status_hearing,
+          status_proposal: status_proposal,
+          status_estimate: status_estimate,
+          status_closing: status_closing,
+          status_order: status_order,
+        })

@@ -76,7 +76,7 @@ import ExpendablesSearch from 'components/expendables_search/index.jsx'
 import Target from 'components/target'
 
 //試し活動履歴グラフ
-import ActivityGraph from 'components/activity_graph'
+import TargetGraph from 'components/target_graph'
 
 //試し活動履歴グラフ
 import ProspectGraph from 'components/prospect_graph'
@@ -101,6 +101,6 @@ WebpackerReact.setup({
   ExpendablesEditor,
   ExpendablesSearch,
   Target,
-  ActivityGraph,
+  TargetGraph,
   ProspectGraph,
 })

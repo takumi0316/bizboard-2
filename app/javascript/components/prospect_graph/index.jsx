@@ -56,18 +56,19 @@ export default class ProspectGraph extends Component {
       <button className={ 'c-btnMain-primaryB u-ml-10' } onClick={this.onClickButton_accurary}>確度</button>
         { this.state.graph_type == 'accurary' ?
           <BarChart
-            width={250}
-            height={600}
+            width={200}
+            height={500}
             data={data}
             margin={{
               top: 20, right: 30, left: 20, bottom: 5,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name" style={{fontSize: '15px'}} />
             <YAxis
               type='number'
               tickFormatter={val => val.toLocaleString()}
+              style={{fontSize: '15px'}}
             />
             <Tooltip />
             <Legend />
@@ -79,18 +80,19 @@ export default class ProspectGraph extends Component {
         }
         { this.state.graph_type == 'status' ?
           <BarChart
-            width={250}
-            height={600}
+            width={200}
+            height={500}
             data={data}
             margin={{
               top: 20, right: 30, left: 20, bottom: 5,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name" style={{fontSize: '15px'}} />
             <YAxis
               type='number'
               tickFormatter={val => val.toLocaleString()}
+              style={{fontSize: '15px'}}
             />
             <Tooltip />
             <Legend />
