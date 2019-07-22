@@ -40,14 +40,15 @@ class ProfitsController < ApplicationController
   def index
 
     add_breadcrumb '請求情報'
-    @company = Company.includes(:profits).where("profits.id is not NULL").order("profits.price DESC")
+
     if params[:date1].present?
-      @date1 = params[:date1]
-      @date2 = params[:date2]
+      @date1 = params[:date1].to_time.beginning_of_day
+      @date2 = params[:date2].to_time.end_of_day
     else
       @date1 = Time.current.beginning_of_month
       @date2 = Time.current.end_of_month
     end
+    @company = Company.joins(:profits).eager_load(:profits).where(profits: {date: @date1..@date2}).where.not(profits: {price: 0})
   end
 
 
