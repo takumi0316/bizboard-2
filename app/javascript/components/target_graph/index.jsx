@@ -30,7 +30,7 @@ export default class TargetGraph extends Component {
             type='number'
             domain={[0, this.props.target]}
             tickFormatter={val => val.toLocaleString()}
-            style={{fontSize: '15px'}}
+            style={{fontSize: '10px'}}
           />
           <Tooltip />
           <Legend />

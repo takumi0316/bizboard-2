@@ -27,7 +27,7 @@
     .c-float__right
       .c-box__width-377
         p.u-fs-small 見積書番号：　#{quote.quote_number}
-        p.u-fs-small 発行日：　　　#{quote.created_at.strftime("%Y-%m-%d")}
+        p.u-fs-small 発行日：　　　#{Date.today.strftime("%Y-%m-%d")}
         p.u-fs-small 有効期限：　　#{quote.expiration&.strftime("%Y-%m-%d")}
 
   .u-mt-50

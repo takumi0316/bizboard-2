@@ -68,7 +68,7 @@ export default class ProspectGraph extends Component {
             <YAxis
               type='number'
               tickFormatter={val => val.toLocaleString()}
-              style={{fontSize: '15px'}}
+              style={{fontSize: '10px'}}
             />
             <Tooltip />
             <Legend />
@@ -92,7 +92,7 @@ export default class ProspectGraph extends Component {
             <YAxis
               type='number'
               tickFormatter={val => val.toLocaleString()}
-              style={{fontSize: '15px'}}
+              style={{fontSize: '10px'}}
             />
             <Tooltip />
             <Legend />
