@@ -74,8 +74,12 @@ class Invoice < ApplicationRecord
 
     _self = self
 
+    if parameters[:name].blank? && parameters[:date1].blank? && parameters[:date2].blank?
+
+      return _self
+
     # フリーワードが入っている場合
-    if parameters[:name].present?
+    elsif parameters[:name].present?
 
       # 名称検索
       _self = self.date_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
@@ -91,7 +95,7 @@ class Invoice < ApplicationRecord
       _self = self.date_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
       return _self
     end
-     return _self
+
   end
 
 end
