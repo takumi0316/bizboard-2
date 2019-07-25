@@ -52,7 +52,6 @@ ja:
         order: 受注
         lost: 失注
         rejection: 不採用
-        other: その他
       accurary:
         a: A
         b: B

@@ -35,7 +35,7 @@ class Activity < ApplicationRecord
   #  estimate: 30, workshop: 40, lost: 50, other: 60 }
 
   enum status: {contact: 0, hearing: 10, proposal: 20, estimate: 30,
-    closing: 40, order: 50, lost: 60, rejection: 70, other: 90
+    closing: 40, order: 50, lost: 60, rejection: 70
   }, _prefix: true
   #確度のenum
   enum accurary: { a: 0, b: 10, c: 20 }
