@@ -26,6 +26,11 @@ CSV.generate do |csv|
   )
   csv << column_names
   @csv_data.each_with_index do |r, i|
+    if r.tax_type == 'exemption'
+      @price = (r.price).floor
+    else
+      @price = (r.price * SiteConfig.consumption_tax).floor
+    end
     column_values = [
       (i + 1),
       r.invoice.date,
@@ -33,13 +38,13 @@ CSV.generate do |csv|
       r.client.company_division.company.name,
       '対象外',
       '',
-      (r.price * SiteConfig.consumption_tax).floor,
+      (@price),
       '',
       '売り上げ高',
       r.quote_type_i18n,
       '課税売上 8%',
       r.division.name,
-      (r.price * SiteConfig.consumption_tax).floor,
+      (@price),
       '',
       r.quote_number,
       '',

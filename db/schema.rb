@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_17_030241) do
+ActiveRecord::Schema.define(version: 2019_07_26_045205) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -429,6 +429,8 @@ ActiveRecord::Schema.define(version: 2019_07_17_030241) do
     t.integer "discount"
     t.integer "delivery_type"
     t.text "delivery_type_note"
+    t.integer "tax_type"
+    t.integer "payment_terms"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end
 
@@ -505,6 +507,17 @@ ActiveRecord::Schema.define(version: 2019_07_17_030241) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_targets_on_division_id"
+  end
+
+  create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.date "date", comment: "希望納期"
+    t.binary "data"
+    t.text "remarks"
+    t.integer "quote_number"
+    t.bigint "quote_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quote_id"], name: "index_tasks_on_quote_id"
   end
 
   create_table "uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

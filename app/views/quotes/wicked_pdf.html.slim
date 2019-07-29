@@ -37,8 +37,12 @@
   .u-mt-30
 
   .c-border
-    p.u-fs-small.u-fw-bold お見積金額　#{((quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+    - if quote.tax_type == 'exemption'
 
+      p.u-fs-small.u-fw-bold お見積金額　#{(quote.price).to_s(:delimited)} 円
+    -else
+
+      p.u-fs-small.u-fw-bold お見積金額　#{((quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
   .u-mt-30
 
   .c-table-pdf
@@ -64,6 +68,16 @@
               td.u-ta-right
                 .u-fw-light #{((r.price).to_i).to_s(:delimited)}
 
+            - if quote.discount > 0
+              td.u-ta-left
+                .u-fw-light 値引き金額
+              td.u-ta-right
+                .u-fw-light
+              td.u-ta-right
+                .u-fw-light
+              td.u-ta-right
+                .u-fw-light -#{((quote.discount).to_i).to_s(:delimited)}
+
   .u-mt-50
 
   .c-float__right
@@ -74,22 +88,32 @@
           td.u-ta-right #{(quote.price).to_s(:delimited)} 円
 
   .c-box__height-100
+  - if quote.tax_type == 'exemption'
 
-  .c-float__right
-    .c-table-pdf__price
-      table
-        tr
-          th.u-ta-left 消費税
-          td.u-ta-right #{((quote.price * SiteConfig.consumption_tax).floor - quote.price).to_s(:delimited)} 円
+    .c-float__right
+      .c-table-pdf__price
+        table
+          tr
+            th.u-ta-left 合計
+            td.u-ta-right #{((quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+  - else
 
-  .u-mt-50
+    .c-float__right
+      .c-table-pdf__price
+        table
+          tr
+            th.u-ta-left 消費税
+            td.u-ta-right #{((quote.price * SiteConfig.consumption_tax).floor - quote.price).to_s(:delimited)} 円
 
-  .c-float__right
-    .c-table-pdf__price
-      table
-        tr
-          th.u-ta-left 合計
-          td.u-ta-right #{((quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+    .u-mt-50
+
+    .c-float__right
+      .c-table-pdf__price
+        table
+          tr
+            th.u-ta-left 合計
+            td.u-ta-right #{((quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+
 
   .c-box__height-100
 

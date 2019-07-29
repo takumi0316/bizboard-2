@@ -17,6 +17,8 @@ import Dayjs from 'dayjs'
 import {
   QUOTE_TYPES,
   CHANNELS,
+  TAX_TYPES,
+  PAYMENT_TERMS,
 } from './properties.es6'
 
 /**
@@ -42,6 +44,8 @@ export default class QuoteEditor extends React.Component {
       client: props.client,
       user_id: props.user === null ? null : props.user.id,
       quote_type: props.quote.quote_type === null ? 'contract' : props.quote.quote_type,
+      tax_type: props.quote.tax_type === null ? 'taxation' : props.quote.tax_type,
+      payment_terms: props.quote.payment_terms === null ? 'postpaid' : props.quote.tax_type,
       deliver_type: props.quote.deliver_type === null ? 'seat' : props.quote.deliver_type,
       deliver_at: props.quote.deliver_at,
       discount: props.quote.discount === null ? 0 : props.quote.discount,
@@ -151,6 +155,8 @@ export default class QuoteEditor extends React.Component {
       'quote[company_division_client_id]': this.refs.company_division_client_id.value || '',
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
+      'quote[tax_type]': this.refs.tax_type.value,
+      'quote[payment_terms]': this.refs.payment_terms.value,
       'quote[channel]': this.refs.channel.value,
       'quote[date]': this.state.date || '',
       'quote[expiration]': this.state.expiration || '',
@@ -185,12 +191,11 @@ export default class QuoteEditor extends React.Component {
           if (!this.props.quote.id) {
 
             alert('案件情報を作成しました');
-            location.href = `/quotes`;
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
+            location.href = `${res.body.quote.id}/edit`;
           } else {
 
             alert('案件情報を更新しました');
-            location.href = `/quotes`;
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
           }
         } else {
@@ -683,6 +688,36 @@ export default class QuoteEditor extends React.Component {
                 </td>
               </tr>
               <tr>
+                <td className='u-fw-bold'>課税対象</td>
+                <td>
+                  <div className='c-form-selectWrap'>
+                    <select className='c-form-select' ref='tax_type' defaultValue={this.state.tax_type}>
+                      { Object.keys(TAX_TYPES).map((item, index) => {
+                        const key = 'tax-'+index;
+                        return (
+                          <option {...{key}} value={TAX_TYPES[item]}>{item}</option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td className='u-fw-bold'>支払い方法</td>
+                <td>
+                  <div className='c-form-selectWrap'>
+                    <select className='c-form-select' ref='payment_terms' defaultValue={this.state.payment_terms}>
+                      { Object.keys(PAYMENT_TERMS).map((item, index) => {
+                        const key = 'payment-'+index;
+                        return (
+                          <option {...{key}} value={PAYMENT_TERMS[item]}>{item}</option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
                   <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost }></textarea>
@@ -694,7 +729,6 @@ export default class QuoteEditor extends React.Component {
                   <textarea placeholder='案件に関する備考を入力してください ※見積もりに記載されます' className='c-form-textarea' row={5} autoComplete='off' spellCheck='false' type='text' ref='remarks' defaultValue={this.props.quote.remarks}></textarea>
                 </td>
               </tr>
-
               <tr>
                 <td className='u-fw-bold'>メモ ※見積もりに記載されません</td>
                 <td>

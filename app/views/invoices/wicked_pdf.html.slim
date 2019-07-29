@@ -37,7 +37,12 @@
   .u-mt-30
 
   .c-border
-    p.u-fs-small.u-fw-bold ご請求金額　#{((invoice.quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+    - if invoice.quote.tax_type == 'exemption'
+
+      p.u-fs-small.u-fw-bold ご請求金額　#{(invoice.quote.price).to_s(:delimited)} 円
+    - else
+
+      p.u-fs-small.u-fw-bold ご請求金額　#{((invoice.quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
 
   .u-mt-30
 
@@ -62,6 +67,17 @@
                 .u-fw-light #{((r.unit).to_i).to_s(:delimited)}
               td.u-ta-right
                 .u-fw-light #{((r.price).to_i).to_s(:delimited)}
+          - if invoice.quote.discount > 0
+            tr
+              td.u-ta-left
+                .u-fw-light 値引き金額
+              td.u-ta-right
+                .u-fw-light
+              td.u-ta-right
+                .u-fw-light
+              td.u-ta-right
+                .u-fw-light -#{((invoice.quote.discount).to_i).to_s(:delimited)}
+
 
 
   .u-mt-50
@@ -74,22 +90,32 @@
           td.u-ta-right #{((invoice.quote.price).to_i).to_s(:delimited)} 円
 
   .c-box__height-150
+  - if invoice.quote.tax_type == 'exemption'
 
-  .c-float__right
-    .c-table-pdf__price
-      table
-        tr
-          th.u-ta-left 消費税
-          td.u-ta-right #{((invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price).to_s(:delimited)} 円
+    .c-float__right
+      .c-table-pdf__price
+        table
+          tr
+            th.u-ta-left 合計
+            td.u-ta-right #{(invoice.quote.price).to_s(:delimited)} 円
+  -else
 
-  .u-mt-50
+    .c-float__right
+      .c-table-pdf__price
+        table
+          tr
+            th.u-ta-left 消費税
+            td.u-ta-right #{((invoice.quote.price * SiteConfig.consumption_tax).floor - Invoice.find(params[:id]).quote.price).to_s(:delimited)} 円
 
-  .c-float__right
-    .c-table-pdf__price
-      table
-        tr
-          th.u-ta-left 合計
-          td.u-ta-right #{((invoice.quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+    .u-mt-50
+
+    .c-float__right
+      .c-table-pdf__price
+        table
+          tr
+            th.u-ta-left 合計
+            td.u-ta-right #{((invoice.quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+
 
   .c-box__height-100
 

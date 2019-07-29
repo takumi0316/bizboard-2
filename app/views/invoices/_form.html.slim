@@ -61,15 +61,30 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
             td = (r.unit_price.to_i * r.unit.to_i).to_s(:delimited)
           tr
             td colspan=4 = r.remarks
+        - if invoice.quote.discount > 0
+          tr
+            td 値引き金額
+            td
+            td
+            td
+              |-
+              = (invoice.quote.discount.to_i).to_s(:delimited)
+          tr
+            td colspan=4
 
   .c-table.u-mt-30
     table
       tbody
         tr
           td 合計金額 (税込)
-          td
-            |¥
-            = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).floor.to_s(:delimited)
+          - if invoice.quote.tax_type = 'exemption'
+            td
+              |¥
+              = (invoice.quote.price || 0).floor.to_s(:delimited)
+          - else
+            td
+              |¥
+              = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).floor.to_s(:delimited)
 
   .c-form-label.u-mt-30
     = f.label :remarks, '備考　※請求書に記載されます'

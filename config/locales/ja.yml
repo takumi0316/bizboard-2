@@ -96,6 +96,12 @@ ja:
         pickup: 引取り
         bizstant: ビジスタント部
         other: その他
+      tax_type:
+        taxation: 課税対象
+        exemption: 非課税対象
+      payment_terms:
+        postpaid: 後払い
+        advance: 先払い
     project:
       project_category:
         project_print: プリント

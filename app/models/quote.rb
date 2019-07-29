@@ -53,6 +53,9 @@ class Quote < ApplicationRecord
   enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
   enum deliver_type: { seat: 0, location: 10, pickup: 20, bizstant: 30, other: 40 }
 
+  enum tax_type: { taxation: 0, exemption: 10}
+  enum payment_terms: { postpaid: 0, advance: 10}
+
 
   #----------------------------------------
   #  ** Validations **
