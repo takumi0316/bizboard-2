@@ -95,7 +95,7 @@
         table
           tr
             th.u-ta-left 合計
-            td.u-ta-right #{((quote.price * SiteConfig.consumption_tax).floor).to_s(:delimited)} 円
+            td.u-ta-right #{(quote.price).to_s(:delimited)} 円
   - else
 
     .c-float__right
