@@ -28,8 +28,12 @@ CSV.generate do |csv|
   @csv_data.each_with_index do |r, i|
     if r.tax_type == 'exemption'
       @price = (r.price).floor
+      @I列 = '立替金'
+      @K列 = '対象外'
     else
       @price = (r.price * SiteConfig.consumption_tax).floor
+      @I列 = '売り上げ高'
+      @K列 = '課税売上 8%'
     end
     column_values = [
       (i + 1),
@@ -40,9 +44,9 @@ CSV.generate do |csv|
       '',
       (@price),
       '',
-      '売り上げ高',
+      (@I列),
       r.quote_type_i18n,
-      '課税売上 8%',
+      (@K列),
       r.division.name,
       (@price),
       '',
