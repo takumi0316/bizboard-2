@@ -98,6 +98,9 @@ Rails.application.routes.draw do
   # 自社部署
   resources :divisions
 
+  # カタログ
+  resources :catalogs
+
   # ユーザー管理
   resources :users, only: [:index, :edit, :update, :destroy]
 

@@ -1,0 +1,23 @@
+= form_for catalog, html: { class: 'u-mt-30'} do |f|
+  .c-form-label
+    = f.label :name, 'カタログ名'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :name, placeholder: 'カタログ名を入力してください', class: 'c-form-text'
+
+  .c-form-label
+    = f.label :description, 'カタログ説明文'
+  = f.text_area :description, placeholder: '説明文を入力してください', class: 'c-form-textarea', rows: 2
+
+  .c-form-label
+    = f.label :deliver_at, '納期目安 ※日付だけでなく〇〇営業日など記入可能です'
+  = f.text_field :deliver_at, placeholder: '納期の目安を入力してください', class: 'c-form-text'
+
+  .c-form-label
+    = f.label :price, '金額目安 ※〇〇円だけでなく１箱 〇〇円など記入可能です'
+  = f.text_field :price, placeholder: '金額を入力してください', class: 'c-form-text'
+
+  .c-form-label
+    = f.label :image, 'カタログのイメージ写真'
+  = f.file_field :image
+
+  .u-ta-center.u-mt-30 = f.submit catalog.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

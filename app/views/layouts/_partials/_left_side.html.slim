@@ -72,6 +72,11 @@
               span.u-ml-10 労務費入力
 
           li.l-dashboard__menuItem
+            = link_to catalogs_path do
+              = evil_icon 'ei-tag', size: :s
+              span.u-ml-10 カタログ作成
+
+          li.l-dashboard__menuItem
             = link_to users_path do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 ユーザー一覧

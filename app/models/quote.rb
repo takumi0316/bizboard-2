@@ -15,7 +15,7 @@
 #  attention                  :integer
 #  pdf_url                    :text(65535)
 #  user_id                    :integer
-#  status                     :integer          default("draft")
+#  status                     :integer          default("unworked")
 #  quote_number               :string(191)
 #  company_division_client_id :integer
 #  quote_type                 :integer
@@ -25,6 +25,10 @@
 #  deliver_type_note          :text(65535)
 #  division_id                :bigint(8)
 #  discount                   :integer
+#  delivery_type              :integer
+#  delivery_type_note         :text(65535)
+#  tax_type                   :integer
+#  payment_terms              :integer
 #
 
 class Quote < ApplicationRecord

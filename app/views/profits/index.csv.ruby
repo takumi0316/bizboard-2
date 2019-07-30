@@ -1,6 +1,6 @@
 require 'csv'
 
-CSV.generate do |csv|
+CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
   column_names = %w(
     取引№
     取引日
@@ -32,7 +32,7 @@ CSV.generate do |csv|
       @K列 = '対象外'
     else
       @price = (r.price * SiteConfig.consumption_tax).floor
-      @I列 = '売り上げ高'
+      @I列 = '売上高'
       @K列 = '課税売上 8%'
     end
     column_values = [

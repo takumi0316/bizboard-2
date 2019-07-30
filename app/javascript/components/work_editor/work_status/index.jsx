@@ -29,6 +29,11 @@ export default class StatusVisualization extends React.Component {
 
   onUpdate = (e, status_type) => {
 
+    if (window.confirm('ステータスを変更しますがよろしいですか？')) {
+
+      alert('変更しました')
+    }
+
     let url = '/works/' + this.state.work_id;
     let field = {
       'work[status]': status_type,
@@ -56,7 +61,7 @@ export default class StatusVisualization extends React.Component {
     return(
       <div className={ Style.WorkStatus }>
         { this.state.work_status === 'draft' ?
-          <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>未作業</button></div> 
+          <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>未作業</button></div>
             :
           <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>未作業</button>
 
@@ -64,12 +69,12 @@ export default class StatusVisualization extends React.Component {
         { this.state.work_status === 'working' ?
           <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button></div>
             :
-          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button> 
+          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button>
         }
         { this.state.work_status === 'delivered' ?
           <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button></div>
             :
-          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button> 
+          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button>
         }
         { this.state.work_status === 'completed' ?
         <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button></div>
