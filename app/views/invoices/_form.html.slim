@@ -76,12 +76,13 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
     table
       tbody
         tr
-          td 合計金額 (税込)
-          - if invoice.quote.tax_type = 'exemption'
+          - if invoice.quote.tax_type == 'exemption'
+            td 合計金額
             td
               |¥
               = (invoice.quote.price || 0).floor.to_s(:delimited)
           - else
+            td 合計金額 (税込)
             td
               |¥
               = ((invoice.quote.price || 0) * SiteConfig.consumption_tax).floor.to_s(:delimited)
