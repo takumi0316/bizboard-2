@@ -99,7 +99,7 @@ class WorksController < ApplicationController
 
       work.quote.working! if work.working?
 
-      work.quote.end_work! if work.delivered? || work.completed?
+      work.quote.end_work! if work.completed?
 
       render json: { status: :success, work: work.status }
     elsif params[:status] === 'price'
