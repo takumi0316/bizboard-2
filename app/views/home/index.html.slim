@@ -76,9 +76,8 @@
   h2.l-dashboard__heading 見込み
   .l-dashboard__graphs
     .l-dashboard__graph
-    - divisions = Division.all
-
-    - divisions.each do |r|
+    - prospect_targets = targets.where.not(division_id: 2).where.not(division_id: 7).where.not(division_id: 8)
+    - prospect_targets.each do |r|
 
       / 形状範囲
       - range = current_date.beginning_of_month..current_date.end_of_month
@@ -111,7 +110,7 @@
           activity: activity,
           activity_ids: activity_ids,
           hash: hash,
-          label: r.name,
+          label: r.division.name,
           accurary_a: accurary_a,
           accurary_b: accurary_b,
           accurary_c: accurary_c,

@@ -76,7 +76,7 @@ class InvoicesController < ApplicationController
     #請求情報上書き
     profit = Profit.find_by(quote_id: invoice&.quote_id)&.update(price: invoice&.quote&.price, date: invoice&.date)
 
-    redirect_to :back, flash: {notice: {message: '請求書情報を更新しました'}}
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '請求書情報を更新しました'}}
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
