@@ -18,6 +18,10 @@
 
   .c-form-label
     = f.label :image, 'カタログのイメージ写真'
-  = f.file_field :image
+  = f.file_field :image, accept: :image
+
+  - if catalog.image.attached?
+    .u-mt-10 = image_tag catalog.decorate.image_thumb
+
 
   .u-ta-center.u-mt-30 = f.submit catalog.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

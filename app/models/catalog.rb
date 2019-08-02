@@ -21,13 +21,6 @@ class Catalog < ApplicationRecord
   #  ** Includes **
   #----------------------------------------
 
-  has_attached_file :image,
-  #画像サイズを指定
-  styles: { medium: "500x500>", thumb: "100x100>", big: "810x500"},
-  #サーバ上の画像保存先パス
-  path: "#{Rails.root}/app/assets/images/catalog/:filename"
-  validates_attachment_content_type :image, content_type: /image/
-
   #----------------------------------------
   #  ** Constants **
   #----------------------------------------
@@ -44,6 +37,9 @@ class Catalog < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 画像
+  has_one_attached :image, dependent: :detach
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------
@@ -51,6 +47,9 @@ class Catalog < ApplicationRecord
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
+
+  # 画像のN+1回避(eager load)
+  scope :with_eager_loaded_image, -> { eager_load(image_attachment: :blob) }
 
   #----------------------------------------
   #  ** Methods **

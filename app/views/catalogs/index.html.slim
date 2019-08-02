@@ -18,7 +18,7 @@
           td = r.description
           td = r.deliver_at
           td = r.price
-          td = image_tag r.image.url
+          td = image_tag r.decorate.image_thumb
           td = link_to '編集', edit_catalog_path(r), class: 'c-btnMain-standard'
           td = link_to '削除', catalog_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
