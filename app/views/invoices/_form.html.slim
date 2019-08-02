@@ -95,4 +95,7 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
     = f.label :memo, 'メモ　※請求書に記載されません'
   = f.text_area :memo, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
 
-  .c-overlay-submit = f.submit invoice.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+  .c-overlay-submit
+    = f.submit invoice.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+    - if !invoice.new_record?
+      = link_to '請求書ダウンロード', wicked_pdf_invoice_path(invoice.id), target: :_blank, class: 'c-btnMain-standard u-ml-30'

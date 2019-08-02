@@ -61,8 +61,10 @@
           td
             - if r.invoicing? && r.invoice.present?
               = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
-            - elsif r.end_work? || r.payment_terms_i18n == '先払い'
+            - elsif r.end_work?
               = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
+            - elsif r.payment_terms_i18n == '先払い'
+              = link_to '先払い請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-red'
             - else
               | 未発行
           td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
