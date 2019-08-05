@@ -6,6 +6,38 @@
   span = "#{current_date.year}年#{current_date.month}月"
   = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
 
+  h2.l-dashboard__heading 全体
+  .l-dashboard__graphs
+
+    / 形状範囲
+    - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+    / 売上
+    - quotes = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(range))
+    - sales = quotes.map(&:price).inject(:+).to_i
+
+    / 原価
+    - expendables = Expendable.date_in(range)
+    - labors = Labor.date_in(range)
+    - expendable_cost = expendables.map(&:price).inject(:+).to_i
+    - labor_cost = labors.map(&:price).inject(:+).to_i
+    - cost = expendable_cost + labor_cost
+
+    .l-dashboard__graph
+      p 売り上げ
+      p #{sales.to_s(:delimited)}円
+    = react_component 'TargetGraph', label: '売り上げ', value: sales, color: 'rgba(34, 80, 162, 0.6)'
+
+    .l-dashboard__graph
+      p 原価
+      p #{cost.to_s(:delimited)}円
+    = react_component 'TargetGraph', label: '原価', value: cost, color: 'rgba(0, 204, 204, 0.6)'
+
+    .l-dashboard__graph
+      p 粗利
+      p #{(sales - cost).to_s(:delimited)}円
+    = react_component 'TargetGraph', label: '粗利', value: (sales - cost), color: (sales - cost) >= 0 ? 'rgba(64, 127, 94, 0.6)' : 'rgba(209, 60, 90, 0.6)'
+
   h2.l-dashboard__heading 売り上げ
   .l-dashboard__graphs
     .l-dashboard__graph

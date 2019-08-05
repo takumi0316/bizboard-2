@@ -34,7 +34,11 @@ export default class TargetGraph extends Component {
           />
           <Tooltip />
           <Legend />
-          <Bar dataKey="目標" fill="rgba(0,153,255,1)" />
+          { this.props.target == null?
+            null            
+            :
+            <Bar dataKey="目標" fill="rgba(0,153,255,1)" />
+          }
           <Bar dataKey="金額" fill={this.props.color} />
         </BarChart>
       </div>
