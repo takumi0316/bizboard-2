@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_02_064917) do
+ActiveRecord::Schema.define(version: 2019_08_02_092517) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -91,6 +91,21 @@ ActiveRecord::Schema.define(version: 2019_08_02_064917) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "free_word"
+    t.integer "status", limit: 1, default: 0, comment: "承認設定"
+    t.integer "user_type", limit: 1, default: 0, comment: "ユーザー区分"
+    t.string "password_digest", comment: "暗号化済パスワード"
+    t.string "provider", comment: "登録元SNS"
+    t.string "uid", comment: "登録元SNSユーザーID"
+    t.integer "sign_in_count", default: 0, comment: "ログイン回数"
+    t.datetime "current_sign_in_at", comment: "ログイン日時"
+    t.datetime "last_sign_in_at", comment: "最終ログイン日時"
+    t.string "current_sign_in_ip", comment: "ログイン元IP"
+    t.string "last_sign_in_ip", comment: "最終ログイン元IP"
+    t.datetime "remember_created_at", comment: "継続ログイン情報作成日時"
+    t.string "confirmation_token", comment: "認証トークン"
+    t.datetime "confirmed_at", comment: "承認日時"
+    t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
+    t.string "unconfirmed_email", comment: "承認待時メール送信先"
     t.index ["company_division_id"], name: "index_company_division_clients_on_company_division_id"
     t.index ["user_id"], name: "index_company_division_clients_on_user_id"
   end
