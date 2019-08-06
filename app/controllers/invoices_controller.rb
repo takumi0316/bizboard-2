@@ -109,6 +109,8 @@ class InvoicesController < ApplicationController
   #
   def destroy
 
+    Profit.find_by(quote_id: invoice.quote_id).destroy! if Profit.find_by(quote_id: invoice.quote_id).present?
+
     invoice.destroy
   rescue => e
 

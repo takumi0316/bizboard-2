@@ -105,7 +105,7 @@ class Work < ApplicationRecord
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['works.free_word like ?'] * terms.size).join(' and ')
-      _self = where(query, *terms.map { |term| "%#{term}%" }).where(status: parameters[:status])
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" }).where(status: parameters[:status])
 
       # 日付検索
       return _self
