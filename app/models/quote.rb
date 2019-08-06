@@ -83,6 +83,8 @@ class Quote < ApplicationRecord
 
   has_one  :invoice,    dependent: :destroy
 
+  has_one  :profit,    dependent: :destroy
+
   has_one  :work, dependent: :destroy
 
   has_one  :activity, -> { order(created_at: :desc) }, dependent: :destroy

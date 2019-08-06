@@ -34,6 +34,7 @@ class Profit < ApplicationRecord
   #----------------------------------------
 
   belongs_to :company, foreign_key: 'company_id'
+  belongs_to :quote, foreign_key: 'quote_id'
 
   #----------------------------------------
   #  ** Scopes **
