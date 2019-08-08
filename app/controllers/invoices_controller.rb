@@ -58,6 +58,7 @@ class InvoicesController < ApplicationController
 
     add_breadcrumb '請求書一覧', path: invoices_path
     add_breadcrumb '編集'
+    @tax = 1.08
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
@@ -120,6 +121,7 @@ class InvoicesController < ApplicationController
   end
 
   def wicked_pdf
+    @tax = 1.08
 
     respond_to do |format|
       format.html do

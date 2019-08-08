@@ -266,6 +266,7 @@ class QuotesController < ApplicationController
   end
 
   def wicked_pdf
+    @tax = 1.08
 
     respond_to do |format|
       format.html do
