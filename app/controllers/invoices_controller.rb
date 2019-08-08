@@ -48,6 +48,7 @@ class InvoicesController < ApplicationController
 
     add_breadcrumb '請求書一覧', path: invoices_path
     add_breadcrumb '新規作成'
+    @tax = 1.08
   end
 
   ##
