@@ -75,8 +75,21 @@ class InvoicesController < ApplicationController
     # 情報更新
     self.invoice.update! invoice_params
 
-    #請求情報上書き
-    profit = Profit.find_by(quote_id: invoice&.quote_id)&.update(price: invoice&.quote&.price, date: invoice&.date)
+    #会社探し
+    co = Company.joins(divisions:[clients: :quotes]).merge(Quote.where(id: invoice&.quote_id))
+    #profit見つける
+    profit_id = Profit.find_by(quote_id: invoice&.quote_id)
+    #配列で会社のidを取り出す
+    co_id = co.pluck(:id)
+
+    #案件の会社のidとprofitの会社のidが違っていたら実行
+    if co_id[0] != profit_id.company_id
+      #請求情報上書き(会社のidも)
+      profit = profit_id&.update(price: invoice&.quote&.price, date: invoice&.date, company_id: co_id[0])
+    else
+      #請求情報上書き
+      profit = profit_id&.update(price: invoice&.quote&.price, date: invoice&.date)
+    end
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '請求書情報を更新しました'}}
   rescue => e
