@@ -31,7 +31,7 @@ CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |
       @I列 = '立替金'
       @K列 = '対象外'
     else
-      @price = (r.price * 1.08).floor
+      @price = (r.price * SiteConfig.consumption_tax.to_f).floor
       @I列 = '売上高'
       @K列 = '課税売上 8%'
     end

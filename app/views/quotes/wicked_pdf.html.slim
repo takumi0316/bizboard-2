@@ -42,7 +42,7 @@
       p.u-fs-small.u-fw-bold お見積金額　#{(quote.price).to_s(:delimited)} 円
     -else
 
-      p.u-fs-small.u-fw-bold お見積金額　#{((quote.price * @tax).floor).to_s(:delimited)} 円
+      p.u-fs-small.u-fw-bold お見積金額　#{((quote.price * SiteConfig.consumption_tax.to_f).floor).to_s(:delimited)} 円
   .u-mt-30
 
   .c-table-pdf
@@ -103,7 +103,7 @@
         table
           tr
             th.u-ta-left 消費税
-            td.u-ta-right #{((quote.price * @tax).floor - quote.price).to_s(:delimited)} 円
+            td.u-ta-right #{((quote.price * SiteConfig.consumption_tax.to_f).floor - quote.price).to_s(:delimited)} 円
 
     .u-mt-50
 
@@ -112,7 +112,7 @@
         table
           tr
             th.u-ta-left 合計
-            td.u-ta-right #{((quote.price * @tax).floor).to_s(:delimited)} 円
+            td.u-ta-right #{((quote.price * SiteConfig.consumption_tax.to_f).floor).to_s(:delimited)} 円
 
 
   .c-box__height-100
