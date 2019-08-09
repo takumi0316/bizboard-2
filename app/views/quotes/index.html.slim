@@ -48,6 +48,8 @@
           td
             - if r.status == "lost"
               | 失注
+            - elsif r.activity&.status == "rejection"
+              | 不採用
             - else
               - if r.work.nil?
                 = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
