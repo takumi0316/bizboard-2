@@ -43,6 +43,15 @@ class ExpendablesController < ApplicationController
   def index
 
     add_breadcrumb '製造経費入力'
+    respond_to do |format|
+      format.html do
+        #置いておかないとエラーになる
+      end
+      format.csv do
+        @csv_data = Expendable.where(date: params[:date1]..params[:date2]).order(:subcontractor_id).order(:division_id)
+        send_data render_to_string, filename: "製造経費データ#{params[:date1].to_datetime.month}月分.csv", type: :csv
+      end
+    end
   end
 
   ##
