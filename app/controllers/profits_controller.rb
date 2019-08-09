@@ -49,13 +49,13 @@ class ProfitsController < ApplicationController
       @date2 = Time.current.end_of_month
     end
     @company = Company.joins(:profits).eager_load(:profits).where(profits: {date: @date1..@date2}).where.not(profits: {price: 0})
-    @csv_data = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(@date1..@date2))
     respond_to do |format|
       format.html do
         #置いておかないとエラーになる
       end
       format.csv do
-        send_data render_to_string, filename: "MF会計取り込み用データ#{@date1.mon}月分.csv", type: :csv
+        @csv_data = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(params[:date1]..params[:date2]))
+        send_data render_to_string, filename: "MF会計取り込み用データ#{params[:date1].to_datetime.month}月分.csv", type: :csv
       end
     end
   end
