@@ -13,7 +13,7 @@
     - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
     / 売上
-    - quotes = Quote.where.not(tax_type: 10).invoicing.joins(:invoice).merge(Invoice.date_in(range))
+    - quotes = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(range))
     - sales = quotes.map(&:price).inject(:+).to_i
 
     / 原価
@@ -49,7 +49,7 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.where.not(tax_type: 10).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.map(&:price).inject(:+).to_i
 
       / 原価
@@ -71,7 +71,7 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.where.not(tax_type: 10).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.map(&:price).inject(:+).to_i
 
       / 原価
@@ -93,7 +93,7 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.where.not(tax_type: 10).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.map(&:price).inject(:+).to_i
 
       / 原価
