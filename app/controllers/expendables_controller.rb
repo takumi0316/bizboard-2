@@ -83,11 +83,8 @@ class ExpendablesController < ApplicationController
   # @version 2018/06/10
   #
   def update
-
     # 取引先情報更新
     expendable.update! expendable_params
-
-    expendable.update_columns(division_id: current_user.division_id)
 
     payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
     payment.update(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.present?
