@@ -4,6 +4,7 @@ CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |
   column_names = %w(
     №
     申請日
+    案件番号
     仕入先
     負担部署
     勘定科目
@@ -15,6 +16,7 @@ CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |
     column_values = [
       (i + 1),
       r.date,
+      r.work_subcontractor_detail&.work_subcontractor&.work&.quote&.quote_number,
       r.subcontractor.name,
       r.division.name,
       r.status_i18n,

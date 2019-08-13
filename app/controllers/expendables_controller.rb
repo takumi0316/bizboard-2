@@ -101,11 +101,8 @@ class ExpendablesController < ApplicationController
   # @version 2018/06/10
   #
   def create
-
     # 取引先情報更新
     expendable.update! expendable_params
-
-    expendable.update_columns(division_id: current_user.division_id)
 
     payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
     payment.update(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.present?
@@ -123,12 +120,15 @@ class ExpendablesController < ApplicationController
   #
   def destroy
 
+    payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
+    payment.destroy if payment.present?
+
     expendable.destroy
+
+    redirect_to expendables_path, flash: {notice: {message: '製造経費を削除しました'}}
   rescue => e
 
-    flash[:warning] = { message: e.message }
-  ensure
-    redirect_to action: :index
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
 
