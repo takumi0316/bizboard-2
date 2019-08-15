@@ -13,7 +13,7 @@
     - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
     / 売上
-    - quotes = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(range))
+    - quotes = Quote.where(tax_type: 0).invoicing.joins(:invoice).merge(Invoice.date_in(range))
     - sales = quotes.map(&:price).inject(:+).to_i
 
     / 原価
@@ -49,7 +49,7 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.map(&:price).inject(:+).to_i
 
       / 原価
@@ -71,7 +71,7 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.map(&:price).inject(:+).to_i
 
       / 原価
@@ -93,7 +93,7 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.map(&:price).inject(:+).to_i
 
       / 原価
@@ -122,7 +122,7 @@
       /取得した作成日以前の活動履歴のidを取得
       - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
 
-      - quotes = Quote.where(division_id: r.id).joins(:activity).merge(Activity.date_in(range)).merge(Activity.where.not(id: activity_ids))
+      - quotes = Quote.where(tax_type: 0).where(division_id: r.id).joins(:activity).merge(Activity.date_in(range)).merge(Activity.where.not(id: activity_ids))
 
       / 確度
       - accurary_a = quotes.merge(Activity.where(accurary: 0)).map(&:price).inject(:+).to_i
