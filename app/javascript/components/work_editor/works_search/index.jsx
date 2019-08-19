@@ -122,6 +122,7 @@ export default class WorksSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
+              <p className={ 'c-search__tilde' }>〜</p>
               <DatePicker
                 selected={ this.state.startDate2 }
                 onChange={ ::this.handleChange2 }
