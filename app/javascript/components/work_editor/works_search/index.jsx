@@ -138,7 +138,7 @@ export default class WorksSearch extends Component {
               <div className={ Style.Search__date2 }><Icon name='ei-calendar' size='s'/></div>
               <input type='hidden' name='count' value='1' />
               <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
-              <a className={ 'c-btnMain-standard' } href={ '/works' } >元に戻す</a>
+              <a className={ 'c-btnMain-primaryA' } href={ '/works' } >元に戻す</a>
             </div>
           </form>
         </div>

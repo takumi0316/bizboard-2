@@ -7,6 +7,12 @@
 
       - if pagination.prev
         span.page.prev
+          = link_to pagy_trim_url(pagy_url_for(1, pagination)), rel: :prev do
+            svg.u-svg-thinBlack width='15' height='20' viewBox='-2 0 102 100'
+              use xlink:href='#application-tilde'
+            svg.u-svg-thinBlack width='15' height='20' viewBox='-2 20 52 50'
+              use xlink:href='#application-tilde'
+        span.page.prev
           = link_to pagy_trim_url(pagy_url_for(pagination.prev, pagination)), rel: :prev do
             svg.u-svg-thinBlack width='15' height='20' viewBox='-2 0 52 50'
               use xlink:href='#application-tilde'
@@ -23,5 +29,11 @@
         span.page.next
           = link_to pagy_url_for(pagination.next, pagination), rel: :next do
             span.u-mr-10 次へ
+            svg.u-svg-thinBlack width='15' height='20' viewBox='2 0 52 50'
+              use xlink:href='#application-tilde'
+        span.page.next
+          = link_to pagy_url_for(pagination.last, pagination), rel: :next do
+            svg.u-svg-thinBlack width='15' height='20' viewBox='2 20 52 50'
+              use xlink:href='#application-tilde'
             svg.u-svg-thinBlack width='15' height='20' viewBox='2 0 52 50'
               use xlink:href='#application-tilde'
