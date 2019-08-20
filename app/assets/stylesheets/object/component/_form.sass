@@ -369,6 +369,21 @@
       background-color: map-get($layoutColors, 'white')
       width: 125px
       line-height: 2rem
+      &:after
+        content: ''
+        display: block
+        position: absolute
+        top: 231px
+        left: 692px
+        width: 0
+        height: 0
+        padding: 0
+        border-left: 8px solid transparent
+        border-right: 8px solid transparent
+        border-top: 8px solid map-get($layoutColors, 'lightGray')
+        z-index: 1
+        //三角押せるようになるやつ
+        pointer-events: none
 
     &__work-show
       @extend %formStyle
@@ -395,6 +410,21 @@
       background: none
       background-color: map-get($layoutColors, 'white')
       line-height: 2rem
+      &:after
+        content: ''
+        display: block
+        position: absolute
+        top: 231px
+        left: 692px
+        width: 0
+        height: 0
+        padding: 0
+        border-left: 8px solid transparent
+        border-right: 8px solid transparent
+        border-top: 8px solid map-get($layoutColors, 'lightGray')
+        z-index: 1
+        //三角押せるようになるやつ
+        pointer-events: none
 
   // 日付セレクトボックス
   // ------------------------------------

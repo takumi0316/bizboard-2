@@ -2,6 +2,8 @@ import React, { Component } from "react"
 import Style from './style.sass'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import Icon  from 'react-evil-icons'
+
 
 // Ajax
 import Request from "superagent"
@@ -102,7 +104,8 @@ export default class WorksSearch extends Component {
               <span className={ 'c-form__required u-ml-10' }>現在{this.props.count_working}件作業中です</span>
             </div>
             <div className={ Style.Search__SideBySide }>
-              <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='案件No./顧客名/担当者名/作業内容' />
+              <input className={ 'c-form-text__work-index'} type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='案件No./顧客名/担当者名/作業内容' />
+              <div className={ Style.Search__triangle }></div>
               <select name='status' className={ 'c-form-select__work-index' }>
                 <option value={ this.state.status }>{ this.state.status === 'ステータス' ? 'ステータス' : ENUM_STATUS[this.state.status] }</option>
                 { Object.keys(ENUM_STATUS).map((item, index) =>{
@@ -115,6 +118,7 @@ export default class WorksSearch extends Component {
                   );
                 }) }
               </select>
+
               <DatePicker
                 selected={ this.state.startDate }
                 onChange={ ::this.handleChange }
@@ -122,6 +126,7 @@ export default class WorksSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
+              <div className={ Style.Search__date1 }><Icon name='ei-calendar' size='s'/></div>
               <p className={ 'c-search__tilde' }>〜</p>
               <DatePicker
                 selected={ this.state.startDate2 }
@@ -130,6 +135,7 @@ export default class WorksSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
+              <div className={ Style.Search__date2 }><Icon name='ei-calendar' size='s'/></div>
               <input type='hidden' name='count' value='1' />
               <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
               <a className={ 'c-btnMain-standard' } href={ '/works' } >元に戻す</a>

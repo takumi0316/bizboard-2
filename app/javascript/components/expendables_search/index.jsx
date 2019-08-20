@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import Style from './style.sass'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import Icon  from 'react-evil-icons'
 
 // Ajax
 import Request from "superagent"
@@ -101,6 +102,7 @@ export default class ExpendablesSearch extends Component {
         <div className={ Style.Search }>
           <form method='get' action='/expendables?' >
             <div className={ Style.Search__SideBySide }>
+            <div className={ Style.Search__FirstTriangle }></div>
             <select name='division' className={ 'c-form-select__expendable-index' }>
               <option value={ this.state.division }>{ this.state.division === '負担部署' ? '負担部署' : [this.state.division] }</option>
               { this.props.division.map((division, index) => {
@@ -113,6 +115,7 @@ export default class ExpendablesSearch extends Component {
                 );
               }) }
             </select>
+            <div className={ Style.Search__SecondTriangle }></div>
             <select name='subcontractor' className={ 'c-form-select__expendable-index' }>
               <option value={ this.state.subcontractor }>{ this.state.subcontractor === '仕入先' ? '仕入先' : [this.state.subcontractor] }</option>
               { this.props.subcontractor.map((subcontractor, index) => {
@@ -125,6 +128,7 @@ export default class ExpendablesSearch extends Component {
                 );
               }) }
             </select>
+              <div className={ Style.Search__ThirdTriangle }></div>
               <select name='status' className={ 'c-form-select__work-index' }>
                 <option value={ this.state.status }>{ this.state.status === '勘定科目' ? '勘定科目' : ENUM_STATUS[this.state.status] }</option>
                 { Object.keys(ENUM_STATUS).map((item, index) =>{
@@ -144,6 +148,7 @@ export default class ExpendablesSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
+              <div className={ Style.Search__date1 }><Icon name='ei-calendar' size='s'/></div>
               <p className={ 'c-search__tilde' }>〜</p>
               <DatePicker
                 selected={ this.state.startDate2 }
@@ -152,6 +157,7 @@ export default class ExpendablesSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
+              <div className={ Style.Search__date2 }><Icon name='ei-calendar' size='s'/></div>
               <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
               <a className={ 'c-btnMain-standard' } href={ '/expendables' } >元に戻す</a>
             </div>

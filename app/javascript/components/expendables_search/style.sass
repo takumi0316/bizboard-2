@@ -3,7 +3,7 @@
   display: flex
 
   &__SideBySide
-    
+
     display: flex
     input
 
@@ -11,3 +11,69 @@
     select
 
       margin-right: 3px
+
+  &__FirstTriangle
+    content: ''
+    display: block
+    position: absolute
+    top: 241px
+    left: 384px
+    width: 0
+    height: 0
+    padding: 0
+    border-left: 8px solid transparent
+    border-right: 8px solid transparent
+    border-top: 8px solid #aab4b9
+    z-index: 1
+    //三角押せるようになるやつ
+    pointer-events: none
+
+  &__SecondTriangle
+    content: ''
+    display: block
+    position: absolute
+    top: 241px
+    left: 560px
+    width: 0
+    height: 0
+    padding: 0
+    border-left: 8px solid transparent
+    border-right: 8px solid transparent
+    border-top: 8px solid #aab4b9
+    z-index: 1
+    //三角押せるようになるやつ
+    pointer-events: none
+
+  &__ThirdTriangle
+    content: ''
+    display: block
+    position: absolute
+    top: 241px
+    left: 692px
+    width: 0
+    height: 0
+    padding: 0
+    border-left: 8px solid transparent
+    border-right: 8px solid transparent
+    border-top: 8px solid #aab4b9
+    z-index: 1
+    //三角押せるようになるやつ
+    pointer-events: none
+
+  &__date1
+    position: absolute
+    top: 232.5px
+    left: 815px
+    //三角押せるようになるやつ
+    pointer-events: none
+    svg
+      fill: #666
+
+  &__date2
+    position: absolute
+    top: 232.5px
+    left: 959px
+    //三角押せるようになるやつ
+    pointer-events: none
+    svg
+      fill: #666

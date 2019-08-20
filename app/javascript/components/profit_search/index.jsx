@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import Style from './style.sass'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import Icon  from 'react-evil-icons'
 
 // Ajax
 import Request from "superagent"
@@ -106,6 +107,8 @@ export default class ProfitSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
+              <div className={ Style.Search__date1 }><Icon name='ei-calendar' size='s'/></div>
+              <p className={ 'c-search__tilde' }>〜</p>
               <DatePicker
                 selected={ this.state.startDate2 }
                 onChange={ ::this.handleChange2 }
@@ -113,6 +116,7 @@ export default class ProfitSearch extends Component {
                 dateFormat="YYYY/MM/dd"
                 className={ 'c-form-text__work-index__datepicker' }
               />
+              <div className={ Style.Search__date2 }><Icon name='ei-calendar' size='s'/></div>
               <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
               <a className={ 'c-btnMain-standard' } href={ '/profits' } >元に戻す</a>
             </div>
