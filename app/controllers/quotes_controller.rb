@@ -234,7 +234,7 @@ class QuotesController < ApplicationController
 
     clone_quote.save
 
-    clone_quote.update_columns(pdf_url: nil, user_id: current_user.id)
+    clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Date.today.to_time, deliver_at: Date.today.to_time)
 
     clone_quote.unworked!
 
