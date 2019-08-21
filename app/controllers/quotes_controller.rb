@@ -262,7 +262,7 @@ class QuotesController < ApplicationController
       end
     end
 
-    redirect_to edit_quote_path(clone_quote), flash: {notice: {message: '見積書を複製しました'}}
+    redirect_to edit_quote_path(clone_quote), flash: {notice: {message: '案件を複製しました'}}
   end
 
   def wicked_pdf
