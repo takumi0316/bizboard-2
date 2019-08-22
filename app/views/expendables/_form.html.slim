@@ -26,7 +26,7 @@
   .c-form-label
     = f.label :price, '金額(税抜き)'
     span.c-form__required.u-ml-10 必須 (半角数字)
-  = f.number_field :price, placeholder: '1000', class: 'c-form-text'
+  = f.number_field :price, placeholder: '1000', class: 'c-form-text', required: :true
 
   .c-form-label
     = f.label :memo, '備考'
