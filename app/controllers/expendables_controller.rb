@@ -85,6 +85,8 @@ class ExpendablesController < ApplicationController
   def update
     # 取引先情報更新
     expendable.update! expendable_params
+    # priceがnilなら0にする
+    expendable.update(price: 0) if expendable.price.nil?
 
     payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
     payment.update(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.present?
@@ -103,6 +105,8 @@ class ExpendablesController < ApplicationController
   def create
     # 取引先情報更新
     expendable.update! expendable_params
+    # priceがnilなら0にする
+    expendable.update(price: 0) if expendable.price.nil?
 
     payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
     payment.update(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.present?
