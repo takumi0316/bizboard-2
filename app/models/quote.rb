@@ -89,6 +89,9 @@ class Quote < ApplicationRecord
 
   has_one  :activity, -> { order(created_at: :desc) }, dependent: :destroy
 
+    # タスク
+  has_one :task, inverse_of: :quote, dependent: :destroy
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------
