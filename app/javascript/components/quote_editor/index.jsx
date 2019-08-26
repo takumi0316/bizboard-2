@@ -42,6 +42,7 @@ export default class QuoteEditor extends React.Component {
       division: props.division,
       home_division: props.home_division,
       client: props.client,
+      work: props.work,
       user_id: props.user === null ? null : props.user.id,
       quote_type: props.quote.quote_type === null ? 'contract' : props.quote.quote_type,
       tax_type: props.quote.tax_type === null ? 'taxation' : props.quote.tax_type,
@@ -744,6 +745,11 @@ export default class QuoteEditor extends React.Component {
               <div>
                 <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>更新する</div>
                 <a className='c-btnMain-standard c-btn-blue u-ml-30' href={'/quotes/' + this.props.quote.id + '/wicked_pdf'} target="_blank">見積書ダウンロード</a>
+                { this.props.work == null?
+                  <a class='c-btnMain-standard c-btn-orange u-ml-30' rel="nofollow" data-method="post" href={'/quotes/' + this.props.quote.id +'/status?status=working'}>作業書作成</a>
+                  :
+                  <a class='c-btnMain-standard c-btn-blue u-ml-30' href={'/works/' + this.props.work.id}>作業書</a>
+                }
               </div>
               :
               <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>作成する</div>
