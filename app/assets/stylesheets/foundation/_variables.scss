@@ -6,6 +6,7 @@
 // ------------------------------------
 $color-coreColor:  #2f4f4f;
 $color-vividColor: #008080;
+$color-corporateColor: #49AFBA;
 
 // font weights
 // ------------------------------------
@@ -33,6 +34,7 @@ $layoutColors: (
   'base':       #f7f7f7,
   'core':         $color-coreColor,
   'vivid':        $color-vividColor,
+  'corporate':    $color-corporateColor,
   'black':        #000,
   'richBlack':    #333,
   'thinBlack':    #666,

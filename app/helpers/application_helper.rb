@@ -11,7 +11,7 @@ module ApplicationHelper
   # @version 2018/06/10
   #
   def application_meta_tags
-    
+
     {
       site: SiteConfig.site_name,
       reverse: true,
@@ -31,7 +31,7 @@ module ApplicationHelper
   # @version 2018/06/10
   #
   def application_json_ld
-    
+
     {
       '@context': 'http://schema.org',
       '@type': :WebSite,
@@ -73,7 +73,7 @@ module ApplicationHelper
     uri.query = Rack::Utils.parse_nested_query(uri.query).symbolize_keys.merge({ page: pagination.next }).to_param
     uri.to_s
   end
-  
+
   ##
   # page=1のパラメータを削除する(ページネーションで使用)
   # @version 2018/06/10
@@ -109,7 +109,7 @@ module ApplicationHelper
   # @version 2018/06/10
   #
   def render_asset(path)
-    
+
     raw Rails.application.assets.find_asset(path)
   end
 
@@ -118,11 +118,28 @@ module ApplicationHelper
   # @version 2018/06/10
   #
   def confirmation_url(confirmation_token)
-    
+
     # メール認証用URL
     url = verify_url(token: confirmation_token)
     # 認証後に遷移する先
     url += "&return_url=#{CGI.escape(session[:return_url])}" if session[:return_url].present?
     url
   end
+
+  ##
+  # カレントページにいる時css変更
+  # @version 2019/08/22
+  #
+  def cp(path)
+   "l-dashboard__menuCurrent" if current_page?(path)
+  end
+  
+  ##
+  # カレントコントローラーにいる時css変更
+  # @version 2019/08/22
+  #
+  def current_controller(controller_name)
+    "l-dashboard__menuCurrent" if params[:controller]== controller_name
+  end
+
 end

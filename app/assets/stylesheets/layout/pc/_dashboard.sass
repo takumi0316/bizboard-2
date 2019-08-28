@@ -38,7 +38,12 @@
           &:hover
             text-decoration: underline
           svg
-            fill: map-get($layoutColors, 'core')
+            fill: currentColor
+      &Current
+        background-color: map-get($layoutColors, 'corporate')
+        color: map-get($layoutColors, 'white')
+        svg
+          fill: currentColor
 
   &__main
     padding-bottom: 120px
@@ -126,7 +131,7 @@
       // メニューオープン時
       [data-menu-open=true] &::before
         content: '閉じる'
-  
+
   &__tabmenu
     display: flex
     align-items: center

@@ -22,27 +22,27 @@
     ul.l-dashboard__menuList
 
       li.l-dashboard__menuItem
-        = link_to quotes_path do
+        = link_to quotes_path, class: current_controller('quotes') || current_controller('invoices') || current_controller('activities') || current_controller('projects') do
           = evil_icon 'ei-plus', size: :s
           span.u-ml-10 案件管理
 
       li.l-dashboard__menuItem
-        = link_to works_path do
+        = link_to works_path, class: current_controller('works') do
           = evil_icon 'ei-calendar', size: :s
           span.u-ml-10 作業管理
 
       li.l-dashboard__menuItem
-        = link_to companies_path do
+        = link_to companies_path, class: current_controller('companies') || current_controller('company_divisions') || current_controller('company_division_clients')do
           = evil_icon 'ei-link', size: :s
           span.u-ml-10 取引先
 
       li.l-dashboard__menuItem
-        = link_to subcontractors_path do
+        = link_to subcontractors_path, class: current_controller('subcontractors') || current_controller('subcontractor_divisions') || current_controller('subcontractor_division_clients') do
           = evil_icon 'ei-user', size: :s
           span.u-ml-10 外注先
 
       li.l-dashboard__menuItem
-        = link_to expendables_path do
+        = link_to expendables_path, class: current_controller('expendables') do
           = evil_icon 'ei-eye', size: :s
           span.u-ml-10 製造経費入力
 
@@ -52,42 +52,42 @@
         ul.l-dashboard__menuList
 
           li.l-dashboard__menuItem
-            = link_to targets_path do
+            = link_to targets_path, class: current_controller('targets') do
               = evil_icon 'ei-chart', size: :s
               span.u-ml-10 目標管理
 
           li.l-dashboard__menuItem
-            = link_to payments_path do
+            = link_to payments_path, class: cp(payments_path) do
               = evil_icon 'ei-credit-card', size: :s
               span.u-ml-10 支払い管理
 
           li.l-dashboard__menuItem
-            = link_to profits_path do
+            = link_to profits_path, class: cp(profits_path) do
               = evil_icon 'ei-cart', size: :s
               span.u-ml-10 請求情報
 
           li.l-dashboard__menuItem
-            = link_to labors_path do
+            = link_to labors_path, class: current_controller('labors') do
               = evil_icon 'ei-clock', size: :s
               span.u-ml-10 労務費入力
 
           li.l-dashboard__menuItem
-            = link_to catalogs_path do
+            = link_to catalogs_path, class: current_controller('catalogs') do
               = evil_icon 'ei-tag', size: :s
               span.u-ml-10 カタログ作成
 
           li.l-dashboard__menuItem
-            = link_to users_path do
+            = link_to users_path, class: cp(users_path) do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 ユーザー一覧
 
           li.l-dashboard__menuItem
-            = link_to divisions_path do
+            = link_to divisions_path, class: current_controller('divisions') do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 自社部署一覧
 
           li.l-dashboard__menuItem
-            = link_to configs_path do
+            = link_to configs_path, class: cp(configs_path) do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 サイト設定
 
@@ -105,7 +105,7 @@
             span.u-ml-10 ご意見箱
 
           li.l-dashboard__menuItem
-            = link_to edit_user_path(current_user) do
+            = link_to edit_user_path(current_user), class: cp(edit_user_path(current_user)) do
               = evil_icon 'ei-pencil', size: :s
               span.u-ml-10 プロフィール編集
 
