@@ -750,6 +750,7 @@ export default class QuoteEditor extends React.Component {
                   :
                   <a class='c-btnMain-standard c-btn-blue u-ml-30' href={'/works/' + this.props.work.id}>作業書</a>
                 }
+                <a class='c-btnMain-standard c-btn-blue u-ml-30' href={'/activities?name=' + this.props.quote.id} >活動履歴</a>
               </div>
               :
               <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>作成する</div>
