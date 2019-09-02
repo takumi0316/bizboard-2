@@ -124,7 +124,10 @@
       /取得した作成日以前の活動履歴のidを取得
       - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
 
-      - activities = Activity.where.not(id: activity_ids).joins(:quote)
+      - if activity_ids.blank?
+        - activities = Activity.where(id: activity_ids).joins(:quote)
+      - else
+        - activities = Activity.where.not(id: activity_ids).joins(:quote)
 
       / 確度
       - accurary_a = activities.where(accurary: 0).pluck(:price).sum.to_i
