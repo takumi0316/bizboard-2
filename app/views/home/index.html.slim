@@ -125,9 +125,9 @@
       - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
 
       - if activity_ids.blank?
-        - activities = Activity.where(id: activity_ids).joins(:quote)
+        - activities = Activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
       - else
-        - activities = Activity.where.not(id: activity_ids).joins(:quote)
+        - activities = Activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
 
       / 確度
       - accurary_a = activities.where(accurary: 0).pluck(:price).sum.to_i
