@@ -72,6 +72,8 @@ class LaborsController < ApplicationController
 
     # 取引先情報更新
     labor.update! labor_params
+    #　労務費がNULLなら0を入れる
+    labor.update(price: 0) if labor.price.nil?
 
     redirect_to labors_path, flash: {notice: {message: '労務費を更新しました'}}
   rescue => e
@@ -87,6 +89,8 @@ class LaborsController < ApplicationController
 
     # 取引先情報更新
     labor.update! labor_params
+    #　労務費がNULLなら0を入れる
+    labor.update(price: 0) if labor.price.nil?
 
     redirect_to labors_path, flash: {notice: {message: '労務費を登録しました'}}
   rescue => e

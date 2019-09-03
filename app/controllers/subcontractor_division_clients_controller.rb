@@ -71,7 +71,7 @@ class SubcontractorDivisionClientsController < ApplicationController
     add_breadcrumb '外注先一覧', path: subcontractors_path
     add_breadcrumb '部署一覧', path: subcontractor_divisions_path(subcontractor_id: division&.subcontractor&.id)
     add_breadcrumb '担当者一覧', path: subcontractor_division_clients_path(subcontractor_division_id: division&.id)
-    add_breadcrumb '新規作成'
+    add_breadcrumb '編集'
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end

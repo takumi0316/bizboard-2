@@ -8,7 +8,7 @@ require('superagent-rails-csrf')(Request);
  *  @version 2018/06/10
  */
 export default class SubcontractorDivisions extends React.Component {
-  
+
   /**
    *  コンストラクタ
    *  @version
@@ -24,7 +24,7 @@ export default class SubcontractorDivisions extends React.Component {
 
   /**
    *  親要素のクリックイベントを引き継がない
-   *  @version 
+   *  @version
    */
   _onChange(e) {
 
@@ -33,10 +33,10 @@ export default class SubcontractorDivisions extends React.Component {
 
   /**
    *  検索
-   *  @version 
+   *  @version
    */
   _search(id) {
-    
+
     // 記事内容を送信
     Request.get('/subcontractor_divisions.json?subcontractor_id=' + id)
       .end((error, response) => {
@@ -50,7 +50,7 @@ export default class SubcontractorDivisions extends React.Component {
 
   /**
    *  表示処理
-   *  @version 
+   *  @version
    */
   render () {
 
@@ -61,7 +61,7 @@ export default class SubcontractorDivisions extends React.Component {
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <div className='c-form-selectWrap'>
-          <select name='subcontractor_id' id='subcontractor_id' className='c-form-select' defaultValue={this.props.subcontractor_id} onChange={::this._onChange}>
+          <select name='subcontractor_id' id='subcontractor_id' className='c-form-select u-mb-30' defaultValue={this.props.subcontractor_id} onChange={::this._onChange}>
             { this.props.subcontractors.map((subcontractor, index) => {
               const key = `subcontrator-${index}`;
               return (
@@ -76,7 +76,7 @@ export default class SubcontractorDivisions extends React.Component {
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <div className='c-form-selectWrap'>
-          <select className='c-form-select' defaultValue={this.props.subcontractor_division_id} required='required' name='subcontractor_division_client[subcontractor_division_id]' id='subcontractor_division_client_subcontractor_division_id'>
+          <select className='c-form-select u-mb-30' defaultValue={this.props.subcontractor_division_id} required='required' name='subcontractor_division_client[subcontractor_division_id]' id='subcontractor_division_client_subcontractor_division_id'>
             { this.state.divisions.map((division, index) => {
               const key = `division-${index}`;
               return (

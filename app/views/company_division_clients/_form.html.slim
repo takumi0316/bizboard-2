@@ -11,33 +11,33 @@ h1.l-dashboard__heading 担当者
   .c-form-label
     = f.label :user_id, '自社担当者'
     span.c-form__required.u-ml-10 必須
-  = f.select :user_id, User.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
+  = f.select :user_id, User.all.pluck(:name, :id), {}, { class: 'c-form-select u-mb-30', required: true }
 
   .c-form-label
     = f.label :name, '氏名'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :name, placeholder: '氏名', class: 'c-form-text', required: :true
+  = f.text_field :name, placeholder: '氏名', class: 'c-form-text u-mb-30', required: :true
 
   .c-form-label
     = f.label :kana, '氏名(カナ)'
-  = f.text_field :kana, placeholder: '氏名(カナ)', class: 'c-form-text'
+  = f.text_field :kana, placeholder: '氏名(カナ)', class: 'c-form-text u-mb-30'
 
   .c-form-label
     = f.label :title, '敬称'
-  = f.select :title, CompanyDivisionClient.titles_i18n.invert, {}, { class: 'c-form-select' }
+  = f.select :title, CompanyDivisionClient.titles_i18n.invert, {}, { class: 'c-form-select u-mb-30' }
 
   .c-form-label
     = f.label :tel, '電話番号'
     span.c-form__recommend.u-ml-10 入力推奨
-  = f.text_field :tel, placeholder: '電話番号', class: 'c-form-text'
+  = f.text_field :tel, placeholder: '電話番号', class: 'c-form-text u-mb-30'
 
   .c-form-label
     = f.label :email, 'メールアドレス'
     span.c-form__recommend.u-ml-10 入力推奨
-  = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text'
+  = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text u-mb-30'
 
   .c-form-label
     = f.label :note, 'メモ'
-  = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+  = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea u-mb-30', rows: 4
 
   .u-ta-center.u-mt-30 = f.submit client.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

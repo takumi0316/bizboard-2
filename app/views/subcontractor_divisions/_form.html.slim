@@ -18,34 +18,34 @@ h1.l-dashboard__heading.u-mt-30 部署情報
   .c-form-label
     = f.label :name, '名称'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :name, placeholder: '名称', class: 'c-form-text', required: :true
+  = f.text_field :name, placeholder: '名称', class: 'c-form-text u-mb-30', required: :true
 
   .c-form-label
     = f.label :kana, '名称(カナ)'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :kana, placeholder: '名称(カナ)', class: 'c-form-text', required: :true
+  = f.text_field :kana, placeholder: '名称(カナ)', class: 'c-form-text u-mb-30', required: :true
 
   .c-form-label
     = f.label :zip, '郵便番号'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :zip, placeholder: '郵便番号', class: 'c-form-text', required: :true
+  = f.text_field :zip, placeholder: '郵便番号', class: 'c-form-text u-mb-30', required: :true
 
   .c-form-label
     = f.label :prefecture_id, '都道府県'
     span.c-form__required.u-ml-10 必須
-  = f.select :prefecture_id, Prefecture.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
+  = f.select :prefecture_id, Prefecture.all.pluck(:name, :id), {}, { class: 'c-form-select u-mb-30', required: true }
 
   .c-form-label
     = f.label :address1, '住所1'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :address1, placeholder: '住所1', class: 'c-form-text', required: :true
+  = f.text_field :address1, placeholder: '住所1', class: 'c-form-text u-mb-30', required: :true
 
   .c-form-label
     = f.label :address2, '住所2'
-  = f.text_field :address2, placeholder: '住所2', class: 'c-form-text'
+  = f.text_field :address2, placeholder: '住所2', class: 'c-form-text u-mb-30'
 
   .c-form-label
     = f.label :note, 'メモ'
-  = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea', rows: 4
+  = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea u-mb-30', rows: 4
 
   .u-ta-center.u-mt-30 = f.submit division.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
