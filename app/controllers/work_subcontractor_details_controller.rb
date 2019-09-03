@@ -65,6 +65,8 @@ class WorkSubcontractorDetailsController < ApplicationController
           #製造経費保存
           expendable = Expendable.find_or_initialize_by(work_subcontractor_detail_id: parse_json['id'])
           if expendable.present?
+            #製造経費がNULLなら0にする
+            expendable.update(price: 0) if expendable.price.nil?
             expendable.update(division_id: subcontractor_detail.work_subcontractor.work.quote.division.id, subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id,price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor&.delivery_date)
             if  subcontractor_detail.work_subcontractor.work.quote.quote_type = 'contract'
               expendable.update(status: 100)
@@ -74,6 +76,8 @@ class WorkSubcontractorDetailsController < ApplicationController
               expendable.update(status: 10)
             end
           elsif expendable.nil?
+            #製造経費がNULLなら0にする
+            expendable.update(price: 0) if expendable.price.nil?
             expendable.save!(division_id: subcontractor_detail.work_subcontractor.work.quote.division.id, subcontractor_id: subcontractor_detail.work_subcontractor.client&.subcontractor_division&.subcontractor&.id, work_subcontractor_detail_id: parse_json['id'], price: parse_json['actual_cost'], date: subcontractor_detail.work_subcontractor.delivery_date)
             if subcontractor_detail.work_subcontractor.work.quote.quote_type = 'contract'
               expendable.update(status: 100)
