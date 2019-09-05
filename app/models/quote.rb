@@ -90,7 +90,7 @@ class Quote < ApplicationRecord
   has_one  :activity, -> { order(created_at: :desc) }, dependent: :destroy
 
     # ec始まったらコメントアウト外す
-  #as_one :task, dependent: :destroy
+  has_one :task, dependent: :destroy
 
   #----------------------------------------
   #  ** Delegates **

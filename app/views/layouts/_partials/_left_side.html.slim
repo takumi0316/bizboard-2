@@ -22,7 +22,7 @@
     ul.l-dashboard__menuList
 
       li.l-dashboard__menuItem
-        = link_to quotes_path, class: current_controller('quotes') || current_controller('invoices') || current_controller('activities') || current_controller('projects') do
+        = link_to quotes_path, class: current_controller('quotes') || current_controller('invoices') || current_controller('activities') || current_controller('projects') || current_controller('tasks') do
           = evil_icon 'ei-plus', size: :s
           span.u-ml-10 案件管理
 

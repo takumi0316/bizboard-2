@@ -101,6 +101,9 @@ Rails.application.routes.draw do
   # カタログ
   resources :catalogs
 
+  # タスク管理
+  resources :tasks, only: [:show, :update]
+
   # ユーザー管理
   resources :users, only: [:index, :edit, :update, :destroy]
 

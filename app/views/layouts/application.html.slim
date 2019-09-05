@@ -57,13 +57,12 @@ html lang='ja'
       / パンくず
       / ----------------------------------------------
       = render 'layouts/_partials/breadcrumbs'
-
-
-      .u-px-30 = yield
-    / ----------------------------------------------
-    / 試しのチャット
-    / ----------------------------------------------
-    script src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async
+      - if @task_id && current_page?(task_path(@task_id))
+        = yield
+      - else
+        .l-dashboard__rootExcept = yield
+        / 試しのチャット
+        script src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async
 
     / ----------------------------------------------
     / flash messages

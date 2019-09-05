@@ -57,6 +57,7 @@ export default class QuoteEditor extends React.Component {
       total_cost: props.quote.price === null ? 0 : props.quote.price,
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
+      task: props.task,
     }
   }
 
@@ -168,6 +169,7 @@ export default class QuoteEditor extends React.Component {
       'quote[user_id]': this.props.user_id,
       'quote[discount]': this.state.discount,
       'quote[total_cost]': Number(this.state.total_cost),
+
       'specifications[]': arrayRails,
     };
 
@@ -751,6 +753,11 @@ export default class QuoteEditor extends React.Component {
                   <a class='c-btnMain-standard c-btn-blue u-ml-30' href={'/works/' + this.props.work.id}>作業書</a>
                 }
                 <a class='c-btnMain-standard c-btn-blue u-ml-30' href={'/activities?name=' + this.props.quote.id} >活動履歴</a>
+                { this.props.task == null?
+                  null
+                  :
+                  <a class='c-btnMain-standard c-btn-blue u-ml-30' href={'/tasks/' + this.props.task.id}>チャット</a>
+                }
               </div>
               :
               <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>作成する</div>

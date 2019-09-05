@@ -25,11 +25,14 @@ class Task < ApplicationRecord
   #----------------------------------------
 
   # quote
-  belongs_to :quote, inverse_of: :task
-  accepts_nested_attributes_for :quote, update_only: true
+  belongs_to :quote
 
   #catalog
   belongs_to :catalog
+
+  # message
+  has_many :messages
+  accepts_nested_attributes_for :messages, allow_destroy: true
 
   #----------------------------------------
   #  ** Delegates **

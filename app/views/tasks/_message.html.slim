@@ -1,0 +1,15 @@
+- task.messages.each do |r|
+  //自分と相手のメッセージのcss変更
+  -if r.name === current_user.name
+    dl.p-tasks__message-current
+      dt = r.content
+  -else
+    dl.p-tasks__message-others
+      dt = r.content
+javascript:
+  window.onload = function(){
+    var countup = function(){
+      location.reload();
+    }
+    //setTimeout(countup, 20000);
+  }
