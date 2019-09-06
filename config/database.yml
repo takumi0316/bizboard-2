@@ -33,6 +33,6 @@ staging:
 production:
   <<: *default
   database: factory
-  username: factory
-  password: factoryfactory_2018
+  username: root
+  password: 
   host: localhost
