@@ -1,15 +1,28 @@
-- task.messages.each do |r|
-  //自分と相手のメッセージのcss変更
-  -if r.name === current_user.name
-    dl.p-tasks__message-current
-      dt = r.content
-  -else
-    dl.p-tasks__message-others
-      dt = r.content
+#ajaxreload
+  - task.messages.each do |r|
+    //自分と相手のメッセージのcss変更
+    -if r.name === current_user.name
+      dl.p-tasks__message-current
+        dt = simple_format(r.content)
+    -else
+      dl.p-tasks__message-others
+        dt = simple_format(r.content)
+
 javascript:
-  window.onload = function(){
-    var countup = function(){
-      location.reload();
-    }
-    //setTimeout(countup, 20000);
+  function ajaxUpdate(url, element){
+    var ajax = XMLHttpRequest;
+    ajax.open('GET', url, true);
+    ajax.responseType = 'document';
+    ajax.onload = function () {
+      document.getElementById('ajaxreload').innerHTML = ajax.response.getElementById('ajaxreload').innerHTML
+     };
+    ajax.send(null);
   }
+  //20秒に一回メッセージエリアを読み込む
+  window.addEventListener('load', function(){
+    var url = 'show';
+    var div = document.getElementById('ajaxreload');
+    setInterval(function(){
+      ajaxUpdate(url, div);
+    }, 20000);
+  });
