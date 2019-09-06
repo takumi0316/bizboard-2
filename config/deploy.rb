@@ -15,5 +15,5 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/storage
 set :assets_dependencies, %w(app/assets lib/assets vendor/assets app/javascript package.json yarn.lock config/webpack)
 
 # ruby
-set :rbenv_ruby, '2.5.1'
+set :rbenv_ruby, '2.6.3'
 set :default_env, { path: '~/.rbenv/shims:~/.rbenv/bin:$PATH' }
