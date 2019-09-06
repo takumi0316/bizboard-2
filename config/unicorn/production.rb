@@ -6,7 +6,7 @@ preload_app true
 
 timeout 30
 
-@app_path = '/home/jii/factory/current'
+@app_path = '/home/media/current'
 
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 2)
 working_directory "#{@app_path}"

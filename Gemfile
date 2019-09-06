@@ -86,6 +86,8 @@ gem 'enum_help'
 # pagination
 gem 'pagy'
 
+gem 'paperclip'
+
 # auth
 gem 'devise'
 gem 'omniauth'
