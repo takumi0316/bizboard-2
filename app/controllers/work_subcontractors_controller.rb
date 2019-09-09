@@ -5,7 +5,6 @@ class WorkSubcontractorsController < ApplicationController
   #
   #
   def create
-
     if params[:contents] === 'create'
 
       Work.find(params[:work_subcontractors][:work_id]).subcontractor.create!(order_date: DateTime.now, delivery_date: DateTime.now)
@@ -16,6 +15,10 @@ class WorkSubcontractorsController < ApplicationController
 
         parse_json = JSON.parse(subcontractors)
         WorkSubcontractor.find(parse_json['id']).update!(notices: parse_json['notices'], order_date: parse_json['order_date'], delivery_date: parse_json['delivery_date'], delivery_destination: parse_json['delivery_destination'])
+        detail_ids = WorkSubcontractorDetail.where(work_subcontractor_id: parse_json['id']).ids
+        Payment.where(work_subcontractor_detail_id: detail_ids).update_all(date: parse_json['delivery_date'])
+        Expendable.where(work_subcontractor_detail_id: detail_ids).update_all(date: parse_json['delivery_date'])
+
       end
       render json: { status: :success, work_subcontractors: Work.find(params[:work_id]).subcontractor }
     end
