@@ -82,7 +82,25 @@ class ActivitiesController < ApplicationController
     if activity.status == "lost"
       quote = Quote.find_or_initialize_by(id: activity.quote.id)
       quote.update(status: "lost")
+      #失注になった場合に外注書が作成されていたら紐づくデータを削除
+      subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: quote.work.id)
+      unless subcontractor_detail_id.nil?
+        Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+        Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+      end
     end
+
+    if activity.status == "rejection"
+      quote = Quote.find_or_initialize_by(id: activity.quote.id)
+      quote.update(status: "rejection")
+      #不採用になった場合に外注書が作成されていたら紐づくデータを削除
+      subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: quote.work.id)
+      unless subcontractor_detail_id.nil?
+        Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+        Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+      end
+    end
+
 
     @sort = activity.quote_id
     redirect_to activities_path+"?name=#{@sort}", flash: {notice: {message: '活動履歴を更新しました'}}
@@ -103,6 +121,25 @@ class ActivitiesController < ApplicationController
     if activity.status == "lost"
       quote = Quote.find_or_initialize_by(id: activity.quote.id)
       quote.update(status: "lost")
+      #失注になった場合に外注書が作成されていたら紐づくデータを削除
+      subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: quote.work.id)
+      unless subcontractor_detail_id.nil?
+        Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+        Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+      end
+
+    end
+
+    if activity.status == "rejection"
+      quote = Quote.find_or_initialize_by(id: activity.quote.id)
+      quote.update(status: "rejection")
+      #不採用になった場合に外注書が作成されていたら紐づくデータを削除
+      subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: quote.work.id)
+      unless subcontractor_detail_id.nil?
+        Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+        Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+      end
+
     end
 
     @sort = activity.quote_id
