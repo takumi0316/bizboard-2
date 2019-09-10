@@ -31,19 +31,6 @@ class TasksController < ApplicationController
   #----------------------------------------
   #  ** Actions **
   #----------------------------------------
-
-  ##
-  # 進捗確認のタスク一覧
-  # @version 2019/06/10
-  #
-  def index
-
-    add_breadcrumb '進捗確認ページ'
-
-    @id = task.quote_id
-    @catalog = task.catalog_id
-  end
-
   ##
   # タスク編集
   # @version 2018/06/10
@@ -52,7 +39,6 @@ class TasksController < ApplicationController
 
     add_breadcrumb '編集'
     @task_id = task.id
-    #@catalog = task.catalog_id
 
   rescue => e
     #エラー時は進捗確認のタスク一覧へ。
@@ -83,9 +69,5 @@ class TasksController < ApplicationController
   #  ** Methods **
   #----------------------------------------
   private
-
-   # def task_params
-   #  params.require(:task).permit :id, :date, :data, :remarks, :catalog_id, :quote_id, :client_name, :client_mail,  messages_attributes: [:id, :task_id, :content, :name]
-   # end
 
 end
