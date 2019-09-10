@@ -49,7 +49,8 @@ class QuotesController < ApplicationController
   #----------------------------------------
   #  ** Request cycles **
   #----------------------------------------
-
+  #既読判定
+  before_action :read_message
   #----------------------------------------
   #  ** Actions **
   #----------------------------------------
@@ -274,6 +275,21 @@ class QuotesController < ApplicationController
                 layout: 'layouts/pdf.html.slim',
                 template: 'quotes/wicked_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
                 show_as_html: params.key?('debug')
+      end
+    end
+  end
+
+  ##
+  # 既読処理
+  # @version 2018/06/10
+  #
+  def read_message
+    # 遷移元のアクションとコントローラー判定
+    path = Rails.application.routes.recognize_path(request.referer)
+    if path[:controller] == 'tasks' && path[:action] == 'show'
+      unless params[:controller] == 'tasks' && params[:action] == 'show'
+        users = User.find_by(email: current_user[:email])
+        users.update_columns(lastaccesstask: DateTime.now)
       end
     end
   end

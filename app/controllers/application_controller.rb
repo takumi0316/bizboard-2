@@ -38,9 +38,6 @@ class ApplicationController < ActionController::Base
 
   #before_action :judgment_browser, unless: -> { params[:controller].include? SiteConfig.home }
 
-  #既読判定
-  before_action :read_message
-
   # bulletの停止
   around_action :skip_bullet, if: -> { Rails.env.development? }
 
@@ -219,21 +216,6 @@ class ApplicationController < ActionController::Base
     def after_sign_out_path_for(scope)
 
       sign_in_path
-    end
-
-    ##
-    # 既読処理
-    # @version 2018/06/10
-    #
-    def read_message
-      # 遷移元のアクションとコントローラー判定
-      path = Rails.application.routes.recognize_path(request.referer)
-      if path[:controller] == 'tasks' && path[:action] == 'show'
-        unless params[:controller] == 'tasks' && params[:action] == 'show'
-          users = User.find_by(email: current_user[:email])
-          users.update_columns(lastaccesstask: DateTime.now)
-        end
-      end
     end
 
     ##
