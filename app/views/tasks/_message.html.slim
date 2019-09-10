@@ -1,4 +1,4 @@
-#ajaxreload
+#messages_area
   - task.messages.each do |r|
     //自分と相手のメッセージのcss変更
     -if r.name === current_user.name
@@ -10,18 +10,18 @@
 
 javascript:
   function ajaxUpdate(url, element){
-    var ajax = XMLHttpRequest;
+    var ajax = new XMLHttpRequest;
     ajax.open('GET', url, true);
-    ajax.responseType = 'document';
+    ajax.responseType = "document";
     ajax.onload = function () {
-      document.getElementById('ajaxreload').innerHTML = ajax.response.getElementById('ajaxreload').innerHTML
+      document.getElementById('messages_area').innerHTML = ajax.response.getElementById('messages_area').innerHTML;
      };
     ajax.send(null);
   }
   //20秒に一回メッセージエリアを読み込む
   window.addEventListener('load', function(){
-    var url = 'show';
-    var div = document.getElementById('ajaxreload');
+    var url = '#{@task_id}';
+    var div = document.getElementById('messages_area');
     setInterval(function(){
       ajaxUpdate(url, div);
     }, 20000);
