@@ -39,7 +39,7 @@ class PaymentsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '支払い管理'
+    add_breadcrumb '支払い管理あああ'
 
     if params[:date1].present?
       @date1 = params[:date1].to_time.beginning_of_day
