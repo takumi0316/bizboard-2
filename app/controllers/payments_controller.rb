@@ -48,7 +48,7 @@ class PaymentsController < ApplicationController
       @date1 = Time.current.beginning_of_month
       @date2 = Time.current.end_of_month
     end
-    @subcontractor = Subcontractor.joins(:payments).eager_load(:payments).where.not(payments: {price: 0}).where(payments: {date: @date1..@date2})
+    @subcontractor = Subcontractor.joins(:payments).eager_load(:payments).where(payments: {date: @date1..@date2}).where.not(payments: {price: 0})
   end
 
 
