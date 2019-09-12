@@ -12,4 +12,4 @@ h1.l-dashboard__heading 外注企業 支払い情報一覧
       - @subcontractor.each do |r|
         tr
           td = r.name
-          td = "#{r.payments&.order(price: 'DESC').pluck(:price).sum.to_s(:delimited)}円"
+          td = "#{r.payments&.pluck(:price).sum.to_s(:delimited)}円"

@@ -33,6 +33,10 @@ staging:
 production:
   <<: *default
   database: factory
-  username: factory
-  password: factoryfactory_2018
-  host: factory-instance-1.cyss4kcjgyjd.ap-northeast-1.rds.amazonaws.com
+  username: root
+  password:
+  host: localhost
+  # 修正の為一度コメントアウト
+  #username: factory
+  #password: factoryfactory_2018
+  #host: factory-instance-1.cyss4kcjgyjd.ap-northeast-1.rds.amazonaws.com
