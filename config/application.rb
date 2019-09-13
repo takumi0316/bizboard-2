@@ -34,6 +34,9 @@ module JiiFactory
     # ActiveStorageのURL有効期限
     ActiveStorage::Service.url_expires_in = 6.hours
 
+    # ActiveStorageの保存パス
+    config.active_storage.routes_prefix = '/storage'
+
     # cache store
     config.cache_store = :redis_cache_store, {
       driver: :hiredis,
