@@ -2,7 +2,7 @@
   .c-form-label
     = f.label :name, 'カタログ名'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :name, placeholder: 'カタログ名を入力してください', class: 'c-form-text u-mb-30'
+  = f.text_field :name, placeholder: 'カタログ名を入力してください', class: 'c-form-text u-mb-30', required: :true
 
   .c-form-label
     = f.label :description, 'カタログ説明文'
