@@ -60,8 +60,8 @@ export default class SubcontractorDivisions extends React.Component {
           <label htmlFor='subcontractor_division_client_subcontractor_division_id'>会社</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
-        <div className='c-form-selectWrap'>
-          <select name='subcontractor_id' id='subcontractor_id' className='c-form-select u-mb-30' defaultValue={this.props.subcontractor_id} onChange={::this._onChange}>
+        <div className='c-form-selectWrap u-mb-30'>
+          <select name='subcontractor_id' id='subcontractor_id' className='c-form-select' defaultValue={this.props.subcontractor_id} onChange={::this._onChange}>
             { this.props.subcontractors.map((subcontractor, index) => {
               const key = `subcontrator-${index}`;
               return (
@@ -75,8 +75,8 @@ export default class SubcontractorDivisions extends React.Component {
           <label htmlFor='subcontractor_division_client_subcontractor_division_id'>部署</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
-        <div className='c-form-selectWrap'>
-          <select className='c-form-select u-mb-30' defaultValue={this.props.subcontractor_division_id} required='required' name='subcontractor_division_client[subcontractor_division_id]' id='subcontractor_division_client_subcontractor_division_id'>
+        <div className='c-form-selectWrap u-mb-30'>
+          <select className='c-form-select' defaultValue={this.props.subcontractor_division_id} required='required' name='subcontractor_division_client[subcontractor_division_id]' id='subcontractor_division_client_subcontractor_division_id'>
             { this.state.divisions.map((division, index) => {
               const key = `division-${index}`;
               return (

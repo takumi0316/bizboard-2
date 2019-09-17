@@ -11,7 +11,8 @@ h1.l-dashboard__heading 担当者
   .c-form-label
     = f.label :user_id, '自社担当者'
     span.c-form__required.u-ml-10 必須
-  = f.select :user_id, User.all.pluck(:name, :id), {}, { class: 'c-form-select u-mb-30', required: true }
+  .c-form-selectWrap.u-mb-30
+    = f.select :user_id, User.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
 
   .c-form-label
     = f.label :name, '氏名'
@@ -26,7 +27,8 @@ h1.l-dashboard__heading 担当者
   .c-form-label
     = f.label :title, '敬称'
     span.c-form__required.u-ml-10 必須
-  = f.select :title, SubcontractorDivisionClient.titles_i18n.invert, {}, { class: 'c-form-select u-mb-30', required: true }
+  .c-form-selectWrap.u-mb-30
+    = f.select :title, SubcontractorDivisionClient.titles_i18n.invert, {}, { class: 'c-form-select', required: true }
 
   .c-form-label
     = f.label :tel, '電話番号'

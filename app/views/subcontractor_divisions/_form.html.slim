@@ -33,7 +33,8 @@ h1.l-dashboard__heading.u-mt-30 部署情報
   .c-form-label
     = f.label :prefecture_id, '都道府県'
     span.c-form__required.u-ml-10 必須
-  = f.select :prefecture_id, Prefecture.all.pluck(:name, :id), {}, { class: 'c-form-select u-mb-30', required: true }
+  .c-form-selectWrap.u-mb-30
+    = f.select :prefecture_id, Prefecture.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
 
   .c-form-label
     = f.label :address1, '住所1'

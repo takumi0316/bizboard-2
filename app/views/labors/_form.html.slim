@@ -7,7 +7,7 @@
 
   .c-form-label
     = f.label :division_id, '負担部署'
-  = f.select :division_id, Division.all.pluck(:name, :id), {selected: @user.division_id},{:class=>'c-form-dateselect u-mb-30'}
+  = f.select :division_id, Division.all.pluck(:name, :id), {selected: @user.division_id},{:class=>'c-form-dateselect'}
 
   .c-form-label
     = f.label :price, '金額(税抜き)'
