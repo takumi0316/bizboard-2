@@ -27,8 +27,7 @@ class TasksController < ApplicationController
   #----------------------------------------
   #  ** Request cycles **
   #----------------------------------------
-  #既読判定
-  # before_action :read_message, only: :show
+
   #----------------------------------------
   #  ** Actions **
   #----------------------------------------
@@ -71,13 +70,4 @@ class TasksController < ApplicationController
   #----------------------------------------
   private
 
-    # ##
-    # # 既読処理
-    # # @version 2018/06/10
-    # #
-    # def read_message
-    #   # ログインユーザーを特定しカラムアップデート
-    #   users = User.find_by(email: current_user[:email])
-    #   users.update_columns(lastaccesstask: DateTime.now)
-    # end
 end
