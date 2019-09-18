@@ -42,7 +42,7 @@
       p.u-fs-small.u-fw-bold ご請求金額　#{(invoice.quote.price).to_s(:delimited)} 円
     - else
 
-      p.u-fs-small.u-fw-bold ご請求金額　#{((invoice.quote.price * SiteConfig.consumption_tax.to_f).floor).to_s(:delimited)} 円
+      p.u-fs-small.u-fw-bold ご請求金額　#{((invoice.quote.price * invoice.quote.tax.to_f).floor).to_s(:delimited)} 円
 
   .u-mt-30
 
@@ -105,7 +105,7 @@
         table
           tr
             th.u-ta-left 消費税
-            td.u-ta-right #{((invoice.quote.price * SiteConfig.consumption_tax.to_f).floor - Invoice.find(params[:id]).quote.price).to_s(:delimited)} 円
+            td.u-ta-right #{((invoice.quote.price * invoice.quote.tax.to_f).floor - Invoice.find(params[:id]).quote.price).to_s(:delimited)} 円
 
     .u-mt-50
 
@@ -114,7 +114,7 @@
         table
           tr
             th.u-ta-left 合計
-            td.u-ta-right #{((invoice.quote.price * SiteConfig.consumption_tax.to_f).floor).to_s(:delimited)} 円
+            td.u-ta-right #{((invoice.quote.price * invoice.quote.tax.to_f).floor).to_s(:delimited)} 円
 
 
   .c-box__height-100

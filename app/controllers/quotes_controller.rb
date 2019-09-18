@@ -126,7 +126,7 @@ class QuotesController < ApplicationController
     # quote.update! quote_params.merge(division_id: current_user.division_id)
 
     if params[:id] == 'null'
-      new_quote = Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], payment_terms: params[:quote][:payment_terms])
+      new_quote = Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], tax: params[:quote][:tax], payment_terms: params[:quote][:payment_terms])
       # slack通知
       if params[:quote][:payment_terms] == 'advance'
         Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{new_quote.quote_number}] お客様情報[#{new_quote&.client&.company_division&.company&.name} #{new_quote&.client&.name}] 担当者[#{new_quote&.user&.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
@@ -143,7 +143,7 @@ class QuotesController < ApplicationController
     else
 
       findQuote = Quote.find(params[:id])
-      findQuote.update!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id] == 'null' ? nil : params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], payment_terms: params[:quote][:payment_terms])
+      findQuote.update!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id] == 'null' ? nil : params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], tax: params[:quote][:tax], payment_terms: params[:quote][:payment_terms])
       unless params[:specifications].nil?
         params[:specifications].each do |specification|
 
@@ -163,7 +163,7 @@ class QuotesController < ApplicationController
       if quote.task.present?
         quote.task.update_columns(date: params[:quote][:deliver_at])
       end
-      
+
       render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
     end
   rescue => e
@@ -293,7 +293,7 @@ class QuotesController < ApplicationController
   def quote_params
 
     params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
-      :quote_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms,
+      :quote_type, :channel, :deliver_at, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax,
       quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
   end
 

@@ -46,6 +46,7 @@ export default class QuoteEditor extends React.Component {
       user_id: props.user === null ? null : props.user.id,
       quote_type: props.quote.quote_type === null ? 'contract' : props.quote.quote_type,
       tax_type: props.quote.tax_type === null ? 'taxation' : props.quote.tax_type,
+      tax: props.quote.tax === null ? 1.08 : props.quote.tax,
       payment_terms: props.quote.payment_terms === null ? 'postpaid' : props.quote.tax_type,
       deliver_type: props.quote.deliver_type === null ? 'seat' : props.quote.deliver_type,
       deliver_at: props.quote.deliver_at,
@@ -158,6 +159,7 @@ export default class QuoteEditor extends React.Component {
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
       'quote[tax_type]': this.refs.tax_type.value,
+      'quote[tax]': this.state.tax,
       'quote[payment_terms]': this.refs.payment_terms.value,
       'quote[channel]': this.refs.channel.value,
       'quote[date]': this.state.date || '',
@@ -702,6 +704,26 @@ export default class QuoteEditor extends React.Component {
                         );
                       })}
                     </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td className='u-fw-bold'>税率
+                </td>
+                <td>
+                  <div className='u-mt-15'>
+                    <label className='c-form-radioLabel'>
+                      <input name='tax' type='radio' defaultChecked={this.state.quote.tax == 1.08 || this.state.quote.tax === null} onChange={() => this.setState({tax: 1.08})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>8％</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='tax' type='radio' defaultChecked={this.state.quote.tax == 1.10 || this.state.quote.tax === null} onChange={() => this.setState({tax: 1.10})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>10%</span>
+                    </label>
+                  </div>
+                  <div className='u-mt-15'>
                   </div>
                 </td>
               </tr>
