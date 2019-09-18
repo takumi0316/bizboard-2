@@ -18,5 +18,19 @@
       = f.fields_for 'messages_attributes' do |t|
         = t.text_area :content, placeholder: 'メッセージを入力', class: 'p-tasks__textarea'
       .u-ta-right
-        = f.file_field :attached_files, accept: 'text/plain, image/*, application/pdf', multiple: true
+        = f.file_field :attached_files, accept: 'text/plain, image/*, application/pdf', multiple: true, onchange: 'check()'
         = f.submit '送信', class: 'c-btnMain-standard c-btn-blue'
+
+javascript:
+  function check(){
+    var fileList = document.getElementById('task_attached_files').files;
+    var sum = 0;
+    for(var i=0; i<fileList.length; i++){
+      sum += fileList[i].size;
+    }
+    console.log(sum)
+    if (sum >= 1073741824) {
+    	alert('1GBを超えるデータの送付はお控えください。');
+    	return false;
+    }
+  }
