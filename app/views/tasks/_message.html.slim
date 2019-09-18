@@ -1,29 +1,38 @@
 #messages_area
-  - task.messages.each do |r|
-    //自分と相手のメッセージのcss変更
-    -if r.name === current_user.name
-      - unless r.content.nil?
-        dl.p-tasks__message-current
-          dt = simple_format(r.content)
-      - if r.attached_files.attached?
-        - r.attached_files.each do |file|
-          = link_to rails_blob_path(file) ,target: :_blank do
+  - @group.each do |key,messages|
+    .p-tasks__message-date = key
+    - messages.each do |r|
+      //自分と相手のメッセージのcss変更
+      -if r.name === current_user.name
+        - unless r.content.nil?
+          .c-flex
             dl.p-tasks__message-current
-              - if file.blob.content_type[0, 5] == 'image'
-                dt = image_tag file, :size =>'150x150'
-              dt = file.blob.filename
-    -else
-      - unless r.content.nil?
-        dl.p-tasks__message-others
-          dt = simple_format(r.content)
-      - if r.attached_files.attached?
-        - r.attached_files.each do |file|
-          = link_to rails_blob_path(file) ,target: :_blank do
-            dl.p-tasks__message-current
-              - if file.blob.content_type[0, 5] == 'image'
-                dt = image_tag file, :size =>'150x150'
-              dt = file.blob.filename
-
+              dt = simple_format(r.content)
+            .p-tasks__message-current-time = r.created_at.strftime('%H:%M')
+        - if r.attached_files.attached?
+          - r.attached_files.each do |file|
+            = link_to rails_blob_path(file) ,target: :_blank do
+              .c-flex
+                dl.p-tasks__message-current
+                  - if file.blob.content_type[0, 5] == 'image'
+                    dt = image_tag file, :size =>'150x150'
+                  dt = file.blob.filename
+                .p-tasks__message-current-time = r.created_at.strftime('%H:%M')
+      -else
+        - unless r.content.nil?
+          .c-flex
+            dl.p-tasks__message-others
+              dt = simple_format(r.content)
+            .p-tasks__message-others-time = r.created_at.strftime('%H:%M')
+        - if r.attached_files.attached?
+          - r.attached_files.each do |file|
+            = link_to rails_blob_path(file) ,target: :_blank do
+              .c-flex
+                dl.p-tasks__message-current
+                  - if file.blob.content_type[0, 5] == 'image'
+                    dt = image_tag file, :size =>'150x150'
+                  dt = file.blob.filename
+                .p-tasks__message-others-time = r.created_at.strftime('%H:%M')
 
 javascript:
   function ajaxUpdate(url, element){
