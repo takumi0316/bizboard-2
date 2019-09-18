@@ -104,9 +104,6 @@ Rails.application.routes.draw do
   # タスク管理
   resources :tasks, only: [:show, :update]
 
-  # ユーザー管理
-  resources :users, only: [:index, :edit, :update, :destroy]
-
   # 認証
   devise_scope :user do
     match  :sign_in,        to: 'sessions#index',          as: :sign_in, via: [:get, :post]
@@ -119,6 +116,9 @@ Rails.application.routes.draw do
     match  :password_reset, to: 'sessions#password_reset', as: :password_reset, via: [:get, :post]
     get    :inactive,       to: 'sessions#inactive',       as: :inactive
   end
+  
+  # ユーザー管理
+  resources :users, only: [:index, :edit, :update, :destroy]
 
   mount Sidekiq::Web, at: '/sidekiq'
 
