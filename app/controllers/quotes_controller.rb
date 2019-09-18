@@ -158,6 +158,12 @@ class QuotesController < ApplicationController
           end
         end
       end
+
+      # taskが存在していたらtaskの納期も更新する
+      if quote.task.present?
+        quote.task.update_columns(date: params[:quote][:deliver_at])
+      end
+      
       render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
     end
   rescue => e
