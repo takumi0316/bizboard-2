@@ -2,11 +2,28 @@
   - task.messages.each do |r|
     //自分と相手のメッセージのcss変更
     -if r.name === current_user.name
-      dl.p-tasks__message-current
-        dt = simple_format(r.content)
+      - unless r.content.nil?
+        dl.p-tasks__message-current
+          dt = simple_format(r.content)
+      - if r.attached_files.attached?
+        - r.attached_files.each do |file|
+          = link_to rails_blob_path(file) ,target: :_blank do
+            dl.p-tasks__message-current
+              - if file.blob.content_type[0, 5] == 'image'
+                dt = image_tag file, :size =>'150x150'
+              dt = file.blob.filename
     -else
-      dl.p-tasks__message-others
-        dt = simple_format(r.content)
+      - unless r.content.nil?
+        dl.p-tasks__message-others
+          dt = simple_format(r.content)
+      - if r.attached_files.attached?
+        - r.attached_files.each do |file|
+          = link_to rails_blob_path(file) ,target: :_blank do
+            dl.p-tasks__message-current
+              - if file.blob.content_type[0, 5] == 'image'
+                dt = image_tag file, :size =>'150x150'
+              dt = file.blob.filename
+
 
 javascript:
   function ajaxUpdate(url, element){

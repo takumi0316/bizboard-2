@@ -18,5 +18,5 @@
       = f.fields_for 'messages_attributes' do |t|
         = t.text_area :content, placeholder: 'メッセージを入力', class: 'p-tasks__textarea'
       .u-ta-right
-        = f.file_field :data, accept: 'text/plain, image/*, application/pdf'
+        = f.file_field :attached_files, accept: 'text/plain, image/*, application/pdf', multiple: true
         = f.submit '送信', class: 'c-btnMain-standard c-btn-blue'

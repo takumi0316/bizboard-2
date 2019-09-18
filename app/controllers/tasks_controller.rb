@@ -50,24 +50,23 @@ class TasksController < ApplicationController
   # @version 2018/06/10
   #
   def update
-    #情報更新
-    message = task.messages.new
-    message.name = current_user.name
-    message.content = params[:task][:messages_attributes][:content]
 
-    message.save!
+   #情報更新
+   message = task.messages.new
+   message.name = current_user.name
+   message.content = params[:task][:messages_attributes][:content] unless params[:task][:messages_attributes][:content].blank?
+   message.attached_files = params[:task][:attached_files] unless params[:task][:attached_files].blank?
+   message.save!
 
-    #成功したら編集ページに飛ぶ
-    redirect_to task_path(task)
-
-  rescue => e
-    #エラー時は直前のページへ
-    redirect_back fallback_location: url_for({action: :edit}), flash: {notice: {message: e.message}}
-  end
+   #成功したら編集ページに飛ぶ
+   redirect_to task_path(task)
+ rescue => e
+   #エラー時は直前のページへ
+   redirect_back fallback_location: url_for({action: :edit}), flash: {notice: {message: e.message}}
+ end
 
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-  private
 
 end

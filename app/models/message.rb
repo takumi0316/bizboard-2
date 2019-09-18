@@ -16,11 +16,13 @@ class Message < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
 
-  validates :content,  presence: true
+  #validates :content,  presence: true
 
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
+
+  has_many_attached :attached_files, dependent: :detach
 
   # task
   belongs_to :task
