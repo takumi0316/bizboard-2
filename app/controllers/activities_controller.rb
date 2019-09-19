@@ -79,25 +79,29 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    if activity.status == "lost"
+    if activity.status == 'lost'
       quote = Quote.find_or_initialize_by(id: activity.quote.id)
-      quote.update(status: "lost")
-      #失注になった場合に外注書が作成されていたら紐づくデータを削除
-      subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: quote.work.id)
-      unless subcontractor_detail_id.nil?
-        Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
-        Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+      quote.update(status: 'lost') unless activity.quote.status == 'lost'
+      unless activity.quote.work.nil?
+        #失注になった場合に外注書が作成されていたら紐づくデータを削除
+        subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
+        unless subcontractor_detail_id.nil?
+          Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+          Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+        end
       end
     end
 
-    if activity.status == "rejection"
+    if activity.status == 'rejection'
       quote = Quote.find_or_initialize_by(id: activity.quote.id)
-      quote.update(status: "rejection")
-      #不採用になった場合に外注書が作成されていたら紐づくデータを削除
-      subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: quote.work.id)
-      unless subcontractor_detail_id.nil?
-        Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
-        Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+      quote.update(status: 'rejection') unless activity.quote.status == 'rejection'
+      unless activity.quote.work.nil?
+        #不採用になった場合に外注書が作成されていたら紐づくデータを削除
+        subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
+        unless subcontractor_detail_id.nil?
+          Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+          Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+        end
       end
     end
 
@@ -114,32 +118,33 @@ class ActivitiesController < ApplicationController
   # @version 2018/06/10
   #
   def create
-
     # 取引先情報更新
     activity.update! activity_params
 
-    if activity.status == "lost"
+    if activity.status == 'lost'
       quote = Quote.find_or_initialize_by(id: activity.quote.id)
-      quote.update(status: "lost")
-      #失注になった場合に外注書が作成されていたら紐づくデータを削除
-      subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: quote.work.id)
-      unless subcontractor_detail_id.nil?
-        Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
-        Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+      quote.update(status: 'lost') unless activity.quote.status == 'lost'
+      unless activity.quote.work.nil?
+        #失注になった場合に外注書が作成されていたら紐づくデータを削除
+        subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
+        unless subcontractor_detail_id.nil?
+          Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+          Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+        end
       end
-
     end
 
-    if activity.status == "rejection"
+    if activity.status == 'rejection'
       quote = Quote.find_or_initialize_by(id: activity.quote.id)
-      quote.update(status: "rejection")
-      #不採用になった場合に外注書が作成されていたら紐づくデータを削除
-      subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: quote.work.id)
-      unless subcontractor_detail_id.nil?
-        Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
-        Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+      quote.update(status: 'rejection') unless activity.quote.status == 'rejection'
+      unless activity.quote.work.nil?
+        #不採用になった場合に外注書が作成されていたら紐づくデータを削除
+        subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
+        unless subcontractor_detail_id.nil?
+          Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+          Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+        end
       end
-
     end
 
     @sort = activity.quote_id
