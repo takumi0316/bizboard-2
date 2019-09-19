@@ -24,6 +24,8 @@ class WorksController < ApplicationController
     Work
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
+    .where.not(status: 'delivered')
+    .where.not(status: 'completed')
     .asc_deliverd_at
   }
 
@@ -32,6 +34,7 @@ class WorksController < ApplicationController
     Work
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
+    .where.not(status: 'delivered')
     .where.not(status: 'completed')
     .asc_deliverd_at
   }
