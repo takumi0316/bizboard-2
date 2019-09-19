@@ -18,6 +18,7 @@
     #messages_area
       overflow: scroll
       height: 73vh
+      margin-top: 10px
       //ipad用
       @media screen and(max-width: 1280px)
         height: 77vh
@@ -27,35 +28,45 @@
       padding: 20px
       background-color: map-get($layoutColors, 'gray')
       border-radius: 10px 10px 10px 0
-      margin: 20px
+      margin: 20px 10px
       width: 80%
+      img
+        object-fit: cover
 
     &-others-time
-      margin-top: 60px
+      margin-top: 58px
       font-size: 1.4rem
-      
+      color: map-get($layoutColors, 'thinBlack')
+
     //自分側のメッセージ
     &-current
       padding: 20px
       background-color: rgba(map-get($layoutColors, 'corporate'), .1)
       border-radius: 10px 10px 0px 10px
-      margin: 20px
+      margin: 20px 10px
       width: 80%
       position: relative
-      left: 100px
+      left: 80px
+      order: 2
+      img
+        object-fit: cover
 
     &-current-time
-      margin: 60px 0 0 -540px
+      margin-top: 58px
       font-size: 1.4rem
+      position: relative
+      left: 80px
+      order: 1
+      color: map-get($layoutColors, 'thinBlack')
 
     //日付
     &-date
       text-align: center
-      padding: 10px
+      padding: 5px 10px
       background-color: map-get($layoutColors, 'gray')
-      border-radius: 10px 10px 10px 10px
-      margin: 0 auto
-      width: 20%
+      border-radius: 4px
+      margin: 20px auto
+      width: 130px
 
   &__inputarea
     padding-top: 20px
