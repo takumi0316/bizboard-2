@@ -31,30 +31,32 @@ export default class StatusVisualization extends React.Component {
 
     if (window.confirm('ステータスを変更しますがよろしいですか？')) {
 
+      let url = '/works/' + this.state.work_id;
+      let field = {
+        'work[status]': status_type,
+        'status': 'status',
+      }
+
+      Request
+        .put(url)
+        .field(field)
+        .set('X-Requested-With', 'XMLHttpRequest')
+        .setCsrfToken()
+        .end((err, res) => {
+          if (!err && res.body.status === "success") {
+
+            this.setState({ work_status: res.body.work });
+          } else {
+
+            this.setState({ work_status: res.body.work });
+          }
+        });
+
       alert('変更しました')
+    }else{
+
+      alert('キャンセルしました')
     }
-
-    let url = '/works/' + this.state.work_id;
-    let field = {
-      'work[status]': status_type,
-      'status': 'status',
-    }
-
-    Request
-      .put(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === "success") {
-
-          this.setState({ work_status: res.body.work });
-        } else {
-
-          this.setState({ work_status: res.body.work });
-        }
-      });
-
  }
 
   render() {
