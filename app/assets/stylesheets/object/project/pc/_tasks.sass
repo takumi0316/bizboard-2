@@ -8,6 +8,10 @@
     @media screen and(max-width: 1280px)
       width: 260px
 
+  &__item
+    position: relative
+    display: flex
+
   &__message
     margin-right: 170px
     width: 700px
@@ -36,6 +40,9 @@
     &-others-time
       margin-top: 58px
       font-size: 1.4rem
+      position: absolute
+      bottom: 24px
+      right: 80px
       color: map-get($layoutColors, 'thinBlack')
 
     //自分側のメッセージ
@@ -54,8 +61,9 @@
     &-current-time
       margin-top: 58px
       font-size: 1.4rem
-      position: relative
-      left: 80px
+      position: absolute
+      bottom: 24px
+      left: 40px
       order: 1
       color: map-get($layoutColors, 'thinBlack')
 
