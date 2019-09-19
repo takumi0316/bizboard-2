@@ -28,7 +28,7 @@
           - r.attached_files.each do |file|
             = link_to rails_blob_path(file) ,target: :_blank do
               .p-tasks__item
-                dl.p-tasks__message-current
+                dl.p-tasks__message-others
                   - if file.blob.content_type[0, 5] == 'image'
                     dt = image_tag file, :size =>'150x150'
                   dt = file.blob.filename
