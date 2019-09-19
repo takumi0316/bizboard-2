@@ -35,6 +35,11 @@ export default class QuoteEditor extends React.Component {
 
     super(props);
 
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const day = date.getDate()
+
     this.state = {
       quote: props.quote,
       quote_projects: props.quote_projects,
@@ -49,7 +54,7 @@ export default class QuoteEditor extends React.Component {
       tax: props.quote.tax === null ? 1.08 : props.quote.tax,
       payment_terms: props.quote.payment_terms === null ? 'postpaid' : props.quote.tax_type,
       deliver_type: props.quote.deliver_type === null ? 'seat' : props.quote.deliver_type,
-      deliver_at: props.quote.deliver_at,
+      deliver_at: props.quote.deliver_at === null ? new Date(year, month, day) : props.quote.deliver_at,
       discount: props.quote.discount === null ? 0 : props.quote.discount,
       date: props.quote.date,
       channel: props.quote.channel,
