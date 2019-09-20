@@ -12,10 +12,15 @@
         - if r.attached_files.attached?
           - r.attached_files.each do |file|
             = link_to rails_blob_path(file) ,target: :_blank do
-              .p-tasks__item
-                dl.p-tasks__message-current
+              .p-tasks__messageItem
+                dl.p-tasks__message-currentFile
+                  - if file.blob.content_type[0, 5] == 'image'
+                    dt = image_tag file, :size =>'150x150'
                   dt = file.blob.filename
-                .p-tasks__message-current-time = r.created_at.strftime('%H:%M')
+                  /hover時表示
+                  .p-tasks__message-currentMask
+                    p.u-fw-bold ダウンロードする
+                  .p-tasks__message-fileTime = r.created_at.strftime('%H:%M')
       -else
         - unless r.content.nil?
           .p-tasks__item
@@ -26,8 +31,13 @@
           - r.attached_files.each do |file|
             = link_to rails_blob_path(file) ,target: :_blank do
               .p-tasks__item
-                dl.p-tasks__message-others
+                dl.p-tasks__message-othersFile
+                  - if file.blob.content_type[0, 5] == 'image'
+                    dt = image_tag file, :size =>'150x150'
                   dt = file.blob.filename
+                  /hover時表示
+                  .p-tasks__message-othersMask
+                    p.u-fw-bold ダウンロードする
                 .p-tasks__message-others-time = r.created_at.strftime('%H:%M')
 
 javascript:
