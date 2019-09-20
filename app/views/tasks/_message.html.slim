@@ -14,8 +14,6 @@
             = link_to rails_blob_path(file) ,target: :_blank do
               .p-tasks__item
                 dl.p-tasks__message-current
-                  - if file.blob.content_type[0, 5] == 'image'
-                    dt = image_tag file, :size =>'150x150'
                   dt = file.blob.filename
                 .p-tasks__message-current-time = r.created_at.strftime('%H:%M')
       -else
@@ -29,8 +27,6 @@
             = link_to rails_blob_path(file) ,target: :_blank do
               .p-tasks__item
                 dl.p-tasks__message-others
-                  - if file.blob.content_type[0, 5] == 'image'
-                    dt = image_tag file, :size =>'150x150'
                   dt = file.blob.filename
                 .p-tasks__message-others-time = r.created_at.strftime('%H:%M')
 
@@ -38,7 +34,7 @@ javascript:
   function ajaxUpdate(url, element){
     var ajax = new XMLHttpRequest;
     ajax.open('GET', url, true);
-    ajax.responseType = "document";
+    ajax.responseType = 'document';
     ajax.onload = function () {
       document.getElementById('messages_area').innerHTML = ajax.response.getElementById('messages_area').innerHTML;
      };
