@@ -50,6 +50,7 @@ export default class QuoteEditor extends React.Component {
       work: props.work,
       user_id: props.user === null ? null : props.user.id,
       quote_type: props.quote.quote_type === null ? 'contract' : props.quote.quote_type,
+      quote_number: props.quote.quote_number === null ? null : props.quote.quote_number,
       tax_type: props.quote.tax_type === null ? 'taxation' : props.quote.tax_type,
       tax: props.quote.tax === null ? 1.08 : props.quote.tax,
       payment_terms: props.quote.payment_terms === null ? 'postpaid' : props.quote.tax_type,
@@ -63,6 +64,7 @@ export default class QuoteEditor extends React.Component {
       total_cost: props.quote.price === null ? 0 : props.quote.price,
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
+      show_quote_number: props.quote.quote_number === null || props.quote.quote_number == '' ? false : true,
       task: props.task,
     }
   }
@@ -163,6 +165,7 @@ export default class QuoteEditor extends React.Component {
       'quote[company_division_client_id]': this.refs.company_division_client_id.value || '',
       'quote[subject]': this.refs.subject.value,
       'quote[quote_type]': this.refs.quote_type.value,
+      'quote[quote_number]': this.state.quote_number === null ? '' : this.state.quote_number,
       'quote[tax_type]': this.refs.tax_type.value,
       'quote[tax]': this.state.tax,
       'quote[payment_terms]': this.refs.payment_terms.value,
@@ -232,6 +235,21 @@ export default class QuoteEditor extends React.Component {
   discount_from_close() {
 
     this.setState({ show: false, discount: 0});
+  }
+
+  /**
+   *  モーダルを表示する
+   *  @version 2018/06/10
+   */
+  quote_number_from_open() {
+    this.setState({ show_quote_number: true });
+  }
+  /**
+   *  モーダルを表示する
+   *  @version 2018/06/10
+   */
+  quote_number_from_close() {
+    this.setState({ show_quote_number: false });
   }
 
   /**
@@ -465,7 +483,6 @@ export default class QuoteEditor extends React.Component {
     this.setState({ discount: refDiscount, total_cost: totalCost });
   }
 
-
   /**
    *  表示処理
    *  @version 2018/06/10
@@ -584,6 +601,30 @@ export default class QuoteEditor extends React.Component {
                         );
                       })}
                     </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td className='u-fw-bold'>案件番号<br/>※通常の起案の場合は選択しないでください
+                </td>
+                <td>
+                  <div className='u-mt-15'>
+                    <label className='c-form-radioLabel'>
+                      <input name='quote_number_from_button' type='radio' defaultChecked={ this.state.quote_number == null } onChange={::this.quote_number_from_close} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>変更なし</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='quote_number_from_button' type='radio' defaultChecked={ this.state.quote_number !== null } onChange={::this.quote_number_from_open} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>変更あり</span>
+                    </label>
+                  </div>
+                  <div className='u-mt-15'>
+                    { this.state.show_quote_number ?
+                      <textarea placeholder='BPR・ERP番号入れてね' className='c-form-text' onChange={() => this.setState({quote_number: this.refs.quote_number.value})} type='text' ref='quote_number' defaultValue={ this.state.quote_number }></textarea>
+                      : null
+                    }
                   </div>
                 </td>
               </tr>

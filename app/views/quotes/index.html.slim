@@ -10,6 +10,7 @@
       tr
         th 案件No.
         th ステータス
+        th 作業ステータス
         th 確度
         th 件名
         th お客様
@@ -33,6 +34,11 @@
                   = r&.status_i18n
                 - else
                   = r&.activity&.status_i18n
+              td
+                - if r.work.nil?
+
+                - else
+                  = r.work.status_i18n
               td = r&.activity&.accurary_i18n
               td = r&.subject&.truncate(25)
               td
@@ -85,6 +91,11 @@
                   = r&.status_i18n
                 - else
                   = r&.activity&.status_i18n
+              td
+                - if r.work.nil?
+
+                - else
+                  = r.work.status_i18n
               td = r&.activity&.accurary_i18n
               td = r&.subject&.truncate(25)
               td
@@ -137,6 +148,11 @@
                 = r&.status_i18n
               - else
                 = r&.activity&.status_i18n
+            td
+              - if r.work.nil?
+
+              - else
+                = r.work.status_i18n
             td = r&.activity&.accurary_i18n
             td = r&.subject&.truncate(25)
             td

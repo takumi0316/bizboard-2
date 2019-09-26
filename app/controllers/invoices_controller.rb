@@ -81,7 +81,6 @@ class InvoicesController < ApplicationController
     profit_id = Profit.find_by(quote_id: invoice&.quote_id)
     #配列で会社のidを取り出す
     co_id = co.pluck(:id)
-
     #案件の会社のidとprofitの会社のidが違っていたら実行
     if co_id[0] != profit_id.company_id
       #請求情報上書き(会社のidも)
