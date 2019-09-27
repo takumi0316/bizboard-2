@@ -146,6 +146,20 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def roundup
+    @invoice = Invoice.where(id: params[:invoice_ids]).joins(:quote)
+    @quote = Quote.where(id: @invoice.pluck(:quote_id))
+    respond_to do |format|
+      format.html do
+        render  pdf: "#{@invoice.last.quote.client.company_division.company.name}_請求書鏡", #pdfファイルの名前。これがないとエラーが出ます
+                encoding: 'UTF-8',
+                layout: 'layouts/pdf.html.slim',
+                template: 'invoices/roundup_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
+                show_as_html: params.key?('debug')
+      end
+    end
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

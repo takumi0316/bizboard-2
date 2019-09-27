@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   # 案件
   namespace :invoices do
     post :apipost
+    get :roundup
   end
   resources :invoices do
     member do
@@ -116,7 +117,7 @@ Rails.application.routes.draw do
     match  :password_reset, to: 'sessions#password_reset', as: :password_reset, via: [:get, :post]
     get    :inactive,       to: 'sessions#inactive',       as: :inactive
   end
-  
+
   # ユーザー管理
   resources :users, only: [:index, :edit, :update, :destroy]
 

@@ -17,7 +17,7 @@ export default class QuoteSearch extends Component {
     const date = new Date()
     const year = date.getFullYear()
     const last_month = date.getMonth() - 1
-    const next_month = date.getMonth() + 1
+    const next_month = date.getMonth() + 3
     const day = date.getDate()
     this.state = {
       startDate: new Date(year, last_month, day),
