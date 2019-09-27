@@ -54,6 +54,7 @@ javascript:
   window.addEventListener('load', function(){
     var url = '#{@task_id}';
     var div = document.getElementById('messages_area');
+    div.scrollTop = div.scrollHeight;
     setInterval(function(){
       ajaxUpdate(url, div);
     }, 20000);
