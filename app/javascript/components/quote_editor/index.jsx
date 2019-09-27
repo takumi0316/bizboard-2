@@ -64,7 +64,7 @@ export default class QuoteEditor extends React.Component {
       total_cost: props.quote.price === null ? 0 : props.quote.price,
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
-      show_quote_number: props.quote.quote_number === null || props.quote.quote_number == '' ? false : true,
+      show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
       task: props.task,
     }
   }
@@ -235,21 +235,6 @@ export default class QuoteEditor extends React.Component {
   discount_from_close() {
 
     this.setState({ show: false, discount: 0});
-  }
-
-  /**
-   *  モーダルを表示する
-   *  @version 2018/06/10
-   */
-  quote_number_from_open() {
-    this.setState({ show_quote_number: true });
-  }
-  /**
-   *  モーダルを表示する
-   *  @version 2018/06/10
-   */
-  quote_number_from_close() {
-    this.setState({ show_quote_number: false });
   }
 
   /**
@@ -484,6 +469,19 @@ export default class QuoteEditor extends React.Component {
   }
 
   /**
+   * 値引き金額を変更
+   *
+   */
+  _changeChannel = () => {
+    var channel_value = document.getElementById('channel').value;
+    if (channel_value == 'bpr_erp') {
+      this.setState({ show_quote_number: true });
+    }else {
+      this.setState({ show_quote_number: false });
+    }
+  }
+
+  /**
    *  表示処理
    *  @version 2018/06/10
    */
@@ -593,7 +591,7 @@ export default class QuoteEditor extends React.Component {
                 <td className='u-fw-bold'>受注経路</td>
                 <td>
                   <div className='c-form-selectWrap'>
-                    <select className='c-form-select' ref='channel' defaultValue={this.state.channel}>
+                    <select className='c-form-select' id='channel' ref='channel' defaultValue={this.state.channel} onChange={ e  => this._changeChannel() }>
                       { Object.keys(CHANNELS).map((item, index) => {
                         const key = 'channel-'+index;
                         return (
@@ -604,30 +602,15 @@ export default class QuoteEditor extends React.Component {
                   </div>
                 </td>
               </tr>
-              <tr>
-                <td className='u-fw-bold'>案件番号<br/>※通常の起案の場合は選択しないでください
-                </td>
-                <td>
-                  <div className='u-mt-15'>
-                    <label className='c-form-radioLabel'>
-                      <input name='quote_number_from_button' type='radio' defaultChecked={ this.state.quote_number == null } onChange={::this.quote_number_from_close} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>変更なし</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input name='quote_number_from_button' type='radio' defaultChecked={ this.state.quote_number !== null } onChange={::this.quote_number_from_open} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>変更あり</span>
-                    </label>
-                  </div>
-                  <div className='u-mt-15'>
-                    { this.state.show_quote_number ?
-                      <textarea placeholder='BPR・ERP番号入れてね' className='c-form-text' onChange={() => this.setState({quote_number: this.refs.quote_number.value})} type='text' ref='quote_number' defaultValue={ this.state.quote_number }></textarea>
-                      : null
-                    }
-                  </div>
-                </td>
-              </tr>
+              { this.state.show_quote_number ?
+                <tr>
+                  <td className='u-fw-bold'>案件番号</td>
+                  <td>
+                    <textarea placeholder='BPR・ERP番号入れてね' className='c-form-text' onChange={() => this.setState({quote_number: this.refs.quote_number.value})} type='text' ref='quote_number' defaultValue={ this.state.quote_number }></textarea>
+                  </td>
+                </tr>
+                : null
+              }
               <tr>
                 <td className='u-fw-bold'>受注区分</td>
                 <td>
