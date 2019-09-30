@@ -155,7 +155,6 @@ class InvoicesController < ApplicationController
       query = (['free_word like ?'] * terms.size).join(' and ')
       @invoice = _self.where(query, *terms.map { |term| "%#{term}%" })
       @quote = Quote.where(id: @invoice.pluck(:quote_id))
-      binding.pry
       respond_to do |format|
         format.html do
           render  pdf: "#{@invoice.last.quote.client.company_division.company.name}_請求書鏡", #pdfファイルの名前。これがないとエラーが出ます
