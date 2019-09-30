@@ -24,10 +24,6 @@
 
   .c-box__height-150
 
-  .u-mt-50
-
-  .u-mt-30
-
   .c-border
       p.u-fs-small.u-fw-bold ご請求金額　#{((@quote.pluck(:price).sum * @invoice.last.quote.tax.to_f).floor).to_s(:delimited)} 円
 
@@ -53,8 +49,6 @@
               td.u-ta-right
                 .u-fw-light #{((r.price).to_i).to_s(:delimited)}
 
-
-  .u-mt-50
 
   .c-box__height-100
 
