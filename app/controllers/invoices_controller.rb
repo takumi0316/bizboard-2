@@ -147,15 +147,23 @@ class InvoicesController < ApplicationController
   end
 
   def roundup
-    @invoice = Invoice.where(id: params[:invoice_ids]).joins(:quote)
-    @quote = Quote.where(id: @invoice.pluck(:quote_id))
-    respond_to do |format|
-      format.html do
-        render  pdf: "#{@invoice.last.quote.client.company_division.company.name}_請求書鏡", #pdfファイルの名前。これがないとエラーが出ます
-                encoding: 'UTF-8',
-                layout: 'layouts/pdf.html.slim',
-                template: 'invoices/roundup_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
-                show_as_html: params.key?('debug')
+    if params[:name].blank? && params[:date1].blank? && params[:date2].blank?
+      redirect_to action: :index
+    else
+      _self = Invoice.date_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      @invoice = _self.where(query, *terms.map { |term| "%#{term}%" })
+      @quote = Quote.where(id: @invoice.pluck(:quote_id))
+      binding.pry
+      respond_to do |format|
+        format.html do
+          render  pdf: "#{@invoice.last.quote.client.company_division.company.name}_請求書鏡", #pdfファイルの名前。これがないとエラーが出ます
+                  encoding: 'UTF-8',
+                  layout: 'layouts/pdf.html.slim',
+                  template: 'invoices/roundup_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
+                  show_as_html: params.key?('debug')
+        end
       end
     end
   end

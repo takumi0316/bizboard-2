@@ -2,7 +2,7 @@
 
 = react_component('InvoiceSearch')
 
-.u-mt-30 = link_to '請求書鏡作成', invoices_roundup_path(invoice_ids: invoices.ids), target: :_blank, class: 'c-btnMain-standard'
+.u-mt-30 = link_to '請求書鏡作成', invoices_roundup_path(invoice_ids: invoices.ids, name: params[:name], date1: params[:date1], date2: params[:date2]), target: :_blank, class: 'c-btnMain-standard'
 p テスト機能です※触らないでください
 
 .c-table.u-mt-30
