@@ -21,7 +21,15 @@
       - @works.each_with_index do |r, index|
         tr
           td.u-ta-center
+          - if r.quote.deliver_at.blank?
             = r.quote.quote_number if r.quote&.quote_number.present?
+          - else
+            - if r.quote.deliver_at == Date.today
+              .u-fc-red = r.quote.quote_number if r.quote&.quote_number.present?
+            - elsif r.quote.deliver_at == Date.today - 1
+              .u-fc-vivid = r.quote.quote_number if r.quote&.quote_number.present?
+            - else
+              = r.quote.quote_number if r.quote&.quote_number.present?
           td.u-ta-center = link_to '詳細', work_path(r), class: 'c-btnMain-standard'
           td.u-ta-center = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
           td.u-ta-center = r.quote.subject.truncate(25) if r.quote&.subject.present?
