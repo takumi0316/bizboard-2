@@ -27,7 +27,13 @@
         - if r.task.present?
           - if r.task&.messages&.last(1)&.pluck(:created_at)&.join(' ').to_s > current_user.lastaccesstask.to_datetime.to_s
             tr
-              td.p-tasks__unread = r&.quote_number
+              td.p-tasks__unread
+                - if r.deliver_at.to_date == Date.today
+                  .u-fc-red= r&.quote_number
+                - elsif r.deliver_at.to_date == Date.today - 1
+                  .u-fc-vivid = r&.quote_number
+                - else
+                  = r&.quote_number
               //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
               td
                 - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
@@ -84,7 +90,13 @@
               td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
           - else
             tr
-              td = r&.quote_number
+              td
+                - if r.deliver_at.to_date == Date.today
+                  .u-fc-red= r&.quote_number
+                - elsif r.deliver_at.to_date == Date.today - 1
+                  .u-fc-vivid = r&.quote_number
+                - else
+                  = r&.quote_number
               //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
               td
                 - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
@@ -141,7 +153,13 @@
               td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
         - else
           tr
-            td = r&.quote_number
+            td
+              - if r.deliver_at.to_date == Date.today
+                .u-fc-red= r&.quote_number
+              - elsif r.deliver_at.to_date == Date.today - 1
+                .u-fc-vivid = r&.quote_number
+              - else
+                = r&.quote_number
             //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
             td
               - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
