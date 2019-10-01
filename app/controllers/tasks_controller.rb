@@ -57,8 +57,10 @@ class TasksController < ApplicationController
    message.content = params[:task][:messages_attributes][:content] unless params[:task][:messages_attributes][:content].blank?
    message.attached_files = params[:task][:attached_files] unless params[:task][:attached_files].blank?
    message.save!
-   # メール送信
-   TaskMailer.read(task.quote.client.id,task.id,message.id).deliver_later if message.created_at > task.clientlastaccess && message.created_at > task.quote.client.lastaccesstask
+   if message.created_at > task.quote.client.lastaccesstask
+     # メール送信
+     TaskMailer.read(task.quote.client.id,task.id,message.id).deliver_later unless message.created_at.to_datetime.between?(task.clientlastaccess.to_datetime, task.quote.client.lastaccesstask.to_datetime)
+   end
 
    #成功したら編集ページに飛ぶ
    redirect_to task_path(task)
