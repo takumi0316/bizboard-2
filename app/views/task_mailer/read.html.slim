@@ -13,7 +13,7 @@ table.l-mailers__contents cellpadding=0 cellspacing=0
     tr
       td.u-pt-20.u-pb-30
         .l-mailers__text--medium
-          | ご相談件名[#{@task.remarks}]
+          | ご相談件名[#{@task.quote.subject}]
           br
           | #{@message.content}
           br
