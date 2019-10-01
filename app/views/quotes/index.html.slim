@@ -33,7 +33,7 @@
                 - else
                   - if r.deliver_at.to_date == Date.today
                     .u-fc-red= r&.quote_number
-                  - elsif r.deliver_at.to_date == Date.today - 1
+                  - elsif r.deliver_at.to_date == Date.today + 1
                     .u-fc-vivid = r&.quote_number
                   - else
                     = r&.quote_number
@@ -99,7 +99,7 @@
                 - else
                   - if r.deliver_at.to_date == Date.today
                     .u-fc-red= r&.quote_number
-                  - elsif r.deliver_at.to_date == Date.today - 1
+                  - elsif r.deliver_at.to_date == Date.today + 1
                     .u-fc-vivid = r&.quote_number
                   - else
                     = r&.quote_number
@@ -165,7 +165,7 @@
               - else
                 - if r.deliver_at.to_date == Date.today
                   .u-fc-red= r&.quote_number
-                - elsif r.deliver_at.to_date == Date.today - 1
+                - elsif r.deliver_at.to_date == Date.today + 1
                   .u-fc-vivid = r&.quote_number
                 - else
                   = r&.quote_number

@@ -24,9 +24,9 @@
             - if r.quote.deliver_at.blank?
               = r.quote.quote_number if r.quote&.quote_number.present?
             - else
-              - if r.quote.deliver_at == Date.today
+              - if r.quote.deliver_at.to_date == Date.today
                 .u-fc-red = r.quote.quote_number if r.quote&.quote_number.present?
-              - elsif r.quote.deliver_at == Date.today - 1
+              - elsif r.quote.deliver_at.to_date == Date.today + 1
                 .u-fc-vivid = r.quote.quote_number if r.quote&.quote_number.present?
               - else
                 = r.quote.quote_number if r.quote&.quote_number.present?
