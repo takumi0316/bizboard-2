@@ -85,9 +85,10 @@ class ActivitiesController < ApplicationController
       unless activity.quote.work.nil?
         #失注になった場合に外注書が作成されていたら紐づくデータを削除
         subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
+        work_subcontractor_detail_id = WorkSubcontractorDetail.where(work_subcontractor_id: subcontractor_detail_id.id)
         unless subcontractor_detail_id.nil?
-          Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
-          Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+          Payment.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
+          Expendable.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
         end
       end
     end
@@ -98,9 +99,10 @@ class ActivitiesController < ApplicationController
       unless activity.quote.work.nil?
         #不採用になった場合に外注書が作成されていたら紐づくデータを削除
         subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
+        work_subcontractor_detail_id = WorkSubcontractorDetail.where(work_subcontractor_id: subcontractor_detail_id.id)
         unless subcontractor_detail_id.nil?
-          Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
-          Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+          Payment.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
+          Expendable.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
         end
       end
     end
@@ -126,10 +128,11 @@ class ActivitiesController < ApplicationController
       quote.update(status: 'lost') unless activity.quote.status == 'lost'
       unless activity.quote.work.nil?
         #失注になった場合に外注書が作成されていたら紐づくデータを削除
-        subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
+        subcontractor_detail_id = WorkSubcontractor.where(work_id: activity.quote.work.id)
+        work_subcontractor_detail_id = WorkSubcontractorDetail.where(work_subcontractor_id: subcontractor_detail_id.id)
         unless subcontractor_detail_id.nil?
-          Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
-          Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+          Payment.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
+          Expendable.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
         end
       end
     end
@@ -140,9 +143,10 @@ class ActivitiesController < ApplicationController
       unless activity.quote.work.nil?
         #不採用になった場合に外注書が作成されていたら紐づくデータを削除
         subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
+        work_subcontractor_detail_id = WorkSubcontractorDetail.where(work_subcontractor_id: subcontractor_detail_id.id)
         unless subcontractor_detail_id.nil?
-          Payment.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
-          Expendable.where(work_subcontractor_detail_id: subcontractor_detail_id).delete_all
+          Payment.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
+          Expendable.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
         end
       end
     end
