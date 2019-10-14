@@ -100,19 +100,21 @@
             span.u-ml-10 マニュアル
 
         li.l-dashboard__menuItem
-          = link_to "https://forms.gle/CKQftkLndUydTpuS9", target: :_blank do
-            = evil_icon 'ei-sc-telegram', size: :s
-            span.u-ml-10 ご意見箱
+          = link_to "https://docs.google.com/document/d/1LDfYKbHh14dCdCHueKJQY6W0LTifMlpOD3reZuKPmqU/edit?usp=sharing", target: :_blank do
+            = evil_icon 'ei-like', size: :s
+            span.u-ml-10 更新履歴
+          p(style="font-size: 13px; color: red;")　10/14:機能追加しました！
 
-          li.l-dashboard__menuItem
-            = link_to edit_user_path(current_user), class: cp(edit_user_path(current_user)) do
-              = evil_icon 'ei-pencil', size: :s
-              span.u-ml-10 プロフィール編集
 
-          li.l-dashboard__menuItem
-            = link_to sign_out_path, method: :delete do
-              = evil_icon 'ei-close-o', size: :s
-              span.u-ml-10 ログアウト
+        li.l-dashboard__menuItem
+          = link_to edit_user_path(current_user), class: cp(edit_user_path(current_user)) do
+            = evil_icon 'ei-pencil', size: :s
+            span.u-ml-10 プロフィール編集
+
+        li.l-dashboard__menuItem
+          = link_to sign_out_path, method: :delete do
+            = evil_icon 'ei-close-o', size: :s
+            span.u-ml-10 ログアウト
 
 javascript:
 
