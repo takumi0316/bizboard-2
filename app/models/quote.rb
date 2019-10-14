@@ -55,6 +55,7 @@ class Quote < ApplicationRecord
 
   enum quote_type: { contract: 0, copy: 10 }
   enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
+  enum reception: { acceptance: 0, mail: 10, delivery: 20, reservation: 30, konpro: 40, reception_other: 50 }
   enum deliver_type: { seat: 0, location: 10, pickup: 20, bizstant: 30, other: 40 }
 
   enum tax_type: { taxation: 0, exemption: 10}

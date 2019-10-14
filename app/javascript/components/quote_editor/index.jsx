@@ -54,6 +54,7 @@ export default class QuoteEditor extends React.Component {
       tax_type: props.quote.tax_type === null ? 'taxation' : props.quote.tax_type,
       tax: props.quote.tax === null ? 1.08 : props.quote.tax,
       payment_terms: props.quote.payment_terms === null ? 'postpaid' : props.quote.tax_type,
+      reception: props.quote.reception === null ? 'acceptance' : props.quote.reception,
       deliver_type: props.quote.deliver_type === null ? 'seat' : props.quote.deliver_type,
       deliver_at: props.quote.deliver_at === null ? new Date(year, month, day) : props.quote.deliver_at,
       discount: props.quote.discount === null ? 0 : props.quote.discount,
@@ -173,6 +174,7 @@ export default class QuoteEditor extends React.Component {
       'quote[date]': this.state.date || '',
       'quote[expiration]': this.state.expiration || '',
       'quote[deliver_at]': this.state.deliver_at || '',
+      'quote[reception]': this.state.reception,
       'quote[deliver_type]': this.state.deliver_type,
       'quote[remarks]': this.refs.remarks.value,
       'quote[memo]': this.refs.memo.value,
@@ -611,6 +613,43 @@ export default class QuoteEditor extends React.Component {
                 </tr>
                 : null
               }
+              <tr>
+                <td className='u-fw-bold'>受注方法</td>
+                <td>
+                  <div className='u-mt-15'>
+                    <label className='c-form-radioLabel'>
+                      <input name='reception' type='radio' defaultChecked={this.state.quote.reception == 'acceptance' || this.state.quote.reception === null} onChange={() => this.setState({reception: 'acceptance'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>受付</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='reception' type='radio' defaultChecked={this.state.reception == 'mail'} onChange={() => this.setState({reception: 'mail'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>メール</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='reception' type='radio' defaultChecked={this.state.reception == 'delivery'} onChange={() => this.setState({reception: 'delivery'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>集配</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='reception' type='radio' defaultChecked={this.state.reception == 'reservation'} onChange={() => this.setState({reception: 'reservation'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>予約</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='reception' type='radio' defaultChecked={this.state.reception == 'konpro'} onChange={() => this.setState({reception: 'konpro'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>コンプロ！</span>
+                    </label>
+                    <label className='c-form-radioLabel u-ml-15'>
+                      <input name='reception' type='radio' defaultChecked={this.state.reception == 'reception_other'} onChange={() => this.setState({reception: 'other'})} className='c-form-radio' />
+                      <i className='c-form-radioIcon' />
+                      <span>その他</span>
+                    </label>
+                  </div>
+                </td>
+              </tr>
               <tr>
                 <td className='u-fw-bold'>受注区分</td>
                 <td>

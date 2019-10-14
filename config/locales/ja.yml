@@ -91,6 +91,13 @@ ja:
         bpr_erp: BPR/ERP
         reception: 受付
         channel_other: その他
+      reception:
+        acceptance: 受付
+        mail: メール
+        delivery: 集配
+        reservation: 予約
+        konpro: こんプロ！
+        reception_other: その他
       deliver_type:
         seat: 席まで
         location: 指定場所

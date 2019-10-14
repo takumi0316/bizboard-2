@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_01_072954) do
+ActiveRecord::Schema.define(version: 2019_10_14_030139) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -466,6 +466,7 @@ ActiveRecord::Schema.define(version: 2019_10_01_072954) do
     t.integer "tax_type"
     t.integer "payment_terms"
     t.float "tax", default: 1.1
+    t.integer "reception"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end
 
