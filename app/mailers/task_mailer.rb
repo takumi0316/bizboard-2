@@ -8,7 +8,7 @@ class TaskMailer < EcMailer
     @client = CompanyDivisionClient.find client_id
     @task = Task.find task_id
     @message = Message.find message_id
-    mail to: @client.email, subject: "[Ec-factory]未読のチャットがあります"
+    mail to: @client.email, subject: "[こんプロ！]未読のチャットがあります"
   end
 
 end

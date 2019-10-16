@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_14_030139) do
+ActiveRecord::Schema.define(version: 2019_10_16_061055) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 2019_10_14_030139) do
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
     t.datetime "lastaccesstask", default: "2019-09-06 16:22:15"
+    t.integer "opt", default: 0
     t.index ["company_division_id"], name: "index_company_division_clients_on_company_division_id"
     t.index ["user_id"], name: "index_company_division_clients_on_user_id"
   end
