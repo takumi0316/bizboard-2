@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     post :copy
     member do
       get 'wicked_pdf'
+      get 'delivery_note_pdf'
     end
   end
 

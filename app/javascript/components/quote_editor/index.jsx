@@ -48,6 +48,7 @@ export default class QuoteEditor extends React.Component {
       home_division: props.home_division,
       client: props.client,
       work: props.work,
+      invoice: props.invoice,
       user_id: props.user === null ? null : props.user.id,
       quote_type: props.quote.quote_type === null ? 'contract' : props.quote.quote_type,
       quote_number: props.quote.quote_number === null ? null : props.quote.quote_number,
@@ -835,8 +836,23 @@ export default class QuoteEditor extends React.Component {
           <div className='c-overlay-submit'>
             { this.props.quote.id ?
               <div>
-                <div className='c-btnMain-standard c-btn-blue' onClick={::this.onSubmit}>更新する</div>
+                <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={::this.onSubmit}>更新する</div>
                 <a className='c-btnMain-standard c-btn-blue u-ml-30' href={'/quotes/' + this.props.quote.id + '/wicked_pdf'} target="_blank">見積書ダウンロード</a>
+                { this.props.quote.status == 'end_work'?
+                  <a className='c-btnMain-standard c-btn-orange u-ml-30' href={'/invoices/new?quote_id=' + this.props.quote.id}>請求書作成</a>
+                  :
+                  null
+                }
+                { this.props.quote.status == 'invoicing'?
+                  <a className='c-btnMain-standard c-btn-blue u-ml-30' href={'/invoices/' + this.props.invoice.id + '/edit'} >請求書</a>
+                  :
+                  null
+                }
+                { this.props.invoice == null?
+                  null
+                  :
+                  <a className='c-btnMain-standard c-btn-blue u-ml-30' href={'/quotes/' + this.props.quote.id + '/delivery_note_pdf'} target="_blank">納品書ダウンロード</a>
+                }
                 { this.props.work == null?
                   <a class='c-btnMain-standard c-btn-orange u-ml-30' rel="nofollow" data-method="post" href={'/quotes/' + this.props.quote.id +'/status?status=working'}>作業書作成</a>
                   :

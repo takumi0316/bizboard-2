@@ -99,3 +99,4 @@ h1.l-dashboard__heading = "#{invoice.quote.subject} 請求書"
     = f.submit invoice.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
     - if !invoice.new_record?
       = link_to '請求書ダウンロード', wicked_pdf_invoice_path(invoice.id), target: :_blank, class: 'c-btnMain-standard u-ml-30'
+      = link_to '案件に戻る', edit_quote_path(invoice.quote), class: 'c-btnMain-standard c-btn-blue u-ml-30'

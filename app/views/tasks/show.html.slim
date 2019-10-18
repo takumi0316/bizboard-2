@@ -10,6 +10,7 @@
       dd.u-mt-5 = task.date
       dt.l-dashboard__menuList.u-fw-bold.u-pt-15 概要
       dd.u-mt-5 = task.remarks
+    .u-pt-15 = link_to '案件に戻る', edit_quote_path(task.quote), class: 'c-btnMain-standard'
   .p-tasks__message
     = render 'message'
 
