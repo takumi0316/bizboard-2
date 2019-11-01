@@ -15,14 +15,40 @@
     = render 'message'
 
     /モデル名変更する
-    = form_for task, html: { class: 'p-tasks__inputarea'} do |f|
+    = form_for task, html: { class: 'p-tasks__inputarea', name: 'message_form'} do |f|
       = f.fields_for 'messages_attributes' do |t|
         = t.text_area :content, placeholder: 'メッセージを入力', class: 'p-tasks__textarea'
       .u-ta-right
         = f.file_field :attached_files, accept: 'text/plain, image/*, application/pdf', multiple: true, onchange: 'check()'
         = f.submit '送信', class: 'c-btnMain-standard c-btn-blue'
+        p.u-mt-10.u-fw-light ctlキー + enterキー同時押しでも送信が可能です。
 
 javascript:
+  document.onkeydown = function(e) {
+    //winの処理
+    if (e.key === 'Control') {
+      document.onkeydown = function(e) {
+        if (e.key === 'Enter') {
+          console.log('win処理')
+          document.message_form.submit();
+        } else {
+          return false;
+        }
+      };
+    };
+    //macの処理
+    if (e.key === 'Meta') {
+      document.onkeydown = function(e) {
+        if (e.key === 'Enter') {
+          console.log('mac処理')
+          document.message_form.submit();
+        } else {
+          return false;
+        }
+      };
+    };
+  };
+
   function check(){
     var fileList = document.getElementById('task_attached_files').files;
     var sum = 0;
