@@ -17,8 +17,8 @@ table.l-mailers__contents cellpadding=0 cellspacing=0
           br
           | #{@message.content}
           br
-          = link_to "チャットページ", '<a href="https://ecfactory.jiinet.co.jp/tasks/<%= @task.id %>/edit">チャットページ</a>', target: :_blank, class: 'u-fc-blue'
-
+           = link_to 'チャットページ', "https://ecfactory.jiinet.co.jp/tasks/#{@task.id}/edit", target: :_blank, class: 'u-fc-blue'
+ 
     tr
       td.u-pt-15.u-pb-40
 
