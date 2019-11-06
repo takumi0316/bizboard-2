@@ -777,26 +777,6 @@ export default class QuoteEditor extends React.Component {
                 </td>
               </tr>
               <tr>
-                <td className='u-fw-bold'>税率
-                </td>
-                <td>
-                  <div className='u-mt-15'>
-                    <label className='c-form-radioLabel'>
-                      <input name='tax' type='radio' defaultChecked={this.state.quote.tax == 1.08 || this.state.quote.tax === null} onChange={() => this.setState({tax: 1.08})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>8％</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input name='tax' type='radio' defaultChecked={this.state.quote.tax == 1.10 || this.state.quote.tax === null} onChange={() => this.setState({tax: 1.10})} className='c-form-radio' />
-                      <i className='c-form-radioIcon' />
-                      <span>10%</span>
-                    </label>
-                  </div>
-                  <div className='u-mt-15'>
-                  </div>
-                </td>
-              </tr>
-              <tr>
                 <td className='u-fw-bold'>支払い方法</td>
                 <td>
                   <div className='c-form-selectWrap'>

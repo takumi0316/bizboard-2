@@ -67,7 +67,7 @@ class CompanyDivisionClient < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.company_division&.company&.name} #{self.company_division&.company&.kana} #{self.company_division&.name} #{self.company_division&.kana} #{self.user&.name} #{self.name} #{self.kana} #{self.note}"
+    self.free_word = "#{self.company_division&.company&.name} #{self.company_division&.company&.kana} #{self.company_division&.name} #{self.company_division&.kana} #{self.name} #{self.kana} #{self.note}"
   end
 
   ##
