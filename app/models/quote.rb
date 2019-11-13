@@ -93,6 +93,8 @@ class Quote < ApplicationRecord
     # ec始まったらコメントアウト外す
   has_one :task, dependent: :destroy
 
+  has_one :import, dependent: :destroy
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

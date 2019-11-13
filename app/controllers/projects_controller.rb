@@ -127,7 +127,7 @@ class ProjectsController < ApplicationController
     #
     def project_params
 
-      params.require(:project).permit(:price, :user_id, :company_division_client_id, :name, :project_category, :note, :after_process, :binding_work,
+      params.require(:project).permit(:price, :user_id, :company_division_client_id, :name, :project_category, :note, :after_process, :binding_work, :code,
         bind_attributes:  [:project_id, :posting_state, :print_size, :print_size_note, :price],
         card_attributes:  [:project_id, :draft_data, :url, :card_type, :work_type, :work_time, :work_price, :color, :paper, :surface, :emboss, :price],
         copy_attributes:  [:project_id, :posting_state, :posting_state_note, :draft_split, :draft_restore, :color, :surface, :open_type, :print_size, :print_size_note, :price],

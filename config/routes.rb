@@ -103,6 +103,9 @@ Rails.application.routes.draw do
   # カタログ
   resources :catalogs
 
+  # 品目取り込み
+  resources :imports
+
   # タスク管理
   resources :tasks, only: [:show, :update]
 

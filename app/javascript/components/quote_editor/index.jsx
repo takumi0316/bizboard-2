@@ -64,6 +64,7 @@ export default class QuoteEditor extends React.Component {
       quote_type: props.quote.quote_type,
       expiration: props.quote.expiration,
       total_cost: props.quote.price === null ? 0 : props.quote.price,
+      price: props.quote.price,
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
       show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
@@ -182,6 +183,8 @@ export default class QuoteEditor extends React.Component {
       'quote[user_id]': this.props.user_id,
       'quote[discount]': this.state.discount,
       'quote[total_cost]': Number(this.state.total_cost),
+      'quote[price]': Number(this.state.price),
+
 
       'specifications[]': arrayRails,
     };
@@ -470,6 +473,17 @@ export default class QuoteEditor extends React.Component {
     totalCost = totalCost - refDiscount;
     this.setState({ discount: refDiscount, total_cost: totalCost });
   }
+
+  /**
+   * 合計金額を変更(ERP・BPR時のみ)
+   *
+   */
+  _changePrice = () => {
+
+    const refPrice = Number(this.refs.price.value);
+    this.setState({ price: refPrice });
+  }
+
 
   /**
    * 値引き金額を変更
@@ -794,7 +808,13 @@ export default class QuoteEditor extends React.Component {
               <tr>
                 <td className='u-fw-bold'>合計金額</td>
                 <td>
-                  <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost }></textarea>
+                  { this.state.show_quote_number ?
+                    /** <textarea placeholder='金額を入力してください' className='c-form-textarea' onChange={ e  => this._changePrice() } type='text' ref='price' defaultValue={ this.state.price }></textarea> */
+                    /** 利用開始したらコメントアウトしてるのに変える */
+                    <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost }></textarea>
+                    :
+                    <textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' type='text' ref='total_cost' value={ this.state.total_cost }></textarea>
+                  }
                 </td>
               </tr>
               <tr>

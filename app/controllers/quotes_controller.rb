@@ -125,11 +125,20 @@ class QuotesController < ApplicationController
     # 情報更新
     # quote.update! quote_params.merge(division_id: current_user.division_id)
     if params[:id] == 'null'
-      new_quote = Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:total_cost], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], reception: params[:quote][:reception], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], tax: params[:quote][:tax], payment_terms: params[:quote][:payment_terms])
+      new_quote = Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], reception: params[:quote][:reception], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], tax: params[:quote][:tax], payment_terms: params[:quote][:payment_terms])
       unless params[:quote][:quote_number].blank?
         new_quote.update!(quote_number: params[:quote][:quote_number])
       else
         new_quote.update!(quote_number: new_quote.quote_number)
+      end
+      if params[:quote][:total_cost].blank?
+        #普通の時
+        new_quote.update!(price: params[:quote][:total_cost])
+      else
+        #BPR・ERPの時
+        new_quote.update!(price: params[:quote][:total_cost])
+        #利用開始したらコメントアウトしてるのに変える
+        #new_quote.update!(price: params[:quote][:price])
       end
       # slack通知
       if params[:quote][:payment_terms] == 'advance'

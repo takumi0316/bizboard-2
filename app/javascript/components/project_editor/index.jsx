@@ -38,6 +38,7 @@ export default class ProjectEditor extends React.Component {
       division: props.division,
       client: props.client,
       price: props.project.price || 0,
+      code: props.project.code,
       project_category: props.project.project_category || 'project_print',
       after_process: props.project.after_process || 'after_process_unnecessary',
       binding_work: props.project.binding_work || 'binding_works_unnecessary',
@@ -77,6 +78,7 @@ export default class ProjectEditor extends React.Component {
       'project[company_division_client_id]': this.refs.company_division_client_id.value,
       'project[name]': this.refs.name.value,
       'project[price]': this.refs.price.value,
+      'project[code]': this.refs.code.value,
       'project[project_category]': this.state.project_category,
       'project[after_process]': this.state.after_process,
       'project[binding_work]': this.state.binding_work,
@@ -240,6 +242,12 @@ export default class ProjectEditor extends React.Component {
           <label htmlFor='project_name'>品目単価 <span className='u-fs-small u-fc-thinBlack'>※更新時に価格が自動計算されます</span></label>
         </div>
         <input placeholder='※更新時に価格が自動計算されます' readOnly={true} className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' value={Utilities.numberWithDelimiter(this.state.price)} />
+
+        <div className='c-form-label u-mt-30'>
+          <label htmlFor='project_name'>品目コード <span className='u-fs-small u-fc-thinBlack'>※客先システムの番号がある場合は入力してください</span></label>
+        </div>
+        <input placeholder='品目コード' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='code' defaultValue={this.props.project.code} />
+
 
         { this.state.client ?
           <div className='c-attention'>

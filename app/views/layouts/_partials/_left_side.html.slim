@@ -72,6 +72,11 @@
               span.u-ml-10 労務費入力
 
           li.l-dashboard__menuItem
+            = link_to imports_path, class: current_controller('labors') do
+              = evil_icon 'ei-link', size: :s
+              span.u-ml-10 品目紐付け
+
+          li.l-dashboard__menuItem
             = link_to catalogs_path, class: current_controller('catalogs') do
               = evil_icon 'ei-tag', size: :s
               span.u-ml-10 カタログ作成
