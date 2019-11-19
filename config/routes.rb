@@ -104,7 +104,10 @@ Rails.application.routes.draw do
   resources :catalogs
 
   # 品目取り込み
-  resources :imports
+  resources :inquiries, only: :index do
+    collection { post :import_bpr }
+    collection { post :import_erp }
+  end
 
   # タスク管理
   resources :tasks, only: [:show, :update]

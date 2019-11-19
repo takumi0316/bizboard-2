@@ -97,6 +97,9 @@ gem 'wkhtmltopdf-binary'
 # slack
 gem 'slack-api'
 
+# csv読み込み
+gem 'roo'
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 

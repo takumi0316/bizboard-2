@@ -1,4 +1,4 @@
-class ImportsController < ApplicationController
+class InquiriesController < ApplicationController
 
   #----------------------------------------
   #  ** Includes **
@@ -8,13 +8,14 @@ class ImportsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
   # タスク
-  expose(:imports) {
-    Import
+  expose(:inquiries) {
+    Inquiry
+    .all
     .joins(:quote)
   }
 
   # タスク
-  expose(:import) { Import.find_or_initialize_by id: params[:id]}
+  expose(:inquiry) { Inquiry.find_or_initialize_by id: params[:id]}
 
   #----------------------------------------
   #  ** Layouts **
@@ -35,6 +36,13 @@ class ImportsController < ApplicationController
   def index
 
     add_breadcrumb '紐付け結果'
+  end
+
+
+  def import_bpr
+    # fileはtmpに自動で一時保存される
+    Inquiry.import(params[:file])
+    redirect_to root_url, notice: "商品を追加しました。"
   end
 
   #----------------------------------------

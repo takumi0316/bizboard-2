@@ -25,7 +25,7 @@
   .c-box__height-150
 
   .c-border
-      p.u-fs-small.u-fw-bold ご請求金額　#{((@quote.pluck(:price).sum * @invoice.last.quote.tax.to_f).floor).to_s(:delimited)} 円
+      p.u-fs-small.u-fw-bold ご請求金額　#{(((@quote.where.not(tax_type: 'exemption').pluck(:price).sum * @invoice.last.quote.tax.to_f).floor) + (@quote.where(tax_type: 'exemption').pluck(:price).sum).to_i).to_s(:delimited)} 円
 
   .u-mt-30
 
@@ -34,20 +34,26 @@
       thead
         tr.c-border
           th.u-ta-left 案件名
-          th.u-ta-left
-          th.u-ta-left
-          th.u-ta-left 価格
+          th.u-ta-left 小計
+          th.u-ta-left 消費税
+          th.u-ta-left 合計
         tbody
           - @quote.each do |r|
             tr
               td.u-ta-left
                 .u-fw-light #{r.subject}
               td.u-ta-right
-
-              td.u-ta-right
-
-              td.u-ta-right
                 .u-fw-light #{((r.price).to_i).to_s(:delimited)}
+              td.u-ta-right
+                - if r.tax_type == 'exemption'
+                  .u-fw-light 0
+                - else
+                  .u-fw-light #{(((((r.price).to_i) * r.tax.to_f).floor) - ((r.price).to_i).to_i).to_s(:delimited)}
+              td.u-ta-right
+                - if r.tax_type == 'exemption'
+                  .u-fw-light #{((r.price).to_i).to_s(:delimited)}
+                - else
+                  .u-fw-light #{((((r.price).to_i) * r.tax.to_f).floor).to_s(:delimited)}
 
 
   .c-box__height-100

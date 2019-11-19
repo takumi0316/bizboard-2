@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_13_065617) do
+ActiveRecord::Schema.define(version: 2019_11_18_064102) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -189,14 +189,14 @@ ActiveRecord::Schema.define(version: 2019_11_13_065617) do
     t.index ["work_subcontractor_detail_id"], name: "index_expendables_on_work_subcontractor_detail_id"
   end
 
-  create_table "imports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "inquiries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "quote_id"
     t.integer "result", default: 0
     t.string "quote_number", comment: "案件番号"
     t.datetime "import_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["quote_id"], name: "index_imports_on_quote_id"
+    t.index ["quote_id"], name: "index_inquiries_on_quote_id"
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
