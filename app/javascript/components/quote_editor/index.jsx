@@ -560,7 +560,11 @@ export default class QuoteEditor extends React.Component {
                 </td>
               </tr>
               <tr>
-                <td className='u-fw-bold'>納期</td>
+                <td className='u-fw-bold'>
+                  納期
+                  <br></br>
+                  <span>※製作発送の場合は出荷日を入力</span>
+                </td>
                 <td>
                   <span className='u-mr-30'>{ this.state.deliver_at ? Dayjs(this.state.deliver_at).format('YYYY年MM月DD日 HH時mm分') : '未定' }</span>
                   <DatetimePicker apply={::this.setDeliverAt} defaultDatetime={this.props.quote.deliver_at} />

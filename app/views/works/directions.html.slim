@@ -107,7 +107,8 @@ javascript:
           th 仕様
           th 原稿枚数
           th 部数数量
-          th 各工程検品
+          th 作業担当者
+          th 作業期日
       tbody
          - Work.find(params[:id]).work_details.each_with_index do |r, index|
           tr
@@ -117,7 +118,8 @@ javascript:
             td.u-va-top.u-ta-left = simple_format(r.specification)
             td.u-va-top.u-ta-right= "#{r.number_of_copies}"
             td.u-va-top.u-ta-right = "#{r.count}"
-            td
+            td.u-va-top.u-ta-right = "#{r.client_name}"
+            td.u-va-top.u-ta-right = "#{r.deliver_at.strftime('%Y年%m月%d日')}"
   .c-table
     table
       thead

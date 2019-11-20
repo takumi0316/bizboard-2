@@ -37,19 +37,17 @@ class Inquiry < ApplicationRecord
   #----------------------------------------
 
   def self.import(file)
-    CSV.foreach(file.path, encoding: "SJIS:UTF-8", headers: true) do |row|
-      # IDが見つかれば、レコードを呼び出し、見つかれなければ、新しく作成
-      product = find_by(id: row["id"]) || new
-      # CSVからデータを取得し、設定する
-      product.attributes = row.to_hash.slice(*updatable_attributes)
-      # 保存する
-      product.save!
-    end
-  end
+    CSV.parse(file.path, encoding: "SJIS:UTF-8", headers: true) do |row|
 
-  # 更新を許可するカラムを定義
-  def self.updatable_attributes
-    ["name", "price", "released_on"]
+    end
+    CSV.foreach(file.path, encoding: "SJIS:UTF-8", headers: true) do |row|
+      # quote_numberが見つかれば、quoteレコードを呼び出し、見つかれなければ、Inquiry新しく作成
+      quote = Quote.find_by(quote_number: row["受付No"]) || new
+      # CSVから品目番号を取得して、設定する
+    
+
+
+    end
   end
 
 end
