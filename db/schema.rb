@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_18_064102) do
+ActiveRecord::Schema.define(version: 2019_11_26_062409) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -230,7 +230,11 @@ ActiveRecord::Schema.define(version: 2019_11_18_064102) do
     t.string "name", comment: "チャット送信者"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "company_division_client_id"
+    t.index ["company_division_client_id"], name: "index_messages_on_company_division_client_id"
     t.index ["task_id"], name: "index_messages_on_task_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -677,6 +681,8 @@ ActiveRecord::Schema.define(version: 2019_11_18_064102) do
   end
 
   add_foreign_key "expendables", "work_subcontractor_details"
+  add_foreign_key "messages", "company_division_clients"
+  add_foreign_key "messages", "users"
   add_foreign_key "payments", "expendables"
   add_foreign_key "quotes", "divisions"
   add_foreign_key "tasks", "catalogs"

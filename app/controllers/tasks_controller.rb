@@ -54,6 +54,7 @@ class TasksController < ApplicationController
    #情報更新
    message = task.messages.new
    message.name = current_user.name
+   message.user_id = current_user.id
    message.content = params[:task][:messages_attributes][:content] unless params[:task][:messages_attributes][:content].blank?
    message.attached_files = params[:task][:attached_files] unless params[:task][:attached_files].blank?
    message.save!
