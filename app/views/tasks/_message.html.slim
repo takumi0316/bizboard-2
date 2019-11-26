@@ -2,8 +2,8 @@
   - @group.each do |key,messages|
     .p-tasks__message-date = key
     - messages.each do |r|
-      //自分と相手のメッセージのcss変更
-      //自分側
+      // 自分と相手のメッセージのcss変更
+      // 自分側
       -if r.name === current_user.name
         - unless r.content.nil?
           .p-tasks__item
@@ -26,7 +26,7 @@
                   .p-tasks__message-fileTime.u-mb-20 = r.name
 
       -else
-        //相手側
+        // 相手側
         - unless r.content.nil?
           .p-tasks__item
             dl.p-tasks__message-others
