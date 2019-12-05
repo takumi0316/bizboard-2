@@ -103,6 +103,14 @@ gem 'roo'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+#コード規約チェック
+group :development do
+  # rubocop
+  gem 'rubocop-performance', require: false
+  gem 'rubocop', '~> 0.77.0', require: false
+end
+
+
 group :production do
 
   # for debug
