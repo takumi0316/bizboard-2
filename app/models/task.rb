@@ -26,6 +26,7 @@ class Task < ApplicationRecord
 
   # quote
   belongs_to :quote
+  accepts_nested_attributes_for :quote, update_only: true
 
   #catalog
   belongs_to :catalog
