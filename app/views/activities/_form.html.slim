@@ -30,7 +30,7 @@
     .u-mr-30
       .c-form-label
         = f.label :next_action_date, '次回アクション期日'
-      = f.date_select :next_action_date, {use_month_numbers: true, :start_year => Date.today.years_ago(5).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
+      = f.date_select :next_action_date, {use_month_numbers: true, :start_year => Date.today.since(2.years).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
 
   .c-form-label
     = f.label :quote_id, '案件番号'
