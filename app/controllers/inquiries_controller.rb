@@ -42,7 +42,7 @@ class InquiriesController < ApplicationController
   def import_bpr
     # fileはtmpに自動で一時保存される
     Inquiry.import(params[:file])
-    redirect_to root_url, notice: "商品を追加しました。"
+    redirect_to inquiries_path, notice: 'テスト'
   end
 
   #----------------------------------------

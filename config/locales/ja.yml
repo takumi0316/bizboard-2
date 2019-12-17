@@ -389,6 +389,13 @@ ja:
         tax_in: 税込
         tax_not_in: 税別
 
+    inquiry:
+      result:
+        unknown_quote_number: 案件番号不一致
+        wrong_quote_price: 金額不一致
+        unknown_project_number: 品目不一致
+        complete: 完了
+
   attributes:
     created_at: 登録日時
     updated_at: 更新日時

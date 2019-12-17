@@ -4,12 +4,12 @@
       .c-form-label
         = f.label :date, '対応日時'
         span.c-form__required.u-ml-10 必須
-      = f.date_select :date, {use_month_numbers: true, :start_year => Date.today.years_ago(5).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
+      = f.date_select :date, {use_month_numbers: true, :start_year => Date.today.since(2.years).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
 
     .u-mr-30
       .c-form-label
         = f.label :scheduled_date, '受注予定日'
-      = f.date_select :scheduled_date, {use_month_numbers: true, :start_year => Date.today.years_ago(5).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
+      = f.date_select :scheduled_date, {use_month_numbers: true, :start_year => Date.today.since(2.years).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
   .c-form-group
     .u-mr-30
       .c-form-label
