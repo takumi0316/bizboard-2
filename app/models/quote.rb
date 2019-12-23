@@ -48,19 +48,14 @@ class Quote < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  #のenum
-  enum attention: { messrs: 0, dear: 10}
-
+  enum attention: { messrs: 0, dear: 10 }
   enum status: { unworked: 0, draft: 10, estimated: 20, working: 30, end_work: 40, invoicing: 50, complete: 60, lost: 70, rejection: 80 }
-
   enum quote_type: { contract: 0, copy: 10 }
   enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
   enum reception: { acceptance: 0, mail: 10, delivery: 20, reservation: 30, konpro: 40, reception_other: 50 }
   enum deliver_type: { seat: 0, location: 10, pickup: 20, bizstant: 30, other: 40 }
-
-  enum tax_type: { taxation: 0, exemption: 10}
-  enum payment_terms: { postpaid: 0, advance: 10}
-
+  enum tax_type: { taxation: 0, exemption: 10 }
+  enum payment_terms: { postpaid: 0, advance: 10 }
 
   #----------------------------------------
   #  ** Validations **
@@ -73,11 +68,11 @@ class Quote < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :client, optional: true, class_name: 'CompanyDivisionClient', foreign_key: :company_division_client_id
 
-  #部署
+  # 部署
   belongs_to :division, optional: true
 
   has_many :quote_projects, dependent: :destroy
-  #has_many :projects, through: :quote_projects
+  # has_many :projects, through: :quote_projects
 
   has_many :quote_items
   accepts_nested_attributes_for :quote_items
@@ -90,7 +85,7 @@ class Quote < ApplicationRecord
 
   has_one  :activity, -> { order(created_at: :desc) }, dependent: :destroy
 
-    # ec始まったらコメントアウト外す
+  # ec始まったらコメントアウト外す
   has_one :task, dependent: :destroy
 
   has_one :inquiry, dependent: :destroy
@@ -105,7 +100,7 @@ class Quote < ApplicationRecord
 
   scope :deliverd_in, ->(datetime) { where(deliver_at: datetime) }
 
-  scope :deliverd_at, ->{ order(:deliver_at) }
+  scope :deliverd_at, -> { order(:deliver_at) }
 
   #----------------------------------------
   #  ** Methods **

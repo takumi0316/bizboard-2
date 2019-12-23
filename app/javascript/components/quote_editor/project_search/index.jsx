@@ -1,9 +1,8 @@
-import React from 'react'
-import Style from './style.sass'
-import Icon  from 'react-evil-icons'
+import React from 'react';
+import Style from '../style.sass';
 
 // Ajax
-import Request from 'superagent'
+import Request from 'superagent';
 require('superagent-rails-csrf')(Request);
 
 /**

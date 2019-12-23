@@ -6,3 +6,276 @@
     padding: 10px
     font-size: map-get($fontSize, 'large')
     border-bottom: 1px solid map-get($layoutColors, 'lightGray')
+
+.ProjectSearch
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 900px
+    position: relative
+    padding: 30px
+    height: 720px
+    margin-top: 30px
+    overflow-y: scroll
+  &__list
+    margin-top: 10px
+  &__item
+    margin-top: 10px
+    display: block
+    cursor: pointer
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 10px
+    &:hover
+      opacity: .8
+    &Name
+      font-size: map-get($fontSize, 'large')
+      font-weight: bold
+  &__input
+    border: solid 1px map-get($layoutColors, 'lightGray')
+    outline: none
+    height: 45px
+    font-size: 16px
+    border-radius: 4px
+    width: 420px
+  &__button
+    display: block
+    margin-top: 10px
+  &__close
+    &Icon
+      position: absolute
+      right: 5px
+      top: 5px
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')
+
+
+.DatetimePicker
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  align-items: center
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 640px
+    position: relative
+    padding: 60px 30px 30px
+  &__year
+    display: inline-block
+    width: 100px
+  &__month
+    display: inline-block
+    width: 80px
+    margin-left: 10px
+  &__date
+    display: inline-block
+    width: 80px
+    margin-left: 10px
+  &__hour
+    display: inline-block
+    width: 80px
+    margin-left: 10px
+  &__minute
+    display: inline-block
+    width: 80px
+    margin-left: 10px
+  &__label
+    display: inline-block
+    vertical-align: top
+    margin: 12px 0 0 5px
+    color: map-get($fontColors, 'midBlack')
+    font-size: map-get($fontSize, 'base')
+  &__close
+    position: absolute
+    top: 10px
+    right: 10px
+    cursor: pointer
+
+.ClientSearch
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 900px
+    position: relative
+    padding: 30px
+    height: 720px
+    margin-top: 30px
+    overflow-y: scroll
+  &__list
+    margin-top: 10px
+  &__item
+    margin-top: 10px
+    display: block
+    cursor: pointer
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 10px
+    &:hover
+      opacity: .8
+    &Name
+      font-size: map-get($fontSize, 'large')
+      font-weight: bold
+  &__input
+    border: solid 1px map-get($layoutColors, 'lightGray')
+    outline: none
+    height: 45px
+    font-size: 16px
+    border-radius: 4px
+    width: 420px
+  &__button
+    display: block
+    margin-top: 10px
+  &__close
+    &Icon
+      position: absolute
+      right: 5px
+      top: 5px
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')
+
+.SubcontractorBulk
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 900px
+    position: relative
+    padding: 10px
+    height: 720px
+    margin-top: 20px
+    overflow-y: scroll
+  &__candidateCompany
+    width: 825px
+    padding: 10px
+    height: 280px
+    overflow-y: scroll
+    font: bold
+    //スクロールバーの設定
+    &::-webkit-scrollbar
+      width: 10px
+    &::-webkit-scrollbar-track
+      background: map-get($layoutColors, 'gray')
+      border-radius: 10px
+    &::-webkit-scrollbar-thumb
+      background: map-get($layoutColors, 'vivid')
+      border-radius: 10px
+    &__modal
+      position: fixed
+      display: flex
+      max-width: 600px
+      min-width: 600px
+      //background-color: rgba(map-get($layoutColors, 'black'), .3)
+      background-color: map-get($layoutColors, 'white')
+      z-index: $layerLevel-overlay
+      justify-content: right
+      filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.2))
+      padding: 5px 5px 5px 0
+  &__candidateDivisions
+    width: 825px
+    padding: 10px
+    height: 100px
+    overflow-y: scroll
+    font: bold
+    //スクロールバーの設定
+    &::-webkit-scrollbar
+      width: 10px
+    &::-webkit-scrollbar-track
+      background: map-get($layoutColors, 'gray')
+      border-radius: 10px
+    &::-webkit-scrollbar-thumb
+      background: map-get($layoutColors, 'vivid')
+      border-radius: 10px
+    &__modal
+      position: fixed
+      display: flex
+      max-width: 600px
+      min-width: 600px
+      top: 235px
+      left: 280px
+      right: 335px
+      bottom: 370px
+      //background-color: rgba(map-get($layoutColors, 'black'), .3)
+      background-color: map-get($layoutColors, 'white')
+      z-index: $layerLevel-overlay
+      justify-content: right
+      filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.2))
+      padding: 5px 5px 5px 0
+  &__list
+    margin-top: 10px
+  &__item
+    display: block
+    cursor: pointer
+    border-bottom: solid 1px map-get($layoutColors, 'black')
+    padding: 10px
+    &Name
+      font-size: map-get($fontSize, 'small')
+      font-weight: bold
+      color: black
+  &__input
+    border: solid 1px map-get($layoutColors, 'lightGray')
+    outline: none
+    height: 45px
+    font-size: 16px
+    border-radius: 4px
+    width: 825px
+  &__close
+    &Icon
+      position: absolute
+      right: 5px
+      top: 5px
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')

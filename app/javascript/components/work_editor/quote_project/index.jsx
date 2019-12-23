@@ -106,7 +106,7 @@ export default class QuoteProject extends React.Component {
    * 表示処理
    */
   render() {
-    console.log(this.state.quote_project)
+
     return (
       <div>
         { this.state.show === false ?
@@ -333,7 +333,7 @@ export default class QuoteProject extends React.Component {
               }
             </div>
           </div>
-         :
+					:
           null
         }
         { this.state.project_category === '名刺' && this.state.show === true ?
