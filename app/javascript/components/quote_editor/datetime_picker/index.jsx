@@ -1,7 +1,7 @@
-import React from 'react'
-import Style from './style.sass'
-import Icon  from 'react-evil-icons'
-import Dayjs from 'dayjs'
+import React from 'react';
+import Style from '../style.sass';
+import Icon  from 'react-evil-icons';
+import Dayjs from 'dayjs';
 
 import {
   YEARS,
@@ -9,7 +9,7 @@ import {
   DATES,
   HOURS,
   MINUTES,
-} from './properties.es6'
+} from '../properties.es6';
 
 /**
  *  @version 2018/06/10
