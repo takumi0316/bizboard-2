@@ -417,15 +417,16 @@ class InitSchema < ActiveRecord::Migration[5.2]
 		#	@version 2019/12/19
 		#
 		create_table :activities do |t|
-      t.date 			:date,							comment:'対応日時'
-      t.integer		:status, 						comment:'対応内容'
-      t.text			:memo, 							comment:'メモ'
-			t.text			:attachment,				comment:'添付'
-			t.text 			:free_word
-			t.integer		:accurary,					comment:'確度'
-			t.integer		:next_action,				comment:'次回アクション'
-			t.date			:next_action_date,	comment:'次回アクション期日'
-			t.date			:scheduled_date, 		comment:'受注予定日'
+      t.date 				:date,							comment:'対応日時'
+      t.integer			:status, 						comment:'対応内容'
+      t.text				:memo, 							comment:'メモ'
+			t.text				:attachment,				comment:'添付'
+			t.text 				:free_word
+			t.integer			:accurary,					comment:'確度'
+			t.integer			:next_action,				comment:'次回アクション'
+			t.date				:next_action_date,	comment:'次回アクション期日'
+			t.date				:scheduled_date, 		comment:'受注予定日'
+			t.references 	:quote
 
       t.timestamps
 		end
