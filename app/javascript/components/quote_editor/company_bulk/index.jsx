@@ -200,7 +200,6 @@ export default class CompanyBulk extends React.Component {
 
       let copyDivision = Object.assign([], this.state.companyDivision);
       copyDivision.name = this.refs.companyDivisionName.value;
-      console.log(copyDivision)
       this.setState({ companyDivision: copyDivision });
     } else {
 

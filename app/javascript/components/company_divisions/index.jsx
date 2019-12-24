@@ -41,8 +41,6 @@ export default class CompanyDivisions extends React.Component {
     Request.get('/company_divisions.json?company_id=' + id)
       .end((error, response) => {
 
-        console.log(response);
-
         if (error) return false;
         this.setState({divisions: response.body.divisions});
       });

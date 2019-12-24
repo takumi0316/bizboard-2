@@ -173,9 +173,6 @@ export default class ProjectEditor extends React.Component {
       return false;
     }
 
-    console.log('price', price);
-    console.log('field', field);
-
     // 価格の適用
     field['project[price]'] = price;
     this.setState({ price: price }, () => {
