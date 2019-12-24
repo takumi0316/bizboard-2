@@ -48,7 +48,6 @@ export default class ProjectViewer extends React.Component {
     Request.get(`/projects/${this.props.project.id}`)
       .set('X-Requested-With', 'XMLHttpRequest')
       .end((error, response) => {
-        console.log('response', response);
 
         this.setState({body: response.text});
       });

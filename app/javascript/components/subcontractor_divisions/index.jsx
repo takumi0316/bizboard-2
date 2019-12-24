@@ -41,8 +41,6 @@ export default class SubcontractorDivisions extends React.Component {
     Request.get('/subcontractor_divisions.json?subcontractor_id=' + id)
       .end((error, response) => {
 
-        console.log(response);
-
         if (error) return false;
         this.setState({divisions: response.body.divisions});
       });

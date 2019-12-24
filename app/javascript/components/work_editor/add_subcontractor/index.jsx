@@ -291,7 +291,6 @@ export default class AddSubcontractor extends React.Component {
           }
         } else {
 
-          console.log('kokoyae')
           this.setState({ subcontractor_details: res.body.detail });
         }
       });

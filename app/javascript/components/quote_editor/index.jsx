@@ -65,7 +65,7 @@ export default class QuoteEditor extends React.Component {
 			task: props.task,
 			users: props.users,
 			prefectures: props.prefectures,
-			deliver_type_note: props.quote.deliver_type_note,
+			deliver_type_note: props.quote.deliver_type_note || '',
 			remarks: props.quote.remarks || '',
 			memo: props.quote.memo || '',
     };
@@ -309,7 +309,7 @@ export default class QuoteEditor extends React.Component {
    *
    *
    */
-  setRemarks = (passIndex, remarks) => {
+  setQuoteRemarks = (passIndex, remarks) => {
 
     let quote_projects = Object.assign([], this.state.quote_projects);
 		quote_projects[passIndex].remarks = remarks;
@@ -326,8 +326,9 @@ export default class QuoteEditor extends React.Component {
 
     if (this.state.quote_subject == '') message.push('案件タイトルを入力してください。');
 		
-		if (this.state.deliver_type_note == '') messages.push('納品方法を記入してください');
+		if (this.state.deliver_type_note == '') message.push('納品方法を記入してください');
 
+		console.log(message);
     return message;
   }
 
@@ -345,7 +346,7 @@ export default class QuoteEditor extends React.Component {
 		e.preventDefault();
     let arrayRails = [];
     let field = {};
-    let messages = this.validation;
+    let messages = this.validation();
     // エラーが存在する場合
     if (messages.length > 0) {
 
@@ -394,7 +395,7 @@ export default class QuoteEditor extends React.Component {
     // 納品方法
     if (this.state.deliver_type == 'location' || this.state.deliver_type == 'other') {
 
-      field['quote[deliver_type_note]'] = this.state.deliver_type_note;
+      field['quote[deliver_type_note]'] = this.state.deliver_type_note || '';
 		};
 		
     let url = '/quotes';
@@ -421,7 +422,7 @@ export default class QuoteEditor extends React.Component {
           this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
         };
       });
-  }
+  };
 
   /**
    *  お客様選択時
@@ -523,7 +524,7 @@ export default class QuoteEditor extends React.Component {
 											setReception={ this.setReception } setQuoteType={ this.setQuoteType }
 				/>
 				<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } 
-															setRemarks={ this.setRemarks } setUnitPrice={ this.setUnitPrice } 
+															setQuoteRemarks={ this.setQuoteRemarks } setUnitPrice={ this.setUnitPrice } 
 															setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy }
 				/>
         <div className='u-mt-15'>

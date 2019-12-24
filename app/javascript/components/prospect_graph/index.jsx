@@ -25,7 +25,7 @@ export default class ProspectGraph extends Component {
       status_closing: this.props.status_closing,
       status_order: this.props.status_order,
     };
-    console.log(this.state.quote)
+
   }
 
   onClickButton_status = () => {
