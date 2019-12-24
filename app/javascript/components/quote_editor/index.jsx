@@ -1,7 +1,7 @@
-import React      from 'react'
+import React, { Fragment }  from 'react'
 
 // Ajax
-import Request from 'superagent'
+import Request from 'superagent';
 require('superagent-rails-csrf')(Request);
 
 // import Component
@@ -322,13 +322,13 @@ export default class QuoteEditor extends React.Component {
    */
   validation = () => {
 
-    let message = [];
-
+		let message = [];
+		const deliver_type = this.state.deliver_type;
+		const result = deliver_type === 'location' || deliver_type === 'other' && this.state.deliver_type_note == '';
     if (this.state.quote_subject == '') message.push('案件タイトルを入力してください。');
 		
-		if (this.state.deliver_type_note == '') message.push('納品方法を記入してください');
+		if (result) message.push('納品方法を記入してください');
 
-		console.log(message);
     return message;
   }
 
@@ -506,9 +506,12 @@ export default class QuoteEditor extends React.Component {
   render() {
 
     return (
-      <div>
+      <Fragment>
 				<Subject subject={ this.state.quote_subject } setSubject={ this.setSubject } />
-				<CustomerInformation client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' } division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient } users={ this.state.users } prefectures={ this.state.prefectures } />
+				<CustomerInformation	client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' } 
+															division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient } 
+															users={ this.state.users } prefectures={ this.state.prefectures } 
+				/>
 				<div className='u-mt-15'>
         	<ClientSearch applyClient={ this.applyClient } users={ this.state.users } prefectures={ this.state.prefectures } />
       	</div>
@@ -516,27 +519,29 @@ export default class QuoteEditor extends React.Component {
         <div className='u-mt-10'>
           <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
         </div>
-				<CaseDetails	date={ this.state.date } setDate={ this.setDate } setExpiration={ this.setExpiration } expiration={ this.state.expiration } 
-											deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type } deliver_type_note={ this.state.deliver_type_note }
-											channel={ this.state.channel } quote_number={ this.state.quote_number } quote_type={ this.state.quote_type }
-											reception={ this.state.reception } show_quote_number={ this.state.show_quote_number } setDeliverTypeNote={ this.setDeliverTypeNote }
-											setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber } setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt }
-											setReception={ this.setReception } setQuoteType={ this.setQuoteType }
+				<CaseDetails	date={ this.state.date } setDate={ this.setDate } setExpiration={ this.setExpiration } 
+											expiration={ this.state.expiration } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type } 
+											deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number } 
+											quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
+											setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber } 
+											setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception } 
+											setQuoteType={ this.setQuoteType }
 				/>
-				<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } 
-															setQuoteRemarks={ this.setQuoteRemarks } setUnitPrice={ this.setUnitPrice } 
-															setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy }
+				<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks } 
+										setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy }
 				/>
         <div className='u-mt-15'>
           <ProjectSearch applyProject={ this.applyProject } prefectures={ this.props.prefectures } />
         </div>
-				<PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks } memo={ this.state.memo } 
-												payment_terms={ this.state.payment_terms } price={ this.state.price } show={ this.state.show }
-												setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType } setRemarks={ this.setRemarks } setMemo={ this.setMemo }
-												setShow={ this.setShow } setDiscount={ this.setDiscount }
+				<PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks } 
+												memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price } 
+												show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType } 
+												setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount }
 				/>
-				<ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } task={ this.state.task } onSubmit={ this.onSubmit }/>
-      </div>
+				<ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } 
+											task={ this.state.task } onSubmit={ this.onSubmit }
+				/>
+      </Fragment>
     );
   }
 }
