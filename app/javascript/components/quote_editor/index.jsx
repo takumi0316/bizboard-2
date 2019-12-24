@@ -324,9 +324,9 @@ export default class QuoteEditor extends React.Component {
 
     let message = [];
 
-    if (this.state.quote_subject == '') {
-      message.push('案件タイトルを入力してください。');
-    }
+    if (this.state.quote_subject == '') message.push('案件タイトルを入力してください。');
+		
+		if (this.state.deliver_type_note == '') messages.push('納品方法を記入してください');
 
     return message;
   }
@@ -393,8 +393,6 @@ export default class QuoteEditor extends React.Component {
 
     // 納品方法
     if (this.state.deliver_type == 'location' || this.state.deliver_type == 'other') {
-
-      if (this.state.deliver_type_note == '') messages.push('納品方法を記入してください');
 
       field['quote[deliver_type_note]'] = this.state.deliver_type_note;
 		};
