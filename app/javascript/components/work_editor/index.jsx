@@ -30,7 +30,6 @@ export default class WorkEditor extends React.Component {
       subcontractor_detail_cost: props.subcontractor_detail_actual_cost,
 		};
 		
-		console.log(this.state.work);
 	};
 	
 	/**
@@ -377,6 +376,12 @@ export default class WorkEditor extends React.Component {
    * 表示処理
    */
   render() {
+		console.log('--- prop ---');
+		console.log(this.props.work);
+		console.log('--- prop ---');
+		console.log('--- state ---');
+		console.log(this.state.work);
+		console.log('--- state ---');
     return (
       <Fragment>
 				<WorkDivisionInfo division={ this.state.division } passedDivision={ this.passedDivision }/>
