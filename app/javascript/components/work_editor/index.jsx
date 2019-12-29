@@ -21,7 +21,7 @@ export default class WorkEditor extends React.Component {
     super(props);
 
     this.state = {
-			work: props.work,
+			work: props.works,
 			division: props.division,
 			work_details: props.work_details,
 			work_subcontractors: props.work_subcontractors,
@@ -380,7 +380,7 @@ export default class WorkEditor extends React.Component {
 		console.log(this.props);
 		console.log('--- props ---');
 		console.log('--- work ---');
-		console.log(this.props.work);
+		console.log(this.props.works);
 		console.log(this.state.work);
 		console.log('--- work ---');
 		console.log('--- work_details ---');
