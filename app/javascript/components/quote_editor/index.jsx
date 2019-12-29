@@ -222,7 +222,7 @@ export default class QuoteEditor extends React.Component {
   setDiscount = (discount) => {
 
 		const castDiscount = Number(discount);
-    const	copyProjects = Object.assign([], this.state.quote_projects);
+		const	copyProjects = this.state.quote_projects.slice();
     let price = 0;
     copyProjects.map((project) => {
 
@@ -246,7 +246,7 @@ export default class QuoteEditor extends React.Component {
         return false
       }
 
-			let quote_projects = Object.assign([], this.state.quote_projects);
+			let quote_projects = this.state.quote_projects.slice();
 			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
 			quote_projects[passIndex].unit_price = Number(unitPrice);
 			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(quote_projects[passIndex].unit);
@@ -254,7 +254,7 @@ export default class QuoteEditor extends React.Component {
       this.setState({ quote_projects: quote_projects, price: price });
     } else {
 
-			let quote_projects = Object.assign([], this.state.quote_projects);
+			let quote_projects = this.state.quote_projects.slice();
 			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
 			quote_projects[passIndex].unit_price = Number(unitPrice);
 			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(quote_projects[passIndex].unit);
@@ -277,7 +277,7 @@ export default class QuoteEditor extends React.Component {
 				return false
 			};
 
-			let quote_projects = Object.assign([], this.state.quote_projects);
+			let quote_projects = this.state.quote_projects.slice();
 			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
 			quote_projects[passIndex].unit = Number(unit);
 			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
@@ -285,7 +285,7 @@ export default class QuoteEditor extends React.Component {
       this.setState({ quote_projects: quote_projects, price: price });
 		} else {
 
-			let quote_projects = Object.assign([], this.state.quote_projects);
+			let quote_projects =  this.state.quote_projects.slice();
 			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
 			quote_projects[passIndex].unit = Number(unit);
 			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
@@ -300,7 +300,7 @@ export default class QuoteEditor extends React.Component {
    */
   setName = (passIndex, name) => {
 
-    let quote_projects = Object.assign([], this.state.quote_projects);
+    let quote_projects = this.state.quote_projects.slice();
 		quote_projects[passIndex].name = name;
     this.setState({ quote_projects: quote_projects });
   };
@@ -311,7 +311,7 @@ export default class QuoteEditor extends React.Component {
    */
   setQuoteRemarks = (passIndex, remarks) => {
 
-    let quote_projects = Object.assign([], this.state.quote_projects);
+    let quote_projects = this.state.quote_projects.slice();
 		quote_projects[passIndex].remarks = remarks;
     this.setState({ quote_projects: quote_projects });
   };
@@ -470,7 +470,7 @@ export default class QuoteEditor extends React.Component {
 			return
 		};
 
-		let quote_projects = Object.assign([], this.state.quote_projects);
+		let quote_projects = this.state.quote_projects.slice();
 		quote_projects.splice(passIndex, 1);
 		const delProjectPrice = Number(this.state.quote_projects[passIndex].price);
 		let minusPrice = Number(this.state.price) - delProjectPrice;

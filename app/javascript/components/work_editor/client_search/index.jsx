@@ -1,10 +1,11 @@
-import React from 'react'
-import Style from './style.sass'
-import Icon  from 'react-evil-icons'
-import SubcontractorBulk from '../subcontractor_bulk/index.jsx'
+import React from 'react';
+import Style from '../style.sass';
+
+// import components
+import SubcontractorBulk from '../subcontractor_bulk/';
 
 // Ajax
-import Request from 'superagent'
+import Request from 'superagent';
 require('superagent-rails-csrf')(Request);
 
 /**

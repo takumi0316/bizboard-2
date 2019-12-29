@@ -1,8 +1,8 @@
-import React      from 'react'
-import Style from './style.sass'
+import React from 'react';
+import Style from '../style.sass';
 
 // Ajax
-import Request from 'superagent'
+import Request from 'superagent';
 require('superagent-rails-csrf')(Request);
 
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Style from '../style.sass';
 
 // Ajax
@@ -45,9 +45,9 @@ export default class CompanyBulk extends React.Component {
    * 親要素のクリックイベントを引き継がない
    *
    */
-  _stopPropagation = (event) => {
+  _stopPropagation = (e) => {
 
-    event.stopPropagation();
+    e.stopPropagation();
   }
 
   /**
@@ -72,59 +72,58 @@ export default class CompanyBulk extends React.Component {
    */
   _nullCheck = () => {
 
-    if ( this.refs.companyName.value === '' ) {
+    if(this.refs.companyName.value === '') {
 
       alert('会社名を入力してください！！！！！！！！！！！！！');
-      exit
-    }
+      return false;
+    };
 
-    if ( this.refs.companyDivisionName.value === '' ) {
+    if(this.refs.companyDivisionName.value === '') {
 
       alert('部署名を入力してください！！！！！！！！！！！！！');
-      exit
-    }
+      return false;
+    };
 
-    if ( this.refs.companyPost.value === '' ) {
+    if(this.refs.companyPost.value === '') {
 
       alert('郵便番号は配達員の人は優秀やから無くてもわかるけど、やっぱり入れて欲しいかな。');
-      exit
-    }
+      return false;
+    };
 
-    if ( this.refs.companyAddress1.value === '' ) {
+    if(this.refs.companyAddress1.value === '') {
 
       alert('住所はまぁ入れんでええとは思うねんけどなぁ。');
-      exit
-    }
+      return false;
+    };
 
-    if ( this.refs.companyClientName.value === '' ) {
+    if(this.refs.companyClientName.value === '') {
 
       alert('担当者は入力してくれなあかんよ。');
-      exit
-    }
+      return false;
+    };
 
-    if ( this.refs.companyClientTel.value === '' ) {
+    if( this.refs.companyClientTel.value === '') {
 
       alert('電話番号を入力してくや。');
-      exit
-    }
+      return false;
+    };
 
-    if ( this.refs.companyClientEmail.value === '' ) {
+    if(this.refs.companyClientEmail.value === '') {
 
       alert('メールアドレスを入力してや。');
-      exit
-    }
-  }
+      return false;
+    };
+  };
 
   /**
    * 担当者を作成
    *
    */
-  _onBulkCreate = () => {
+  _onBulkCreate = (e) => {
 
     this._nullCheck();
     const url = '/companies/bulk';
-    let field = {};
-    field = {
+    const field = {
       companyName: this.refs.companyName.value,
       companyDivisionName: this.refs.companyDivisionName.value,
       companyPost: this.refs.companyPost.value,
@@ -134,7 +133,8 @@ export default class CompanyBulk extends React.Component {
       companyClientName: this.refs.companyClientName.value,
       companyClientTel: this.refs.companyClientTel.value,
       companyClientEmail: this.refs.companyClientEmail.value,
-    }
+		};
+
     Request.post(url)
       .set('X-Requested-With', 'XMLHttpRequest')
       .field(field)
@@ -151,10 +151,10 @@ export default class CompanyBulk extends React.Component {
             email: res.body.client.email,
             division: res.body.division,
             company: res.body.company,
-          }
-          this.props.closeBulk();
+          };
+          this.props.closeBulk(e);
           this.props.applyClient(client);
-          this.props.close();
+          this.props.close(e);
         } else if (err && res.body.status === 'error') {
 
           alert('正常に作成できませんでした。');
@@ -166,8 +166,9 @@ export default class CompanyBulk extends React.Component {
    *  フリーワード検索
    *  @version 2018/06/10
    */
-  _companySearch = () => {
+  _companySearch = (e) => {
 
+		e.preventDefault();
     const search = this.refs.companyName.value;
     // 記事内容を送信
     Request.get('/companies.json?search=' + search)
@@ -188,7 +189,7 @@ export default class CompanyBulk extends React.Component {
     setTimeout(() => { this.setState({ companies: []}) }, 500);
   }
 
-  _changeCompany = () => {
+  _changeCompany = (e) => {
 
     let companyName = this.refs.companyName.value;
     this.setState({ company_name: companyName }, this._companySearch());
@@ -256,7 +257,7 @@ export default class CompanyBulk extends React.Component {
    *  親要素のクリックイベントを引き継がない
    *  @version 2018/06/10
    */
-  _stopPropagation(event) {
+  _stopPropagation = (event) => {
 
     event.stopPropagation();
   }
@@ -267,118 +268,132 @@ export default class CompanyBulk extends React.Component {
    */
   render() {
     return (
-
-      <React.Fragment key={'bulk'}>
-          <div className={ Style.SubcontractorBulk }>
-            <div className={ Style.SubcontractorBulk__inner } onMouseDown={ e => this._stopPropagation(e) } >
-              <h1 className={ 'l-dashboard__heading-jsx' }>取引先担当者</h1>
-              <div className={ 'c-form-label' } >
-                <label>会社名</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div><input id='companyName' placeholder='会社名' ref='companyName' autoComplete='nooe' className={ Style.SubcontractorBulk__input } onChange={::this._changeCompany} onFocus={ ::this._openCompany } onBlur={ ::this._closeCompany } onClick={ ::this._companySearch } value={ this.state.company_name } /></div>
-
-              { this.state.companies.length > 0 && this.state.company_type ?
-
-                <div className={ Style.SubcontractorBulk__candidateCompany__modal }>
-                  <ul className={ Style.SubcontractorBulk__candidateCompany }>
-                    { this.state.companies.map((company, index) => {
-
-                      const key = 'company-' + index;
-                      return(
-                        <li {...{key}} className={ Style.SubcontractorBulk__item }>
-                          <h2 className={ Style.SubcontractorBulk__itemName } onClick={ e => this._onSelectCompany(company.name, company.divisions) }>{ company.name }</h2>
-                        </li>
-                      )
-                    }) }
-                  </ul>
-                </div>
-                :
-                null
-              }
-              <div className={ 'c-form-label' } >
-                <label>部署名</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' autoComplete='nope' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } onBlur={ ::this._closeDivision } value={ this.state.companyDivision.name } onChange={ ::this._changeDivision }/></div>
-              { this.state.divisions.length > 0 && this.state.division_type ?
-
-                <div className={ Style.SubcontractorBulk__candidateDivisions__modal }>
-                  <ul className={ Style.SubcontractorBulk__candidateDivisions }>
-                    { this.state.divisions.map((division, index) => {
-
-                      const key = 'divisoion-' + index;
-                      return(
-                        <li {...{key}} className={ Style.SubcontractorBulk__item }>
-                          <h2 className={ Style.SubcontractorBulk__itemName } onClick={ e => this._onSelectDivision(division) } >{ division.name }</h2>
-                        </li>
-                      )
-                    }) }
-                  </ul>
-                </div>
-                :
-                null
-              }
-              <div className={ 'c-form-label' } >
-                <label>郵便番号</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div><input onChange={ e => this._formatCheck('companyPost') } id='companyPost' placeholder='郵便番号' ref='companyPost' autoComplete='nope' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.zip } /></div>
-              <div className={ 'c-form-label' } >
-                <label>都道府県</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div>
-                <select defaultValue={ this.state.companyDivision.prefecture_id } ref='companyPrefecture' className={ 'c-form-select__bulk-jsx' }>
-                  { this.props.prefectures.map((prefecture, index) => {
-                    const key = 'prefecture-' + index;
-                    return (
-                      <option {...{key}} value={ prefecture.attributes.id }>{ prefecture.attributes.name }</option>
-                    );
-                  }) }
-                </select>
-              </div>
-              <div className={ 'c-form-label' } >
-                <label>住所</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div><input id='commpanyAddress1' placeholder='住所' ref='companyAddress1' autoComplete='nope' className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.address1 } /></div>
-              <div className={ 'c-form-label' } >
-                <label>自社担当者</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div>
-                <select defaultValue={ this.state.user_id } ref='currentClientName' autoComplete='nope' className={ 'c-form-select__bulk-jsx' }>
-                  { this.props.users.map((user, index) => {
-                    const key = 'user-' + index;
-                    return (
-                      <option {...{key}} value={ user.id }>{ user.name }</option>
-                    );
-                  }) }
-                </select>
-              </div>
-              <div className={ 'c-form-label' } >
-                <label>担当者</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div><input id='companyClientName' placeholder='担当者名' ref='companyClientName' autoComplete='nope' className={ Style.SubcontractorBulk__input } /></div>
-              <div className={ 'c-form-label' } >
-                <label>電話番号</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div><input placeholder='電話番号' ref='companyClientTel' autoComplete='nope' className={ Style.SubcontractorBulk__input } /></div>
-<div className={ 'c-form-label' } >
-                <label>メールアドレス</label>
-                <span className={ 'c-form__required u-ml-10' }>必須</span>
-              </div>
-              <div><input placeholder='メールアドレス' ref='companyClientEmail' autoComplete='nope' className={ Style.SubcontractorBulk__input } /></div>
-              <div className={ 'u-ta-center' }>
-                <button onClick={ e => this._onBulkCreate() } className={ 'c-btnMain-standard c-btn-blue u-mt-20' }>作成</button>
-              </div>
-              <div onClick={ e => this.props.closeBulk() } className={ Style.SubcontractorBulk__closeIcon }>×</div>
+      <Fragment>
+        <div className={ Style.SubcontractorBulk }>
+          <div className={ Style.SubcontractorBulk__inner } onMouseDown={ e => this._stopPropagation(e) } >
+            <h1 className={ 'l-dashboard__heading-jsx' }>取引先担当者</h1>
+            <div className={ 'c-form-label' } >
+              <label>会社名</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
             </div>
+            <Fragment>
+							<input	id='companyName' placeholder='会社名' ref='companyName' autoComplete='nooe' className={ Style.SubcontractorBulk__input } 
+											onChange={ e => this._changeCompany } onFocus={ e => this._openCompany } onBlur={ e => this._closeCompany } 
+											onClick={ e => this._companySearch(e) } value={ this.state.company_name }
+							/>
+						</Fragment>
+            { this.state.companies.length > 0 && this.state.company_type ?
+              <div className={ Style.SubcontractorBulk__candidateCompany__modal }>
+                <ul className={ Style.SubcontractorBulk__candidateCompany }>
+                  { this.state.companies.map((company, index) => {
+                    const key = 'company-' + index;
+                    return(
+                      <li { ...{key} } className={ Style.SubcontractorBulk__item }>
+                        <h2 className={ Style.SubcontractorBulk__itemName } onClick={ e => this._onSelectCompany(company.name, company.divisions) }>{ company.name }</h2>
+                      </li>
+                    )
+                  }) }
+                </ul>
+              </div>
+              : null
+            }
+            <div className={ 'c-form-label' } >
+              <label>部署名</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
+            </div>
+            <div><input id='companyDivisionName' placeholder='部署名' ref='companyDivisionName' autoComplete='nope' className={ Style.SubcontractorBulk__input } onFocus={ ::this._openDivision } onBlur={ ::this._closeDivision } value={ this.state.companyDivision.name } onChange={ ::this._changeDivision }/></div>
+            { this.state.divisions.length > 0 && this.state.division_type ?
+              <div className={ Style.SubcontractorBulk__candidateDivisions__modal }>
+                <ul className={ Style.SubcontractorBulk__candidateDivisions }>
+                  { this.state.divisions.map((division, index) => {
+                    const key = 'divisoion-' + index;
+                    return(
+                      <li { ...{key} } className={ Style.SubcontractorBulk__item }>
+                        <h2 className={ Style.SubcontractorBulk__itemName } onClick={ e => this._onSelectDivision(division) } >{ division.name }</h2>
+                      </li>
+                    )
+                  }) }
+                </ul>
+              </div>
+              : null
+            }
+            <div className={ 'c-form-label' } >
+              <label>郵便番号</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
+            </div>
+            <Fragment>
+							<input	id='companyPost' placeholder='郵便番号' ref='companyPost' autoComplete='nope' 
+											className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.zip }
+											onChange={ e => this._formatCheck('companyPost') }
+							/>
+						</Fragment>
+            <div className={ 'c-form-label' } >
+              <label>都道府県</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
+            </div>
+            <div>
+              <select defaultValue={ this.state.companyDivision.prefecture_id } ref='companyPrefecture' className={ 'c-form-select__bulk-jsx' }>
+                { this.props.prefectures.map((prefecture, index) => {
+                  const key = 'prefecture-' + index;
+                  return (
+                    <option {...{key}} value={ prefecture.attributes.id }>{ prefecture.attributes.name }</option>
+                  );
+                }) }
+              </select>
+            </div>
+            <div className={ 'c-form-label' } >
+              <label>住所</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
+            </div>
+            <Fragment>
+							<input	id='commpanyAddress1' placeholder='住所' ref='companyAddress1' autoComplete='nope' 
+											className={ Style.SubcontractorBulk__input } defaultValue={ this.state.companyDivision.address1 }
+							/>
+							</Fragment>
+            <div className={ 'c-form-label' } >
+              <label>自社担当者</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
+            </div>
+            <div>
+              <select defaultValue={ this.state.user_id } ref='currentClientName' autoComplete='nope' className={ 'c-form-select__bulk-jsx' }>
+                { this.props.users.map((user, index) => {
+                  const key = 'user-' + index;
+                  return (
+                    <option {...{key}} value={ user.id }>{ user.name }</option>
+                  );
+                }) }
+              </select>
+            </div>
+            <div className={ 'c-form-label' } >
+              <label>担当者</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
+            </div>
+            <Fragment>
+							<input id='companyClientName' placeholder='担当者名' ref='companyClientName' autoComplete='nope' 
+										className={ Style.SubcontractorBulk__input } 
+							/>
+						</Fragment>
+            <div className={ 'c-form-label' } >
+              <label>電話番号</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
+            </div>
+            <Fragment>
+							<input placeholder='電話番号' ref='companyClientTel' autoComplete='nope' className={ Style.SubcontractorBulk__input } />
+						</Fragment>
+						<div className={ 'c-form-label' } >
+              <label>メールアドレス</label>
+              <span className={ 'c-form__required u-ml-10' }>必須</span>
+            </div>
+            <Fragment>
+							<input placeholder='メールアドレス' ref='companyClientEmail' autoComplete='nope' className={ Style.SubcontractorBulk__input }/>
+						</Fragment>
+            <div className={ 'u-ta-center' }>
+              <button onClick={ e => this._onBulkCreate(e) } className={ 'c-btnMain-standard c-btn-blue u-mt-20' }>作成</button>
+            </div>
+            <div onClick={ e => this.props.closeBulk(e) } className={ Style.SubcontractorBulk__closeIcon }>×</div>
           </div>
-      </React.Fragment>
+        </div>
+      </Fragment>
     );
   }
 }
