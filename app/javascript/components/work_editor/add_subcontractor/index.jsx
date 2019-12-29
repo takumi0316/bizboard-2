@@ -1,16 +1,14 @@
-import React from 'react'
-import SubcontractorStatus from '../subcontractor_status/index.jsx'
-import ReadSubcontractorStatus from '../read-subcontractor_status/index.jsx'
-import ClientSearch from '../client_search/index.jsx'
-import Style from './style.sass'
+import React	from 'react'
+import Style 	from '../style.sass';
+
+import ClientSearch	from '../client_search/index.jsx';
 
 // Ajax
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
 
 // Datetime
-import Dayjs from 'dayjs'
-import { ENUM_STATUS } from '../properties.es6'
+import Dayjs from 'dayjs';
 
 export default class AddSubcontractor extends React.Component {
 
@@ -342,7 +340,7 @@ export default class AddSubcontractor extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.setState({ show: false, work_subcontractors: res.body.work_subcontractors }, this.props.applyPrice(actual_cost, type));
+          this.setState({ show: false, work_subcontractors: res.body.work_subcontractors }, this.props.passedPrice(actual_cost, type));
         } else {
 
           this.setState({ work_subcontractors: res.body.work_subcontractors });

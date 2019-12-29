@@ -1,0 +1,409 @@
+@import '../../../assets/stylesheets/foundation/variables'
+
+.ClientSearch
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 900px
+    position: relative
+    padding: 30px
+    height: 720px
+    margin-top: 30px
+    overflow-y: scroll
+  &__list
+    margin-top: 10px
+  &__item
+    margin-top: 10px
+    display: block
+    cursor: pointer
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 10px
+    &:hover
+      opacity: .8
+    &Name
+      font-size: map-get($fontSize, 'large')
+      font-weight: bold
+  &__input
+    border: solid 1px map-get($layoutColors, 'lightGray')
+    outline: none
+    height: 45px
+    font-size: 16px
+    border-radius: 4px
+    width: 420px
+  &__button
+    display: block
+    margin-top: 10px
+  &__close
+    &Icon
+      position: absolute
+      right: 5px
+      top: 5px
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')
+
+.AddSubcontractor
+
+  &__ReadOnly
+
+    margin-top: 10px
+    display: flex
+    justify-content: space-between
+
+  &__EditButton
+
+    margin-top: 50px
+    padding-top: 50px
+    border-top: 1px solid #ccc
+    button
+      margin-right: 3px
+
+  &__SideBySide
+
+    display: flex
+    justify-content: space-between
+    margin-top: 10px
+    margin-bottom: 10px
+    button
+      margin-left: 3px
+
+.AddDetails
+
+  &__WorkEdit
+    
+    margin-top: 10px
+    margin-bottom: 10px
+
+  &__finish_button
+
+    button
+
+      font-weight: bold
+      color: white
+      margin-top: 5px
+      margin-bottom: 5px
+      width: 54px
+      height: 36px
+      background: #2f4f4f
+      font: 1.5rem
+
+  &__edit_button
+
+    button
+      
+      font-weight: bold
+      color: white
+      margin-top: 5px
+      margin-bottom: 5px
+      width: 54px
+      height: 36px
+      background: #2f4f4f
+      font: 1.5rem
+
+  &__edit_table
+    overflow: auto
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) 0 0/20px 100%, linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) right/20px 100%
+    background-repeat: no-repeat
+    background-attachment: scroll
+    -webkit-overflow-scrolling: touch
+    table
+      width: 1600px
+      background: linear-gradient(to left, hsla(0,0%,100%,0), white 15px) 0 0 / 50px 100%, linear-gradient(to right, hsla(0,0%,100%,0), white 15px) right / 50px 100%
+      background-repeat: no-repeat
+      background-attachment: local
+      border-bottom: 1px solid lightgray
+      border-collapse: collapse
+      thead
+        tr
+          th
+            padding: 5px
+            background: rgba(lightgray, .1)
+            border-top: 1px solid lightgray
+            border-left: 1px solid lightgray
+            white-space: nowrap
+      tbody
+        tr
+          &:nth-child(even)
+            td
+              background: rgba(lightgray, .1)
+          td
+            padding: 20px
+            text-align: center
+            border-top: 0.5px solid lightgray
+            border-left: 0.5px solid lightgray
+            white-space: nowrap
+            background: rgba(white, 0)
+            input 
+              text-align: right
+            button
+              font-size: 20px
+              color: white
+              padding: 0
+              width: 34px
+              height: 24px
+              background-color: red
+
+
+  &__reading_table
+    overflow: auto
+    table
+      width: 1170px
+      border-collapse: separate
+      border-spacing: 0px
+      border-top: 1px solid #ccc
+      border-left: 1px solid #ccc
+
+      th
+        padding: 10px
+        width: auto
+        text-align: center
+        vertical-align: top
+        color: #444
+        background-color: rgba(204, 204, 204, 0.1)
+        border-top: 1px solid #fff
+        border-left: 1px solid #fff
+        border-right: 1px solid #ccc
+        border-bottom: 1px solid #ccc
+        white-space: nowrap
+      tr
+        &:nth-child(even)
+          td
+            background: rgba(lightgray, .1)
+        td
+          padding: 10px
+          white-space: nowrap
+          text-align: center
+          border-top: 1px solid #fff
+          border-left: 1px solid #fff
+          white-space: nowrap
+          background: rgba(white, 0)
+          border-right: 1px solid lightgray
+          border-bottom: 1px solid lightgray
+          padding: 5px
+
+.WorkStatus
+  display: flex
+  justify-content: flex-end
+
+  button
+    width: 105px
+    height: 45px 
+    font-size: 1.5rem
+    margin-left: 3px
+
+.SubcontractorBulk
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 900px
+    position: relative
+    padding: 10px
+    height: 720px
+    margin-top: 20px
+    overflow-y: scroll
+  &__candidateCompany
+    width: 825px
+    padding: 10px
+    height: 100px
+    overflow-y: scroll
+    font: bold
+    //スクロールバーの設定
+    &::-webkit-scrollbar
+      width: 10px
+    &::-webkit-scrollbar-track
+      background: map-get($layoutColors, 'gray')
+      border-radius: 10px
+    &::-webkit-scrollbar-thumb
+      background: map-get($layoutColors, 'vivid')
+      border-radius: 10px
+    &__modal
+      position: fixed
+      display: flex
+      max-width: 600px
+      min-width: 600px
+      //background-color: rgba(map-get($layoutColors, 'black'), .3)
+      background-color: map-get($layoutColors, 'white')
+      z-index: $layerLevel-overlay
+      justify-content: right
+      filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.2))
+      padding: 5px 5px 5px 0
+  &__candidateDivisions
+    width: 825px
+    padding: 10px
+    height: 100px
+    overflow-y: scroll
+    font: bold
+    //スクロールバーの設定
+    &::-webkit-scrollbar
+      width: 10px
+    &::-webkit-scrollbar-track
+      background: map-get($layoutColors, 'gray')
+      border-radius: 10px
+    &::-webkit-scrollbar-thumb
+      background: map-get($layoutColors, 'vivid')
+      border-radius: 10px
+    &__modal
+      position: fixed
+      display: flex
+      max-width: 600px
+      min-width: 600px
+      //top: 230px
+      left: 280px
+      right: 335px
+      //bottom: 200px
+      //background-color: rgba(map-get($layoutColors, 'black'), .3)
+      background-color: map-get($layoutColors, 'white')
+      z-index: $layerLevel-overlay
+      justify-content: right
+      filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.2))
+      padding: 5px 5px 5px 0
+  &__list
+    margin-top: 10px
+  &__item
+    display: block
+    cursor: pointer
+    border-bottom: solid 1px map-get($layoutColors, 'black')
+    padding: 10px
+    &Name
+      font-size: map-get($fontSize, 'small')
+      font-weight: bold
+      color: black
+  &__input
+    border: solid 1px map-get($layoutColors, 'lightGray')
+    outline: none
+    height: 45px
+    font-size: 16px
+    border-radius: 4px
+    width: 825px
+  &__close
+    &Icon
+      position: absolute
+      right: 5px
+      top: 5px
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')
+
+.WorkStatus
+  display: flex
+  justify-content: flex-end
+
+  button
+    width: 105px
+    height: 45px 
+    font-size: 1.5rem
+    margin-left: 3px
+    margin-bottom: 10px
+
+.Search
+
+  display: flex
+
+  &__SideBySide
+
+    display: flex
+    input
+
+      margin-right: 3px
+    select
+
+      margin-right: 3px
+
+  &__date1
+    position: absolute
+    top: 106.5px
+    left: 814px
+    //三角押せるようになるやつ
+    pointer-events: none
+    svg
+      fill: #666
+
+  &__date2
+    position: absolute
+    top: 106.5px
+    left: 959px
+    //三角押せるようになるやつ
+    pointer-events: none
+    svg
+      fill: #666
+
+  &__triangle
+    content: ''
+    display: block
+    position: absolute
+    top: 115px
+    left: 692px
+    width: 0
+    height: 0
+    padding: 0
+    border-left: 8px solid transparent
+    border-right: 8px solid transparent
+    border-top: 8px solid #aab4b9
+    z-index: 1
+    //三角押せるようになるやつ
+    pointer-events: none
+
+.Pickadate
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 380px
+    position: relative
+    padding: 10px
+    height: 360px
+    top: 30%
+    overflow-y: scroll
+  &__close
+    &Icon
+      text-align: right
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')

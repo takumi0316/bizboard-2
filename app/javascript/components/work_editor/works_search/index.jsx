@@ -1,12 +1,13 @@
-import React, { Component } from "react"
-import Style from './style.sass'
-import DatePicker from 'react-datepicker';
+import React, { Component } from "react";
+import Style								from '../style.sass';
+import Icon									from 'react-evil-icons';
 import "react-datepicker/dist/react-datepicker.css";
-import Icon  from 'react-evil-icons'
 
+// import components
+import DatePicker from 'react-datepicker';
 
 // Ajax
-import Request from "superagent"
+import Request from "superagent";
 require("superagent-rails-csrf")(Request);
 
 // enum_status
