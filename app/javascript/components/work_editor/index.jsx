@@ -28,7 +28,10 @@ export default class WorkEditor extends React.Component {
       project_price: props.project_price,
       work_detail_cost: props.work_detail_actual_cost,
       subcontractor_detail_cost: props.subcontractor_detail_actual_cost,
-    };
+		};
+		
+		console.log(this.state.work.notices === null ? true : false)
+		console.log(this.state.work);
 	};
 	
 	/**
