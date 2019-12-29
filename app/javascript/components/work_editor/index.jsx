@@ -376,12 +376,14 @@ export default class WorkEditor extends React.Component {
    * 表示処理
    */
   render() {
-		console.log('--- prop ---');
+		console.log('--- work ---');
 		console.log(this.props.work);
-		console.log('--- prop ---');
-		console.log('--- state ---');
 		console.log(this.state.work);
-		console.log('--- state ---');
+		console.log('--- work ---');
+		console.log('--- work_details ---');
+		console.log(this.props.work_details);
+		console.log(this.state.work_details);
+		console.log('--- work_details ---');
 		console.log('--- division ---');
 		console.log(this.props.division);
 		console.log(this.state.division);
