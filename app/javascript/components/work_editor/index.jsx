@@ -391,7 +391,7 @@ export default class WorkEditor extends React.Component {
     return (
       <Fragment>
 				<WorkDivisionInfo division={ this.state.division } passedDivision={ this.passedDivision }/>
-				<WorkDetails	work_notices={ this.state.work.notices || '' } work_details={ this.state.work_details } 
+				<WorkDetails	work_notices={ this.state.work ? this.state.work.notices : '' } work_details={ this.state.work_details } 
 											work_id={ this.state.work.id } user_id={ this.props.user_id } users={ this.props.users } 
 											passedPrice={ this.passedPrice } setDeOrderContents={ this.setDeOrderContents } setDangerHtml={ this.setDangerHtml }
 											setDeDeliverMethod={ this.setDeDeliverMethod } setDeSpecification={ this.setDeSpecification }
