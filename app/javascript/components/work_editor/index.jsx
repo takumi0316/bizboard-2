@@ -21,7 +21,7 @@ export default class WorkEditor extends React.Component {
     super(props);
 
     this.state = {
-			work: props.works,
+			work: props.work,
 			division: props.division,
 			work_details: props.work_details,
 			work_subcontractors: props.work_subcontractors,
@@ -376,25 +376,10 @@ export default class WorkEditor extends React.Component {
    * 表示処理
    */
   render() {
-		console.log('--- props ---');
-		console.log(this.props);
-		console.log('--- props ---');
-		console.log('--- work ---');
-		console.log(this.props.works);
-		console.log(this.state.work);
-		console.log('--- work ---');
-		console.log('--- work_details ---');
-		console.log(this.props.work_details);
-		console.log(this.state.work_details);
-		console.log('--- work_details ---');
-		console.log('--- division ---');
-		console.log(this.props.division);
-		console.log(this.state.division);
-		console.log('--- division ---');
     return (
       <Fragment>
 				<WorkDivisionInfo division={ this.state.division } passedDivision={ this.passedDivision }/>
-				<WorkDetails	work_notices={ this.state.work ? this.state.work.notices : '' } work_details={ this.state.work_details } 
+				<WorkDetails	work_notices={ this.state.work.notices } work_details={ this.state.work_details } 
 											work_id={ this.state.work.id } user_id={ this.props.user_id } users={ this.props.users } 
 											passedPrice={ this.passedPrice } setDeOrderContents={ this.setDeOrderContents } setDangerHtml={ this.setDangerHtml }
 											setDeDeliverMethod={ this.setDeDeliverMethod } setDeSpecification={ this.setDeSpecification }
