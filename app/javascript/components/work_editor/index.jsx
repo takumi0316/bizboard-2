@@ -382,6 +382,10 @@ export default class WorkEditor extends React.Component {
 		console.log('--- state ---');
 		console.log(this.state.work);
 		console.log('--- state ---');
+		console.log('--- division ---');
+		console.log(this.props.division);
+		console.log(this.state.division);
+		console.log('--- division ---');
     return (
       <Fragment>
 				<WorkDivisionInfo division={ this.state.division } passedDivision={ this.passedDivision }/>
