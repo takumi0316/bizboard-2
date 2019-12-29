@@ -30,7 +30,6 @@ export default class WorkEditor extends React.Component {
       subcontractor_detail_cost: props.subcontractor_detail_actual_cost,
 		};
 		
-		console.log(this.state.work.notices === null ? true : false)
 		console.log(this.state.work);
 	};
 	
