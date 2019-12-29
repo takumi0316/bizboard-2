@@ -16,7 +16,6 @@
         th 原価
         th 粗利
         th 粗利率
-        //th 更新日
     tbody
       - @works.each_with_index do |r, index|
         tr
@@ -41,6 +40,5 @@
           td.u-ta-right  = "#{r.price}円"
           td.u-ta-right  = r.quote&.price.present? ? "#{r.quote.price - r.price}円" : '0円'
           td.u-ta-right  = r.price < r.quote.price ? "#{(((r.quote.price - r.price)&.to_f / r.quote&.price&.to_f)*100).floor}%" : '0%'
-          //td.u-ta-right  = r.updated_at
 
 = render 'layouts/_partials/pagination'
