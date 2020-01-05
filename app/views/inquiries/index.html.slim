@@ -1,3 +1,32 @@
-= form_tag import_bpr_inquiries_path, multipart: true do
-  = file_field_tag :file
-  = submit_tag "インポート"
+div
+  - if current_user.division_id == 5
+    h2.l-dashboard__heading BPR取り込み
+    = form_tag import_bpr_inquiries_path, multipart: true do
+      = file_field_tag :file
+      = submit_tag "インポート"
+  - elsif current_user.division_id == 7
+    h2.l-dashboard__heading ERP取り込み
+    = form_tag import_erp_inquiries_path, multipart: true do
+      = file_field_tag :file
+      = submit_tag "インポート"
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 案件番号
+        th 取り込み日時
+        th 結果
+        th 案件編集
+    tbody
+      - @inquirie.each do |r|
+        tr
+          td = r.quote_number
+          td = r.created_at
+          td = r.result_i18n
+          - if r.quote.blank?
+            td 案件なし
+          - else
+            td = link_to '編集', edit_quote_path(r.quote), class: 'c-btnMain-standard'
+
+= render 'layouts/_partials/pagination'

@@ -104,6 +104,15 @@ const CaseDetails = (props) => {
 						</tr>
 						: null
 					}
+          { props.show_quote_number ?
+            <tr>
+              <td className='u-fw-bold'>合計金額 ※金額を入力する場合は品目は選択しないでください</td>
+              <td>
+                <textarea placeholder='BPRとERPで確定した金額を入力してください' className='c-form-text' onChange={ e => props.setTemporaryPrice(e.target.value) } type='text' defaultValue={ props.temporary_price } />
+              </td>
+            </tr>
+            : null
+          }
 					<tr>
 						<td className='u-fw-bold'>受注方法</td>
 						<td>

@@ -68,7 +68,7 @@ const PaymentDetails = props => {
           <tr>
             <td className='u-fw-bold'>合計金額</td>
             <td>
-							<textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false' 
+							<textarea readOnly placeholder='合計金額' className='c-form-textarea' autoComplete='off' spellCheck='false'
 												type='text' value={ props.price }
 							/>
             </td>
@@ -76,7 +76,7 @@ const PaymentDetails = props => {
           <tr>
           	<td className='u-fw-bold'>備考 ※見積もりに記載されます</td>
             <td>
-							<textarea placeholder='案件に関する備考を入力してください ※見積もりに記載されます' className='c-form-textarea' row={5} 
+							<textarea placeholder='案件に関する備考を入力してください ※見積もりに記載されます' className='c-form-textarea' row={5}
 												autoComplete='off' spellCheck='false' type='text' defaultValue={ props.remarks } onBlur={ e => props.setRemarks(e.target.value) }
 							/>
             </td>
@@ -84,7 +84,7 @@ const PaymentDetails = props => {
           <tr>
           	<td className='u-fw-bold'>メモ ※見積もりに記載されません</td>
             <td>
-							<textarea placeholder='案件に関するメモを入力してください ※見積もりに記載されません' className='c-form-textarea' row={5} 
+							<textarea placeholder='案件に関するメモを入力してください ※見積もりに記載されません' className='c-form-textarea' row={5}
 												autoComplete='off' spellCheck='false' type='text' defaultValue={ props.memo } onBlur={ e => props.setMemo(e.target.value) }
 							/>
             </td>
