@@ -9,6 +9,7 @@ class Inquiry < ApplicationRecord
   #  ** Constants **
   #----------------------------------------
 
+
   HEADER_TO_SYM_MAP = {
     'ID' => :id,
     '部名' => :department_name,
@@ -82,18 +83,21 @@ class Inquiry < ApplicationRecord
           next
         end
 
+        quote_project = []
+
         # 同じ案件番号の内容でeach処理
         begin
           r.each do |ri|
-
             project = Project.all.find_by(code: ri[:project_code])
 
             unless project.blank?
-              QuoteProject.create!(quote_id: quote.id, project_id: project.id, price: ri[:price], unit: 1, name: project.name , unit_price: ri[:price] )
+              quote_project << QuoteProject.new(quote_id: quote.id, project_id: project.id, price: ri[:price], unit: 1, name: project.name , unit_price: ri[:price] )
+              #QuoteProject.create!(quote_id: quote.id, project_id: project.id, price: ri[:price], unit: 1, name: project.name , unit_price: ri[:price] )
             else
               raise NoMethodError
             end
           end
+          QuoteProject.import quote_project
           Inquiry.where(quote_number: quote.quote_number).destroy_all
           Inquiry.create!(quote_id: quote.id, result: 30, quote_number: row, division_id: 5)
         rescue

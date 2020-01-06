@@ -35,7 +35,7 @@ class InquiriesController < ApplicationController
   def index
 
     add_breadcrumb '紐付け結果'
-    @inquirie = inquiries.where(division_id: current_user.division_id).where(created_at: Date.today.to_datetime.beginning_of_day..Date.today.to_datetime.end_of_day)
+    @inquirie = inquiries.where(division_id: current_user.division_id, created_at: Date.today.beginning_of_day..Date.today.end_of_day)
   end
 
 
