@@ -341,14 +341,19 @@ export default class QuoteEditor extends React.Component {
   validation = () => {
 
 		let message = [];
-		const deliver_type = this.state.deliver_type;
-		const result = deliver_type === 'location' || deliver_type === 'other' && this.state.deliver_type_note == '';
-    if (this.state.quote_subject == '') message.push('案件タイトルを入力してください。');
+		let deliver_type = this.state.deliver_type;
+		deliver_type = deliver_type === 'location' || deliver_type === 'other' && this.state.deliver_type_note === '';
+		const deliver_type_note = this.state.deliver_type_note === '';
 
-		if (result) message.push('納品方法を記入してください');
+    if(this.state.quote_subject === '') message.push('案件タイトルを入力してください。');
+		
+		if(deliver_type) {
+
+			if(deliver_type_note) message.push('納品方法を記入してください');
+		};
 
     return message;
-  }
+  };
 
   onPDF = (passQuoteId) => {
 
