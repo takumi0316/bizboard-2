@@ -55,6 +55,7 @@ export default class QuoteEditor extends React.Component {
       deliver_type: props.quote.deliver_type || 'seat',
       deliver_at: props.quote.deliver_at || new Date(year, month, day),
       discount: props.quote.discount || 0,
+      temporary_price: props.quote.temporary_price || 0,
       date: props.quote.date,
       channel: props.quote.channel || '',
       expiration: props.quote.expiration,
@@ -103,7 +104,7 @@ export default class QuoteEditor extends React.Component {
       expiration: datetime.datetime,
     });
 	};
-	
+
 	/**
 	* タイトルの変更処理
 	* @version 2019/12/20
@@ -113,8 +114,8 @@ export default class QuoteEditor extends React.Component {
 		this.setState({ quote_subject: subject });
 	};
 
-	/** 
-	* 
+	/**
+	*
 	* @version 2019/12/20
 	*/
 	setDeliverType = (deliver_type) => {
@@ -132,7 +133,7 @@ export default class QuoteEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2019/12/20
 	 */
 	setChannel = (channel) => {
@@ -142,7 +143,7 @@ export default class QuoteEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2019/12/20
 	 */
 	setQuoteNumber = (quote_number) => {
@@ -151,7 +152,7 @@ export default class QuoteEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2019/12/20
 	 */
 	setReception = (reception) => {
@@ -160,7 +161,7 @@ export default class QuoteEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2019/12/20
 	 */
 	setQuoteType = (quote_type) => {
@@ -169,7 +170,7 @@ export default class QuoteEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2019/12/23
 	 */
 	setRemarks = (remarks) => {
@@ -178,7 +179,7 @@ export default class QuoteEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2019/12/23
 	 */
 	setMemo = (memo) => {
@@ -187,7 +188,7 @@ export default class QuoteEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2019/12/23
 	 */
 	setPaymentTerms = (payment_terms) => {
@@ -196,7 +197,7 @@ export default class QuoteEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2019/12/23
 	 */
 	setTaxType = (tax_type) => {
@@ -214,7 +215,7 @@ export default class QuoteEditor extends React.Component {
 		const undoPrice = Number(this.state.price) + Number(this.state.discount);
     bool ? this.setState({ show: bool }) : this.setState({ show: bool, discount: 0, price: undoPrice });
 	};
-	
+
   /**
    * 値引き金額を変更
    * @version 2019/12/23
@@ -231,7 +232,24 @@ export default class QuoteEditor extends React.Component {
     price = price - castDiscount;
     this.setState({ discount: castDiscount, price: price });
 	};
-	
+
+  /**
+   * 合計金額を変更
+   * @version 2019/12/23
+   */
+  setTemporaryPrice = (temporary_price) => {
+
+    const castTemporaryPrice = Number(temporary_price);
+    const	copyProjects = this.state.quote_projects.slice();
+    let price = 0;
+    copyProjects.map((project) => {
+
+      price = price + Number(project.price);
+    });
+    price = castTemporaryPrice;
+    this.setState({ temporary_price: castTemporaryPrice, price: price });
+  };
+
   /**
    * Unitを変更する
    *
@@ -380,6 +398,7 @@ export default class QuoteEditor extends React.Component {
       'quote[subject]': this.state.quote_subject || '',
       'quote[quote_type]': this.state.quote_type,
       'quote[quote_number]': this.state.quote_number || '',
+      'quote[temporary_price]': this.state.temporary_price,
       'quote[tax_type]': this.state.tax_type,
       'quote[tax]': this.state.tax,
       'quote[payment_terms]': this.state.payment_terms,
@@ -402,7 +421,7 @@ export default class QuoteEditor extends React.Component {
 
       field['quote[deliver_type_note]'] = this.state.deliver_type_note || '';
 		};
-		
+
     let url = '/quotes';
     Request
       .post(url)
@@ -513,9 +532,9 @@ export default class QuoteEditor extends React.Component {
     return (
       <Fragment>
 				<Subject subject={ this.state.quote_subject } setSubject={ this.setSubject } />
-				<CustomerInformation	client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' } 
-															division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient } 
-															users={ this.state.users } prefectures={ this.state.prefectures } 
+				<CustomerInformation	client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' }
+															division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient }
+															users={ this.state.users } prefectures={ this.state.prefectures }
 				/>
 				<div className='u-mt-15'>
         	<ClientSearch applyClient={ this.applyClient } users={ this.state.users } prefectures={ this.state.prefectures } />
@@ -524,26 +543,26 @@ export default class QuoteEditor extends React.Component {
         <div className='u-mt-10'>
           <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
         </div>
-				<CaseDetails	date={ this.state.date } setDate={ this.setDate } setExpiration={ this.setExpiration } 
-											expiration={ this.state.expiration } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type } 
-											deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number } 
+				<CaseDetails	date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setExpiration={ this.setExpiration }
+											expiration={ this.state.expiration } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
+											deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
 											quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
-											setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber } 
-											setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception } 
-											setQuoteType={ this.setQuoteType }
+											setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
+											setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
+											setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
 				/>
-				<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks } 
+				<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
 										setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy }
 				/>
         <div className='u-mt-15'>
           <ProjectSearch applyProject={ this.applyProject } prefectures={ this.props.prefectures } />
         </div>
-				<PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks } 
-												memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price } 
-												show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType } 
+				<PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
+												memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
+												show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
 												setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount }
 				/>
-				<ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } 
+				<ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice }
 											task={ this.state.task } onSubmit={ this.onSubmit }
 				/>
       </Fragment>

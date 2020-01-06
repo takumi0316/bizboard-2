@@ -9,6 +9,7 @@ class Inquiry < ApplicationRecord
   #  ** Constants **
   #----------------------------------------
 
+
   HEADER_TO_SYM_MAP = {
     'ID' => :id,
     '部名' => :department_name,
@@ -47,7 +48,7 @@ class Inquiry < ApplicationRecord
   #----------------------------------------
 
   # quote
-  belongs_to :quote
+  belongs_to :quote, optional: true
 
   #----------------------------------------
   #  ** Delegates **
@@ -61,35 +62,104 @@ class Inquiry < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
-  def self.import(file)
-    # ヘッダー情報をHEADER_TO_SYM_MAPに置き換える準備
+  #csv読み込んでcsv案件の品目コードを参照してfactoryの案件に品目を紐づける処理
+  def self.import_bpr(file)
+
     header_converter = lambda { |h| HEADER_TO_SYM_MAP[h] }
-    # csvを読み込む(ヘッダー情報はHEADER_TO_SYM_MAPで指定した内容に置き換わる)
+
     csv = CSV.read(file.path, headers: :first_row, header_converters: header_converter, converters: :integer, skip_blanks: true, encoding: 'UTF-8')
-    # project_number(案件番号)でgroup_by
+
     group = csv.group_by{|u| u[:project_number] }
-    # 案件番号毎にeach処理
+
     group.each do |row,r|
-      # csvと同じ案件番号のquote_idを探す
+
       quote = Quote.all.find_by(quote_number: row)
-      # 案件番号あるならeach
+
       unless quote.blank?
-        # 同じ案件番号の内容でeach処理
-        r.each do |ri|
-          # csvの品目コードと同じ品目を探す
-          project = Project.all.find_by(code: ri[:project_code])
-          # 品目あれば紐付け処理
-          unless project.blank?
-            QuoteProject.create!(quote_id: quote.id, project_id: project.id, price: ri[:price], unit: 1, name: project.name , unit_price: ri[:price] )
 
-          # 案件番号無かったエラー処理書く事(else)
-          end
+        unless r[1][:total_price] === quote.price
+          Inquiry.where(quote_number: quote.quote_number).destroy_all
+          Inquiry.create!(quote_id: quote.id, result: 10, quote_number: row, division_id: 5)
+          next
         end
-        Inquiry.create!(quote_id: quote.id, result: 30, quote_number: row, import_time: Date.today.to_time)
 
-      # 案件番号無かったエラー処理書く事(else)
+        quote_project = []
+
+        # 同じ案件番号の内容でeach処理
+        begin
+          r.each do |ri|
+            project = Project.all.find_by(code: ri[:project_code])
+
+            unless project.blank?
+              quote_project << QuoteProject.new(quote_id: quote.id, project_id: project.id, price: ri[:price], unit: 1, name: project.name , unit_price: ri[:price] )
+              #QuoteProject.create!(quote_id: quote.id, project_id: project.id, price: ri[:price], unit: 1, name: project.name , unit_price: ri[:price] )
+            else
+              raise NoMethodError
+            end
+          end
+          QuoteProject.import quote_project
+          Inquiry.where(quote_number: quote.quote_number).destroy_all
+          Inquiry.create!(quote_id: quote.id, result: 30, quote_number: row, division_id: 5)
+        rescue
+          Inquiry.where(quote_number: quote.quote_number).destroy_all
+          Inquiry.create!(quote_id: quote.id, result: 20, quote_number: row, division_id: 5)
+          QuoteProject.where(quote_id: quote.id).destroy_all
+        end
+
+      else
+        Inquiry.create!(quote_number: row, result: 0, import_time: Date.today.to_time)
+        next
       end
     end
   end
+
+  #csv読み込んでcsv案件の品目コードを参照してfactoryの案件に品目を紐づける処理
+  def self.import_erp(file)
+
+    header_converter = lambda { |h| HEADER_TO_SYM_MAP[h] }
+
+    csv = CSV.read(file.path, headers: :first_row, header_converters: header_converter, converters: :integer, skip_blanks: true, encoding: 'UTF-8')
+
+    group = csv.group_by{|u| u[:project_number] }
+
+    group.each do |row,r|
+
+      quote = Quote.all.find_by(quote_number: row)
+
+      unless quote.blank?
+
+        unless r[1][:total_price] === quote.price
+          Inquiry.where(quote_number: quote.quote_number).destroy_all
+          Inquiry.create!(quote_id: quote.id, result: 10, quote_number: row, division_id: 7)
+          next
+        end
+
+        # 同じ案件番号の内容でeach処理
+        begin
+          r.each do |ri|
+
+            project = Project.all.find_by(code: ri[:project_code])
+
+            unless project.blank?
+              QuoteProject.create!(quote_id: quote.id, project_id: project.id, price: ri[:price], unit: 1, name: project.name , unit_price: ri[:price] )
+            else
+              raise NoMethodError
+            end
+          end
+          Inquiry.where(quote_number: quote.quote_number).destroy_all
+          Inquiry.create!(quote_id: quote.id, result: 30, quote_number: row, division_id: 7)
+        rescue
+          Inquiry.where(quote_number: quote.quote_number).destroy_all
+          Inquiry.create!(quote_id: quote.id, result: 20, quote_number: row, division_id: 7)
+          QuoteProject.where(quote_id: quote.id).destroy_all
+        end
+
+      else
+        Inquiry.create!(quote_number: row, result: 0, import_time: Date.today.to_time)
+        next
+      end
+    end
+  end
+
 
 end

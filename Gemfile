@@ -100,6 +100,9 @@ gem 'slack-api'
 # csv読み込み
 gem 'roo'
 
+# bulk insert
+gem 'activerecord-import'
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
