@@ -11,7 +11,6 @@ class InquiriesController < ApplicationController
   expose(:inquiries) {
     Inquiry
     .all
-    .joins(:quote)
   }
 
   # タスク
@@ -36,14 +35,22 @@ class InquiriesController < ApplicationController
   def index
 
     add_breadcrumb '紐付け結果'
+    @inquirie = inquiries.where(division_id: current_user.division_id, created_at: Date.today.beginning_of_day..Date.today.end_of_day)
   end
 
 
   def import_bpr
     # fileはtmpに自動で一時保存される
-    Inquiry.import(params[:file])
+    Inquiry.import_bpr(params[:file])
     redirect_to inquiries_path, notice: 'テスト'
   end
+
+  def import_erp
+    # fileはtmpに自動で一時保存される
+    Inquiry.import_bpr(params[:file])
+    redirect_to inquiries_path, notice: 'テスト'
+  end
+
 
   #----------------------------------------
   #  ** Methods **
