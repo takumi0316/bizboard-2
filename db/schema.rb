@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.integer "next_action", comment: "次回アクション"
     t.date "next_action_date", comment: "次回アクション期日"
     t.date "scheduled_date", comment: "受注予定日"
+    t.bigint "quote_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["quote_id"], name: "index_activities_on_quote_id"
   end
 
   create_table "bases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -102,7 +104,7 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2019-12-19 15:12:55"
+    t.datetime "lastaccesstask", default: "2020-01-06 13:11:32"
     t.integer "opt", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -535,7 +537,8 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2019-12-19 15:12:57"
+    t.datetime "clientlastaccess", default: "2020-01-06 13:11:33"
+    t.integer "will_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["catalog_id"], name: "index_tasks_on_catalog_id"
@@ -571,7 +574,7 @@ ActiveRecord::Schema.define(version: 2017_07_29_074819) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2019-12-19 15:12:55"
+    t.datetime "lastaccesstask", default: "2020-01-06 13:11:32"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_users_on_division_id"
