@@ -106,7 +106,7 @@ export default class DatetimePicker extends React.Component {
 
 		const send = {
 			action: this.props.action,
-			value: this.state.current_datetime,
+			value: this.state.current_datetime.format('YYYY-MM-DD'),
 			index: this.props.index
 		};
     this.setState({ show: false }, () => {

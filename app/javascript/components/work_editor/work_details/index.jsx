@@ -52,14 +52,12 @@ const AddDetails = props => {
         </div>
       }
       { show ?
-        <Fragment>
-					<EditTable	work_details={ props.work_details } work_notices={ props.work_notices } setDeOrderContents={ props.setDeOrderContents } 
-											setDeDeliverMethod={ props.setDeDeliverMethod } setDeSpecification={ props.setDeSpecification } 
-											setDeDeliverAt={ props.setDeDeliverAt } setDeClientName={ props.setDeClientName } setDeNotices={ props.setDeNotices }
-											setDeNumberOfCopies={ props.setDeNumberOfCopies } setDeCount={ props.setDeCount } setDeCost={ props.setDeCost }
-											onConfirm={ onConfirm } users={ props.users } onWorkDetailCreate={ props.onWorkDetailCreate }
-					/>
-        </Fragment>
+				<EditTable	work_details={ props.work_details } work_notices={ props.work_notices } setDeOrderContents={ props.setDeOrderContents } 
+										setDeDeliverMethod={ props.setDeDeliverMethod } setDeSpecification={ props.setDeSpecification } 
+										setDeDeliverAt={ props.setDeDeliverAt } setDeClientName={ props.setDeClientName } setDeNotices={ props.setDeNotices }
+										setDeNumberOfCopies={ props.setDeNumberOfCopies } setDeCount={ props.setDeCount } setDeCost={ props.setDeCost }
+										onConfirm={ onConfirm } users={ props.users } onWorkDetailCreate={ props.onWorkDetailCreate }
+				/>
         :
 				<ReadTable work_details={ props.work_details } work_notices={ props.work_notices } setDangerHtml={ props.setDangerHtml }/>
       }
