@@ -719,14 +719,15 @@ class InitSchema < ActiveRecord::Migration[5.2]
 		# @version 2019/12/19
 		#
 		create_table :tasks do |t|
-      t.date				:date,												comment: '希望納期'
-      t.binary			:data,												comment: '添付データ'
-      t.text				:remarks,											comment: '備考欄'
-			t.references	:quote,		foreign_key: true,	comment: 'quoteのid'
-			t.references	:catalog, foreign_key: true,	comment: 'catalogのid'
+      t.date				:date,																	comment: '希望納期'
+      t.binary			:data,																	comment: '添付データ'
+      t.text				:remarks,																comment: '備考欄'
+			t.references	:quote,							foreign_key: true,	comment: 'quoteのid'
+			t.references	:catalog,						foreign_key: true,	comment: 'catalogのid'
 			t.string			:client_name
 			t.string			:client_mail
 			t.datetime		:clientlastaccess,	default: DateTime.now
+			t.integer 		:will_order,				default: 0
 
       t.timestamps
 		end

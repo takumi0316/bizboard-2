@@ -23,7 +23,16 @@ $fontSize: (
   'base':         1.5rem,
   'large':        1.8rem,
   'title':        2.0rem,
-  'x-large':      2.4rem,
+	'x-large':      2.4rem,
+);
+
+$fontSizes: (
+	'xs':          1.0rem,
+  's':           1.2rem,
+  'm':           1.5rem,
+  'l':           1.8rem,
+  'xl':          2.0rem,
+  'xxl':         2.4rem,
 );
 
 // layoutColors
@@ -143,6 +152,12 @@ $container-sm: 780px;
 $container-md: 1024px;
 $container-lg: 1200px;
 $container-x-lg: 1440px;
+
+// コンテンツの幅(medipro)
+// ------------------------------------
+$container-s: 780px;
+$container-m: 1100px;
+$container-l: 1440px;
 
 // サイトの最小幅
 // ------------------------------------
