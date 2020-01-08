@@ -3,7 +3,7 @@ group :development do
   gem 'rb-readline'
 
   # Use Puma as the app server
-  gem 'puma', '~> 3.7'
+  gem 'puma', '3.12.1'
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
