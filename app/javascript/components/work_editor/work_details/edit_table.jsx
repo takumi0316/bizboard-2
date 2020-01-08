@@ -1,27 +1,16 @@
-import React, { Fragment, useState }	from 'react';
+import React, { Fragment }	from 'react';
 
-// import components
-import PickaDate from './pickadate';
-
-// import libraries
-import Dayjs 	from 'dayjs';
+import DatetimePicker from '../../utilities/datetime_picker';
 
 const EditTable = props => {
 
-	const initialState = {
-		show: false,
-		index: 0
-	};
-	const [state, setState] = useState(initialState);
+	const sortingAction = prop => {
 
-	const openPickadate = index => {
-
-		setState({ show: true, index: index });
+		props.setDeDeliverAt(prop.index, prop.value);
 	};
 
 	return(
 		<Fragment>
-			{ state.show ? <PickaDate state={ state } setState={ setState } setDeDeliverAt={ props.setDeDeliverAt }/> : null }
 			<div className={ 'u-mt-10 c-table' }>
       	<table>
         	<thead>
@@ -66,8 +55,8 @@ const EditTable = props => {
 										/>
 									</td>
 									<td>
-										<input	className={ 'c-form-text__work-show-input1' }	defaultValue={ Dayjs(detail.deliver_at).format('YYYY年MM月DD日') } 
-														onClick={ () => openPickadate(index) }
+										<DatetimePicker type={ 'text' } name={ 'start_at' } default_datetime={ detail.deliver_at } action={ '' }
+																    sortingAction={ sortingAction } index={ index } class={ 'c-form-text__work-index__datepicker' }
 										/>
 									</td>
                 	<td className={ 'u-va-top' }>
