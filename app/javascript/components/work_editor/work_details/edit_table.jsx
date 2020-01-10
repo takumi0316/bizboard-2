@@ -29,7 +29,7 @@ const EditTable = props => {
           	</tr>
         	</thead>
         	<tbody>
-						{ props.work_details.length > 0 ?
+						{ props.work_details ?
 							<Fragment>
           		  { props.work_details.map((detail, index) => {
 							 	 const key = 'detail' + detail.id;
