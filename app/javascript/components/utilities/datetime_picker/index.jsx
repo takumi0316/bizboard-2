@@ -37,7 +37,7 @@ export default class DatetimePicker extends React.Component {
    */
   _apply = e => {
 
-    e.stopPropagation();
+    // e.stopPropagation();
 
     let datetime = this.state.current_datetime;
 

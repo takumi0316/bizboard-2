@@ -23,25 +23,30 @@ const ReadTable = props => {
 						</tr>
 					</thead>
 					<tbody>
-						{ props.work_details.map((detail, index) => {
-							const key = 'work_details' + index;
-							return (
-								<tr key={ key }>
-									<td className={ 'u-va-top u-ta-center' }>{ index + 1 }</td>
-									<td>{ props.setDangerHtml(detail.order_contents, 'u-ml-10') }</td>
-									<td>{ props.setDangerHtml(detail.deliver_method, 'u-ml-10') }</td>
-									<td>{ props.setDangerHtml(detail.specification, 'u-ml-10') }</td>
-									<td className={ 'u-va-middle u-ta-center' }>
-										{ detail.deliver_at ? Dayjs(detail.deliver_at).format('YYYY年MM月DD日') : detail.deliver_at }
-									</td>
-									<td className={ 'u-va-middle u-ta-center' }>{ detail.client_name }</td>
-									<td className={ 'u-va-middle u-ta-right' }>{ detail.number_of_copies }</td>
-									<td className={ 'u-va-middle u-ta-right' }>{ detail.count }</td>
-									<td className={ 'u-va-middle u-ta-right' }>{ detail.estimated_cost }円</td>
-									<td className={ 'u-va-middle u-ta-right' }>{ detail.actual_cost }円</td>
-								</tr>
-							);
-						}) }
+						{ props.work_details.length > 0 ?
+							<Fragment>
+								{ props.work_details.map((detail, index) => {
+									const key = 'work_details' + detail.id;
+									return (
+										<tr { ...{key} }>
+											<td className={ 'u-va-top u-ta-center' }>{ index + 1 }</td>
+											<td>{ props.setDangerHtml(detail.order_contents, 'u-ml-10') }</td>
+											<td>{ props.setDangerHtml(detail.deliver_method, 'u-ml-10') }</td>
+											<td>{ props.setDangerHtml(detail.specification, 'u-ml-10') }</td>
+											<td className={ 'u-va-middle u-ta-center' }>
+												{ detail.deliver_at ? Dayjs(detail.deliver_at).format('YYYY年MM月DD日') : detail.deliver_at }
+											</td>
+											<td className={ 'u-va-middle u-ta-center' }>{ detail.client_name }</td>
+											<td className={ 'u-va-middle u-ta-right' }>{ detail.number_of_copies }</td>
+											<td className={ 'u-va-middle u-ta-right' }>{ detail.count }</td>
+											<td className={ 'u-va-middle u-ta-right' }>{ detail.estimated_cost }円</td>
+											<td className={ 'u-va-middle u-ta-right' }>{ detail.actual_cost }円</td>
+										</tr>
+									);
+								}) }
+							</Fragment>
+							: null
+						}
 					</tbody>
 				</table>
 			</div>

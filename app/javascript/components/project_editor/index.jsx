@@ -230,18 +230,18 @@ export default class ProjectEditor extends React.Component {
         <h1 className='l-dashboard__heading'>品目作成</h1>
 
         <div className='c-form-label u-mt-30'>
-          <label htmlFor='project_name'>品目名</label>
+          <label>品目名</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <input placeholder='品目名' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='name' defaultValue={this.props.project.name} />
 
         <div className='c-form-label u-mt-30'>
-          <label htmlFor='project_name'>品目単価 <span className='u-fs-small u-fc-thinBlack'>※更新時に価格が自動計算されます</span></label>
+          <label>品目単価 <span className='u-fs-small u-fc-thinBlack'>※更新時に価格が自動計算されます</span></label>
         </div>
         <input placeholder='※更新時に価格が自動計算されます' readOnly={true} className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text' ref='price' value={Utilities.numberWithDelimiter(this.state.price)} />
 
         <div className='c-form-label u-mt-30'>
-          <label htmlFor='project_name'>品目コード <span className='u-fs-small u-fc-thinBlack'>※客先システムの番号がある場合は入力してください</span></label>
+          <label>品目コード <span className='u-fs-small u-fc-thinBlack'>※客先システムの番号がある場合は入力してください</span></label>
         </div>
         <input placeholder='品目コード' className='c-form-text' autoComplete='off' spellCheck='false' type='text' ref='code' defaultValue={this.props.project.code} />
 

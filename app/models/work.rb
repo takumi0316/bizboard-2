@@ -44,7 +44,7 @@ class Work < ApplicationRecord
 
   belongs_to :quote
 
-  #部署
+  # 部署
   belongs_to :division, optional: true
 
   has_many :work_details, class_name: 'WorkDetail', dependent: :destroy
@@ -57,11 +57,11 @@ class Work < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
   #Quoteのdeliverd_atを使えるように
-  scope :asc_deliverd_at, -> {joins(:quote).merge(Quote.deliverd_at)}
+  scope :asc_deliverd_at, -> { joins(:quote).merge(Quote.deliverd_at) }
   #Workのステータス未作業のもの検索
-  scope :draft, -> {where(status: 0)}
+  scope :draft, -> { where(status: 0) }
   #Workのステータス作業中のもの検索
-  scope :working, ->{where(status: 10)}
+  scope :working, ->{ where(status: 10) }
 
   #----------------------------------------
   #  ** Methods **
@@ -69,6 +69,35 @@ class Work < ApplicationRecord
 
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
+
+  ##
+  # Iterate
+  # @version 2020/01/06
+  #
+  def iterate
+
+		reshape = []
+		self.subcontractor&.pluck(:id, :subcontractor_division_client_id, :order_date, :delivery_date, :delivery_destination, :notices, :work_id).each do |i|
+
+			reshape_detail = []
+			associative = { id: nil, client: nil, division: nil, subcontractor: nil, order_date: '', delivery_date: '', delivery_destination: '', notices: '', details: nil }
+
+			associative[:id]                    = i[0] ? i[0] : nil
+			associative[:client]                = i[1] ? SubcontractorDivisionClient.find(i[1]) : nil
+			associative[:division]              = i[1] ? SubcontractorDivision.find(SubcontractorDivisionClient.find(i[1]).subcontractor_division_id) : nil
+			associative[:subcontractor]         = i[1] ? Subcontractor.find(SubcontractorDivision.find(SubcontractorDivisionClient.find(i[1]).subcontractor_division_id).subcontractor_id) : nil
+			associative[:order_date]            = i[2] ? i[2] : ''
+			associative[:delivery_date]         = i[3] ? i[3] : ''
+			associative[:delivery_destination]  = i[4] ? i[4] : ''
+			associative[:notices]               = i[5] ? i[5] : ''
+			i[0] ? WorkSubcontractor.find(i[0]).detail.each { |detail| reshape_detail.push(detail) if detail.work_id == self.id && detail.work_subcontractor_id == i[0] } : nil
+			associative[:details]                = reshape_detail
+
+			reshape.push(associative)
+    end
+
+    reshape
+  end
 
   ##
   # フリーワード検索用文字列をセットする(顧客、自社担当者、案件名、案件番号、期日、自部署名、作業担当者)
@@ -95,7 +124,7 @@ class Work < ApplicationRecord
       query = (['works.free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
       # 日付検索
-      return _self
+      _self
     # フリーワードが入っていて、ステータスが選択されている
     elsif parameters[:name].present? && parameters[:status] != 'ステータス'
 
@@ -108,22 +137,22 @@ class Work < ApplicationRecord
       _self = _self.where(query, *terms.map { |term| "%#{term}%" }).where(status: parameters[:status])
 
       # 日付検索
-      return _self
+      _self
 
     # フリーワードが空で、ステータスが未選択
     elsif parameters[:name].blank? && parameters[:status] == 'ステータス'
 
       _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
-      return _self
+      _self
     # フリーワードが空で、ステータスが入力されている
     elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != 'ステータス'
 
       _self = where(status: parameters[:status])
       # 日付検索
       _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
-      return _self
+      _self
     end
-     return _self
+    _self
   end
 
 end
