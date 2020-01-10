@@ -26,7 +26,7 @@ export default class SubcontractorDivisions extends React.Component {
    *  親要素のクリックイベントを引き継がない
    *  @version
    */
-  _onChange(e) {
+  _onChange = e => {
 
     this._search(e.target.value);
   }
@@ -35,7 +35,7 @@ export default class SubcontractorDivisions extends React.Component {
    *  検索
    *  @version
    */
-  _search(id) {
+  _search = id => {
 
     // 記事内容を送信
     Request.get('/subcontractor_divisions.json?subcontractor_id=' + id)
@@ -55,11 +55,11 @@ export default class SubcontractorDivisions extends React.Component {
     return (
       <div>
         <div className='c-form-label'>
-          <label htmlFor='subcontractor_division_client_subcontractor_division_id'>会社</label>
+          <label>会社</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <div className='c-form-selectWrap u-mb-30'>
-          <select name='subcontractor_id' id='subcontractor_id' className='c-form-select' defaultValue={this.props.subcontractor_id} onChange={::this._onChange}>
+          <select name='subcontractor_id' id='subcontractor_id' className='c-form-select' defaultValue={this.props.subcontractor_id} onChange={ e => this._onChange(e) }>
             { this.props.subcontractors.map((subcontractor, index) => {
               const key = `subcontrator-${index}`;
               return (
@@ -70,7 +70,7 @@ export default class SubcontractorDivisions extends React.Component {
         </div>
 
         <div className='c-form-label'>
-          <label htmlFor='subcontractor_division_client_subcontractor_division_id'>部署</label>
+          <label>部署</label>
           <span className='c-form__required u-ml-10'>必須</span>
         </div>
         <div className='c-form-selectWrap u-mb-30'>

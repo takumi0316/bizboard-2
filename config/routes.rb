@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :quote_projects, only: [:destroy]
+  resources :quote_projects, only: [:create, :destroy]
 
   # 案件
   namespace :invoices do

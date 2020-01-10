@@ -473,9 +473,36 @@ export default class QuoteEditor extends React.Component {
    */
   applyProject = (project) => {
 
-		const mergeProjects = [...this.state.quote_projects, { ...project.specifications[0] }];
 		const price = Number(this.state.price) + Number(project.price);
-    this.setState({ quote_projects: mergeProjects, price: price });
+		const url = '/quote_projects';
+		const specification = project.specifications[0]
+		let mergeProjects = [];
+		const field = {
+			'project_id': specification.project_id,
+			'quote_id': this.state.quote.id,
+			'name': specification.name,
+			'unit_price': specification.unit_price,
+			'unit': specification.unit,
+			'price': specification.price,
+			'project_name': specification.project_name,
+			'remarks': specification.remarks ? specification.remarks : ''
+		};
+		Request
+		  .post(url)
+			.field(field)
+			.set('X-Requested-With', 'XMLHttpRequest')
+			.setCsrfToken()
+			.end((err, res) => { 
+				if(!err && res.body.status === 'success') { 
+
+					let quote_projects = this.state.quote_projects.slice();
+					mergeProjects = [...quote_projects, { ...res.body.project }];
+					this.setState({ quote_projects: mergeProjects, price: price });
+			  } else {
+
+					alert(res.body.message);
+				}; 
+			});
   }
 
   /**
@@ -499,7 +526,7 @@ export default class QuoteEditor extends React.Component {
 		const delProjectPrice = Number(this.state.quote_projects[passIndex].price);
 		let minusPrice = Number(this.state.price) - delProjectPrice;
 
-    if ( this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null ) {
+    if(this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null) {
 
       let url = '/quote_projects/' + this.state.quote_projects[passIndex].id;
       let field = { 'quote_id': this.state.quote.id, 'quote_price': minusPrice };

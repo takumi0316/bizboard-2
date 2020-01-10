@@ -1,11 +1,13 @@
-import React      from 'react'
-import Style      from './style.sass'
+import React from 'react';
+
 // Ajax
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
 
-// datetime
-import Dayjs from 'dayjs'
+// import libraries
+import Dayjs          from 'dayjs'
+
+// import properties
 import { ENUM_STATUS } from './properties.es6'
 
 /**
@@ -23,7 +25,6 @@ export default class ExpendablesEditor extends React.Component {
     super(props);
 
     this.state = {
-
       expendables: this.props.details,
       startDate: new Date(),
     }

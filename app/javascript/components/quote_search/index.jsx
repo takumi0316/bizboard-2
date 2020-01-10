@@ -1,26 +1,27 @@
 import React, { Component } from "react";
 
 // import libraries
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
 import Icon           from 'react-evil-icons';
 import DatetimePicker from '../utilities/datetime_picker';
 
 // Ajax
-import Request from "superagent"
+import Request from "superagent";
 require("superagent-rails-csrf")(Request);
 
 // enum_status
-import { ENUM_STATUS, } from './properties.es6'
+import { ENUM_STATUS, } from './properties.es6';
 
 export default class QuoteSearch extends Component {
   constructor(props) {
-    super(props)
-    const date = new Date()
-    const year = date.getFullYear()
-    const last_month = date.getMonth() - 1
-    const next_month = date.getMonth() + 2
-    const day = date.getDate()
+
+		super(props);
+		
+    const date = new Date();
+    const year = date.getFullYear();
+    const last_month = date.getMonth() - 1;
+    const next_month = date.getMonth() + 2;
+		const day = date.getDate();
+
     this.state = {
       startDate: new Date(year, last_month, day),
       endDate: new Date(year, next_month, day),
@@ -118,7 +119,7 @@ export default class QuoteSearch extends Component {
     return (
       <div className={ 'c-search__work-index u-mt-20' }>
         <div>
-          <label for='name'>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
+          <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
   	      <span className={ 'c-form__required u-ml-10' }>現在{this.props.count_number}件表示されています</span>
         </div>
         <form method='get' action='/quotes?count='>
