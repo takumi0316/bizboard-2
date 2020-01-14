@@ -16,7 +16,7 @@ const ReadTable = props => {
 						const key = 'work_subcontractor' + index;
             return(
               <Fragment key={ key }>
-								{ work_subcontractor.subcontractor_division_client_id ?
+								{ work_subcontractor ?
                   <a className={ 'c-btnMain-primaryB u-mt-20' } href={ '/work_subcontractors/' + work_subcontractor.id } target='_blank'>外注指示書発行</a>
                   : null
                 }
