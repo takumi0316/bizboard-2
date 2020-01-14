@@ -484,7 +484,7 @@ export default class QuoteEditor extends React.Component {
 			'unit_price': specification.unit_price,
 			'unit': specification.unit,
 			'price': specification.price,
-			'project_name': specification.project_name,
+			'project_name': specification.project_name ? specification.project_name : '',
 			'remarks': specification.remarks ? specification.remarks : ''
 		};
 		Request
