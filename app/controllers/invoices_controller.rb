@@ -146,10 +146,12 @@ class InvoicesController < ApplicationController
     end
   end
 
-  def roundup
+	def roundup
+
     if params[:name].blank? && params[:date1].blank? && params[:date2].blank?
       redirect_to action: :index
-    else
+		else
+
       _self = Invoice.date_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
       terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
@@ -157,7 +159,7 @@ class InvoicesController < ApplicationController
       @quote = Quote.where(id: @invoice.pluck(:quote_id))
       respond_to do |format|
         format.html do
-          render  pdf: "#{@invoice.last.quote.client.company_division.company.name}_請求書鏡", #pdfファイルの名前。これがないとエラーが出ます
+          render  pdf: "#{@invoice.last.quote&.client&.company_division&.company&.name}_請求書鏡", #pdfファイルの名前。これがないとエラーが出ます
                   encoding: 'UTF-8',
                   layout: 'layouts/pdf.html.slim',
                   template: 'invoices/roundup_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
