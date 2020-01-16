@@ -46,7 +46,7 @@ export default class ClientSearch extends React.Component {
    */
   _close = (e) => {
 
-		e.preventDefault();
+		// e.preventDefault();
     this.setState({ show: false, show_create_form: false, clients: [] });
   };
 
@@ -162,7 +162,7 @@ export default class ClientSearch extends React.Component {
               				return (
                   			<li { ...{key} } className={ Style.ClientSearch__item }>
                     			<h2 className={ Style.ClientSearch__itemName } data-number={ i } onClick={ e => this._onSelect(e) }>
-														{ client.company.name || '会社名なし' } { client.division.name || '部署名なし' } { client.name || '担当者なし' } 様
+														{ client.company ? client.company.name : '会社名なし' } { client.division ? client.division.name : '部署名なし' } { client ? client.name : '担当者なし' } 様
 													</h2>
                   			</li>
                 			);

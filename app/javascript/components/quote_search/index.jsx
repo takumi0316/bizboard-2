@@ -58,6 +58,11 @@ export default class QuoteSearch extends Component {
     }
   };
 
+	/**
+	 *
+	 * @version 2020/01/08
+	 *
+	 */
   setStartDate = prop => {
 
     this.setState({
@@ -65,6 +70,11 @@ export default class QuoteSearch extends Component {
     });
   };
 
+	/**
+	 *
+	 * @version 2020/01/08
+	 *
+	 */
   setEndDate = prop => {
 
     this.setState({
