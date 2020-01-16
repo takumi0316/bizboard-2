@@ -26,6 +26,7 @@
 
   .c-border
     p.u-fs-small.u-fw-bold ご請求金額(税込み)　#{(((@quote.where.not(tax_type: 'exemption').pluck(:price).sum * @invoice.last.quote&.tax&.to_f).floor) + (@quote.where(tax_type: 'exemption').pluck(:price).sum).to_i).to_s(:delimited)} 円
+	div
 		p.u-fs-small.u-fw-bold ご請求金額(税抜き) #{((@quote.where.not(tax_type: 'exemption').pluck(:price).sum) + (@quote.where(tax_type: 'exemption').pluck(:price).sum).to_i).to_s(:delimited) } 円
 
   .u-mt-30
