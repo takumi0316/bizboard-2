@@ -126,7 +126,7 @@ export default class InvoiceSearch extends Component {
           <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
   	      <span className={ 'c-form__required u-ml-10' }>現在{this.props.count_number}件表示されています</span>
         </div>
-        <form method='get' action='/quotes?count='>
+        <form method='get' action='/invoices?count='>
         	<div className={ 'u-mt-10 c-flex' }>
             <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ this.onSearchParams('name') } placeholder='件名/お客様/自社部署名/納期' />
 						<DatetimePicker type={ 'text' } name={ 'date1' } default_datetime={ this.state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' }
@@ -140,7 +140,7 @@ export default class InvoiceSearch extends Component {
 						<Icon name='ei-calendar' size='m'/>
             <input type='hidden' name='count' value='1'/>
             <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
-            <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/quotes' } >元に戻す</a>
+            <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/invoices' } >元に戻す</a>
           </div>
         </form>
       </div>
