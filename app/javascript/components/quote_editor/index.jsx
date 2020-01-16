@@ -35,6 +35,7 @@ export default class QuoteEditor extends React.Component {
     const month = date.getMonth()
     const day = date.getDate()
 
+		console.log(this.props.quote_projects);
     this.state = {
 			quote: props.quote,
 			quote_subject: props.quote.subject,
@@ -432,7 +433,7 @@ export default class QuoteEditor extends React.Component {
         if (!err && res.body.status == 'success') {
           if (!this.props.quote.id) {
 
-            alert('案件情報を作成しました');
+						alert('案件情報を作成しました');
             this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
             location.href = `${res.body.quote.id}/edit`;
           } else {
@@ -468,7 +469,7 @@ export default class QuoteEditor extends React.Component {
 
 
   /**
-   *  品目選択時
+   *  品目選択時(案件が既に存在している場合)
    *  @version 2018/06/10
    */
   applyProject = (project) => {
@@ -503,7 +504,35 @@ export default class QuoteEditor extends React.Component {
 					alert(res.body.message);
 				}; 
 			});
-  }
+	};
+
+  /**
+   *  品目選択時(新規案件の場合)
+   *  @version 2018/06/10
+   */
+  applyNewProject = (project) => {
+
+		const price = Number(this.state.price) + Number(project.price);
+		const specification = project.specifications[0]
+		let mergeProjects = [];
+		const strong = 1000;
+		// uniqueなidを生成
+		const id = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
+		const field = {
+			'id': id,
+			'project_id': specification.project_id,
+			'name': specification.name,
+			'unit_price': specification.unit_price,
+			'unit': specification.unit,
+			'price': specification.price,
+			'project_name': specification.project_name ? specification.project_name : '',
+			'remarks': specification.remarks ? specification.remarks : ''
+		};
+
+		let quote_projects = this.state.quote_projects.slice();
+		mergeProjects = [...quote_projects, { ...field }];
+		this.setState({ quote_projects: mergeProjects, price: price });
+  };
 
   /**
    * 指定されたprojectを消す
@@ -582,7 +611,7 @@ export default class QuoteEditor extends React.Component {
 										setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy }
 				/>
         <div className='u-mt-15'>
-          <ProjectSearch applyProject={ this.applyProject } prefectures={ this.props.prefectures } />
+          <ProjectSearch applyProject={ this.state.quote.id ? this.applyProject : this.applyNewProject } prefectures={ this.props.prefectures } />
         </div>
 				<PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
 												memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
