@@ -23,7 +23,7 @@ export default class InvoiceSearch extends Component {
 
     this.state = {
       startDate: new Date(year, last_month, day),
-      startDate2: new Date(year, next_month, day),
+      endDate: new Date(year, next_month, day),
     };
 	};
 
@@ -52,7 +52,7 @@ export default class InvoiceSearch extends Component {
           result[paramName] = decodeURIComponent(paramValue);
         }
 
-        this.setState({ startDate: new Date(result['date1']), startDate2: new Date(result['date2']) });
+        this.setState({ startDate: new Date(result['date1']), endDate: new Date(result['date2']) });
       };
     };
   };
