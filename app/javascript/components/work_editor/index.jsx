@@ -101,7 +101,7 @@ export default class WorkEditor extends React.Component {
 		let send_array = [];
 		let field = {};
     let actual_cost = 0;
-    let count = this.props.work_details.length;
+		let count = work_details.length;
     if(count !== 0){
 
 			work_details.map((detail) => {
@@ -150,11 +150,12 @@ export default class WorkEditor extends React.Component {
 	 */
   onWorkNoticesUpdate = (actual_cost, type) => {
 
+		const work = Object.assign({}, this.state.work);
     let field = {};
-    let url = '/works/' + this.state.work.id;
+		let url = '/works/' + work.id;
     field = {
-      'work_id': this.state.work.id,
-      'work_notices': this.state.work.notices,
+      'work_id': work.id,
+      'work_notices': work.notices || '',
       'status': 'notices',
 		};
     Request
@@ -166,7 +167,7 @@ export default class WorkEditor extends React.Component {
 
         if (!err && res.body.status === 'success') {
 
-          this.setState({ show: false }, this.passedPrice(Number(actual_cost), type));
+          this.setState({ show: false, work: { ...work, notices: res.body.notices } }, this.passedPrice(Number(actual_cost), type));
         };
       });
 	};

@@ -35,7 +35,6 @@ export default class QuoteEditor extends React.Component {
     const month = date.getMonth()
     const day = date.getDate()
 
-		console.log(this.props.quote_projects);
     this.state = {
 			quote: props.quote,
 			quote_subject: props.quote.subject,
@@ -434,17 +433,17 @@ export default class QuoteEditor extends React.Component {
           if (!this.props.quote.id) {
 
 						alert('案件情報を作成しました');
-            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
+            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects });
             location.href = `${res.body.quote.id}/edit`;
           } else {
 
             alert('案件情報を更新しました');
-            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
+            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects });
           }
         } else {
 
           alert('案件情報の保存に失敗しました。');
-          this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects })
+          this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects });
         };
       });
   };

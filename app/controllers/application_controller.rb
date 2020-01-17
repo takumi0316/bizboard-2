@@ -225,7 +225,7 @@ class ApplicationController < ActionController::Base
     # @version 2018/06/10
     #
     def read_message
-      # 遷移元のアクションとコントローラー判定
+			# 遷移元のアクションとコントローラー判定
       path = Rails.application.routes.recognize_path(request.referer)
       if path[:controller] == 'tasks' && path[:action] == 'show'
         unless params[:controller] == 'tasks' && params[:action] == 'show'

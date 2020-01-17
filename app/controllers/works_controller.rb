@@ -96,7 +96,7 @@ class WorksController < ApplicationController
   #
   def update
 
-    if params[:status] === 'status'
+    if params[:status] == 'status'
 
       work.update! status: params[:work][:status]
 
@@ -105,17 +105,17 @@ class WorksController < ApplicationController
       work.quote.end_work! if work.completed? && !work.quote.invoicing?
 
       render json: { status: :success, work: work.status }
-    elsif params[:status] === 'price'
+    elsif params[:status] == 'price'
 
       work.update! price: params[:price]
       render json: { status: :success, price: work.price }
 
-    elsif params[:status] === 'notices'
+    elsif params[:status] == 'notices'
 
       work.update! notices: params[:work_notices]
       render json: { status: :success, notices: work.notices }
 
-    elsif params[:status] === 'division'
+    elsif params[:status] == 'division'
 
       work.update! division_id: params[:division_id]
       render json: { status: :success, division: work.division }
@@ -123,13 +123,13 @@ class WorksController < ApplicationController
 
   rescue => e
 
-    if params[:status] === 'status'
+    if params[:status] == 'status'
 
       render json: { status: :error, work: work.status }
-    elsif params[:status] === 'price'
+    elsif params[:status] == 'price'
 
       render json: { status: :error, price: work.price }
-    elsif params[:status] === 'notices'
+    elsif params[:status] == 'notices'
 
       work.update! notices: params[:work_notices]
       render json: { status: :success, notices: work.notices }
