@@ -5,9 +5,14 @@ class QuoteProjectsController < ApplicationController
 
 	def create
 
-		quote_project.update!(name: params[:name], remarks: params[:remarks], unit_price: params[:unit_price], unit: params[:unit], price: params[:price], quote_id: params[:quote_id], project_id: params[:project_id], project_name: params[:project_name])
-		project = Quote.find(params[:quote_id]).quote_projects.last
-		render json: { status: :success, project: project }
+		quote = Quote.find(params[:quote_id])
+		array = []
+		params.require(:projects).each do |project|
+			parse_json = JSON.parse(project)
+			quote_project = QuoteProject.create!(quote_id: parse_json['quote_id'], name: parse_json['name'], remarks: '', unit_price: parse_json['unit_price'], unit: parse_json['unit'], price: parse_json['unit_price'], project_id: parse_json['unit_price'], project_name: parse_json['project_name'])
+			array.push(quote_project)
+		end
+		render json: { status: :success, projects: array }
 	rescue => e
 
 		render json: { status: :error, message: e.message }
