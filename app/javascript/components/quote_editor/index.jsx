@@ -502,17 +502,25 @@ export default class QuoteEditor extends React.Component {
 
 		const price = Number(this.state.price) + Number(project.price);
 		const url = '/quote_projects';
-		const specification = project.specifications[0]
+		let quote_projects = this.state.quote_projects.slice();
 		let mergeProjects = [];
+		project.specifications.map((specification) => {
+
+			const field = {
+				'project_id': specification.project_id,
+				'quote_id': this.state.quote.id,
+				'name': specification.name,
+				'unit_price': specification.unit_price,
+				'unit': 1,
+				'price': specification.price,
+				'project_name': specification.project_name ? specification.project_name : '',
+				'remarks': specification.remarks ? specification.remarks : ''
+			};
+			mergeProjects.push(JSON.stringify({ ...field }));
+		});
 		const field = {
-			'project_id': specification.project_id,
 			'quote_id': this.state.quote.id,
-			'name': specification.name,
-			'unit_price': specification.unit_price,
-			'unit': specification.unit,
-			'price': specification.price,
-			'project_name': specification.project_name ? specification.project_name : '',
-			'remarks': specification.remarks ? specification.remarks : ''
+			'projects[]': mergeProjects
 		};
 		Request
 		  .post(url)
@@ -522,9 +530,12 @@ export default class QuoteEditor extends React.Component {
 			.end((err, res) => {
 				if(!err && res.body.status === 'success') {
 
-					let quote_projects = this.state.quote_projects.slice();
-					mergeProjects = [...quote_projects, { ...res.body.project }];
-					this.setState({ quote_projects: mergeProjects, price: price });
+					let applyMergeProjects = [...quote_projects];
+					res.body.projects.map((project) => {
+
+						applyMergeProjects.push({ ...project });
+					});
+					this.setState({ quote_projects: applyMergeProjects, price: price });
 			  } else {
 
 					alert(res.body.message);
@@ -539,24 +550,26 @@ export default class QuoteEditor extends React.Component {
   applyNewProject = (project) => {
 
 		const price = Number(this.state.price) + Number(project.price);
-		const specification = project.specifications[0]
-		let mergeProjects = [];
-		const strong = 1000;
-		// uniqueなidを生成
-		const id = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
-		const field = {
-			'id': id,
-			'project_id': specification.project_id,
-			'name': specification.name,
-			'unit_price': specification.unit_price,
-			'unit': specification.unit,
-			'price': specification.price,
-			'project_name': specification.project_name ? specification.project_name : '',
-			'remarks': specification.remarks ? specification.remarks : ''
-		};
-
 		let quote_projects = this.state.quote_projects.slice();
-		mergeProjects = [...quote_projects, { ...field }];
+		let mergeProjects = [...quote_projects];
+		project.specifications.map((specification) => {
+
+			const strong = 1000;
+			// uniqueなidを生成
+			const id = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
+			const field = {
+				'id': id,
+				'project_id': specification.project_id,
+				'name': specification.name,
+				'unit_price': specification.unit_price,
+				'unit': specification.unit,
+				'price': specification.price,
+				'project_name': specification.project_name ? specification.project_name : '',
+				'remarks': specification.remarks ? specification.remarks : ''
+			};
+			mergeProjects = [...mergeProjects, { ...field }];
+		});
+		
 		this.setState({ quote_projects: mergeProjects, price: price });
   };
 

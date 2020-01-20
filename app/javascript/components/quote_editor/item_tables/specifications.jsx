@@ -7,7 +7,7 @@ const Specifications = (props) => {
       { props.quote_projects.length > 0 ?
         <Fragment>
           { props.quote_projects.map((specification, index) => {
-            const key = 'specification-' + new Date().getTime().toString(16) + Math.floor(1000 * Math.random()).toString(16) + specification.id;
+						const key = 'specification-' + new Date().getTime().toString(16) + Math.floor(1000 * Math.random()).toString(16) + specification.id;
             return (
               <tr { ...{key} }>
               	<td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } value={ specification.name } onChange={ e => props.setName(index, e.target.value) } /></td>
