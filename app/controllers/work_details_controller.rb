@@ -48,7 +48,7 @@ class WorkDetailsController < ApplicationController
         params.require(:work_detail_update).each do |detail|
 
 					parse_json = JSON.parse(detail)
-          work_detail = WorkDetail.find(parse_json['id'])
+					work_detail = WorkDetail.find(parse_json['id'])
           work_detail.update!(
             work_id: parse_json['work_id'],
             order_contents: parse_json['order_contents'],

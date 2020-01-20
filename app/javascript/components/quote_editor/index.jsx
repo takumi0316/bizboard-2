@@ -30,10 +30,10 @@ export default class QuoteEditor extends React.Component {
 
     super(props);
 
-    const date = new Date()
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    const day = date.getDate()
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
 
     this.state = {
 			quote: props.quote,
@@ -69,6 +69,7 @@ export default class QuoteEditor extends React.Component {
 			deliver_type_note: props.quote.deliver_type_note || '',
 			remarks: props.quote.remarks || '',
 			memo: props.quote.memo || '',
+			itemStatus: true
     };
   };
 
@@ -332,7 +333,34 @@ export default class QuoteEditor extends React.Component {
     let quote_projects = this.state.quote_projects.slice();
 		quote_projects[passIndex].remarks = remarks;
     this.setState({ quote_projects: quote_projects });
-  };
+	};
+
+	/**
+	 *
+	 * @version 2020/01/20
+	 */
+	setItemStatus = (e, bool) => {
+
+		e.preventDefault();
+
+		const isQuoteProjects = this.state.quote_projects.length > 0 ? true : false;
+		if(!isQuoteProjects) {
+
+			alert('品目を追加してください！');
+			return false;
+		};
+
+		this.setState({ itemStatus: bool });
+	};
+
+	/**
+	 * 品目を並べ直す
+	 * @version 2020/01/20
+	 */
+	reorderQuoteProjects = props => {
+
+		this.setState({ quote_projects: props });
+	};
 
   /**
    *  バリデーション
@@ -346,7 +374,7 @@ export default class QuoteEditor extends React.Component {
 		const deliver_type_note = this.state.deliver_type_note === '';
 
     if(this.state.quote_subject === '') message.push('案件タイトルを入力してください。');
-		
+
 		if(deliver_type) {
 
 			if(deliver_type_note) message.push('納品方法を記入してください');
@@ -464,8 +492,7 @@ export default class QuoteEditor extends React.Component {
   applyHomeDivision = (division) => {
 
     this.setState({ home_division: division })
-  }
-
+  };
 
   /**
    *  品目選択時(案件が既に存在している場合)
@@ -492,8 +519,8 @@ export default class QuoteEditor extends React.Component {
 			.field(field)
 			.set('X-Requested-With', 'XMLHttpRequest')
 			.setCsrfToken()
-			.end((err, res) => { 
-				if(!err && res.body.status === 'success') { 
+			.end((err, res) => {
+				if(!err && res.body.status === 'success') {
 
 					let quote_projects = this.state.quote_projects.slice();
 					mergeProjects = [...quote_projects, { ...res.body.project }];
@@ -501,7 +528,7 @@ export default class QuoteEditor extends React.Component {
 			  } else {
 
 					alert(res.body.message);
-				}; 
+				};
 			});
 	};
 
@@ -607,10 +634,12 @@ export default class QuoteEditor extends React.Component {
 											setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
 				/>
 				<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
-										setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy }
+										setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy } itemStatus={ this.state.itemStatus }
+										reorderQuoteProjects={ this.reorderQuoteProjects }
 				/>
         <div className='u-mt-15'>
           <ProjectSearch applyProject={ this.state.quote.id ? this.applyProject : this.applyNewProject } prefectures={ this.props.prefectures } />
+					<div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
         </div>
 				<PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
 												memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
