@@ -7,12 +7,12 @@ const Specifications = (props) => {
       { props.quote_projects.length > 0 ?
         <Fragment>
           { props.quote_projects.map((specification, index) => {
-						const key = 'specification-' + new Date().getTime().toString(16) + Math.floor(1000 * Math.random()).toString(16) + specification.id;
+						const key = 'specification-' + specification.id + index ;
             return (
               <tr { ...{key} }>
               	<td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } value={ specification.name } onChange={ e => props.setName(index, e.target.value) } /></td>
     	          <td><textarea className={ 'c-form-textarea__work-show-input__textarea2' } type='textarea' value={ specification.remarks } onChange={ e => props.setQuoteRemarks(index, e.target.value)} /></td>
-              	<td><input className={ 'c-form-text' } type='number' step='0.1' value={ specification.unit_price } onChange={ e => props.setUnitPrice(index, e.target.value) } /></td>
+              	<td><input className={ 'c-form-text' } type='text' value={ specification.unit_price } onChange={ e => props.setUnitPrice(index, e.target.value) } /></td>
               	<td><input className={ 'c-form-text' } type='number' value={ specification.unit } onChange={ e => props.setUnit(index, e.target.value) } /></td>
               	<td><input readOnly className={ 'c-form-text' } type='text' value={ specification.price }/></td>
               	<td><button className={ 'c-btnMain2-primaryA' } onClick={ e => props._projectDestroy(e, index) }>ー</button></td>
