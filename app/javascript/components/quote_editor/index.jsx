@@ -257,29 +257,18 @@ export default class QuoteEditor extends React.Component {
    */
   setUnitPrice = (passIndex, unitPrice) => {
 
-    if (unitPrice != 0) {
+  	if (unitPrice.match(/^([1-9]¥d*|0)(¥.¥d+)?$/)) {
 
-      if (!unitPrice.match(/^[0-9\.]+$/)) {
-
-        alert('半角数字以外を入力しないで下さい。');
-        return false
-      }
-
-			let quote_projects = this.state.quote_projects.slice();
-			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
-			quote_projects[passIndex].unit_price = Number(unitPrice);
-			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(quote_projects[passIndex].unit);
-      price = Number(price) + Number(quote_projects[passIndex].price);
-      this.setState({ quote_projects: quote_projects, price: price });
-    } else {
-
-			let quote_projects = this.state.quote_projects.slice();
-			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
-			quote_projects[passIndex].unit_price = Number(unitPrice);
-			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(quote_projects[passIndex].unit);
-      price = Number(price) + Number(quote_projects[passIndex].price);
-      this.setState({ quote_projects: quote_projects, price: price });
+      alert('半角数字以外を入力しないで下さい。');
+      return false
     };
+
+		let quote_projects = this.state.quote_projects.slice();
+		let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
+		quote_projects[passIndex].unit_price = Number(unitPrice);
+		quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(quote_projects[passIndex].unit);
+    price = Number(price) + Number(quote_projects[passIndex].price);
+    this.setState({ quote_projects: quote_projects, price: price });
   };
 
   /**
