@@ -9,7 +9,7 @@ class QuoteProjectsController < ApplicationController
 		array = []
 		params.require(:projects).each do |project|
 			parse_json = JSON.parse(project)
-			quote_project = QuoteProject.create!(quote_id: parse_json['quote_id'], name: parse_json['name'], remarks: '', unit_price: parse_json['unit_price'], unit: parse_json['unit'], price: parse_json['unit_price'], project_id: parse_json['unit_price'], project_name: parse_json['project_name'])
+			quote_project = QuoteProject.create!(quote_id: parse_json['quote_id'], name: parse_json['name'], remarks: '', unit_price: parse_json['unit_price'], unit: parse_json['unit'], price: parse_json['unit_price'], project_id: parse_json['project_id'], project_name: parse_json['project_name'])
 			array.push(quote_project)
 		end
 		render json: { status: :success, projects: array }
