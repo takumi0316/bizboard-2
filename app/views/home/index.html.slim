@@ -13,10 +13,8 @@
     - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
     / 売上
-    / quotesに差し替える可能性ある為に残してます
-    /- quotes = Quote.where(tax_type: 0).invoicing.joins(:invoice).merge(Invoice.date_in(range))
-    - works = Quote.deliverd_in(range).where(tax_type: 0).joins(:work).merge(Work.where.not(status: 0))
-    - sales = works.map(&:price).inject(:+).to_i
+    - quotes = Quote.where(tax_type: 0).invoicing.joins(:invoice).merge(Invoice.date_in(range))
+    - sales = quotes.map(&:price).inject(:+).to_i
 
     / 原価
     - expendables = Expendable.date_in(range)
@@ -40,7 +38,7 @@
       p #{(sales - cost).to_s(:delimited)}円
     = react_component 'TargetGraph', label: '粗利', value: (sales - cost), color: (sales - cost) >= 0 ? 'rgba(64, 127, 94, 0.6)' : 'rgba(209, 60, 90, 0.6)'
 
-  h2.l-dashboard__heading 売り上げ
+  h2.l-dashboard__heading 売り上げ見込み
   .l-dashboard__graphs
     .l-dashboard__graph
 
@@ -147,7 +145,7 @@
       - status_order = activities.where(status: 50).pluck(:price).sum.to_i
 
       = react_component('ProspectGraph',
-        { quotes: works,
+        { quotes: quotes,
           range: range,
           activity: activity,
           activity_ids: activity_ids,
