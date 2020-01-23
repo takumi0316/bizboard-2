@@ -496,7 +496,7 @@ export default class QuoteEditor extends React.Component {
 		project.specifications.map((specification) => {
 
 			const field = {
-				'project_id': specification.project_id,
+				'project_id': project.id,
 				'quote_id': this.state.quote.id,
 				'name': specification.name,
 				'unit_price': specification.unit_price,
@@ -511,6 +511,7 @@ export default class QuoteEditor extends React.Component {
 			'quote_id': this.state.quote.id,
 			'projects[]': mergeProjects
 		};
+
 		Request
 		  .post(url)
 			.field(field)
@@ -548,7 +549,7 @@ export default class QuoteEditor extends React.Component {
 			const id = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
 			const field = {
 				'id': id,
-				'project_id': specification.project_id,
+				'project_id': project.id,
 				'name': specification.name,
 				'unit_price': specification.unit_price,
 				'unit': specification.unit,
