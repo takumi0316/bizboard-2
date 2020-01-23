@@ -6,7 +6,7 @@
   span = "#{current_date.year}年#{current_date.month}月"
   = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
 
-  h2.l-dashboard__heading 全体
+  h2.l-dashboard__heading 全体 ※請求書が発行された案件の金額が含まれます
   .l-dashboard__graphs
 
     / 形状範囲
@@ -38,7 +38,7 @@
       p #{(sales - cost).to_s(:delimited)}円
     = react_component 'TargetGraph', label: '粗利', value: (sales - cost), color: (sales - cost) >= 0 ? 'rgba(64, 127, 94, 0.6)' : 'rgba(209, 60, 90, 0.6)'
 
-  h2.l-dashboard__heading 売り上げ
+  h2.l-dashboard__heading 売り上げ見込み ※作業書が発行された案件の金額が含まれます
   .l-dashboard__graphs
     .l-dashboard__graph
 
@@ -49,8 +49,9 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
-      - sales = quotes.map(&:price).inject(:+).to_i
+      /- quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - works = Quote.deliverd_in(range).where(tax_type: 0).where(division_id: r.division.id).joins(:work).merge(Work.where.not(status: 0))
+      - sales = works.map(&:price).inject(:+).to_i
 
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)
@@ -71,8 +72,9 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
-      - sales = quotes.map(&:price).inject(:+).to_i
+      /- quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - works = Quote.deliverd_in(range).where(tax_type: 0).where(division_id: r.division.id).joins(:work).merge(Work.where.not(status: 0))
+      - sales = works.map(&:price).inject(:+).to_i
 
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)
@@ -93,8 +95,9 @@
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 売上
-      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
-      - sales = quotes.map(&:price).inject(:+).to_i
+      /- quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - works = Quote.deliverd_in(range).where(tax_type: 0).where(division_id: r.division.id).joins(:work).merge(Work.where.not(status: 0))
+      - sales = works.map(&:price).inject(:+).to_i
 
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)

@@ -12,7 +12,7 @@ class TargetsController < ApplicationController
   #----------------------------------------
 
   # 目標一覧
-  expose(:targets) { Target.all }
+  expose(:targets) { Target.all.order(created_at: 'DESC') }
 
   # 目標
   expose(:target) { Target.find_or_initialize_by id: params[:id] || params[:target_id] }
