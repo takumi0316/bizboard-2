@@ -100,7 +100,7 @@ const QuoteSearch = props => {
 				setEndDate(prop);
 				break;
 			default:
-					break;
+				break;
 		};
 	};
 
@@ -115,7 +115,7 @@ const QuoteSearch = props => {
           <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期' />
           <select name='status' className={ 'u-ml-10 c-form-select__work-index' } value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
             <option value=''>ステータス</option>
-            { Object.keys(ENUM_STATUS).map((item, index) =>{
+            { Object.keys(ENUM_STATUS).map((item, index) => {
 
 							const key = 'status-' + index;
               return (

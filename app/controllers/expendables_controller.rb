@@ -14,8 +14,8 @@ class ExpendablesController < ApplicationController
   # 見積もり
   expose_with_pagination(:expendables) {
 		Expendable
+		.search(status: params[:status], subcontractor: params[:subcontractor], division: params[:division], date1: params[:date1], date2: params[:date2])
 		.all
-    .search(status: params[:status], subcontractor: params[:subcontractor], division: params[:division], date1: params[:date1], date2: params[:date2])
     .order(date: 'DESC')
   }
 
@@ -45,7 +45,7 @@ class ExpendablesController < ApplicationController
     add_breadcrumb '製造経費入力'
     respond_to do |format|
       format.html do
-        #置いておかないとエラーになる
+        # 置いておかないとエラーになる
       end
       format.csv do
         @csv_data = Expendable.where(date: params[:date1]..params[:date2]).order(:subcontractor_id).order(:division_id)

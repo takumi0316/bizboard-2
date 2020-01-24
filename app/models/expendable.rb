@@ -71,7 +71,6 @@ class Expendable < ApplicationRecord
 
       # 日付検索
       _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
-      _self
 		else
 
       # 日付検索
@@ -79,7 +78,6 @@ class Expendable < ApplicationRecord
       _self = _self.where(status: parameters[:status]) if parameters[:status] != '' && parameters[:status] != nil
       _self = _self.where(division_id: parameters[:division]) if parameters[:division] != '' && parameters[:division] != nil
       _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != '' && parameters[:subcontractor] != nil
-      _self
     end
 
     _self
