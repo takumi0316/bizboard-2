@@ -454,7 +454,7 @@ DEPENDENCIES
   webpacker
   webpacker-react
   wicked_pdf
-  wkhtmltopdf-binary
+  wkhtmltopdf-binary (= 0.12.5.1)
 
 BUNDLED WITH
    1.17.3
