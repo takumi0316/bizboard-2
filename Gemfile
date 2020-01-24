@@ -92,7 +92,6 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
 
 # slack
 gem 'slack-api'
