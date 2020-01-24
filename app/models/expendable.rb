@@ -67,17 +67,18 @@ class Expendable < ApplicationRecord
 
     _self = self
 
-    if parameters[:division] == "負担部署" && parameters[:subcontractor] == "仕入先" && parameters[:status] == "勘定科目"
+    if parameters[:division] == '' && parameters[:subcontractor] == '' && parameters[:status] == ''
 
-      #日付検索
+      # 日付検索
       _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
       _self
-    else
-      #日付検索
+		else
+
+      # 日付検索
       _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
-      _self = _self.where(status: parameters[:status]) if parameters[:status] != "勘定科目" && parameters[:status] != nil
-      _self = _self.where(division_id: parameters[:division]) if parameters[:division] != "負担部署" && parameters[:division] != nil
-      _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != "仕入先" && parameters[:subcontractor] != nil
+      _self = _self.where(status: parameters[:status]) if parameters[:status] != '' && parameters[:status] != nil
+      _self = _self.where(division_id: parameters[:division]) if parameters[:division] != '' && parameters[:division] != nil
+      _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != '' && parameters[:subcontractor] != nil
       _self
     end
 

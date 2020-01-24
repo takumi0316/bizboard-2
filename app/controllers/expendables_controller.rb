@@ -13,9 +13,9 @@ class ExpendablesController < ApplicationController
 
   # 見積もり
   expose_with_pagination(:expendables) {
-    Expendable
+		Expendable
+		.all
     .search(status: params[:status], subcontractor: params[:subcontractor], division: params[:division], date1: params[:date1], date2: params[:date2])
-    .all
     .order(date: 'DESC')
   }
 

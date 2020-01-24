@@ -116,7 +116,7 @@ class Work < ApplicationRecord
 
     _self = self
     # フリーワードが入っていて、ステータスが未選択
-    if parameters[:name].present? && parameters[:status] == 'ステータス'
+    if parameters[:name].present? && parameters[:status] == ''
 
       # 名称検索
       _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
@@ -126,7 +126,7 @@ class Work < ApplicationRecord
       # 日付検索
       _self
     # フリーワードが入っていて、ステータスが選択されている
-    elsif parameters[:name].present? && parameters[:status] != 'ステータス'
+    elsif parameters[:name].present? && parameters[:status] != ''
 
       _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
 
@@ -140,12 +140,12 @@ class Work < ApplicationRecord
       _self
 
     # フリーワードが空で、ステータスが未選択
-    elsif parameters[:name].blank? && parameters[:status] == 'ステータス'
+    elsif parameters[:name].blank? && parameters[:status] == ''
 
       _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
       _self
     # フリーワードが空で、ステータスが入力されている
-    elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != 'ステータス'
+    elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != ''
 
       _self = where(status: parameters[:status])
       # 日付検索

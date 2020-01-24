@@ -13,15 +13,17 @@ class QuotesController < ApplicationController
 
   # 見積もり
   expose_with_pagination(:quotes) {
-    Quote
+
+		Quote
+		.all
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .all
     .includes(:quote_items)
     .order(date: 'DESC')
   }
 
   # 見積もり
   expose_with_pagination(:quote_manager) {
+
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
@@ -30,6 +32,7 @@ class QuotesController < ApplicationController
 
   # 見積もり
   expose_with_pagination(:quote_general) {
+
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)

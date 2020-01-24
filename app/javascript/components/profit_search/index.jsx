@@ -9,7 +9,7 @@ import Request from "superagent";
 require("superagent-rails-csrf")(Request);
 
 const ProfitSearch = props => {
-		
+
   const date = new Date();
   const year = date.getFullYear();
   const last_month = date.getMonth() - 1;
@@ -22,13 +22,13 @@ const ProfitSearch = props => {
 	};
 
 	const [state, setState] = useState(init);
-	
+
 	useEffect(() => {
 
 		const values = onSearchParams();
 		if(!values) return;
 
-		setState({ 
+		setState({
 			...state,
 			startDate: values['date1'],
 			endDate: values['date2']
@@ -42,7 +42,6 @@ const ProfitSearch = props => {
 	 */
   const setStartDate = prop => {
 
-		console.log(prop);
     setState({ ...state, startDate: prop.value });
   };
 
@@ -82,7 +81,7 @@ const ProfitSearch = props => {
 	/**
 	 * DatetimePickerから渡ってきた値を振り分けてsetStateする
 	 * @version 2020/01/08
-	 * 
+	 *
 	 */
 	const sortingAction = prop => {
 
@@ -94,7 +93,7 @@ const ProfitSearch = props => {
 				setEndDate(prop);
 				break;
 			default:
-					break;
+				break;
 		};
 	};
 

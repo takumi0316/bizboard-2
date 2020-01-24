@@ -9,7 +9,7 @@ import Request from "superagent";
 require("superagent-rails-csrf")(Request);
 
 const InvoiceSearch = props => {
-		
+
   const date = new Date();
   const year = date.getFullYear();
   const last_month = date.getMonth() - 1;
@@ -23,13 +23,13 @@ const InvoiceSearch = props => {
 	};
 
 	const [state, setState] = useState(init);
-	
+
 	useEffect(() => {
 
 		const values = onSearchParams();
 		if(!values) return;
 
-		setState({ 
+		setState({
 			...state,
 			name: values['name'],
 			startDate: values['date1'],
@@ -83,7 +83,7 @@ const InvoiceSearch = props => {
 	/**
 	 * DatetimePickerから渡ってきた値を振り分けてsetStateする
 	 * @version 2020/01/08
-	 * 
+	 *
 	 */
 	const sortingAction = prop => {
 

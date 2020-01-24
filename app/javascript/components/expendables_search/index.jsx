@@ -9,7 +9,7 @@ import Request from "superagent";
 require("superagent-rails-csrf")(Request);
 
 // enum_status
-import { ENUM_STATUS, } from './properties.es6';
+import { ENUM_STATUS } from './properties.es6';
 
 const ExpendableSearch = props => {
 		
