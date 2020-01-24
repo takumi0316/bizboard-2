@@ -13,7 +13,7 @@
     | 担当者:
     span.u-ml-10 = works.find(params[:id]).quote&.user&.name
   span.u-ml-30
-    = link_to '案件を編集する', edit_quote_path(work.quote), class: 'c-btnMain-standard'
+    = link_to '案件を編集する', edit_quote_path(works.find(params[:id]).quote), class: 'c-btnMain-standard'
   .u-mt-10
   | お客様情報
   br

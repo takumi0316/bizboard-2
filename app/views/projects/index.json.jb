@@ -229,6 +229,7 @@ json[:projects] = projects.map do |r|
       type: true,
       specifications: specifications,
     }
+
   when 'project_card'
 
     specifications = []

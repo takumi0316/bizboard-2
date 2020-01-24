@@ -1,128 +1,126 @@
-import React, { Component } from "react"
-import Style from './style.sass'
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
-import Icon  from 'react-evil-icons'
+import React, { Fragment, useState, useEffect } from "react";
+
+// import libraries
+import Icon           from 'react-evil-icons';
+import DatetimePicker from '../utilities/datetime_picker';
 
 // Ajax
-import Request from "superagent"
+import Request from "superagent";
 require("superagent-rails-csrf")(Request);
 
+const PaymentSearch = props => {
+		
+  const date = new Date();
+  const year = date.getFullYear();
+  const last_month = date.getMonth() - 1;
+  const next_month = date.getMonth() + 2;
+	const day = date.getDate();
 
-export default class PaymentSearch extends Component {
-  constructor(props) {
-    super(props)
-    const date = new Date()
-    const date1 = date.setDate(1)
-    const end_date = new Date(date.getFullYear(), date.getMonth() + 1, 0)
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    const start_day = date.getDate()
-    const end_day = end_date.getDate()
-    this.state = {
-      startDate: new Date(year, month, start_day),
-      startDate2: new Date(year, month, end_day),
-    };
-  }
+  const init = {
+    startDate: new Date(year, last_month, day),
+    endDate: new Date(year, next_month, day)
+	};
 
-  handleChange = (date) => {
-    this.setState({
-      startDate: date
-    })
-  }
+	const [state, setState] = useState(init);
+	
+	useEffect(() => {
 
-  handleChange2 = (date) => {
-    this.setState({
-      startDate2: date
-    })
-  }
+		const values = onSearchParams();
+		if(!values) return;
 
-  componentWillMount = () => {
+		setState({ 
+			...state,
+			startDate: values['date1'],
+			endDate: values['date2']
+		});
+	}, []);
 
-    if (location.search.length > 0) {
-      // MF見積もり作成・更新なのか確認
-      if (location.search.substring(1,4) == "fal") {
-        return false;
-      }
-      else if (location.search.substring(1,6) == "page=") {
-        return false;
-      }
-      else {
-        // 最初の1文字 (?記号) を除いた文字列を取得する
-        let query = document.location.search.substring(1);
-        let parameters = query.split('&');
-        let result = new Object();
-        for (var i = 0; i < parameters.length; i++) {
-          // パラメータ名とパラメータ値に分割する
-          let element = parameters[i].split('=');
-          let paramName = decodeURIComponent(element[0]);
-          let paramValue = decodeURIComponent(element[1]);
+	/**
+	 *
+	 * @version 2020/01/08
+	 *
+	 */
+  const setStartDate = prop => {
 
-          // パラメータ名をキーとして連想配列に追加する
-          result[paramName] = decodeURIComponent(paramValue);
-        }
+    setState({ ...state, startDate: prop.value });
+  };
 
-        this.setState({ startDate: new Date(result['date1']), startDate2: new Date(result['date2']) });
-      }
-    }
-  }
+	/**
+	 *
+	 * @version 2020/01/08
+	 *
+	 */
+  const setEndDate = prop => {
 
-  onSearchParams = (params) => {
+    setState({ ...state, endDate: prop.value });
+  };
 
-    if (location.search.length > 0) {
+  const onSearchParams = () => {
 
-      // 最初の1文字 (?記号) を除いた文字列を取得する
-      let query = document.location.search.substring(1);
-      let parameters = query.split('&');
-      let result = new Object();
-      for (var i = 0; i < parameters.length; i++) {
-        // パラメータ名とパラメータ値に分割する
-        let element = parameters[i].split('=');
-        let paramName = decodeURIComponent(element[0]);
-        let paramValue = decodeURIComponent(element[1]);
+		const isPresent = location.search.length > 0;
+    if(!isPresent) return;
 
-        // パラメータ名をキーとして連想配列に追加する
-        result[paramName] = decodeURIComponent(paramValue);
-      }
-      return result[params];
-    } else {
+    // 最初の1文字 (?記号) を除いた文字列を取得する
+    const query = document.location.search.substring(1);
+		const parameters = query.split('&');
+		let value = new Object();
+		parameters.map((parameter, index) => {
 
-      return null;
-    }
-  }
+			// パラメータ名とパラメータ値に分割する
+			let element = parameter.split('=');
+			let paramName = decodeURIComponent(element[0]);
+			let paramValue = decodeURIComponent(element[1]);
 
-  render() {
-    return (
-      <div className={ 'c-search__work-index u-mt-20' }>
-        <div className={ Style.Search }>
-          <form method='get' action='/payments?' >
-            <div>
-              <label for='name'>日付検索 ※外注書に登録された時の日付が検索されます</label>
-            </div>
-            <div className={ Style.Search__SideBySide }>
-              <DatePicker
-                selected={ this.state.startDate }
-                onChange={ ::this.handleChange }
-                name='date1'
-                dateFormat="YYYY/MM/dd"
-                className={ 'c-form-text__work-index__datepicker' }
-              />
-              <div className={ Style.Search__date1 }><Icon name='ei-calendar' size='s'/></div>
-              <p className={ 'c-search__tilde' }>〜</p>
-              <DatePicker
-                selected={ this.state.startDate2 }
-                onChange={ ::this.handleChange2 }
-                name='date2'
-                dateFormat="YYYY/MM/dd"
-                className={ 'c-form-text__work-index__datepicker' }
-              />
-              <div className={ Style.Search__date2 }><Icon name='ei-calendar' size='s'/></div>
-              <input type='submit' name='commit' value='検索' className={ 'c-btnMain-standard' }/>
-              <a className={ 'c-btnMain-primaryA' } href={ '/payments' } >元に戻す</a>
-            </div>
-          </form>
+			// パラメータ名をキーとして連想配列に追加する
+			value[paramName] = decodeURIComponent(paramValue);
+		});
+
+    return value;
+	};
+
+	/**
+	 * DatetimePickerから渡ってきた値を振り分けてsetStateする
+	 * @version 2020/01/08
+	 * 
+	 */
+	const sortingAction = prop => {
+
+		switch(prop.action) {
+		  case 'start_date':
+				setStartDate(prop);
+				break;
+			case 'end_date':
+				setEndDate(prop);
+				break;
+			default:
+					break;
+		};
+	};
+
+  return (
+    <div className={ 'c-search__work-index u-mt-20' }>
+      <Fragment>
+        <label>日付検索 ※外注書に登録された時の日付が検索されます</label>
+  	    <span className={ 'c-form__required u-ml-10' }>現在{ props.count_number }件表示されています</span>
+      </Fragment>
+      <form method='get' action='/payments'>
+        <div className={ 'u-mt-10 c-flex' }>
+					<DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date1' } default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' }
+					                action={ 'start_date' } sortingAction={ sortingAction } index={ true }
+					/>
+          <Icon name='ei-calendar' size='m'/>
+          <p className={ 'c-search__tilde' }>〜</p>
+					<DatetimePicker key={ state.endDate } type={ 'text' } name={ 'date2' } default_datetime={ state.endDate } class={ 'c-form-text__work-index__datepicker' }
+						              action={ 'end_date' } sortingAction={ sortingAction } index={ false }
+					/>
+					<Icon name='ei-calendar' size='m'/>
+          <input type='hidden' name='count' value='1'/>
+          <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
+          <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/payments' } >元に戻す</a>
         </div>
-      </div>
-    );
-  }
-}
+      </form>
+    </div>
+  );
+};
+
+export default PaymentSearch;
