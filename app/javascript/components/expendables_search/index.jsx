@@ -114,7 +114,7 @@ const ExpendableSearch = props => {
       <form method='get' action='/expendables?'>
         <div className={ 'c-flex' }>
 					<select name='division' className={ 'c-form-select__work-index' } value={ state.division } onChange={ e => setState({ ...state, division: e.target.value }) }>
-						<option value='負担部署'>負担部署</option>
+						<option value=''>負担部署</option>
 						{ props.division.map((division, index) => {
 
 							const key = 'division-' + index;
@@ -124,7 +124,7 @@ const ExpendableSearch = props => {
 						}) }
 					</select>
           <select name='subcontractor' className={ 'u-ml-10 c-form-select__expendable-index' } value={ state.subcontractor } onChange={ e => setState({ ...state, subcontractor: e.target.value }) }>
-						<option value='仕入れ先'>仕入れ先</option>
+						<option value=''>仕入れ先</option>
           	{ state.subcontractors.map((subcontractor, index) => {							
 
 							const key = 'subcontractor-' + index;
@@ -134,7 +134,7 @@ const ExpendableSearch = props => {
           	}) }
           </select>
         	<select name='status' className={ 'u-ml-10 c-form-select__work-index' } value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
-						<option value='勘定科目'>勘定科目</option>
+						<option value=''>勘定科目</option>
           	{ Object.keys(ENUM_STATUS).map((item, index) =>{
 
 							const key = 'status-' + index;
