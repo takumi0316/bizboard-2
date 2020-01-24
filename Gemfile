@@ -91,8 +91,6 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary', '0.12.5.1'
 
 # slack
 gem 'slack-api'
