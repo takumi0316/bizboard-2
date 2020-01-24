@@ -91,6 +91,7 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
+gem 'wicked_pdf'
 
 # slack
 gem 'slack-api'
