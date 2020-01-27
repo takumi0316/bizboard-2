@@ -32,6 +32,7 @@ ja:
         manager: マネージャー
         sales: 営業
         admin: 管理者
+        operator: チャットオペレーター
     company_division_client:
       title:
         nothing: なし

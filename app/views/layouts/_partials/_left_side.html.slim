@@ -46,7 +46,7 @@
           = evil_icon 'ei-eye', size: :s
           span.u-ml-10 製造経費入力
 
-    - if current_user.user_type != 'general'
+    - if ['manager', 'sales', 'admin'].include?(current_user.user_type)
 
       .u-mt-15
         ul.l-dashboard__menuList
