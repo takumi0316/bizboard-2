@@ -284,7 +284,7 @@ class QuotesController < ApplicationController
       # , :subcontractor, :subcontractor_detail
 			clone_work = quote.work.deep_clone(:work_details)
 			clone_work.quote_id = clone_quote.id
-			clone_work.working!
+			clone_work.draft!
       clone_work.save!
       quote.work.subcontractor.each do |subcontractor|
 
