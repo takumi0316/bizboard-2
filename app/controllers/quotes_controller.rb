@@ -42,6 +42,18 @@ class QuotesController < ApplicationController
   }
 
   # 見積もり
+  expose_with_pagination(:quote_operator) {
+
+    Quote
+    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
+    .joins(:task)
+    .where.not(status: 'invoicing')
+    .where.not(status: 'lost')
+    .order(created_at: 'DESC')
+  }
+
+
+  # 見積もり
   expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id]}
 
 
@@ -74,6 +86,8 @@ class QuotesController < ApplicationController
       @quotes = quote_manager
     elsif @user_type == 'general'
       @quotes = quote_general
+    elsif @user_type == 'operator'
+      @quotes = quote_operator
     elsif @user_type != 'general'
       @quotes = quotes
     end
