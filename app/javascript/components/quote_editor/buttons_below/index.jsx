@@ -17,7 +17,7 @@ const ButtonsBelow = props => {
             : null
           }
         	{ props.invoice ?
-          	<a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotes/${props.quote.id}/delivery_note_pdf` } target="_blank">納品書ダウンロード</a>
+          	<a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/deliveries/${props.quote.id}/edit` } target="_blank">納品書ダウンロード</a>
         		: null 
           }
         	{ props.work ?

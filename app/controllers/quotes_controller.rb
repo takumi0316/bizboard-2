@@ -52,9 +52,8 @@ class QuotesController < ApplicationController
     .order(created_at: 'DESC')
   }
 
-
   # 見積もり
-  expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id]}
+  expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id] }
 
 
   #----------------------------------------
@@ -92,7 +91,6 @@ class QuotesController < ApplicationController
       @quotes = quotes
     end
     @count_number = @quotes.size
-
   end
 
   ##
@@ -114,8 +112,9 @@ class QuotesController < ApplicationController
 
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '編集'
-  rescue => e
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+	rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -127,10 +126,10 @@ class QuotesController < ApplicationController
     # 情報更新
     quote.update! quote_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '見積もりを更新しました'}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '見積もりを更新しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -149,13 +148,13 @@ class QuotesController < ApplicationController
         new_quote.update!(quote_number: new_quote.quote_number)
       end
       if params[:quote][:price].blank?
-        #普通の時
+        # 普通の時
         new_quote.update!(price: params[:quote][:price])
       else
-        #BPR・ERPの時
+        # BPR・ERPの時
         new_quote.update!(price: params[:quote][:price])
-        #利用開始したらコメントアウトしてるのに変える
-        #new_quote.update!(price: params[:quote][:price])
+        # 利用開始したらコメントアウトしてるのに変える
+        # new_quote.update!(price: params[:quote][:price])
       end
       # slack通知
       if params[:quote][:payment_terms] == 'advance'
