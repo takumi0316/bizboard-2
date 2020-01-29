@@ -274,11 +274,11 @@ class QuotesController < ApplicationController
 
     clone_quote = quote.deep_clone(:quote_projects)
 
+		clone_quote.unworked!
+
     clone_quote.save
 
     clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Date.today.to_time, deliver_at: Date.today.to_time, tax: 1.1)
-
-    clone_quote.unworked!
 
     if quote.work.present?
       # , :subcontractor, :subcontractor_detail
