@@ -55,9 +55,7 @@ Rails.application.routes.draw do
   # 納品書
 	resources :deliveries do
 		member do
-			member do
-				get 'delivery_pdf'
-			end
+			get 'delivery_pdf'
 		end
   end
 
