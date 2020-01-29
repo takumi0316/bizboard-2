@@ -282,10 +282,10 @@ class QuotesController < ApplicationController
 
     if quote.work.present?
       # , :subcontractor, :subcontractor_detail
-      clone_work = quote.work.deep_clone(:work_details)
-      clone_work.quote_id = clone_quote.id
+			clone_work = quote.work.deep_clone(:work_details)
+			clone_work.quote_id = clone_quote.id
+			clone_work.working!
       clone_work.save!
-      clone_work.draft!
       quote.work.subcontractor.each do |subcontractor|
 
         deep_subcontractor = subcontractor.deep_dup
@@ -319,20 +319,6 @@ class QuotesController < ApplicationController
       end
     end
   end
-
-  def delivery_note_pdf
-
-    respond_to do |format|
-      format.html do
-        render  pdf: "納品書_#{quote.id}", #pdfファイルの名前。これがないとエラーが出ます
-                encoding: 'UTF-8',
-                layout: 'layouts/pdf.html.slim',
-                template: 'quotes/delivery_note_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
-                show_as_html: params.key?('debug')
-      end
-    end
-  end
-
 
   #----------------------------------------
   #  ** Methods **
