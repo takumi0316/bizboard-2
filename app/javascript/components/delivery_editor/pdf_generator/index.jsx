@@ -6,7 +6,8 @@ import DatetimePicker from '../../utilities/datetime_picker';
 const DeliveryPdfGenrator = props => {
 
 	const init = {
-    date: new Date()
+    date: new Date(),
+    subject: props.quote.subject
   };
 
   const [state, setState] = useState(init);
@@ -44,7 +45,7 @@ const DeliveryPdfGenrator = props => {
         </div>
         <div className="u-mt-30">
           <label className="c-form-label">件名</label>
-          <input type="text" name="subject" className="c-form-text"></input>
+          <input type="text" name="subject" className="c-form-text" defaultValue={ props.quote.subject } onChange={ e => setState({ ...state, subject: e.target.value }) }></input>
         </div>
         <div className="u-mt-30 c-table">
 			    <table>
