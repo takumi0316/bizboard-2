@@ -49,8 +49,17 @@ Rails.application.routes.draw do
   end
   #get 'invoices/:id/wicked_pdf' => 'invoices#wicked_pdf'
 
-  #活動履歴
+  # 活動履歴
   resources :activities
+
+  # 納品書
+	resources :deliveries do
+		member do
+			member do
+				get 'delivery_pdf'
+			end
+		end
+  end
 
   # 作業進捗
   resources :works do
