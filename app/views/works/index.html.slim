@@ -1,4 +1,4 @@
-= react_component('WorksSearch',{count_draft: @count_draft, count_working: @count_working})
+= react_component('WorksSearch', { count_draft: @count_draft, count_working: @count_working })
 
 .c-table.u-mt-20
   table
@@ -17,7 +17,7 @@
         th 粗利
         th 粗利率
     tbody
-      - @works.each_with_index do |r, index|
+      - @works.each do |r|
         tr
           td.u-ta-center
             - if r.quote.deliver_at.blank?
