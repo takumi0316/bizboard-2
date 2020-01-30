@@ -62,20 +62,8 @@ class WorksController < ApplicationController
 
     add_breadcrumb '作業進捗一覧'
 
-    @division = current_user.division&.id
-    @user_type = current_user.user_type
-    @count = params[:count]
-    if @user_type == 'general' && @count.present? || @user_type == 'manager' && @count.present?
-      @works = works
-    elsif @user_type == 'manager'
-      @works = work_manager
-    elsif @user_type == 'general'
-      @works = work_general
-    elsif @user_type != 'general'
-      @works = works
-    end
-    @draft = Work.all.draft.where(division_id: current_user.division.id)
-    @working = Work.all.working.where(division_id: current_user.division.id)
+    @draft = works.draft.where(division_id: current_user.division.id)
+    @working = works.working.where(division_id: current_user.division.id)
     @count_draft = @draft.size
     @count_working = @working.size
   end
