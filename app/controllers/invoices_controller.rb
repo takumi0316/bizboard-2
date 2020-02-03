@@ -133,14 +133,14 @@ class InvoicesController < ApplicationController
     redirect_to action: :index
   end
 
-  def wicked_pdf
+  def pdf
 
     respond_to do |format|
       format.html do
         render  pdf: "請求書_#{invoice.quote.id}", #pdfファイルの名前。これがないとエラーが出ます
                 encoding: 'UTF-8',
                 layout: 'layouts/pdf.html.slim',
-                template: 'invoices/wicked_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
+                template: 'invoices/pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
                 show_as_html: params.key?('debug')
       end
     end

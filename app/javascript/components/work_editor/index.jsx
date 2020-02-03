@@ -4,7 +4,7 @@ import React, { Fragment }	from 'react';
 import WorkDivisionInfo	from './work_division_info';
 import AddSubcontractor	from './add_subcontractor';
 import WorkDetails			from './work_details';
-import SalesTable				from './sales_table'; 
+import SalesTable				from './sales_table';
 
 // Ajax
 import Request from 'superagent';
@@ -31,7 +31,7 @@ export default class WorkEditor extends React.Component {
 			work_subcontractors_iterate: props.work_subcontractors_iterate
 		};
 	};
-	
+
 	/**
 	 * 請求合算値変更
 	 * @versions 2019/12/27
@@ -143,7 +143,7 @@ export default class WorkEditor extends React.Component {
         }
       });
 	};
-	
+
 	/**
 	 * 作業書備考更新
 	 * @versions 2019/12/27
@@ -201,9 +201,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/09
-	 * 
+	 *
 	 */
   workSubcontractorCreate = e => {
 
@@ -248,7 +248,7 @@ export default class WorkEditor extends React.Component {
 	/**
 	 * 新規作成
 	 * @version 2020/01/09
-	 * 
+	 *
 	 */
   workSubcontractorDetailCreate = (e, passIndex) => {
 
@@ -279,7 +279,7 @@ export default class WorkEditor extends React.Component {
 	/**
 	 * 更新
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
   workSubcontractorDetailUpdate = () => {
 
@@ -292,14 +292,14 @@ export default class WorkEditor extends React.Component {
     if(work_subcontractors_iterate.length > 0) {
 			work_subcontractors_iterate.map((subcontractor) => {
 				subcontractor.details.map((detail) => {
-	
+
 					const result = detail.actual_cost ? true : false;
 					if(!result) {
-	
+
 						window.confirm('空欄の実績原価が存在しています。半角数字を入力しなおしてください。');
 						return false;
 					};
-	
+
 					send_array_details.push(JSON.stringify({ ...detail }));
 					actual_cost = Number(actual_cost) + Number(detail.actual_cost);
 				});
@@ -309,7 +309,7 @@ export default class WorkEditor extends React.Component {
 				const delivery_date = subcontractor.delivery_date;
 				const delivery_destination = subcontractor.delivery_destination;
 				const notices = subcontractor.notices;
-				send_array_subcontractors.push(JSON.stringify({ 
+				send_array_subcontractors.push(JSON.stringify({
 					id: id, order_date: order_date, delivery_date: delivery_date, delivery_destination: delivery_destination, notices: notices
 				}));
 			});
@@ -354,7 +354,7 @@ export default class WorkEditor extends React.Component {
 	/**
 	 * 削除
 	 * @version 2020/01/09
-	 * 
+	 *
 	 */
   workSubcontractorDetailDestroy = (e, passIndex, passIndex1) => {
 
@@ -379,7 +379,7 @@ export default class WorkEditor extends React.Component {
 			const delivery_destination = sub.delivery_destination;
 			const notices = sub.notices;
 			const details = sub.details ? sub.details : null;
-			subcontractors.push({ 
+			subcontractors.push({
 				id: id,
 				client: client,
 				division: division,
@@ -393,7 +393,7 @@ export default class WorkEditor extends React.Component {
 		});
 
     const url = '/work_subcontractor_details/' + e.target.value;
-    const field = { 
+    const field = {
 			'work_id': this.state.work.id,
 		};
     Request
@@ -415,7 +415,7 @@ export default class WorkEditor extends React.Component {
 	/**
 	 * 外注先削除
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
   workSubcontractorDestroy = (e, passIndex) => {
 
@@ -431,7 +431,7 @@ export default class WorkEditor extends React.Component {
 
     const url = '/work_subcontractors/' + e.target.value;
 		const field = { 'work_id': this.state.work.id };
-		
+
     Request
       .del(url)
       .field(field)
@@ -447,11 +447,11 @@ export default class WorkEditor extends React.Component {
         };
       });
 	};
-	
+
 	/**
 	 * アラート処理
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	windowConfirm = () => {
 
@@ -461,7 +461,7 @@ export default class WorkEditor extends React.Component {
 			window.confirm('キャンセルしました。');
 			return false;
 		};
-		
+
 		return true;
 	};
 
@@ -648,7 +648,7 @@ export default class WorkEditor extends React.Component {
 		work_details[passIndex].estimated_cost = value;
 		this.setState({ work_details: work_details });
 	};
-	
+
 	/**
 	 * 特記事項更新
 	 * @versions 2019/12/26
@@ -661,9 +661,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	setOrderContents = (e, passIndex, passIndex1) => {
 
@@ -673,9 +673,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	setDeliverMethod = (e, passIndex, passIndex1) => {
 
@@ -685,9 +685,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	setSpecification = (e, passIndex, passIndex1) => {
 
@@ -697,9 +697,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	setCount = (e, passIndex, passIndex1) => {
 
@@ -709,9 +709,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	setNumberOfCopies = (e, passIndex, passIndex1) => {
 
@@ -721,9 +721,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	setActualCost = (e, passIndex, passIndex1) => {
 
@@ -733,22 +733,22 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	setOrderDate = prop => {
 
 		let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
 		work_subcontractors_iterate[prop.index].order_date = prop.value;
-	
+
 		this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/07
-	 * 
+	 *
 	 */
 	setDeliveryDate = prop => {
 
@@ -758,9 +758,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/08
-	 * 
+	 *
 	 */
 	setDeliveryDestination = (passIndex, value) => {
 
@@ -770,9 +770,9 @@ export default class WorkEditor extends React.Component {
 	};
 
 	/**
-	 * 
+	 *
 	 * @version 2020/01/08
-	 * 
+	 *
 	 */
 	setNotices = (passIndex, value) => {
 
@@ -781,7 +781,7 @@ export default class WorkEditor extends React.Component {
 		this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
 	};
 
-	
+
 	/**
 	 * htmlを埋め込む
 	 * @version 2019/12/26
@@ -795,35 +795,36 @@ export default class WorkEditor extends React.Component {
 	};
 
   /**
+   *
    * 表示処理
    */
   render() {
     return (
       <Fragment>
-				<WorkDivisionInfo division={ this.state.division } passedDivision={ this.passedDivision }/>
-				<WorkDetails	work_notices={ this.state.work.notices } work_details={ this.state.work_details } 
-											work_id={ this.state.work.id } user_id={ this.props.user_id } users={ this.props.users } 
-											passedPrice={ this.passedPrice } setDeOrderContents={ this.setDeOrderContents } setDangerHtml={ this.setDangerHtml }
-											setDeDeliverMethod={ this.setDeDeliverMethod } setDeSpecification={ this.setDeSpecification }
-											setDeDeliverAt={ this.setDeDeliverAt } setDeClientName={ this.setDeClientName }
-											setDeNumberOfCopies={ this.setDeNumberOfCopies } setDeCount={ this.setDeCount } 
-											setDeCost={ this.setDeCost } setDeNotices={ this.setDeNotices } onWorkDetailUpdate={ this.onWorkDetailUpdate }
-											onWorkDetailCreate={ this.onWorkDetailCreate } onWorkNoticesUpdate={ this.onWorkNoticesUpdate }
-											onWorkDetailDestroy={ this.onWorkDetailDestroy }
-				/>
-				<AddSubcontractor	work_subcontractors={ this.state.work_subcontractors } subcontractor_details={ this.props.subcontractor_details } 
-													work_id={ this.state.work.id } subcontractors={ this.props.subcontractors } divisions={ this.props.divisions } 
-													clients={ this.props.clients } passedPrice={ this.passedPrice } users={ this.props.users } 
-													prefectures={ this.props.prefectures } setDangerHtml={ this.setDangerHtml } work_subcontractors_iterate={ this.state.work_subcontractors_iterate }
-													setOrderContents={ this.setOrderContents } setOrderContents={ this.setOrderContents } setDeliverMethod={ this.setDeliverMethod }
-													setSpecification={ this.setSpecification } setCount={ this.setCount } setNumberOfCopies={ this.setNumberOfCopies }
-													setActualCost={ this.setActualCost } setOrderDate={ this.setOrderDate } setDeliveryDate={ this.setDeliveryDate }
-													setDeliveryDestination={ this.setDeliveryDestination } setNotices={ this.setNotices }
-													workSubcontractorDetailDestroy={ this.workSubcontractorDetailDestroy } workSubcontractorCreate={ this.workSubcontractorCreate }
-													workSubcontractorDetailCreate={ this.workSubcontractorDetailCreate } workSubcontractorDetailUpdate={ this.workSubcontractorDetailUpdate }
-													workSubcontractorDestroy={ this.workSubcontractorDestroy } windowConfirm={ this.windowConfirm } applyClient={ this.applyClient }
-				/>
-				<SalesTable project_price={ this.state.project_price } work_price={ this.state.work.price }/>
+  			<WorkDivisionInfo division={ this.state.division } passedDivision={ this.passedDivision }/>
+  			<WorkDetails	work_notices={ this.state.work.notices } work_details={ this.state.work_details }
+  										work_id={ this.state.work.id } user_id={ this.props.user_id } users={ this.props.users }
+  										passedPrice={ this.passedPrice } setDeOrderContents={ this.setDeOrderContents } setDangerHtml={ this.setDangerHtml }
+  										setDeDeliverMethod={ this.setDeDeliverMethod } setDeSpecification={ this.setDeSpecification }
+  										setDeDeliverAt={ this.setDeDeliverAt } setDeClientName={ this.setDeClientName }
+  										setDeNumberOfCopies={ this.setDeNumberOfCopies } setDeCount={ this.setDeCount }
+  										setDeCost={ this.setDeCost } setDeNotices={ this.setDeNotices } onWorkDetailUpdate={ this.onWorkDetailUpdate }
+  										onWorkDetailCreate={ this.onWorkDetailCreate } onWorkNoticesUpdate={ this.onWorkNoticesUpdate }
+  										onWorkDetailDestroy={ this.onWorkDetailDestroy }
+  			/>
+  			<AddSubcontractor	work_subcontractors={ this.state.work_subcontractors } subcontractor_details={ this.props.subcontractor_details }
+  												work_id={ this.state.work.id } divisions={ this.props.divisions }
+  												clients={ this.props.clients } passedPrice={ this.passedPrice } users={ this.props.users }
+  												prefectures={ this.props.prefectures } setDangerHtml={ this.setDangerHtml } work_subcontractors_iterate={ this.state.work_subcontractors_iterate }
+  												setOrderContents={ this.setOrderContents } setOrderContents={ this.setOrderContents } setDeliverMethod={ this.setDeliverMethod }
+  												setSpecification={ this.setSpecification } setCount={ this.setCount } setNumberOfCopies={ this.setNumberOfCopies }
+  												setActualCost={ this.setActualCost } setOrderDate={ this.setOrderDate } setDeliveryDate={ this.setDeliveryDate }
+  												setDeliveryDestination={ this.setDeliveryDestination } setNotices={ this.setNotices }
+  												workSubcontractorDetailDestroy={ this.workSubcontractorDetailDestroy } workSubcontractorCreate={ this.workSubcontractorCreate }
+  												workSubcontractorDetailCreate={ this.workSubcontractorDetailCreate } workSubcontractorDetailUpdate={ this.workSubcontractorDetailUpdate }
+  												workSubcontractorDestroy={ this.workSubcontractorDestroy } windowConfirm={ this.windowConfirm } applyClient={ this.applyClient }
+  			/>
+  			<SalesTable project_price={ this.state.project_price } work_price={ this.state.work.price }/>
       </Fragment>
     );
   };

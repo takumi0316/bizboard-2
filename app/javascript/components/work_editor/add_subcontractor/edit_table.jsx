@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import Style 	             from '../style.sass';
 
 // import components
-import ClientSearch	   from '../client_search/index.jsx';
-import DatetimePicker  from '../../utilities/datetime_picker/index';
+import ClientSearch	   from '../../utilities/client_search';
+import DatetimePicker  from '../../utilities/datetime_picker';
 const EditTable = props => {
 
 	return(
@@ -32,7 +32,7 @@ const EditTable = props => {
 									  : null
 								  }
 							  <div className={ 'u-mt-10 c-flex__start' }>
-								  <ClientSearch prefectures={ props.prefectures } applyClient={ props.applyClient } index={ index } users={ props.users } />
+								  <ClientSearch applyClient={ props.applyClient } index={ index } path={ '/subcontractor_division_clients.json?search=' } notFound={ '外注先情報が見つかりませんでした' } typeName={ '外注先情報' }/>
 								  <div>
 									  <button className={ 'u-mt-10 c-btnMain-primaryA' } value={ work_subcontractor.id } onClick={ e => props.workSubcontractorDestroy(e, index) }>外注先[削除]</button>
 								  </div>

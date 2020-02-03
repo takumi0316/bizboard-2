@@ -14,52 +14,50 @@ Rails.application.routes.draw do
     post :create_logo
     post :create_favicon
   end
+
   resources :configs
 
   # 目標管理
   resources :targets
 
-  # 案件
+  # 品目
   resources :projects
 
-  #見積もり
-  namespace :quotes do
-    get  :pdf_dl
-  end
+  # 案件
   resources :quotes do
     post :status
     post :copy
     member do
-      get 'wicked_pdf'
-      get 'delivery_note_pdf'
+      get :pdf
     end
   end
 
+  # 案件詳細
   resources :quote_projects, only: [:create, :destroy]
 
-  # 案件
+  # 請求
   namespace :invoices do
     post :apipost
     get :roundup
   end
+
   resources :invoices do
     member do
-      get 'wicked_pdf'
+      get :pdf
     end
   end
-  #get 'invoices/:id/wicked_pdf' => 'invoices#wicked_pdf'
 
   # 活動履歴
   resources :activities
 
-  # 納品書
-	resources :deliveries do
-		member do
-			get 'delivery_pdf'
-		end
+  # 納品
+  resources :delivery_notes do
+    member do
+      get :pdf
+    end
   end
 
-  # 作業進捗
+  # 作業
   resources :works do
     member do
       get :directions
@@ -68,40 +66,44 @@ Rails.application.routes.draw do
 
   # 作業詳細
   resources :work_details
+
+  # 外注先作業
   resources :work_subcontractors
+
+  # 外注先作業詳細
   resources :work_subcontractor_details
 
-  # 取引先
-  resources :companies do
-    collection do
-      post :bulk
-    end
-  end
+  # 取引先(会社)
+  resources :companies
+
+  # 取引先(部署)
   resources :company_divisions
+
+  # 取引先(担当者)
   resources :company_division_clients
 
-  # 外注先
-  resources :subcontractors do
-    collection do
-      post :bulk
-    end
-  end
+  # 外注先(会社)
+  resources :subcontractors
+
+  # 外注先(部署)
   resources :subcontractor_divisions
+
+  # 外注先(担当者)
   resources :subcontractor_division_clients
 
-  #外注先支払い情報
+  # 外注先支払い情報
   resources :payments
 
-  #取引先請求情報
+  # 取引先請求情報
   resources :profits
 
-  #請求情報
+  # 請求情報
   resources :bills
 
-  #経費入力
+  # 経費入力
   resources :expendables
 
-  #労務費入力
+  # 労務費入力
   resources :labors
 
   # 自社部署

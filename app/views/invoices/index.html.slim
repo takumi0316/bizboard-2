@@ -20,12 +20,12 @@ p 検索して絞り込んだ請求書をまとめて請求書鑑を作成しま
       - invoices.each do |r|
         tr
           td = r.id
-          td = r.quote.quote_number
+          td = r.quote&.quote_number
           td = r.subject.truncate(25)
           td
-            - if r.quote.company_division_client_id?
+            - if r.quote&.company_division_client_id?
               = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
-          td = "¥ #{r.quote.price.to_s(:delimited)}"
+          td = "¥ #{r.quote&.price&.to_s(:delimited)}"
           td = r.date
           td = link_to '編集', edit_invoice_path(r), class: 'c-btnMain-standard'
           td = link_to '削除', invoice_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }

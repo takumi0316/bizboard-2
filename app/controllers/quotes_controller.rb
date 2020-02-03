@@ -304,17 +304,17 @@ class QuotesController < ApplicationController
       end
     end
 
-    redirect_to edit_quote_path(clone_quote), flash: {notice: {message: '案件を複製しました'}}
+    redirect_to edit_quote_path(clone_quote), flash: { notice: { message: '案件を複製しました' } }
   end
 
-  def wicked_pdf
+  def pdf
 
     respond_to do |format|
       format.html do
-        render  pdf: "見積書_#{quote.id}", #pdfファイルの名前。これがないとエラーが出ます
+        render  pdf: "見積書_#{quote.id}", # pdfファイルの名前。これがないとエラーが出ます
                 encoding: 'UTF-8',
                 layout: 'layouts/pdf.html.slim',
-                template: 'quotes/wicked_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
+                template: 'quotes/pdf.html.slim', # テンプレートファイルの指定。viewsフォルダが読み込まれます。
                 show_as_html: params.key?('debug')
       end
     end
