@@ -79,7 +79,7 @@ class QuotesController < ApplicationController
     @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
-    if @user_type == 'general' && @count.present? || @user_type == 'manager' && @count.present?
+    if @user_type == 'general' && @count.present? || @user_type == 'manager' && @count.present? || @user_type == 'operator' && @count.present?
       @quotes = quotes
     elsif @user_type == 'manager'
       @quotes = quote_manager
