@@ -98,7 +98,7 @@ class DeliveryNotesController < ApplicationController
 	#
 	def edit
 
-    add_breadcrumb '納品書一覧', path: deliveries_path
+    add_breadcrumb '納品書一覧', path: delivery_notes_path
     add_breadcrumb '編集'
 	end
 
@@ -106,10 +106,10 @@ class DeliveryNotesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render  pdf: "納品書_#{quote.id}", #pdfファイルの名前。これがないとエラーが出ます
+        render  pdf: "納品書_#{quote.id}", # pdfファイルの名前。これがないとエラーが出ます
                 encoding: 'UTF-8',
                 layout: 'layouts/pdf.html.slim',
-                template: 'deliveries/delivery_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
+                template: 'delivery_notes/pdf.html.slim', # テンプレートファイルの指定。viewsフォルダが読み込まれます。
                 show_as_html: params.key?('debug')
       end
     end
