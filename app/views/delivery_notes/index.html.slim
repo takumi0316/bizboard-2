@@ -37,7 +37,7 @@
               td = r.work.status_i18n
               td = r&.subject
               td = r.deliver_at&.to_date
-              td = link_to '編集', edit_delivery_path(r), class: 'c-btnMain-standard'
+              td = link_to '編集', edit_delivery_note_path(r), class: 'c-btnMain-standard'
           - else
             tr
               td
@@ -59,7 +59,7 @@
               td = r.work&.status_i18n
               td = r&.subject
               td = r.deliver_at&.to_date
-              td = link_to '編集', edit_delivery_path(r), class: 'c-btnMain-standard'
+              td = link_to '編集', edit_delivery_note_path(r), class: 'c-btnMain-standard'
         - else
           tr
             td
@@ -85,6 +85,6 @@
                 = r.work.status_i18n
             td = r&.subject
             td = r.deliver_at&.to_date
-            td = link_to '編集', edit_delivery_path(r), class: 'c-btnMain-standard'
+            td = link_to '編集', edit_delivery_note_path(r), class: 'c-btnMain-standard'
 
 = render 'layouts/_partials/pagination'
