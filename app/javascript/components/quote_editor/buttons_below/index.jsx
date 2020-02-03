@@ -7,18 +7,18 @@ const ButtonsBelow = props => {
       { props.quote.id ?
         <div>
           <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={ e => props.onSubmit(e) }>更新する</div>
-          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotes/${props.quote.id}/wicked_pdf `} target="_blank">見積書ダウンロード</a>
+          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotes/${props.quote.id}/pdf `} target="_blank">見積書ダウンロード</a>
           { props.quote.status == 'end_work'?
             <a className='c-btnMain-standard c-btn-orange u-ml-30' href={ `/invoices/new?quote_id=${props.quote.id}` }>請求書作成</a>
             : null
           }
           { props.quote.status == 'invoicing'?
-            <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/invoices/${props.invoice.id}'/edit` } >請求書</a>
+            <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/invoices/${props.invoice.id}/edit` } >請求書</a>
             : null
           }
         	{ props.invoice ?
           	<a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/deliveries/${props.quote.id}/edit` } target="_blank">納品書ダウンロード</a>
-        		: null 
+        		: null
           }
         	{ props.work ?
           	<a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/works/${props.work.id}` }>作業書</a>
@@ -27,7 +27,7 @@ const ButtonsBelow = props => {
           <a className='c-btnMain-standard c-btn-blue u-ml-30' href={	`/activities?name=${props.quote.id}` } >活動履歴</a>
           { props.task ?
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/tasks/${props.task.id}` }>チャット</a>
-            : null 
+            : null
           }
         </div>
       	: <div className='c-btnMain-standard c-btn-blue' onClick={ e => props.onSubmit(e) }>作成する</div>

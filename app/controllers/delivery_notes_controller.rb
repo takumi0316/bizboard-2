@@ -1,7 +1,7 @@
 ##
 # Invoices Controller
 #
-class DeliveriesController < ApplicationController
+class DeliveryNotesController < ApplicationController
 
   #----------------------------------------
   #  ** Includes **
@@ -102,7 +102,7 @@ class DeliveriesController < ApplicationController
     add_breadcrumb '編集'
 	end
 
-	def delivery_pdf
+	def pdf
 
     respond_to do |format|
       format.html do

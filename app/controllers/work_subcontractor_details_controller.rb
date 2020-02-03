@@ -8,7 +8,6 @@ class WorkSubcontractorDetailsController < ApplicationController
   #  ** Instance variables **
   #------------------------------------------
 
-  # 作業
   #------------------------------------------
   #  ** Layouts **
   #------------------------------------------

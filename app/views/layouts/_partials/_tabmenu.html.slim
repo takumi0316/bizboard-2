@@ -9,7 +9,7 @@ ul.l-dashboard__tabmenu
       = link_to_unless_current '活動履歴', activities_path, class: 'l-dashboard__tabmenuText' do
         .l-dashboard__tabmenuText--active 活動履歴
     li
-      = link_to_unless_current '納品書', deliveries_path, class: 'l-dashboard__tabmenuText' do
+      = link_to_unless_current '納品書', delivery_notes_path, class: 'l-dashboard__tabmenuText' do
         .l-dashboard__tabmenuText--active 納品書
     li
       = link_to_unless_current '請求書', invoices_path, class: 'l-dashboard__tabmenuText' do

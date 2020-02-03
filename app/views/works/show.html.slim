@@ -217,10 +217,5 @@
     subcontractor_details: work.subcontractor_detail,
     subcontractor_detail_actual_cost: (work.subcontractor_detail.sum(:actual_cost)).to_i,
 		project_price: work.quote&.price,
-		users: User.all,
-		subcontractors: Subcontractor.all,
-    divisions: SubcontractorDivision.all,
-    clients: SubcontractorDivisionClient.all,
-    prefectures: Prefecture.all,
 		work_subcontractors_iterate: work.iterate,
   })
