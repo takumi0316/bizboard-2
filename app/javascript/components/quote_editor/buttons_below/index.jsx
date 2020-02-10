@@ -7,7 +7,7 @@ const ButtonsBelow = props => {
       { props.quote.id ?
         <div>
           <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={ e => props.onSubmit(e) }>更新する</div>
-          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotes/${props.quote.id}/pdf `} target="_blank">見積書ダウンロード</a>
+          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotes/${props.quote.id}/pdf` } target="_blank">見積書ダウンロード</a>
           { props.quote.status == 'end_work'?
             <a className='c-btnMain-standard c-btn-orange u-ml-30' href={ `/invoices/new?quote_id=${props.quote.id}` }>請求書作成</a>
             : null
