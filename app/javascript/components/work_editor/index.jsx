@@ -70,8 +70,8 @@ export default class WorkEditor extends React.Component {
 
 		e.preventDefault();
 		let work_details = this.state.work_details.slice();
-    let url = '/work_details';
-    let field = {
+    const url = '/work_details';
+    const field = {
       'work_detail[work_id]': this.state.work.id,
     };
     Request
@@ -123,7 +123,7 @@ export default class WorkEditor extends React.Component {
       };
     };
 
-    let url = '/work_details';
+    const url = '/work_details';
     Request
       .post(url)
       .field(field)
@@ -151,9 +151,8 @@ export default class WorkEditor extends React.Component {
   onWorkNoticesUpdate = (actual_cost, type) => {
 
 		const work = Object.assign({}, this.state.work);
-    let field = {};
-		let url = '/works/' + work.id;
-    field = {
+		const url = '/works/' + work.id;
+    const field = {
       'work_id': work.id,
       'work_notices': work.notices || '',
       'status': 'notices',
@@ -176,12 +175,12 @@ export default class WorkEditor extends React.Component {
 	 * 作業書詳細消去
 	 * @versions 2019/12/27
 	 */
-	onWorkDetailDestroy = (passIndex) => {
+	onWorkDetailDestroy = passIndex => {
 
 		let work_details = this.state.work_details.slice();
 		work_details.splice(passIndex, 1);
-    let url = '/work_details/' + this.state.work_details[passIndex].id;
-    let field = {
+    const url = '/work_details/' + this.state.work_details[passIndex].id;
+    const field = {
       'work_detail[work_id]': this.state.work.id,
     };
     Request
@@ -210,8 +209,8 @@ export default class WorkEditor extends React.Component {
 		e.preventDefault();
 
 		let work_subcontractors_iterate = Object.assign(JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
-    let url = '/work_subcontractors';
-    let field = {
+    const url = '/work_subcontractors';
+    const field = {
       'work_subcontractors[work_id]': this.state.work.id,
       'contents': 'create',
 		};
@@ -512,8 +511,8 @@ export default class WorkEditor extends React.Component {
 
   passedDivision = (division) => {
 
-    let url = '/works/' + this.state.work.id;
-    let field = {
+    const url = '/works/' + this.state.work.id;
+    const field = {
       'division_id': division.id,
       'status': 'division',
     }
