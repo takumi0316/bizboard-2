@@ -2,21 +2,6 @@ import React, { Fragment } from 'react';
 
 const SalesTables = props => {
 
-  console.log('=== project price ===');
-  console.log(props.project_price);
-  console.log('=== project price ===');
-
-  console.log('=== work price ===');
-  console.log(props.work_price);
-  console.log('=== work price ===');
-
-  console.log('=== work && price subtraction ===');
-  console.log(props.project_price - props.work_price);
-  console.log('=== work && price subtraction ===');
-
-  console.log('=== project && work division ===');
-  console.log(((props.project_price - props.work_price) / props.project_price) * 100);
-  console.log('=== project && work division ===');
 	return(
 		<Fragment>
 			<div className={ 'c-form-label u-mt-20' }>

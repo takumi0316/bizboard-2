@@ -5,18 +5,18 @@ import Style								from '../style.sass';
 import Dayjs from 'dayjs';
 const ReadTable = props => {
 
-	return(
-		<div>
+  return(
+    <div>
       <div className={ Style.AddSubcontractor__EditButton }>
         <button className={ 'c-btnMain-standard' } onClick={ e => props.onEditable(e) }>外注先[編集]</button>
       </div>
       { props.work_subcontractors_iterate ?
         <Fragment>
           { props.work_subcontractors_iterate.map((work_subcontractor, index) => {
-						const key = 'work_subcontractor' + index;
+            const key = 'work_subcontractor' + index;
             return(
               <Fragment key={ key }>
-								{ work_subcontractor ?
+                { work_subcontractor.client ?
                   <a className={ 'c-btnMain-primaryB u-mt-20' } href={ '/work_subcontractors/' + work_subcontractor.id } target='_blank'>外注指示書発行</a>
                   : null
                 }
@@ -28,33 +28,33 @@ const ReadTable = props => {
                 <Fragment>
                   { work_subcontractor.client ?
                     <div className={ 'c-attention' }>
-                    	<div className={ 'u-mt-10' }>会社名: { work_subcontractor.subcontractor.name || '部署名なし' }</div>
+                      <div className={ 'u-mt-10' }>会社名: { work_subcontractor.subcontractor.name || '部署名なし' }</div>
                       <div className={ 'u-mt-10' }>部署名: { work_subcontractor.division.name }</div>
-                    	<div className={ 'u-mt-10' }>担当者名: { work_subcontractor.client.name }</div>
-                    	<div className={ 'u-mt-10' }>担当者TEL: { work_subcontractor.client.tel }</div>
-                    	<div className={ 'u-mt-10' }>担当者email: { work_subcontractor.client.email }</div>
+                      <div className={ 'u-mt-10' }>担当者名: { work_subcontractor.client.name }</div>
+                      <div className={ 'u-mt-10' }>担当者TEL: { work_subcontractor.client.tel }</div>
+                      <div className={ 'u-mt-10' }>担当者email: { work_subcontractor.client.email }</div>
                     </div>
                     : null
                   }
-              	</Fragment>
-              	<div className={ 'c-table u-mt-20' }>
-                	<table>
+                </Fragment>
+                <div className={ 'c-table u-mt-20' }>
+                  <table>
                     <thead>
                       <tr>
                         <th className={ 'u-va-middle' }>No.</th>
-												<th className={ 'u-va-middle' }>発注内容</th>
+                        <th className={ 'u-va-middle' }>発注内容</th>
                         <th className={ 'u-va-middle' }>入稿物</th>
-												<th className={ 'u-va-middle' }>仕様</th>
+                        <th className={ 'u-va-middle' }>仕様</th>
                         <th>原稿<br />数量</th>
                         <th>部数<br />数量</th>
                         <th className={ 'u-va-middle' }>実績原価</th>
                       </tr>
                     </thead>
                     <tbody>
-              	      { work_subcontractor.details ?
+                      { work_subcontractor.details ?
                         <Fragment>
                           { work_subcontractor.details.map((detail, index) => {
-														const key = 'subcontractor' + index;
+                            const key = 'subcontractor' + index;
                             return(
                               <tr key={ key }>
                                 <td className={ 'u-va-top u-ta-center' }>{ index + 1 }</td>
@@ -70,8 +70,8 @@ const ReadTable = props => {
                         </Fragment>
                         : null
                       }
-                  	</tbody>
-                </table>
+                    </tbody>
+                  </table>
                 </div>
                 <div className={ 'c-table' }>
                   <table>
@@ -112,7 +112,7 @@ const ReadTable = props => {
         : null
       }
     </div>
-	);
+  );
 };
 
 export default ReadTable;

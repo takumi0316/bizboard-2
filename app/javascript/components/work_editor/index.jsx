@@ -223,19 +223,19 @@ export default class WorkEditor extends React.Component {
       .end((err, res) => {
         if(!err && res.body.status == 'success') {
 
-					const subcontractor = res.body.subcontractor;
-					const copy = {
-						id: subcontractor.id,
-						client: null,
-						division: null,
-						subcontractor: null,
-						order_date: subcontractor.order_date,
-						delivery_date: subcontractor.delivery_date,
-						delivery_destination: '',
-						notices: '',
-						details: null
-					};
-					work_subcontractors_iterate.push(copy);
+          const subcontractor = res.body.subcontractor;
+          const copy = {
+            id: subcontractor.id,
+            client: null,
+            division: null,
+            subcontractor: null,
+            order_date: subcontractor.order_date,
+            delivery_date: subcontractor.delivery_date,
+            delivery_destination: '',
+            notices: '',
+            details: []
+          };
+          work_subcontractors_iterate.push(copy);
           this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
         } else {
 
@@ -266,7 +266,7 @@ export default class WorkEditor extends React.Component {
       .end((err, res) => {
         if (!err && res.body.status === "success") {
 
-					work_subcontractors_iterate[passIndex].details.push(res.body.detail);
+          work_subcontractors_iterate[passIndex].details.push(res.body.detail);
           this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
         } else {
 
@@ -324,9 +324,9 @@ export default class WorkEditor extends React.Component {
       field = {
         'subcontractor_detail[work_subcontractor_id]': '',
         'token':                                       'empty',
-        'work_id':                                     this.props.work_id,
+        'work_id':                                     this.props.work.id,
       };
-    };
+		};
 
     const url = '/work_subcontractor_details';
     Request
