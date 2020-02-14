@@ -82,15 +82,15 @@ class Work < ApplicationRecord
       reshape_detail = []
       associative = { id: nil, client: nil, division: nil, subcontractor: nil, order_date: '', delivery_date: '', delivery_destination: '', notices: '', details: [] }
 
-      associative[:id]                    = i[0] ? i[0] : nil
-      associative[:client]                = i[1] ? SubcontractorDivisionClient.find(i[1]) : nil
-      associative[:division]              = i[1] ? SubcontractorDivision.find(SubcontractorDivisionClient.find(i[1]).subcontractor_division_id) : nil
-      associative[:subcontractor]         = i[1] ? Subcontractor.find(SubcontractorDivision.find(SubcontractorDivisionClient.find(i[1]).subcontractor_division_id).subcontractor_id) : nil
-      associative[:order_date]            = i[2] ? i[2] : ''
-      associative[:delivery_date]         = i[3] ? i[3] : ''
-      associative[:delivery_destination]  = i[4] ? i[4] : ''
-      associative[:notices]               = i[5] ? i[5] : ''
-      i[0] ? WorkSubcontractor.find(i[0]).detail.each { |detail| reshape_detail.push(detail) if detail.work_id == self.id && detail.work_subcontractor_id == i[0] } : nil
+      associative[:id]                    = i[0] if i[0]
+      associative[:client]                = SubcontractorDivisionClient.find(i[1]) if i[1]
+      associative[:division]              = SubcontractorDivision.find(SubcontractorDivisionClient.find(i[1]).subcontractor_division_id) if i[1]
+      associative[:subcontractor]         = Subcontractor.find(SubcontractorDivision.find(SubcontractorDivisionClient.find(i[1]).subcontractor_division_id).subcontractor_id) if i[1]
+      associative[:order_date]            = i[2] || ''
+      associative[:delivery_date]         = i[3] || ''
+      associative[:delivery_destination]  = i[4] || ''
+      associative[:notices]               = i[5] || ''
+      WorkSubcontractor.find(i[0]).detail.each { |detail| reshape_detail.push(detail) if detail.work_id == self.id && detail.work_subcontractor_id == i[0] } if i[0]
 
       associative[:details]                = reshape_detail
 
