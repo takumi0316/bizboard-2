@@ -104,17 +104,20 @@ export default class DatetimePicker extends React.Component {
    */
   close = () => {
 
-    const send = {
-      action: this.props.action,
-      value: this.state.current_datetime.format('YYYY-MM-DD'),
-      index: this.props.index
-    };
-
     this.setState({ show: false }, () => {
       document.body.style.overflow = 'auto';
     });
 
-    if(this.props.sortingAction) this.props.sortingAction(send);
+    if(this.props.sortingAction) {
+
+      const send = {
+        action: this.props.action,
+        value: this.state.current_datetime.format('YYYY-MM-DD'),
+        index: this.props.index
+      };
+
+      this.props.sortingAction(send);
+    };
   };
 
   /**
@@ -155,7 +158,7 @@ export default class DatetimePicker extends React.Component {
       if (!this.props.show_time) this._apply(e);
     });
 	};
-	
+
 	range = (start, end) => {
     return Array.from({length: (end + 1 - start)}, (v, k) => k + start );
 	};

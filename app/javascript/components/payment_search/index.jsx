@@ -12,12 +12,11 @@ const PaymentSearch = props => {
 
   const date = new Date();
   const year = date.getFullYear();
-  const last_month = date.getMonth() - 1;
-  const next_month = date.getMonth() + 2;
+  const month = date.getMonth();
 	const day = date.getDate();
 
   const init = {
-    startDate: new Date(year, last_month, day),
+   date: new Date(year, month, day),
 	};
 
 	const [state, setState] = useState(init);
@@ -28,30 +27,9 @@ const PaymentSearch = props => {
 		if(!values) return;
 
 		setState({
-			...state,
-			startDate: values['date'],
+			date: values['date'],
 		});
 	}, []);
-
-	/**
-	 *
-	 * @version 2020/01/08
-	 *
-	 */
-  const setStartDate = prop => {
-
-    setState({ ...state, startDate: prop.value });
-  };
-
-	/**
-	 *
-	 * @version 2020/01/08
-	 *
-	 */
-  const setEndDate = prop => {
-
-    setState({ ...state, endDate: prop.value });
-  };
 
   const onSearchParams = () => {
 
@@ -76,33 +54,14 @@ const PaymentSearch = props => {
     return value;
 	};
 
-	/**
-	 * DatetimePickerから渡ってきた値を振り分けてsetStateする
-	 * @version 2020/01/08
-	 *
-	 */
-	const sortingAction = prop => {
-
-		switch(prop.action) {
-		  case 'start_date':
-				setStartDate(prop);
-				break;
-			default:
-					break;
-		};
-	};
-
   return (
     <div className={ 'c-search__work-index u-mt-20' }>
       <Fragment>
         <label>日付検索 ※外注書に登録された時の日付が検索されます</label>
-  	    <span className={ 'c-form__required u-ml-10' }>現在{ props.count_number }件表示されています</span>
       </Fragment>
       <form method='get' action='/payments'>
         <div className={ 'u-mt-10 c-flex' }>
-        <DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date' } default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' }
-                        action={ 'start_date' } sortingAction={ sortingAction } index={ true }
-        />
+        <DatetimePicker key={ state.date } type={ 'text' } name={ 'date' } default_datetime={ state.date } class={ 'c-form-text__work-index__datepicker u-ml-10' }/>
         <Icon name='ei-calendar' size='m'/>
         <input type='hidden' name='count' value='1'/>
         <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
