@@ -104,15 +104,18 @@ export default class DatetimePicker extends React.Component {
    */
   close = () => {
 
-		const send = {
-			action: this.props.action,
-			value: this.state.current_datetime.format('YYYY-MM-DD'),
-			index: this.props.index
-		};
+    const send = {
+      action: this.props.action,
+      value: this.state.current_datetime.format('YYYY-MM-DD'),
+      index: this.props.index
+    };
+
     this.setState({ show: false }, () => {
       document.body.style.overflow = 'auto';
-    }, this.props.sortingAction(send));
-  }
+    });
+
+    if(this.props.sortingAction) this.props.sortingAction(send);
+  };
 
   /**
    *  前の月

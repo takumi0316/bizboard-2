@@ -19,6 +19,17 @@ h1.l-dashboard__heading 製造経費情報一覧
         th colspan= 2
     tbody
       - expendables.each do |r|
+
+        - if r.division.name == "コンサルティング2GR" && r.status_i18n == "外注費"
+          - puts "------------------------------------------------------------"
+          - puts "#{r.work_subcontractor_detail_id}"
+          - puts "申請日(外注指示書納期): #{r.date}"
+          - puts "負担部署: #{r.division.name}"
+          - puts "仕入れ先(外注先企業): #{r.subcontractor.name}"
+          - puts "勘定科目: #{r.status_i18n}"
+          - puts "外注費用(税抜き): #{r.price.to_s(:delimited)}"
+          - puts "------------------------------------------------------------"
+
         tr
           td = r.date
           td = r.division.name

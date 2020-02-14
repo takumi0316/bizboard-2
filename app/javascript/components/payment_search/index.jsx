@@ -9,7 +9,7 @@ import Request from "superagent";
 require("superagent-rails-csrf")(Request);
 
 const PaymentSearch = props => {
-		
+
   const date = new Date();
   const year = date.getFullYear();
   const last_month = date.getMonth() - 1;
@@ -18,20 +18,18 @@ const PaymentSearch = props => {
 
   const init = {
     startDate: new Date(year, last_month, day),
-    endDate: new Date(year, next_month, day)
 	};
 
 	const [state, setState] = useState(init);
-	
+
 	useEffect(() => {
 
 		const values = onSearchParams();
 		if(!values) return;
 
-		setState({ 
+		setState({
 			...state,
-			startDate: values['date1'],
-			endDate: values['date2']
+			startDate: values['date'],
 		});
 	}, []);
 
@@ -81,16 +79,13 @@ const PaymentSearch = props => {
 	/**
 	 * DatetimePickerから渡ってきた値を振り分けてsetStateする
 	 * @version 2020/01/08
-	 * 
+	 *
 	 */
 	const sortingAction = prop => {
 
 		switch(prop.action) {
 		  case 'start_date':
 				setStartDate(prop);
-				break;
-			case 'end_date':
-				setEndDate(prop);
 				break;
 			default:
 					break;
@@ -105,18 +100,13 @@ const PaymentSearch = props => {
       </Fragment>
       <form method='get' action='/payments'>
         <div className={ 'u-mt-10 c-flex' }>
-					<DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date1' } default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' }
-					                action={ 'start_date' } sortingAction={ sortingAction } index={ true }
-					/>
-          <Icon name='ei-calendar' size='m'/>
-          <p className={ 'c-search__tilde' }>〜</p>
-					<DatetimePicker key={ state.endDate } type={ 'text' } name={ 'date2' } default_datetime={ state.endDate } class={ 'c-form-text__work-index__datepicker' }
-						              action={ 'end_date' } sortingAction={ sortingAction } index={ false }
-					/>
-					<Icon name='ei-calendar' size='m'/>
-          <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
-          <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/payments' } >元に戻す</a>
+        <DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date' } default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' }
+                        action={ 'start_date' } sortingAction={ sortingAction } index={ true }
+        />
+        <Icon name='ei-calendar' size='m'/>
+        <input type='hidden' name='count' value='1'/>
+        <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
+        <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/payments' } >元に戻す</a>
         </div>
       </form>
     </div>

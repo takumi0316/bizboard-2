@@ -41,13 +41,14 @@ class PaymentsController < ApplicationController
 
     add_breadcrumb '支払い管理'
 
-    if params[:date1].present?
-      @date1 = params[:date1].to_time.beginning_of_day
-      @date2 = params[:date2].to_time.end_of_day
-    else
-      @date1 = Time.current.beginning_of_month
-      @date2 = Time.current.end_of_month
+    @start_date = Time.current.beginning_of_month
+    @end_date = Time.current.end_of_month
+
+    if params[:date].present?
+      @start_date = params[:date].to_time.beginning_of_day
+      @end_date = params[:date].to_time.end_of_day
     end
+
     @subcontractor = Subcontractor.eager_load(:payments).where.not(payments: {price: 0})
   end
 
