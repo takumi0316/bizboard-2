@@ -59,7 +59,7 @@ export default class QuoteEditor extends React.Component {
       date: props.quote.date,
       channel: props.quote.channel || '',
       expiration: props.quote.expiration,
-      price: props.quote.price ? props.quote.price : 0,
+      price: props.quote.price || 0,
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
       show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
@@ -77,7 +77,7 @@ export default class QuoteEditor extends React.Component {
    *  公開日時を適用するcallback
    *  @version 2018/06/10
    */
-  setDeliverAt = (datetime) => {
+  setDeliverAt = datetime => {
 
     this.setState({
       deliver_at: datetime.datetime,
@@ -88,7 +88,7 @@ export default class QuoteEditor extends React.Component {
    *  見積もり作成日時を適用するcallback
    *  @version 2018/06/10
    */
-  setDate = (datetime) => {
+  setDate = datetime => {
 
     this.setState({
       date: datetime.datetime,
@@ -99,7 +99,7 @@ export default class QuoteEditor extends React.Component {
    *  見積もり期日を適用するcallback
    *  @version 2018/06/10
    */
-  setExpiration = (datetime) => {
+  setExpiration = datetime => {
 
     this.setState({
       expiration: datetime.datetime,
@@ -110,7 +110,7 @@ export default class QuoteEditor extends React.Component {
 	* タイトルの変更処理
 	* @version 2019/12/20
 	*/
-	setSubject = (subject) => {
+	setSubject = subject => {
 
 		this.setState({ quote_subject: subject });
 	};
@@ -119,7 +119,7 @@ export default class QuoteEditor extends React.Component {
 	*
 	* @version 2019/12/20
 	*/
-	setDeliverType = (deliver_type) => {
+	setDeliverType = deliver_type => {
 
 		this.setState({ deliver_type: deliver_type });
 	};
@@ -128,7 +128,7 @@ export default class QuoteEditor extends React.Component {
 	*
 	* @version 2019/12/20
 	*/
-	setDeliverTypeNote = (deliver_type_note) => {
+	setDeliverTypeNote = deliver_type_note => {
 
 		this.setState({ deliver_type_note: deliver_type_note });
 	};
@@ -137,7 +137,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/20
 	 */
-	setChannel = (channel) => {
+	setChannel = channel => {
 
 		const result = channel == 'bpr_erp' ? true : false;
     this.setState({ channel: channel, show_quote_number: result });
@@ -147,7 +147,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/20
 	 */
-	setQuoteNumber = (quote_number) => {
+	setQuoteNumber = quote_number => {
 
 		this.setState({ quote_number: quote_number });
 	};
@@ -156,7 +156,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/20
 	 */
-	setReception = (reception) => {
+	setReception = reception => {
 
 		this.setState({ reception: reception });
 	};
@@ -165,7 +165,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/20
 	 */
-	setQuoteType = (quote_type) => {
+	setQuoteType = quote_type => {
 
 		this.setState({ quote_type: quote_type });
 	};
@@ -174,7 +174,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/23
 	 */
-	setRemarks = (remarks) => {
+	setRemarks = remarks => {
 
 		this.setState({ remarks: remarks });
 	};
@@ -183,7 +183,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/23
 	 */
-	setMemo = (memo) => {
+	setMemo = memo => {
 
 		this.setState({ memo: memo });
 	};
@@ -192,7 +192,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/23
 	 */
-	setPaymentTerms = (payment_terms) => {
+	setPaymentTerms = payment_terms => {
 
 		this.setState({ payment_terms: payment_terms });
 	};
@@ -201,7 +201,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/23
 	 */
-	setTaxType = (tax_type) => {
+	setTaxType = tax_type => {
 
 		this.setState({ tax_type: tax_type });
 	};
@@ -211,7 +211,7 @@ export default class QuoteEditor extends React.Component {
    *  モーダルを表示する
    *  @version 2019/12/23
    */
-  setShow = (bool) => {
+  setShow = bool => {
 
 		const undoPrice = Number(this.state.price) + Number(this.state.discount);
     bool ? this.setState({ show: bool }) : this.setState({ show: bool, discount: 0, price: undoPrice });
@@ -221,7 +221,7 @@ export default class QuoteEditor extends React.Component {
    * 値引き金額を変更
    * @version 2019/12/23
    */
-  setDiscount = (discount) => {
+  setDiscount = discount => {
 
 		const castDiscount = Number(discount);
 		const	copyProjects = this.state.quote_projects.slice();
@@ -238,27 +238,19 @@ export default class QuoteEditor extends React.Component {
    * 合計金額を変更
    * @version 2019/12/23
    */
-  setTemporaryPrice = (temporary_price) => {
+  setTemporaryPrice = temporary_price => {
 
     const castTemporaryPrice = Number(temporary_price);
-    const	copyProjects = this.state.quote_projects.slice();
-    let price = 0;
-    copyProjects.map((project) => {
-
-      price = price + Number(project.price);
-    });
-    price = castTemporaryPrice;
-    this.setState({ temporary_price: castTemporaryPrice, price: price });
+    this.setState({ temporary_price: castTemporaryPrice, price: castTemporaryPrice });
   };
 
   /**
-   * Unitを変更する
+   * 単価を変更する
    *
    */
   setUnitPrice = (passIndex, unitPrice) => {
 
-  	if (unitPrice.match(/^([1-9]¥d*|0)(¥.¥d+)?$/)) {
-
+    if (unitPrice.match(/^([1-9]¥d*|0)(¥.¥d+)?$/)) {
       alert('半角数字以外を入力しないで下さい。');
       return false
     };
@@ -272,34 +264,24 @@ export default class QuoteEditor extends React.Component {
   };
 
   /**
-   * Unitを変更する
+   * 数量を変更する
    *
    */
   setUnit = (passIndex, unit) => {
 
     if (unit != 0) {
-
-    	if (!unit.match(/^[0-9]+$/)) {
-
-      	alert('半角数字以外を入力しないで下さい。');
-				return false
-			};
-
-			let quote_projects = this.state.quote_projects.slice();
-			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
-			quote_projects[passIndex].unit = Number(unit);
-			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
-      price = Number(price) + Number(quote_projects[passIndex].price);
-      this.setState({ quote_projects: quote_projects, price: price });
-		} else {
-
-			let quote_projects =  this.state.quote_projects.slice();
-			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
-			quote_projects[passIndex].unit = Number(unit);
-			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
-      price = Number(price) + Number(quote_projects[passIndex].price);
-      this.setState({ quote_projects: quote_projects, price: price });
+      if (!unit.match(/^[0-9]+$/)) {
+        alert('半角数字以外を入力しないで下さい。');
+				return
+      };
 		};
+
+    let quote_projects = this.state.quote_projects.slice();
+    let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
+    quote_projects[passIndex].unit = Number(unit);
+    quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
+    price = Number(price) + Number(quote_projects[passIndex].price);
+    this.setState({ quote_projects: quote_projects, price: price });
 	};
 
   /**
@@ -372,16 +354,16 @@ export default class QuoteEditor extends React.Component {
     return message;
   };
 
-  onPDF = (passQuoteId) => {
+  onPDF = passQuoteId => {
 
     location.href = `/quotes/` + passQuoteId + '/wicked_pdf';
-  }
+  };
 
   /**
    *  登録処理
    *  @version 2018/06/10
    */
-  onSubmit = (e) => {
+  onSubmit = e => {
 
 		e.preventDefault();
     let arrayRails = [];
@@ -469,7 +451,7 @@ export default class QuoteEditor extends React.Component {
    *  お客様選択時
    *  @version 2018/06/10
    */
-  applyClient = (client) => {
+  applyClient = client => {
 
     this.setState({
       client: client,
@@ -478,7 +460,7 @@ export default class QuoteEditor extends React.Component {
     });
   }
 
-  applyHomeDivision = (division) => {
+  applyHomeDivision = division => {
 
     this.setState({ home_division: division })
   };
@@ -487,7 +469,7 @@ export default class QuoteEditor extends React.Component {
    *  品目選択時(案件が既に存在している場合)
    *  @version 2018/06/10
    */
-  applyProject = (project) => {
+  applyProject = project => {
 
 		const price = Number(this.state.price) + Number(project.price);
 		const url = '/quote_projects';
@@ -537,7 +519,7 @@ export default class QuoteEditor extends React.Component {
    *  品目選択時(新規案件の場合)
    *  @version 2018/06/10
    */
-  applyNewProject = (project) => {
+  applyNewProject = project => {
 
 		const price = Number(this.state.price) + Number(project.price);
 		let quote_projects = this.state.quote_projects.slice();
@@ -571,13 +553,7 @@ export default class QuoteEditor extends React.Component {
 
 		e.preventDefault();
 		const result = window.confirm('本当に消しますか？');
-		if(result) {
-
-			alert('消します！');
-		} else {
-
-			return
-		};
+		if(result) alert('消します！');
 
 		let quote_projects = this.state.quote_projects.slice();
 		quote_projects.splice(passIndex, 1);
