@@ -18,11 +18,11 @@ h1.l-dashboard__heading.u-mt-30 部署情報
   .c-form-label
     = f.label :name, '名称'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :name, placeholder: '名称', class: 'c-form-text u-mb-30', required: :true
+  = f.text_field :name, placeholder: '部署名', class: 'c-form-text u-mb-30', required: :true
 
   .c-form-label
     = f.label :kana, '名称(カナ)'
-  = f.text_field :kana, placeholder: '名称(カナ)', class: 'c-form-text u-mb-30'
+  = f.text_field :kana, placeholder: '部署名(カナ)', class: 'c-form-text u-mb-30'
 
   .c-form-label
     = f.label :zip, '郵便番号'

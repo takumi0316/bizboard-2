@@ -9,11 +9,11 @@ h1.l-dashboard__heading 取引先
   .c-form-label
     = f.label :name, '名称'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :name, placeholder: '名称', class: 'c-form-text u-mb-30', required: :true
+  = f.text_field :name, placeholder: '会社名', class: 'c-form-text u-mb-30', required: :true
 
   .c-form-label
     = f.label :kana, '名称(カナ)'
-  = f.text_field :kana, placeholder: '名称(カナ)', class: 'c-form-text u-mb-30'
+  = f.text_field :kana, placeholder: '会社名(カナ)', class: 'c-form-text u-mb-30'
 
   .c-form-label
     = f.label :note, 'メモ'
