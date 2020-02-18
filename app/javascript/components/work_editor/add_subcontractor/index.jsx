@@ -53,7 +53,8 @@ const AddSubcontractor = props => {
                     setCount={ props.setCount } setNumberOfCopies={ props.setNumberOfCopies } setActualCost={ props.setActualCost }
                     workSubcontractorDetailCreate={ props.workSubcontractorDetailCreate } sortingAction={ sortingAction }
                     setDeliveryDestination={ props.setDeliveryDestination } setNotices={ props.setNotices } workSubcontractorCreate={ props.workSubcontractorCreate }/>
-        : <ReadTable	onEditable={ onEditable } work_id={ props.work_id } setDangerHtml={ props.setDangerHtml } work_subcontractors_iterate={ props.work_subcontractors_iterate/>
+        :
+        <ReadTable	onEditable={ onEditable } work_id={ props.work_id } setDangerHtml={ props.setDangerHtml } work_subcontractors_iterate={ props.work_subcontractors_iterate }/>
       }
     </div>
   );
