@@ -93,6 +93,9 @@ import QuotationSearch from 'components/quotations/quotation_search';
 // 見積書PDF作成
 import QuotationPdfGenerator from 'components/quotations/pdf_generator';
 
+// 請求書PDF作成
+import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -118,5 +121,6 @@ WebpackerReact.setup({
 	DeliverySearch,
 	DeliveryPdfGenerator,
 	QuotationSearch,
-	QuotationPdfGenerator
+	QuotationPdfGenerator,
+	InvoicePdfGenerator,
 })

@@ -8,11 +8,11 @@ const ButtonsBelow = props => {
         <div>
           <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={ e => props.onSubmit(e) }>更新する</div>
           <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotes/${props.quote.id}/pdf` } target="_blank">見積書ダウンロード</a>
-          { props.quote.status == 'end_work'?
+          { props.quote.status == 'end_work' && !props.invoice?
             <a className='c-btnMain-standard c-btn-orange u-ml-30' href={ `/invoices/new?quote_id=${props.quote.id}` }>請求書作成</a>
             : null
           }
-          { props.quote.status == 'invoicing'?
+          { props.quote.status == 'invoicing' && props.invoice?
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/invoices/${props.invoice.id}/edit` } >請求書</a>
             : null
           }

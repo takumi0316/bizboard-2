@@ -3,25 +3,29 @@ import React, { Fragment } from 'react';
 // import libraries
 import DatetimePicker from '../../utilities/datetime_picker';
 
-const DeliveryPdfGenrator = props => {
+const QuotationPdfGenrator = props => {
 
 	return(
     <Fragment>
-      <h1 className="l-dashboard__heading">納品書: { props.quote.subject }</h1>
-      <div className="u-mt-15 c-attention">
-        <p>会社名: { props.company.name }</p>
-        <p>部署名: { props.division.name }</p>
-        <p>担当者名: { props.client.name }</p>
-      </div>
-      <form method='get' target='_blank' action={ `/delivery_notes/${props.quote.id}/pdf` }>
+      <h1 className='l-dashboard__heading'>見積書: { props.quote.subject }</h1>
+        <div className='u-mt-15 c-attention'>
+          <p>会社名: { props.company }</p>
+          <p>部署名: { props.division }</p>
+          <p>担当者名: { props.client }</p>
+        </div>
+      <form method='get' target='_blank' action={ `/quotations/${props.quote.id}/pdf` }>
         <div className='u-mt-30 c-flex'>
           <div className='c-flex__column'>
             <label className='c-form-label'>案件番号</label>
             <div>{ props.quote.quote_number }</div>
           </div>
           <div className='u-ml-30 c-flex__column'>
-            <label className='c-form-label'>納品日</label>
-            <DatetimePicker type='text' class='c-form-text__work-index__datepicker' name='date'/>
+            <label className='c-form-label'>発行日</label>
+	          <DatetimePicker type='text' class='c-form-text__work-index__datepicker' action='date' name='issues_date'/>
+          </div>
+            <div className='u-ml-30 c-flex__column'>
+            <label className='c-form-label'>有効期限</label>
+	          <DatetimePicker type='text' default_datetime={ props.quote.expiratino } class='c-form-text__work-index__datepicker' action='date' name='expiration'/>
           </div>
         </div>
         <div className='u-mt-30'>
@@ -42,27 +46,27 @@ const DeliveryPdfGenrator = props => {
               <Fragment>
                 { props.projects ?
                   <Fragment>
-                    { props.projects.map((project, index) => {
-                      const key = 'project' + new Date().getTime().toString(16) + index;
-                      return(
-                        <Fragment { ...{key} }>
+                   { props.projects.map((project, index) => {
+                   	const key = 'project' + new Date().getTime().toString(16) + index;
+                   	return(
+                      <Fragment { ...{key} }>
+                        <tr>
+                          <td>{ project.name }</td>
+                          <td>{ Number(project.unit_price).toLocaleString() }</td>
+                          <td>{ project.unit }</td>
+                          <td>{ (Number(project.unit_price) * Number(project.unit)).toLocaleString() }</td>
+                        </tr>
+                        { project.remarks != '' ?
                           <tr>
-                            <td>{ project.name }</td>
-                            <td>{ Number(project.unit_price).toLocaleString() }</td>
-                            <td>{ project.unit }</td>
-                            <td>{ (Number(project.unit_price) * Number(project.unit)).toLocaleString() }</td>
+                            <td colSpan='4'>{ project.remarks }</td>
                           </tr>
-                          { project.remarks != '' ?
-                            <tr>
-                              <td colSpan='4'>{ project.remarks }</td>
-                            </tr>
-                            : null
-                          }
-                        </Fragment>
-                      );
-                    }) }
+                         : null
+                        }
+                      </Fragment>
+                   	);
+                   }) }
                   </Fragment>
-                  : null
+                : null
                 }
               </Fragment>
               <tr>
@@ -94,11 +98,11 @@ const DeliveryPdfGenrator = props => {
           </table>
         </div>
         <div className='c-flex__center'>
-          <input type='submit' name='commit' value='納品書ダウンロード' className='u-mt-30 c-btnMain-primaryB'/>
+          <input type='submit' name='commit' value='見積書ダウンロード' className='u-mt-30 c-btnMain-primaryB'/>
         </div>
       </form>
     </Fragment>
-  );
+	);
 };
 
-export default DeliveryPdfGenrator;
+export default QuotationPdfGenrator;
