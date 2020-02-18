@@ -1,5 +1,5 @@
 ##
-# Invoices Controller
+# DeliveryNotes Controller
 #
 class DeliveryNotesController < ApplicationController
 
@@ -14,14 +14,14 @@ class DeliveryNotesController < ApplicationController
   # 見積もり
   expose_with_pagination(:quotes) {
 
-		Quote
-		.all
+    Quote
+    .all
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .order(date: 'DESC')
   }
 
-	# 見積もり
-	expose(:quote) { Quote.find_or_initialize_by id: params[:id] }
+  # 見積もり
+  expose(:quote) { Quote.find_or_initialize_by id: params[:id] }
 
   #----------------------------------------
   #  ** Layouts **
@@ -44,17 +44,17 @@ class DeliveryNotesController < ApplicationController
 		add_breadcrumb '納品書一覧'
   end
 
-	##
-	# 編集
-	# @version 2020/01/29
-	#
-	def edit
+  ##
+  # 編集
+  # @version 2020/01/29
+  #
+  def edit
 
     add_breadcrumb '納品書一覧', path: delivery_notes_path
     add_breadcrumb '編集'
-	end
+  end
 
-	def pdf
+  def pdf
 
     respond_to do |format|
       format.html do
@@ -70,7 +70,5 @@ class DeliveryNotesController < ApplicationController
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-
-  private
 
 end

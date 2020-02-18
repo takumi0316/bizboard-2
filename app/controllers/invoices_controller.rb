@@ -21,8 +21,6 @@ class InvoicesController < ApplicationController
   #  ** Layouts **
   #----------------------------------------
 
-  #layout 'layouts/pdf'
-
   #----------------------------------------
   #  ** Request cycles **
   #----------------------------------------
@@ -48,7 +46,6 @@ class InvoicesController < ApplicationController
 
     add_breadcrumb '請求書一覧', path: invoices_path
     add_breadcrumb '新規作成'
-
   end
 
   ##
@@ -70,30 +67,28 @@ class InvoicesController < ApplicationController
   #
   def update
 
-    self.invoice = Invoice.find(params[:id])
-
     # 情報更新
-    self.invoice.update! invoice_params
+    invoice.update! invoice_params
 
-    #会社探し
-    co = Company.joins(divisions:[clients: :quotes]).merge(Quote.where(id: invoice&.quote_id))
-    #profit見つける
-    profit_id = Profit.find_by(quote_id: invoice&.quote_id)
-    #配列で会社のidを取り出す
+    # 会社探し
+    co = Company.joins(divisions: [clients: :quotes]).merge(Quote.where(id: invoice&.quote_id))
+    # profit見つける
+    profit = Profit.find_by(quote_id: invoice&.quote_id)
+    # 配列で会社のidを取り出す
     co_id = co.pluck(:id)
-    #案件の会社のidとprofitの会社のidが違っていたら実行
-    if co_id[0] != profit_id.company_id
-      #請求情報上書き(会社のidも)
-      profit = profit_id&.update(price: invoice&.quote&.price, date: invoice&.date, company_id: co_id[0])
+    # 案件の会社のidとprofitの会社のidが違っていたら実行
+    if co_id[0] != profit.company_id
+      # 請求情報上書き(会社のidも)
+      profit&.update(price: invoice&.quote&.price, date: invoice&.date, company_id: co_id[0])
     else
-      #請求情報上書き
-      profit = profit_id&.update(price: invoice&.quote&.price, date: invoice&.date)
+      # 請求情報上書き
+      profit&.update(price: invoice&.quote&.price, date: invoice&.date)
     end
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '請求書情報を更新しました'}}
+    render json: { status: true }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    render json: { status: false, message: e.message }
   end
 
   ##
@@ -107,14 +102,13 @@ class InvoicesController < ApplicationController
 
     invoice.quote.invoicing! unless invoice.quote.invoicing?
 
-    #請求情報保存
-    profit = Profit.create!(company_id: invoice&.quote&.client&.company_division&.company&.id, quote_id: invoice&.quote_id, price: invoice&.quote&.price, date: invoice&.date)
+    # 請求情報保存
+    Profit.create!(company_id: invoice&.quote&.client&.company_division&.company&.id, quote_id: invoice&.quote_id, price: invoice&.quote&.price, date: invoice&.date)
 
-    redirect_to edit_invoice_path(invoice.id), flash: {notice: {message: '請求書情報を作成しました'}}
-
+    render json: { status: true, invoice: invoice }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    render json: { status: false, message: e.message }
   end
 
   ##
@@ -177,7 +171,7 @@ class InvoicesController < ApplicationController
 
   def invoice_params
 
-    params.require(:invoice).permit :quote_id, :date, :expiration, :attention, :subject, :remarks, :memo
+    params.require(:invoice).permit :quote_id, :date, :expiration, :subject, :remarks, :memo
   end
 
 end

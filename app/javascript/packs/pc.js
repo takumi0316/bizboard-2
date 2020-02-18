@@ -84,7 +84,11 @@ import ProspectGraph from 'components/prospect_graph';
 // 納品書検索
 import DeliverySearch from 'components/delivery_editor/delivery_search';
 
+// 納品書PDF作成
 import DeliveryPdfGenrator from 'components/delivery_editor/pdf_generator';
+
+// 請求書PDF作成
+import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 
 WebpackerReact.setup({
   Alert,
@@ -109,5 +113,6 @@ WebpackerReact.setup({
   TargetGraph,
 	ProspectGraph,
 	DeliverySearch,
-	DeliveryPdfGenrator
+	DeliveryPdfGenrator,
+	InvoicePdfGenerator,
 })
