@@ -21,7 +21,7 @@ class ExpendablesController < ApplicationController
 
 
   # 見積もり
-  expose(:expendable) { Expendable.find_or_initialize_by id: params[:id] || params[:expendable_id]}
+  expose(:expendable) { Expendable.find_or_initialize_by id: params[:id] || params[:expendable_id] }
 
 
   #----------------------------------------
@@ -42,7 +42,15 @@ class ExpendablesController < ApplicationController
   #
   def index
 
-    add_breadcrumb '製造経費入力'
+    @expendable = expendables.where.not(status: '100')
+
+    expendables.where(status: '100').pluck(:subcontractor_id).uniq.sort.each do |r|
+
+      @expendable = @expendable + [Expendable.find_by(subcontractor_id: r)]
+    end
+
+    @expendable.sort
+
     respond_to do |format|
       format.html do
         # 置いておかないとエラーになる
@@ -52,6 +60,8 @@ class ExpendablesController < ApplicationController
         send_data render_to_string, filename: "製造経費データ#{params[:date1].to_datetime.month}月分.csv", type: :csv
       end
     end
+
+    add_breadcrumb '製造経費入力'
   end
 
   ##
