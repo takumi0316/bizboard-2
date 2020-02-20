@@ -23,7 +23,6 @@ class Activity < ApplicationRecord
   #  ** Includes **
   #----------------------------------------
 
-  #extend
   ActiveHash::Associations::ActiveRecordExtensions
 
   #----------------------------------------
@@ -34,18 +33,35 @@ class Activity < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  #種類のenum
+  # 種類のenum
   # enum status: { meeting: 0, mail: 10, tell: 20,
   #  estimate: 30, workshop: 40, lost: 50, other: 60 }
 
-  enum status: {contact: 0, hearing: 10, proposal: 20, estimate: 30,
-    closing: 40, order: 50, lost: 60, rejection: 70
+  enum status: {
+    contact: 0,
+    hearing: 10,
+    proposal: 20,
+    estimate: 30,
+    closing: 40,
+    order: 50,
+    lost: 60,
+    rejection: 70
   }, _prefix: true
-  #確度のenum
+
+  # 確度のenum
   enum accurary: { a: 0, b: 10, c: 20 }
-  #次回アクションのenum
-  enum next_action: {contact: 0, hearing: 10, proposal: 20, estimate: 30,
-    closing: 40, order: 50, lost: 60, rejection: 70, other: 90
+
+  # 次回アクションのenum
+  enum next_action: {
+    contact: 0,
+    hearing: 10,
+    proposal: 20,
+    estimate: 30,
+    closing: 40,
+    order: 50,
+    lost: 60,
+    rejection: 70,
+    other: 90
   }, _prefix: true
 
   #----------------------------------------

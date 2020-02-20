@@ -44,9 +44,20 @@ class ExpendablesController < ApplicationController
 
     @expendable = expendables.where.not(status: '100')
 
-    expendables.where(status: '100').pluck(:subcontractor_id).uniq.sort.each do |r|
+    @expendable = expendables.where(status: 100).where(work_subcontractor_detail_id: nil)
 
-      @expendable = @expendable + [Expendable.find_by(subcontractor_id: r)]
+    # ================
+    # expendables.where(status: 100).where.not(work_subcontractor_detail_id: nil).first.work_subcontractor_detail.work.quote
+    # detail_ids = expendables.where(status: 100).where.not(work_subcontractor_detail_id: nil).pluck(:work_subcontractor_detail_id)
+    # work_ids = WorkSubcontractorDetail.where(id: detail_ids).pluck(:work_id).uniq
+    # Work.where(id: work_ids).all.quote
+    # ================
+
+    expendables.where(status: 100).where.not(work_subcontractor_detail_id: nil).each do |r|
+
+      # @expendable = @expendable + [Expendable.find_by(work_sub: r)]
+      binding.pry
+      @expendable = @expendable + [r]
     end
 
     @expendable.sort

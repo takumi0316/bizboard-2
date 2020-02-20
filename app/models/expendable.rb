@@ -29,16 +29,23 @@ class Expendable < ApplicationRecord
   #----------------------------------------
 
   enum status: {
-    copy: 0, material: 10, paper: 20,
-    product: 30, expendable: 40, rent: 50,
-    repair: 60, communication: 70, delivery: 80,
-    maintenance: 90, cost: 100
+    copy: 0,
+    material: 10,
+    paper: 20,
+    product: 30,
+    expendable: 40,
+    rent: 50,
+    repair: 60,
+    communication: 70,
+    delivery: 80,
+    maintenance: 90,
+    cost: 100
   }
 
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
-  # validates :price, presence: true
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------

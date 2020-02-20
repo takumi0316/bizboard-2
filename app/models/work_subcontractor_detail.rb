@@ -44,6 +44,8 @@ class WorkSubcontractorDetail < ApplicationRecord
 
   belongs_to :work_subcontractor
 
+  belongs_to :work
+
   #請求情報
   has_many :payments, dependent: :destroy
 
