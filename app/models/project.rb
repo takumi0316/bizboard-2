@@ -12,12 +12,13 @@
 #  binding_work               :integer          default("binding_works_unnecessary")
 #  after_process              :integer          default("after_process_unnecessary")
 #  note                       :text(65535)
+#  status                     :integer          default(0)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
-#  status                     :integer          default(0)
 #  free_word                  :text(65535)
 #  project_number             :bigint(8)
 #  price                      :integer          default(0)
+#  code                       :string(191)
 #
 
 class Project < ApplicationRecord

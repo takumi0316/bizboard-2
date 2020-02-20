@@ -3,21 +3,25 @@
   .c-form-label
     = f.label :date, '申請日時'
     span.c-form__required.u-ml-10 必須
-  = f.date_select :date, {use_month_numbers: true, :start_year => Date.today.years_ago(5).year, :end_year => Date.today.year}, {class: 'c-form-dateselect u-mb-30'}
+  = f.date_select :date, { use_month_numbers: true, :start_year => Date.today.years_ago(5).year, :end_year => Date.today.year }, { class: 'c-form-dateselect u-mb-30' }
 
   .c-form-label
     = f.label :division_id, '負担部署'
-  = f.select :division_id, Division.all.pluck(:name, :id), {selected: @user.division_id, disabled: true},{:class=>'c-form-dateselect u-mb-30'}
+  = f.select :division_id, Division.all.pluck(:name, :id), { selected: expendable.new_record?? current_user.division_id : expendable.division.id, disabled: true }, { class: 'c-form-dateselect u-mb-30' }
+
+  .c-form-label
+    = f.label :user_id, '作成者'
+  = f.select :user_id, User.all.pluck(:name, :id), { selected: expendable.new_record?? current_user.id : expendable.user_id.nil?? current_user.id : expendable.user_id, disabled: true }, { class: 'c-form-dateselect u-mb-30' }
 
   .c-form-label
     = f.label :subcontractor_id, '仕入先'
     span.c-form__required.u-ml-10 必須
-  = f.select :subcontractor_id, Subcontractor.all.pluck(:name, :id),{},{:class=>'c-form-dateselect u-mb-30'}
+  = f.select :subcontractor_id, Subcontractor.all.pluck(:name, :id), {}, { class: 'c-form-dateselect u-mb-30' }
 
   .c-form-label
     = f.label :status, '勘定科目'
     span.c-form__required.u-ml-10 必須
-  = f.select :status, Expendable.statuses_i18n.invert, {prompt: '対応ステータス'}, { class: 'c-form-dateselect u-mb-30' }
+  = f.select :status, Expendable.statuses_i18n.invert, { prompt: '対応ステータス' }, { class: 'c-form-dateselect u-mb-30' }
 
   .c-form-label
     = f.label :name, '品目'
