@@ -56,7 +56,6 @@ class ExpendablesController < ApplicationController
     expendables.where(status: 100).where.not(work_subcontractor_detail_id: nil).each do |r|
 
       # @expendable = @expendable + [Expendable.find_by(work_sub: r)]
-      binding.pry
       @expendable = @expendable + [r]
     end
 
