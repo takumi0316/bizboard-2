@@ -1,6 +1,6 @@
 h1.l-dashboard__heading 外注企業 支払い情報一覧
 
-= react_component('PaymentSearch')
+= react_component('PaymentSearch', { begginning: @start_date, end: @end_date })
 
 .c-table.u-mt-30
   table
