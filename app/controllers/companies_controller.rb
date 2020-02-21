@@ -13,7 +13,7 @@ class CompaniesController < ApplicationController
 
   # 取引先一覧
   expose_with_pagination(:companies) {
-    params[:name] ? Company.search(params[:name]).all.reverse_order : Company.search(params[:search]).all.reverse_order
+    Company.search(params[:name]).all.reverse_order
   }
   # 取引先
   expose(:company) { Company.find_or_initialize_by id: params[:id] || params[:company_id] }
@@ -61,6 +61,7 @@ class CompaniesController < ApplicationController
     add_breadcrumb '取引先一覧', path: companies_path
     add_breadcrumb '編集'
   rescue => e
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -107,36 +108,8 @@ class CompaniesController < ApplicationController
 
     flash[:warning] = { message: e.message }
   ensure
+
     redirect_to action: :index
-  end
-
-  ##
-  # 一括作成
-  #
-  #
-  def bulk
-
-    newSub = Company.find_or_initialize_by(:name => params[:companyName])
-    newSubDivision = nil
-
-    if newSub.id.nil?
-
-      newSub.save!
-      newSubDivision = newSub.divisions.create :name => params[:companyDivisionName], :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
-
-      newSubDivision.clients.create :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
-    else
-
-      newSubDivisions = newSub.divisions
-      newSubDivision = newSubDivisions.find_or_initialize_by(:name => params[:companyDivisionName])
-
-      newSubDivision.update! :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
-      newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
-    end
-
-    client = CompanyDivisionClient.find_or_initialize_by(:name => params[:companyClientName])
-    render json: { status: :success, client: client, division: client.company_division, company: client.company_division.company }
-
   end
 
   #----------------------------------------
