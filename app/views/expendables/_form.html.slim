@@ -7,12 +7,12 @@
 
   .c-form-label
     = f.label :division_id, '負担部署'
-  = f.select :division_id, Division.all.pluck(:name, :id), {selected: @user.division_id, disabled: true},{:class=>'c-form-dateselect u-mb-30'}
+  = f.select :division_id, Division.all.pluck(:name, :id), { selected: @user.division_id, disabled: true }, { class: 'c-form-dateselect u-mb-30' }
 
   .c-form-label
     = f.label :subcontractor_id, '仕入先'
     span.c-form__required.u-ml-10 必須
-  = f.select :subcontractor_id, Subcontractor.all.pluck(:name, :id),{},{:class=>'c-form-dateselect u-mb-30'}
+  = f.select :subcontractor_id, Subcontractor.all.pluck(:name, :id), {}, { class: 'c-form-dateselect u-mb-30' }
 
   .c-form-label
     = f.label :status, '勘定科目'
