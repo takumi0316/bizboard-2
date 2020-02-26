@@ -24,6 +24,7 @@
 #  unconfirmed_email    :string(191)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  lastaccesstask       :datetime         default(Thu, 12 Sep 2019 18:42:55 JST +09:00)
 #
 
 class User < ApplicationRecord

@@ -10,46 +10,43 @@ require("superagent-rails-csrf")(Request);
 
 const PaymentSearch = props => {
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth();
-	const day = date.getDate();
-
   const init = {
-   date: new Date(year, month, day),
-	};
+    begginning: props.begginning,
+    end: props.end
+  };
 
-	const [state, setState] = useState(init);
+  const [state, setState] = useState(init);
 
-	useEffect(() => {
+  useEffect(() => {
 
-		const values = onSearchParams();
-		if(!values) return;
+    const values = onSearchParams();
+    if(!values) return;
 
-		setState({
-			date: values['date'],
-		});
-	}, []);
+    setState({
+      begginning: values['begginning'],
+      end: values['end'],
+    });
+  }, []);
 
   const onSearchParams = () => {
 
-		const isPresent = location.search.length > 0;
+    const isPresent = location.search.length > 0;
     if(!isPresent) return;
 
     // 最初の1文字 (?記号) を除いた文字列を取得する
     const query = document.location.search.substring(1);
-		const parameters = query.split('&');
-		let value = new Object();
-		parameters.map((parameter, index) => {
+    const parameters = query.split('&');
+    let value = new Object();
+    parameters.map((parameter, index) => {
 
-			// パラメータ名とパラメータ値に分割する
-			let element = parameter.split('=');
-			let paramName = decodeURIComponent(element[0]);
-			let paramValue = decodeURIComponent(element[1]);
+      // パラメータ名とパラメータ値に分割する
+      let element = parameter.split('=');
+      let paramName = decodeURIComponent(element[0]);
+      let paramValue = decodeURIComponent(element[1]);
 
-			// パラメータ名をキーとして連想配列に追加する
-			value[paramName] = decodeURIComponent(paramValue);
-		});
+      // パラメータ名をキーとして連想配列に追加する
+      value[paramName] = decodeURIComponent(paramValue);
+    });
 
     return value;
 	};
@@ -61,7 +58,8 @@ const PaymentSearch = props => {
       </Fragment>
       <form method='get' action='/payments'>
         <div className={ 'u-mt-10 c-flex' }>
-        <DatetimePicker key={ state.date } type={ 'text' } name={ 'date' } default_datetime={ state.date } class={ 'c-form-text__work-index__datepicker u-ml-10' }/>
+        <DatetimePicker key={ `${state.begginning}-begginning` } type={ 'text' } name={ 'begginning' } default_datetime={ state.begginning } class={ 'c-form-text__work-index__datepicker u-ml-10' }/>
+        <DatetimePicker key={ `${state.date}-end` } type={ 'text' } name={ 'end' } default_datetime={ state.end } class={ 'c-form-text__work-index__datepicker u-ml-10' }/>
         <Icon name='ei-calendar' size='m'/>
         <input type='hidden' name='count' value='1'/>
         <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>

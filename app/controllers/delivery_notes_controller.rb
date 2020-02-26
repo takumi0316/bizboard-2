@@ -17,7 +17,7 @@ class DeliveryNotesController < ApplicationController
     Quote
     .all
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .order(date: 'DESC')
+    .order(date: :desc)
   }
 
   # 見積もり
@@ -41,10 +41,11 @@ class DeliveryNotesController < ApplicationController
   #
   def index
 
-		add_breadcrumb '納品書一覧'
+    add_breadcrumb '納品書一覧'
   end
 
   ##
+
   # 詳細
   # @version 2020/01/29
   #

@@ -62,8 +62,6 @@ class ExpendablesController < ApplicationController
 
     add_breadcrumb '製造経費入力', path: expendables_path
     add_breadcrumb '新規作成'
-    @user = current_user
-
   end
 
   ##
@@ -71,11 +69,12 @@ class ExpendablesController < ApplicationController
   # @version 2018/06/10
   #
   def edit
+
     add_breadcrumb '製造経費入力', path: expendables_path
     add_breadcrumb '編集'
-    @user = current_user
   rescue => e
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -83,19 +82,20 @@ class ExpendablesController < ApplicationController
   # @version 2018/06/10
   #
   def update
+
     # 取引先情報更新
     expendable.update! expendable_params
     # priceがnilなら0にする
     expendable.update(price: 0) if expendable.price.nil?
 
     payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
-    payment.update(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.present?
-    payment.save!(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.nil?
+    payment.update!(expendable_id: expendable.id, subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date) if payment.present?
+    payment.save!(expendable_id: expendable.id, subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date) if payment.nil?
 
-    redirect_to expendables_path, flash: {notice: {message: '製造経費を更新しました'}}
+    redirect_to expendables_path, flash: { notice: { message: '製造経費を更新しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -103,19 +103,20 @@ class ExpendablesController < ApplicationController
   # @version 2018/06/10
   #
   def create
+
     # 取引先情報更新
     expendable.update! expendable_params
     # priceがnilなら0にする
     expendable.update(price: 0) if expendable.price.nil?
 
     payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
-    payment.update(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.present?
-    payment.save!(expendable_id: expendable.id,subcontractor_id: expendable.subcontractor_id,price: expendable.price, date: expendable.date) if payment.nil?
+    payment.update!(expendable_id: expendable.id, subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date) if payment.present?
+    payment.save!(expendable_id: expendable.id, subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date) if payment.nil?
 
-    redirect_to expendables_path, flash: {notice: {message: '製造経費を登録しました'}}
+    redirect_to expendables_path, flash: { notice: { message: '製造経費を登録しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -129,10 +130,10 @@ class ExpendablesController < ApplicationController
 
     expendable.destroy
 
-    redirect_to expendables_path, flash: {notice: {message: '製造経費を削除しました'}}
+    redirect_to expendables_path, flash: { notice: { message: '製造経費を削除しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
 
@@ -144,8 +145,7 @@ class ExpendablesController < ApplicationController
 
   def expendable_params
 
-    params.require(:expendable).permit :name, :date, :status, :memo, :price,
-    :subcontractor_id, :division_id
+    params.require(:expendable).permit :name, :date, :status, :memo, :price, :subcontractor_id, :division_id, :user_id
   end
 
 end
