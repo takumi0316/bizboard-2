@@ -14,8 +14,8 @@ class QuotesController < ApplicationController
   # 見積もり
   expose_with_pagination(:quotes) {
 
-		Quote
-		.all
+    Quote
+    .all
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .includes(:quote_items)
     .order(date: 'DESC')
