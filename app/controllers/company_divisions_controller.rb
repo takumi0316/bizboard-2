@@ -50,7 +50,7 @@ class CompanyDivisionsController < ApplicationController
     add_breadcrumb '部署一覧', path: company_divisions_path(company_id: company&.id)
     add_breadcrumb '新規作成'
   rescue => e
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -65,7 +65,7 @@ class CompanyDivisionsController < ApplicationController
     add_breadcrumb '部署一覧', path: company_divisions_path(company_id: self.company.id)
     add_breadcrumb '編集'
   rescue => e
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -77,10 +77,10 @@ class CompanyDivisionsController < ApplicationController
     # 取引先情報更新
     division.update! division_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先部署情報を更新しました'}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '取引先部署情報を更新しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -92,10 +92,10 @@ class CompanyDivisionsController < ApplicationController
     # 取引先情報更新
     division.update! division_params
 
-    redirect_to edit_company_division_path(division), flash: {notice: {message: '取引先部署情報を更新しました'}}
+    redirect_to edit_company_division_path(division), flash: { notice: { message: '取引先部署情報を更新しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -108,10 +108,10 @@ class CompanyDivisionsController < ApplicationController
 
     division.destroy!
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先部署情報を削除しました'}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '取引先部署情報を削除しました' }}
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message }}
   end
 
   #----------------------------------------
