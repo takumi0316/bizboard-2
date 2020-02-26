@@ -7,12 +7,13 @@
 #  subcontractor_id             :bigint(8)
 #  status                       :integer          default("copy")
 #  name                         :string(191)
-#  price                        :integer          default(0)
+#  price                        :integer          default(0), not null
 #  date                         :date
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #  memo                         :text(65535)
 #  work_subcontractor_detail_id :bigint(8)
+#  user_id                      :bigint(8)
 #
 
 class Expendable < ApplicationRecord
@@ -29,10 +30,17 @@ class Expendable < ApplicationRecord
   #----------------------------------------
 
   enum status: {
-    copy: 0, material: 10, paper: 20,
-    product: 30, expendable: 40, rent: 50,
-    repair: 60, communication: 70, delivery: 80,
-    maintenance: 90, cost: 100
+    copy: 0,
+    material: 10,
+    paper: 20,
+    product: 30,
+    expendable: 40,
+    rent: 50,
+    repair: 60,
+    communication: 70,
+    delivery: 80,
+    maintenance: 90,
+    cost: 100
   }
 
   #----------------------------------------
