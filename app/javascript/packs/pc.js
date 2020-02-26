@@ -84,7 +84,20 @@ import ProspectGraph from 'components/prospect_graph';
 // 納品書検索
 import DeliverySearch from 'components/delivery_editor/delivery_search';
 
-import DeliveryPdfGenrator from 'components/delivery_editor/pdf_generator';
+// 納品書PDF作成
+import DeliveryPdfGenerator from 'components/delivery_editor/pdf_generator';
+
+// 見積書検索
+import QuotationSearch from 'components/quotations/quotation_search';
+
+// 見積書PDF作成
+import QuotationPdfGenerator from 'components/quotations/pdf_generator';
+
+// 請求書PDF作成
+import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
+
+// 請求書PDF作成
+import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 
 WebpackerReact.setup({
   Alert,
@@ -109,5 +122,8 @@ WebpackerReact.setup({
   TargetGraph,
 	ProspectGraph,
 	DeliverySearch,
-	DeliveryPdfGenrator
+	DeliveryPdfGenerator,
+	QuotationSearch,
+	QuotationPdfGenerator,
+	InvoicePdfGenerator,
 })

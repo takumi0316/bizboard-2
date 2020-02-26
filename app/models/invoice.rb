@@ -5,7 +5,7 @@
 #  id         :bigint(8)        not null, primary key
 #  quote_id   :bigint(8)
 #  date       :date
-#  expiration :date             default(Sat, 31 Aug 2019)
+#  expiration :date
 #  subject    :string(191)
 #  remarks    :text(65535)
 #  memo       :text(65535)

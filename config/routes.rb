@@ -50,7 +50,14 @@ Rails.application.routes.draw do
   # 活動履歴
   resources :activities
 
-  # 納品
+  # 見積書
+  resources :quotations do
+    member do
+      get :pdf
+    end
+  end
+
+  # 納品書
   resources :delivery_notes do
     member do
       get :pdf

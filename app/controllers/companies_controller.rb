@@ -110,35 +110,6 @@ class CompaniesController < ApplicationController
     redirect_to action: :index
   end
 
-  ##
-  # 一括作成
-  #
-  #
-  def bulk
-
-    newSub = Company.find_or_initialize_by(:name => params[:companyName])
-    newSubDivision = nil
-
-    if newSub.id.nil?
-
-      newSub.save!
-      newSubDivision = newSub.divisions.create :name => params[:companyDivisionName], :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
-
-      newSubDivision.clients.create :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
-    else
-
-      newSubDivisions = newSub.divisions
-      newSubDivision = newSubDivisions.find_or_initialize_by(:name => params[:companyDivisionName])
-
-      newSubDivision.update! :zip => params[:companyPost], :prefecture_id => params[:companyPrefecture], :address1 => params[:companyAddress1]
-      newSubDivision.clients.create! :name => params[:companyClientName], :user_id => params[:currentClientName], :tel => params[:companyClientTel], :email => params[:companyClientEmail]
-    end
-
-    client = CompanyDivisionClient.find_or_initialize_by(:name => params[:companyClientName])
-    render json: { status: :success, client: client, division: client.company_division, company: client.company_division.company }
-
-  end
-
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

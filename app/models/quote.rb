@@ -25,10 +25,11 @@
 #  deliver_type_note          :text(65535)
 #  division_id                :bigint(8)
 #  discount                   :integer
-#  delivery_type              :integer
-#  delivery_type_note         :text(65535)
 #  tax_type                   :integer
 #  payment_terms              :integer
+#  tax                        :float(24)        default(1.1)
+#  reception                  :integer
+#  temporary_price            :integer
 #
 
 class Quote < ApplicationRecord

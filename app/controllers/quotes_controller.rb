@@ -139,7 +139,6 @@ class QuotesController < ApplicationController
   def create
 
     # 情報更新
-    # quote.update! quote_params.merge(division_id: current_user.division_id)
     if params[:id] == 'null'
       new_quote = Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], expiration: params[:quote][:expiration], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], reception: params[:quote][:reception], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], tax: params[:quote][:tax], payment_terms: params[:quote][:payment_terms], temporary_price: params[:quote][:temporary_price])
       unless params[:quote][:quote_number].blank?

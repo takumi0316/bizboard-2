@@ -2,18 +2,35 @@
 #
 # Table name: company_division_clients
 #
-#  id                  :bigint(8)        not null, primary key
-#  company_division_id :bigint(8)
-#  user_id             :bigint(8)
-#  name                :string(191)
-#  kana                :string(191)
-#  title               :integer          default("honorific")
-#  tel                 :string(191)
-#  email               :string(191)
-#  note                :text(65535)
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  free_word           :text(65535)
+#  id                   :bigint(8)        not null, primary key
+#  company_division_id  :bigint(8)
+#  user_id              :bigint(8)
+#  name                 :string(191)
+#  kana                 :string(191)
+#  title                :integer          default("honorific")
+#  tel                  :string(191)
+#  email                :string(191)
+#  note                 :text(65535)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  free_word            :text(65535)
+#  status               :integer          default(0)
+#  user_type            :integer          default(0)
+#  password_digest      :string(191)
+#  provider             :string(191)
+#  uid                  :string(191)
+#  sign_in_count        :integer          default(0)
+#  current_sign_in_at   :datetime
+#  last_sign_in_at      :datetime
+#  current_sign_in_ip   :string(191)
+#  last_sign_in_ip      :string(191)
+#  remember_created_at  :datetime
+#  confirmation_token   :string(191)
+#  confirmed_at         :datetime
+#  confirmation_sent_at :datetime
+#  unconfirmed_email    :string(191)
+#  lastaccesstask       :datetime         default(Fri, 06 Sep 2019 15:38:25 JST +09:00)
+#  opt                  :integer          default(0)
 #
 
 class CompanyDivisionClient < ApplicationRecord

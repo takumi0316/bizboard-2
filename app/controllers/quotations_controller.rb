@@ -1,7 +1,7 @@
 ##
-# DeliveryNotes Controller
+# Quotations Controller
 #
-class DeliveryNotesController < ApplicationController
+class QuotationsController < ApplicationController
 
   #----------------------------------------
   #  ** Includes **
@@ -41,28 +41,26 @@ class DeliveryNotesController < ApplicationController
   #
   def index
 
-    add_breadcrumb '納品書一覧'
+    add_breadcrumb '見積書一覧'
   end
 
-  ##
+	##
+	# 詳細
+	# @version 2020/02/18
+	def show
 
-  # 詳細
-  # @version 2020/01/29
-  #
-  def show
-
-    add_breadcrumb '納品書一覧', path: delivery_notes_path
+    add_breadcrumb '見積書一覧', path: quotations_path
     add_breadcrumb '詳細'
-  end
+	end
 
   def pdf
 
     respond_to do |format|
       format.html do
-        render  pdf: "納品書_#{quote.id}", # pdfファイルの名前。これがないとエラーが出ます
+        render  pdf: "見積書_#{quote.id}",
                 encoding: 'UTF-8',
                 layout: 'layouts/pdf.html.slim',
-                template: 'delivery_notes/pdf.html.slim', # テンプレートファイルの指定。viewsフォルダが読み込まれます。
+                template: 'quotations/pdf.html.slim',
                 show_as_html: params.key?('debug')
       end
     end
