@@ -7,6 +7,7 @@
 
   .c-form-label
     = f.label :division_id, '負担部署'
+
   = f.select :division_id, Division.all.pluck(:name, :id), { selected: expendable.new_record?? current_user.division_id : expendable.division.id, disabled: true }, { class: 'c-form-dateselect u-mb-30' }
 
   .c-form-label
