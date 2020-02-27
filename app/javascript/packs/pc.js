@@ -96,9 +96,6 @@ import QuotationPdfGenerator from 'components/quotations/pdf_generator';
 // 請求書PDF作成
 import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 
-// 請求書PDF作成
-import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
-
 WebpackerReact.setup({
   Alert,
   Kawaii,
