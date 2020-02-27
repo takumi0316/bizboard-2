@@ -11,12 +11,10 @@ class CompanyDivisionClientsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 部署
-  expose(:division) { params[:company_division_id] ? CompanyDivision.find(params[:company_division_id]) : nil }
+  # 取引先
+  expose(:companies) { Company.all.order(:id) }
   # 担当者一覧
-  expose_with_pagination(:clients) {
-    params[:company_division_id] ? division.clients : CompanyDivisionClient.search(params[:search]).all.reverse_order
-  }
+  expose_with_pagination(:clients) { CompanyDivisionClient.search(params[:search]).all.reverse_order }
   # 担当者
   expose(:client) { CompanyDivisionClient.find_or_initialize_by id: params[:id] }
 
@@ -40,8 +38,20 @@ class CompanyDivisionClientsController < ApplicationController
 
     unless request.xhr?
 
-      add_breadcrumb '取引先一覧', path: companies_path
-      add_breadcrumb '部署一覧', path: company_divisions_path(company_id: division&.company&.id)
+     # @clients = Array.new
+     # division_ids = clients.pluck(:company_division_id).uniq
+     # client_ids = CompanyDivision.where(id: division_ids).pluck(:company_id).uniq
+     # companies = Company.where(id: client_ids)
+     # companies.each do |r|
+     #   r.divisions.each do |d|
+     #     d.clients.each do |c|
+
+     #       @clients = @clients + [c]
+     #     end
+     #   end
+     # end
+
+      @clients = CompanyDivisionClient.all.where(company_division_id: nil)
       add_breadcrumb '担当者一覧'
     end
   end
@@ -52,12 +62,11 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '部署一覧', path: company_divisions_path(company_id: division&.company&.id)
     add_breadcrumb '担当者一覧', path: company_division_clients_path(company_division_id: division&.id)
     add_breadcrumb '新規作成'
   rescue => e
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -68,12 +77,11 @@ class CompanyDivisionClientsController < ApplicationController
 
     self.division = client.company_division
 
-    add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '部署一覧', path: company_divisions_path(company_id: self.division.company.id)
     add_breadcrumb '担当者一覧', path: company_division_clients_path(company_division_id: self.division.id)
     add_breadcrumb '編集'
   rescue => e
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -85,10 +93,10 @@ class CompanyDivisionClientsController < ApplicationController
     # 担当者情報更新
     client.update! client_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '担当者情報を更新しました'}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '担当者情報を更新しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -100,10 +108,10 @@ class CompanyDivisionClientsController < ApplicationController
     # 担当者情報更新
     client.update! client_params
 
-    redirect_to edit_company_division_client_path(client), flash: {notice: {message: '担当者情報を更新しました'}}
+    redirect_to edit_company_division_client_path(client), flash: { notice: { message: '担当者情報を更新しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -116,10 +124,10 @@ class CompanyDivisionClientsController < ApplicationController
 
     client.destroy!
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '担当者情報を削除しました'}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '担当者情報を削除しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   #----------------------------------------
