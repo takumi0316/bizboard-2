@@ -67,7 +67,7 @@ const CustomerAddress = props => {
         </Fragment>
       :
         <Fragment>
-          <div className='c-btnMain-standard' onClick={ () => setHonorific() }>会社ベースにする</div>
+          <div className='u-mt-10 c-btnMain-standard' onClick={ () => setHonorific() }>会社ベースにする</div>
           <div className='u-mt-10'>
             <label className='c-form-label'>担当者名</label>
             <input key={ `company_${state.company}_${state.honorific}` } type='text' name='client' className='c-form-text' placeholder='米田昌悟' defaultValue={ state.client }/>
