@@ -124,6 +124,7 @@ class InvoicesController < ApplicationController
 
     flash[:warning] = { message: e.message }
   ensure
+
     redirect_to action: :index
   end
 
@@ -143,8 +144,9 @@ class InvoicesController < ApplicationController
 	def roundup
 
     if params[:name].blank? && params[:date1].blank? && params[:date2].blank?
+
       redirect_to action: :index
-		else
+    else
 
       _self = Invoice.date_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
       terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
@@ -171,7 +173,7 @@ class InvoicesController < ApplicationController
 
   def invoice_params
 
-    params.require(:invoice).permit :quote_id, :date, :expiration, :subject, :remarks, :memo
+    params.require(:invoice).permit :quote_id, :date, :expiration, :subject, :remarks, :memo, :attention
   end
 
 end

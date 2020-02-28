@@ -28,8 +28,7 @@ const PaymentDetails = props => {
               </div>
               <div className='u-mt-15'>
                 { props.show ?
-									<textarea placeholder='2000' className='c-form-textarea' onChange={ e => props.setDiscount(e.target.value) }
-														type='text' defaultValue={ props.discount } />
+                  <textarea placeholder='2000' className='c-form-textarea' onChange={ e => props.setDiscount(e.target.value) } type='text' defaultValue={ props.discount } />
                   : null
                 }
               </div>

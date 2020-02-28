@@ -10,6 +10,8 @@ require('superagent-rails-csrf')(Request);
 
 const InvoicePdfGenrator = props => {
 
+  const attentions = ['請求書', '納品・請求書'];
+
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 2;
@@ -19,7 +21,8 @@ const InvoicePdfGenrator = props => {
     expiration: props.invoice ? props.invoice.expiration : new Date(year, month, 0),
     subject: props.quote.subject,
     remarks: props.invoice ? props.invoice.remarks : props.quote.remarks,
-    memo: props.invoice ? props.invoice.memo : props.quote.memo
+    memo: props.invoice ? props.invoice.memo : props.quote.memo,
+    attention: props.invoice ? props.invoice.attention || '請求書' : '請求書'
   };
 
   const [state, setState] = useState(init);
@@ -114,6 +117,15 @@ const InvoicePdfGenrator = props => {
   };
 
   /**
+   * 形式を更新する
+   * @version 2020/02/28
+   */
+  const setAttention = e => {
+
+    setState({ ...state, attention: e.target.value });
+  };
+
+  /**
    * 請求書を作成
    * @version 2020/02/18
    */
@@ -142,7 +154,8 @@ const InvoicePdfGenrator = props => {
       'invoice[expiration]': state.expiration,
       'invoice[subject]': state.subject,
       'invoice[remarks]': state.remarks,
-      'invoice[memo]': state.memo
+      'invoice[memo]': state.memo,
+      'invoice[attention]': state.attention
     };
 
     Request
@@ -178,7 +191,8 @@ const InvoicePdfGenrator = props => {
       'invoice[expiration]': state.expiration,
       'invoice[subject]': state.subject,
       'invoice[remarks]': state.remarks,
-      'invoice[memo]': state.memo
+      'invoice[memo]': state.memo,
+      'invoice[attention]': state.attention
     };
 
     Request
@@ -239,6 +253,19 @@ const InvoicePdfGenrator = props => {
           <div className='u-mt-30'>
             <label className='c-form-label'>件名</label>
             <input type='text' name='subject' className='c-form-text' defaultValue={ props.invoice.subject } onChange={ e => setSubject(e) }/>
+          </div>
+          <div className='u-mt-30'>
+            <label className='c-form-label'>形式</label>
+            <div className='c-form-selectWrap'>
+              <select className='c-form-select' defaultValue={ state.attention } onChange={ e => setAttention(e) }>
+                { attentions.map((att, index) => {
+                  const key = 'attention' + index;
+                  return(
+                    <option {...{key}} value={ att }>{ att }</option>
+                  );
+                }) }
+              </select>
+            </div>
           </div>
           <div className='u-mt-30 c-table'>
             <table>
@@ -341,6 +368,19 @@ const InvoicePdfGenrator = props => {
           <div className='u-mt-30'>
             <label className='c-form-label'>件名</label>
             <input type='text' name='subject' className='c-form-text' defaultValue={ props.quote.subject } onChange={ e => setSubject(e) }/>
+          </div>
+          <div className='u-mt-30'>
+            <label className='c-form-label'>形式</label>
+            <div className='c-form-selectWrap'>
+              <select className='c-form-select' defaultValue={ state.attention } onChange={ e => setAttention(e) }>
+                { attentions.map((att, index) => {
+                  const key = 'attention' + index;
+                  return(
+                    <option {...{key}} value={ att }>{ att }</option>
+                  );
+                }) }
+              </select>
+            </div>
           </div>
           <div className='u-mt-30 c-table'>
             <table>
