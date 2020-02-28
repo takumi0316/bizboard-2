@@ -10,138 +10,142 @@ require('superagent-rails-csrf')(Request);
 
 const InvoicePdfGenrator = props => {
 
-	const init = {
-		date: props.invoice ? props.invoice.date : new Date(),
-		expiration: props.invoice ? props.invoice.expiration : new Date(),
-		subject: props.quote.subject,
-		remarks: props.invoice ? props.invoice.remarks : props.quote.remarks,
-		memo: props.invoice ? props.invoice.memo : props.quote.memo
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 2;
+
+  const init = {
+    date: props.invoice ? props.invoice.date : date,
+    expiration: props.invoice ? props.invoice.expiration : new Date(year, month, 0),
+    subject: props.quote.subject,
+    remarks: props.invoice ? props.invoice.remarks : props.quote.remarks,
+    memo: props.invoice ? props.invoice.memo : props.quote.memo
   };
 
   const [state, setState] = useState(init);
 
-	/**
-	 * 取引先が登録されているか確認
-	 * @version 2020/02/18
-	 */
-	const checkClient = () => {
+  /**
+   * 取引先が登録されているか確認
+   * @version 2020/02/18
+   */
+  const checkClient = () => {
 
-		let send = {
-			check: false,
-			message: ''
-		};
+    let send = {
+      check: false,
+      message: ''
+    };
 
     if(!props.client) {
 
-			send = {
-				check: true,
-				message: '取引先を案件で登録してください。'
-			};
-		};
+      send = {
+        check: true,
+        message: '取引先を案件で登録してください。'
+      };
+	  };
 
-		return send;
-	};
+    return send;
+  };
 
-	/**
-	 * 件名が登録されているか確認
-	 * @version 2020/02/18
-	 */
-	const checkSubject = () => {
+  /**
+   * 件名が登録されているか確認
+   * @version 2020/02/18
+   */
+  const checkSubject = () => {
 
-		let send = {
-			check: false,
-			message: ''
-		};
+    let send = {
+      check: false,
+      message: ''
+    };
 
     if(!state.subject) {
 
-			send = {
-				check: true,
-				message: '件名を入力してください。'
-			};
-		};
+      send = {
+        check: true,
+        message: '件名を入力してください。'
+      };
+    };
 
-		return send;
-	};
+    return send;
+  };
 
-	/**
-	 *
-	 * @version 2020/02/18
-	 */
+  /**
+   *
+   * @version 2020/02/18
+   */
   const setDate = prop => {
 
     setState({ ...state, date: prop.value });
   };
 
-	/**
-	 *
-	 * @version 2020/02/18
-	 */
+  /**
+   *
+   * @version 2020/02/18
+   */
   const setExpiration = prop => {
 
     setState({ ...state, expiration: prop.value });
-	};
+  };
 
-	/**
-	 * 件名を更新する
-	 * @version 2020/02/18
-	 */
-	const setSubject = e => {
+  /**
+   * 件名を更新する
+   * @version 2020/02/18
+   */
+  const setSubject = e => {
 
-		setState({ ...state, subject: e.target.value });
-	};
+    setState({ ...state, subject: e.target.value });
+  };
 
-	/**
-	 * 備考を更新する
-	 * @version 2020/02/18
-	 */
-	const setRemarks = e => {
+  /**
+   * 備考を更新する
+   * @version 2020/02/18
+   */
+  const setRemarks = e => {
 
-		setState({ ...state, remarks: e.target.value });
-	};
+    setState({ ...state, remarks: e.target.value });
+  };
 
-	/**
-	 * メモを更新する
-	 * @version 2020/02/18
-	 */
-	const setMemo = e => {
+  /**
+   * メモを更新する
+   * @version 2020/02/18
+   */
+  const setMemo = e => {
 
-		setState({ ...state, memo: e.target.value });
-	};
+    setState({ ...state, memo: e.target.value });
+  };
 
-	/**
-	 * 請求書を作成
-	 * @version 2020/02/18
-	 */
-	const setNewInvoice = e => {
+  /**
+   * 請求書を作成
+   * @version 2020/02/18
+   */
+  const setNewInvoice = e => {
 
-		e.preventDefault();
+    e.preventDefault();
 
-		let validation = checkClient();
-		if(validation.check) {
-
-      alert(validation.message);
-      return;
-		};
-
-		validation = checkSubject();
-		if(validation.check) {
+    let validation = checkClient();
+    if(validation.check) {
 
       alert(validation.message);
       return;
-		};
+    };
 
-		const url = '/invoices';
-		const field = {
-			'invoice[quote_id]': props.quote.id,
-			'invoice[date]': state.date,
-			'invoice[expiration]': state.expiration,
-			'invoice[subject]': state.subject,
-			'invoice[remarks]': state.remarks,
-			'invoice[memo]': state.memo
-		};
+    validation = checkSubject();
+    if(validation.check) {
 
-		Request
+      alert(validation.message);
+      return;
+    };
+
+    const url = '/invoices';
+    const field = {
+      'invoice[quote_id]': props.quote.id,
+      'invoice[date]': state.date,
+      'invoice[expiration]': state.expiration,
+      'invoice[subject]': state.subject,
+      'invoice[remarks]': state.remarks,
+      'invoice[memo]': state.memo
+    };
+
+    Request
       .post(url)
       .field(field)
       .set('X-Requested-With', 'XMLHttpRequest')
@@ -149,35 +153,35 @@ const InvoicePdfGenrator = props => {
       .end((err, res) => {
         if(!err && res.body.status) {
 
-					alert('請求書を作成しました。');
-					location.href = `${res.body.invoice.id}/edit`;
-				} else {
+          alert('請求書を作成しました。');
+          location.href = `${res.body.invoice.id}/edit`;
+        } else {
 
-					alert('請求書の作成に失敗しました。');
-					alert(res.body.message);
-				};
-			});
-	};
+          alert('請求書の作成に失敗しました。');
+          alert(res.body.message);
+        };
+      });
+  };
 
-	/**
-	 * 請求書を更新
-	 * @version 2020/02/18
-	 */
-	const setUpdateInvoice = e => {
+  /**
+   * 請求書を更新
+   * @version 2020/02/18
+   */
+  const setUpdateInvoice = e => {
 
-		e.preventDefault();
+    e.preventDefault();
 
-		const url = `/invoices/${props.invoice.id}`;
-		const field = {
-			'invoice[quote_id]': props.quote.id,
-			'invoice[date]': state.date,
-			'invoice[expiration]': state.expiration,
-			'invoice[subject]': state.subject,
-			'invoice[remarks]': state.remarks,
-			'invoice[memo]': state.memo
-		};
+    const url = `/invoices/${props.invoice.id}`;
+    const field = {
+      'invoice[quote_id]': props.quote.id,
+      'invoice[date]': state.date,
+      'invoice[expiration]': state.expiration,
+      'invoice[subject]': state.subject,
+      'invoice[remarks]': state.remarks,
+      'invoice[memo]': state.memo
+    };
 
-		Request
+    Request
       .put(url)
       .field(field)
       .set('X-Requested-With', 'XMLHttpRequest')
@@ -185,32 +189,32 @@ const InvoicePdfGenrator = props => {
       .end((err, res) => {
         if(!err && res.body.status) {
 
-					alert('請求書を更新しました。');
-				} else {
+          alert('請求書を更新しました。');
+        } else {
 
-					alert('請求書の更新に失敗しました。');
-					alert(res.body.message);
-				}
-			});
-	};
+          alert('請求書の更新に失敗しました。');
+          alert(res.body.message);
+        }
+      });
+  };
 
-	/**
-	 * DatetimePickerから渡ってきた値を振り分けてsetStateする
-	 * @version 2020/02/18
-	 */
-	const sortingAction = prop => {
+  /**
+   * DatetimePickerから渡ってきた値を振り分けてsetStateする
+   * @version 2020/02/18
+   */
+  const sortingAction = prop => {
 
-		switch(prop.action) {
+    switch(prop.action) {
       case 'date':
-				setDate(prop);
-				break;
-			case 'expiration':
-				setExpiration(prop);
-				break;
-			default:
-				break;
-		};
-	};
+        setDate(prop);
+        break;
+      case 'expiration':
+        setExpiration(prop);
+        break;
+      default:
+        break;
+    };
+  };
 
 	return(
     <Fragment>
@@ -413,7 +417,7 @@ const InvoicePdfGenrator = props => {
           </div>
           <div className='c-overlay-submit'>
 	          <a className='c-btnMain-standard c-btn-blue' onClick={ e => setNewInvoice(e) }>作成する</a>
-						<a className='u-ml-30 c-btnMain-standard c-btn-blue' href={ `/quotes/${props.quote.id}/edit` }>案件に戻る</a>
+            <a className='u-ml-30 c-btnMain-standard c-btn-blue' href={ `/quotes/${props.quote.id}/edit` }>案件に戻る</a>
           </div>
         </div>
         }
