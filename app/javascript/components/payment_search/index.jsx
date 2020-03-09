@@ -59,6 +59,8 @@ const PaymentSearch = props => {
       <form method='get' action='/payments'>
         <div className={ 'u-mt-10 c-flex' }>
         <DatetimePicker key={ `${state.begginning}-begginning` } type={ 'text' } name={ 'begginning' } default_datetime={ state.begginning } class={ 'c-form-text__work-index__datepicker u-ml-10' }/>
+        <Icon name='ei-calendar' size='m'/>
+        <p className={ 'c-search__tilde' }>〜</p>
         <DatetimePicker key={ `${state.date}-end` } type={ 'text' } name={ 'end' } default_datetime={ state.end } class={ 'c-form-text__work-index__datepicker u-ml-10' }/>
         <Icon name='ei-calendar' size='m'/>
         <input type='hidden' name='count' value='1'/>

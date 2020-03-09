@@ -18,7 +18,7 @@ class QuotesController < ApplicationController
     .all
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .includes(:quote_items)
-    .order(date: 'DESC')
+    .order(date: :desc)
   }
 
   # 見積もり
@@ -27,7 +27,7 @@ class QuotesController < ApplicationController
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
-    .order(date: 'DESC')
+    .order(date: :desc)
   }
 
   # 見積もり
@@ -36,9 +36,9 @@ class QuotesController < ApplicationController
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
-    .where.not(status: 'invoicing')
-    .where.not(status: 'lost')
-    .order(date: 'DESC')
+    .where.not(status: :invoicing)
+    .where.not(status: :lost)
+    .order(date: :desc)
   }
 
   # 見積もり
@@ -47,9 +47,9 @@ class QuotesController < ApplicationController
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .joins(:task)
-    .where.not(status: 'invoicing')
-    .where.not(status: 'lost')
-    .order(created_at: 'DESC')
+    .where.not(status: :invoicing)
+    .where.not(status: :lost)
+    .order(created_at: :desc)
   }
 
   # 見積もり
@@ -74,23 +74,30 @@ class QuotesController < ApplicationController
   #
   def index
 
-    add_breadcrumb '案件'
-
     @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
+
     if @user_type == 'general' && @count.present? || @user_type == 'manager' && @count.present? || @user_type == 'operator' && @count.present?
+
       @quotes = quotes
     elsif @user_type == 'manager'
+
       @quotes = quote_manager
     elsif @user_type == 'general'
+
       @quotes = quote_general
     elsif @user_type == 'operator'
+
       @quotes = quote_operator
     elsif @user_type != 'general'
+
       @quotes = quotes
     end
+
     @count_number = @quotes.size
+
+    add_breadcrumb '案件'
   end
 
   ##
@@ -99,9 +106,10 @@ class QuotesController < ApplicationController
   #
   def new
 
+    @quote = Quote.new
+
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '新規作成'
-    @quote = Quote.new
   end
 
   ##
@@ -226,23 +234,24 @@ class QuotesController < ApplicationController
   # @version 2018/06/10
   #
   def status
+
     if quote.unworked? && quote.work.blank? || quote.draft? && quote.work.blank?
 
       quote.build_work(division_id: current_user.division_id).save!
 
       quote.unworked!
 
-      redirect_to work_path(quote.work), flash: {notice: {message: '作業書を作成しました'}} and return
+      redirect_to work_path(quote.work), flash: { notice: { message: '作業書を作成しました' } } and return
     end
 
     if quote.payment_terms == 'advance' && quote.invoicing? && quote.work.blank?
 
       quote.build_work(division_id: current_user.division_id).save!
 
-      redirect_to work_path(quote.work), flash: {notice: {message: '作業書を作成しました'}} and return
+      redirect_to work_path(quote.work), flash: { notice: { message: '作業書を作成しました' } } and return
     end
 
-    redirect_to :back, flash: {notice: {message: 'ステータスを更新しました'}}
+    redirect_to :back, flash: { notice: { message: 'ステータスを更新しました' } }
   end
 
   ##
