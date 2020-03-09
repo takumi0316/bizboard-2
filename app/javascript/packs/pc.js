@@ -96,6 +96,9 @@ import QuotationPdfGenerator from 'components/quotations/pdf_generator';
 // 請求書PDF作成
 import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 
+// 丸の内CSV書き出し日付検索
+import MarunouchiSearchable from 'components/api/marunouchi/searchable';
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -123,4 +126,5 @@ WebpackerReact.setup({
 	QuotationSearch,
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
+  MarunouchiSearchable
 })

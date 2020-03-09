@@ -17,6 +17,17 @@ Rails.application.routes.draw do
 
   resources :configs
 
+  # APIモード
+  namespace :api do
+    # 丸の内
+    resources :marunouchi, only: :index do
+      collection do
+        get :consul
+        get :only_card
+      end
+    end
+  end
+
   # 目標管理
   resources :targets
 
