@@ -16,13 +16,12 @@ CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |
   )
   csv << headers
 	@only_card&.each_with_index do |r, index|
-		binding.pry
     values = [
       (index + 1),
       r.date,
       r.quote.quote_number,
-      r.quote.client.company_division.company.name,
-      r.quote.client.company_division.name,
+      r.quote.client&.company_division&.company&.name,
+      r.quote.client&.company_division&.name,
       r.quote.subject,
       "#{r.quote.price}円",
       r.quote.channel_i18n,
