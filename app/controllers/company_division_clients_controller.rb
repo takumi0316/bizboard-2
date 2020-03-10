@@ -14,7 +14,11 @@ class CompanyDivisionClientsController < ApplicationController
   # 取引先
   expose(:companies) { Company.all.order(:id) }
   # 担当者一覧
-  expose_with_pagination(:clients) { CompanyDivisionClient.search(params[:search]).all.reverse_order }
+  expose_with_pagination(:clients) { CompanyDivisionClient.search(params[:name]).all.order(:company_division_id) }
+  # 後々実装
+  # CompanyDivisionClient.joins(company_division: :company).order('companies.id asc')
+  # expose_with_pagination(:clients) { CompanyDivisionClient.search(params[:name]).joins(company_division: :company).all.order('companies.id asc') }
+
   # 担当者
   expose(:client) { CompanyDivisionClient.find_or_initialize_by id: params[:id] }
 
@@ -38,20 +42,6 @@ class CompanyDivisionClientsController < ApplicationController
 
     unless request.xhr?
 
-     # @clients = Array.new
-     # division_ids = clients.pluck(:company_division_id).uniq
-     # client_ids = CompanyDivision.where(id: division_ids).pluck(:company_id).uniq
-     # companies = Company.where(id: client_ids)
-     # companies.each do |r|
-     #   r.divisions.each do |d|
-     #     d.clients.each do |c|
-
-     #       @clients = @clients + [c]
-     #     end
-     #   end
-     # end
-
-      @clients = CompanyDivisionClient.all.where(company_division_id: nil)
       add_breadcrumb '担当者一覧'
     end
   end
@@ -62,7 +52,7 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '担当者一覧', path: company_division_clients_path(company_division_id: division&.id)
+    add_breadcrumb '担当者一覧', path: company_division_clients_path
     add_breadcrumb '新規作成'
   rescue => e
 
@@ -75,9 +65,7 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def edit
 
-    self.division = client.company_division
-
-    add_breadcrumb '担当者一覧', path: company_division_clients_path(company_division_id: self.division.id)
+    add_breadcrumb '担当者一覧', path: company_division_clients_path
     add_breadcrumb '編集'
   rescue => e
 
