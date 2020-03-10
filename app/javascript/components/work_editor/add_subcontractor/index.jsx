@@ -8,37 +8,37 @@ const AddSubcontractor = props => {
 
 	const [show, setShow] = useState(false);
 
-	const onClosable = e => {
+  const onClosable = e => {
 
-		e.preventDefault();
-		setShow(false);
-		props.workSubcontractorDetailUpdate();
-	};
+    e.preventDefault();
+    setShow(false);
+    props.workSubcontractorDetailUpdate();
+  };
 
   const onEditable = e => {
 
-		e.preventDefault();
+    e.preventDefault();
     setShow(true);
   };
 
 	/**
 	 * 子componentに渡した処理を振り分ける
 	 * @version 2020/01/09
-	 * 
+	 *
 	 */
-	const sortingAction = prop => {
+  const sortingAction = prop => {
 
-		switch(prop.action) {
+    switch(prop.action) {
       case 'order_date':
-				props.setOrderDate(prop);
-				break;
-			case 'delivery_date':
-				props.setDeliveryDate(prop);
-				break;
-			default:
-				break;
-		};
-	};
+        props.setOrderDate(prop);
+        break;
+      case 'delivery_date':
+        props.setDeliveryDate(prop);
+        break;
+      default:
+        break;
+    };
+  };
 
   /**
    *　表示処理
@@ -46,18 +46,15 @@ const AddSubcontractor = props => {
   return (
     <div>
       { show ?
-				<EditTable  work_subcontractors_iterate={ props.work_subcontractors_iterate } users={ props.users } prefectures={ props.prefectures }
-										onClosable={ onClosable } applyClient={ props.applyClient }
-										workSubcontractorDestroy={ props.workSubcontractorDestroy } workSubcontractorDetailDestroy={ props.workSubcontractorDetailDestroy }
-										setOrderContents={ props.setOrderContents } setDeliverMethod={ props.setDeliverMethod } setSpecification={ props.setSpecification }
-										setCount={ props.setCount } setNumberOfCopies={ props.setNumberOfCopies } setActualCost={ props.setActualCost }
-										workSubcontractorDetailCreate={ props.workSubcontractorDetailCreate } sortingAction={ sortingAction }
-										setDeliveryDestination={ props.setDeliveryDestination } setNotices={ props.setNotices } workSubcontractorCreate={ props.workSubcontractorCreate }
-				/>
+        <EditTable  work_subcontractors_iterate={ props.work_subcontractors_iterate } users={ props.users } prefectures={ props.prefectures }
+                    onClosable={ onClosable } applyClient={ props.applyClient }
+                    workSubcontractorDestroy={ props.workSubcontractorDestroy } workSubcontractorDetailDestroy={ props.workSubcontractorDetailDestroy }
+                    setOrderContents={ props.setOrderContents } setDeliverMethod={ props.setDeliverMethod } setSpecification={ props.setSpecification }
+                    setCount={ props.setCount } setNumberOfCopies={ props.setNumberOfCopies } setActualCost={ props.setActualCost }
+                    workSubcontractorDetailCreate={ props.workSubcontractorDetailCreate } sortingAction={ sortingAction }
+                    setDeliveryDestination={ props.setDeliveryDestination } setNotices={ props.setNotices } workSubcontractorCreate={ props.workSubcontractorCreate }/>
         :
-				<ReadTable	onEditable={ onEditable } work_id={ props.work_id }
-									  setDangerHtml={ props.setDangerHtml } work_subcontractors_iterate={ props.work_subcontractors_iterate }
-				/>
+        <ReadTable	onEditable={ onEditable } work_id={ props.work_id } setDangerHtml={ props.setDangerHtml } work_subcontractors_iterate={ props.work_subcontractors_iterate }/>
       }
     </div>
   );

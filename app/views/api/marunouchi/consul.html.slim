@@ -1,0 +1,35 @@
+= render 'layouts/_partials/marunouchi_tabmenu'
+
+= react_component :MarunouchiSearchable, action: :consul
+
+= link_to "CSV書き出し", consul_api_marunouchi_index_path(sdate: params[:sdate], edate: params[:edate], format: :csv), class: 'u-mt-10 c-btnMain-standard'
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th No.
+        th 請求日
+        th 案件番号
+        th 会社名
+        th 部署名
+        th 案件名
+        th 金額
+        th 受注経路
+        th 受注方法
+        th 納品方法
+        th 受注区分
+    tbody
+      - consul&.each_with_index do |r, index|
+        tr
+          td.u-ta-center = (index + 1)
+          td = r.date
+          td = r.quote.quote_number
+          td = r.quote.client&.company_division&.company&.name
+          td = r.quote.client&.company_division&.name
+          td = r.quote.subject
+          td = "#{r.quote.price}円"
+          td.u-ta-center = r.quote.channel_i18n
+          td.u-ta-center = r.quote.reception_i18n
+          td.u-ta-center = r.quote.deliver_type_i18n
+          td.u-ta-center = r.quote.quote_type_i18n

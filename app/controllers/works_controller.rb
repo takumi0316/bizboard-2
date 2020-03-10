@@ -24,8 +24,8 @@ class WorksController < ApplicationController
     Work
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
-    .where.not(status: 'delivered')
-    .where.not(status: 'completed')
+    .where.not(status: :delivered)
+    .where.not(status: :completed)
     .asc_deliverd_at
   }
 
@@ -34,8 +34,8 @@ class WorksController < ApplicationController
     Work
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
-    .where.not(status: 'delivered')
-    .where.not(status: 'completed')
+    .where.not(status: :delivered)
+    .where.not(status: :completed)
     .asc_deliverd_at
   }
 
@@ -60,12 +60,12 @@ class WorksController < ApplicationController
   #
   def index
 
-    add_breadcrumb '作業進捗一覧'
-
     @draft = works.draft.where(division_id: current_user.division.id)
     @working = works.working.where(division_id: current_user.division.id)
     @count_draft = @draft.size
     @count_working = @working.size
+
+    add_breadcrumb '作業進捗一覧'
   end
 
   ##
@@ -108,7 +108,6 @@ class WorksController < ApplicationController
       work.update! division_id: params[:division_id]
       render json: { status: :success, division: work.division }
     end
-
   rescue => e
 
     if params[:status] == 'status'

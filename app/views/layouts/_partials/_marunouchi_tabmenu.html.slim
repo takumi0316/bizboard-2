@@ -1,0 +1,10 @@
+ul.l-dashboard__tabmenu
+  li
+    = link_to_unless_current '丸の内全案件', api_marunouchi_index_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active 丸の内全案件
+  li
+    = link_to_unless_current '丸の内案件(名刺のみ)', only_card_api_marunouchi_index_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active 丸の内案件(名刺のみ)
+  li
+    = link_to_unless_current 'コンサル2全案件', consul_api_marunouchi_index_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active コンサル2全案件

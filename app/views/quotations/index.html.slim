@@ -1,0 +1,39 @@
+= render 'layouts/_partials/tabmenu'
+
+= react_component('QuotationSearch')
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 案件No.
+        th ステータス
+        th 作業ステータス
+        th 件名
+        th 納期
+        th colspan=1
+    tbody
+      - quotes.each do |r|
+        tr
+          td.p-tasks__unread
+            - if r.deliver_at.blank?
+              = r&.quote_number
+            - else
+              - if r.deliver_at.to_date == Date.today
+                .u-fc-red= r&.quote_number
+              - elsif r.deliver_at.to_date == Date.today + 1
+                .u-fc-vivid = r&.quote_number
+              - else
+                = r&.quote_number
+          //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
+          td
+            - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
+              = r&.status_i18n
+            - else
+              = r&.activity&.status_i18n
+          td = r.work&.status_i18n
+          td = r&.subject
+          td = r.deliver_at&.to_date
+          td = link_to '詳細', quotation_path(r), class: 'c-btnMain-standard'
+
+= render 'layouts/_partials/pagination'

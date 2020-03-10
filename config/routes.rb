@@ -17,6 +17,17 @@ Rails.application.routes.draw do
 
   resources :configs
 
+  # APIモード
+  namespace :api do
+    # 丸の内
+    resources :marunouchi, only: :index do
+      collection do
+        get :consul
+        get :only_card
+      end
+    end
+  end
+
   # 目標管理
   resources :targets
 
@@ -50,7 +61,14 @@ Rails.application.routes.draw do
   # 活動履歴
   resources :activities
 
-  # 納品
+  # 見積書
+  resources :quotations do
+    member do
+      get :pdf
+    end
+  end
+
+  # 納品書
   resources :delivery_notes do
     member do
       get :pdf

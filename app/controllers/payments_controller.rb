@@ -47,7 +47,7 @@ class PaymentsController < ApplicationController
       @end_date = params[:end].to_time.end_of_month
     end
 
-    @subcontractor = Subcontractor.eager_load(:payments).where.not(payments: {price: 0})
+    @subcontractor = Subcontractor.eager_load(:payments).where.not(payments: { price: 0 })
 
     add_breadcrumb '支払い管理'
   end

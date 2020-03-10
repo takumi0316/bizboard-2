@@ -1,10 +1,10 @@
 .c-box
   .u-ta-center
-    p.u-fw-lignt.u-fs-base #{invoice.attention}
+    p.u-fw-lignt.u-fs-base = invoice.attention.nil?? '請求書' : invoice.attention
 
   .c-box.c-box__height-100.u-mt-30
     .c-float__left
-      .u-fs-small = "#{invoice.quote.client&.company_division&.company&.name}　御中"
+      .u-fs-small = params[:company].present?? "#{params[:company]}　御中" : "#{params[:client]}　様"
     .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "377x40"}
 
   .c-box__height-250
@@ -17,11 +17,16 @@
         p.u-fs-small.u-mt-5 住友不動産茅場町ビル2号館 5F
         p.u-fs-small.u-mt-5 TEL: 03-6280-5510
     .c-float__left
-      - if invoice.quote.client&.company_division&.zip&.present?
-        p.u-fs-small 〒#{invoice.quote.client&.company_division&.zip}
-      p.u-fs-small #{invoice.quote.client&.company_division&.address1}
-      p.u-fs-small #{invoice.quote.client&.company_division&.address2}
-      p.u-fs-small #{invoice.quote.client&.company_division&.name}
+      - if params[:zip].present?
+        p.u-fs-small 〒#{params[:zip]}
+      - if params[:address1].present?
+        p.u-fs-small #{params[:address1]}
+      - if params[:address2].present?
+        p.u-fs-small #{params[:address2]}
+      - if params[:division].present?
+        p.u-fs-small #{params[:division]}
+      - if params[:company].present? && params[:client].present?
+        p.u-fs-small #{params[:client]}
 
   .c-box__height-150
     .c-float__right

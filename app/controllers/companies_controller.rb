@@ -107,7 +107,7 @@ class CompaniesController < ApplicationController
   rescue => e
 
     flash[:warning] = { message: e.message }
-  ensure
+  ensure 
 
     redirect_to action: :index
   end

@@ -1,6 +1,6 @@
 = render 'layouts/_partials/tabmenu'
 
-= react_component('DeliverySearch', { count_number: @count_number })
+= react_component('DeliverySearch')
 
 .c-table.u-mt-30
   table
@@ -34,6 +34,6 @@
           td = r.work&.status_i18n
           td = r&.subject
           td = r.deliver_at&.to_date
-          td = link_to '編集', edit_delivery_note_path(r), class: 'c-btnMain-standard'
+          td = link_to '詳細', delivery_note_path(r), class: 'c-btnMain-standard'
 
 = render 'layouts/_partials/pagination'
