@@ -20,7 +20,7 @@
         th 納品方法
         th 受注区分
     tbody
-      - consul&.each_with_index do |r, index|
+      - @consul.each_with_index do |r, index|
         tr
           td.u-ta-center = (index + 1)
           td = r.date
