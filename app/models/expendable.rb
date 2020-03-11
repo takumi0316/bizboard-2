@@ -14,6 +14,7 @@
 #  memo                         :text(65535)
 #  work_subcontractor_detail_id :bigint(8)
 #  user_id                      :bigint(8)
+#  work_subcontractor_id        :bigint(8)
 #
 
 class Expendable < ApplicationRecord
@@ -47,6 +48,7 @@ class Expendable < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
   # validates :price, presence: true
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
@@ -54,6 +56,8 @@ class Expendable < ApplicationRecord
   belongs_to :subcontractor
 
   belongs_to :division
+
+  belongs_to :work_subcontractor, optional: true
 
   belongs_to :work_subcontractor_detail, optional: true
 
@@ -79,7 +83,7 @@ class Expendable < ApplicationRecord
 
       # 日付検索
       _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
-		else
+    else
 
       # 日付検索
       _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil

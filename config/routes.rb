@@ -86,10 +86,14 @@ Rails.application.routes.draw do
   resources :work_details
 
   # 外注先作業
-  resources :work_subcontractors
+  resources :work_subcontractors, only: [:create, :update, :show, :destroy] do
+    member do
+      post :client
+    end
+  end
 
   # 外注先作業詳細
-  resources :work_subcontractor_details
+  resources :work_subcontractor_details, only: [:create, :destroy]
 
   # 取引先(会社)
   resources :companies
