@@ -1,14 +1,10 @@
 json = { status: :success }
 
-json[:clients] = clients.map do |r|
+json[:divisions] = CompanyDivision.where(company_id: params[:company_id]).map do |r|
 
   {
     id: r.id,
     name: r.name,
-    tel: r.tel,
-    email: r.email,
-    division: r.company_division,
-    company: r.company_division&.company,
   }
 end
 

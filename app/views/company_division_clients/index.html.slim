@@ -1,6 +1,14 @@
-h1.l-dashboard__heading 担当者一覧
+= render 'layouts/_partials/company_tabmenu'
 
-.u-mt-15 = link_to '部署 - 担当者 を作成する', new_company_division_client_path(company_division_id: division&.id), class: 'c-btnMain-standard'
+= form_with url: company_division_clients_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+
+  .c-search__item
+    = f.label :name, '検索ワードはスペース区切り(検索ワードは2つまで対応)'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '日本工業社 経営管理部'
+
+  = f.submit '検索', class: 'c-btnMain-standard'
+
+.u-mt-15 = link_to '担当者を作成する', new_company_division_client_path, class: 'c-btnMain-standard c-btn-blue'
 
 .c-table.u-mt-30
   table
