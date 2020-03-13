@@ -127,6 +127,9 @@ Rails.application.routes.draw do
   # 自社部署
   resources :divisions
 
+  # カテゴリー
+  resources :categories
+
   # カタログ
   resources :catalogs
 
