@@ -34,11 +34,10 @@ class WorkSubcontractorDetailsController < ApplicationController
 
     work_subcontractor_detail.update! work_id: params[:work_id], work_subcontractor_id: params[:work_subcontractor_id], deliver_at: DateTime.now, count: 1, number_of_copies: 1, actual_cost: 0
 
-      render json: { status: :success, work_subcontractor_detail: work_subcontractor_detail }
+    render json: { status: :success, work_subcontractor_detail: work_subcontractor_detail }
   rescue => e
 
-    flash[:warning] = { message: e.message }
-    render json: { work_subcontractors_iterate: Work.find(params[:work_id]).iterate }
+    render json: { status: :error, message: e.message }
   end
 
   ##

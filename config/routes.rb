@@ -83,12 +83,12 @@ Rails.application.routes.draw do
   end
 
   # 作業詳細
-  resources :work_details
+  resources :work_details, only: [:create, :destroy]
 
   # 外注先作業
   resources :work_subcontractors, only: [:create, :update, :show, :destroy] do
     member do
-      post :client
+      post :set_client
     end
   end
 

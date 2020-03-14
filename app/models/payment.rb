@@ -30,6 +30,7 @@ class Payment < ApplicationRecord
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
+
   validates :price, presence: true
   #----------------------------------------
   #  ** Associations **
@@ -44,6 +45,5 @@ class Payment < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-
 
 end

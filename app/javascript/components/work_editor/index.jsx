@@ -33,62 +33,44 @@ export default class WorkEditor extends React.Component {
   };
 
   /**
-   * 請求合算値変更
-   * @versions 2019/12/27
-   */
-  setPrice = () => {
-
-    const url = '/works/' + this.state.work.id;
-    const field = {
-      'price': this.state.work_detail_cost + this.state.subcontractor_detail_cost,
-      'status': 'price',
-    };
-
-    Request
-      .put(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === 'success') {
-
-          let work = Object.assign({}, JSON.parse(JSON.stringify(this.state.work)));
-          work = { ...work, price: res.body.price };
-          this.setState({ work: work });
-        } else {
-
-          this.setState({ work_price: res.body.price });
-        };
-      });
-  };
-
-  /**
    * 作業詳細作成
    * @versions 2019/12/27
    */
   onWorkDetailCreate = e => {
 
     e.preventDefault();
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+
     let work_details = this.state.work_details.slice();
+    const field = new FormData();
+    field.append('work_detail[work_id]', this.state.work.id);
+    field.append('work_detail[count]', 0);
+    field.append('work_detail[deliver_at]', new Date(year, month, day));
+    field.append('work_detail[estimated_cost]', 0);
+    field.append('work_detail[number_of_copies]', 0);
+    field.append('work_detail[actual_cost]', 0);
+    field.append('work_detail[client_name]', this.props.user_name);
+
     const url = '/work_details';
-    const field = {
-      'work_detail[work_id]': this.state.work.id,
-    };
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === "success") {
+    const request = window.xhrRequest.post(url, field);
+    request.then(res => {
 
-          work_details.push(res.body.detail);
-          this.setState({ work_details: work_details });
-        } else {
+      if(res.data.status == 'success') {
 
-          this.setState({ work_details: work_details });
-        }
-      });
+        work_details.push(res.data.work_detail);
+        this.setState({ work_details: work_details });
+      } else {
+
+        window.alert(res.data.message);
+      };
+    }).catch(err => {
+
+      window.alert(err);
+    });
   };
 
   /**
@@ -97,107 +79,71 @@ export default class WorkEditor extends React.Component {
    */
   onWorkDetailUpdate = e => {
 
-    let work_details = this.state.work_details.slice();
-    let send_array = [];
-    let field = {};
+    const work_details = this.state.work_details.slice();
     let actual_cost = 0;
-    let count = work_details.length;
-    if(count !== 0){
+    const field = new FormData();
 
-      work_details.map((detail) => {
-        send_array.push(JSON.stringify({ ...detail }));
-        actual_cost = Number(actual_cost) + Number(detail.actual_cost);
-      });
-      field = {
-        'work_detail_update[]': send_array,
-        'work_detail[work_id]': '',
-        'token': 'value',
-        'work_id': this.state.work.id,
+    field.append('work[notices]', this.state.work.notices || '');
+
+    work_details.forEach((detail) => {
+      if(detail) {
+        actual_cost = actual_cost + Number(detail.actual_cost);
+        field.append('work[work_details_attributes][][id]', detail.id);
+        field.append('work[work_details_attributes][][work_id]', detail.work_id);
+        field.append('work[work_details_attributes][][order_contents]', detail.order_contents || '');
+        field.append('work[work_details_attributes][][deliver_method]', detail.deliver_method || '');
+        field.append('work[work_details_attributes][][specification]', detail.specification || '');
+        field.append('work[work_details_attributes][][number_of_copies]', detail.number_of_copies);
+        field.append('work[work_details_attributes][][count]', detail.count);
+        field.append('work[work_details_attributes][][deliver_at]', detail.deliver_at);
+        field.append('work[work_details_attributes][][client_name]', detail.client_name);
+        field.append('work[work_details_attributes][][estimated_cost]', detail.estimated_cost);
+        field.append('work[wokr_details_attributes][][actual_cost]', detail.actual_cost);
       };
-    } else {
-      field = {
-        'work_detail_update[]': '',
-        'work_detail[work_id]': '',
-        'token': 'empty',
-        'work_id': this.state.work.id,
+    });
+
+    const url = '/works/' + this.state.work.id;
+    const request = window.xhrRequest.put(url, field);
+    request.then(res => {
+
+      if(res.data.status === 'success') {
+
+        const type = 'work_detail_cost';
+        this.passedPrice(actual_cost, type);
+      } else {
+
+        window.alert(res.data.message);
       };
-    };
+    }).catch(err => {
 
-    const url = '/work_details';
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        let type = 'work_detail_cost';
-        if (!err && res.body.status === "success") {
-
-          this.setState({ work_details: res.body.detail }, this.onWorkNoticesUpdate(actual_cost, type));
-        } else if (!err && res.body.status === 'nothing') {
-
-          this.onWorkNoticesUpdate(actual_cost, type);
-        } else {
-
-          this.setState({ work_details: res.body.detail });
-        }
-      });
-  };
-
-  /**
-   * 作業書備考更新
-   * @versions 2019/12/27
-   */
-  onWorkNoticesUpdate = (actual_cost, type) => {
-
-    const work = Object.assign({}, this.state.work);
-    const url = '/works/' + work.id;
-    const field = {
-      'work_id': work.id,
-      'work_notices': work.notices || '',
-      'status': 'notices',
-    };
-
-    Request
-      .put(url)
-      .field(field)
-      .set('X-Request-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-
-        if (!err && res.body.status === 'success') {
-
-          this.setState({ show: false, work: { ...work, notices: res.body.notices } }, this.passedPrice(Number(actual_cost), type));
-        };
-      });
+      window.alert(err);
+    });
   };
 
   /**
    * 作業書詳細消去
    * @versions 2019/12/27
    */
-  onWorkDetailDestroy = passIndex => {
+  onWorkDetailDestroy = index => {
 
     let work_details = this.state.work_details.slice();
-    work_details.splice(passIndex, 1);
-    const url = '/work_details/' + this.state.work_details[passIndex].id;
-    const field = {
-      'work_detail[work_id]': this.state.work.id,
-    };
-    Request
-      .del(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === "success") {
+    work_details.splice(index, 1);
 
-          this.setState({ work_details: work_details });
-        } else {
+    const url = '/work_subcontractor_details/' + e.target.value;
+    const request = window.xhrRequest.delete(url);
+    request.then(res => {
 
-          this.setState({ work_details: res.body.detail });
-        }
-      });
+      if(res.data.status === 'success') {
+
+        this.setState({ work_details: work_details });
+      } else {
+
+        window.alert(res.data.message);
+      };
+    }).catch(err => {
+
+      window.alert(err);
+    });
   };
 
   /**
@@ -205,44 +151,54 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/09
    *
    */
-  workSubcontractorCreate = e => {
+  workSubcontractorCreate = (e, state) => {
 
     e.preventDefault();
 
-    let work_subcontractors_iterate = Object.assign(JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
-    const url = '/work_subcontractors';
-    const field = {
-      'id': '',
-      'work_id': this.state.work.id
+    if(state.subcontractor_id) {
+
+      window.confirm('編集中の作業外注を更新して下さい。');
+      return false;
     };
 
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if(!err && res.body.status == 'success') {
+    let work_subcontractors_iterate = Object.assign(JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
 
-          const subcontractor = res.body.subcontractor;
-          const copy = {
-            id: subcontractor.id,
-            client: null,
-            division: null,
-            subcontractor: null,
-            order_date: subcontractor.order_date,
-            delivery_date: subcontractor.delivery_date,
-            delivery_destination: '',
-            notices: '',
-            details: []
-          };
-          work_subcontractors_iterate.push(copy);
-          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-        } else {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    const field = new FormData();
 
-          window.confirm(res.body.message);
+    field.append('work_subcontractor[work_id]', this.state.work.id);
+    field.append('work_subcontractor[order_date]', new Date(year, month, day));
+    field.append('work_subcontractor[delivery_date]', new Date(year, month, day));
+    const url = '/work_subcontractors';
+    const request = window.xhrRequest.post(url, field);
+    request.then(res => {
+      if(res.data.status == 'success') {
+
+        const subcontractor = res.data.subcontractor;
+        const copy = {
+          id: subcontractor.id,
+          client: null,
+          division: null,
+          subcontractor: null,
+          order_date: subcontractor.order_date,
+          delivery_date: subcontractor.delivery_date,
+          delivery_destination: '',
+          notices: '',
+          details: []
         };
-      });
+        work_subcontractors_iterate.push(copy);
+     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
+      } else {
+
+        window.alert(res.data.message);
+      };
+    }).catch(err => {
+
+      window.alert(err);
+    });
   };
 
   /**
@@ -252,47 +208,52 @@ export default class WorkEditor extends React.Component {
    */
   workSubcontractorUpdate = (index, id) => {
 
-  	let work_subcontractors_iterate = Object.assign(JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
+    const work_subcontractors_iterate = Object.assign(JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
     const work_subcontractor = work_subcontractors_iterate[index];
+    let actual_cost = 0;
+
+    const field = new FormData();
+
+    field.append('work_subcontractor[work_id]', this.state.work.id);
+    field.append('work_subcontractor[notices]', work_subcontractor.notices || '');
+    field.append('work_subcontractor[order_date]',  work_subcontractor.order_date);
+    field.append('work_subcontractor[delivery_date]',  work_subcontractor.delivery_date);
+    field.append('work_subcontractor[delivery_destination]', work_subcontractor.delivery_destination || '');
+
+    work_subcontractors_iterate.forEach((subcontractor, index1) => {
+      if(subcontractor.details) {
+        subcontractor.details.forEach((detail) => {
+          actual_cost = actual_cost + Number(detail.actual_cost);
+          if(index == index1) {
+
+            field.append('work_subcontractor[detail_attributes][][id]', detail.id);
+            field.append('work_subcontractor[detail_attributes][][work_subcontractor_id]', detail.work_subcontractor_id);
+            field.append('work_subcontractor[detail_attributes][][order_contents]', detail.order_contents || '');
+            field.append('work_subcontractor[detail_attributes][][deliver_method]', detail.deliver_method || '');
+            field.append('work_subcontractor[detail_attributes][][specification]', detail.specification || '');
+            field.append('work_subcontractor[detail_attributes][][count]', detail.count);
+            field.append('work_subcontractor[detail_attributes][][number_of_copies]', detail.number_of_copies);
+            field.append('work_subcontractor[detail_attributes][][actual_cost]', detail.actual_cost);
+          };
+        });
+      };
+    });
 
     const url = '/work_subcontractors/' + id;
+    const request = window.xhrRequest.put(url, field);
+    request.then(res => {
+      if(res.data.status === 'success') {
 
-    const field = {
-      'work_subcontractor[work_id]': this.state.work.id,
-      'work_subcontractor[notices]': work_subcontractor.notices,
-      'work_subcontractor[order_date]': work_subcontractor.order_date,
-      'work_subcontractor[delivery_date]': work_subcontractor.delivery_date,
-      'work_subcontractor[delivery_destination]': work_subcontractor.delivery_destination
-    };
+        const type = 'subcontractor_detail_cost';
+        this.passedPrice(actual_cost, type);
+      } else {
 
-    if(work_subcontractor.details) {
+       	window.alert(res.data.message);
+      };
+    }).catch(err => {
 
-      work_subcontractor.details.forEach((detail) => {
-        field['work_subcontractor[detail_attributes][][id]'] = detail.id;
-        field['work_subcontractor[detail_attributes][][work_subcontractor_id]'] = detail.work_subcontractor_id;
-        field['work_subcontractor[detail_attributes][][order_contents]'] = detail.order_contents;
-        field['work_subcontractor[detail_attributes][][deliver_method]'] = detail.deliver_method;
-        field['work_subcontractor[detail_attributes][][specification]'] = detail.specification;
-        field['work_subcontractor[detail_attributes][][count]'] = detail.count;
-        field['work_subcontractor[detail_attributes][][number_of_copies]'] = detail.number_of_copies;
-        field['work_subcontractor[detail_attributes][][actual_cost]'] = detail.actual_cost;
-      });
-    };
-
-    Request
-      .put(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if(!err && res.body.status == 'success') {
-
-          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-        } else {
-
-          window.confirm(res.body.message);
-        };
-      });
+      window.alert(err);
+    });
   };
 
   /**
@@ -300,7 +261,7 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/07
    *
    */
-  workSubcontractorDestroy = (e, passIndex) => {
+  workSubcontractorDestroy = (e, index, state, setState) => {
 
     e.preventDefault();
 
@@ -311,26 +272,34 @@ export default class WorkEditor extends React.Component {
     };
 
     let work_subcontractors_iterate = Object.assign([], JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
-    work_subcontractors_iterate.splice(passIndex, 1);
+    work_subcontractors_iterate.splice(index, 1);
+  	let actual_cost = 0;
+
+    work_subcontractors_iterate.forEach((subcontractor) => {
+      if(subcontractor.details) {
+        subcontractor.details.forEach((detail) => {
+          actual_cost = actual_cost + Number(detail.actual_cost);
+        });
+      };
+    });
 
     const url = '/work_subcontractors/' + e.target.value;
+    const request = window.xhrRequest.delete(url);
+    request.then(res => {
+      if(res.data.status === 'success') {
 
-    Request
-      .del(url)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === 'success'){
+        const type = 'subcontractor_detail_cost';
+        setState({ ...state, subcontractor_id: '' });
+        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, this.passedPrice(actual_cost, type));
+      } else {
 
-          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-        } else {
+        window.alert(res.data.message);
+      };
+    }).catch(err => {
 
-          window.confirm(res.body.message);
-        };
-      });
+      window.alert(err);
+    });
   };
-
-
 
   /**
    * 新規作成
@@ -344,101 +313,24 @@ export default class WorkEditor extends React.Component {
     let work_subcontractors_iterate = Object.assign(JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
     const url = '/work_subcontractor_details';
 
-    const field = {
-      'work_subcontractor_id': e.target.value,
-      'work_id': this.state.work.id,
-    };
+    const field = new FormData();
 
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === "success") {
+    field.append('work_subcontractor_id', e.target.value);
+    field.append('work_id', this.state.work.id);
+    const request = window.xhrRequest.post(url, field);
+    request.then(res => {
+      if(res.data.status == 'success') {
 
-          work_subcontractors_iterate[index].details.push(res.body.work_subcontractor_detail);
+          work_subcontractors_iterate[index].details.push(res.data.work_subcontractor_detail);
           this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-        } else {
+      } else {
 
-          window.confirm(res.body.message);
-        };
-      });
-  };
-
-  /**
-   * 更新
-   * @version 2020/01/07
-   *
-   */
-  workSubcontractorDetailUpdate = () => {
-
-    let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    let send_array_details = [];
-    let send_array_subcontractors = [];
-    let field = {};
-    let actual_cost = 0;
-
-    if(work_subcontractors_iterate.length > 0) {
-      work_subcontractors_iterate.map((subcontractor) => {
-        subcontractor.details.map((detail) => {
-
-          const result = detail.actual_cost ? true : false;
-          if(!result) {
-
-          	window.confirm('空欄の実績原価が存在しています。半角数字を入力しなおしてください。');
-          	return false;
-          };
-
-          send_array_details.push(JSON.stringify({ ...detail }));
-          actual_cost = Number(actual_cost) + Number(detail.actual_cost);
-        });
-
-        const id = subcontractor.id;
-        const order_date = subcontractor.order_date;
-        const delivery_date = subcontractor.delivery_date;
-        const delivery_destination = subcontractor.delivery_destination;
-        const notices = subcontractor.notices;
-        send_array_subcontractors.push(JSON.stringify({
-        	id: id, order_date: order_date, delivery_date: delivery_date, delivery_destination: delivery_destination, notices: notices
-        }));
-      });
-
-      field = {
-        'subcontractor_details[]': send_array_details,
-        'subcontractors[]': send_array_subcontractors,
-        'subcontractor_detail[subcontractor_id]': '',
-        'token': 'value',
-        'work_id': this.state.work.id,
+        window.alert(res.data.message);
       };
-    } else {
-      field = {
-        'subcontractor_detail[work_subcontractor_id]': '',
-        'token': 'empty',
-        'work_id': this.props.work.id,
-      };
-    };
+    }).catch(err => {
 
-    const url = '/work_subcontractor_details';
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-
-        const type = 'subcontractor_detail_cost';
-        if (!err && res.body.status === "success") {
-
-          this.setState({ show: false, work_subcontractors_iterate: res.body.work_subcontractors_iterate }, this.passedPrice(actual_cost, type));
-        } else if (!err && res.body.status === 'nothing') {
-
-          this.setState({ show: false });
-        } else {
-
-          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-        };
-      });
+      window.alert(err);
+    });
   };
 
   /**
@@ -456,47 +348,23 @@ export default class WorkEditor extends React.Component {
       return false;
     };
 
-    let subcontractors = [];
     let work_subcontractors_iterate = Object.assign([], JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
     work_subcontractors_iterate[index].details.splice(index1, 1);
 
-    work_subcontractors_iterate.map((sub) => {
-      const id = sub.id;
-      const client = sub.client ? { ...sub.client } : null;
-      const division = sub.division ? { ...sub.division } : null;
-      const subcontractor = sub.subcontractor ? { ...sub.subcontractor } : null;
-      const order_date = sub.order_date;
-      const delivery_date = sub.delivery_date;
-      const delivery_destination = sub.delivery_destination;
-      const notices = sub.notices;
-      const details = sub.details ? sub.details : null;
-      subcontractors.push({
-        id: id,
-        client: client,
-        division: division,
-        subcontractor: subcontractor,
-        order_date: order_date,
-        delivery_date: delivery_date,
-        delivery_destination: delivery_destination,
-        notices: notices,
-        details: details,
-      });
-    });
-
     const url = '/work_subcontractor_details/' + e.target.value;
-    Request
-      .del(url)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === "success") {
+    const request = window.xhrRequest.delete(url);
+    request.then(res => {
+      if(res.data.status === 'success') {
 
-          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-        } else {
+        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
+      } else {
 
-          window.confirm(res.body.message);
-        };
-      });
+        window.alert(res.data.message);
+      };
+    }).catch(err => {
+
+      window.alert(err);
+    });
   };
 
   /**
@@ -520,69 +388,103 @@ export default class WorkEditor extends React.Component {
    *  お客様選択時
    *  @version
    */
-  applyClient = (client, passIndex) => {
+  applyClient = (client, index) => {
 
     let work_subcontractors_iterate = Object.assign([], JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
-    const id = work_subcontractors_iterate[passIndex].id;
-    const url = '/work_subcontractors/' + id + '/client';
-    const field = {
-      'client': client.id,
-      'work_id': this.state.work.id,
-    };
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === 'success') {
+    const id = work_subcontractors_iterate[index].id;
+    const url = '/work_subcontractors/' + id;
 
-          work_subcontractors_iterate[passIndex].client        = res.body.client;
-          work_subcontractors_iterate[passIndex].division      = res.body.division;
-          work_subcontractors_iterate[passIndex].subcontractor = res.body.subcontractor;
-          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-        } else {
+    const field = new FormData();
 
-          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-        };
-      });
+    field.append('work_subcontractor[subcontractor_division_client_id]', client.id);
+    field.append('work_subcontractor[work_id]', this.state.work.id);
+    const request = window.xhrRequest.put(url, field);
+    request.then(res => {
+
+      if(res.data.status == 'success') {
+
+        work_subcontractors_iterate[index].client        = res.data.client;
+        work_subcontractors_iterate[index].division      = res.data.division;
+        work_subcontractors_iterate[index].subcontractor = res.data.subcontractor;
+        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
+      } else {
+
+        window.alert(res.data.message);
+      };
+    }).catch(err => {
+
+      window.alert(err);
+    });
   };
 
+  /**
+   * 請求合算値変更
+   * @versions 2019/12/27
+   */
+  setPrice = () => {
+
+    const price = this.state.work_detail_cost + this.state.subcontractor_detail_cost;
+    const field = new FormData();
+    field.append('work[price]', price);
+    const url = '/works/' + this.state.work.id;
+    const request = window.xhrRequest.put(url, field);
+    request.then(res => {
+      if(res.data.status == 'success') {
+
+          let work = Object.assign({}, JSON.parse(JSON.stringify(this.state.work)));
+          work = { ...work, price: res.data.work.price, notices: res.data.work.notices };
+          this.setState({ work: work });
+      } else {
+
+        window.alert(res.data.message);
+      };
+    }).catch(err => {
+
+      window.alert(err);
+    });
+  };
+
+  /**
+  * 作業部署更新
+  * @version 2020/03/13
+  */
+  passedDivision = division => {
+
+    const url = '/works/' + this.state.work.id;
+    const field = new FormData();
+    field.append('work[division_id]', division.id);
+    const request = window.xhrRequest.put(url, field);
+    request.then(res => {
+      if(res.data.status == 'success') {
+
+        window.alert('作業部署を登録出来ました');
+        this.setState({ division: res.data.work.division });
+      } else {
+
+        window.alert(res.data.message);
+      };
+    }).catch(err => {
+
+      window.alert(err);
+    });
+  };
+
+  /**
+  * 各原価合算
+  * @version 2020/03/13
+  */
   passedPrice = (price, type) => {
 
     if (type === 'work_detail_cost') {
 
       this.setState({ work_detail_cost: price });
-    } else if (type === 'subcontractor_detail_cost') {
+    };
+
+    if (type === 'subcontractor_detail_cost') {
 
       this.setState({ subcontractor_detail_cost: price });
-    }
+    };
     this.setPrice();
-  }
-
-  passedDivision = (division) => {
-
-    const url = '/works/' + this.state.work.id;
-    const field = {
-      'division_id': division.id,
-      'status': 'division',
-    }
-    Request
-      .put(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status === 'success') {
-
-          alert('作業部署を登録出来ました')
-          this.setState({ division: res.body.division });
-        } else {
-
-          alert('作業部署を登録出来ませんでした')
-          this.setState({ work_price: res.body.division });
-        }
-      });
   };
 
   /**
@@ -600,10 +502,10 @@ export default class WorkEditor extends React.Component {
    * 発注内容更新
    * @versions 2019/12/26
    */
-  setDeOrderContents = (passIndex, value) => {
+  setDeOrderContents = (index, value) => {
 
     let work_details = this.state.work_details.slice();
-    work_details[passIndex].order_contents = value;
+    work_details[index].order_contents = value;
     this.setState({ work_details: work_details });
   };
 
@@ -611,10 +513,10 @@ export default class WorkEditor extends React.Component {
    * 入稿物更新
    * @versions 2019/12/26
    */
-  setDeDeliverMethod = (passIndex, value) => {
+  setDeDeliverMethod = (index, value) => {
 
     let work_details = this.state.work_details.slice();
-    work_details[passIndex].deliver_method = value;
+    work_details[index].deliver_method = value;
     this.setState({ work_details: work_details });
   };
 
@@ -622,10 +524,10 @@ export default class WorkEditor extends React.Component {
    * 仕様更新
    * @versions 2019/12/26
    */
-  setDeSpecification = (passIndex, value) => {
+  setDeSpecification = (index, value) => {
 
     let work_details = this.state.work_details.slice();
-    work_details[passIndex].specification = value;
+    work_details[index].specification = value;
     this.setState({ work_details: work_details });
   };
 
@@ -633,10 +535,10 @@ export default class WorkEditor extends React.Component {
    * 期日更新
    * @versions 2019/12/26
    */
-  setDeDeliverAt = (passIndex, value) => {
+  setDeDeliverAt = (index, value) => {
 
     let work_details = this.state.work_details.slice();
-    work_details[passIndex].deliver_at = value;
+    work_details[index].deliver_at = value;
     this.setState({ work_details: work_details });
   };
 
@@ -644,10 +546,10 @@ export default class WorkEditor extends React.Component {
    * 担当者更新
    * @versions 2019/12/26
    */
-  setDeClientName = (passIndex, value) => {
+  setDeClientName = (index, value) => {
 
     let work_details = this.state.work_details.slice();
-    work_details[passIndex].client_name = value;
+    work_details[index].client_name = value;
     this.setState({ work_details: work_details });
   };
 
@@ -655,15 +557,15 @@ export default class WorkEditor extends React.Component {
    * 原稿枚数・合計金額更新
    * @versions 2019/12/26
    */
-  setDeNumberOfCopies = (passIndex, value) => {
+  setDeNumberOfCopies = (index, value) => {
 
     let work_details = this.state.work_details.slice();
-    const count = work_details[passIndex].count;
-    const cost = work_details[passIndex].estimated_cost;
+    const count = work_details[index].count;
+    const cost = work_details[index].estimated_cost;
     const actual_cost = value * Number(count) * Number(cost);
 
-    work_details[passIndex].actual_cost = actual_cost;
-    work_details[passIndex].number_of_copies = value;
+    work_details[index].actual_cost = actual_cost;
+    work_details[index].number_of_copies = value;
     this.setState({ work_details: work_details });
   };
 
@@ -671,15 +573,15 @@ export default class WorkEditor extends React.Component {
    * 部数数量・合計金額更新
    * @versions 2019/12/26
    */
-  setDeCount = (passIndex, value) => {
+  setDeCount = (index, value) => {
 
     let work_details = this.state.work_details.slice();
-    const number_of_copies = work_details[passIndex].number_of_copies;
-    const cost = work_details[passIndex].estimated_cost;
+    const number_of_copies = work_details[index].number_of_copies;
+    const cost = work_details[index].estimated_cost;
     const actual_cost = Number(number_of_copies) * value * Number(cost);
 
-    work_details[passIndex].count = value;
-    work_details[passIndex].actual_cost = actual_cost;
+    work_details[index].count = value;
+    work_details[index].actual_cost = actual_cost;
     this.setState({ work_details: work_details });
   };
 
@@ -687,15 +589,15 @@ export default class WorkEditor extends React.Component {
    * 原単価・合計金額更新
    * @versions 2019/12/26
    */
-  setDeCost = (passIndex, value) => {
+  setDeCost = (index, value) => {
 
     let work_details = this.state.work_details.slice();
-    const number_of_copies = work_details[passIndex].number_of_copies;
-    const count = work_details[passIndex].count;
+    const number_of_copies = work_details[index].number_of_copies;
+    const count = work_details[index].count;
     const actual_cost = Number(number_of_copies) * Number(count) * value;
 
-    work_details[passIndex].actual_cost = actual_cost;
-    work_details[passIndex].estimated_cost = value;
+    work_details[index].actual_cost = actual_cost;
+    work_details[index].estimated_cost = value;
     this.setState({ work_details: work_details });
   };
 
@@ -703,9 +605,9 @@ export default class WorkEditor extends React.Component {
    * 特記事項更新
    * @versions 2019/12/26
    */
-  setDeNotices = (value) => {
+  setDeNotices = value => {
 
-    let work = Object.assign([], this.state.work);
+    let work = Object.assign({}, this.state.work);
     work.notices = value;
     this.setState({ work: work });
   };
@@ -715,10 +617,10 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/07
    *
    */
-  setOrderContents = (e, passIndex, passIndex1) => {
+  setOrderContents = (e, index, index1) => {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    work_subcontractors_iterate[passIndex].details[passIndex1].order_contents = e.target.value;
+    work_subcontractors_iterate[index].details[index1].order_contents = e.target.value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -727,10 +629,10 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/07
    *
    */
-  setDeliverMethod = (e, passIndex, passIndex1) => {
+  setDeliverMethod = (e, index, index1) => {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    work_subcontractors_iterate[passIndex].details[passIndex1].deliver_method = e.target.value;
+    work_subcontractors_iterate[index].details[index1].deliver_method = e.target.value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -739,10 +641,10 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/07
    *
    */
-  setSpecification = (e, passIndex, passIndex1) => {
+  setSpecification = (e, index, index1) => {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    work_subcontractors_iterate[passIndex].details[passIndex1].specification = e.target.value;
+    work_subcontractors_iterate[index].details[index1].specification = e.target.value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -751,10 +653,10 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/07
    *
    */
-  setCount = (e, passIndex, passIndex1) => {
+  setCount = (e, index, index1) => {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    work_subcontractors_iterate[passIndex].details[passIndex1].count = e.target.value;
+    work_subcontractors_iterate[index].details[index1].count = e.target.value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -763,10 +665,10 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/07
    *
    */
-  setNumberOfCopies = (e, passIndex, passIndex1) => {
+  setNumberOfCopies = (e, index, index1) => {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    work_subcontractors_iterate[passIndex].details[passIndex1].number_of_copies = e.target.value;
+    work_subcontractors_iterate[index].details[index1].number_of_copies = e.target.value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -775,10 +677,10 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/07
    *
    */
-  setActualCost = (e, passIndex, passIndex1) => {
+  setActualCost = (e, index, index1) => {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    work_subcontractors_iterate[passIndex].details[passIndex1].actual_cost = e.target.value;
+    work_subcontractors_iterate[index].details[index1].actual_cost = e.target.value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -791,7 +693,6 @@ export default class WorkEditor extends React.Component {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
     work_subcontractors_iterate[prop.index].order_date = prop.value;
-
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -812,10 +713,10 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/08
    *
    */
-  setDeliveryDestination = (passIndex, value) => {
+  setDeliveryDestination = (index, value) => {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    work_subcontractors_iterate[passIndex].delivery_destination = value;
+    work_subcontractors_iterate[index].delivery_destination = value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -824,10 +725,10 @@ export default class WorkEditor extends React.Component {
    * @version 2020/01/08
    *
    */
-  setNotices = (passIndex, value) => {
+  setNotices = (index, value) => {
 
     let work_subcontractors_iterate = this.state.work_subcontractors_iterate.slice();
-    work_subcontractors_iterate[passIndex].notices = value;
+    work_subcontractors_iterate[index].notices = value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
@@ -840,7 +741,7 @@ export default class WorkEditor extends React.Component {
 
     const setText = text ? text.replace(/\n/g, '<br />') : text;
     return(
-      <div className={ `${style}` } dangerouslySetInnerHTML={{ __html: setText }}/>
+      <div className={`${style}`} dangerouslySetInnerHTML={{ __html: setText }}/>
     );
   };
 

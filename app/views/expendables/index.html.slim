@@ -20,16 +20,6 @@ h1.l-dashboard__heading 製造経費情報一覧
     tbody
       - expendables.each do |r|
 
-        - if r.division.name == "コンサルティング2GR" && r.status_i18n == "外注費"
-          - puts "------------------------------------------------------------"
-          - puts "#{r.work_subcontractor_detail_id}"
-          - puts "申請日(外注指示書納期): #{r.date}"
-          - puts "負担部署: #{r.division.name}"
-          - puts "仕入れ先(外注先企業): #{r.subcontractor.name}"
-          - puts "勘定科目: #{r.status_i18n}"
-          - puts "外注費用(税抜き): #{r.price.to_s(:delimited)}"
-          - puts "------------------------------------------------------------"
-
         tr
           td = r.date
           td = r.division.name
@@ -38,17 +28,18 @@ h1.l-dashboard__heading 製造経費情報一覧
           td = r.price.to_s(:delimited)
           td = r.memo
           td
-            - if r.work_subcontractor_detail_id.present?
+            - if r.work_subcontractor.present?
+              = link_to '編集', work_path(r.work_subcontractor.work.id), class: 'c-btnMain-standard'
+            - elsif r.work_subcontractor_detail.present?
               = link_to '編集', work_path(r.work_subcontractor_detail.work_id), class: 'c-btnMain-standard'
             - else
               = link_to '編集', edit_expendable_path(r), class: 'c-btnMain-standard'
-
-
           td
-            - if r.work_subcontractor_detail_id.present?
-              = link_to '削除', work_path(r.work_subcontractor_detail.work_id), class: 'c-btnMain-negative'
+            - if r.work_subcontractor.present?
+              = link_to '削除', work_path(r.work_subcontractor.work.id), class: 'c-btnMain-negative'
+            - elsif r.work_subcontractor_detail.present?
+              = link_to '削除', work_path(r.work_subcontractor_detail.work_id), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
             - else
               = link_to '削除', expendable_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
-
 
 = render 'layouts/_partials/pagination'

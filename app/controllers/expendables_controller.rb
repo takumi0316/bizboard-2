@@ -18,11 +18,8 @@ class ExpendablesController < ApplicationController
       .all
       .order(date: :desc)
   }
-
-
   # 見積もり
   expose(:expendable) { Expendable.find_or_initialize_by id: params[:id] || params[:expendable_id]}
-
 
   #----------------------------------------
   #  ** Layouts **
