@@ -190,7 +190,7 @@ export default class WorkEditor extends React.Component {
           details: []
         };
         work_subcontractors_iterate.push(copy);
-     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
+        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
       } else {
 
         window.alert(res.data.message);
@@ -248,7 +248,7 @@ export default class WorkEditor extends React.Component {
         this.passedPrice(actual_cost, type);
       } else {
 
-       	window.alert(res.data.message);
+        window.alert(res.data.message);
       };
     }).catch(err => {
 
@@ -315,18 +315,8 @@ export default class WorkEditor extends React.Component {
 
     const field = new FormData();
 
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
-    const field = new FormData();
-
-    field.append('work_subcontractor_detail[work_id]', this.state.work.id);
-    field.append('work_subcontractor_detail[work_subcontractor_id]', e.target.value);
-    field.append('work_subcontractor_detail[deliver_at]', new Date(year, month, day));
-    field.append('work_subcontractor_detail[count]', 1);
-    field.append('work_subcontractor_detail[number_of_copies]', 1);
-    field.append('work_subcontractor_detail[actual_cost]', 0);
+    field.append('work_subcontractor_id', e.target.value);
+    field.append('work_id', this.state.work.id);
     const request = window.xhrRequest.post(url, field);
     request.then(res => {
       if(res.data.status == 'success') {
