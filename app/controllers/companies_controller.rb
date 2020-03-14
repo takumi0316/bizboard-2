@@ -13,7 +13,7 @@ class CompaniesController < ApplicationController
 
   # 取引先一覧
   expose_with_pagination(:companies) {
-    params[:name] ? Company.search(params[:name]).all.reverse_order : Company.search(params[:search]).all.reverse_order
+    Company.search(params[:name]).all.reverse_order
   }
   # 取引先
   expose(:company) { Company.find_or_initialize_by id: params[:id] || params[:company_id] }
@@ -61,7 +61,8 @@ class CompaniesController < ApplicationController
     add_breadcrumb '取引先一覧', path: companies_path
     add_breadcrumb '編集'
   rescue => e
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -73,10 +74,10 @@ class CompaniesController < ApplicationController
     # 取引先情報更新
     company.update! company_params
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: '取引先情報を更新しました'}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '取引先情報を更新しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -88,10 +89,10 @@ class CompaniesController < ApplicationController
     # 取引先情報更新
     company.update! company_params
 
-    redirect_to edit_company_path(company), flash: {notice: {message: '取引先情報を更新しました'}}
+    redirect_to edit_company_path(company), flash: { notice: { message: '取引先情報を更新しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -106,7 +107,8 @@ class CompaniesController < ApplicationController
   rescue => e
 
     flash[:warning] = { message: e.message }
-  ensure
+  ensure 
+
     redirect_to action: :index
   end
 

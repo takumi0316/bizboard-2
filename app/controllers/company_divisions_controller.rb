@@ -11,10 +11,8 @@ class CompanyDivisionsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 取引先
-  expose(:company) { params[:company_id] ? Company.find(params[:company_id]) : nil }
   # 部署一覧
-  expose_with_pagination(:divisions) { params[:company_id] ? company.divisions : CompanyDivision.all }
+  expose_with_pagination(:divisions) { CompanyDivision.all.order(company_id: :desc) }
   # 部署
   expose(:division) { CompanyDivision.find_or_initialize_by id: params[:id] }
 
@@ -36,7 +34,6 @@ class CompanyDivisionsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '取引先一覧', path: companies_path
     add_breadcrumb '部署一覧'
   end
 
@@ -46,10 +43,10 @@ class CompanyDivisionsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '部署一覧', path: company_divisions_path(company_id: company&.id)
+    add_breadcrumb '部署一覧', path: company_divisions_path
     add_breadcrumb '新規作成'
   rescue => e
+
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
@@ -59,12 +56,10 @@ class CompanyDivisionsController < ApplicationController
   #
   def edit
 
-    self.company = division.company
-
-    add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '部署一覧', path: company_divisions_path(company_id: self.company.id)
+    add_breadcrumb '部署一覧', path: company_divisions_path
     add_breadcrumb '編集'
   rescue => e
+
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
@@ -108,10 +103,10 @@ class CompanyDivisionsController < ApplicationController
 
     division.destroy!
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '取引先部署情報を削除しました' }}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '取引先部署情報を削除しました' } }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message }}
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   #----------------------------------------
