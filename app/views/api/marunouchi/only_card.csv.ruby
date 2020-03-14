@@ -23,7 +23,7 @@ CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |
       r.quote.client&.company_division&.company&.name,
       r.quote.client&.company_division&.name,
       r.quote.subject,
-      "#{r.quote.price}円",
+      r.quote.price,
       r.quote.channel_i18n,
       r.quote.reception_i18n,
       r.quote.deliver_type_i18n,

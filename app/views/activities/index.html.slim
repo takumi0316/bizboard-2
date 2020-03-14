@@ -34,15 +34,15 @@
           td = r.accurary_i18n
           td = r.next_action_i18n
           td = r.next_action_date
-          td = r.quote.quote_number
-          td = r.quote.subject&.truncate(25)
+          td = r.quote&.quote_number
+          td = r.quote&.subject&.truncate(25)
           td
-            - if r.quote.company_division_client_id?
+            - if r.quote&.company_division_client_id?
               = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
             - else
               p お客様情報が存在しません
           td
-            - if r.quote.user_id.present?
+            - if r.quote&.user_id.present?
               = r.quote.user.name
             - else
               |担当者不明
