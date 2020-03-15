@@ -16,11 +16,11 @@ CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |
     column_values = [
       (i + 1),
       r.date,
-      r.work_subcontractor_detail&.work_subcontractor&.work&.quote&.quote_number,
+      r.work_subcontractor&.work&.quote&.quote_number,
       r.subcontractor.name,
       r.division.name,
       r.status_i18n,
-      r.work_subcontractor_detail&.work_subcontractor&.work&.quote&.quote_type_i18n,
+      r.work_subcontractor&.work&.quote&.quote_type_i18n,
       r.price,
     ]
     csv << column_values

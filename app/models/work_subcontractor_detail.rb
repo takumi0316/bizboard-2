@@ -42,7 +42,11 @@ class WorkSubcontractorDetail < ApplicationRecord
   #  ** Associations **
   #------------------------------------
 
+  belongs_to :work
+
   belongs_to :work_subcontractor
+
+  belongs_to :expendable
 
   #----------------------------------------
   #  ** Scopes **

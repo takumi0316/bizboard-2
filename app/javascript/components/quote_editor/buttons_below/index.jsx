@@ -3,7 +3,7 @@ import React from 'react';
 const ButtonsBelow = props => {
 
 	return(
-		<div className='c-overlay-submit'>
+    <div className='c-overlay-submit'>
       { props.quote.id ?
         <div>
           <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={ e => props.onSubmit(e) }>更新する</div>
@@ -16,13 +16,13 @@ const ButtonsBelow = props => {
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/invoices/${props.invoice.id}/edit` }>請求書</a>
             : null
           }
-        	{ props.invoice ?
+          { props.invoice ?
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/delivery_notes/${props.quote.id}` }>納品書</a>
-        		: null
+            : null
           }
-        	{ props.work ?
-          	<a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/works/${props.work.id}` }>作業書</a>
-          	: <a className='c-btnMain-standard c-btn-orange u-ml-30' rel="nofollow" data-method="post" href={ `/quotes/${props.quote.id}/status?status=working` }>作業書作成</a>
+          { props.work ?
+            <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/works/${props.work.id}` }>作業書</a>
+            : <a className='c-btnMain-standard c-btn-orange u-ml-30' rel="nofollow" data-method="post" href={ `/quotes/${props.quote.id}/status?status=working` }>作業書作成</a>
           }
           <a className='c-btnMain-standard c-btn-blue u-ml-30' href={	`/activities?name=${props.quote.id}` } >活動履歴</a>
           { props.task ?
@@ -30,10 +30,10 @@ const ButtonsBelow = props => {
             : null
           }
         </div>
-      	: <div className='c-btnMain-standard c-btn-blue' onClick={ e => props.onSubmit(e) }>作成する</div>
-    	}
-		</div>
-	);
+        : <div className='c-btnMain-standard c-btn-blue' onClick={ e => props.onSubmit(e) }>作成する</div>
+      }
+    </div>
+  );
 };
 
 export default ButtonsBelow;
