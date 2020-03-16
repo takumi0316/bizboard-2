@@ -32,6 +32,7 @@ class Payment < ApplicationRecord
   #----------------------------------------
 
   validates :price, presence: true
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
