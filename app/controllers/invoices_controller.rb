@@ -85,6 +85,9 @@ class InvoicesController < ApplicationController
       profit&.update(price: invoice&.quote&.price, date: invoice&.date)
     end
 
+    #請求先情報を静的に保存
+    invoice.quote.update(last_company: invoice&.quote&.client&.company_division&.company&.name, last_division: invoice&.quote&.client&.company_division&.name, last_client: invoice&.quote&.client&.name)
+
     render json: { status: true }
   rescue => e
 
@@ -101,6 +104,9 @@ class InvoicesController < ApplicationController
     invoice.update! invoice_params
 
     invoice.quote.invoicing! unless invoice.quote.invoicing?
+
+    #請求先情報を静的に保存
+    invoice.quote.update(last_company: invoice&.quote&.client&.company_division&.company&.name, last_division: invoice&.quote&.client&.company_division&.name, last_client: invoice&.quote&.client&.name)
 
     # 請求情報保存
     Profit.create!(company_id: invoice&.quote&.client&.company_division&.company&.id, quote_id: invoice&.quote_id, price: invoice&.quote&.price, date: invoice&.date)

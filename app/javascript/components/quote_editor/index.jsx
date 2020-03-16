@@ -58,7 +58,9 @@ export default class QuoteEditor extends React.Component {
       temporary_price: props.quote.temporary_price || 0,
       date: props.quote.date,
       channel: props.quote.channel || '',
+      issues_date: props.quote.issues_date,
       expiration: props.quote.expiration,
+      delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
@@ -103,6 +105,28 @@ export default class QuoteEditor extends React.Component {
 
     this.setState({
       expiration: datetime.datetime,
+    });
+	};
+
+  /**
+   *  見積もり発行日を適用するcallback
+   *  @version 2018/06/10
+   */
+  setIssuesDate = (datetime) => {
+
+    this.setState({
+      issues_date: datetime.datetime,
+    });
+  };
+
+  /**
+   *  納品日を適用するcallback
+   *  @version 2018/06/10
+   */
+  setDeliveryNoteDate = (datetime) => {
+
+    this.setState({
+      delivery_note_date: datetime.datetime,
     });
 	};
 
@@ -421,7 +445,9 @@ export default class QuoteEditor extends React.Component {
       'quote[payment_terms]': this.state.payment_terms,
       'quote[channel]': this.state.channel,
       'quote[date]': this.state.date || '',
+      'quote[issues_date]': this.state.issues_date || '',
       'quote[expiration]': this.state.expiration || '',
+      'quote[delivery_note_date]': this.state.delivery_note_date || '',
       'quote[deliver_at]': this.state.deliver_at || '',
       'quote[reception]': this.state.reception,
       'quote[deliver_type]': this.state.deliver_type,
@@ -627,8 +653,10 @@ export default class QuoteEditor extends React.Component {
         <div className='u-mt-10'>
           <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
         </div>
-    		<CaseDetails	date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setExpiration={ this.setExpiration }
-    									expiration={ this.state.expiration } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
+    		<CaseDetails	date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setIssuesDate={ this.setIssuesDate }
+    									issues_date={ this.state.issues_date } setExpiration={ this.setExpiration }
+    									expiration={ this.state.expiration } setDeliveryNoteDate={ this.setDeliveryNoteDate }
+    									delivery_note_date={ this.state.delivery_note_date } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
     									deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
     									quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
     									setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
