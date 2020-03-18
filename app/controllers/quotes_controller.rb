@@ -197,9 +197,10 @@ class QuotesController < ApplicationController
       end
 
       # taskが存在していたらtaskの納期も更新する
-      if quote.task.present?
-        quote.task.update_columns(date: params[:quote][:deliver_at])
-      end
+      quote.task.update_columns(date: params[:quote][:deliver_at]) if quote.task.present?
+
+      #請求先情報を静的に保存(更新)
+      quote.update(last_company: quote&.client&.company_division&.company&.name, last_division: quote&.client&.company_division&.name, last_client: quote&.client&.name) if quote.invoice.present?
 
       render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
     end
