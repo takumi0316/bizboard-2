@@ -8,6 +8,8 @@
   table
     thead
       tr
+        - if current_user.admin?
+          th ロック
         th 案件No.
         th ステータス
         th 作業ステータス
@@ -27,6 +29,10 @@
         - if r.task.present?
           - if r.task&.messages&.last(1)&.pluck(:created_at)&.join(' ').to_s > current_user.lastaccesstask.to_datetime.to_s
             tr
+              - if current_user.admin?
+                td
+                  = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
+                    = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
               td.p-tasks__unread
                 - if r.deliver_at.blank?
                   = r&.quote_number
@@ -94,6 +100,10 @@
           - else
             tr
               td
+                - if current_user.admin?
+                  = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
+                    = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
+              td
                 - if r.deliver_at.blank?
                   = r&.quote_number
                 - else
@@ -159,6 +169,10 @@
               td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
         - else
           tr
+            td
+              - if current_user.admin?
+                = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
+                  = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
             td
               - if r.deliver_at.blank?
                 = r&.quote_number

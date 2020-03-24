@@ -388,6 +388,8 @@ export default class QuoteEditor extends React.Component {
 
     if(this.state.quote_subject === '') message.push('案件タイトルを入力してください。');
 
+    if(this.state.quote.lock) message.push('案件がロックされている為に更新できません。');
+
 		if(deliver_type) {
 
 			if(deliver_type_note) message.push('納品方法を記入してください');

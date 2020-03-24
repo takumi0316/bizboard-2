@@ -67,6 +67,8 @@ class InvoicesController < ApplicationController
   #
   def update
 
+    render json: { status: false, message: '案件がロックされている為に更新できません。' } if invoice&.quote&.lock
+
     # 情報更新
     invoice.update! invoice_params
 

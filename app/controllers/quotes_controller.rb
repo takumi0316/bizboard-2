@@ -160,8 +160,6 @@ class QuotesController < ApplicationController
       else
         # BPR・ERPの時
         new_quote.update!(price: params[:quote][:price])
-        # 利用開始したらコメントアウトしてるのに変える
-        # new_quote.update!(price: params[:quote][:price])
       end
       # slack通知
       if params[:quote][:payment_terms] == 'advance'
@@ -177,7 +175,7 @@ class QuotesController < ApplicationController
       end
       render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
     else
-
+      
 			findQuote = Quote.find(params[:id])
 
       findQuote.update!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id] == 'null' ? nil : params[:quote][:division_id], date: params[:quote][:date], date: params[:quote][:date], issues_date: params[:quote][:issues_date], expiration: params[:quote][:expiration], delivery_note_date: params[:quote][:delivery_note_date], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:price], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], reception: params[:quote][:reception], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], tax: params[:quote][:tax], payment_terms: params[:quote][:payment_terms], temporary_price: params[:quote][:temporary_price], quote_number: params[:quote][:quote_number] == 'null' ? nil : params[:quote][:quote_number])
@@ -327,6 +325,23 @@ class QuotesController < ApplicationController
                 show_as_html: params.key?('debug')
       end
     end
+  end
+
+  def lock
+
+    if quote.lock
+      quote.lock = false
+    else
+      quote.lock = true
+    end
+
+    quote.save!
+
+    #成功したら編集ページに飛ぶ
+    redirect_to quotes_path
+  rescue => e
+    #エラー時は直前のページへ
+    redirect_back fallback_location: url_for({action: :new}), flash: {notice: {message: e.message}}
   end
 
   #----------------------------------------
