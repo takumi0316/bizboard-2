@@ -2,11 +2,10 @@ h1.l-dashboard__heading 担当者
 
 = form_for client, html: { class: 'u-mt-30'} do |f|
 
-  = react_component('CompanyDivisions',
-    { companies: Company.all.order(:name),
-    company_id: (params[:company_division_id].present? || client.company_division_id?)? division.company.id : nil,
-    company_division_id: (params[:company_division_id].present? || client.company_division_id?)? division.id : nil,
-    divisions: (params[:company_division_id].present? || client.company_division_id?)? division.company.divisions : [] })
+  - if client.new_record?
+    = react_component :CompanyDivisions, companies: companies
+  - else
+    = react_component :CompanyDivisions, companies: companies, divisions: CompanyDivision.where(company_id: client.company_division&.company&.id), company_id: client&.company_division&.company&.id, division_id: client&.company_division&.id
 
   .c-form-label
     = f.label :user_id, '自社担当者'

@@ -35,7 +35,6 @@ class WorkSubcontractorDetailsController < ApplicationController
 
       detail = WorkSubcontractor.find(params[:subcontractor_detail][:subcontractor_id]).detail.create!(order_contents: '', deliver_method: '', specification: '', count: 1, number_of_copies: 1, deliver_at: DateTime.now, cost_unit_price: 0, estimated_cost: 0, actual_count: 1, actual_cost: 0, work_id: params[:work_id])
       render json: { status: :success, detail: detail }
-
     # update処理
     else
 
