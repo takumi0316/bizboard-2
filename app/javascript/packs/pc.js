@@ -99,6 +99,12 @@ import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 // 丸の内CSV書き出し日付検索
 import MarunouchiSearchable from 'components/api/marunouchi/searchable';
 
+// 名刺マスタ登録
+import CardTemplateGenerate from 'components/card/template/template_generate';
+
+// 名刺マスタ登録
+import CardClientGenerate from 'components/card/client/client_generate';
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -126,5 +132,7 @@ WebpackerReact.setup({
 	QuotationSearch,
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
-  MarunouchiSearchable
+	MarunouchiSearchable,
+	CardTemplateGenerate,
+	CardClientGenerate
 })

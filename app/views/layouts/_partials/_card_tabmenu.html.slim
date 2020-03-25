@@ -1,0 +1,7 @@
+ul.l-dashboard__tabmenu
+  li
+    = link_to_unless_current '名刺マスタ', cards_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active 名刺マスタ
+  li
+    = link_to_unless_current '名刺情報', card_clients_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active 名刺情報

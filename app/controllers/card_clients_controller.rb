@@ -1,4 +1,4 @@
-class CardsController < ApplicationController
+class CardClientsController < ApplicationController
 
   #----------------------------------------
   #  ** Includes **
@@ -9,12 +9,12 @@ class CardsController < ApplicationController
   #----------------------------------------
 
   # 名刺マスタ
-  expose_with_pagination(:cards) {
-    Card.all
+  expose_with_pagination(:card_clients) {
+    CardClient.all
   }
 
   # 名刺マスタ
-  expose(:card) { Card.find_or_initialize_by id: params[:id] }
+  expose(:card_client) { CardClient.find_or_initialize_by id: params[:id] }
 
   #----------------------------------------
   #  ** Layouts **
@@ -34,7 +34,7 @@ class CardsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '名刺マスタ一覧'
+    add_breadcrumb '名刺情報一覧'
   end
 
   ##
@@ -43,7 +43,7 @@ class CardsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '名刺マスタ一覧', path: cards_path
+    add_breadcrumb '名刺情報一覧', path: card_clients_path
     add_breadcrumb '新規作成'
   end
 
@@ -60,11 +60,8 @@ class CardsController < ApplicationController
   #
   def edit
 
-    add_breadcrumb '名刺マスタ一覧', path: cards_path
+    add_breadcrumb '名刺情報一覧', path: card_clients_path
     add_breadcrumb '編集'
-  end
-
-  def show
   end
 
   ##
@@ -83,12 +80,12 @@ class CardsController < ApplicationController
 
   private
 
-  def card_params
+  def card_client_params
 
-    params.require(:card).permit! :id, :company_division_id, :name, {
-      card_template_attributes: [:id, :card_id, :status, :file,
-        { template_details_attributes: [:id, :card_template_id, :name, :font, :font_size, :font_color, :length, :line_space] }
+    params.require(:card_client).permit! :id, :company_division_client_id, {
+      client_template_attributes: [:id, :card_client_id, :card_teimplate_id,
+        { template_details_attributes: [:id, :client_template_id, :template_detail_id, :value] }
       ]
-    }
-  end
+		}
+	end
 end

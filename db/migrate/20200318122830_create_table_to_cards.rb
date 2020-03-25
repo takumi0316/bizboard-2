@@ -39,6 +39,7 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
 
       t.references :client_template, index: true
       t.references :template_detail, index: true
+      t.string     :value,           comment: '入力値'
     end
   end
 end

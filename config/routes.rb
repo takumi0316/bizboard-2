@@ -134,7 +134,7 @@ Rails.application.routes.draw do
   resources :cards
 
   # 名刺情報
-  resources :card_templates
+  resources :card_clients
 
   # 品目取り込み
   resources :inquiries, only: :index do

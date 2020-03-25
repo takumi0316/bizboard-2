@@ -1,2 +1,30 @@
-h1 Cards#index
-p Find me in app/views/cards/index.html.slim
+= render 'layouts/_partials/card_tabmenu'
+
+.u-mt-15 = link_to '名刺マスタを作成する', new_card_path, class: 'c-btnMain-standard c-btn-blue'
+
+= form_with url: cards_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+
+  .c-search__item
+    = f.label :name, '名称'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '日本工業社'
+
+  = f.submit '検索', class: 'c-btnMain-standard'
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 名刺ID
+        th アイキャッチ
+        th 名称
+        th colspan=2
+    tbody
+      - cards.each do |r|
+        tr
+          td = r.id
+          td
+          td = r.name
+          td = link_to '編集', edit_card_path(r), class: 'c-btnMain-standard'
+          td = link_to '削除', card_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+
+= render 'layouts/_partials/pagination'
