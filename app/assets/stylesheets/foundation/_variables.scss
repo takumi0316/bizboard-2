@@ -138,6 +138,18 @@ $rankingColors: (
   '3rd':   #a15326,
 );
 
+// svgSize
+// @example
+//  svg-size: map-get($svgSizes, 'm')
+$svgSizes: (
+  'xs':           18px,
+  's':            21px,
+  'm':            24px,
+  'l':           34px,
+  'xl':          75px,
+  'xxl':         100px,
+);
+
 // ==============================================
 // settings
 // ==============================================

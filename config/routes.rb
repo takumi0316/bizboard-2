@@ -130,6 +130,12 @@ Rails.application.routes.draw do
   # カタログ
   resources :catalogs
 
+  # 名刺
+  resources :cards
+
+  # 名刺情報
+  resources :card_templates
+
   # 品目取り込み
   resources :inquiries, only: :index do
     collection { post :import_bpr }

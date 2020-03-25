@@ -14,6 +14,7 @@
 #  memo                         :text(65535)
 #  work_subcontractor_detail_id :bigint(8)
 #  user_id                      :bigint(8)
+#  work_subcontractor_id        :bigint(8)
 #
 
 class Expendable < ApplicationRecord
