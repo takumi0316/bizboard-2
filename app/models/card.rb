@@ -29,6 +29,9 @@ class Card < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 部署
+  belongs_to :company_division
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

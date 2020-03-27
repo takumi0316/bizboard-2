@@ -1,1 +1,1 @@
-= react_component :CardTemplateGenerate, card: card, action: card.new_record?? :new : :edit
+= react_component :CardTemplateGenerate, card: card, action: action, company: card.new_record?? '' : card.company_division.company, division: card.new_record?? '' : card.company_division

@@ -41,13 +41,17 @@ class CompanyDivision < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :company
-
   # 都道府県
   belongs_to_active_hash :prefecture
 
-  # 部署
+  # 会社
+  belongs_to :company
+
+  # 担当者
   has_many :clients, class_name: 'CompanyDivisionClient'
+
+  # 名刺テンプレート
+  has_many :cards
 
   #----------------------------------------
   #  ** Scopes **
@@ -61,11 +65,11 @@ class CompanyDivision < ApplicationRecord
   # 名称検索
   # @version 2018/06/10
   #
-  def self.search(id)
+  def self.search(word)
 
     # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
     terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['free_word like ?'] * terms.size).join(' and ')
+    query = (['name like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
   end

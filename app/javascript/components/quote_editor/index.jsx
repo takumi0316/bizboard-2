@@ -36,8 +36,8 @@ export default class QuoteEditor extends React.Component {
     const day = date.getDate();
 
     this.state = {
-			quote: props.quote,
-			quote_subject: props.quote.subject,
+      quote: props.quote,
+      quote_subject: props.quote.subject,
       quote_projects: props.quote_projects,
       company: props.company,
       division: props.division,
@@ -56,20 +56,19 @@ export default class QuoteEditor extends React.Component {
       deliver_at: props.quote.deliver_at || new Date(year, month, day),
       discount: props.quote.discount || 0,
       temporary_price: props.quote.temporary_price || 0,
-      date: props.quote.date,
       channel: props.quote.channel || '',
       expiration: props.quote.expiration,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
       show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
-			task: props.task,
-			users: props.users,
-			prefectures: props.prefectures,
-			deliver_type_note: props.quote.deliver_type_note || '',
-			remarks: props.quote.remarks || '',
-			memo: props.quote.memo || '',
-			itemStatus: true
+      task: props.task,
+      users: props.users,
+      prefectures: props.prefectures,
+      deliver_type_note: props.quote.deliver_type_note || '',
+      remarks: props.quote.remarks || '',
+      memo: props.quote.memo || '',
+      itemStatus: true
     };
   };
 
@@ -576,7 +575,7 @@ export default class QuoteEditor extends React.Component {
 			alert('消します！');
 		} else {
 
-			return
+			return;
 		};
 
 		let quote_projects = this.state.quote_projects.slice();

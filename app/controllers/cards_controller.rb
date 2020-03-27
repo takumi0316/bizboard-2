@@ -52,6 +52,14 @@ class CardsController < ApplicationController
   # @version 2020/03/23
   #
   def create
+
+    card.update! card_params
+
+    render json: { status: :success, card: card }
+
+  rescue => e
+
+    render json: { status: :error, message: e.message }
   end
 
   ##
@@ -72,6 +80,14 @@ class CardsController < ApplicationController
   # @version 2020/03/23
   #
   def update
+
+    card.update! card_params
+
+    render json: { status: :success, card: card }
+
+  rescue => e
+
+    render json: { status: :error, message: e.message }
   end
 
   ##
@@ -79,13 +95,21 @@ class CardsController < ApplicationController
   # @version 2020/03/23
   #
   def destroy
+  
+    card.destroy!
+  
+    render json: { status: :success }
+  
+  rescue => e
+  
+    render json: { status: :error, message: e.message }
   end
 
   private
 
   def card_params
 
-    params.require(:card).permit! :id, :company_division_id, :name, {
+    params.require(:card).permit :id, :company_division_id, :name, {
       card_template_attributes: [:id, :card_id, :status, :file,
         { template_details_attributes: [:id, :card_template_id, :name, :font, :font_size, :font_color, :length, :line_space] }
       ]
