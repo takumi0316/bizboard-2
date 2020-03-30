@@ -1,0 +1,7 @@
+ul.l-dashboard__tabmenu
+  li
+    = link_to_unless_current 'カテゴリー', categories_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active カテゴリー
+  li
+    = link_to_unless_current 'カタログ', catalogs_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active カタログ

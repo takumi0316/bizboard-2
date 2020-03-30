@@ -77,9 +77,9 @@
               //span.u-ml-10 品目紐付け
 
           li.l-dashboard__menuItem
-            = link_to catalogs_path, class: current_controller('catalogs') do
+            = link_to categories_path, class: current_controller('categories') || current_controller('catalogs') do
               = evil_icon 'ei-tag', size: :s
-              span.u-ml-10 カタログ作成
+              span.u-ml-10 こんプロメニュー
 
           li.l-dashboard__menuItem
             = link_to users_path, class: cp(users_path) do
