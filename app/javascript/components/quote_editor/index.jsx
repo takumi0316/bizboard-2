@@ -61,7 +61,7 @@ export default class QuoteEditor extends React.Component {
       expiration: props.quote.expiration,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
-      show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
+      show: props.quote.discount === 0 || props.quote.discount ? false : true,
       show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
       task: props.task,
       users: props.users,
