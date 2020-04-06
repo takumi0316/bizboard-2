@@ -97,27 +97,18 @@ class WorksController < ApplicationController
 
   def directions
 
-    work_detail_clients = Work.find(params[:id]).work_details.pluck(:client_name).uniq
-    work_detail_clients = work_detail_clients.reject{ |client| client == '' }
-    @client = String.new
-    @clients = String.new
-    @directions = (Date.today).to_s + works.find(params[:id]).quote.subject
-    if work_detail_clients.present?
-      if work_detail_clients.length == 1
-        @client = work_detail_clients[0]
-        return @client
+    work_detail_clients = work.work_details.pluck(:client_name).uniq
+    work_detail_clients = work_detail_clients.reject { |client| client == '' }
+    @client = ''
+    @clients = ''
+    @directions = (Date.today).to_s + work.quote.subject
+    @client = work_detail_clients if work_detail_clients.length == 1
+    work_detail_clients.each_with_index do |client, index|
+      if work_detail_clients.length - 1 == index
+        @clients << client
       else
-        work_detail_clients.each_with_index do |client, index|
-          if work_detail_clients.length - 1 == index
-              @clients << "#{client}"
-          else
-              @clients << "#{client}, "
-          end
-       end
-          return @clients
+        @clients << "#{client}, "
       end
-    else
-      return @client
     end
   end
 

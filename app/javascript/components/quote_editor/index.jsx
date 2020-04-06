@@ -472,7 +472,7 @@ export default class QuoteEditor extends React.Component {
   applyClient = (client) => {
 
     this.setState({
-      client: client,
+      client: client.client,
       company: client.company,
       division: client.division,
     });
