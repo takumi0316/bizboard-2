@@ -34,6 +34,9 @@ class TemplateDetail < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 名刺テンプレート情報
+  belongs_to :template, class_name: 'CardTemplate', optional: true
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

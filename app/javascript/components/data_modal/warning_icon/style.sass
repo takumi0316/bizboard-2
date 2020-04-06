@@ -1,0 +1,44 @@
+// ==============================================
+// Warning Icon
+// ==============================================
+@import '../../../../assets/stylesheets/foundation/variables'
+
+.WarningIcon
+
+  width: 80px
+  height: 80px
+  border-width: 4px
+  border-style: solid
+  border-radius: 50%
+  padding: 0
+  position: relative
+  box-sizing: content-box
+  margin: 20px auto
+  border-color: map-get($layoutColors, 'orange')
+  animation: pulseWarning 0.75s infinite alternate
+
+  &__body
+    position: absolute
+    width: 5px
+    height: 47px
+    left: 50%
+    top: 10px
+    border-radius: 2px
+    margin-left: -2px
+    background-color: map-get($layoutColors, 'orange')
+
+  &__dot
+    position: absolute
+    width: 7px
+    height: 7px
+    border-radius: 50%
+    margin-left: -4px
+    left: 50%
+    bottom: -11px
+    background-color: map-get($layoutColors, 'orange')
+
+@keyframes pulseWarning
+  from
+    border-color: #F8D486
+  to
+    border-color: map-get($layoutColors, 'orange')

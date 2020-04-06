@@ -1,12 +1,16 @@
+const Rails = require('@rails/ujs');
 import 'scripts/utilities';
 import 'scripts/initializer';
 import 'scripts/pagy';
 import 'scripts/image_converter';
 import 'scripts/xhr_request';
+import 'scripts/rails_ujs_jack';
 
 (function() {
 
   Initializer.loadWebfont();
+  RailsUjsJack.jack(Rails);
+  Rails.start();
   Initializer.lazy();
 
   // 初期表示時や、ajaxでのリクエスト時に発動
@@ -18,6 +22,9 @@ import 'scripts/xhr_request';
 
 // react
 import WebpackerReact from 'webpacker-react';
+
+// 汎用モーダル
+import DataModal from 'components/data_modal';
 
 // flashメッセージ
 import Alert from 'components/alert';
@@ -100,14 +107,19 @@ import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 // 丸の内CSV書き出し日付検索
 import MarunouchiSearchable from 'components/api/marunouchi/searchable';
 
-// 名刺マスタ登録
-import CardTemplateGenerate from 'components/card/template/template_generate';
+// 名刺マスタ登録(新規作成)
+import NewCardTemplateGenerate from 'components/card/template/template_generate/new.jsx';
 
-// 名刺マスタ登録
+// 名刺マスタ登録(更新)
+import EditCardTemplateGenerate from 'components/card/template/template_generate/edit.jsx';
+
+// 名刺情報登録
 import CardClientGenerate from 'components/card/client/client_generate';
+
 
 WebpackerReact.setup({
   Alert,
+  DataModal,
   Kawaii,
   LogoEditor,
   ProjectEditor,
@@ -134,6 +146,7 @@ WebpackerReact.setup({
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
 	MarunouchiSearchable,
-	CardTemplateGenerate,
+  NewCardTemplateGenerate,
+  EditCardTemplateGenerate,
 	CardClientGenerate
 })

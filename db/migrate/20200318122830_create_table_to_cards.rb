@@ -20,6 +20,8 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
       t.string     :font,          comments: 'フォント'
       t.string     :font_size,     comments: 'フォントサイズ(pt)'
       t.string     :font_color,    comments: 'フォントカラー'
+      t.string     :coord_x,       comments: '座標(x)'
+      t.string     :coord_y,       comments: '座標(y)'
       t.string     :length,        comemnts: '長さ'
       t.string     :line_space,    comments: '行間'
     end

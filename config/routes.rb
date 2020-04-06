@@ -131,7 +131,16 @@ Rails.application.routes.draw do
   resources :catalogs
 
   # 名刺
-  resources :cards
+  resources :cards, except: :show
+  namespace :cards do
+    get :transfer
+  end
+
+  # 名刺テンプレート
+  resources :card_templates
+  namespace :card_templates do
+    get :transfer
+  end
 
   # 名刺情報
   resources :card_clients

@@ -56,7 +56,6 @@ class CardsController < ApplicationController
     card.update! card_params
 
     render json: { status: :success, card: card }
-
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -84,7 +83,6 @@ class CardsController < ApplicationController
     card.update! card_params
 
     render json: { status: :success, card: card }
-
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -95,23 +93,38 @@ class CardsController < ApplicationController
   # @version 2020/03/23
   #
   def destroy
+
+  card.destroy!
   
-    card.destroy!
-  
-    render json: { status: :success }
-  
+  redirect_to action: :index, flash: { type: :success, message: '削除しました。' }
   rescue => e
   
     render json: { status: :error, message: e.message }
+  end
+
+  ##
+  # 画像引用参照
+  # @version 2018/06/10
+  #
+  def transfer
+
+    raise if params[:url].blank?
+    content = open params[:url]
+    send_data content.read, type: content.content_type, disposition: 'inline'
+  rescue
+
+    render_json_404
   end
 
   private
 
   def card_params
 
-    params.require(:card).permit :id, :company_division_id, :name, {
-      card_template_attributes: [:id, :card_id, :status, :file,
-        { template_details_attributes: [:id, :card_template_id, :name, :font, :font_size, :font_color, :length, :line_space] }
+    params.require(:card).permit :company_division_id, :name, {
+      templates_attributes: [:id, :card_id, :status, :file,
+        { 
+          details_attributes: [:id, :card_template_id, :name, :font, :font_size, :font_color, :coord_x, :coord_y, :length, :line_space]
+        }
       ]
     }
   end

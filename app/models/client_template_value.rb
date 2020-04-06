@@ -5,6 +5,7 @@
 #  id                 :bigint(8)        not null, primary key
 #  client_template_id :bigint(8)
 #  template_detail_id :bigint(8)
+#  value              :string(191)
 #
 
 class ClientTemplateValue < ApplicationRecord

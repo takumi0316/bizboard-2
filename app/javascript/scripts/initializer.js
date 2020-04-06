@@ -2,10 +2,8 @@
 // Initializer
 //##############################################################################
 
-import Rails      from 'rails-ujs';
 import Turbolinks from 'turbolinks';
 import Lozad      from 'lozad';
-import MoveTo     from 'moveto';
 
 /**
  *  初期化クラス
@@ -23,11 +21,10 @@ window.Initializer = window.Initializer||{};
    */
   function Initializer() {
 
-    Rails.start();
-    Turbolinks.start();
+    // Turbolinks.start();
 
     // turbolinksのパッチ
-    this.setTurbolinksMonkeyPatch();
+    // this.setTurbolinksMonkeyPatch();
     
     // 画像の遅延読み込み
     this.lazy_load = Lozad('.lazy', {

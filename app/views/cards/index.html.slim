@@ -22,9 +22,9 @@
       - cards.each do |r|
         tr
           td = r.id
-          td
+          td 
           td = r.name
-          td = link_to '編集', edit_card_path(r), class: 'c-btnMain-standard'
-          td = link_to '削除', card_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+          td.u-ta-center = link_to '編集', edit_card_path(r), class: 'c-btnMain-standard'
+          td.u-ta-center = link_to '削除', card_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

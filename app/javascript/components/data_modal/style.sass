@@ -1,0 +1,74 @@
+@import '../../../assets/stylesheets/foundation/variables'
+@import '../../../assets/stylesheets/foundation/keyframes'
+
+// ==============================================
+// 汎用モーダルウィンドウ
+// ==============================================
+.DataModal
+  &__success
+    border-top: 10px solid map-get($layoutColors, 'core')
+  &__info
+    border-top: 10px solid map-get($layoutColors, 'blue')
+  &__warning
+    border-top: 10px solid map-get($layoutColors, 'orange')
+  &__error
+    border-top: 10px solid map-get($layoutColors, 'red')
+
+  &__title
+    margin: 30px 10px 20px
+    font-size: 18px
+    text-align: center
+  &__message
+    text-align: center
+    margin-bottom: 50px
+    margin-top: 50px
+
+  &__title + &__message
+    margin-top: 0
+
+  &__icon + &__message
+    margin-top: 30px
+
+  &__overlay
+    display: none
+    z-index: $layerLevel-overlay
+    &:not(:empty)
+      position: fixed
+      left: 0
+      top: 0
+      right: 0
+      bottom: 0
+      display: flex
+      align-items: center
+      justify-content: center
+      z-index: $layerLevel-overlay
+      background: rgba(map-get($layoutColors, 'black'), .5)
+  &__inner
+    position: relative
+    width: 420px
+    margin: 10px
+    padding: 15px
+    background-color: map-get($layoutColors, 'white')
+    border-radius: 5px
+    z-index: $layerLevel-overlay+20
+    animation: FadeInY .3s ease 0ms
+    box-shadow: 0px 2px 23px -2px map-get($layoutColors, 'darkGray')
+  &__button
+    display: block
+    margin-top: 10px
+  &__close
+    &Icon
+      position: absolute
+      right: 5px
+      top: 5px
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')
