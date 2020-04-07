@@ -27,6 +27,5 @@
           - unless SiteConfig.allow_inactive_user
             td = r.status_i18n
           td = link_to '編集', edit_user_path(r), class: 'c-btnMain-standard'
-          td = link_to '削除', user_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'
