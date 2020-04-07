@@ -28,6 +28,9 @@ class CardClient < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 担当者
+  belongs_to :company_division_client
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

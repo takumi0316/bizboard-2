@@ -29,6 +29,12 @@ class ClientTemplate < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 名刺担当者
+  has_many :card_clients
+
+  # 名刺テンプレート
+  has_many :card_templates
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

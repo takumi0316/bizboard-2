@@ -1,4 +1,5 @@
 const Rails = require('@rails/ujs');
+// const Rails = require('rails-ujs')
 import 'scripts/utilities';
 import 'scripts/initializer';
 import 'scripts/pagy';

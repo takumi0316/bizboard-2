@@ -37,14 +37,14 @@ export default class NewTemplateGenerate extends React.Component {
 
 
   /**
-   *  
+   *
    * @version 2020/04/03
    */
   componentDidUpdate = (prevProps, prevState) => {
 
     if(this.state.status == prevState.status && !this.state.templates[0].file && this.state.templates[1].file) return;
 
-    const file = this.state.status ? this.state.templates[0].file : this.state.templates[1].file;  
+    const file = this.state.status ? this.state.templates[0].file : this.state.templates[1].file;
 
     if(file) this.setPDF(file);
   };
@@ -59,16 +59,16 @@ export default class NewTemplateGenerate extends React.Component {
    *  @version 2018/06/10
    */
   onDrop = files => {
-  
+
     let templates = this.state.templates;
     const file = files[0];
 
     if(this.state.status) templates[0].file = file;
-    
+
     if(!this.state.status) templates[1].file = file;
 
     this.setState({ ...templates });
-  }; 
+  };
 
   /**
    * 会社・部署セット
@@ -81,7 +81,7 @@ export default class NewTemplateGenerate extends React.Component {
 
   /**
    * ステータスセット
-   * @version 2020/03/27 
+   * @version 2020/03/27
    */
   setStatus = () => {
 
@@ -89,8 +89,29 @@ export default class NewTemplateGenerate extends React.Component {
   };
 
   /**
+   * PDFにテキストを展開
+   * @version 2020/04/06
+   */
+  drawText = () => {
+
+    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
+
+    let draw_ctx = document.getElementById('draw').getContext('2d');
+    draw_ctx.font = "48px serif";
+    draw_ctx.strokeText("Hello world", 10, 50);
+
+    details.forEach((detail, index) => {
+
+      draw_ctx.font = 10.625178 * 2;
+      const height = (1.3281472327365 * detail.coord_y) * 2;
+      const width =	(1.3281472327365 * detail.coord_x) * 2;
+      draw_ctx.fillText(detail.name, width, height);
+    });
+  }
+
+  /**
    * 名刺ヘッダーカラム追加
-   * @version 2020/03/30 
+   * @version 2020/03/30
    */
   addDetail = e => {
 
@@ -99,14 +120,14 @@ export default class NewTemplateGenerate extends React.Component {
     const templates = this.state.templates;
 
     const init = {
-      id: '', 
+      id: '',
       card_template_id: '',
-      name: '',     
-      font: 'Osaka',     
+      name: '',
+      font: 'Osaka',
       font_size: '14',
       font_color: 'black',
       coord: '0',
-      length: '15',   
+      length: '15',
       line_space: '2'
     };
 
@@ -115,8 +136,8 @@ export default class NewTemplateGenerate extends React.Component {
   };
 
   /**
-   * ヘッダーセット 
-   * @version 2020/03/30 
+   * ヘッダーセット
+   * @version 2020/03/30
    */
   onChangeDetail = e => {
 
@@ -129,7 +150,7 @@ export default class NewTemplateGenerate extends React.Component {
 
     if(!status) templates[1].details[detail_id][detail_name] = e.target.value;
 
-    this.setState({ ...templates });
+    this.setState({ ...templates }, () => this.drawText() );
   };
 
   /**
@@ -141,14 +162,14 @@ export default class NewTemplateGenerate extends React.Component {
     let templates = this.state.templates;
 
     if(this.state.status) templates[0].file = '';
-    
+
     if(!this.state.status) templates[1].file = '';
 
     this.setState({ ...templates })
   };
 
   /**
-   * PDFを展開する 
+   * PDFを展開する
    * @version 2020/03/30
    */
   setPDF = file => {

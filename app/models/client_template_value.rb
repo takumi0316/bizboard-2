@@ -30,6 +30,12 @@ class ClientTemplateValue < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 名刺担当者テンプレート
+  belongs_to :client_template
+
+  # 名刺情報詳細
+  belongs_to :template_detail
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

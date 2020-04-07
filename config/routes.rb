@@ -98,7 +98,11 @@ Rails.application.routes.draw do
   resources :company_divisions
 
   # 取引先(担当者)
-  resources :company_division_clients
+  resources :company_division_clients do
+    collection do
+      get :search_clients
+    end
+  end
 
   # 外注先(会社)
   resources :subcontractors

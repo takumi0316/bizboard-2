@@ -13,8 +13,10 @@ class CompanyDivisionClientsController < ApplicationController
 
   # 取引先
   expose(:companies) { Company.all.order(:id) }
+
   # 担当者一覧
   expose_with_pagination(:clients) { CompanyDivisionClient.search(params[:name]).all.order(:company_division_id) }
+
   # 後々実装
   # CompanyDivisionClient.joins(company_division: :company).order('companies.id asc')
   # expose_with_pagination(:clients) { CompanyDivisionClient.search(params[:name]).joins(company_division: :company).all.order('companies.id asc') }
@@ -116,6 +118,13 @@ class CompanyDivisionClientsController < ApplicationController
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+  end
+
+  def search_clients
+
+    @clients = CompanyDivisionClient.where company_division_id: params[:company_division_id]
+    @cards = Card.where company_division_id: params[:company_division_id]
+    render json: { status: :success, clients: @clients, cards: @cards }
   end
 
   #----------------------------------------

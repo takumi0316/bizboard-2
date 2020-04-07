@@ -6515,9 +6515,10 @@ raf@^3.4.0:
   dependencies:
     performance-now "^2.1.0"
 
-rails-ujs@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/rails-ujs/-/rails-ujs-5.2.1.tgz#2869c6d54fdfefac3aaa257f4efe211d8f5a7169"
+rails-ujs@^5.2.4-2:
+  version "5.2.4-2"
+  resolved "https://registry.yarnpkg.com/rails-ujs/-/rails-ujs-5.2.4-2.tgz#c810719fc2e62ae04b9f4ca630d064dc9c336d23"
+  integrity sha512-uvV6bHVHgTdJrwOSQ5vQUM5mIP9qYXTYIcNNmsMamUt3TenQ7DhB43isSjaYLNXnBm8vD8g4O7d3O7u3sW6jFA==
 
 randomatic@^3.0.0:
   version "3.1.1"

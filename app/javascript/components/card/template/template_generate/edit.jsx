@@ -64,8 +64,8 @@ export default class EditTemplateGenerate extends React.Component {
 
     if(this.state.status == prevState.status) return;
 
-    const file = this.state.status ? this.template_front_file : this.template_reverse_file;  
-    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;  
+    const file = this.state.status ? this.template_front_file : this.template_reverse_file;
+    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
 
     if(file) this.setPDF(file, this.loadingRef, details);
   };
@@ -80,7 +80,7 @@ export default class EditTemplateGenerate extends React.Component {
    *  @version 2018/06/10
    */
   onDrop = files => {
-  
+
     const file = files[0];
     let templates = this.state.templates;
 
@@ -89,7 +89,7 @@ export default class EditTemplateGenerate extends React.Component {
       templates[0].file = file;
       this.template_front_file = file;
     };
-    
+
     if(!this.state.status) {
 
       templates[1].file = file;
@@ -97,7 +97,7 @@ export default class EditTemplateGenerate extends React.Component {
     };
 
     this.setState({ ...templates });
-  }; 
+  };
 
   /**
    * 会社・部署セット
@@ -110,7 +110,7 @@ export default class EditTemplateGenerate extends React.Component {
 
   /**
    * ステータスセット
-   * @version 2020/03/27 
+   * @version 2020/03/27
    */
   setStatus = () => {
 
@@ -119,7 +119,7 @@ export default class EditTemplateGenerate extends React.Component {
 
   /**
    * 名刺ヘッダーカラム追加
-   * @version 2020/03/30 
+   * @version 2020/03/30
    */
   addDetail = e => {
 
@@ -128,14 +128,14 @@ export default class EditTemplateGenerate extends React.Component {
     const templates = this.state.templates;
 
     const init = {
-      id: '', 
+      id: '',
       card_template_id: '',
-      name: '',     
-      font: 'Osaka',     
+      name: '',
+      font: 'Osaka',
       font_size: '14',
       font_color: 'black',
       coord: '0',
-      length: '15',   
+      length: '15',
       line_space: '2'
     };
 
@@ -144,8 +144,8 @@ export default class EditTemplateGenerate extends React.Component {
   };
 
   /**
-   * ヘッダーセット 
-   * @version 2020/03/30 
+   * ヘッダーセット
+   * @version 2020/03/30
    */
   onChangeDetail = e => {
 
@@ -168,18 +168,22 @@ export default class EditTemplateGenerate extends React.Component {
   drawText = () => {
 
     const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
-  
+
     let draw_canvas = document.getElementById('draw');
     let draw_ctx = draw_canvas.getContext('2d')
 
-    // draw_ctx.clearRect(0, 0, draw_canvas.width, draw_canvas.height)
-    details.forEach((detail, index) => {
+    draw_ctx.beginPath();
+    draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
+    draw_ctx.save();
+    draw_ctx.setTransform(1,0,0,1,0,0);
+    draw_ctx.restore();
 
+    details.forEach(detail => {
+
+      draw_ctx.font = 10.625178 * 2;
       const metrics = draw_ctx.measureText(detail.name || '')
-      draw_ctx.font = 10.625178 * 2.5;
-      // const height = index == 0 ? 37.188123 * 1.5 : ((37.188123 * 1.5) + (10.625178 * 1.5 + (index + 1)));
-      const height = (1.3281472327365 * detail.coord_y) * 2.5;
-      const width =	(1.3281472327365 * detail.coord_x) * 2.5; 
+      const height = (1.3281472327365 * detail.coord_y) * 2;
+      const width =	(1.3281472327365 * detail.coord_x) * 2;
       draw_ctx.fillText(detail.name, width, height);
     });
   };
@@ -192,12 +196,12 @@ export default class EditTemplateGenerate extends React.Component {
 
     let templates = this.state.templates;
 
-    if(this.state.status) { 
+    if(this.state.status) {
 
       templates[0].file = '';
       this.template_front_file = '';
     };
-    
+
     if(!this.state.status) {
 
       templates[1].file = '';
@@ -208,7 +212,7 @@ export default class EditTemplateGenerate extends React.Component {
   };
 
   /**
-   * PDFを展開する 
+   * PDFを展開する
    * @version 2020/03/30
    */
   setPDF = (file, loadingRef, details) => {
@@ -241,15 +245,18 @@ export default class EditTemplateGenerate extends React.Component {
       canvas.width = viewport.width;
       draw_canvas.height = viewport.height;
       draw_canvas.width = viewport.width;
+      draw_ctx.beginPath();
+      draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
+      draw_ctx.save();
+      draw_ctx.setTransform(1,0,0,1,0,0);
+      draw_ctx.restore();
 
       details.forEach(detail => {
 
-        console.log(detail)
-        draw_ctx.font = 10.625178 * 1.5;
-        // const height = index == 0 ? 37.188123 * 1.5 : ((37.188123 * 1.5) + (10.625178 * 1.5 + (index + 1)));
-        const height = (1.3281472327365 * detail.coord_y) * 2.5;
-        const width =	(1.3281472327365 * detail.coord_x) * 225; 
-        draw_ctx.fillText(detail.name, width, height);
+        draw_ctx.font = 10.625178 * 2;
+        const height = (1.3281472327365 * detail.coord_y) * 2;
+        const width =	(1.3281472327365 * detail.coord_x) * 2;
+        draw_ctx.strokeText(detail.name, width, height);
       });
 
       // Prepare object needed by render method

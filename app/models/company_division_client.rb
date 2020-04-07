@@ -67,6 +67,9 @@ class CompanyDivisionClient < ApplicationRecord
   # 見積
   has_many :quotes, -> { order(id: :desc) }
 
+  # 名刺担当者
+  has_many :card_clients
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
