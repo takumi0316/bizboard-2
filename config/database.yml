@@ -25,9 +25,9 @@ development:
 
 staging:
   <<: *default
-  database: factory_staging
-  username: factory
-  password: factoryfactory_2018
+  database: factory
+  username: root
+  password:
   host: localhost
 
 production:
