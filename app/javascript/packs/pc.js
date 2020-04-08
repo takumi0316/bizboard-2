@@ -2,6 +2,7 @@ import 'scripts/utilities';
 import 'scripts/initializer';
 import 'scripts/pagy';
 import 'scripts/image_converter';
+import 'scripts/xhr_request';
 
 (function() {
 

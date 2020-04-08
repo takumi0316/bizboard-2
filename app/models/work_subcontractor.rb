@@ -38,9 +38,17 @@ class WorkSubcontractor < ApplicationRecord
 
   belongs_to :work
 
-  has_many :detail, class_name: 'WorkSubcontractorDetail', dependent: :destroy
+  # 請求情報
+  belongs_to :payments, dependent: :destroy
+
+  # 製造原価
+  belongs_to :expendables, dependent: :destroy
 
   belongs_to :client, optional: true, class_name: 'SubcontractorDivisionClient', foreign_key: :subcontractor_division_client_id
+
+  has_many :detail, class_name: 'WorkSubcontractorDetail', dependent: :destroy
+
+  accepts_nested_attributes_for :detail
 
   #----------------------------------------
   #  ** Scopes **

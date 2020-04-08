@@ -10,6 +10,7 @@
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #  expendable_id                :bigint(8)
+#  work_subcontractor_id        :bigint(8)
 #
 
 class Payment < ApplicationRecord
@@ -29,7 +30,9 @@ class Payment < ApplicationRecord
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
+
   validates :price, presence: true
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
@@ -43,6 +46,5 @@ class Payment < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-
 
 end
