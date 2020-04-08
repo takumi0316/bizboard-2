@@ -6,7 +6,7 @@ preload_app true
 
 timeout 30
 
-@app_path = '/home/jii/factory_staging/current'
+@app_path = '/home/media/current'
 
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 2)
 working_directory "#{@app_path}"
@@ -42,5 +42,5 @@ after_fork do |server, worker|
 end
 
 # logging
-stderr_path "log/unicorn.staging.stderr.log"
-stdout_path "log/unicorn.staging.stdout.log"
+stderr_path "log/unicorn.stderr.log"
+stdout_path "log/unicorn.stdout.log"
