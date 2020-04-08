@@ -7,14 +7,14 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
-server 'factory', user: 'jii', roles: %w{app assets batch db}
+server 'factory-staging', user: 'media', roles: %w{app assets batch db}
 
 set :assets_roles, [:assets]
 
 # rails
-set :rails_env, 'staging'
+set :rails_env, 'production'
 set :branch, 'master'
-set :deploy_to, '/home/jii/factory_staging'
+set :deploy_to, '/home/media'
 set :log_level, :debug
 set :default_shell, '/bin/bash -l'
 
@@ -38,6 +38,14 @@ namespace :deploy do
           execute :rails, 'db:create'
         end
       end
+    end
+  end
+
+  # migration前にmysql再起動
+  before :db_create, :mysql_restart do
+    on roles(:db), in: :sequence, wait: 5 do
+      info 'restarting mysql server...'
+      sudo '/etc/init.d/mysqld restart'
     end
   end
 end
