@@ -791,7 +791,7 @@ class InitSchema < ActiveRecord::Migration[5.2]
       t.references :quote,        index: true
       t.integer    :result,       default: 0
       t.string     :quote_number, comment: '案件番号'
-     	t.datetime   :import_time
+      t.datetime   :import_time
 
       t.timestamps
     end
