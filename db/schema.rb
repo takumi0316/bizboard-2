@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2020_03_18_122830) do
+=======
+ActiveRecord::Schema.define(version: 2020_03_12_093904) do
+>>>>>>> 13a63fc63f1dd6260b5d5530f7a723dcd3033c50
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -83,6 +87,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
     t.text "description", comment: "商品説明用"
     t.string "price", comment: "文言なども入る"
     t.string "deliver_at", comment: "文言なども入る"
+<<<<<<< HEAD
   end
 
   create_table "client_template_values", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -98,6 +103,18 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
     t.bigint "card_template_id"
     t.index ["card_client_id"], name: "index_client_templates_on_card_client_id"
     t.index ["card_template_id"], name: "index_client_templates_on_card_template_id"
+=======
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_catalogs_on_category_id"
+  end
+
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+>>>>>>> 13a63fc63f1dd6260b5d5530f7a723dcd3033c50
   end
 
   create_table "companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -181,10 +198,14 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
     t.date "date", comment: "申請日"
     t.text "memo"
     t.bigint "work_subcontractor_detail_id"
+<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "work_subcontractor_id"
+=======
+    t.bigint "user_id"
+>>>>>>> 13a63fc63f1dd6260b5d5530f7a723dcd3033c50
     t.index ["division_id"], name: "index_expendables_on_division_id"
     t.index ["subcontractor_id"], name: "index_expendables_on_subcontractor_id"
     t.index ["user_id"], name: "index_expendables_on_user_id"
@@ -701,6 +722,10 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
     t.index ["quote_id"], name: "index_works_on_quote_id"
   end
 
+<<<<<<< HEAD
+=======
+  add_foreign_key "catalogs", "categories"
+>>>>>>> 13a63fc63f1dd6260b5d5530f7a723dcd3033c50
   add_foreign_key "expendables", "users"
   add_foreign_key "expendables", "work_subcontractor_details"
   add_foreign_key "expendables", "work_subcontractors"

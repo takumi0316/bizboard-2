@@ -1,4 +1,10 @@
 = form_for catalog, html: { class: 'u-mt-30'} do |f|
+
+  .c-form-label
+    = f.label :category_id, 'カテゴリー'
+    span.c-form__required.u-ml-10 必須
+  = f.select :category_id, Category.all.pluck(:name, :id),{},{:class=>'c-form-dateselect'}
+
   .c-form-label
     = f.label :name, 'カタログ名'
     span.c-form__required.u-ml-10 必須

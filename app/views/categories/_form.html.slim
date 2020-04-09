@@ -1,0 +1,7 @@
+= form_for category, html: { class: 'u-mt-30'} do |f|
+  .c-form-label
+    = f.label :name, 'カテゴリー名'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :name, placeholder: 'カタログ名を入力してください', class: 'c-form-text u-mb-30', required: :true
+
+  .u-ta-center.u-mt-30 = f.submit category.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

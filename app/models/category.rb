@@ -1,21 +1,14 @@
 # == Schema Information
 #
-# Table name: quote_projects
+# Table name: categories
 #
-#  id           :bigint(8)        not null, primary key
-#  quote_id     :bigint(8)
-#  project_id   :bigint(8)
-#  unit         :string(191)
-#  price        :string(191)
-#  name         :string(191)
-#  unit_price   :string(191)
-#  project_name :string(191)
-#  remarks      :text(65535)
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :bigint(8)        not null, primary key
+#  name       :string(191)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
-class QuoteProject < ApplicationRecord
+class Category < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -37,8 +30,10 @@ class QuoteProject < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :quote
-  #belongs_to :project
+  # catalogs
+  has_many :catalogs
+  accepts_nested_attributes_for :catalogs, allow_destroy: true
+
 
   #----------------------------------------
   #  ** Delegates **
