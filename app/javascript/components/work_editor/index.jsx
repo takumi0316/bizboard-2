@@ -124,12 +124,12 @@ export default class WorkEditor extends React.Component {
    * 作業書詳細消去
    * @versions 2019/12/27
    */
-  onWorkDetailDestroy = index => {
+  onWorkDetailDestroy = (index, e) => {
 
     let work_details = this.state.work_details.slice();
     work_details.splice(index, 1);
 
-    const url = '/work_subcontractor_details/' + e.target.value;
+    const url = '/work_details/' + e.target.value;
     const request = window.xhrRequest.delete(url);
     request.then(res => {
 
@@ -215,6 +215,7 @@ export default class WorkEditor extends React.Component {
     const field = new FormData();
 
     field.append('work_subcontractor[work_id]', this.state.work.id);
+    field.append('work_subcontractor[subcontractor_division_client_id]', work_subcontractor.client.id);
     field.append('work_subcontractor[notices]', work_subcontractor.notices || '');
     field.append('work_subcontractor[order_date]',  work_subcontractor.order_date);
     field.append('work_subcontractor[delivery_date]',  work_subcontractor.delivery_date);
@@ -273,7 +274,7 @@ export default class WorkEditor extends React.Component {
 
     let work_subcontractors_iterate = Object.assign([], JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
     work_subcontractors_iterate.splice(index, 1);
-  	let actual_cost = 0;
+    let actual_cost = 0;
 
     work_subcontractors_iterate.forEach((subcontractor) => {
       if(subcontractor.details) {
@@ -315,8 +316,12 @@ export default class WorkEditor extends React.Component {
 
     const field = new FormData();
 
-    field.append('work_subcontractor_id', e.target.value);
-    field.append('work_id', this.state.work.id);
+    field.append('work_subcontractor_detail[work_subcontractor_id]', e.target.value);
+    field.append('work_subcontractor_detail[work_id]', this.state.work.id);
+    field.append('work_subcontractor_detail[deliver_at]', new Date());
+    field.append('work_subcontractor_detail[count]', 0);
+    field.append('work_subcontractor_detail[number_of_copies]', 0);
+    field.append('work_subcontractor_detail[actual_cost]', 0);
     const request = window.xhrRequest.post(url, field);
     request.then(res => {
       if(res.data.status == 'success') {
@@ -753,15 +758,15 @@ export default class WorkEditor extends React.Component {
     return (
       <Fragment>
         <WorkDivisionInfo division={ this.state.division } passedDivision={ this.passedDivision }/>
-        <WorkDetails work_notices={ this.state.work.notices } work_details={ this.state.work_details }
-                     work_id={ this.state.work.id } user_id={ this.props.user_id } users={ this.props.users }
-                     passedPrice={ this.passedPrice } setDeOrderContents={ this.setDeOrderContents } setDangerHtml={ this.setDangerHtml }
-                     setDeDeliverMethod={ this.setDeDeliverMethod } setDeSpecification={ this.setDeSpecification }
-                     setDeDeliverAt={ this.setDeDeliverAt } setDeClientName={ this.setDeClientName }
-                     setDeNumberOfCopies={ this.setDeNumberOfCopies } setDeCount={ this.setDeCount }
-                     setDeCost={ this.setDeCost } setDeNotices={ this.setDeNotices } onWorkDetailUpdate={ this.onWorkDetailUpdate }
-                     onWorkDetailCreate={ this.onWorkDetailCreate } onWorkNoticesUpdate={ this.onWorkNoticesUpdate }
-                     onWorkDetailDestroy={ this.onWorkDetailDestroy }
+        <WorkDetails  work_notices={ this.state.work.notices } work_details={ this.state.work_details }
+                      work_id={ this.state.work.id } user_id={ this.props.user_id } users={ this.props.users }
+                      passedPrice={ this.passedPrice } setDeOrderContents={ this.setDeOrderContents } setDangerHtml={ this.setDangerHtml }
+                      setDeDeliverMethod={ this.setDeDeliverMethod } setDeSpecification={ this.setDeSpecification }
+                      setDeDeliverAt={ this.setDeDeliverAt } setDeClientName={ this.setDeClientName }
+                      setDeNumberOfCopies={ this.setDeNumberOfCopies } setDeCount={ this.setDeCount }
+                      setDeCost={ this.setDeCost } setDeNotices={ this.setDeNotices } onWorkDetailUpdate={ this.onWorkDetailUpdate }
+                      onWorkDetailCreate={ this.onWorkDetailCreate } onWorkNoticesUpdate={ this.onWorkNoticesUpdate }
+                      onWorkDetailDestroy={ this.onWorkDetailDestroy }
         />
         <AddSubcontractor work_subcontractors={ this.state.work_subcontractors } subcontractor_details={ this.props.subcontractor_details }
                           work_id={ this.state.work.id } divisions={ this.props.divisions }

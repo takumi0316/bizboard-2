@@ -7,13 +7,13 @@
 #  data             :binary(65535)
 #  remarks          :text(65535)
 #  quote_id         :bigint(8)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
 #  catalog_id       :bigint(8)
 #  client_name      :string(191)
 #  client_mail      :string(191)
-#  clientlastaccess :datetime         default(Mon, 30 Sep 2019 09:53:06 JST +09:00)
+#  clientlastaccess :datetime         default(Mon, 06 Apr 2020 15:31:45 JST +09:00)
 #  will_order       :integer          default(0)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #  ts_code          :string(191)
 #
 

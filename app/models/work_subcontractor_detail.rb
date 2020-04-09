@@ -46,8 +46,6 @@ class WorkSubcontractorDetail < ApplicationRecord
 
   belongs_to :work_subcontractor
 
-  belongs_to :expendable
-
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
