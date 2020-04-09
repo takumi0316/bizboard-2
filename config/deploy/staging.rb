@@ -12,7 +12,7 @@ server 'factory-staging', user: 'media', roles: %w{app assets batch db}
 set :assets_roles, [:assets]
 
 # rails
-set :rails_env, 'production'
+set :rails_env, 'staging'
 set :branch, 'master'
 set :deploy_to, '/home/media'
 set :log_level, :debug
