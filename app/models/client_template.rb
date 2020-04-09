@@ -30,10 +30,12 @@ class ClientTemplate < ApplicationRecord
   #----------------------------------------
 
   # 名刺担当者
-  has_many :card_clients
+  belongs_to :card_client
 
   # 名刺テンプレート
-  has_many :card_templates
+  has_many :values, class_name: 'ClientTemplateValue', dependent: :delete_all
+
+  accepts_nested_attributes_for :values, allow_destroy: true, reject_if: :all_blank
 
   #----------------------------------------
   #  ** Delegates **

@@ -52,6 +52,14 @@ class CardClientsController < ApplicationController
   # @version 2020/03/23
   #
   def create
+
+    binding.pry
+    card_client.update! card_client_params
+
+    render json: { status: :success, card_client: card_client }
+  rescue => e
+
+    render json: { status: :error, message: e.message }
   end
 
   ##
@@ -69,6 +77,14 @@ class CardClientsController < ApplicationController
   # @version 2020/03/23
   #
   def update
+
+    card_client.update! card_client_params
+
+    render json: { status: :success, card_client: card_client }
+
+  rescue => e
+
+    render json: { status: :error, message: e.message }
   end
 
   ##
@@ -82,10 +98,13 @@ class CardClientsController < ApplicationController
 
   def card_client_params
 
-    params.require(:card_client).permit :id, :company_division_client_id, {
-      client_template_attributes: [:id, :card_client_id, :card_teimplate_id,
-        { template_details_attributes: [:id, :client_template_id, :template_detail_id, :value] }
+    params.require(:card_client).permit :company_division_client_id, {
+      templates_attributes: [:id, :card_client_id, :card_template_id,
+        {
+          values_attributes: [:id, :client_template_id, :template_detail_id, :value]
+        }
       ]
-		}
-	end
+    }
+  end
+
 end

@@ -4,9 +4,9 @@ import DivisionSearch     from './division_search/index';
 import CustomerInfomation from './customer_infomation/index';
 import TempalteStatus     from './template_status/index';
 import CardTemplate       from './card_template/index';
+import Loading            from '../../../loading'
 
 import pdfjsLib from 'pdfjs-dist/webpack';
-import * as createjs from 'createjs-module';
 // Ajax
 import Request from 'superagent';
 require('superagent-rails-csrf')(Request)
@@ -25,6 +25,8 @@ export default class NewTemplateGenerate extends React.Component {
       { ...props.front_side },
       { ...props.reverse_side },
     ];
+
+    console.log(this.props.action)
 
     this.state = {
       card_id: props.card.id || '',
@@ -96,18 +98,22 @@ export default class NewTemplateGenerate extends React.Component {
 
     const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
 
-    let draw_ctx = document.getElementById('draw').getContext('2d');
-    draw_ctx.font = "48px serif";
-    draw_ctx.strokeText("Hello world", 10, 50);
+    let draw_ctx = document.getElementById('draw').getContext('2d')
+
+    draw_ctx.beginPath();
+    draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
+    draw_ctx.save();
+    draw_ctx.setTransform(1,0,0,1,0,0);
+    draw_ctx.restore()
 
     details.forEach((detail, index) => {
 
-      draw_ctx.font = 10.625178 * 2;
-      const height = (1.3281472327365 * detail.coord_y) * 2;
-      const width =	(1.3281472327365 * detail.coord_x) * 2;
+      draw_ctx.font = 10.625178 * 4;
+      const height = (1.3281472327365 * detail.coord_y) * 4;
+      const width =	(1.3281472327365 * detail.coord_x) * 4;
       draw_ctx.fillText(detail.name, width, height);
     });
-  }
+  };
 
   /**
    * 名刺ヘッダーカラム追加
@@ -181,7 +187,7 @@ export default class NewTemplateGenerate extends React.Component {
       return pdf.getPage(1);
     }).then(function(page) {
       // Set scale (zoom) level
-      let scale = 1;
+      let scale = 2;
 
       // Get viewport (dimensions)
       let viewport = page.getViewport(scale);
@@ -231,7 +237,6 @@ export default class NewTemplateGenerate extends React.Component {
       field.append('card[templates_attributes][][card_id]', template.card_id);
       field.append('card[templates_attributes][][status]', template.status);
       if(template.file) field.append('card[templates_attributes][][file]', template.file);
-      console.log(template.file ? true : false);
       template.details.forEach(detail => {
 
         field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
@@ -276,8 +281,9 @@ export default class NewTemplateGenerate extends React.Component {
           <CardTemplate template={ this.state.templates[1] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
         }
         <div className='u-mt-10'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ this.state.card_id ? '更新する' : '保存する' }</button>
+          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>'保存する'</button>
         </div>
+        <Loading ref={node => this.loadingRef = node} message='展開しています' />
       </Fragment>
     );
   };

@@ -22,7 +22,6 @@ const Search = props => {
     
     e.preventDefault();
 
-    console.log(props.cards)
     setState({ ...state, cards: props.cards, show: !state.show });
   };
   

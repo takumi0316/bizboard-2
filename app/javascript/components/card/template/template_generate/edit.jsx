@@ -180,10 +180,10 @@ export default class EditTemplateGenerate extends React.Component {
 
     details.forEach(detail => {
 
-      draw_ctx.font = 10.625178 * 2;
+      draw_ctx.font = 10.625178 * 4;
       const metrics = draw_ctx.measureText(detail.name || '')
-      const height = (1.3281472327365 * detail.coord_y) * 2;
-      const width =	(1.3281472327365 * detail.coord_x) * 2;
+      const height = (1.3281472327365 * detail.coord_y) * 4;
+      const width =	(1.3281472327365 * detail.coord_x) * 4;
       draw_ctx.fillText(detail.name, width, height);
     });
   };
@@ -253,9 +253,9 @@ export default class EditTemplateGenerate extends React.Component {
 
       details.forEach(detail => {
 
-        draw_ctx.font = 10.625178 * 2;
-        const height = (1.3281472327365 * detail.coord_y) * 2;
-        const width =	(1.3281472327365 * detail.coord_x) * 2;
+        draw_ctx.font = 10.625178 * 4;
+        const height = (1.3281472327365 * detail.coord_y) * 4;
+        const width =	(1.3281472327365 * detail.coord_x) * 4;
         draw_ctx.strokeText(detail.name, width, height);
       });
 
@@ -341,7 +341,7 @@ export default class EditTemplateGenerate extends React.Component {
           <CardTemplate template={ this.state.templates[1] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
         }
         <div className='u-mt-10'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ this.state.card_id ? '更新する' : '保存する' }</button>
+          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>
         </div>
         <Loading ref={node => this.loadingRef = node} message='展開しています' />
       </Fragment>
