@@ -11,7 +11,7 @@ if params[:company_id].present?
 else
    json[:clients] = clients.map do |r|
      {
-       company: r.company_division.company,
+       company: r.company_division&.company,
        division: r.company_division,
        client: r
      }
