@@ -1,0 +1,12 @@
+= form_for inventory, html: { class: 'u-mt-30'} do |f|
+
+  - if inventory.new_record?
+    = react_component :InventoryDivisionsSelect, companies: companies
+  - else
+    = react_component :InventoryDivisionsSelect, companies: companies, divisions: CompanyDivision.where(company_id: inventory.company_division&.company&.id), company_id: inventory&.company_division&.company&.id, division_id: inventory&.company_division&.id
+
+  .c-form-label
+    = f.label :remarks, '備考'
+  = f.text_area :remarks, placeholder: '在庫管理情報など入力', class: 'c-form-textarea u-mb-30', rows: 4
+
+  .u-ta-center.u-mt-30 = f.submit inventory.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'

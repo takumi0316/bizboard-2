@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_12_093904) do
+ActiveRecord::Schema.define(version: 2020_04_08_051715) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -38,14 +38,14 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.integer "status", comment: "対応内容"
     t.text "memo", comment: "メモ"
     t.text "attachment", comment: "添付"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "free_word"
-    t.bigint "quote_id"
     t.integer "accurary", comment: "確度"
     t.integer "next_action", comment: "次回アクション"
     t.date "next_action_date", comment: "次回アクション期日"
     t.date "scheduled_date", comment: "受注予定日"
+    t.bigint "quote_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["quote_id"], name: "index_activities_on_quote_id"
   end
 
@@ -66,8 +66,6 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.text "description", comment: "商品説明用"
     t.string "price", comment: "文言なども入る"
     t.string "deliver_at", comment: "文言なども入る"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.bigint "category_id"
     t.index ["category_id"], name: "index_catalogs_on_category_id"
   end
@@ -82,9 +80,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.string "name"
     t.string "kana"
     t.text "note"
+    t.text "free_word"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "free_word"
   end
 
   create_table "company_division_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -96,8 +94,6 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.string "tel"
     t.string "email"
     t.text "note"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "free_word"
     t.integer "status", limit: 1, default: 0, comment: "承認設定"
     t.integer "user_type", limit: 1, default: 0, comment: "ユーザー区分"
@@ -114,9 +110,12 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2019-09-06 16:22:15"
+    t.datetime "lastaccesstask", default: "2020-04-08 01:56:33"
     t.integer "opt", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_division_id"], name: "index_company_division_clients_on_company_division_id"
+    t.index ["password_digest"], name: "index_company_division_clients_on_password_digest"
     t.index ["user_id"], name: "index_company_division_clients_on_user_id"
   end
 
@@ -130,9 +129,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.string "address1"
     t.string "address2"
     t.text "note"
+    t.text "free_word"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "free_word"
     t.index ["company_id"], name: "index_company_divisions_on_company_id"
   end
 
@@ -149,38 +148,6 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "estimate_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "estimate_id"
-    t.bigint "item_id"
-    t.integer "cost", comment: "原価"
-    t.integer "gross_profit", comment: "粗利"
-    t.text "detail", comment: "詳細"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["estimate_id"], name: "index_estimate_items_on_estimate_id"
-    t.index ["item_id"], name: "index_estimate_items_on_item_id"
-  end
-
-  create_table "estimates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "project_id"
-    t.string "estimat_number", comment: "見積もり番号"
-    t.date "date", comment: "発行日"
-    t.date "expiration", comment: "有効期限"
-    t.string "subject", comment: "件名"
-    t.string "item", comment: "品目"
-    t.integer "unit_price", comment: "単価"
-    t.integer "quantity", comment: "数量"
-    t.integer "cost", comment: "原価"
-    t.integer "gross_profit", comment: "粗利"
-    t.text "detail", comment: "詳細"
-    t.text "remarks", comment: "備考"
-    t.string "tag", comment: "タグ"
-    t.text "memo", comment: "メモ"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_estimates_on_project_id"
-  end
-
   create_table "expendables", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "division_id"
     t.bigint "subcontractor_id"
@@ -188,10 +155,10 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.string "name"
     t.integer "price", default: 0, null: false
     t.date "date", comment: "申請日"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "memo"
     t.bigint "work_subcontractor_detail_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.index ["division_id"], name: "index_expendables_on_division_id"
     t.index ["subcontractor_id"], name: "index_expendables_on_subcontractor_id"
@@ -203,25 +170,32 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.bigint "quote_id"
     t.integer "result", default: 0
     t.string "quote_number", comment: "案件番号"
+    t.datetime "import_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "division_id"
-    t.index ["division_id"], name: "index_inquiries_on_division_id"
     t.index ["quote_id"], name: "index_inquiries_on_quote_id"
+  end
+
+  create_table "inventories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "company_division_id"
+    t.text "remarks", comment: "備考"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_division_id"], name: "index_inventories_on_company_division_id"
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "quote_id"
     t.date "date", comment: "請求日"
-    t.date "expiration", default: "2019-08-31", comment: "支払い期限"
+    t.date "expiration", comment: "支払い期限"
     t.string "subject", comment: "件名"
     t.text "remarks", comment: "備考"
     t.text "memo", comment: "メモ"
     t.text "free_word", comment: "検索用"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "attention"
     t.string "pdf_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["quote_id"], name: "index_invoices_on_quote_id"
   end
 
@@ -239,10 +213,10 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.bigint "task_id"
     t.text "content", comment: "チャット内容"
     t.string "name", comment: "チャット送信者"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "company_division_client_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_division_client_id"], name: "index_messages_on_company_division_client_id"
     t.index ["task_id"], name: "index_messages_on_task_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
@@ -253,12 +227,32 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.bigint "work_subcontractor_detail_id"
     t.integer "price", default: 0, null: false
     t.date "date", comment: "支払日"
+    t.bigint "expendable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "expendable_id"
     t.index ["expendable_id"], name: "index_payments_on_expendable_id"
     t.index ["subcontractor_id"], name: "index_payments_on_subcontractor_id"
     t.index ["work_subcontractor_detail_id"], name: "index_payments_on_work_subcontractor_detail_id"
+  end
+
+  create_table "product_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "product_id"
+    t.date "date", comment: "発注日"
+    t.integer "status", comment: "依頼ステータス"
+    t.integer "quantity", comment: "数量"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_histories_on_product_id"
+  end
+
+  create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "inventory_id"
+    t.string "name", comment: "商品名"
+    t.integer "quantity", comment: "在庫数"
+    t.text "remarks", comment: "備考"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_id"], name: "index_products_on_inventory_id"
   end
 
   create_table "profits", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -289,9 +283,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.integer "back_text", limit: 1, default: 0
     t.integer "back_text_price", default: 0
     t.text "back_text_note"
+    t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "note"
     t.index ["project_id"], name: "index_project_after_processes_on_project_id"
   end
 
@@ -311,10 +305,10 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.text "radio_cut_note"
     t.text "double_doors"
     t.text "gold_letter"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "note"
     t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_project_binding_works_on_project_id"
   end
 
@@ -323,9 +317,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.integer "posting_state", default: 0
     t.integer "print_size", limit: 1, default: 0
     t.text "print_size_note"
+    t.integer "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "price"
     t.index ["project_id"], name: "index_project_binds_on_project_id"
   end
 
@@ -341,9 +335,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.integer "paper", limit: 1, default: 0
     t.integer "surface", limit: 1, default: 0
     t.integer "emboss", limit: 1, default: 0
+    t.integer "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "price"
     t.index ["project_id"], name: "index_project_cards_on_project_id"
   end
 
@@ -357,10 +351,10 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.text "print_size_note"
     t.integer "surface", limit: 1, default: 0
     t.integer "open_type", limit: 1, default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "posting_state_note"
     t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_project_copies_on_project_id"
   end
 
@@ -387,9 +381,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.text "print_size_note"
     t.integer "surface", limit: 1, default: 0
     t.integer "open_type", limit: 1, default: 0
+    t.integer "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "price"
     t.index ["project_id"], name: "index_project_prints_on_project_id"
   end
 
@@ -409,10 +403,10 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.integer "odr", limit: 1, default: 0
     t.integer "bookmark", limit: 1, default: 0
     t.integer "edit_file_name", limit: 1, default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "posting_state_note"
     t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_project_scans_on_project_id"
   end
 
@@ -427,12 +421,12 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.integer "after_process", limit: 1, default: 0
     t.text "note"
     t.integer "status", limit: 1, default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "free_word"
     t.bigint "project_number"
     t.integer "price", default: 0
     t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_division_client_id"], name: "index_projects_on_company_division_client_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
@@ -442,25 +436,25 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.integer "cost", comment: "コスト"
     t.decimal "gross_profit", precision: 11, scale: 8, comment: "粗利"
     t.string "detail", comment: "詳細"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "name"
     t.integer "unit_price"
     t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["quote_id"], name: "index_quote_items_on_quote_id"
   end
 
   create_table "quote_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "quote_id"
     t.bigint "project_id"
-    t.string "price", default: "10"
-    t.string "unit", default: "10"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "unit"
+    t.string "price"
     t.string "name"
     t.string "unit_price"
     t.string "project_name"
     t.text "remarks"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_quote_projects_on_project_id"
     t.index ["quote_id"], name: "index_quote_projects_on_quote_id"
   end
@@ -472,8 +466,6 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.text "remarks", comment: "備考"
     t.text "memo", comment: "メモ"
     t.text "free_word", comment: "検索用"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "price"
     t.integer "attention"
     t.text "pdf_url"
@@ -488,13 +480,14 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.text "deliver_type_note"
     t.bigint "division_id"
     t.integer "discount"
-    t.integer "delivery_type"
-    t.text "delivery_type_note"
     t.integer "tax_type"
     t.integer "payment_terms"
     t.float "tax", default: 1.1
     t.integer "reception"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "temporary_price"
+    t.index ["company_division_client_id"], name: "index_quotes_on_company_division_client_id"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end
 
@@ -546,9 +539,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.string "address1"
     t.string "address2"
     t.text "note"
+    t.text "free_word"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "free_word"
     t.index ["subcontractor_id"], name: "index_subcontractor_divisions_on_subcontractor_id"
   end
 
@@ -556,9 +549,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.string "name"
     t.string "kana"
     t.text "note"
+    t.text "free_word"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "free_word"
   end
 
   create_table "targets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -578,13 +571,13 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.binary "data", comment: "添付データ"
     t.text "remarks", comment: "備考欄"
     t.bigint "quote_id", comment: "quoteのid"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2019-09-30 18:48:35"
+    t.datetime "clientlastaccess", default: "2020-04-08 01:56:34"
     t.integer "will_order", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "ts_code"
     t.index ["catalog_id"], name: "index_tasks_on_catalog_id"
     t.index ["quote_id"], name: "index_tasks_on_quote_id"
@@ -619,9 +612,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
+    t.datetime "lastaccesstask", default: "2020-04-08 01:56:33"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "lastaccesstask", default: "2019-09-11 10:29:11"
     t.index ["division_id"], name: "index_users_on_division_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["password_digest"], name: "index_users_on_password_digest"
@@ -637,12 +630,12 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.string "estimated_cost"
     t.string "actual_man_hours"
     t.string "actual_cost"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "order_contents"
     t.text "deliver_method"
     t.text "specification"
     t.string "number_of_copies"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["work_id"], name: "index_work_details_on_work_id"
   end
 
@@ -659,9 +652,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.string "actual_count"
     t.string "actual_cost"
     t.integer "status", limit: 1, default: 0
+    t.bigint "work_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "work_id"
     t.index ["work_id"], name: "index_work_subcontractor_details_on_work_id"
     t.index ["work_subcontractor_id"], name: "index_work_subcontractor_details_on_work_subcontractor_id"
   end
@@ -670,12 +663,12 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.bigint "work_id"
     t.bigint "subcontractor_division_client_id"
     t.integer "status", limit: 1, default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "notices"
     t.datetime "order_date"
     t.datetime "delivery_date"
     t.string "delivery_destination"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["subcontractor_division_client_id"], name: "index_work_subcontractors_on_subcontractor_division_client_id"
     t.index ["work_id"], name: "index_work_subcontractors_on_work_id"
   end
@@ -685,11 +678,11 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
     t.integer "price", default: 0
     t.integer "cost", default: 0
     t.integer "status", limit: 1, default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.text "free_word"
     t.text "notices"
     t.bigint "division_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_works_on_division_id"
     t.index ["quote_id"], name: "index_works_on_quote_id"
   end
@@ -697,7 +690,6 @@ ActiveRecord::Schema.define(version: 2020_03_12_093904) do
   add_foreign_key "catalogs", "categories"
   add_foreign_key "expendables", "users"
   add_foreign_key "expendables", "work_subcontractor_details"
-  add_foreign_key "inquiries", "divisions"
   add_foreign_key "messages", "company_division_clients"
   add_foreign_key "messages", "users"
   add_foreign_key "payments", "expendables"

@@ -99,6 +99,10 @@ import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 // 丸の内CSV書き出し日付検索
 import MarunouchiSearchable from 'components/api/marunouchi/searchable';
 
+// 在庫管理の部署選択
+import InventoryDivisionsSelect from 'components/inventory_divisions_select';
+
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -126,5 +130,6 @@ WebpackerReact.setup({
 	QuotationSearch,
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
-  MarunouchiSearchable
+  MarunouchiSearchable,
+  InventoryDivisionsSelect
 })
