@@ -8,6 +8,8 @@
 #  font             :string(191)
 #  font_size        :string(191)
 #  font_color       :string(191)
+#  coord_x          :string(191)
+#  coord_y          :string(191)
 #  length           :string(191)
 #  line_space       :string(191)
 #
@@ -33,6 +35,9 @@ class TemplateDetail < ApplicationRecord
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
+
+  # 名刺担当者情報
+  has_one :client_template_value, dependent: :destroy
 
   # 名刺テンプレート情報
   belongs_to :template, class_name: 'CardTemplate', optional: true

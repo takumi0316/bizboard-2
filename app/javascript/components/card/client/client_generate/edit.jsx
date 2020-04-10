@@ -27,36 +27,64 @@ export default class ClientGenerate extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log(props.front_value)
+    const templateInit = [
+      { ...props.front_template },
+      { ...props.reverse_template }
+    ];
+
+    const clientTemplateInit = [
+      { ...props.front_value },
+      { ...props.reverse_value }
+    ]
+
     this.template_front_file = '';
     this.template_reverse_file = '';
 
     this.state = {
-      cards: '',
-      card: '',
-      templates: '',
-      company: props.company || '',
-      divisions: '',
-      division: props.division || '',
-      clients: '',
-      client: props.client || '',
-      client_templates: '',
+      cards: props.cards,
+      card: props.card,
+      templates: [...templateInit],
+      company: props.company,
+      divisions: props.divisions,
+      division: props.division,
+      clients: props.clients,
+      client: props.client,
+      client_templates: [...clientTemplateInit],
       status: true,
-      card_client_id: this.props.card_client.id || ''
+      card_client_id: this.props.card_client.id
     };
 	};
 
   componentDidMount = () => {
 
+    const client_templates = this.state.client_templates;
+
+    client_templates.forEach(client_template => {
+
+      if(!client_template.file) return;
+      Request.get('/cards/transfer')
+        .query({url: client_template.file})
+        .responseType('blob')
+        .end((error, res) => {
+
+          const file = res.body;
+          const bool = this.toBoolean(client_template.status);
+          if(bool) this.template_front_file = file;
+          if(bool) this.setPDF(file, this.loadingRef, client_templates[0].values);
+          if(!bool) this.template_reverse_file = file;
+        });
+    });
   };
 
   componentDidUpdate = (prevProps, prevState) => {
 
-    if(this.state.status == prevState.status || !this.state.templates) return;
+    if(this.state.status == prevState.status || !this.state.client_templates) return;
 
     const file = this.state.status ? this.template_front_file : this.template_reverse_file;
-    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
+    const values = this.state.status ? this.state.client_templates[0].values : this.state.client_templates[1].values;
 
-    if(file) this.setPDF(file, this.loadingRef, details)
+    if(file) this.setPDF(file, this.loadingRef, values)
   };
 
   toBoolean = data => {
@@ -71,10 +99,8 @@ export default class ClientGenerate extends React.Component {
   onChangeValue = e => {
 
     const status = this.state.status;
-    const templates = { ...this.state.templates };
     let client_templates = { ...this.state.client_templates };
     const detail_id = e.target.getAttribute('index');
-    const column = e.target.id;
 
     if(status) client_templates[0].values[detail_id].value = e.target.value;
 
@@ -89,16 +115,16 @@ export default class ClientGenerate extends React.Component {
    */
   drawText = () => {
 
-    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
+    const values = this.state.status ? this.state.client_templates[0].values : this.state.client_templates[1].values;
 
     let draw_ctx = document.getElementById('draw').getContext('2d');
 
-    details.forEach((detail, index) => {
+    values.forEach(value => {
 
       draw_ctx.font = 10.625178 * 4;
-      const height = (1.3281472327365 * detail.coord_y) * 4;
-      const width =	(1.3281472327365 * detail.coord_x) * 4;
-      draw_ctx.fillText(detail.name, width, height);
+      const height = (1.3281472327365 * value.coord_y) * 4;
+      const width =	(1.3281472327365 * value.coord_x) * 4;
+      draw_ctx.fillText(value.value, width, height);
     });
   };
 
@@ -106,11 +132,12 @@ export default class ClientGenerate extends React.Component {
    * PDFを展開する
    * @version 2020/03/30
    */
-  setPDF = (file, loadingRef, details) => {
+  setPDF = (file, loadingRef, values) => {
 
     const blob = new Blob([file]);
     const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
     const getPDF = pdfjsLib.getDocument(blob_path);
+
     getPDF.then(function(pdf) {
       return pdf.getPage(1);
     }).then(function(page) {
@@ -139,12 +166,15 @@ export default class ClientGenerate extends React.Component {
       draw_ctx.setTransform(1,0,0,1,0,0);
       draw_ctx.restore();
 
-      details.forEach(detail => {
+      values.forEach(value => {
 
-        draw_ctx.font = 10.625178 * 4;
-        const height = (1.3281472327365 * detail.coord_y) * 4;
-        const width =	(1.3281472327365 * detail.coord_x) * 4;
-        draw_ctx.strokeText(detail.name, width, height);
+        //draw_ctx.font = 10.625178 * 4;
+        //const height = (1.3281472327365 * detail.coord_y) * 4; 
+        //const width = (1.3281472327365 * detail.coord_x) * 4; 
+        draw_ctx.font = (3.7795275591 * value.font_size) * 2;
+        const height =  (3.7795275591 * value.coord_y) * 2;
+        const width =	(3.7795275591 * value.coord_x) *2;
+        draw_ctx.strokeText(value.value, width, height);
       });
 
       // Prepare object needed by render method
@@ -264,19 +294,19 @@ export default class ClientGenerate extends React.Component {
    */
   getConvertPDF = () => {
 
-    const templates = this.state.templates;
-    templates.forEach((template, index) => {
+    const client_templates = this.state.client_templates;
+    client_templates.forEach((client_template, index) => {
 
-      if(!template.file) return;
+      if(!client_template.file) return;
       Request.get('/cards/transfer')
-        .query({url: template.file})
+        .query({url: client_template.file})
         .responseType('blob')
         .end((error, res) => {
 
           const file = res.body;
-          const bool = this.toBoolean(template.status);
+          const bool = this.toBoolean(client_template.status);
           if(bool) this.template_front_file = file;
-          if(bool) this.setPDF(file, this.loadingRef, templates[0].details);
+          if(bool) this.setPDF(file, this.loadingRef, client_templates[0].values);
           if(!bool) this.template_reverse_file = file;
         });
     });
@@ -321,12 +351,12 @@ export default class ClientGenerate extends React.Component {
         <Client clients={ this.state.clients } client={ this.state.client } typeName={ ClientTypeName } notFound={ ClientNotFound } applyClient={ this.applyClient }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
         <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
-        { this.state.templates ?
+        { this.state.client_templates ?
           <Fragment>
             { this.state.status ?
-              <Template template={ this.state.templates[0] } client_template={ this.state.client_templates[0] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
+              <Template client_template={ this.state.client_templates[0] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
               :
-              <Template template={ this.state.templates[1] } client_template={ this.state.client_templates[1] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
+              <Template client_template={ this.state.client_templates[1] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
             }
           </Fragment>
           : <div>テンプレートを選択してください。</div>

@@ -4,7 +4,7 @@
 #
 #  id      :bigint(8)        not null, primary key
 #  card_id :bigint(8)
-#  status  :integer          default(0)
+#  status  :integer          default("true")
 #
 
 class CardTemplate < ApplicationRecord
@@ -53,5 +53,22 @@ class CardTemplate < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
+  def formatting status
+
+    obj = { id: '', card_id: '', status: status, file: '', details: [] }
+    unless self.new_record?
+
+      details = []
+      self.details.each { |detail| details.push(detail) }
+      obj['id'] = self.id
+      obj['card_id'] = self.card.id
+      obj['status'] = self.status
+      obj['file'] = self.decorate.file_original
+      obj['details'] = details
+    end
+
+    obj
+  end
 
 end

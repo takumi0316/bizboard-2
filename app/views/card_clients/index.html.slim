@@ -4,11 +4,11 @@
 
 = form_with url: card_clients_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 
-  .c-search__item
-    = f.label :name, '名称'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '日本工業社'
+  .c-search
+    = f.label :name, '部署'
+    = f.select :company_division_id, CompanyDivision.where(id:CompanyDivisionClient.where(id: card_clients.pluck(:company_division_client_id)).pluck(:company_division_id)).pluck(:name, :id), { class: 'c-form-select__work-index' }
 
-  = f.submit '検索', class: 'c-btnMain-standard'
+    = f.submit '検索', class: 'c-btnMain-standard'
 
 .c-table.u-mt-30
   table
@@ -22,11 +22,11 @@
     tbody
       - card_clients.each do |r|
         tr
-          td = r.id
-          td
-          td
-          td = r.name
-          td = link_to '編集', edit_card_client_path(r), class: 'c-btnMain-standard'
-          td = link_to '削除', card_client_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
+          td.u-ta-center = r.id
+          td.u-ta-center = r.company_division_client.company_division.company.name
+          td.u-ta-center = r.company_division_client.company_division.name
+          td.u-ta-center = r.templates.first.card_template.card.name
+          td.u-ta-center = link_to '編集', edit_card_client_path(r), class: 'c-btnMain-standard'
+          td.u-ta-center = link_to '削除', card_client_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

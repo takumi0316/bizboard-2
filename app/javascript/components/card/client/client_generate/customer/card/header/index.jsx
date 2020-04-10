@@ -18,13 +18,13 @@ const Header = props => {
             <th>名称</th>
             <th>入力値</th>
           </tr>
-          { props.template.details.map((detail, index) => {
+          { props.client_template.values.map((value, index) => {
             const key = `value-${props.status}-${generateKey(index)}`;
-            const value = props.client_template.values[index];
+
             return(
               <tr key={ key }>
-                <th>{ detail.name }</th>
-                <td className='u-ta-center'><input id={ detail.id } index={ index } className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e) }/></td>
+                <th>{ value.name }</th>
+                <td className='u-ta-center'><input id={ value.id } index={ index } className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e) }/></td>
               </tr>
             );
           })}

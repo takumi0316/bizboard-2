@@ -114,8 +114,11 @@ import NewCardTemplateGenerate from 'components/card/template/template_generate/
 // 名刺マスタ登録(更新)
 import EditCardTemplateGenerate from 'components/card/template/template_generate/edit.jsx';
 
-// 名刺情報登録
-import CardClientGenerate from 'components/card/client/client_generate';
+// 名刺情報登録(新規作成)
+import NewCardClientGenerate from 'components/card/client/client_generate/new.jsx';
+
+// 名刺情報登録(更新)
+import EditCardClientGenerate from 'components/card/client/client_generate/edit.jsx';
 
 
 WebpackerReact.setup({
@@ -149,5 +152,6 @@ WebpackerReact.setup({
 	MarunouchiSearchable,
   NewCardTemplateGenerate,
   EditCardTemplateGenerate,
-	CardClientGenerate
+	NewCardClientGenerate,
+	EditCardClientGenerate
 })

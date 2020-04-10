@@ -53,7 +53,6 @@ class CardClientsController < ApplicationController
   #
   def create
 
-    binding.pry
     card_client.update! card_client_params
 
     render json: { status: :success, card_client: card_client }
