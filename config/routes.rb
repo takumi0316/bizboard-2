@@ -154,7 +154,12 @@ Rails.application.routes.draw do
   end
 
   # 名刺情報
-  resources :card_clients
+  resources :card_clients do
+    collection do
+      get :download
+      get :upload
+    end
+  end
 
   # 品目取り込み
   resources :inquiries, only: :index do

@@ -5,6 +5,8 @@
 #  id               :bigint(8)        not null, primary key
 #  card_client_id   :bigint(8)
 #  card_template_id :bigint(8)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 class ClientTemplate < ApplicationRecord

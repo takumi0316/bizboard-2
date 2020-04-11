@@ -10,7 +10,7 @@ class CardClientsController < ApplicationController
 
   # 名刺マスタ
   expose_with_pagination(:card_clients) {
-    CardClient.all
+    CardClient.all.search(company_division_id: params[:company_division_id])
   }
 
   # 名刺マスタ
@@ -93,11 +93,41 @@ class CardClientsController < ApplicationController
   def destroy
   end
 
+  ##
+  # CSVアップロード
+  # @version 2020/04/11
+  #
+  def upload
+
+    add_breadcrumb '名刺情報一覧', path: card_clients_path
+    add_breadcrumb 'アップロード'
+  end
+
+  ##
+  # CSVダウンロード
+  # @version 2020/04/11
+  #
+  def download
+
+    @divisions = []
+    card_clients.each do |r|
+
+      obj = {
+        division: r.company_division,
+        company: r.company_division.company
+      }
+      @divisions.append(obj)
+    end
+
+    add_breadcrumb '名刺情報一覧', path: card_clients_path
+    add_breadcrumb 'ダウンロード'
+  end
+
   private
 
   def card_client_params
 
-    params.require(:card_client).permit :company_division_client_id, {
+    params.require(:card_client).permit :company_division_id, :company_division_client_id, {
       templates_attributes: [:id, :card_client_id, :card_template_id,
         {
           values_attributes: [:id, :client_template_id, :template_detail_id, :value]

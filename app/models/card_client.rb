@@ -3,7 +3,10 @@
 # Table name: card_clients
 #
 #  id                         :bigint(8)        not null, primary key
+#  company_division_id        :bigint(8)
 #  company_division_client_id :bigint(8)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
 #
 
 class CardClient < ApplicationRecord
@@ -28,6 +31,9 @@ class CardClient < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 部署
+  belongs_to :company_division
+
   # 担当者
   belongs_to :company_division_client
 
@@ -47,5 +53,15 @@ class CardClient < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
+  def self.search(**parameters)
+
+    if parameters[:company_division_id].present?
+
+      self.where(company_division_id: parameters[:company_division_id])
+    end
+
+    self
+  end
 
 end

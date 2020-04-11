@@ -287,6 +287,7 @@ export default class EditTemplateGenerate extends React.Component {
 
     if(!validProperty(this.inputRef.value.trim(), 'タイトル')) return;
     if(!validProperty(this.state.division, '部署')) return;
+    if(!validProperty(this.template_front_file, 'テンプレート')) return;
 
     const field = new FormData();
 
@@ -318,11 +319,14 @@ export default class EditTemplateGenerate extends React.Component {
     // 保存処理
     request.then(res => {
 
+      this.loadingRef.finish();
       window.alertable({ icon: 'success', message: '更新に成功しました。' });
     }).catch(error => {
 
+      this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error.message });
     });
+    this.loadingRef.start();
 	};
 
   render() {
@@ -343,7 +347,7 @@ export default class EditTemplateGenerate extends React.Component {
         <div className='u-mt-10'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>
         </div>
-        <Loading ref={node => this.loadingRef = node} message='展開しています' />
+        <Loading ref={node => this.loadingRef = node}/>
       </Fragment>
     );
   };

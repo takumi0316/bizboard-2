@@ -59,6 +59,7 @@ class CompanyDivisionClient < ApplicationRecord
   #----------------------------------------
 
   belongs_to :company_division
+
   belongs_to :user, optional: true
 
   # 案件

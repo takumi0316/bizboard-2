@@ -102,6 +102,6 @@ class WorkSubcontractorsController < ApplicationController
   def work_subcontractor_params
 
     params.require(:work_subcontractor).permit :work_id, :notices, :order_date, :delivery_date, :delivery_destination, :subcontractor_division_client_id, :order_date, :delivery_date,
-    detail_attributes: [:id, :work_subcontractor_id, :order_contents, :deliver_method, :specification, :count, :number_of_copies, :actual_cost]
+    details_attributes: [:id, :work_subcontractor_id, :order_contents, :deliver_method, :specification, :count, :number_of_copies, :actual_cost]
   end
 end

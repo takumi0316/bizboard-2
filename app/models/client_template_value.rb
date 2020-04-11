@@ -6,6 +6,8 @@
 #  client_template_id :bigint(8)
 #  template_detail_id :bigint(8)
 #  value              :string(191)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 class ClientTemplateValue < ApplicationRecord

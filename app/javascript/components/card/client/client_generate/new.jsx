@@ -7,7 +7,6 @@ import Template       from './customer/card/template';
 import TempalteStatus from './template_status';
 import Loading        from '../../../loading';
 
-
 import pdfjsLib from 'pdfjs-dist/webpack';
 // Ajax
 import Request from 'superagent';
@@ -300,6 +299,7 @@ export default class ClientGenerate extends React.Component {
     e.stopPropagation();
     const field = new FormData();
     
+    field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);
     this.state.client_templates.forEach((template, index) => {
       field.append('card_client[templates_attributes][][id]', template.id);
@@ -316,11 +316,14 @@ export default class ClientGenerate extends React.Component {
     const request = window.xhrRequest.post(this.props.action, field);
     request.then(res => {
 
+      this.loadingRef.finish();
       window.location.href = `/card_clients/${res.data.card_client.id}/edit/`;
     }).catch(error => {
 
+      this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error.message });
     });
+    this.loadingRef.start();
   };
 
   render() {

@@ -12,6 +12,8 @@
 #  coord_y          :string(191)
 #  length           :string(191)
 #  line_space       :string(191)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 class TemplateDetail < ApplicationRecord

@@ -27,7 +27,6 @@ export default class ClientGenerate extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(props.front_value)
     const templateInit = [
       { ...props.front_template },
       { ...props.reverse_template }
@@ -134,6 +133,7 @@ export default class ClientGenerate extends React.Component {
    */
   setPDF = (file, loadingRef, values) => {
 
+    loadingRef.start();
     const blob = new Blob([file]);
     const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
     const getPDF = pdfjsLib.getDocument(blob_path);
@@ -185,6 +185,11 @@ export default class ClientGenerate extends React.Component {
 
       // Render PDF page
       page.render(renderContext);
+      loadingRef.finish();
+    }).catch(error => {
+
+      loadingRef.finish();;
+      window.alertable({ 'icon': 'error', message: error});
     });
   };
 
@@ -321,6 +326,7 @@ export default class ClientGenerate extends React.Component {
     e.stopPropagation();
     const field = new FormData();
     
+    field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);
     this.state.client_templates.forEach((template, index) => {
       field.append('card_client[templates_attributes][][id]', template.id);
@@ -334,14 +340,17 @@ export default class ClientGenerate extends React.Component {
       });
     });
 
-    const request = window.xhrRequest.post(this.props.action, field);
+    const request = window.xhrRequest.put(this.props.action, field);
     request.then(res => {
 
+      this.loadingRef.finish();
       window.location.href = `/card_clients/${res.data.card_client.id}/edit/`;
     }).catch(error => {
 
+      this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error.message });
     });
+    this.loadingRef.start();
   };
 
   render() {
@@ -364,7 +373,7 @@ export default class ClientGenerate extends React.Component {
         <div className='u-mt-30'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>作成する</button>
         </div>
-        <Loading ref={ node => this.loadingRef = node } message='展開しています' />
+        <Loading ref={ node => this.loadingRef = node }/>
       </div>
 		);
   };

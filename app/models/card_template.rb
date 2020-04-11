@@ -2,9 +2,11 @@
 #
 # Table name: card_templates
 #
-#  id      :bigint(8)        not null, primary key
-#  card_id :bigint(8)
-#  status  :integer          default("true")
+#  id         :bigint(8)        not null, primary key
+#  card_id    :bigint(8)
+#  status     :integer          default("true")
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 class CardTemplate < ApplicationRecord

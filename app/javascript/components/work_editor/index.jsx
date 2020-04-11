@@ -227,14 +227,14 @@ export default class WorkEditor extends React.Component {
           actual_cost = actual_cost + Number(detail.actual_cost);
           if(index == index1) {
 
-            field.append('work_subcontractor[detail_attributes][][id]', detail.id);
-            field.append('work_subcontractor[detail_attributes][][work_subcontractor_id]', detail.work_subcontractor_id);
-            field.append('work_subcontractor[detail_attributes][][order_contents]', detail.order_contents || '');
-            field.append('work_subcontractor[detail_attributes][][deliver_method]', detail.deliver_method || '');
-            field.append('work_subcontractor[detail_attributes][][specification]', detail.specification || '');
-            field.append('work_subcontractor[detail_attributes][][count]', detail.count);
-            field.append('work_subcontractor[detail_attributes][][number_of_copies]', detail.number_of_copies);
-            field.append('work_subcontractor[detail_attributes][][actual_cost]', detail.actual_cost);
+            field.append('work_subcontractor[details_attributes][][id]', detail.id);
+            field.append('work_subcontractor[details_attributes][][work_subcontractor_id]', detail.work_subcontractor_id);
+            field.append('work_subcontractor[details_attributes][][order_contents]', detail.order_contents || '');
+            field.append('work_subcontractor[details_attributes][][deliver_method]', detail.deliver_method || '');
+            field.append('work_subcontractor[details_attributes][][specification]', detail.specification || '');
+            field.append('work_subcontractor[details_attributes][][count]', detail.count);
+            field.append('work_subcontractor[details_attributes][][number_of_copies]', detail.number_of_copies);
+            field.append('work_subcontractor[details_attributes][][actual_cost]', detail.actual_cost);
           };
         });
       };

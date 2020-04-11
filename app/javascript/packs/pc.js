@@ -117,8 +117,14 @@ import EditCardTemplateGenerate from 'components/card/template/template_generate
 // 名刺情報登録(新規作成)
 import NewCardClientGenerate from 'components/card/client/client_generate/new.jsx';
 
-// 名刺情報登録(更新)
+// 名刺担当者情報登録(更新)
 import EditCardClientGenerate from 'components/card/client/client_generate/edit.jsx';
+
+// 名刺担当者情報登録(更新)
+import CardClientSearch from 'components/card/client/search';
+
+// 名刺担当者情報CSVダウンロード
+import DownloadCardClient from 'components/card/client/csv/download';
 
 
 WebpackerReact.setup({
@@ -153,5 +159,7 @@ WebpackerReact.setup({
   NewCardTemplateGenerate,
   EditCardTemplateGenerate,
 	NewCardClientGenerate,
-	EditCardClientGenerate
-})
+  EditCardClientGenerate,
+  CardClientSearch,
+  DownloadCardClient,
+});
