@@ -10,7 +10,7 @@ class CardClientsController < ApplicationController
 
   # 名刺マスタ
   expose_with_pagination(:card_clients) {
-    CardClient.all.search(company_division_id: params[:company_division_id])
+    CardClient.search(company_division_id: params[:company_division_id]).all
   }
 
   # 名刺マスタ
@@ -110,11 +110,13 @@ class CardClientsController < ApplicationController
   def download
 
     @divisions = []
-    card_clients.each do |r|
+    card_clients.pluck(:company_division_id).uniq.each do |r|
+
+      division = CompanyDivision.find(r)
 
       obj = {
-        division: r.company_division,
-        company: r.company_division.company
+        division: division,
+        company: division.company
       }
       @divisions.append(obj)
     end

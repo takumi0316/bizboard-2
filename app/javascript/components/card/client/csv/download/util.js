@@ -11,8 +11,8 @@ export function generateKey(pre) {
  * valid property 
  * @version 2020/04/04
  */
-export function validProperty(value, property) {
+export function validProperty(value, message) {
 
   if(value) return true;
-  window.alertable({ icon: 'error', message: `${property}を入力してください。`});
+  window.alertable({ icon: 'error', message: message});
 };

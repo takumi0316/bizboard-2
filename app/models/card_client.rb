@@ -3,6 +3,7 @@
 # Table name: card_clients
 #
 #  id                         :bigint(8)        not null, primary key
+#  card_id                    :bigint(8)
 #  company_division_id        :bigint(8)
 #  company_division_client_id :bigint(8)
 #  created_at                 :datetime         not null

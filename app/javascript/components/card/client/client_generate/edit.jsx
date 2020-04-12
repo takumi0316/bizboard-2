@@ -371,7 +371,7 @@ export default class ClientGenerate extends React.Component {
           : <div>テンプレートを選択してください。</div>
         }
         <div className='u-mt-30'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>作成する</button>
+          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>更新する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </div>

@@ -1,11 +1,33 @@
 json = { status: :success }
 
-json[:card_clients] = card_clients.map do |r|
+arr = []
+if params[:cardSearch].present?
+  CardClient.where(company_division_id: params[:company_division_id]).map do |r|
 
-  {
-    division: r,
-    company: r.company
-  }
+    card = r.templates.first.card_template.card
+    if arr.present?
+
+      isPresent = true
+      arr.map do |c|
+
+        isPresent = false if c.id == card.id
+      end
+
+      arr.push(card) if isPresent
+    else
+
+      arr.push(card)
+    end
+  end
+  json[:cards] = arr
+else
+  CardClient.where(company_division_id: params[:division_id]).where(card_id: params[:card_id]).map do |r|
+
+    obj = { card_client: r, client: r.company_division_client }
+    arr.push(obj)
+  end
+  json[:card_clients] = arr
 end
+
 
 json
