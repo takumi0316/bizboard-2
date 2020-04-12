@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 
-import Division   from './division';
-import Card       from './card';
-import CardClient from './card_client';
-import Loading    from '../../../../loading';
+import Division    from './division';
+import Card        from './card';
+import CardClient  from './card_client';
+import CSVDownload from './csv';
+import Loading     from '../../../../loading';
 
 import {
   DivisionTypeName,
@@ -24,12 +25,14 @@ export default class DownloadCardClient extends React.Component {
 
     super(props);
 
+    this.replace_values = [];
     this.state = {
       company: props.company || '',
       divisions: props.divisions || '',
       division: props.division || '',
       clients: '',
       client: props.client || '',
+      card: '',
       card_clients: ''
     };
   };
@@ -107,10 +110,15 @@ export default class DownloadCardClient extends React.Component {
       res.data.card_clients.forEach(card_client => {
 
         const obj = {
-          'id': card_client.card_client.id,
-          'client_name': card_client.client.name,
-          'status': true
+          'id': card_client.id,
+          'client_name': card_client.client_name,
+          'status': true,
+          'values': card_client.values
         };
+        card_client.values.forEach(value => {
+
+          this.replace_values.push(value);
+        });
         card_clients.push(obj);
       });
       this.loadingRef.finish();
@@ -126,9 +134,17 @@ export default class DownloadCardClient extends React.Component {
   changeRaidoStatus = e => {
 
     const card_clients = [];
+    this.replace_values = [];
     this.state.card_clients.forEach(card_client => {
 
       if(card_client.id == e.target.value) card_client.status = !card_client;
+      if(card_client.status) {
+
+        card_client.values.forEach(value => {
+
+          this.replace_values.push(value);
+        });
+      };
       card_clients.push(card_client);
     });
 
@@ -161,9 +177,7 @@ export default class DownloadCardClient extends React.Component {
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
         <Loading ref={ node => this.loadingRef = node }/>
         <CardClient card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } changeRaidoStatus={ this.changeRaidoStatus }/>
-        <div className='u-mt-10'>
-          <button className='c-btnMain-standard c-btn-blue' onClick={ e => this.download(e) }>ダウンロード</button>
-        </div>
+        <CSVDownload division={ this.state.division } card={ this.state.card } card_clients={ this.state.card_clients } replace_values={ this.replace_values }/>
       </Fragment>
     );
   };

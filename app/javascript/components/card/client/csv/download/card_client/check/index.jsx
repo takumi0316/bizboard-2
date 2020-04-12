@@ -3,7 +3,6 @@ import Style from './style.sass';
 
 const Check = props => {
 
-  console.log(props.division)
   return(
     <div>
       { props.card_clients.map((card_client, index) => {

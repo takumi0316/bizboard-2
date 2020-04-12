@@ -23,7 +23,21 @@ if params[:cardSearch].present?
 else
   CardClient.where(company_division_id: params[:division_id]).where(card_id: params[:card_id]).map do |r|
 
-    obj = { card_client: r, client: r.company_division_client }
+    values = []
+    r.templates.map do |t|
+      t.values.map do |v|
+        value = {
+          card_client_id: r.id,
+          client_id: r.company_division_client.id,
+          client_name: r.company_division_client.name,
+          template_status: t.card_template.status,
+          template_detail: v.template_detail.name,
+          value: v.value
+        }
+        values.push(value)
+      end
+    end
+    obj = { id: r.id, values: values, client_name: r.company_division_client.name }
     arr.push(obj)
   end
   json[:card_clients] = arr
