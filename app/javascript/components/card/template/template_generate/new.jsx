@@ -26,8 +26,6 @@ export default class NewTemplateGenerate extends React.Component {
       { ...props.reverse_side },
     ];
 
-    console.log(this.props.action)
-
     this.state = {
       card_id: props.card.id || '',
       company: props.company || '',
@@ -37,6 +35,10 @@ export default class NewTemplateGenerate extends React.Component {
     };
   };
 
+  shouldComponentUpdate = (prevProps, prevState) => {
+
+    return true;
+  };
 
   /**
    *
@@ -44,11 +46,19 @@ export default class NewTemplateGenerate extends React.Component {
    */
   componentDidUpdate = (prevProps, prevState) => {
 
-    if(this.state.status == prevState.status && !this.state.templates[0].file && this.state.templates[1].file) return;
+    const template = this.state.status ? this.state.templates[0] : this.state.templates[1];
+    const prevTemplate = this.state.status ? prevState.templates[0] : prevState.templates[1];
+    const file = template.file;
+    const prevFile = prevTemplate.file;
+    if(this.state.status == prevState.status) {
 
-    const file = this.state.status ? this.state.templates[0].file : this.state.templates[1].file;
+      if(!prevFile && file) this.setPDF(file, this.loadingRef);
+    };
 
-    if(file) this.setPDF(file);
+    if(this.state.status != prevState.status) {
+
+      if(file) this.setPDF(file, this.loadingRef);
+    };
   };
 
   toBoolean = data => {
@@ -62,14 +72,14 @@ export default class NewTemplateGenerate extends React.Component {
    */
   onDrop = files => {
 
-    let templates = this.state.templates;
+    let templates = this.state.templates.slice();
     const file = files[0];
 
     if(this.state.status) templates[0].file = file;
 
     if(!this.state.status) templates[1].file = file;
 
-    this.setState({ ...templates });
+    this.setState({ templates: templates });
   };
 
   /**
@@ -98,20 +108,23 @@ export default class NewTemplateGenerate extends React.Component {
 
     const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
 
-    let draw_ctx = document.getElementById('draw').getContext('2d')
+    // Fetch canvas' 2d context
+    let draw_canvas = document.getElementById('draw');
+    let draw_ctx = draw_canvas.getContext('2d');
 
+    // Set dimensions to Canvas
     draw_ctx.beginPath();
     draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
     draw_ctx.save();
     draw_ctx.setTransform(1,0,0,1,0,0);
-    draw_ctx.restore()
+    draw_ctx.restore();
 
-    details.forEach((detail, index) => {
+    details.forEach(detail => {
 
       draw_ctx.font = 10.625178 * 4;
       const height = (1.3281472327365 * detail.coord_y) * 4;
       const width =	(1.3281472327365 * detail.coord_x) * 4;
-      draw_ctx.fillText(detail.name, width, height);
+      draw_ctx.strokeText(detail.name, width, height);
     });
   };
 
@@ -138,7 +151,7 @@ export default class NewTemplateGenerate extends React.Component {
     };
 
     this.state.status ? templates[0].details.push(init) : templates[1].details.push(init);
-    this.setState({ ...templates });
+    this.setState({ templates: templates });
   };
 
   /**
@@ -149,14 +162,24 @@ export default class NewTemplateGenerate extends React.Component {
 
     const status = this.state.status;
     let templates = { ...this.state.templates };
+    let file = '';
     const detail_id = e.target.getAttribute('index');
     const detail_name =  e.target.id;
 
-    if(status) templates[0].details[detail_id][detail_name] = e.target.value;
+    if(status) {
 
-    if(!status) templates[1].details[detail_id][detail_name] = e.target.value;
+      templates[0].details[detail_id][detail_name] = e.target.value;
+      file = templates[0].file;
+    };
 
-    this.setState({ ...templates }, () => this.drawText() );
+    if(!status) {
+
+      templates[1].details[detail_id][detail_name] = e.target.value;
+      file = templates[1].file;
+    };
+
+    if(file) this.setState({ ...templates }, () => this.drawText() );
+    if(!file) this.setState({ ...templates });
   };
 
   /**
@@ -178,8 +201,9 @@ export default class NewTemplateGenerate extends React.Component {
    * PDFを展開する
    * @version 2020/03/30
    */
-  setPDF = file => {
+  setPDF = (file, loadingRef) => {
 
+    loadingRef.start();
     const blob = new Blob([file]);
     const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
     const getPDF = pdfjsLib.getDocument(blob_path);
@@ -211,9 +235,14 @@ export default class NewTemplateGenerate extends React.Component {
         viewport: viewport
       };
 
+      loadingRef.finish();
       // Render PDF page
       page.render(renderContext);
-    });
+    }).catch(error => {
+
+      loadingRef.finish();
+      window.alertable({ icon: 'error', message: error });
+    })
   };
 
   /**
@@ -226,6 +255,7 @@ export default class NewTemplateGenerate extends React.Component {
 
     if(!validProperty(this.inputRef.value.trim(), 'タイトル')) return;
     if(!validProperty(this.state.division, '部署')) return;
+    if(!validProperty(this.state.templates[0].file, 'テンプレート')) return;
 
     const field = new FormData();
 
@@ -257,12 +287,15 @@ export default class NewTemplateGenerate extends React.Component {
     // 保存処理
     request.then(res => {
 
+      this.loadingRef.finish();
       window.alertable({ icon: 'success', message: 'テンプレートを保存しました。' });
       window.location.href = `/cards/${res.data.card.id}/edit/`;
     }).catch(error => {
 
+      this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error.message });
     });
+    this.loadingRef.start();
 	};
 
   render() {
@@ -281,9 +314,9 @@ export default class NewTemplateGenerate extends React.Component {
           <CardTemplate template={ this.state.templates[1] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
         }
         <div className='u-mt-10'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>'保存する'</button>
+          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>保存する</button>
         </div>
-        <Loading ref={node => this.loadingRef = node} message='展開しています' />
+        <Loading ref={node => this.loadingRef = node}/>
       </Fragment>
     );
   };
