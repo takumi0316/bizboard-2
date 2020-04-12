@@ -127,7 +127,7 @@ class CardClientsController < ApplicationController
 
   def card_client_params
 
-    params.require(:card_client).permit :company_division_id, :company_division_client_id, {
+    params.require(:card_client).permit :card_id, :company_division_id, :company_division_client_id, {
       templates_attributes: [:id, :card_client_id, :card_template_id,
         {
           values_attributes: [:id, :client_template_id, :template_detail_id, :value]

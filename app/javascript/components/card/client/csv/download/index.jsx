@@ -13,13 +13,12 @@ import {
   CardNotFound,
 } from './properties.es6'
 
-export default class EditTemplateGenerate extends React.Component {
+export default class DownloadCardClient extends React.Component {
 
   constructor(props) {
 
     super(props);
 
-    console.log(props.divisions)
     this.state = {
       company: props.company || '',
       divisions: props.divisions || '',
@@ -65,52 +64,10 @@ export default class EditTemplateGenerate extends React.Component {
    */
   cardSearch = card => {
 
-    const url = '/cards.json?id=' + card.id;
+    const url = '/card_clients.json?company_division_id=' + card.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
-      const front_templates = res.data.front_templates;
-      const reverse_templates = res.data.reverse_templates;
-      const templatesInit = [
-        { ...front_templates },
-        { ...reverse_templates }
-      ];
-      let clientTemplatesInit = [];
-
-      templatesInit.map((template, index) => {
-
-        let templateObj = {
-          'id': '',
-          'card_client_id': '',
-          'card_template_id': template.id,
-          'status': template.status,
-          'file': template.file,
-          'values': []
-        };
-
-        template.details.map(detail => {
-          const valueObj = {
-            'id': '',
-            'client_template_id': template.id,
-            'template_detail_id': detail.id,
-            'value': '',
-            'name': detail.name,
-            'font': detail.font,
-            'font_size': detail.font_size,
-            'font_color': detail.font_color,
-            'coord_x': detail.coord_x,
-            'coord_y': detail.coord_y,
-            'length': detail.lenght,
-            'line_space': detail.line_space
-
-          };
-          templateObj.values.push({ ...valueObj });
-        });
-
-        clientTemplatesInit.push({ ...templateObj });
-      });
-
-      this.setState({ card: card, client_templates: clientTemplatesInit }, () => this.getConvertPDF());
     }).catch(error => {
 
       window.alertable({ icon: 'error', message: error.message });

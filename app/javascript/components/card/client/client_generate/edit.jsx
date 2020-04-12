@@ -7,7 +7,6 @@ import Template       from './customer/card/template';
 import TempalteStatus from './template_status';
 import Loading        from '../../../loading';
 
-
 import pdfjsLib from 'pdfjs-dist/webpack';
 // Ajax
 import Request from 'superagent';
@@ -326,6 +325,7 @@ export default class ClientGenerate extends React.Component {
     e.stopPropagation();
     const field = new FormData();
     
+    field.append('card_client[card_id]', this.state.card.id);
     field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);
     this.state.client_templates.forEach((template, index) => {

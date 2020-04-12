@@ -34,6 +34,7 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
 
     create_table :card_clients do |t|
 
+      t.references :card, index: true
       t.references :company_division, index: true
       t.references :company_division_client, index: true
 

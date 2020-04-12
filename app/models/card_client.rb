@@ -31,6 +31,9 @@ class CardClient < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # 名刺
+  belongs_to :card
+
   # 部署
   belongs_to :company_division
 

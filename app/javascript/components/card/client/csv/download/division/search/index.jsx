@@ -22,7 +22,7 @@ const Search = props => {
     
     e.preventDefault();
 
-    setState({ ...init, status: !state.status });
+    setState({ ...state, show: true });
   };
   
   /**
