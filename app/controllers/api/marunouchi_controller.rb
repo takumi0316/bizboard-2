@@ -57,7 +57,7 @@ class Api::MarunouchiController < ApplicationController
       end
     end
 
-	rescue => e
+  rescue => e
 
     flash[:warning] = { message: e.message }
   end
