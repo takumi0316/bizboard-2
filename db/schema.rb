@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
   end
 
   create_table "card_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+<<<<<<< HEAD
     t.bigint "card_id"
     t.bigint "company_division_id"
     t.bigint "company_division_client_id"
@@ -70,21 +71,31 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
     t.index ["card_id"], name: "index_card_clients_on_card_id"
     t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
     t.index ["company_division_id"], name: "index_card_clients_on_company_division_id"
+=======
+    t.bigint "company_division_client_id"
+    t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
+>>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
   end
 
   create_table "card_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "card_id"
     t.integer "status", limit: 1, default: 0, comment: "テンプレートの状態"
+<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+=======
+>>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["card_id"], name: "index_card_templates_on_card_id"
   end
 
   create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "company_division_id"
     t.string "name", comment: "名刺名称"
+<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+=======
+>>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["company_division_id"], name: "index_cards_on_company_division_id"
   end
 
@@ -107,8 +118,11 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
     t.bigint "client_template_id"
     t.bigint "template_detail_id"
     t.string "value", comment: "入力値"
+<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+=======
+>>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["client_template_id"], name: "index_client_template_values_on_client_template_id"
     t.index ["template_detail_id"], name: "index_client_template_values_on_template_detail_id"
   end
@@ -116,8 +130,11 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
   create_table "client_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "card_client_id"
     t.bigint "card_template_id"
+<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+=======
+>>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["card_client_id"], name: "index_client_templates_on_card_client_id"
     t.index ["card_template_id"], name: "index_client_templates_on_card_template_id"
   end
@@ -616,8 +633,11 @@ ActiveRecord::Schema.define(version: 2020_03_18_122830) do
     t.string "coord_y"
     t.string "length"
     t.string "line_space"
+<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+=======
+>>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["card_template_id"], name: "index_template_details_on_card_template_id"
   end
 

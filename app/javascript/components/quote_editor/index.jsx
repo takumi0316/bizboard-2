@@ -614,43 +614,43 @@ export default class QuoteEditor extends React.Component {
   render() {
     return (
       <Fragment>
-    		<Subject subject={ this.state.quote_subject } setSubject={ this.setSubject } />
-    		<CustomerInformation	client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' }
-    													division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient }
-    													users={ this.state.users } prefectures={ this.state.prefectures }
-    		/>
-    		<div className='u-mt-15'>
-          <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?search=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
-      	</div>
-    		<SalesDepartment home_division={ this.state.home_division } />
+        <Subject subject={ this.state.quote_subject } setSubject={ this.setSubject } />
+        <CustomerInformation	client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' }
+                              division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient }
+                              users={ this.state.users } prefectures={ this.state.prefectures }
+        />
+        <div className='u-mt-15'>
+          <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?name=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
+        </div>
+        <SalesDepartment home_division={ this.state.home_division } />
         <div className='u-mt-10'>
           <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
         </div>
-    		<CaseDetails	date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setExpiration={ this.setExpiration }
-    									expiration={ this.state.expiration } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
-    									deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
-    									quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
-    									setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
-    									setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
-    									setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
-    		/>
-    		<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
-    								setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy } itemStatus={ this.state.itemStatus }
-    								reorderQuoteProjects={ this.reorderQuoteProjects }
-    		/>
+        <CaseDetails	date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setExpiration={ this.setExpiration }
+                      expiration={ this.state.expiration } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
+                      deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
+                      quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
+                      setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
+                      setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
+                      setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
+        />
+        <ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
+                    setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy } itemStatus={ this.state.itemStatus }
+                    reorderQuoteProjects={ this.reorderQuoteProjects }
+        />
         <div className='u-mt-15'>
           <ProjectSearch applyProject={ this.state.quote.id ? this.applyProject : this.applyNewProject } prefectures={ this.props.prefectures } />
-    			<div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
+          <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
         </div>
-    		<PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
-    										memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
-    										show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
-    										setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount }
-    		/>
-    		<ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice }
-    									task={ this.state.task } onSubmit={ this.onSubmit }
-    		/>
+        <PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
+                        memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
+                        show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
+                        setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount }
+        />
+        <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice }
+                      task={ this.state.task } onSubmit={ this.onSubmit }
+        />
       </Fragment>
     );
-  }
-}
+  };
+};
