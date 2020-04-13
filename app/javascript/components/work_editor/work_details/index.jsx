@@ -32,7 +32,7 @@ const AddDetails = props => {
   const onConfirm = (e, passIndex) => {
 
 		e.preventDefault();
-    window.confirm('削除します。') ? props.onWorkDetailDestroy(passIndex) : alert('キャンセルしました。');
+    window.confirm('削除します。') ? props.onWorkDetailDestroy(passIndex, e) : alert('キャンセルしました。');
   };
 
   /**

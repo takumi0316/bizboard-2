@@ -7,8 +7,7 @@
 #  description :text(65535)
 #  price       :string(191)
 #  deliver_at  :string(191)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  category_id :bigint(8)
 #
 
 class Catalog < ApplicationRecord

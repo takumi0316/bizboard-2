@@ -621,7 +621,7 @@ export default class QuoteEditor extends React.Component {
                               users={ this.state.users } prefectures={ this.state.prefectures }
         />
         <div className='u-mt-15'>
-            <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?name=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
+          <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?name=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
         </div>
         <SalesDepartment home_division={ this.state.home_division } />
         <div className='u-mt-10'>

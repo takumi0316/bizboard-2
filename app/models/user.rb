@@ -22,9 +22,9 @@
 #  confirmed_at         :datetime
 #  confirmation_sent_at :datetime
 #  unconfirmed_email    :string(191)
+#  lastaccesstask       :datetime         default(Mon, 06 Apr 2020 15:31:43 JST +09:00)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  lastaccesstask       :datetime         default(Thu, 12 Sep 2019 18:42:55 JST +09:00)
 #
 
 class User < ApplicationRecord
