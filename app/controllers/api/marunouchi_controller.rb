@@ -53,7 +53,7 @@ class Api::MarunouchiController < ApplicationController
       end
       format.csv do
         @consul = Invoice.joins(:quote).where('quotes.division_id': 10).where(date: (params[:sdate].present?? params[:sdate] : Time.current.beginning_of_month)..(params[:edate].present?? params[:edate] : Time.current.beginning_of_month)).all.order(date: :asc)
-        send_data render_to_string, filename: "コンサル2Gr全案件_#{params[:sdate].to_datetime.month}月.csv", type: :csv
+        send_data render_to_string.encode(Encoding::Windows_31J, undef: :replace, row_sep: "\r\n", force_quotes: true), filename: "コンサル2Gr全案件_#{params[:sdate].to_datetime.month}月.csv", type: :csv
       end
     end
 
