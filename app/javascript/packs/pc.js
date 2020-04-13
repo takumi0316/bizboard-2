@@ -126,6 +126,8 @@ import CardClientSearch from 'components/card/client/search';
 // 名刺担当者情報CSVダウンロード
 import DownloadCardClient from 'components/card/client/csv/download';
 
+// 名刺担当者情報CSVアップロード
+import UploadCardClient from 'components/card/client/csv/upload';
 
 WebpackerReact.setup({
   Alert,
@@ -162,4 +164,5 @@ WebpackerReact.setup({
   EditCardClientGenerate,
   CardClientSearch,
   DownloadCardClient,
+  UploadCardClient,
 });

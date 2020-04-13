@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
 
-import Division    from './division';
-import Card        from './card';
-import CardClient  from './card_client';
-import CSVDownload from './csv';
-import Loading     from '../../../../loading';
+import Division   from './division';
+import Card       from './card';
+import CSVImport  from './csv_import';
+import Loading    from '../../../../loading';
 
 import {
   DivisionTypeName,
@@ -13,17 +12,12 @@ import {
   CardNotFound,
 } from './properties.es6'
 
-import {
-  validProperty
-} from './util';
-
-export default class DownloadCardClient extends React.Component {
+export default class UploadCardClient extends React.Component {
 
   constructor(props) {
 
     super(props);
 
-    this.replace_values = [];
     this.state = {
       company: props.company || '',
       divisions: props.divisions || '',
@@ -33,10 +27,6 @@ export default class DownloadCardClient extends React.Component {
       card: '',
       card_clients: ''
     };
-  };
-
-  componentDidMount = () => {
-
   };
 
   /**
@@ -104,23 +94,8 @@ export default class DownloadCardClient extends React.Component {
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
-      let card_clients = [];
-      res.data.card_clients.forEach(card_client => {
-
-        const obj = {
-          'id': card_client.id,
-          'client_name': card_client.client_name,
-          'status': true,
-          'values': card_client.values
-        };
-        card_client.values.forEach(value => {
-
-          this.replace_values.push(value);
-        });
-        card_clients.push(obj);
-      });
       this.loadingRef.finish();
-      this.setState({ card: card, card_clients: card_clients });
+      this.setState({ card: card });
     }).catch(error => {
 
       this.loadingRef.finish();
@@ -129,43 +104,13 @@ export default class DownloadCardClient extends React.Component {
     this.loadingRef.start();
   };
 
-  changeRaidoStatus = e => {
-
-    const card_clients = [];
-    this.replace_values = [];
-    this.state.card_clients.forEach(card_client => {
-
-      if(card_client.id == e.target.value) card_client.status = !card_client;
-      if(card_client.status) {
-
-        card_client.values.forEach(value => {
-
-          this.replace_values.push(value);
-        });
-      };
-      card_clients.push(card_client);
-    });
-
-    this.setState({ card_clients: card_clients});
-  };
-
   /**
-   * CSVダウンロード 
-   * @version 2020/04/13 
-   * 
+   *  ファイルドロップ時
+   *  @version 2018/06/10
    */
-  download = e => {
+  onDrop = files => {
 
-    e.stopPropagation();
-
-    const card_clients = this.state.card_clients;
-    if(!validProperty(this.state.division, '部署情報を選択して下さい。')) return;
-    if(!validProperty(this.state.card, '名刺情報を選択してください。')) return;
-    let i = 0;
-    card_clients.map(card_client => {
-      if(card_client.status) i++;
-    });
-    if(!validProperty(i == card_clients.length, '担当者を選択してください。')) return;
+    console.log(files)
   };
 
   render() {
@@ -173,8 +118,8 @@ export default class DownloadCardClient extends React.Component {
       <Fragment>
         <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        <CardClient card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } changeRaidoStatus={ this.changeRaidoStatus }/>
-        <CSVDownload division={ this.state.division } card={ this.state.card } card_clients={ this.state.card_clients } replace_values={ this.replace_values }/>
+        { /* <CardClient card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } changeRaidoStatus={ this.changeRaidoStatus }/> */ }
+        <CSVImport division={ this.state.division } card={ this.state.card } onDrop={ this.onDrop }/>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );

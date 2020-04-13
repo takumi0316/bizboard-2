@@ -43,10 +43,6 @@ export default class ClientGenerate extends React.Component {
     };
 	};
 
-  componentDidMount = () => {
-
-  };
-
   componentDidUpdate = (prevProps, prevState) => {
 
     if(this.state.status == prevState.status || !this.state.client_templates) return;

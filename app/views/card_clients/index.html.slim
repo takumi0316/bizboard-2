@@ -2,7 +2,7 @@
 
 .u-mt-15.c-flex
   = link_to '情報を登録する', new_card_client_path, class: 'c-btnMain-standard c-btn-blue'
-  = link_to 'CSVアップロード', new_card_client_path, class: 'u-ml-10 c-btnMain-standard c-btn-red'
+  = link_to 'CSVアップロード', upload_card_clients_path, class: 'u-ml-10 c-btnMain-standard c-btn-red'
   = link_to 'CSVダウンロード', download_card_clients_path, class: 'u-ml-10 c-btnMain-standard'
 
 = react_component :CardClientSearch, divisions: CompanyDivision.all

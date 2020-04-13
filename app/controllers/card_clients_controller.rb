@@ -99,6 +99,18 @@ class CardClientsController < ApplicationController
   #
   def upload
 
+    @divisions = []
+    card_clients.pluck(:company_division_id).uniq.each do |r|
+
+      division = CompanyDivision.find(r)
+
+      obj = {
+        division: division,
+        company: division.company
+      }
+      @divisions.append(obj)
+    end
+
     add_breadcrumb '名刺情報一覧', path: card_clients_path
     add_breadcrumb 'アップロード'
   end
