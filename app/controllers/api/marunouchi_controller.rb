@@ -19,7 +19,7 @@ class Api::MarunouchiController < ApplicationController
       end
       format.csv do
         @all = Invoice.joins(:quote).where('quotes.division_id': 5).where(date: (params[:sdate].present?? params[:sdate] : Time.current.beginning_of_month)..(params[:edate].present?? params[:edate] : Time.current.beginning_of_month)).order(date: :asc)
-        send_data render_to_string, filename: "丸の内全案件_#{params[:sdate].to_datetime.month}月.csv", type: :csv
+        send_data render_to_string.encode(Encoding::Windows_31J, undef: :replace, row_sep: "\r\n", force_quotes: true), filename: "丸の内全案件_#{params[:sdate].to_datetime.month}月.csv", type: :csv
       end
     end
 
@@ -36,7 +36,7 @@ class Api::MarunouchiController < ApplicationController
       end
       format.csv do
         @only_card = Invoice.joins(:quote).where('quotes.division_id': 5).where('quotes.subject like ?', '%名刺%').where(date: (params[:sdate].present?? params[:sdate] : Time.current.beginning_of_month)..(params[:edate].present?? params[:edate] : Time.current.beginning_of_month)).order(date: :asc)
-        send_data render_to_string, filename: "丸の内案件(名刺のみ)_#{params[:sdate].to_datetime.month}月.csv", type: :csv
+        send_data render_to_string.encode(Encoding::Windows_31J, undef: :replace, row_sep: "\r\n", force_quotes: true), filename: "丸の内案件(名刺のみ)_#{params[:sdate].to_datetime.month}月.csv", type: :csv
       end
     end
 
@@ -53,7 +53,7 @@ class Api::MarunouchiController < ApplicationController
       end
       format.csv do
         @consul = Invoice.joins(:quote).where('quotes.division_id': 10).where(date: (params[:sdate].present?? params[:sdate] : Time.current.beginning_of_month)..(params[:edate].present?? params[:edate] : Time.current.beginning_of_month)).all.order(date: :asc)
-        send_data render_to_string.encode(Encoding::Windows_31J, undef: :replace, row_sep: "\r\n", force_quotes: true), filename: "コンサル2Gr全案件_#{params[:sdate].to_datetime.month}月.csv", type: :csv
+        send_data render_to_string.encode(Encoding::SJIS, under: :replace, row_sep: "\r\n", force_quotes: true), filename: "コンサル2Gr全案件_#{params[:sdate].to_datetime.month}月.csv", type: :csv
       end
     end
 
