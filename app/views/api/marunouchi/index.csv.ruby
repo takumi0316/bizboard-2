@@ -1,6 +1,6 @@
 require 'csv'
 
-CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
+CSV.generate do |csv|
   headers = %w(
     No.
     請求日
