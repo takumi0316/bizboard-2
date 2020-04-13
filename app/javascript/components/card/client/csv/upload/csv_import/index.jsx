@@ -10,7 +10,7 @@ const CSVImport = props => {
       { props.division && props.card ?
         <Fragment>
           <Information status={ true }/>
-          <DropZone onDrop={ props.onDrop }/>
+          <DropZone parseCSV={ props.parseCSV }/>
         </Fragment>
         : <Information status={ false }/>
       }

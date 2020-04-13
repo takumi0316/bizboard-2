@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import Papa                from 'papaparse';
+import Encoding            from 'encoding-japanese';
 
 import Division   from './division';
 import Card       from './card';
@@ -108,9 +110,31 @@ export default class UploadCardClient extends React.Component {
    *  ファイルドロップ時
    *  @version 2018/06/10
    */
-  onDrop = files => {
+  parseCSV = files => {
 
-    console.log(files)
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = e => {
+      const codes = new Uint8Array(e.target.result);
+      const encoding = Encoding.detect(codes);
+      const unicodeString = Encoding.convert(codes, {
+        to: 'uncode',
+        from: encoding,
+        type: 'string'
+      });
+      Papa.parse(unicodeString, {
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          // results => Stateに反映させる。
+          console.log(results);
+        },
+      });
+    };
+    reader.readAsArrayBuffer(file);
+    console.log(reader);
+    window.alertable({ icon:'success', message: 'ファイルのアップロードが正常に成功しました。'});
   };
 
   render() {
@@ -118,8 +142,7 @@ export default class UploadCardClient extends React.Component {
       <Fragment>
         <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        { /* <CardClient card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } changeRaidoStatus={ this.changeRaidoStatus }/> */ }
-        <CSVImport division={ this.state.division } card={ this.state.card } onDrop={ this.onDrop }/>
+        <CSVImport division={ this.state.division } card={ this.state.card } parseCSV={ this.parseCSV }/>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );
