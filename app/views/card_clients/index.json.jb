@@ -30,11 +30,12 @@ else
       t.values.map do |v|
         template_detail = v.template_detail
         value = {
+          '': '',
           card_client_id: r.id,
           company_division_client_id: r.company_division_client.id,
           client_name: r.company_division_client.name,
           template_status: t.card_template.status,
-          client_template_valueid: v.id,
+          client_template_value_id: v.id,
           card_template_id: template_detail.card_template_id,
           template_detail_id: template_detail.id,
           name: template_detail.name,
