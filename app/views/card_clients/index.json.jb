@@ -10,13 +10,15 @@ if params[:cardSearch].present?
       isPresent = true
       arr.map do |c|
 
-        isPresent = false if c.id == card.id
+        isPresent = false if c[:id] == card.id
       end
 
-      arr.push(card) if isPresent
+      arr.push({ id: card.id, company_division_id: card.company_division_id, name: card.name }) if isPresent && ActiveRecord::Type::Boolean.new.cast(params[:cardSearch])
+      arr.push({ id: card.id, company_division_id: card.company_division_id, name: card.name, front_template: r.templates.first.card_template.decorate.file_original, reverse_template: r.templates.last.card_template.decorate.file_original }) if isPresent && !ActiveRecord::Type::Boolean.new.cast(params[:cardSearch])
     else
 
-      arr.push(card)
+      arr.push({ id: card.id, company_division_id: card.company_division_id, name: card.name }) if ActiveRecord::Type::Boolean.new.cast(params[:cardSearch])
+      arr.push({ id: card.id, company_division_id: card.company_division_id, name: card.name, front_template: r.templates.first.card_template.decorate.file_original, reverse_template: r.templates.last.card_template.decorate.file_original }) if !ActiveRecord::Type::Boolean.new.cast(params[:cardSearch])
     end
   end
   json[:cards] = arr
@@ -26,13 +28,24 @@ else
     values = []
     r.templates.map do |t|
       t.values.map do |v|
+        template_detail = v.template_detail
         value = {
           card_client_id: r.id,
-          client_id: r.company_division_client.id,
+          company_division_client_id: r.company_division_client.id,
           client_name: r.company_division_client.name,
           template_status: t.card_template.status,
-          template_detail: v.template_detail.name,
-          value: v.value
+          client_template_valueid: v.id,
+          card_template_id: template_detail.card_template_id,
+          template_detail_id: template_detail.id,
+          name: template_detail.name,
+          value: v.value,
+          font: template_detail.font,
+          font_size: template_detail.font_size,
+          font_color: template_detail.font_color,
+          coord_x: template_detail.coord_x,
+          coord_y: template_detail.coord_y,
+          length: template_detail.length,
+          line_space: template_detail.line_space
         }
         values.push(value)
       end
@@ -42,6 +55,5 @@ else
   end
   json[:card_clients] = arr
 end
-
 
 json

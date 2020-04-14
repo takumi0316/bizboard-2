@@ -7,6 +7,10 @@ import Card       from './card';
 import CSVImport  from './csv_import';
 import Loading    from '../../../../loading';
 
+// Ajax
+import Request from 'superagent';
+require('superagent-rails-csrf')(Request);
+
 import {
   DivisionTypeName,
   CardTypeName,
@@ -17,8 +21,10 @@ import {
 export default class UploadCardClient extends React.Component {
 
   constructor(props) {
-
     super(props);
+
+    this.template_front_file = '';
+    this.template_reverse_file = '';
 
     this.state = {
       company: props.company || '',
@@ -46,24 +52,7 @@ export default class UploadCardClient extends React.Component {
    **/
   applyCard = card => {
 
-    this.cardClientSearch(card);
-  };
-
-  /**
-   *  検索
-   *  @version 2018/06/10
-   */
-  clientSearch = props => {
-
-    const url = '/company_division_clients/search_clients?company_division_id=' + props.division.id;
-    const request = window.xhrRequest.get(url);
-    request.then(res => {
-
-      this.setState({ company: props.company, division: props.division, clients: res.data.clients, cards: res.data.cards });
-    }).catch(error => {
-
-      window.alertable({ icon: 'error', message: error.message });
-    });
+    this.setState({ card: card }, () => this.cardClientSearch(card));
   };
 
   /**
@@ -72,7 +61,7 @@ export default class UploadCardClient extends React.Component {
    */
   cardSearch = props => {
 
-    const url = '/card_clients.json?cardSearch=true&company_division_id=' + props.division.id;
+    const url = '/card_clients.json?cardSearch=false&company_division_id=' + props.division.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
@@ -92,23 +81,45 @@ export default class UploadCardClient extends React.Component {
    */
   cardClientSearch = card => {
 
-    const url = '/card_clients.json?cardClientSearch=true&division_id=' + this.state.division.id + '&card_id=' + card.id;
-    const request = window.xhrRequest.get(url);
-    request.then(res => {
+    const templates = [{ 'file': card.front_template, 'status': true }, { 'file': card.reverse_template, 'status': false }];
+    templates.forEach(template => {
 
-      this.loadingRef.finish();
-      this.setState({ card: card });
-    }).catch(error => {
+      if(!template.file) {
+        this.loadingRef.finish();
+        return;
+      };
+      Request.get('/cards/transfer')
+        .query({url: template.file})
+        .responseType('blob')
+        .end((error, res) => {
 
-      this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error.message });
-    });
+          const file = res.body;
+          const bool = template.status;
+          if(bool) this.template_front_file = file;
+          if(!bool) {
+            this.template_reverse_file = file;
+            this.loadingRef.finish();
+          };
+        });
+    })
     this.loadingRef.start();
+  };
+
+  /**
+   * 名刺担当者情報一括セット 
+   * @version 2020/04/13 
+   * 
+   */
+  setCardClients = data => {
+
+    console.log(data);
+    window.alertable({ icon:'success', message: 'ファイルのアップロードが正常に成功しました。'});
   };
 
   /**
    *  ファイルドロップ時
    *  @version 2018/06/10
+   * 
    */
   parseCSV = files => {
 
@@ -127,14 +138,11 @@ export default class UploadCardClient extends React.Component {
         dynamicTyping: true,
         skipEmptyLines: true,
         complete: (results) => {
-          // results => Stateに反映させる。
-          console.log(results);
+          this.setCardClients(results.data);
         },
       });
     };
     reader.readAsArrayBuffer(file);
-    console.log(reader);
-    window.alertable({ icon:'success', message: 'ファイルのアップロードが正常に成功しました。'});
   };
 
   render() {

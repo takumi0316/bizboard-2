@@ -220,9 +220,10 @@ export default class ClientGenerate extends React.Component {
         { ...front_templates },
         { ...reverse_templates }
       ];
+
       let clientTemplatesInit = [];
 
-      templatesInit.map((template, index) => {
+      templatesInit.map(template => {
 
         let templateObj = {
           'id': '',
@@ -247,8 +248,8 @@ export default class ClientGenerate extends React.Component {
             'coord_y': detail.coord_y,
             'length': detail.lenght,
             'line_space': detail.line_space
-
           };
+
           templateObj.values.push({ ...valueObj });
         });
 

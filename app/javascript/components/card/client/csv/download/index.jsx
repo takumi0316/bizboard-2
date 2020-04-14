@@ -35,10 +35,6 @@ export default class DownloadCardClient extends React.Component {
     };
   };
 
-  componentDidMount = () => {
-
-  };
-
   /**
    * 会社・部署セット
    * @version 2020/03/23
@@ -111,6 +107,7 @@ export default class DownloadCardClient extends React.Component {
           'id': card_client.id,
           'client_name': card_client.client_name,
           'status': true,
+          'replace': card_client.replace,
           'values': card_client.values
         };
         card_client.values.forEach(value => {
@@ -119,6 +116,7 @@ export default class DownloadCardClient extends React.Component {
         });
         card_clients.push(obj);
       });
+
       this.loadingRef.finish();
       this.setState({ card: card, card_clients: card_clients });
     }).catch(error => {
@@ -126,6 +124,7 @@ export default class DownloadCardClient extends React.Component {
       this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error.message });
     });
+
     this.loadingRef.start();
   };
 

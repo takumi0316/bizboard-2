@@ -19,7 +19,6 @@ const DropZone = props => {
           <div { ...getRootProps() } className={Style.Template__dropzone}>
             <input { ...getInputProps() }/>
             { !isDragActive && 'この部分にCSVをドラッグ&ドロップしてください' }
-            { !isDragReject && 'OK!' }
             { isDragReject && 'このファイルタイプはアップロードできません。' }
           </div>
         </div>

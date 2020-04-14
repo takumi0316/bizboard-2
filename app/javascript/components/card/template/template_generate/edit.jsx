@@ -9,7 +9,7 @@ import Loading            from '../../../loading';
 import pdfjsLib from 'pdfjs-dist/webpack';
 // Ajax
 import Request from 'superagent';
-require('superagent-rails-csrf')(Request)
+require('superagent-rails-csrf')(Request);
 
 import {
   validProperty
@@ -42,7 +42,7 @@ export default class EditTemplateGenerate extends React.Component {
 
     const templates = this.state.templates;
     if(!templates[0].file) return;
-    templates.forEach((template, index) => {
+    templates.forEach(template => {
 
       if(!template.file) return;
       Request.get('/cards/transfer')
@@ -57,7 +57,6 @@ export default class EditTemplateGenerate extends React.Component {
           if(!bool) this.template_reverse_file = file;
         });
     });
-    // this.setItems();
   };
 
   componentDidUpdate = (prevProps, prevState) => {
