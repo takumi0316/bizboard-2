@@ -12,8 +12,14 @@ import Request from 'superagent';
 require('superagent-rails-csrf')(Request);
 
 import {
-  validProperty
+  validProperty,
+  ptTomm,
+  mmTopx,
 } from './util';
+
+import {
+  HEADERS
+} from './properties.es6';
 
 export default class EditTemplateGenerate extends React.Component {
 
@@ -40,6 +46,7 @@ export default class EditTemplateGenerate extends React.Component {
 
   componentDidMount = () => {
 
+    this.loadingRef.start();
     const templates = this.state.templates;
     if(!templates[0].file) return;
     templates.forEach(template => {
@@ -61,10 +68,11 @@ export default class EditTemplateGenerate extends React.Component {
 
   componentDidUpdate = (prevProps, prevState) => {
 
-    if(this.state.status == prevState.status) return;
-
-    const file = this.state.status ? this.template_front_file : this.template_reverse_file;
     const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
+    const file = this.state.status ? this.template_front_file : this.template_reverse_file;
+    const state_file = this.state.status ? this.state.templates[0].file : this.state.templates[1].file;
+
+    if(this.state.status == prevState.status && file != state_file) return;
 
     if(file) this.setPDF(file, this.loadingRef, details);
   };
@@ -133,7 +141,8 @@ export default class EditTemplateGenerate extends React.Component {
       font: 'Osaka',
       font_size: '14',
       font_color: 'black',
-      coord: '0',
+      coord_y: '0',
+      coord_x: '10',
       length: '15',
       line_space: '2'
     };
@@ -150,14 +159,31 @@ export default class EditTemplateGenerate extends React.Component {
 
     const status = this.state.status;
     let templates = { ...this.state.templates };
+    let file = '';
     const detail_id = e.target.getAttribute('index');
     const detail_name =  e.target.id;
+    const value = e.target.value;
 
-    if(status) templates[0].details[detail_id][detail_name] = e.target.value;
+    if(!value) {
 
-    if(!status)  templates[1].details[detail_id][detail_name] = e.target.value;
+      window.alertable({ icon: 'info', message: `ID: ${detail_id}の${HEADERS[detail_name]}を入力して下さい。`});
+      return;
+    };
 
-    this.setState({ ...templates }, this.drawText());
+    if(status) {
+
+      templates[0].details[detail_id][detail_name] = value;
+      file = templates[0].file;
+    };
+
+    if(!status) {
+
+      templates[1].details[detail_id][detail_name] = value;
+      file = templates[1].file;
+    };
+
+    if(file) this.setState({ ...templates }, this.drawText());
+    if(!file) this.setState({ ...templates });
   };
 
   /**
@@ -179,11 +205,19 @@ export default class EditTemplateGenerate extends React.Component {
 
     details.forEach(detail => {
 
-      draw_ctx.font = 10.625178 * 4;
-      const metrics = draw_ctx.measureText(detail.name || '')
-      const height = (1.3281472327365 * detail.coord_y) * 4;
-      const width =	(1.3281472327365 * detail.coord_x) * 4;
-      draw_ctx.fillText(detail.name, width, height);
+      draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
+      const y = mmTopx(detail.coord_y) * 2;
+      const x =	mmTopx(detail.coord_x) * 2;
+      const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
+      const lineSpace = mmTopx(detail.line_space);
+      const name = `ここに${detail.name}が入ります。`;
+
+      for(let lines=name.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
+        let line = lines[i] ;
+        let addY = fontSize ;
+        if (i) addY += fontSize * lineSpace * i ;
+        draw_ctx.fillText(line, x, y + addY);
+      };
     });
   };
 
@@ -216,8 +250,6 @@ export default class EditTemplateGenerate extends React.Component {
    */
   setPDF = (file, loadingRef, details) => {
 
-    loadingRef.start();
-
     const blob = new Blob([file]);
     const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
     const getPDF = pdfjsLib.getDocument(blob_path);
@@ -240,22 +272,36 @@ export default class EditTemplateGenerate extends React.Component {
       let draw_ctx = draw_canvas.getContext('2d');
 
       // Set dimensions to Canvas
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-      draw_canvas.height = viewport.height;
-      draw_canvas.width = viewport.width;
-      draw_ctx.beginPath();
-      draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
-      draw_ctx.save();
-      draw_ctx.setTransform(1,0,0,1,0,0);
-      draw_ctx.restore();
+      canvas.height = (mmTopx(55 * 2));
+      // canvas.style.height = `${(mmTopx(55 * 2))}px`;
+      // viewport.height = `${(mmTopx(55 * 2))}px`; 
+
+      canvas.width = (mmTopx(91 * 2));
+      // canvas.style.width = `${(mmTopx(91 * 2))}px`;
+      // viewport.width = `${(mmTopx(91 * 2))}px`;
+      
+      draw_canvas.height = (mmTopx(55 * 2));
+      // draw_canvas.style.height = `${(mmTopx(55 * 2))}px`;
+      draw_canvas.width = (mmTopx(91 * 2));
+      // draw_canvas.style.width = `${(mmTopx(91 * 2))}px`;
 
       details.forEach(detail => {
 
-        draw_ctx.font = 10.625178 * 4;
-        const height = (1.3281472327365 * detail.coord_y) * 4;
-        const width =	(1.3281472327365 * detail.coord_x) * 4;
-        draw_ctx.strokeText(detail.name, width, height);
+        draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
+        const y = mmTopx(detail.coord_y) * 2;
+        const x =	mmTopx(detail.coord_x) * 2;
+        const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
+        const lineSpace = mmTopx(detail.line_space);
+        const name = `ここに${detail.name}が入ります。`;
+
+        console.log(x)
+        console.log(y)
+        for(let lines=name.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
+          let line = lines[i] ;
+          let addY = fontSize ;
+          if ( i ) addY += fontSize * lineSpace * i ;
+          draw_ctx.fillText(line, x, y + addY);
+        }
       });
 
       // Prepare object needed by render method

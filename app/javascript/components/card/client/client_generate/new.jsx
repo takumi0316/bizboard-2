@@ -21,6 +21,13 @@ import {
   CardNotFound,
 } from './properties.es6';
 
+import {
+  validProperty,
+  ptTomm,
+  mmTopx,
+} from './util';
+
+
 export default class ClientGenerate extends React.Component {
 
   constructor(props) {
@@ -82,15 +89,30 @@ export default class ClientGenerate extends React.Component {
   drawText = () => {
 
     const values = this.state.status ? this.state.client_templates[0].values : this.state.client_templates[1].values;
-
     let draw_ctx = document.getElementById('draw').getContext('2d');
+
+    // Set dimensions to Canvas
+    draw_ctx.beginPath();
+    draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
+    draw_ctx.save();
+    draw_ctx.setTransform(1,0,0,1,0,0);
+    draw_ctx.restore();
 
     values.forEach(value => {
 
-      draw_ctx.font = 10.625178 * 4;
-      const height = (1.3281472327365 * value.coord_y) * 4;
-      const width =	(1.3281472327365 * value.coord_x) * 4;
-      draw_ctx.fillText(value.value, width, height);
+      draw_ctx.font = `${mmTopx(ptTomm(value.font_size)) * 2}px ${value.font}`;
+      const y = mmTopx(value.coord_y) * 2;
+      const x =	mmTopx(value.coord_x) * 2;
+      const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
+      const lineSpace = mmTopx(value.line_space);
+      const card_value = value.value;
+
+      for(let lines=card_value.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
+        let line = lines[i] ;
+        let addY = fontSize ;
+        if ( i ) addY += fontSize * lineSpace * i ;
+        draw_ctx.fillText(line, x, y + addY);
+      };
     });
   };
 
@@ -122,23 +144,18 @@ export default class ClientGenerate extends React.Component {
       let draw_ctx = draw_canvas.getContext('2d');
 
       // Set dimensions to Canvas
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-      draw_canvas.height = viewport.height;
-      draw_canvas.width = viewport.width;
-      draw_ctx.beginPath();
-      draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
-      draw_ctx.save();
-      draw_ctx.setTransform(1,0,0,1,0,0);
-      draw_ctx.restore();
+      canvas.height = (mmTopx(55 * 2));
+      // canvas.style.height = `${(mmTopx(55 * 2))}px`;
+      // viewport.height = `${(mmTopx(55 * 2))}px`;
 
-      values.forEach(value => {
+      canvas.width = (mmTopx(91 * 2));
+      // canvas.style.width = `${(mmTopx(91 * 2))}px`;
+      // viewport.width = `${(mmTopx(91 * 2))}px`;
 
-        draw_ctx.font = 10.625178 * 4;
-        const height = (1.3281472327365 * value.coord_y) * 4;
-        const width =	(1.3281472327365 * value.coord_x) * 4;
-        draw_ctx.strokeText(value.value, width, height);
-      });
+      draw_canvas.height = (mmTopx(55 * 2));
+      // draw_canvas.style.height = `${(mmTopx(55 * 2))}px`;
+      draw_canvas.width = (mmTopx(91 * 2));
+      // draw_canvas.style.width = `${(mmTopx(91 * 2))}px`;
 
       // Prepare object needed by render method
       const renderContext = {
@@ -148,6 +165,7 @@ export default class ClientGenerate extends React.Component {
 
       // Render PDF page
       page.render(renderContext);
+      loadingRef.finish();
     });
   };
 
@@ -205,7 +223,7 @@ export default class ClientGenerate extends React.Component {
   };
 
   /**
-   * 名刺セット 
+   * 名刺セット
    * @version 2020/04/07
    */
   cardSearch = card => {
@@ -265,7 +283,7 @@ export default class ClientGenerate extends React.Component {
 
   /**
    * サーバーからPDF取得
-   * @version 2020/04/08 
+   * @version 2020/04/08
    */
   getConvertPDF = () => {
 
@@ -288,14 +306,14 @@ export default class ClientGenerate extends React.Component {
   };
 
   /**
-   * 保存 
-   * @version 2020/04/08 
+   * 保存
+   * @version 2020/04/08
    */
   save = e => {
 
     e.stopPropagation();
     const field = new FormData();
-    
+
     field.append('card_client[card_id]', this.state.card.id);
     field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);

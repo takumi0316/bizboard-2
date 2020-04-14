@@ -12,8 +12,14 @@ import Request from 'superagent';
 require('superagent-rails-csrf')(Request)
 
 import {
-  validProperty
+  validProperty,
+  ptTomm,
+  mmTopx,
 } from './util';
+
+import {
+  HEADERS
+} from './properties.es6';
 
 export default class NewTemplateGenerate extends React.Component {
 
@@ -121,10 +127,19 @@ export default class NewTemplateGenerate extends React.Component {
 
     details.forEach(detail => {
 
-      draw_ctx.font = 10.625178 * 4;
-      const height = (1.3281472327365 * detail.coord_y) * 4;
-      const width =	(1.3281472327365 * detail.coord_x) * 4;
-      draw_ctx.strokeText(detail.name, width, height);
+      draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
+      const y = mmTopx(detail.coord_y) * 2;
+      const x =	mmTopx(detail.coord_x) * 2;
+      const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
+      const lineSpace = mmTopx(detail.line_space);
+      const name = `ここに${detail.name}が入ります。`;
+
+      for(let lines=name.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
+        let line = lines[i] ;
+        let addY = fontSize ;
+        if ( i ) addY += fontSize * lineSpace * i ;
+        draw_ctx.fillText(line, x, y + addY);
+      };
     });
   };
 
@@ -145,7 +160,8 @@ export default class NewTemplateGenerate extends React.Component {
       font: 'Osaka',
       font_size: '14',
       font_color: 'black',
-      coord: '0',
+      coord_y: '0',
+      coord_x: '10',
       length: '15',
       line_space: '2'
     };
@@ -165,20 +181,27 @@ export default class NewTemplateGenerate extends React.Component {
     let file = '';
     const detail_id = e.target.getAttribute('index');
     const detail_name =  e.target.id;
+    const value = e.target.value;
+
+    if(!value) {
+
+      window.alertable({ icon: 'info', message: `ID: ${detail_id}の${HEADERS[detail_name]}を入力して下さい。`});
+      return;
+    };
 
     if(status) {
 
-      templates[0].details[detail_id][detail_name] = e.target.value;
+      templates[0].details[detail_id][detail_name] = value;
       file = templates[0].file;
     };
 
     if(!status) {
 
-      templates[1].details[detail_id][detail_name] = e.target.value;
+      templates[1].details[detail_id][detail_name] = value;
       file = templates[1].file;
     };
 
-    if(file) this.setState({ ...templates }, () => this.drawText() );
+    if(file) this.setState({ ...templates }, () => this.drawText());
     if(!file) this.setState({ ...templates });
   };
 
@@ -222,12 +245,21 @@ export default class NewTemplateGenerate extends React.Component {
 
       // Fetch canvas' 2d context
       let ctx = canvas.getContext('2d');
+      let draw_ctx = draw_canvas.getContext('2d');
 
       // Set dimensions to Canvas
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-      draw_canvas.height = viewport.height;
-      draw_canvas.width = viewport.width;
+      canvas.height = (mmTopx(55 * 2));
+      // canvas.style.height = `${(mmTopx(55 * 2))}px`;
+      // viewport.height = `${(mmTopx(55 * 2))}px`;
+
+      canvas.width = (mmTopx(91 * 2));
+      // canvas.style.width = `${(mmTopx(91 * 2))}px`;
+      // viewport.width = `${(mmTopx(91 * 2))}px`;
+
+      draw_canvas.height = (mmTopx(55 * 2));
+      // draw_canvas.style.height = `${(mmTopx(55 * 2))}px`;
+      draw_canvas.width = (mmTopx(91 * 2));
+      // draw_canvas.style.width = `${(mmTopx(91 * 2))}px`;
 
       // Prepare object needed by render method
       const renderContext = {
