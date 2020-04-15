@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import Division    from './division';
 import Card        from './card';
-import CardClient  from './card_client';
+import CardClient  from './card/client';
 import CSVDownload from './csv';
 import Loading     from '../../../../loading';
 

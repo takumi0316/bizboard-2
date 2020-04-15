@@ -31,12 +31,13 @@ else
         template_detail = v.template_detail
         value = {
           '': '',
-          card_client_id: r.id,
-          company_division_client_id: r.company_division_client.id,
-          client_name: r.company_division_client.name,
-          template_status: t.card_template.status,
-          client_template_value_id: v.id,
+          card_client_id: '',
           card_template_id: template_detail.card_template_id,
+          client_template_value_id: v.id,
+          client_name: r.company_division_client.name,
+          company_division_id: r.company_division_client.company_division.id,
+          company_division_client_id: r.company_division_client.id,
+          template_status: t.card_template.status,
           template_detail_id: template_detail.id,
           name: template_detail.name,
           value: v.value,

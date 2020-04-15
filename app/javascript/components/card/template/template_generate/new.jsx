@@ -183,11 +183,7 @@ export default class NewTemplateGenerate extends React.Component {
     const detail_name =  e.target.id;
     const value = e.target.value;
 
-    if(!value) {
-
-      window.alertable({ icon: 'info', message: `ID: ${detail_id}の${HEADERS[detail_name]}を入力して下さい。`});
-      return;
-    };
+    if(!value) window.alertable({ icon: 'info', message: `ID: ${detail_id}の${HEADERS[detail_name]}を入力して下さい。`});
 
     if(status) {
 

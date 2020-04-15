@@ -115,10 +115,10 @@ import NewCardTemplateGenerate from 'components/card/template/template_generate/
 import EditCardTemplateGenerate from 'components/card/template/template_generate/edit.jsx';
 
 // 名刺情報登録(新規作成)
-import NewCardClientGenerate from 'components/card/client/client_generate/new.jsx';
+import NewCardClientGenerate from 'components/card/client/generate/new.jsx';
 
 // 名刺担当者情報登録(更新)
-import EditCardClientGenerate from 'components/card/client/client_generate/edit.jsx';
+import EditCardClientGenerate from 'components/card/client/generate/edit.jsx';
 
 // 名刺担当者情報登録(更新)
 import CardClientSearch from 'components/card/client/search';

@@ -3,7 +3,7 @@ import Style from './style.sass';
 
 import {
   generateKey
-} from '../../util';
+} from '../../../util';
 
 const Header = props => {
 
