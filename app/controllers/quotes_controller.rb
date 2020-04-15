@@ -148,7 +148,30 @@ class QuotesController < ApplicationController
 
     # 情報更新
     if params[:id] == 'null'
-      new_quote = Quote.create!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id], date: params[:quote][:date], issues_date: params[:quote][:issues_date], expiration: params[:quote][:expiration], delivery_note_date: params[:quote][:delivery_note_date], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], reception: params[:quote][:reception], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], tax: params[:quote][:tax], payment_terms: params[:quote][:payment_terms], temporary_price: params[:quote][:temporary_price])
+      new_quote = Quote.new
+      new_quote.user_id = params[:quote][:user_id]
+      new_quote.division_id = params[:quote][:division_id]
+      new_quote.date = params[:quote][:date]
+      new_quote.issues_date = params[:quote][:issues_date]
+      new_quote.expiration = params[:quote][:expiration]
+      new_quote.delivery_note_date = params[:quote][:delivery_note_date]
+      new_quote.subject = params[:quote][:subject]
+      new_quote.remarks = params[:quote][:remarks]
+      new_quote.memo = params[:quote][:memo]
+      new_quote.attention = params[:quote][:attention]
+      new_quote.company_division_client_id = params[:quote][:company_division_client_id]
+      new_quote.quote_type = params[:quote][:quote_type]
+      new_quote.channel = params[:quote][:channel]
+      new_quote.deliver_at = params[:quote][:deliver_at]
+      new_quote.reception = params[:quote][:reception]
+      new_quote.deliver_type = params[:quote][:deliver_type]
+      new_quote.deliver_type_note = params[:quote][:deliver_type_note]
+      new_quote.discount = params[:quote][:discount]
+      new_quote.tax_type = params[:quote][:tax_type]
+      new_quote.tax = params[:quote][:tax]
+      new_quote.payment_terms = params[:quote][:payment_terms]
+      new_quote.temporary_price = params[:quote][:temporary_price]
+      new_quote.save!
       unless params[:quote][:quote_number].blank?
         new_quote.update!(quote_number: params[:quote][:quote_number])
       else
@@ -175,10 +198,32 @@ class QuotesController < ApplicationController
       end
       render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
     else
-      
-			findQuote = Quote.find(params[:id])
 
-      findQuote.update!(user_id: params[:quote][:user_id], division_id: params[:quote][:division_id] == 'null' ? nil : params[:quote][:division_id], date: params[:quote][:date], date: params[:quote][:date], issues_date: params[:quote][:issues_date], expiration: params[:quote][:expiration], delivery_note_date: params[:quote][:delivery_note_date], subject: params[:quote][:subject], remarks: params[:quote][:remarks], memo: params[:quote][:memo], price: params[:quote][:price], attention: params[:quote][:attention], company_division_client_id: params[:quote][:company_division_client_id], quote_type: params[:quote][:quote_type], channel: params[:quote][:channel], deliver_at: params[:quote][:deliver_at], reception: params[:quote][:reception], deliver_type: params[:quote][:deliver_type], deliver_type_note: params[:quote][:deliver_type_note], discount: params[:quote][:discount], tax_type: params[:quote][:tax_type], tax: params[:quote][:tax], payment_terms: params[:quote][:payment_terms], temporary_price: params[:quote][:temporary_price], quote_number: params[:quote][:quote_number] == 'null' ? nil : params[:quote][:quote_number])
+			findQuote = Quote.find(params[:id])
+      findQuote.user_id = params[:quote][:user_id]
+      findQuote.division_id = params[:quote][:division_id]
+      findQuote.date = params[:quote][:date]
+      findQuote.issues_date = params[:quote][:issues_date]
+      findQuote.expiration = params[:quote][:expiration]
+      findQuote.delivery_note_date = params[:quote][:delivery_note_date]
+      findQuote.subject = params[:quote][:subject]
+      findQuote.remarks = params[:quote][:remarks]
+      findQuote.memo = params[:quote][:memo]
+      findQuote.attention = params[:quote][:attention]
+      findQuote.company_division_client_id = params[:quote][:company_division_client_id]
+      findQuote.quote_type = params[:quote][:quote_type]
+      findQuote.channel = params[:quote][:channel]
+      findQuote.deliver_at = params[:quote][:deliver_at]
+      findQuote.reception = params[:quote][:reception]
+      findQuote.deliver_type = params[:quote][:deliver_type]
+      findQuote.deliver_type_note = params[:quote][:deliver_type_note]
+      findQuote.discount = params[:quote][:discount]
+      findQuote.tax_type = params[:quote][:tax_type]
+      findQuote.tax = params[:quote][:tax]
+      findQuote.payment_terms = params[:quote][:payment_terms]
+      findQuote.temporary_price = params[:quote][:temporary_price]
+      findQuote.save!
+
       unless params[:specifications].nil?
         params[:specifications].each do |specification|
 
@@ -195,10 +240,10 @@ class QuotesController < ApplicationController
       end
 
       # taskが存在していたらtaskの納期も更新する
-      quote.task.update_columns(date: params[:quote][:deliver_at]) if quote.task.present?
+      quote.task.update(date: params[:quote][:deliver_at]) if quote.task.present?
 
       #請求先情報を静的に保存(更新)
-      quote.update(last_company: quote&.client&.company_division&.company&.name, last_division: quote&.client&.company_division&.name, last_client: quote&.client&.name) if quote.invoice.present?
+      quote.update(last_company: quote&.client&.company_division.company.name, last_division: quote&.client&.company_division.name, last_client: quote&.client&.name) if quote.invoice.present?
 
       render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
     end
@@ -332,7 +377,7 @@ class QuotesController < ApplicationController
     if quote.lock
       quote.lock = false
     else
-      quote.lock = true
+      quote.lock = !quote.lock
     end
 
     quote.save!
