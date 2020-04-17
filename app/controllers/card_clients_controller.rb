@@ -91,6 +91,20 @@ class CardClientsController < ApplicationController
   # @version 2020/03/23
   #
   def destroy
+
+    card_client.destroy!
+
+    redirect_to action: :index, flash: { success: { message: '削除しました。' } }
+  end
+
+  def bulk
+
+    required_params = card_client_params
+    required_params[:templates_attributes].map do |r|
+
+      binding.pry
+      CardClient.create! card_id: required_params[:card_id], company_division_id: required_params[:company_division_id], company_division_client_id: required_params[:company_division_client_id], templates_attributes: r
+    end
   end
 
   ##
@@ -100,7 +114,7 @@ class CardClientsController < ApplicationController
   def upload
 
     @divisions = []
-    card_clients.pluck(:company_division_id).uniq.each do |r|
+    Card.all.pluck(:company_division_id).uniq.each do |r|
 
       division = CompanyDivision.find(r)
 
@@ -122,7 +136,7 @@ class CardClientsController < ApplicationController
   def download
 
     @divisions = []
-    card_clients.pluck(:company_division_id).uniq.each do |r|
+    Card.all.pluck(:company_division_id).uniq.each do |r|
 
       division = CompanyDivision.find(r)
 

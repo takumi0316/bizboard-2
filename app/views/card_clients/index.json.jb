@@ -1,61 +1,40 @@
 json = { status: :success }
 
 arr = []
-if params[:cardSearch].present?
-  CardClient.where(company_division_id: params[:company_division_id]).map do |r|
+CompanyDivision.find(params[:company_division_id]).cards.map do |r|
 
-    card = r.templates.first.card_template.card
-    if arr.present?
-
-      isPresent = true
-      arr.map do |c|
-
-        isPresent = false if c[:id] == card.id
-      end
-
-      arr.push({ id: card.id, company_division_id: card.company_division_id, name: card.name }) if isPresent && ActiveRecord::Type::Boolean.new.cast(params[:cardSearch])
-      arr.push({ id: card.id, company_division_id: card.company_division_id, name: card.name, front_template: r.templates.first.card_template.decorate.file_original, reverse_template: r.templates.last.card_template.decorate.file_original }) if isPresent && !ActiveRecord::Type::Boolean.new.cast(params[:cardSearch])
-    else
-
-      arr.push({ id: card.id, company_division_id: card.company_division_id, name: card.name }) if ActiveRecord::Type::Boolean.new.cast(params[:cardSearch])
-      arr.push({ id: card.id, company_division_id: card.company_division_id, name: card.name, front_template: r.templates.first.card_template.decorate.file_original, reverse_template: r.templates.last.card_template.decorate.file_original }) if !ActiveRecord::Type::Boolean.new.cast(params[:cardSearch])
-    end
-  end
-  json[:cards] = arr
-else
-  CardClient.where(company_division_id: params[:division_id]).where(card_id: params[:card_id]).map do |r|
-
+  CompanyDivision.find(params[:company_division_id]).clients.map do |c|
     values = []
+    obj = { card_id: r.id, values: values, client_name: '' }
     r.templates.map do |t|
-      t.values.map do |v|
-        template_detail = v.template_detail
+      t.details.map do |d|
         value = {
           '': '',
           card_client_id: '',
-          card_template_id: template_detail.card_template_id,
-          client_template_value_id: v.id,
-          client_name: r.company_division_client.name,
-          company_division_id: r.company_division_client.company_division.id,
-          company_division_client_id: r.company_division_client.id,
-          template_status: t.card_template.status,
-          template_detail_id: template_detail.id,
-          name: template_detail.name,
-          value: v.value,
-          font: template_detail.font,
-          font_size: template_detail.font_size,
-          font_color: template_detail.font_color,
-          coord_x: template_detail.coord_x,
-          coord_y: template_detail.coord_y,
-          length: template_detail.length,
-          line_space: template_detail.line_space
+          card_template_id: t.id,
+          client_template_value_id: '',
+          company_division_client_id: c.id,
+          client_name: c.name,
+          company_division_id: r.company_division_id,
+          template_status: t.status,
+          template_detail_id: d.id,
+          name: d.name,
+          value: '',
+          font: d.font,
+          font_size: d.font_size,
+          font_color: d.font_color,
+          coord_x: d.coord_x,
+          coord_y: d.coord_y,
+          length: d.length,
+          line_space: d.line_space
         }
         values.push(value)
       end
     end
-    obj = { id: r.id, values: values, client_name: r.company_division_client.name }
+    obj = { card_id: r.id, values: values, client_name: c.name }
     arr.push(obj)
   end
-  json[:card_clients] = arr
 end
+json[:card_clients] = arr
 
 json

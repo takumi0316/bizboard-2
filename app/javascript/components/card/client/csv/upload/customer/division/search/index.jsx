@@ -8,7 +8,7 @@ const Search = props => {
   
   const init = {
     show: false,
-    divisions: [],
+    divisions: props.divisions,
     body: null
   };
   
@@ -21,7 +21,7 @@ const Search = props => {
   const open = e => {
     
     e.preventDefault();
-    search('');
+    setState({ ...state, show: true });
   };
   
   /**
@@ -31,39 +31,6 @@ const Search = props => {
   const close = () => {
 
     setState({ ...init });
-  };
-
-  /**
-   * 検索
-   * @version 2020/03/23
-   */
-  const onChange = e => {
-
-    if(!e.target.value) {
-
-      setState({ ...state, divisions: [] });
-      return false;
-    };
-
-    search(e.target.value);
-  };
-
-  /**
-   *  フリーワード検索
-   *  @version 2018/06/10
-   */
-  const search = search => {
-
-    // 記事内容を送信
-    const url = '/company_divisions.json?search=' + search;
-    const request = window.xhrRequest.get(url);
-    request.then(res => {
-
-      setState({ ...state, show: true, divisions: res.data.divisions });
-    }).catch(error => {
-
-      window.alertable({ icon: 'error', message: '会社・部署情報を取得出来ませんでした。' });
-    });
   };
 
   /**
@@ -97,10 +64,6 @@ const Search = props => {
           <div className={ Style.DivisionSearch__inner } onMouseDown={ e => stopPropagation(e) }>
             { !state.body ?
               <div>
-                <div className={ Style.DivisionSearch__form }>
-                  <input type='text' className={ Style.DivisionSearch__input } placeholder='部署名で検索' onChange={ e => onChange(e) }/>
-                  <div onClick={ e => onChange(e) } className='c-btnMain-standard u-ml-10'>検索</div>
-                </div>
                 { state.divisions ?
                   <ul className={ Style.DivisionSearch__list }>
                     { state.divisions.map((division, i) => {

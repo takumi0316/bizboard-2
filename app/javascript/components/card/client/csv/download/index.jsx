@@ -76,7 +76,7 @@ export default class DownloadCardClient extends React.Component {
    */
   cardSearch = props => {
 
-    const url = '/card_clients.json?cardSearch=true&company_division_id=' + props.division.id;
+    const url = '/card_clients/download.json?company_division_id=' + props.division.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
@@ -96,7 +96,7 @@ export default class DownloadCardClient extends React.Component {
    */
   cardClientSearch = card => {
 
-    const url = '/card_clients.json?cardClientSearch=true&division_id=' + this.state.division.id + '&card_id=' + card.id;
+    const url = '/card_clients.json?cardClientSearch=true&company_division_id=' + this.state.division.id + '&card_id=' + card.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
@@ -104,10 +104,9 @@ export default class DownloadCardClient extends React.Component {
       res.data.card_clients.forEach(card_client => {
 
         const obj = {
-          'id': card_client.id,
+          'id': card_client.id || '',
           'client_name': card_client.client_name,
           'status': true,
-          'replace': card_client.replace,
           'values': card_client.values
         };
         card_client.values.forEach(value => {
@@ -128,7 +127,7 @@ export default class DownloadCardClient extends React.Component {
     this.loadingRef.start();
   };
 
-  changeRaidoStatus = e => {
+  isClientDownload = e => {
 
     const card_clients = [];
     this.replace_values = [];
@@ -172,7 +171,7 @@ export default class DownloadCardClient extends React.Component {
       <Fragment>
         <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        <CardClient card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } changeRaidoStatus={ this.changeRaidoStatus }/>
+        <CardClient card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } isClientDownload={ this.isClientDownload }/>
         <CSVDownload division={ this.state.division } card={ this.state.card } card_clients={ this.state.card_clients } replace_values={ this.replace_values }/>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>

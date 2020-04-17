@@ -290,8 +290,6 @@ export default class EditTemplateGenerate extends React.Component {
         const lineSpace = mmTopx(detail.line_space);
         const name = `ここに${detail.name}が入ります。`;
 
-        console.log(x)
-        console.log(y)
         for(let lines=name.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
           let line = lines[i] ;
           let addY = fontSize ;

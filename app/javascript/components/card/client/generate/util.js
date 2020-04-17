@@ -1,4 +1,5 @@
 const UAParser = require('ua-parser-js');
+
 /**
  * generate unique key 
  * @version 2020/04/04
@@ -17,6 +18,7 @@ export function validProperty(value, property) {
   if(value) return true;
   window.alertable({ icon: 'error', message: `${property}を入力してください。`});
 };
+
 // ptをmmに変換
 export function ptTomm(pt) {
 

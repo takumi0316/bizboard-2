@@ -26,7 +26,6 @@ import {
   mmTopx,
 } from './util';
 
-
 export default class ClientGenerate extends React.Component {
 
   constructor(props) {

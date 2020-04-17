@@ -310,7 +310,7 @@ export default class NewTemplateGenerate extends React.Component {
       });
     });
 
-    const request = this.state.card_id ? window.xhrRequest.put(this.props.action, field) : window.xhrRequest.post(this.props.action, field);
+    const request = window.xhrRequest.post(this.props.action, field);
 
     // 保存処理
     request.then(res => {

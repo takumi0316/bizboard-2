@@ -13,7 +13,7 @@ const Template = props => {
           <Canvas id='pdf' class_name='c-border c-border-top c-border-left c-border-righ'/>
         </div>
       </div>
-      <Header client_template={ props.client_template } status={ props.status } onChangeValue={ props.onChangeValue }/>
+      <Header client_template={ props.client_template } paginate_count={ props.paginate_count } status={ props.status } onChangeValue={ props.onChangeValue }/>
     </div>
   );
 };

@@ -19,12 +19,12 @@ const Header = props => {
             <th>入力値</th>
           </tr>
           { props.client_template.values.map((value, index) => {
-            const key = `value-${props.status}-${generateKey(index)}`;
+            const key = `value-${props.status}-${props.paginate_count}-${generateKey(index)}`;
 
             return(
               <tr key={ key }>
                 <th>{ value.name }</th>
-                <td className='u-ta-center'><input id={ value.id } index={ index } className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e) }/></td>
+                <td className='u-ta-center'><input id={ value.id } index={ index } className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e, props.paginate_count, props.status) }/></td>
               </tr>
             );
           })}

@@ -40,7 +40,7 @@ class Card < ApplicationRecord
   # 名刺担当者
   has_many :card_clients
 
-  accepts_nested_attributes_for :templates, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :templates, allow_destroy: true, reject_if: :reject_file_blank
 
   #----------------------------------------
   #  ** Delegates **
@@ -53,6 +53,17 @@ class Card < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
+  def reject_file_blank attributes
+
+    result = attributes[:file].present?
+    card_template = CardTemplate.find_or_initialize_by(id: attributes[:id])
+
+    return if result
+    return if card_template.new_record?
+
+    card_template.file.purge if !result
+  end
 
   def formatting status
 
