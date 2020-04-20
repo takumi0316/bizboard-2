@@ -109,7 +109,7 @@ const DeliverySearch = props => {
       <Fragment>
         <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
       </Fragment>
-      <form method='get' action='/deliveries?count='>
+      <form method='get' action='/delivery_notes?count='>
         <div className={ 'u-mt-10 c-flex' }>
           <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期' />
           <select name='status' className={ 'u-ml-10 c-form-select__work-index' } value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
