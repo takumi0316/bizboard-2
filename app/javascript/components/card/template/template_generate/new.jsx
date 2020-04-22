@@ -79,7 +79,7 @@ export default class NewTemplateGenerate extends React.Component {
    */
   onDrop = files => {
 
-    let templates = this.state.templates.slice();
+    let templates = JSON.parse(JSON.stringify(this.state.templates));
     const file = files[0];
 
     if(this.state.status) templates[0].file = file;

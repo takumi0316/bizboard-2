@@ -42,7 +42,7 @@ class TemplateDetail < ApplicationRecord
   has_one :client_template_value, dependent: :destroy
 
   # 名刺テンプレート情報
-  belongs_to :template, class_name: 'CardTemplate', optional: true
+  belongs_to :template, class_name: 'CardTemplate'
 
   #----------------------------------------
   #  ** Delegates **

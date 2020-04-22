@@ -38,7 +38,7 @@ class Card < ApplicationRecord
   has_many :templates, class_name: 'CardTemplate', dependent: :delete_all
 
   # 名刺担当者
-  has_many :card_clients
+  has_many :card_clients, dependent: :destroy
 
   accepts_nested_attributes_for :templates, allow_destroy: true, reject_if: :reject_file_blank
 

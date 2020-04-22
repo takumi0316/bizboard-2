@@ -11,23 +11,24 @@ const Header = props => {
     <div className={ `u-ml-30 ${Style.Header}` }>
       <div className='c-table'>
         <table>
-          <tr>
-            <th className='u-ta-center' colSpan='2'>表面</th>
-          </tr>
-          <tr>
-            <th>名称</th>
-            <th>入力値</th>
-          </tr>
-          { props.client_template.values.map((value, index) => {
-            const key = `value-${props.status}-${generateKey(index)}`;
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>入力値</th>
+            </tr>
+          </thead>
+          <tbody>
+            { props.client_template.values.map((value, index) => {
+              const key = `value-${props.status}-${generateKey(index)}`;
 
-            return(
-              <tr key={ key }>
-                <th>{ value.name }</th>
-                <td className='u-ta-center'><input id={ value.id } index={ index } className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e) }/></td>
-              </tr>
-            );
-          })}
+              return(
+                <tr key={ key }>
+                  <td className='u-ta-center u-va-center'>{ value.name }</td>
+                  <td className='u-ta-center'><input id={ value.id } index={ index } className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e) }/></td>
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
       </div>
     </div>

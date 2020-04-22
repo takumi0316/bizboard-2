@@ -44,7 +44,7 @@ class CardClient < ApplicationRecord
   # 名刺担当者テンプレート情報
   has_many :templates, class_name: 'ClientTemplate', dependent: :delete_all
 
-  has_many :task_card_clients
+  has_many :task_card_clients, dependent: :delete_all
 
   has_many :quotes, through: :task_card_clients
 
