@@ -35,6 +35,7 @@ class User < ApplicationRecord
 
   # パスワード暗号化
   has_secure_password
+
   # MD5
   include GenerateKey
 
@@ -54,7 +55,7 @@ class User < ApplicationRecord
   enum status: { inactive: 0, active: 10 }
 
   # ユーザー区分
-  enum user_type: { general: 0, manager: 10, sales: 20, admin: 30, operator: 40}
+  enum user_type: { general: 0, manager: 10, sales: 20, admin: 30, operator: 40 }
 
   #----------------------------------------
   #  ** Validations **

@@ -229,7 +229,7 @@ export default class UploadCardClient extends React.Component {
    */
   onChangeValue = (e, count, status) => {
 
-    let card_clients = Object.assign([], this.state.card_clients);
+    let card_clients = JSON.parse(JSON.stringify(this.state.card_clients));
     const value_id = e.target.getAttribute('index');
     const value = e.target.value;
 

@@ -36,8 +36,7 @@ class ApplicationController < ActionController::Base
   # ユーザー認証
   before_action :authenticate
 
-  #before_action :judgment_browser, unless: -> { params[:controller].include? SiteConfig.home }
-  #既読判定
+  # 既読判定
   before_action :read_message
 
   # bulletの停止
@@ -167,11 +166,13 @@ class ApplicationController < ActionController::Base
 
       # メールアドレスが未認証の場合
       if current_user.provider && !current_user.confirmed?
-        redirect_to view_context.confirmation_url(user.confirmation_token), flash: {notice: { message: '登録がまだお済みではありません'}} and return
+
+        redirect_to view_context.confirmation_url(user.confirmation_token), flash: { notice: { message: '登録がまだお済みではありません' } } and return
       end
 
       # 管理者による承認が済んでいない場合
       if !SiteConfig.allow_inactive_user && current_user.inactive?
+
         redirect_to inactive_path and return
       end
     end
