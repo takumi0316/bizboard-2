@@ -39,10 +39,10 @@ class WorkSubcontractor < ApplicationRecord
   belongs_to :work
 
   # 請求情報
-  has_one :payments, dependent: :destroy
+  has_one :payment, dependent: :destroy
 
   # 製造原価
-  has_one :expendables, dependent: :destroy
+  has_one :expendable, dependent: :destroy
 
   belongs_to :client, optional: true, class_name: 'SubcontractorDivisionClient', foreign_key: :subcontractor_division_client_id
 

@@ -10,10 +10,13 @@ class WorkSubcontractorsController < ApplicationController
 
   # 作業外注
   expose(:work_subcontractor) { WorkSubcontractor.find_or_initialize_by id: params[:id] }
+
   # 外注先
   expose(:client) { SubcontractorDivisionClient.find_or_initialize_by id: params[:work_subcontractor][:subcontractor_division_client_id] }
+
   # 製造経費
   expose(:expendable) { Expendable.find_or_initialize_by work_subcontractor_id: params[:id] }
+
   # 支払い管理
   expose(:payment) { Payment.find_or_initialize_by work_subcontractor_id: params[:id] }
 
@@ -60,7 +63,7 @@ class WorkSubcontractorsController < ApplicationController
     subcontractor = Subcontractor.find(division.subcontractor_id)
     quote_type = work_subcontractor.work.quote.quote_type == :contract || :salse ? 100 : 10
 
-    expendable.update! division_id: work_subcontractor.work.quote.division.id, subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor.id, price: actual_cost, date: work_subcontractor.delivery_date, status: quote_type
+    expendable.update! division_id: work_subcontractor.work.quote&.division&.id, subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor.id, price: actual_cost, date: work_subcontractor.delivery_date, status: quote_type
     payment.update! subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor.id, work_subcontractor_id: work_subcontractor.id, expendable_id: expendable.id, price: actual_cost, date: work_subcontractor.delivery_date
 
     render json: { status: :success, client: client, division: division, subcontractor: subcontractor }
@@ -99,9 +102,9 @@ class WorkSubcontractorsController < ApplicationController
 
   private
 
-  def work_subcontractor_params
+    def work_subcontractor_params
 
-    params.require(:work_subcontractor).permit :work_id, :notices, :order_date, :delivery_date, :delivery_destination, :subcontractor_division_client_id, :order_date, :delivery_date,
-    detail_attributes: [:id, :work_subcontractor_id, :order_contents, :deliver_method, :specification, :count, :number_of_copies, :actual_cost]
-  end
+      params.require(:work_subcontractor).permit :work_id, :notices, :order_date, :delivery_date, :delivery_destination, :subcontractor_division_client_id, :order_date, :delivery_date,
+      detail_attributes: [:id, :work_subcontractor_id, :order_contents, :deliver_method, :specification, :count, :number_of_copies, :actual_cost]
+    end
 end
