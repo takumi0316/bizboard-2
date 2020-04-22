@@ -9,7 +9,7 @@ const SalesTables = props => {
       </div>
       <div className={ 'c-table3 u-mt-20' }>
         <table>
-        	<thead>
+          <thead>
             <tr>
               <th>受注額</th>
               <th>原価</th>
