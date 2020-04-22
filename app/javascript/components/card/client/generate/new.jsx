@@ -39,11 +39,11 @@ export default class ClientGenerate extends React.Component {
     this.state = {
       cards: '',
       card: '',
-      company: props.company || '',
-      divisions: '',
-      division: props.division || '',
+      company: '',
+      divisions: props.divisions || '',
+      division: '',
       clients: '',
-      client: props.client || '',
+      client: '',
       client_templates: '',
       status: true,
       card_client_id: this.props.card_client.id || ''
@@ -240,13 +240,14 @@ export default class ClientGenerate extends React.Component {
       const reverse_templates = res.data.reverse_templates;
       const templatesInit = [
         { ...front_templates },
-        { ...reverse_templates }
+        { ...reverse_templates },
       ];
 
       let clientTemplatesInit = [];
 
       templatesInit.map(template => {
 
+        if(!template.file) return;
         let templateObj = {
           'id': '',
           'card_client_id': '',
@@ -291,6 +292,7 @@ export default class ClientGenerate extends React.Component {
    */
   getConvertPDF = () => {
 
+    this.loadingRef.start();
     const client_templates = this.state.client_templates;
     client_templates.forEach((client_template, index) => {
 
@@ -349,10 +351,13 @@ export default class ClientGenerate extends React.Component {
   render() {
     return(
       <div>
-        <Division company={ this.state.company } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
-        <Client clients={ this.state.clients } client={ this.state.client } typeName={ ClientTypeName } notFound={ ClientNotFound } applyClient={ this.applyClient }/>
-        <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
+        <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } new={ this.props.new } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
+        <Client clients={ this.state.clients } client={ this.state.client } new={ this.props.new } typeName={ ClientTypeName } notFound={ ClientNotFound } applyClient={ this.applyClient }/>
+        <Card cards={ this.state.cards } card={ this.state.card } new={ this.props.new } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
+        { this.template_reverse_file ?
+          <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
+          : null
+        }
         { this.state.client_templates ?
           <Fragment>
             { this.state.status ?

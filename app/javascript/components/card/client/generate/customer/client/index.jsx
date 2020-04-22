@@ -8,7 +8,10 @@ const Client = props => {
   return(
     <div>
       <Infomation client={ props.client }/>
-      <Search clients={ props.clients } typeName={ props.typeName } notFound={ props.notFound } applyClient={ props.applyClient }/>
+      { props.new ?
+        <Search clients={ props.clients } typeName={ props.typeName } notFound={ props.notFound } applyClient={ props.applyClient }/>
+        : null
+      }
     </div>
   );
 };

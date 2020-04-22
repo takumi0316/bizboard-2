@@ -1,5 +1,5 @@
 - if card_client.new_record?
-  = react_component :NewCardClientGenerate, card_client: card_client, action: action 
+  = react_component :NewCardClientGenerate, card_client: card_client, action: action, new: true, divisions: @divisions
 - else
   = react_component('EditCardClientGenerate',
   { card_client: card_client,
@@ -9,9 +9,9 @@
     division: card_client.company_division_client.company_division,
     clients: card_client.company_division_client.company_division.clients,
     client: card_client.company_division_client,
-    front_template: card_client.templates.first.card_template.formatting(card_client.templates.first.card_template.status),
-    reverse_template: card_client.templates.last.card_template.formatting(card_client.templates.last.card_template.status), 
-    front_value: card_client.templates.first.formatting,
-    reverse_value: card_client.templates.last.formatting,
+    front_template: card_client.templates.first.card_template.formatting(true),
+    reverse_template: card_client.templates.last.card_template.formatting(false),
+    front_value: card_client.templates.first.formatting(true),
+    reverse_value: card_client.templates.last.formatting(false),
     action: action,
   })

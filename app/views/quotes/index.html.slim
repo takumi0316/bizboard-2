@@ -39,7 +39,7 @@
                     = r&.quote_number
               //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
               td
-                - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
+                - if r&.activity&.status.blank? ||  r&.activity&.status == :order
                   = r&.status_i18n
                 - else
                   = r&.activity&.status_i18n
@@ -64,9 +64,9 @@
                 - else
                   |更新者不明
               td
-                - if r.status == "lost"
+                - if r.status == :lost
                   | 失注
-                - elsif r.activity&.status == "rejection"
+                - elsif r.activity&.status == :rejection
                   | 不採用
                 - else
                   - if r.work.nil?
@@ -83,15 +83,17 @@
                   = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
                 - elsif r.end_work?
                   = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
-                - elsif r.payment_terms_i18n == '先払い'
+                - elsif r.payment_terms == :advance
                   = link_to '先払い請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-red'
                 - else
                   | 未発行
               td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
               td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
               td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-              td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+              td = link_to 'Web名刺CSV', bulk_download_card_client_path(r), class: 'c-btnMain-standard'
+              td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
           - else
+
             tr
               td
                 - if r.deliver_at.blank?
@@ -105,7 +107,7 @@
                     = r&.quote_number
               //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
               td
-                - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
+                - if r&.activity&.status.blank? ||  r&.activity&.status == :order
                   = r&.status_i18n
                 - else
                   = r&.activity&.status_i18n
@@ -130,9 +132,9 @@
                 - else
                   |更新者不明
               td
-                - if r.status == "lost"
+                - if r.status == :lost
                   | 失注
-                - elsif r.activity&.status == "rejection"
+                - elsif r.activity&.status == :rejection
                   | 不採用
                 - else
                   - if r.work.nil?
@@ -156,6 +158,7 @@
               td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
               td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
               td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
+              td = link_to 'Web名刺CSV', bulk_download_card_client_path(r), class: 'c-btnMain-standard'
               td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
         - else
           tr
@@ -171,7 +174,7 @@
                   = r&.quote_number
             //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
             td
-              - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
+              - if r&.activity&.status.blank? ||  r&.activity&.status == :order
                 = r&.status_i18n
               - else
                 = r&.activity&.status_i18n
@@ -196,9 +199,9 @@
               - else
                 |更新者不明
             td
-              - if r.status == "lost"
+              - if r.status == :lost
                 | 失注
-              - elsif r.activity&.status == "rejection"
+              - elsif r.activity&.status == :rejection
                 | 不採用
               - else
                 - if r.work.nil?
@@ -215,13 +218,14 @@
                 = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
               - elsif r.end_work?
                 = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
-              - elsif r.payment_terms_i18n == '先払い'
+              - elsif r.payment_terms == :advance
                 = link_to '先払い請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-red'
               - else
                 | 未発行
+
             td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
             td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
             td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-            td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+            td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

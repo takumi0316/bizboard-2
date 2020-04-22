@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_08_051715) do
+ActiveRecord::Schema.define(version: 2020_04_21_130824) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -61,9 +61,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.datetime "updated_at", null: false
   end
 
-<<<<<<< HEAD
   create_table "card_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-<<<<<<< HEAD
     t.bigint "card_id"
     t.bigint "company_division_id"
     t.bigint "company_division_client_id"
@@ -72,36 +70,24 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.index ["card_id"], name: "index_card_clients_on_card_id"
     t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
     t.index ["company_division_id"], name: "index_card_clients_on_company_division_id"
-=======
-    t.bigint "company_division_client_id"
-    t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
->>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
   end
 
   create_table "card_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "card_id"
     t.integer "status", limit: 1, default: 0, comment: "テンプレートの状態"
-<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-=======
->>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["card_id"], name: "index_card_templates_on_card_id"
   end
 
   create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "company_division_id"
     t.string "name", comment: "名刺名称"
-<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-=======
->>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["company_division_id"], name: "index_cards_on_company_division_id"
   end
 
-=======
->>>>>>> 1c4e5da893db70afb0ce93927c37b12bdb8d06bd
   create_table "catalogs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", comment: "商品名"
     t.text "description", comment: "商品説明用"
@@ -117,16 +103,12 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.datetime "updated_at", null: false
   end
 
-<<<<<<< HEAD
   create_table "client_template_values", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "client_template_id"
     t.bigint "template_detail_id"
     t.string "value", comment: "入力値"
-<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-=======
->>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["client_template_id"], name: "index_client_template_values_on_client_template_id"
     t.index ["template_detail_id"], name: "index_client_template_values_on_template_detail_id"
   end
@@ -134,17 +116,12 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
   create_table "client_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "card_client_id"
     t.bigint "card_template_id"
-<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-=======
->>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["card_client_id"], name: "index_client_templates_on_card_client_id"
     t.index ["card_template_id"], name: "index_client_templates_on_card_template_id"
   end
 
-=======
->>>>>>> 1c4e5da893db70afb0ce93927c37b12bdb8d06bd
   create_table "companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "kana"
@@ -179,7 +156,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-04-08 01:56:33"
+    t.datetime "lastaccesstask", default: "2020-04-06 15:31:43"
     t.integer "opt", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -241,18 +218,11 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.bigint "quote_id"
     t.integer "result", default: 0
     t.string "quote_number", comment: "案件番号"
-    t.datetime "import_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "division_id"
+    t.index ["division_id"], name: "index_inquiries_on_division_id"
     t.index ["quote_id"], name: "index_inquiries_on_quote_id"
-  end
-
-  create_table "inventories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "company_division_id"
-    t.text "remarks", comment: "備考"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["company_division_id"], name: "index_inventories_on_company_division_id"
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -306,26 +276,6 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.index ["subcontractor_id"], name: "index_payments_on_subcontractor_id"
     t.index ["work_subcontractor_detail_id"], name: "index_payments_on_work_subcontractor_detail_id"
     t.index ["work_subcontractor_id"], name: "index_payments_on_work_subcontractor_id"
-  end
-
-  create_table "product_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "product_id"
-    t.date "date", comment: "発注日"
-    t.integer "status", comment: "依頼ステータス"
-    t.integer "quantity", comment: "数量"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_product_histories_on_product_id"
-  end
-
-  create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "inventory_id"
-    t.string "name", comment: "商品名"
-    t.integer "quantity", comment: "在庫数"
-    t.text "remarks", comment: "備考"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["inventory_id"], name: "index_products_on_inventory_id"
   end
 
   create_table "profits", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -639,6 +589,18 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.index ["division_id"], name: "index_targets_on_division_id"
   end
 
+  create_table "task_card_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "task_id"
+    t.bigint "quote_id"
+    t.bigint "card_client_id"
+    t.integer "count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_client_id"], name: "index_task_card_clients_on_card_client_id"
+    t.index ["quote_id"], name: "index_task_card_clients_on_quote_id"
+    t.index ["task_id"], name: "index_task_card_clients_on_task_id"
+  end
+
   create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.date "date", comment: "希望納期"
     t.binary "data", comment: "添付データ"
@@ -647,7 +609,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2020-04-08 01:56:34"
+    t.datetime "clientlastaccess", default: "2020-04-06 15:31:45"
     t.integer "will_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -656,7 +618,6 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.index ["quote_id"], name: "index_tasks_on_quote_id"
   end
 
-<<<<<<< HEAD
   create_table "template_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "card_template_id"
     t.string "name"
@@ -667,16 +628,11 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.string "coord_y"
     t.string "length"
     t.string "line_space"
-<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-=======
->>>>>>> 1edd3594e1e0de6ec79b10e494c6fcb1e4f8169a
     t.index ["card_template_id"], name: "index_template_details_on_card_template_id"
   end
 
-=======
->>>>>>> 1c4e5da893db70afb0ce93927c37b12bdb8d06bd
   create_table "uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", comment: "ファイルタイトル"
     t.string "author", comment: "作成者ID"
@@ -706,7 +662,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-04-08 01:56:33"
+    t.datetime "lastaccesstask", default: "2020-04-06 15:31:43"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_users_on_division_id"
@@ -785,6 +741,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
   add_foreign_key "expendables", "users"
   add_foreign_key "expendables", "work_subcontractor_details"
   add_foreign_key "expendables", "work_subcontractors"
+  add_foreign_key "inquiries", "divisions"
   add_foreign_key "messages", "company_division_clients"
   add_foreign_key "messages", "users"
   add_foreign_key "payments", "expendables"

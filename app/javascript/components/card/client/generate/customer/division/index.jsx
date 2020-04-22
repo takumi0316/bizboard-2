@@ -8,7 +8,10 @@ const Division = props => {
   return(
     <Fragment>
       <Infomation company={ props.company } division={ props.division }/>
-      <Search typeName={ props.typeName } notFound={ props.notFound  } applyDivision={ props.applyDivision }/>
+      { props.new ?
+        <Search divisions={ props.divisions } typeName={ props.typeName } notFound={ props.notFound  } applyDivision={ props.applyDivision }/>
+        : null
+      }
     </Fragment>
   );
 };

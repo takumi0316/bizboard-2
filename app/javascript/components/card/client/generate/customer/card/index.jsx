@@ -8,7 +8,10 @@ const Card = props => {
   return(
     <div>
       <Infomation card={ props.card }/>
-      <Search cards={ props.cards } typeName={ props.typeName } notFound={ props.notFound } applyCard={ props.applyCard }/>
+      { props.new ?
+        <Search cards={ props.cards } typeName={ props.typeName } notFound={ props.notFound } applyCard={ props.applyCard }/>
+        : null
+      }
     </div>
   );
 };

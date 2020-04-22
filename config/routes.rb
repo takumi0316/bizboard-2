@@ -158,6 +158,10 @@ Rails.application.routes.draw do
     collection do
       get :download
       get :upload
+      post :bulk
+    end
+    member do
+      get :bulk_download
     end
   end
 

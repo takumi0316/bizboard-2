@@ -67,15 +67,11 @@ class Quote < ApplicationRecord
   #----------------------------------------
 
   belongs_to :user, optional: true
+
   belongs_to :client, optional: true, class_name: 'CompanyDivisionClient', foreign_key: :company_division_client_id
 
   # 部署
   belongs_to :division, optional: true
-
-  has_many :quote_projects, dependent: :destroy
-
-  has_many :quote_items
-  accepts_nested_attributes_for :quote_items
 
   has_one  :invoice,    dependent: :destroy
 
@@ -89,6 +85,16 @@ class Quote < ApplicationRecord
   has_one :task, dependent: :destroy
 
   has_one :inquiry, dependent: :destroy
+
+  has_many :quote_items
+
+  has_many :quote_projects, dependent: :destroy
+
+  has_many :task_card_clients
+
+  has_many :card_clients, through: :task_card_clients
+
+  accepts_nested_attributes_for :quote_items
 
   #----------------------------------------
   #  ** Delegates **

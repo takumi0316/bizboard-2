@@ -45,14 +45,20 @@ class Task < ApplicationRecord
 
   # quote
   belongs_to :quote
-  accepts_nested_attributes_for :quote, update_only: true
 
-  #catalog
+  # catalog
   belongs_to :catalog
 
   # message
   has_many :messages
+
+  has_many :task_card_clients
+
+  has_many :card_clients, through: :task_card_clients
+
   accepts_nested_attributes_for :messages, allow_destroy: true
+
+  accepts_nested_attributes_for :quote, update_only: true
 
   #----------------------------------------
   #  ** Delegates **

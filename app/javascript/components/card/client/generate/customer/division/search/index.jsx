@@ -8,7 +8,7 @@ const Search = props => {
   
   const init = {
     show: false,
-    divisions: [],
+    divisions: props.divisions,
     body: null
   };
   
@@ -21,7 +21,7 @@ const Search = props => {
   const open = e => {
     
     e.preventDefault();
-    search('');
+    setState({ ...state, show: true });
   };
   
   /**
@@ -95,29 +95,22 @@ const Search = props => {
       { state.show ?
         <div className={ Style.DivisionSearch } onMouseDown={ e => close(e) }>
           <div className={ Style.DivisionSearch__inner } onMouseDown={ e => stopPropagation(e) }>
-            { !state.body ?
-              <div>
-                <div className={ Style.DivisionSearch__form }>
-                  <input type='text' className={ Style.DivisionSearch__input } placeholder='部署名で検索' onChange={ e => onChange(e) }/>
-                  <div onClick={ e => onChange(e) } className='c-btnMain-standard u-ml-10'>検索</div>
-                </div>
-                { state.divisions ?
-                  <ul className={ Style.DivisionSearch__list }>
-                    { state.divisions.map((division, i) => {
-                      const key = `divisions-${ i }`;
-                      return (
-                        <li { ...{key} } className={ Style.DivisionSearch__item }>
-                          <h2 className={ Style.DivisinoSearch__itemName } data-number={ i }
-                              onClick={ e => onSelect(e) }>{ division.company ? division.company.name : '会社名なし' } { division ? division.division.name : '部署名なし' }</h2>
-                        </li>
-                      );
-                    }) }
-                  </ul>
-                  : <div className='c-attention u-mt-30'>{ props.notFound }</div>
-                }
-              </div>
-              : <div dangerouslySetInnerHTML={ {__html:state.body} }/>
-            }
+            <div>
+              { state.divisions ?
+                <ul className={ Style.DivisionSearch__list }>
+                  { state.divisions.map((division, i) => {
+                    const key = `divisions-${ i }`;
+                    return (
+                      <li { ...{key} } className={ Style.DivisionSearch__item }>
+                        <h2 className={ Style.DivisinoSearch__itemName } data-number={ i }
+                            onClick={ e => onSelect(e) }>{ division.company ? division.company.name : '会社名なし' } { division ? division.division.name : '部署名なし' }</h2>
+                      </li>
+                    );
+                  }) }
+                </ul>
+                : <div className='c-attention u-mt-30'>{ props.notFound }</div>
+              }
+            </div>
             <div onClick={ e => close(e) } className={ Style.DivisionSearch__closeIcon }>×</div>
           </div>
         </div>

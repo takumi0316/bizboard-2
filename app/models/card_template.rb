@@ -59,6 +59,7 @@ class CardTemplate < ApplicationRecord
   def formatting status
 
     obj = { id: '', card_id: '', status: status, file: '', details: [] }
+    return if self.status != status.to_s
     unless self.new_record?
 
       details = []

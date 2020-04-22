@@ -54,9 +54,10 @@ class ClientTemplate < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
-  def formatting
+  def formatting status
 
-    obj = { id: '', card_client_id: '', card_template_id: '', values: [] }
+    obj = { id: '', card_client_id: '', card_template_id: '', file: '', values: [] }
+    return if self.card_template.status != status.to_s
     unless self.new_record?
 
       values = []

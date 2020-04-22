@@ -219,98 +219,6 @@ export default class ClientGenerate extends React.Component {
   };
 
   /**
-   * 会社・部署セット
-   * @version 2020/03/23
-   **/
-  applyDivision = props => {
-
-    this.clientSearch(props);
-  };
-
-  /**
-   * 担当者セット
-   * @version 2020/04/07
-   */
-  applyClient = client => {
-
-    this.setState({ client: client });
-  };
-
-  /**
-   * 名刺セット
-   * @version 2020/04/07
-   */
-  applyCard = card => {
-
-    this.cardSearch(card);
-  };
-
-  /**
-   *  検索
-   *  @version 2018/06/10
-   */
-  clientSearch = props => {
-
-    const url = '/company_division_clients/search_clients?company_division_id=' + props.division.id;
-    const request = window.xhrRequest.get(url);
-    request.then(res => {
-
-      this.setState({ company: props.company, division: props.division, clients: res.data.clients, cards: res.data.cards });
-    }).catch(error => {
-
-      window.alertable({ icon: 'error', message: error.message });
-    });
-  };
-
-  /**
-   * 名刺セット
-   * @version 2020/04/07
-   */
-  cardSearch = card => {
-
-    const url = '/cards.json?id=' + card.id;
-    const request = window.xhrRequest.get(url);
-    request.then(res => {
-
-      const front_templates = res.data.front_templates;
-      const reverse_templates = res.data.reverse_templates;
-      const templatesInit = [
-        { ...front_templates },
-        { ...reverse_templates }
-      ];
-      let clientTemplatesInit = [];
-
-      templatesInit.map((template, index) => {
-
-        let templateObj = {
-          'id': '',
-          'card_client_id': '',
-          'card_template_id': template.id,
-          'values': []
-        };
-
-        template.details.map(detail => {
-          const detailObj = {
-            'id': '',
-            'client_template_id': template.id,
-            'template_detail_id': detail.id,
-            'value': ''
-          };
-          console.log(detailObj)
-          templateObj.values.push({ ...detailObj });
-        });
-
-        clientTemplatesInit.push({ ...templateObj });
-      });
-
-      this.setState({ card: card, templates: templatesInit, client_templates: clientTemplatesInit }, () => this.getConvertPDF());
-    }).catch(error => {
-
-      window.alertable({ icon: 'error', message: error.message });
-    });
-  };
-
-  /**
    * サーバーからPDF取得
    * @version 2020/04/08
    */
@@ -346,7 +254,8 @@ export default class ClientGenerate extends React.Component {
     field.append('card_client[card_id]', this.state.card.id);
     field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);
-    this.state.client_templates.forEach((template, index) => {
+    this.state.client_templates.map((template, index) => {
+      if(!template.id) return;
       field.append('card_client[templates_attributes][][id]', template.id);
       field.append('card_client[templates_attributes][][card_client_id]', this.state.card_client_id);
       field.append('card_client[templates_attributes][][card_template_id]', template.card_template_id);
@@ -377,7 +286,10 @@ export default class ClientGenerate extends React.Component {
         <Division company={ this.state.company } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Client clients={ this.state.clients } client={ this.state.client } typeName={ ClientTypeName } notFound={ ClientNotFound } applyClient={ this.applyClient }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
+        { this.reverse_template ?
+          <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
+          : null
+        }
         { this.state.client_templates ?
           <Fragment>
             { this.state.status ?

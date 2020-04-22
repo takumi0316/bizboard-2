@@ -56,19 +56,17 @@ class Card < ApplicationRecord
 
   def reject_file_blank attributes
 
-    result = attributes[:file].present?
-    card_template = CardTemplate.find_or_initialize_by(id: attributes[:id])
+    is_destroy = attributes[:only_file].present?
 
-    return if result
-    return if card_template.new_record?
+    return unless is_destroy
 
-    card_template.file.purge if !result
+    card_template.file.purge
   end
 
   def formatting status
 
     obj = { id: '', card_id: '', status: status, file: '', details: [] }
-    unless self.new_record?
+    if !self.new_record? && self.templates.where(status: status).present?
 
       template = self.templates.where(status: status)[0]
       details = []

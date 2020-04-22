@@ -6,4 +6,5 @@ CompanyDivision.find(params[:company_division_id]).cards.map do |r|
   arr.push({ id: r.id, company_division_id: r.company_division_id, name: r.name, front_template: r.templates.first.decorate.file_original, reverse_template: r.templates.last.decorate.file_original })
   json[:cards] = arr
 end
+
 json

@@ -43,6 +43,18 @@ class CardClientsController < ApplicationController
   #
   def new
 
+    @divisions = []
+    Card.all.pluck(:company_division_id).uniq.each do |r|
+
+      division = CompanyDivision.find(r)
+
+      obj = {
+        division: division,
+        company: division.company
+      }
+      @divisions.append(obj)
+    end
+
     add_breadcrumb '名刺情報一覧', path: card_clients_path
     add_breadcrumb '新規作成'
   end
@@ -94,17 +106,30 @@ class CardClientsController < ApplicationController
 
     card_client.destroy!
 
-    redirect_to action: :index, flash: { success: { message: '削除しました。' } }
+    redirect_to action: :index, flash: { icon: :success, message: '削除しました。' }
   end
 
+  ##
+  #
+  #
+  #
   def bulk
 
     required_params = card_client_params
-    required_params[:templates_attributes].map do |r|
+    required_params[:templates_attributes].each_with_index do |r, index|
 
-      binding.pry
-      CardClient.create! card_id: required_params[:card_id], company_division_id: required_params[:company_division_id], company_division_client_id: required_params[:company_division_client_id], templates_attributes: r
+      CardClient.create! card_id: required_params[:card_id], company_division_id: required_params[:company_division_id], company_division_client_id: params[:company_division_client_ids][index], templates_attributes: r
     end
+
+    redirect_to action: 'index', flash: { icon: :success }
+  end
+
+  ##
+  #
+  #
+  #
+  def bulk_download
+
   end
 
   ##

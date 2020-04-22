@@ -30,6 +30,9 @@ export default class EditTemplateGenerate extends React.Component {
     this.template_front_file = '';
     this.template_reverse_file = '';
 
+    this.prev_template_front_file = '';
+    this.prev_template_reverse_file = '';
+
     const init = [
       { ...props.front_side },
       { ...props.reverse_side },
@@ -48,7 +51,12 @@ export default class EditTemplateGenerate extends React.Component {
 
     this.loadingRef.start();
     const templates = this.state.templates;
-    if(!templates[0].file) return;
+    if(!templates[0].file) {
+
+      this.loadingRef.finish();
+      return;
+    };
+
     templates.forEach(template => {
 
       if(!template.file) return;
@@ -133,21 +141,29 @@ export default class EditTemplateGenerate extends React.Component {
     e.preventDefault();
 
     const templates = this.state.templates;
+    const status = this.state.status;
+    const file = status ? templates[0].file : templates[1].file;
+
+    if(!file) {
+
+      window.alertable({ icon: 'info', message: `${ status ? '表面' : '裏面' }のテンプレートを設定して下さい。`});
+      return;
+    };
 
     const init = {
       id: '',
       card_template_id: '',
       name: '',
       font: 'Osaka',
-      font_size: '14',
+      font_size: '8',
       font_color: 'black',
-      coord_y: '0',
-      coord_x: '10',
+      coord_y: '10',
+      coord_x: '27',
       length: '15',
-      line_space: '2'
+      line_space: '9'
     };
 
-    this.state.status ? templates[0].details.push(init) : templates[1].details.push(init);
+    status ? templates[0].details.push(init) : templates[1].details.push(init);
     this.setState({ ...templates });
   };
 
@@ -208,7 +224,7 @@ export default class EditTemplateGenerate extends React.Component {
       const lineSpace = mmTopx(detail.line_space);
       const name = `ここに${detail.name}が入ります。`;
 
-      for(let lines=name.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
+      for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
         let line = lines[i] ;
         let addY = fontSize ;
         if (i) addY += fontSize * lineSpace * i ;
@@ -227,17 +243,21 @@ export default class EditTemplateGenerate extends React.Component {
 
     if(this.state.status) {
 
+      // neted_attributes対策
       templates[0].file = '';
+      this.prev_template_front_file = this.template_front_file;
       this.template_front_file = '';
     };
 
     if(!this.state.status) {
 
+      // neted_attributes対策
       templates[1].file = '';
+      this.prev_template_reverse_file = this.template_reverse_file;
       this.template_reverse_file = '';
     };
 
-    this.setState({ ...templates })
+    this.setState({ ...templates });
   };
 
   /**
@@ -290,10 +310,10 @@ export default class EditTemplateGenerate extends React.Component {
         const lineSpace = mmTopx(detail.line_space);
         const name = `ここに${detail.name}が入ります。`;
 
-        for(let lines=name.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
-          let line = lines[i] ;
-          let addY = fontSize ;
-          if ( i ) addY += fontSize * lineSpace * i ;
+        for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
+          let line = lines[i];
+          let addY = fontSize;
+          if(i) addY += fontSize * lineSpace * i;
           draw_ctx.fillText(line, x, y + addY);
         }
       });
@@ -327,6 +347,15 @@ export default class EditTemplateGenerate extends React.Component {
     if(!validProperty(this.inputRef.value.trim(), 'タイトル')) return;
     if(!validProperty(this.state.division, '部署')) return;
     if(!validProperty(this.template_front_file, 'テンプレート')) return;
+    let isDestroy = false;
+    if(this.props.reverse_side.file && !this.template_reverse_file) {
+
+      const result = window.confirm('裏面のテンプレートが設定されていませんが、削除しますか？');
+      if(!result) return;
+
+      isDestroy = true;
+      window.alertable({ icon: 'info', message: '削除します。' });
+    };
 
     const field = new FormData();
 
@@ -338,7 +367,13 @@ export default class EditTemplateGenerate extends React.Component {
       field.append('card[templates_attributes][][card_id]', template.card_id);
       field.append('card[templates_attributes][][status]', template.status);
       if(this.toBoolean(template.status)) field.append('card[templates_attributes][][file]', this.template_front_file);
-      if(!this.toBoolean(template.status)) field.append('card[templates_attributes][][file]', this.template_reverse_file);
+      if(!this.toBoolean(template.status)) {
+
+        field.append('card[templates_attributes][][file]', this.template_front_file || this.prev_template_reverse_file);
+        if(isDestroy) field.append('card[templates_attributes][][_destroy]', '_destroy');
+        if(this.props.reverse_side.file && !this.template_reverse_file && !isDestroy) field.append('card[templates_attributes][][only_file]', '_destroy');
+      };
+
       template.details.forEach(detail => {
 
         field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
@@ -355,6 +390,7 @@ export default class EditTemplateGenerate extends React.Component {
     });
 
     const request = window.xhrRequest.put(this.props.action, field);
+
     // 保存処理
     request.then(res => {
 
@@ -365,6 +401,7 @@ export default class EditTemplateGenerate extends React.Component {
       this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error.message });
     });
+
     this.loadingRef.start();
 	};
 
@@ -379,9 +416,9 @@ export default class EditTemplateGenerate extends React.Component {
         <DivisionSearch applyDivision={ this.applyDivision } type_name={ '会社・部署情報を登録' } not_found={ '会社・部署情報が見つかりませんでした。'}/>
         <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
         { this.state.status ?
-          <CardTemplate template={ this.state.templates[0] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
+          <CardTemplate template={ this.state.templates[0] } file={ this.template_front_file } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
           :
-          <CardTemplate template={ this.state.templates[1] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
+          <CardTemplate template={ this.state.templates[1] } file={ this.template_reverse_file } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
         }
         <div className='u-mt-10'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>

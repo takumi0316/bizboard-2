@@ -94,11 +94,11 @@ class CardsController < ApplicationController
   #
   def destroy
 
-  card.destroy!
-  
-  redirect_to action: :index, flash: { type: :success, message: '削除しました。' }
+    card.destroy!
+
+    redirect_to action: :index, flash: { type: :success, message: '削除しました。' }
   rescue => e
-  
+
     render json: { status: :error, message: e.message }
   end
 
@@ -121,7 +121,7 @@ class CardsController < ApplicationController
   def card_params
 
     params.require(:card).permit :company_division_id, :name, {
-      templates_attributes: [:id, :card_id, :status, :file,
+      templates_attributes: [:_destroy, :id, :card_id, :status, :file,
         { 
           details_attributes: [:id, :card_template_id, :name, :font, :font_size, :font_color, :coord_x, :coord_y, :length, :line_space]
         }

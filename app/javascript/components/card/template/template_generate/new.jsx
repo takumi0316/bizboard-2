@@ -7,6 +7,7 @@ import CardTemplate       from './card_template/index';
 import Loading            from '../../../loading'
 
 import pdfjsLib from 'pdfjs-dist/webpack';
+
 // Ajax
 import Request from 'superagent';
 require('superagent-rails-csrf')(Request)
@@ -134,10 +135,11 @@ export default class NewTemplateGenerate extends React.Component {
       const lineSpace = mmTopx(detail.line_space);
       const name = `ここに${detail.name}が入ります。`;
 
-      for(let lines=name.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
-        let line = lines[i] ;
-        let addY = fontSize ;
-        if ( i ) addY += fontSize * lineSpace * i ;
+      for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
+
+        let line = lines[i];
+        let addY = fontSize;
+        if ( i ) addY += fontSize * lineSpace * i;
         draw_ctx.fillText(line, x, y + addY);
       };
     });
@@ -152,21 +154,29 @@ export default class NewTemplateGenerate extends React.Component {
     e.preventDefault();
 
     const templates = this.state.templates;
+    const status = this.state.status;
+    const file = status ? templates[0].file : templates[1].file;
+
+    if(!file) {
+
+      window.alertable({ icon: 'info', message: `${ status ? '表面' : '裏面' }のテンプレートを設定して下さい。`});
+      return;
+    };
 
     const init = {
       id: '',
       card_template_id: '',
       name: '',
       font: 'Osaka',
-      font_size: '14',
+      font_size: '8',
       font_color: 'black',
-      coord_y: '0',
-      coord_x: '10',
+      coord_y: '10',
+      coord_x: '27',
       length: '15',
-      line_space: '2'
+      line_space: '9'
     };
 
-    this.state.status ? templates[0].details.push(init) : templates[1].details.push(init);
+    status ? templates[0].details.push(init) : templates[1].details.push(init);
     this.setState({ templates: templates });
   };
 
@@ -241,7 +251,6 @@ export default class NewTemplateGenerate extends React.Component {
 
       // Fetch canvas' 2d context
       let ctx = canvas.getContext('2d');
-      let draw_ctx = draw_canvas.getContext('2d');
 
       // Set dimensions to Canvas
       canvas.height = (mmTopx(55 * 2));
@@ -291,23 +300,25 @@ export default class NewTemplateGenerate extends React.Component {
     field.append('card[company_division_id]', this.state.division.id);
     this.state.templates.forEach((template) => {
 
-      field.append('card[templates_attributes][][id]', template.id);
-      field.append('card[templates_attributes][][card_id]', template.card_id);
-      field.append('card[templates_attributes][][status]', template.status);
-      if(template.file) field.append('card[templates_attributes][][file]', template.file);
-      template.details.forEach(detail => {
+      if(template.file) {
+        field.append('card[templates_attributes][][id]', template.id);
+        field.append('card[templates_attributes][][card_id]', template.card_id);
+        field.append('card[templates_attributes][][status]', template.status);
+        field.append('card[templates_attributes][][file]', template.file);
+        template.details.forEach(detail => {
 
-        field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
-        field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id);
-        field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
-        field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
-        field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
-        field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
-        field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
-        field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
-        field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
-        field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
-      });
+          field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
+          field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id);
+          field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
+          field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
+          field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
+          field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
+          field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
+          field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
+          field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
+          field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
+        });
+      };
     });
 
     const request = window.xhrRequest.post(this.props.action, field);

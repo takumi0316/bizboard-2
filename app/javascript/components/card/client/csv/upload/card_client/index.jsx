@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react';
 
-import Paginate       from './paginate';
-import CardTemplate   from '../customer/card/template';
-import TemplateStatus from './template_status';
+import Paginate          from './paginate';
+import ClientInformation from '../customer/client';
+import CardTemplate      from '../customer/card/template';
+import TemplateStatus    from './template_status';
 
 import pdfjsLib from 'pdfjs-dist/webpack';
 
@@ -108,12 +109,12 @@ const CardClient = props => {
         const card_value = value.value;
 
         if(!card_value) return;
-        for(let lines = card_value.split("\n"), i=0, l=lines.length; l>i; i++) {
+        for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
           let line = lines[i] ;
           let addY = fontSize ;
-          if ( i ) addY += fontSize * lineSpace * i ;
+          if (i) addY += fontSize * lineSpace * i ;
           draw_ctx.fillText(line, x, y + addY);
-        }
+        };
       });
 
       // Prepare object needed by render method
@@ -134,8 +135,12 @@ const CardClient = props => {
 
   return(
     <Fragment>
-      <TemplateStatus status={ state.status } setStatus={ setStatus }/>
+      { props.template_reverse_file ?
+        <TemplateStatus status={ state.status } setStatus={ setStatus }/> :
+        null
+      }
       <Paginate paginate_count={ state.paginate_count } max_count={ state.max_count } changePaginateCount={ changePaginateCount }/>
+      <ClientInformation client_name={ props.card_clients[state.paginate_count].client_name }/>
       { state.status ?
         <CardTemplate client_template={ props.card_clients[state.paginate_count].client_templates[0] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangeValue }/> :
         <CardTemplate client_template={ props.card_clients[state.paginate_count].client_templates[1] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangevalue }/>
