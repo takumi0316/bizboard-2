@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     post :copy
     member do
       get :pdf
+      get :bulk_download
     end
   end
 
@@ -159,9 +160,6 @@ Rails.application.routes.draw do
       get :download
       get :upload
       post :bulk
-    end
-    member do
-      get :bulk_download
     end
   end
 

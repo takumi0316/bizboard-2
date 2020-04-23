@@ -1,3 +1,5 @@
+require 'csv'
+
 class CardClientsController < ApplicationController
 
   #----------------------------------------
@@ -125,14 +127,6 @@ class CardClientsController < ApplicationController
   end
 
   ##
-  #
-  #
-  #
-  def bulk_download
-
-  end
-
-  ##
   # CSVアップロード
   # @version 2020/04/11
   #
@@ -178,15 +172,14 @@ class CardClientsController < ApplicationController
 
   private
 
-  def card_client_params
+    def card_client_params
 
-    params.require(:card_client).permit :card_id, :company_division_id, :company_division_client_id, {
-      templates_attributes: [:id, :card_client_id, :card_template_id,
-        {
-          values_attributes: [:id, :client_template_id, :template_detail_id, :value]
-        }
-      ]
-    }
-  end
-
+      params.require(:card_client).permit :card_id, :company_division_id, :company_division_client_id, {
+        templates_attributes: [:id, :card_client_id, :card_template_id,
+          {
+            values_attributes: [:id, :client_template_id, :template_detail_id, :value]
+          }
+        ]
+      }
+    end
 end

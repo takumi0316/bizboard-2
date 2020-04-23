@@ -92,7 +92,7 @@ class Work < ApplicationRecord
       associative[:delivery_date]         = i[3] || ''
       associative[:delivery_destination]  = i[4] || ''
       associative[:notices]               = i[5] || ''
-      WorkSubcontractor.find(i[0]).detail.each { |detail| reshape_detail.push(detail) if detail.work_id == self.id && detail.work_subcontractor_id == i[0] } if i[0]
+      WorkSubcontractor.find(i[0]).details.each { |detail| reshape_detail.push(detail) if detail.work_id == self.id && detail.work_subcontractor_id == i[0] } if i[0]
 
       associative[:details]                = reshape_detail
 

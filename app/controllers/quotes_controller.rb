@@ -1,3 +1,6 @@
+require 'csv'
+require 'zip'
+
 ##
 # quotes Controller
 #
@@ -106,8 +109,6 @@ class QuotesController < ApplicationController
   #
   def new
 
-    @quote = Quote.new
-
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '新規作成'
   end
@@ -120,7 +121,7 @@ class QuotesController < ApplicationController
 
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '編集'
-	rescue => e
+  rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
@@ -226,6 +227,7 @@ class QuotesController < ApplicationController
 
     flash[:warning] = { message: e.message }
   ensure
+
     redirect_to action: :index
   end
 
@@ -244,7 +246,7 @@ class QuotesController < ApplicationController
       redirect_to work_path(quote.work), flash: { notice: { message: '作業書を作成しました' } } and return
     end
 
-    if quote.payment_terms == 'advance' && quote.invoicing? && quote.work.blank?
+    if quote.payment_terms == :advance && quote.invoicing? && quote.work.blank?
 
       quote.build_work(division_id: current_user.division_id).save!
 
@@ -260,39 +262,18 @@ class QuotesController < ApplicationController
   #
   def copy
 
-    # deep_quote = quote.fake_deep_clone
-
-    # deep_quote.save!
-
-    # if quote.quote_projects.present?
-
-      # quote.quote_projects.each do |r|
-
-        # deep_quote.quote_projects.create!(quote_id: deep_quote.id, project_id: r.project_id, price: r.price, unit: r.unit, name: r.name, unit_price: r.unit_price, project_name: r.project_name, remarks: r.remarks)
-      # end
-    # end
-
-    # if quote.quote_items.present?
-
-      # quote.quote_items.each do |r|
-
-        # deep_clone.quote_items.create!(quote_id: deep_quote.id, cost: r.cost, gross_profit: r.gross_profit, detail: r.detail, name: r.name, unit_price: r.unit_price, quantity: r.quantity)
-      # end
-    # end
-
     clone_quote = quote.deep_clone(:quote_projects)
 
-		clone_quote.unworked!
+    clone_quote.unworked!
 
     clone_quote.save
 
     clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Date.today.to_time, deliver_at: Date.today.to_time, tax: 1.1)
 
     if quote.work.present?
-      # , :subcontractor, :subcontractor_detail
-			clone_work = quote.work.deep_clone(:work_details)
-			clone_work.quote_id = clone_quote.id
-			clone_work.draft!
+      clone_work = quote.work.deep_clone(:work_details)
+      clone_work.quote_id = clone_quote.id
+      clone_work.draft!
       clone_work.save!
       quote.work.subcontractor.each do |subcontractor|
 
@@ -315,6 +296,10 @@ class QuotesController < ApplicationController
     redirect_to edit_quote_path(clone_quote), flash: { notice: { message: '案件を複製しました' } }
   end
 
+  ##
+  #
+  #
+  #
   def pdf
 
     respond_to do |format|
@@ -328,22 +313,65 @@ class QuotesController < ApplicationController
     end
   end
 
+  ##
+  #
+  #
+  #
+  def bulk_download
+
+    filename = 'Web名刺.zip'
+    fullpath = "#{Rails.root}/tmp/#{filename}"
+    bom = "\uFEFF"
+
+    Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
+
+      quote.card_clients.pluck(:card_id).uniq.map do |r|
+        card = Card.find(r)
+        headers = []
+        values = []
+        zipfile.get_output_stream("csv/#{card.name}.csv") do |f|
+          f.puts(
+            CSV.generate(bom) do |csv|
+              headers << ''
+              headers << card.name
+              card.templates.map do |t|
+                t.details.map do |d|
+                  headers << d.name
+                end
+              end
+              csv << headers
+              quote.card_clients.where(card_id: r).map do |c|
+                client = CardClient.find(c.id)
+                client.templates.each_with_index do |ct, index|
+                  values << index
+                  ct.values.map do |v|
+                    values << v.value
+                  end
+                end
+              end
+              csv << values
+            end
+          )
+        end
+      end
+
+    end
+
+    # zipをダウンロードして、直後に削除する
+    send_data File.read(fullpath), filename: filename, type: 'application/zip'
+    File.delete(fullpath)
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
 
   private
 
-  def quote_params
+    def quote_params
 
-    params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
-      :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price,
-      quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
-  end
-
-  def count_params
-
-    params :count
-  end
-
+      params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
+        :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price,
+        quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
+    end
 end

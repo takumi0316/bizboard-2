@@ -15,6 +15,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  ts_code          :string(191)
+#  shipping_address :string(191)
 #
 
 class Task < ApplicationRecord
