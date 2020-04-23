@@ -77,26 +77,14 @@ class QuotesController < ApplicationController
   #
   def index
 
-    @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
 
-    if @user_type == 'general' && @count.present? || @user_type == 'manager' && @count.present? || @user_type == 'operator' && @count.present?
-
-      @quotes = quotes
-    elsif @user_type == 'manager'
-
-      @quotes = quote_manager
-    elsif @user_type == 'general'
-
-      @quotes = quote_general
-    elsif @user_type == 'operator'
-
-      @quotes = quote_operator
-    elsif @user_type != 'general'
-
-      @quotes = quotes
-    end
+    @quotes = quotes if @user_type == :general && @count.present? || @user_type == :manager && @count.present? || @user_type == :operator && @count.present?
+    @quotes = quote_manager if @user_type == :manager
+    @quotes = quote_general if @user_type == :general
+    @quotes = quote_operator if @user_type == :operator
+    @quotes = quotes if @user_type != :general && @user_type != :manager && @user_type != :operator
 
     @count_number = @quotes.size
 
@@ -116,7 +104,6 @@ class QuotesController < ApplicationController
   ##
   # 編集
   # @version 2018/06/10
-  #
   def edit
 
     add_breadcrumb '案件', path: quotes_path
@@ -129,7 +116,6 @@ class QuotesController < ApplicationController
   ##
   # 更新処理
   # @version 2018/06/10
-  #
   def update
 
     # 情報更新
@@ -144,7 +130,6 @@ class QuotesController < ApplicationController
   ##
   # 新規作成 / 更新
   # @version 2018/06/10
-  #
   def create
 
     # 情報更新
@@ -218,7 +203,6 @@ class QuotesController < ApplicationController
   ##
   # 削除
   # @version 2018/06/10
-  #
   def destroy
 
     quote.destroy!
@@ -234,7 +218,6 @@ class QuotesController < ApplicationController
   ##
   # ステータスを更新する
   # @version 2018/06/10
-  #
   def status
 
     if quote.unworked? && quote.work.blank? || quote.draft? && quote.work.blank?
@@ -246,7 +229,7 @@ class QuotesController < ApplicationController
       redirect_to work_path(quote.work), flash: { notice: { message: '作業書を作成しました' } } and return
     end
 
-    if quote.payment_terms == :advance && quote.invoicing? && quote.work.blank?
+    if quote.advance? && quote.invoicing? && quote.work.blank?
 
       quote.build_work(division_id: current_user.division_id).save!
 
@@ -297,9 +280,8 @@ class QuotesController < ApplicationController
   end
 
   ##
-  #
-  #
-  #
+  # PDFダウンロード
+  # @version 2020/04/23
   def pdf
 
     respond_to do |format|
@@ -314,9 +296,8 @@ class QuotesController < ApplicationController
   end
 
   ##
-  #
-  #
-  #
+  # CSV一括ダウンロード
+  # @version 2020/04/23
   def bulk_download
 
     filename = 'Web名刺.zip'
@@ -354,8 +335,15 @@ class QuotesController < ApplicationController
           )
         end
       end
-
     end
+
+    # 新規ダウンロードの場合は、作業書作成 && 案件ステータスを作業中
+    if quote.unworked? && quote.work.blank? || quote.draft? && quote.work.blank?
+      quote.build_work(division_id: current_user.division_id, status: 10).save!
+      quote.working!
+    end
+
+    quote.build_work(division_id: current_user.division_id, status: 10).save! if quote.advance? && quote.invoicing? && quote.work.blank?
 
     # zipをダウンロードして、直後に削除する
     send_data File.read(fullpath), filename: filename, type: 'application/zip'
