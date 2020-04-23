@@ -81,6 +81,13 @@ class CompanyDivisionClientsController < ApplicationController
     # 担当者情報更新
     client.update! client_params
 
+    if client.confirmation_token.nil?
+      client.confirmation_token = 'FactoryToken'
+      client.confirmed_at = Date.today.to_time
+      client.confirmation_sent_at = Date.today.to_time
+      client.save!
+    end
+
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '担当者情報を更新しました' } }
   rescue => e
 
@@ -96,7 +103,12 @@ class CompanyDivisionClientsController < ApplicationController
     # 担当者情報更新
     client.update! client_params
 
-    redirect_to edit_company_division_client_path(client), flash: { notice: { message: '担当者情報を更新しました' } }
+    client.confirmation_token = 'FactoryToken'
+    client.confirmed_at = Date.today.to_time
+    client.confirmation_sent_at = Date.today.to_time
+    client.save!
+
+    redirect_to edit_company_division_client_path(client), flash: { notice: { message: '担当者情報を作成しました' } }
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
@@ -118,6 +130,7 @@ class CompanyDivisionClientsController < ApplicationController
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
@@ -130,6 +143,6 @@ class CompanyDivisionClientsController < ApplicationController
     #
     def client_params
 
-      params.require(:company_division_client).permit :company_division_id, :user_id, :name, :kana, :title, :tel, :email, :note
+      params.require(:company_division_client).permit :company_division_id, :user_id, :name, :kana, :title, :tel, :email, :password, :password_confirmation, :user_type, :note
     end
 end

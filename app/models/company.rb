@@ -21,6 +21,15 @@ class Company < ApplicationRecord
   #  ** Constants **
   #----------------------------------------
 
+  HEADER_TO_SYM_MAP = {
+    'ID' => :id,
+    '部署名' => :division_name,
+    '氏名' => :name,
+    'メールアドレス' => :mail,
+    'パスワード' => :password,
+  }
+
+
   #----------------------------------------
   #  ** Enums **
   #----------------------------------------
@@ -71,6 +80,43 @@ class Company < ApplicationRecord
     query = (['name like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
+  end
+
+  #csv読み込んで担当者を作成する機能
+  def self.import_client(file, company_id)
+
+    header_converter = lambda { |h| HEADER_TO_SYM_MAP[h] }
+
+    csv = CSV.read(file.path, headers: :first_row, header_converters: header_converter, converters: :integer, skip_blanks: true, encoding: 'UTF-8')
+
+    group = csv.group_by{|u| u[:division_name] }
+
+    error_division = []
+
+    group.each do |row,r|
+
+      #csvの中に取引先部署と対応する部署があるか検索
+      division = CompanyDivision.all.where(company_id: company_id).find_by(name: row)
+
+      if division.blank?
+        #部署無い場合
+        error_division << row
+        next
+      else
+        #部署ある場合
+        division_id = division.id
+      end
+
+      new_client = []
+
+      # 同じ案件番号の内容でeach処理
+      begin
+        r.each do |ri|
+            new_client << CompanyDivisionClient.new(company_division_id: division_id, name: ri[:name], email: ri[:mail], confirmation_token: 'FactoryToken', confirmed_at: Date.today.to_time, confirmation_sent_at: Date.today.to_time, password: ri[:password], password_confirmation: ri[:password] )
+        end
+        CompanyDivisionClient.import new_client
+      end
+    end
   end
 
 end

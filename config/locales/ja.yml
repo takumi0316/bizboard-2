@@ -38,6 +38,10 @@ ja:
         nothing: なし
         honorific: 様
         normal: さん
+      user_type:
+        general: 一般
+        division: 部署
+        admin: 管理者
     subcontractor_division_client:
       title:
         nothing: なし
