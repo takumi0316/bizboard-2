@@ -156,7 +156,7 @@ WebpackerReact.setup({
 	InvoicePdfGenerator,
 	MarunouchiSearchable,
   NewCardTemplateGenerate,
-  // EditCardTemplateGenerate,
+  EditCardTemplateGenerate,
   // NewCardClientGenerate,
   // EditCardClientGenerate,
   // CardClientSearch,
