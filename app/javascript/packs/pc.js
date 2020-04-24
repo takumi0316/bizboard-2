@@ -157,7 +157,7 @@ WebpackerReact.setup({
 	MarunouchiSearchable,
   NewCardTemplateGenerate,
   EditCardTemplateGenerate,
-  // NewCardClientGenerate,
+  NewCardClientGenerate,
   // EditCardClientGenerate,
   // CardClientSearch,
   // DownloadCardClient,
