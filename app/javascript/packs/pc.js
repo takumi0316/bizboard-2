@@ -108,25 +108,25 @@ import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 import MarunouchiSearchable from 'components/api/marunouchi/searchable';
 
 // 名刺マスタ登録(新規作成)
-import NewCardTemplateGenerate from 'components/card/template/template_generate/new.jsx';
+// import NewCardTemplateGenerate from 'components/card/template/template_generate/new.jsx';
 
 // 名刺マスタ登録(更新)
-import EditCardTemplateGenerate from 'components/card/template/template_generate/edit.jsx';
+// import EditCardTemplateGenerate from 'components/card/template/template_generate/edit.jsx';
 
 // 名刺情報登録(新規作成)
-import NewCardClientGenerate from 'components/card/client/generate/new.jsx';
+// import NewCardClientGenerate from 'components/card/client/generate/new.jsx';
 
 // 名刺担当者情報登録(更新)
-import EditCardClientGenerate from 'components/card/client/generate/edit.jsx';
+// import EditCardClientGenerate from 'components/card/client/generate/edit.jsx';
 
 // 名刺担当者情報登録(更新)
-import CardClientSearch from 'components/card/client/search';
+// import CardClientSearch from 'components/card/client/search';
 
 // 名刺担当者情報CSVダウンロード
-import DownloadCardClient from 'components/card/client/csv/download';
+// import DownloadCardClient from 'components/card/client/csv/download';
 
 // 名刺担当者情報CSVアップロード
-import UploadCardClient from 'components/card/client/csv/upload';
+// import UploadCardClient from 'components/card/client/csv/upload';
 
 WebpackerReact.setup({
   Alert,
@@ -155,11 +155,11 @@ WebpackerReact.setup({
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
 	MarunouchiSearchable,
-  NewCardTemplateGenerate,
-  EditCardTemplateGenerate,
-	NewCardClientGenerate,
-  EditCardClientGenerate,
-  CardClientSearch,
-  DownloadCardClient,
-  UploadCardClient,
+  // NewCardTemplateGenerate,
+  // EditCardTemplateGenerate,
+  // NewCardClientGenerate,
+  // EditCardClientGenerate,
+  // CardClientSearch,
+  // DownloadCardClient,
+  // UploadCardClient,
 });
