@@ -6525,11 +6525,6 @@ raf@^3.4.0:
   dependencies:
     performance-now "^2.1.0"
 
-rails-ujs@^5.2.4-2:
-  version "5.2.4-2"
-  resolved "https://registry.yarnpkg.com/rails-ujs/-/rails-ujs-5.2.4-2.tgz#c810719fc2e62ae04b9f4ca630d064dc9c336d23"
-  integrity sha512-uvV6bHVHgTdJrwOSQ5vQUM5mIP9qYXTYIcNNmsMamUt3TenQ7DhB43isSjaYLNXnBm8vD8g4O7d3O7u3sW6jFA==
-
 randomatic@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-3.1.1.tgz#b776efc59375984e36c537b2f51a1f0aff0da1ed"
@@ -6659,12 +6654,6 @@ react-is@^16.8.1:
   version "16.8.4"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.4.tgz#90f336a68c3a29a096a3d648ab80e87ec61482a2"
 
-react-kawaii@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-kawaii/-/react-kawaii-0.10.0.tgz#835eeac3ff26b1dc3825593343ab55ba49c48bef"
-  dependencies:
-    prop-types "^15.6.2"
-
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
@@ -6672,13 +6661,6 @@ react-lifecycles-compat@^3.0.4:
 react-onclickoutside@^6.7.1:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.8.0.tgz#9f91b5b3ed59f4d9e43fd71620dc200773a4d569"
-
-react-paginate@^6.3.2:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-6.3.2.tgz#4e18cbdb2654d308566775fa14df11e820188391"
-  integrity sha512-Ch++Njfv8UHpLtIMiQouAPeJQA5Ki86kIYfCer6c1B96Rvn3UF27se+goCilCP8oHNXNsA2R2kxvzanY1YIkyg==
-  dependencies:
-    prop-types "^15.6.1"
 
 react-popper@^1.0.2:
   version "1.3.3"

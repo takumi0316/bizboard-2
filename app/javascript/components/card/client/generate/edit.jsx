@@ -161,7 +161,6 @@ export default class ClientGenerate extends React.Component {
     const blob = new Blob([file]);
     const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
     const getPDF = pdfjsLib.getDocument(blob_path);
-
     getPDF.then(function(pdf) {
       return pdf.getPage(1);
     }).then(function(page) {

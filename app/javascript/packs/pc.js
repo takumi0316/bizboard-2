@@ -1,5 +1,4 @@
 const Rails = require('@rails/ujs');
-// const Rails = require('rails-ujs')
 import 'scripts/utilities';
 import 'scripts/initializer';
 import 'scripts/pagy';
@@ -31,7 +30,7 @@ import DataModal from 'components/data_modal';
 import Alert from 'components/alert';
 
 // かわいいキャラ
-import Kawaii from 'components/kawaii';
+// import Kawaii from 'components/kawaii';
 
 // ロゴエディタ
 import LogoEditor from 'components/logo_editor';
@@ -46,7 +45,7 @@ import QuoteEditor from 'components/quote_editor';
 import QuoteSearch from 'components/quote_search';
 
 // 案件詳細
-import ProjectViewer from 'components/project_viewer';
+// import ProjectViewer from 'components/project_viewer';
 
 // 部署
 import CompanyDivisions from 'components/company_divisions';
@@ -132,12 +131,10 @@ import UploadCardClient from 'components/card/client/csv/upload';
 WebpackerReact.setup({
   Alert,
   DataModal,
-  Kawaii,
   LogoEditor,
   ProjectEditor,
   QuoteEditor,
   QuoteSearch,
-  ProjectViewer,
   CompanyDivisions,
   WorksSearch,
   WorkStatus,
