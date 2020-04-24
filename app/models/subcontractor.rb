@@ -36,10 +36,10 @@ class Subcontractor < ApplicationRecord
   # 部署
   has_many :divisions, class_name: 'SubcontractorDivision', dependent: :destroy
 
-  #請求情報
+  # 請求情報
   has_many :payments
 
-  #経費入力
+  # 経費入力
   has_many :expendables
 
   #----------------------------------------

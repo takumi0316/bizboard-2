@@ -66,19 +66,6 @@ class ApplicationController < ActionController::Base
   private
 
     ##
-    # ブラウザ判定
-    # @version 2019/06/25
-    #
-    def judgment_browser
-
-      # IEの場合にアラートを表示させる
-      if request.env['HTTP_USER_AGENT'].include? "MSIE"
-
-        redirect_to root_path, flash: {notice: {message: 'IEでは使わないでください！'}} and return
-      end
-    end
-
-    ##
     # リクエスト情報の取得
     # @version 2018/06/10
     #
@@ -226,10 +213,12 @@ class ApplicationController < ActionController::Base
     # @version 2018/06/10
     #
     def read_message
-			# 遷移元のアクションとコントローラー判定
+
+      # 遷移元のアクションとコントローラー判定
       path = Rails.application.routes.recognize_path(request.referer)
-      if path[:controller] == 'tasks' && path[:action] == 'show'
-        unless params[:controller] == 'tasks' && params[:action] == 'show'
+      if path[:controller] == :tasks && path[:action] == :show
+
+        unless params[:controller] == :tasks && params[:action] == :show
           users = User.find_by(email: current_user[:email])
           users.update_columns(lastaccesstask: DateTime.now)
         end

@@ -33,6 +33,9 @@ export default class NewTemplateGenerate extends React.Component {
       { ...props.reverse_side },
     ];
 
+    this.front_template = '';
+    this.reverse_template = '';
+
     this.state = {
       card_id: props.card.id || '',
       company: props.company || '',
@@ -42,24 +45,16 @@ export default class NewTemplateGenerate extends React.Component {
     };
   };
 
-  shouldComponentUpdate = (prevProps, prevState) => {
-
-    return true;
-  };
-
   /**
    *
    * @version 2020/04/03
    */
   componentDidUpdate = (prevProps, prevState) => {
 
-    const template = this.state.status ? this.state.templates[0] : this.state.templates[1];
-    const prevTemplate = this.state.status ? prevState.templates[0] : prevState.templates[1];
-    const file = template.file;
-    const prevFile = prevTemplate.file;
+    const file = this.state.status ? this.front_template : this.reverse_template;
     if(this.state.status == prevState.status) {
 
-      if(!prevFile && file) this.setPDF(file, this.loadingRef);
+      if(file) this.setPDF(file, this.loadingRef);
     };
 
     if(this.state.status != prevState.status) {
@@ -82,9 +77,17 @@ export default class NewTemplateGenerate extends React.Component {
     let templates = JSON.parse(JSON.stringify(this.state.templates));
     const file = files[0];
 
-    if(this.state.status) templates[0].file = file;
+    if(this.state.status) {
 
-    if(!this.state.status) templates[1].file = file;
+      templates[0].file = file;
+      this.front_template = file;
+    };
+
+    if(!this.state.status) {
+
+      templates[1].file = file;
+      this.reverse_template = file;
+    };
 
     this.setState({ templates: templates });
   };
@@ -219,9 +222,17 @@ export default class NewTemplateGenerate extends React.Component {
 
     let templates = this.state.templates;
 
-    if(this.state.status) templates[0].file = '';
+    if(this.state.status) {
 
-    if(!this.state.status) templates[1].file = '';
+      templates[0].file = '';
+      this.front_template = '';
+    };
+
+    if(!this.state.status) {
+
+      templates[1].file = '';
+      this.reverse_template = '';
+    };
 
     this.setState({ ...templates })
   };

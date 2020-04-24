@@ -396,30 +396,12 @@ export default class WorkEditor extends React.Component {
   applyClient = (client, index) => {
 
     let work_subcontractors_iterate = Object.assign([], JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
-    const id = work_subcontractors_iterate[index].id;
-    const url = '/work_subcontractors/' + id;
 
-    const field = new FormData();
+    work_subcontractors_iterate[index].client        = { id: client.id, tel: client.tel, email: client.email };
+    work_subcontractors_iterate[index].division      = client.division;
+    work_subcontractors_iterate[index].subcontractor = client.company;
 
-    field.append('work_subcontractor[subcontractor_division_client_id]', client.id);
-    field.append('work_subcontractor[work_id]', this.state.work.id);
-    const request = window.xhrRequest.put(url, field);
-    request.then(res => {
-
-      if(res.data.status == 'success') {
-
-        work_subcontractors_iterate[index].client        = res.data.client;
-        work_subcontractors_iterate[index].division      = res.data.division;
-        work_subcontractors_iterate[index].subcontractor = res.data.subcontractor;
-        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-      } else {
-
-        window.alert(res.data.message);
-      };
-    }).catch(err => {
-
-      window.alert(err);
-    });
+    this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
 
   /**
