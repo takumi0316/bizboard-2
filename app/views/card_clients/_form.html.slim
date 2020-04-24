@@ -1,5 +1,5 @@
 - if card_client.new_record?
-  / = react_component :NewCardClientGenerate, card_client: card_client, action: action, new: true, divisions: @divisions
+  = react_component :NewCardClientGenerate, card_client: card_client, action: action, new: true, divisions: @divisions
 - else
   // = react_component('EditCardClientGenerate',
   // { card_client: card_client,
