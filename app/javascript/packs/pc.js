@@ -111,7 +111,7 @@ import MarunouchiSearchable from 'components/api/marunouchi/searchable';
 import NewCardTemplateGenerate from 'components/card/template/template_generate/new.jsx';
 
 // 名刺マスタ登録(更新)
-import EditCardTemplateGenerate from 'components/card/template/template_generate/edit.jsx';
+// import EditCardTemplateGenerate from 'components/card/template/template_generate/edit.jsx';
 
 // 名刺情報登録(新規作成)
 // import NewCardClientGenerate from 'components/card/client/generate/new.jsx';
@@ -156,7 +156,7 @@ WebpackerReact.setup({
 	InvoicePdfGenerator,
 	MarunouchiSearchable,
   NewCardTemplateGenerate,
-  EditCardTemplateGenerate,
+  // EditCardTemplateGenerate,
   // NewCardClientGenerate,
   // EditCardClientGenerate,
   // CardClientSearch,
