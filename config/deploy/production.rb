@@ -30,6 +30,14 @@ namespace :deploy do
     invoke 'unicorn:legacy_restart'
   end
 
+  before :compile_assets, :set_max_heep_size do
+    on roles(:assets) do
+      within release_path do
+        execute "export NODE_OPTIONS='--max-old-space-size=512'"
+      end
+    end
+  end
+
   # migration前にdatabaseを作成する
   before :migrate, :db_create do
     on roles(:db) do
