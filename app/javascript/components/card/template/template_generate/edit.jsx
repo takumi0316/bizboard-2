@@ -290,12 +290,12 @@ export default class EditTemplateGenerate extends React.Component {
       // Set dimensions to Canvas
       canvas.height = (mmTopx(55 * 2));
       // canvas.style.height = `${(mmTopx(55 * 2))}px`;
-      // viewport.height = `${(mmTopx(55 * 2))}px`; 
+      // viewport.height = `${(mmTopx(55 * 2))}px`;
 
       canvas.width = (mmTopx(91 * 2));
       // canvas.style.width = `${(mmTopx(91 * 2))}px`;
       // viewport.width = `${(mmTopx(91 * 2))}px`;
-      
+
       draw_canvas.height = (mmTopx(55 * 2));
       // draw_canvas.style.height = `${(mmTopx(55 * 2))}px`;
       draw_canvas.width = (mmTopx(91 * 2));
@@ -347,15 +347,6 @@ export default class EditTemplateGenerate extends React.Component {
     if(!validProperty(this.inputRef.value.trim(), 'タイトル')) return;
     if(!validProperty(this.state.division, '部署')) return;
     if(!validProperty(this.template_front_file, 'テンプレート')) return;
-    let isDestroy = false;
-    if(this.props.reverse_side.file && !this.template_reverse_file) {
-
-      const result = window.confirm('裏面のテンプレートが設定されていませんが、削除しますか？');
-      if(!result) return;
-
-      isDestroy = true;
-      window.alertable({ icon: 'info', message: '削除します。' });
-    };
 
     const field = new FormData();
 
@@ -363,30 +354,32 @@ export default class EditTemplateGenerate extends React.Component {
     field.append('card[company_division_id]', this.state.division.id);
     this.state.templates.forEach((template) => {
 
-      field.append('card[templates_attributes][][id]', template.id);
-      field.append('card[templates_attributes][][card_id]', template.card_id);
-      field.append('card[templates_attributes][][status]', template.status);
-      if(this.toBoolean(template.status)) field.append('card[templates_attributes][][file]', this.template_front_file);
-      if(!this.toBoolean(template.status)) {
+      if(template.file) {
+        field.append('card[templates_attributes][][id]', template.id);
+        field.append('card[templates_attributes][][card_id]', template.card_id);
+        field.append('card[templates_attributes][][status]', template.status);
+        if(this.toBoolean(template.status)) field.append('card[templates_attributes][][file]', this.template_front_file);
+        if(!this.toBoolean(template.status)) {
 
-        field.append('card[templates_attributes][][file]', this.template_front_file || this.prev_template_reverse_file);
-        if(isDestroy) field.append('card[templates_attributes][][_destroy]', '_destroy');
-        if(this.props.reverse_side.file && !this.template_reverse_file && !isDestroy) field.append('card[templates_attributes][][only_file]', '_destroy');
+          field.append('card[templates_attributes][][file]', this.template_front_file || this.prev_template_reverse_file);
+          // if(isDestroy) field.append('card[templates_attributes][][_destroy]', '_destroy');
+          // if(this.props.reverse_side.file && !this.template_reverse_file) field.append('card[templates_attributes][][only_file]', '_destroy');
+        };
+
+        template.details.forEach(detail => {
+
+          field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
+          field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id);
+          field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
+          field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
+          field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
+          field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
+          field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
+          field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
+          field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
+          field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
+        });
       };
-
-      template.details.forEach(detail => {
-
-        field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
-        field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id);
-        field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
-        field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
-        field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
-        field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
-        field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
-        field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
-        field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
-        field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
-      });
     });
 
     const request = window.xhrRequest.put(this.props.action, field);

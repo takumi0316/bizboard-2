@@ -123,7 +123,8 @@ export default class ClientGenerate extends React.Component {
 
     const values = this.state.status ? this.state.client_templates[0].values : this.state.client_templates[1].values;
 
-    let draw_ctx = document.getElementById('draw').getContext('2d');
+    let draw_canvas = document.getElementById('draw')
+    let draw_ctx = draw_canvas.getContext('2d');
 
     // Set dimensions to Canvas
     draw_ctx.beginPath();
