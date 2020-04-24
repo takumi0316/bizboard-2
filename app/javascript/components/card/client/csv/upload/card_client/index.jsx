@@ -5,7 +5,7 @@ import ClientInformation from '../customer/client';
 import CardTemplate      from '../customer/card/template';
 import TemplateStatus    from './template_status';
 
-import pdfjsLib from 'pdfjs-dist/webpack';
+// import pdfjsLib from 'pdfjs-dist/webpack';
 
 import {
   ptTomm,
@@ -19,7 +19,7 @@ const CardClient = props => {
 
   useEffect(() => {
 
-    state.status ? setPDF(props.template_front_file, props.loadingRef, props.card_clients[state.paginate_count].client_templates[0].values) : setPDF(props.template_reverse_file, props.loadingRef, props.card_clients[state.paginate_count].client_templates[1].values)
+    // state.status ? setPDF(props.template_front_file, props.loadingRef, props.card_clients[state.paginate_count].client_templates[0].values) : setPDF(props.template_reverse_file, props.loadingRef, props.card_clients[state.paginate_count].client_templates[1].values)
   }, [state])
 
   /**

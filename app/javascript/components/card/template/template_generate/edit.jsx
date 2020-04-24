@@ -6,7 +6,7 @@ import TempalteStatus     from './template_status/index';
 import CardTemplate       from './card_template/index';
 import Loading            from '../../../loading';
 
-import pdfjsLib from 'pdfjs-dist/webpack';
+// import pdfjsLib from 'pdfjs-dist/webpack';
 // Ajax
 import Request from 'superagent';
 require('superagent-rails-csrf')(Request);
@@ -68,7 +68,7 @@ export default class EditTemplateGenerate extends React.Component {
           const file = res.body;
           const bool = this.toBoolean(template.status);
           if(bool) this.template_front_file = file;
-          if(bool) this.setPDF(file, this.loadingRef, templates[0].details);
+          // if(bool) this.setPDF(file, this.loadingRef, templates[0].details);
           if(!bool) this.template_reverse_file = file;
         });
     });
@@ -82,7 +82,7 @@ export default class EditTemplateGenerate extends React.Component {
 
     if(this.state.status == prevState.status && file != state_file) return;
 
-    if(file) this.setPDF(file, this.loadingRef, details);
+    // if(file) this.setPDF(file, this.loadingRef, details);
   };
 
   toBoolean = data => {
