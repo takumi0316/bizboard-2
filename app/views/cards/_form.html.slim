@@ -1,4 +1,4 @@
 - if card.new_record?
-  = react_component :NewCardTemplateGenerate, card: card, front_side: card.formatting(:true), reverse_side: card.formatting(:false), action: action, company: card.new_record?? '' : card.company_division.company, division: card.new_record?? '' : card.company_division
+  / = react_component :NewCardTemplateGenerate, card: card, front_side: card.formatting(:true), reverse_side: card.formatting(:false), action: action, company: card.new_record?? '' : card.company_division.company, division: card.new_record?? '' : card.company_division
 - else
   / = react_component :EditCardTemplateGenerate, card: card, front_side: card.formatting(:true), reverse_side: card.formatting(:false), action: action, company: card.new_record?? '' : card.company_division.company, division: card.new_record?? '' : card.company_division
