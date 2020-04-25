@@ -5,8 +5,6 @@ import ClientInformation from '../customer/client';
 import CardTemplate      from '../customer/card/template';
 import TemplateStatus    from './template_status';
 
-import pdfjsLib from '../../../../../utilities/pdfjs-dist/webpack';
-
 import {
   ptTomm,
   mmTopx,

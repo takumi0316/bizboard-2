@@ -6,7 +6,6 @@ import TempalteStatus     from './template_status/index';
 import CardTemplate       from './card_template/index';
 import Loading            from '../../../loading';
 
-import pdfjsLib from '../../../utilities/pdfjs-dist/webpack';
 // Ajax
 import Request from 'superagent';
 require('superagent-rails-csrf')(Request);

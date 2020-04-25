@@ -26,6 +26,8 @@ html lang='ja'
     / javascripts
     = Gon::Base.render_data
 
+    = javascript_include_tag '/javascripts/build/pdf.js'
+
     / packs
     = javascript_pack_tag 'pc', async: true
     = stylesheet_pack_tag 'pc', async: true
