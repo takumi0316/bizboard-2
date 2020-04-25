@@ -7,7 +7,7 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
-server 'factory2', user: 'media', roles: %w{app assets batch db}
+server 'factory2', user: 'media', roles: %w{app assets batch db}, ssh_options: { keepalive: :true, keepalive_interval: 60 }
 
 set :assets_roles, [:assets]
 
