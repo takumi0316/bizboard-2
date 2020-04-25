@@ -359,6 +359,9 @@ export default class NewTemplateGenerate extends React.Component {
 
       this.loadingRef.finish();
       window.alertable({ icon: 'success', message: 'テンプレートを保存しました。' });
+      console.log('res.data: ', res.data);
+      console.log('card: ', res.data.card);
+      console.log('card.id: ', res.data.card.id);
       window.location.href = `/cards/${res.data.card.id}/edit/`;
     }).catch(error => {
 
