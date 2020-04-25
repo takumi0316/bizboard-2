@@ -38,9 +38,9 @@ class Card < ApplicationRecord
   has_many :templates, class_name: 'CardTemplate', dependent: :delete_all
 
   # 名刺担当者
-  has_many :card_clients, dependent: :destroy
+  has_many :card_clients, dependent: :delete_all
 
-  accepts_nested_attributes_for :templates, allow_destroy: true, reject_if: :reject_file_blank
+  accepts_nested_attributes_for :templates, allow_destroy: true, reject_if: :all_blank
 
   #----------------------------------------
   #  ** Delegates **
@@ -53,15 +53,6 @@ class Card < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-
-  def reject_file_blank attributes
-
-    is_destroy = attributes[:only_file].present?
-
-    return unless is_destroy
-
-    card_template.file.purge
-  end
 
   def formatting status
 

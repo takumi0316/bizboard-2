@@ -50,14 +50,16 @@ export default class NewTemplateGenerate extends React.Component {
   componentDidUpdate = (prevProps, prevState) => {
 
     const file = this.state.status ? this.front_template : this.reverse_template;
+    const prevFile = this.state.status ? prevState.templates[0].file : prevState.templates[1].file;
+    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
     if(this.state.status == prevState.status) {
 
-      if(file) this.setPDF(file, this.loadingRef);
+      if(!prevFile && file) this.setPDF(file, this.loadingRef, details);
     };
 
     if(this.state.status != prevState.status) {
 
-      if(file) this.setPDF(file, this.loadingRef);
+      if(file) this.setPDF(file, this.loadingRef, details);
     };
   };
 
@@ -239,7 +241,7 @@ export default class NewTemplateGenerate extends React.Component {
    * PDFを展開する
    * @version 2020/03/30
    */
-  setPDF = (file, loadingRef) => {
+  setPDF = (file, loadingRef, details) => {
 
     loadingRef.start();
     const blob = new Blob([file]);
@@ -260,20 +262,35 @@ export default class NewTemplateGenerate extends React.Component {
 
       // Fetch canvas' 2d context
       let ctx = canvas.getContext('2d');
+      let draw_ctx = draw_canvas.getContext('2d');
 
       // Set dimensions to Canvas
       canvas.height = (mmTopx(55 * 2));
-      // canvas.style.height = `${(mmTopx(55 * 2))}px`;
-      // viewport.height = `${(mmTopx(55 * 2))}px`;
 
       canvas.width = (mmTopx(91 * 2));
-      // canvas.style.width = `${(mmTopx(91 * 2))}px`;
-      // viewport.width = `${(mmTopx(91 * 2))}px`;
 
       draw_canvas.height = (mmTopx(55 * 2));
-      // draw_canvas.style.height = `${(mmTopx(55 * 2))}px`;
       draw_canvas.width = (mmTopx(91 * 2));
-      // draw_canvas.style.width = `${(mmTopx(91 * 2))}px`;
+
+      if(details) {
+        details.forEach(detail => {
+
+          draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
+          const y = mmTopx(detail.coord_y) * 2;
+          const x =	mmTopx(detail.coord_x) * 2;
+          const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
+          const lineSpace = mmTopx(detail.line_space);
+          const name = `ここに${detail.name}が入ります。`;
+
+          for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
+
+            let line = lines[i];
+            let addY = fontSize;
+            if ( i ) addY += fontSize * lineSpace * i;
+            draw_ctx.fillText(line, x, y + addY);
+          };
+        });
+      };
 
       // Prepare object needed by render method
       const renderContext = {
@@ -310,14 +327,14 @@ export default class NewTemplateGenerate extends React.Component {
     this.state.templates.forEach((template) => {
 
       if(template.file) {
-        field.append('card[templates_attributes][][id]', template.id);
-        field.append('card[templates_attributes][][card_id]', template.card_id);
+        field.append('card[templates_attributes][][id]', template.id || '');
+        field.append('card[templates_attributes][][card_id]', template.card_id || '');
         field.append('card[templates_attributes][][status]', template.status);
         field.append('card[templates_attributes][][file]', template.file);
         template.details.forEach(detail => {
 
-          field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
-          field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id);
+          field.append('card[templates_attributes][][details_attributes][][id]', detail.id || '');
+          field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id || '');
           field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
           field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
           field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);

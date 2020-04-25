@@ -38,11 +38,11 @@ class TemplateDetail < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  # 名刺担当者情報
-  has_one :client_template_value, dependent: :destroy
-
   # 名刺テンプレート情報
-  belongs_to :template, class_name: 'CardTemplate'
+  belongs_to :template, class_name: 'CardTemplate', optional: true
+
+  # 名刺担当者情報
+  has_many :client_template_value, dependent: :destroy
 
   #----------------------------------------
   #  ** Delegates **
