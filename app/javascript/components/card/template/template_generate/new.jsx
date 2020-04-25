@@ -6,8 +6,7 @@ import TempalteStatus     from './template_status/index';
 import CardTemplate       from './card_template/index';
 import Loading            from '../../../loading'
 
-// import pdfjsLib from 'pdfjs-dist/webpack';
-
+import pdfjsLib from '../../../utilities/pdfjs-dist/webpack';
 // Ajax
 import Request from 'superagent';
 require('superagent-rails-csrf')(Request)
@@ -54,12 +53,12 @@ export default class NewTemplateGenerate extends React.Component {
     const file = this.state.status ? this.front_template : this.reverse_template;
     if(this.state.status == prevState.status) {
 
-      // if(file) this.setPDF(file, this.loadingRef);
+      if(file) this.setPDF(file, this.loadingRef);
     };
 
     if(this.state.status != prevState.status) {
 
-      // if(file) this.setPDF(file, this.loadingRef);
+      if(file) this.setPDF(file, this.loadingRef);
     };
   };
 

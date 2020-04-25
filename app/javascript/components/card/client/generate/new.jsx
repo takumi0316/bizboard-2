@@ -7,7 +7,7 @@ import Template       from './customer/card/template';
 import TempalteStatus from './template_status';
 import Loading        from '../../../loading';
 
-// import pdfjsLib from 'pdfjs-dist/webpack';
+import pdfjsLib from '../../../utilities/pdfjs-dist/webpack';
 // Ajax
 import Request from 'superagent';
 require('superagent-rails-csrf')(Request);
@@ -57,7 +57,7 @@ export default class ClientGenerate extends React.Component {
     const file = this.state.status ? this.template_front_file : this.template_reverse_file;
     const values = this.state.status ? this.state.client_templates[0].values : this.state.client_templates[1].values;
 
-    // if(file) this.setPDF(file, this.loadingRef, values);
+    if(file) this.setPDF(file, this.loadingRef, values);
   };
 
   toBoolean = data => {
