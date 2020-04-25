@@ -322,6 +322,7 @@ export default class NewTemplateGenerate extends React.Component {
 
     const field = new FormData();
 
+    console.log('name: ', this.inputRef.value);
     field.append('card[name]', this.inputRef.value);
     field.append('card[company_division_id]', this.state.division.id);
     console.log('division.id: ', this.state.division.id);
@@ -333,7 +334,7 @@ export default class NewTemplateGenerate extends React.Component {
         field.append('card[templates_attributes][][card_id]', template.card_id || '');
         console.log('template.card_id: ', template.card_id);
         field.append('card[templates_attributes][][status]', template.status);
-        field.append('card[templates_attributes][][file]', template.file);
+        field.append('card[templates_attributes][][file]', this.toBoolean(template.status) ? this.front_template : this.reverse_template);
         template.details.forEach(detail => {
 
           field.append('card[templates_attributes][][details_attributes][][id]', detail.id || '');
@@ -358,7 +359,8 @@ export default class NewTemplateGenerate extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      if(res.status == 'success') {
+      console.log(res.data)
+      if(res.data.status == 'success') {
 
         window.alertable({ icon: 'success', message: 'テンプレートを保存しました。' });
         window.location.href = `/cards/${res.data.card.id}/edit/`;
