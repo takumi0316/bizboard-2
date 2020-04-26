@@ -1,7 +1,7 @@
 class CreateTableToCards < ActiveRecord::Migration[5.2]
   def change
 
-    create_table :cards do |t|
+    create_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :company_division, index: true
       t.string     :name,             comment: '名刺名称'
@@ -9,7 +9,7 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :card_templates do |t|
+    create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :card,   index: true
       t.integer    :status, limit: 1,   default: 0, comment: 'テンプレートの状態'
@@ -17,7 +17,7 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :template_details do |t|
+    create_table :template_details, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :card_template, index: true
       t.string     :name,          comments: '名刺カラム名'
@@ -32,7 +32,7 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :card_clients do |t|
+    create_table :card_clients, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :card, index: true
       t.references :company_division, index: true
@@ -41,7 +41,7 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :client_templates do |t|
+    create_table :client_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :card_client,   index: true
       t.references :card_template, index: true
@@ -49,7 +49,7 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :client_template_values do |t|
+    create_table :client_template_values, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :client_template, index: true
       t.references :template_detail, index: true
@@ -58,7 +58,7 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :task_card_clients do |t|
+    create_table :task_card_clients, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :task, index: true
       t.references :quote, index: true
