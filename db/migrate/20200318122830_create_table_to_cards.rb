@@ -57,5 +57,16 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+
+    create_table :task_card_clients do |t|
+
+      t.references :task, index: true
+      t.references :quote, index: true
+      t.references :card_client, index: true
+      t.string     :shipping_address
+      t.integer    :count
+
+      t.timestamps
+    end
   end
 end
