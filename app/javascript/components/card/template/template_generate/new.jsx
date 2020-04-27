@@ -322,25 +322,19 @@ export default class NewTemplateGenerate extends React.Component {
 
     const field = new FormData();
 
-    console.log('name: ', this.inputRef.value);
     field.append('card[name]', this.inputRef.value);
     field.append('card[company_division_id]', this.state.division.id);
-    console.log('division.id: ', this.state.division.id);
     this.state.templates.forEach((template) => {
 
       if(template.file) {
         field.append('card[templates_attributes][][id]', template.id || '');
-        console.log('template.id: ', template.id);
         field.append('card[templates_attributes][][card_id]', template.card_id || '');
-        console.log('template.card_id: ', template.card_id);
         field.append('card[templates_attributes][][status]', template.status);
         field.append('card[templates_attributes][][file]', this.toBoolean(template.status) ? this.front_template : this.reverse_template);
         template.details.forEach(detail => {
 
           field.append('card[templates_attributes][][details_attributes][][id]', detail.id || '');
-          console.log('detail.id: ', detail.id);
           field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id || '');
-          console.log('template.id: ', template.id);
           field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
           field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
           field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);

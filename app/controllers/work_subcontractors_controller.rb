@@ -58,7 +58,7 @@ class WorkSubcontractorsController < ApplicationController
 
     work_subcontractor.update! work_subcontractor_params
 
-    actual_cost = work_subcontractor.detail.sum(:actual_cost).to_i
+    actual_cost = work_subcontractor.details.sum(:actual_cost).to_i
     division      = SubcontractorDivision.find(client.subcontractor_division_id)
     subcontractor = Subcontractor.find(division.subcontractor_id)
     quote_type = work_subcontractor.work.quote.quote_type == :contract || :salse ? 100 : 10
