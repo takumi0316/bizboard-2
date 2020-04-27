@@ -62,14 +62,14 @@ export default class WorkEditor extends React.Component {
       if(res.data.status == 'success') {
 
         work_details.push(res.data.work_detail);
-        this.setState({ work_details: work_details });
-      } else {
-
-        window.alert(res.data.message);
+        this.setState({ work_details: work_details }, () => {
+          window.alertable({ icon: 'success', message: '作成しました。' });
+        });
       };
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: err });
     });
   };
 
@@ -109,14 +109,14 @@ export default class WorkEditor extends React.Component {
       if(res.data.status === 'success') {
 
         const type = 'work_detail_cost';
-        this.passedPrice(actual_cost, type);
-      } else {
-
-        window.alert(res.data.message);
+        const message = '更新しました。';
+        this.passedPrice(actual_cost, type, message);
       };
+
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: err });
     });
   };
 
@@ -133,16 +133,14 @@ export default class WorkEditor extends React.Component {
     const request = window.xhrRequest.delete(url);
     request.then(res => {
 
-      if(res.data.status === 'success') {
+      if(res.data.status === 'success') this.setState({ work_details: work_details }, () => {
+          window.alertable({ icon: 'success', message: '削除しました。' });
+        });
 
-        this.setState({ work_details: work_details });
-      } else {
-
-        window.alert(res.data.message);
-      };
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: err });
     });
   };
 
@@ -157,7 +155,7 @@ export default class WorkEditor extends React.Component {
 
     if(state.subcontractor_id) {
 
-      window.confirm('編集中の作業外注を更新して下さい。');
+      window.alertable({ icon: 'info', message: '編集中の作業外注を更新して下さい。' });
       return false;
     };
 
@@ -189,15 +187,16 @@ export default class WorkEditor extends React.Component {
           notices: '',
           details: []
         };
-        work_subcontractors_iterate.push(copy);
-        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-      } else {
-
-        window.alert(res.data.message);
+        work_subcontractors_iterate.push(JSON.parse(JSON.stringify(copy)));
+        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, () => {
+          window.alertable({ icon: 'success', message: '作成しました。' });
+        });
       };
+
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: error });
     });
   };
 
@@ -247,13 +246,13 @@ export default class WorkEditor extends React.Component {
 
         const type = 'subcontractor_detail_cost';
         this.passedPrice(actual_cost, type);
-      } else {
-
-        window.alert(res.data.message);
+        window.alertable({ icon: 'success', message: '更新しました。' });
       };
+
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: error });
     });
   };
 
@@ -267,10 +266,7 @@ export default class WorkEditor extends React.Component {
     e.preventDefault();
 
     const result = this.windowConfirm();
-    if(!result) {
-
-      return false;
-    };
+    if(!result) return false;
 
     let work_subcontractors_iterate = Object.assign([], JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
     work_subcontractors_iterate.splice(index, 1);
@@ -290,15 +286,15 @@ export default class WorkEditor extends React.Component {
       if(res.data.status === 'success') {
 
         const type = 'subcontractor_detail_cost';
+        const message = '削除しました。';
         setState({ ...state, subcontractor_id: '' });
-        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, this.passedPrice(actual_cost, type));
-      } else {
-
-        window.alert(res.data.message);
+        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, this.passedPrice(actual_cost, type, message));
       };
+
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: err });
     });
   };
 
@@ -327,14 +323,15 @@ export default class WorkEditor extends React.Component {
       if(res.data.status == 'success') {
 
           work_subcontractors_iterate[index].details.push(res.data.work_subcontractor_detail);
-          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-      } else {
-
-        window.alert(res.data.message);
+          this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, () => {
+            window.alertable({ icon: 'success', message: '作成しました。' });
+          });
       };
+
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: err });
     });
   };
 
@@ -348,10 +345,7 @@ export default class WorkEditor extends React.Component {
     e.preventDefault();
 
     const result = this.windowConfirm();
-    if(!result) {
-
-      return false;
-    };
+    if(!result) return false;
 
     let work_subcontractors_iterate = Object.assign([], JSON.parse(JSON.stringify(this.state.work_subcontractors_iterate)));
     work_subcontractors_iterate[index].details.splice(index1, 1);
@@ -359,16 +353,13 @@ export default class WorkEditor extends React.Component {
     const url = '/work_subcontractor_details/' + e.target.value;
     const request = window.xhrRequest.delete(url);
     request.then(res => {
-      if(res.data.status === 'success') {
-
-        this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
-      } else {
-
-        window.alert(res.data.message);
-      };
+      if(res.data.status === 'success') this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, () => {
+          window.alertable({ icon: 'success', message: '削除しました。' });
+        });
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: err });
     });
   };
 
@@ -408,7 +399,7 @@ export default class WorkEditor extends React.Component {
    * 請求合算値変更
    * @versions 2019/12/27
    */
-  setPrice = () => {
+  setPrice = (message) => {
 
     const price = this.state.work_detail_cost + this.state.subcontractor_detail_cost;
     const field = new FormData();
@@ -418,16 +409,17 @@ export default class WorkEditor extends React.Component {
     request.then(res => {
       if(res.data.status == 'success') {
 
-          let work = Object.assign({}, JSON.parse(JSON.stringify(this.state.work)));
-          work = { ...work, price: res.data.work.price, notices: res.data.work.notices };
-          this.setState({ work: work });
-      } else {
-
-        window.alert(res.data.message);
+        let work = Object.assign({}, JSON.parse(JSON.stringify(this.state.work)));
+        work = { ...work, price: res.data.work.price, notices: res.data.work.notices };
+        this.setState({ work: work }, () => {
+          if(message) window.alertable({ icon: 'success', message: message });
+        });
       };
+
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: err });
     });
   };
 
@@ -444,15 +436,16 @@ export default class WorkEditor extends React.Component {
     request.then(res => {
       if(res.data.status == 'success') {
 
-        window.alert('作業部署を登録出来ました');
-        this.setState({ division: res.data.work.division });
+        this.setState({ division: res.data.work.division }, () => {
+          window.alertable({ icon: 'success', message: '作業部署を登録出来ました' });
+        });
       } else {
 
-        window.alert(res.data.message);
+        window.alertable({ icon: 'error', message: res.data.message });
       };
     }).catch(err => {
 
-      window.alert(err);
+      window.alertable({ icon: 'error', message: err });
     });
   };
 
@@ -460,18 +453,13 @@ export default class WorkEditor extends React.Component {
   * 各原価合算
   * @version 2020/03/13
   */
-  passedPrice = (price, type) => {
+  passedPrice = (price, type, message) => {
 
-    if (type === 'work_detail_cost') {
+    if (type === 'work_detail_cost') this.setState({ work_detail_cost: price });
 
-      this.setState({ work_detail_cost: price });
-    };
+    if (type === 'subcontractor_detail_cost') this.setState({ subcontractor_detail_cost: price });
 
-    if (type === 'subcontractor_detail_cost') {
-
-      this.setState({ subcontractor_detail_cost: price });
-    };
-    this.setPrice();
+    this.setPrice(message);
   };
 
   /**

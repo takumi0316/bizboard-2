@@ -294,12 +294,12 @@ export default class ClientGenerate extends React.Component {
         <Division company={ this.state.company } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Client clients={ this.state.clients } client={ this.state.client } typeName={ ClientTypeName } notFound={ ClientNotFound } applyClient={ this.applyClient }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        { this.reverse_template ?
-          <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
-          : null
-        }
         { this.state.client_templates ?
           <Fragment>
+            { this.state.client_templates[1].file ?
+              <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
+              : null
+            }
             { this.state.status ?
               <Template client_template={ this.state.client_templates[0] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
               :

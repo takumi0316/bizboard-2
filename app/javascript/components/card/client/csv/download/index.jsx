@@ -85,7 +85,7 @@ export default class DownloadCardClient extends React.Component {
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error.message });
+      window.alertable({ icon: 'error', message: error });
     });
     this.loadingRef.start();
   };

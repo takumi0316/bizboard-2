@@ -85,17 +85,10 @@ const CardClient = props => {
 
       // Set dimensions to Canvas
       canvas.height = (mmTopx(55 * 2));
-      // canvas.style.height = `${(mmTopx(55 * 2))}px`;
-      // viewport.height = `${(mmTopx(55 * 2))}px`;
-
       canvas.width = (mmTopx(91 * 2));
-      // canvas.style.width = `${(mmTopx(91 * 2))}px`;
-      // viewport.width = `${(mmTopx(91 * 2))}px`;
 
       draw_canvas.height = (mmTopx(55 * 2));
-      // draw_canvas.style.height = `${(mmTopx(55 * 2))}px`;
       draw_canvas.width = (mmTopx(91 * 2));
-      // draw_canvas.style.width = `${(mmTopx(91 * 2))}px`;
 
       values.forEach(value => {
 

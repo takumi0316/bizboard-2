@@ -59,6 +59,10 @@ export default class ClientGenerate extends React.Component {
     if(file) this.setPDF(file, this.loadingRef, values);
   };
 
+  /**
+   * String => Bool
+   * @version 2020/04/27
+   */
   toBoolean = data => {
 
     return data.toLowerCase() === 'true';
@@ -91,7 +95,7 @@ export default class ClientGenerate extends React.Component {
   drawText = () => {
 
     const values = this.state.status ? this.state.client_templates[0].values : this.state.client_templates[1].values;
-    let draw_canvas = document.getElementById('draw'); 
+    let draw_canvas = document.getElementById('draw');
     let draw_ctx = draw_canvas.getContext('2d');
 
     // Set dimensions to Canvas
@@ -275,7 +279,7 @@ export default class ClientGenerate extends React.Component {
           templateObj.values.push({ ...valueObj });
         });
 
-        clientTemplatesInit.push({ ...templateObj });
+        clientTemplatesInit.push({ ...JSON.parse(JSON.stringify(templateObj)) });
       });
 
       this.setState({ card: card, client_templates: clientTemplatesInit }, () => this.getConvertPDF());
@@ -292,8 +296,8 @@ export default class ClientGenerate extends React.Component {
   getConvertPDF = () => {
 
     this.loadingRef.start();
-    const client_templates = this.state.client_templates;
-    client_templates.forEach((client_template, index) => {
+    const client_templates = JSON.parse(JSON.stringify(this.state.client_templates));
+    client_templates.forEach(client_template => {
 
       if(!client_template.file) return;
       Request.get('/cards/transfer')
@@ -353,12 +357,12 @@ export default class ClientGenerate extends React.Component {
         <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } new={ this.props.new } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Client clients={ this.state.clients } client={ this.state.client } new={ this.props.new } typeName={ ClientTypeName } notFound={ ClientNotFound } applyClient={ this.applyClient }/>
         <Card cards={ this.state.cards } card={ this.state.card } new={ this.props.new } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        { this.template_reverse_file ?
-          <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
-          : null
-        }
         { this.state.client_templates ?
           <Fragment>
+            { this.state.client_templates[1].file ?
+              <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
+              : null
+            }
             { this.state.status ?
               <Template client_template={ this.state.client_templates[0] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
               :
