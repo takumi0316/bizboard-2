@@ -117,16 +117,12 @@ class CardClientsController < ApplicationController
   def bulk
 
     required_params = card_client_params
-    required_params[:templates_attributes].each_with_index do |r, index|
+    required_params[:templates_attributes].each_with_index { |r, index| CardClient.create! card_id: required_params[:card_id], company_division_id: required_params[:company_division_id], company_division_client_id: params[:company_division_client_ids][index], templates_attributes: r }
 
-      CardClient.create! card_id: required_params[:card_id], company_division_id: required_params[:company_division_id], company_division_client_id: params[:company_division_client_ids][index], templates_attributes: r
-    end
-
-    redirect_to action: 'index', flash: { icon: :success }
-
+    render json: { status: :success }
   rescue => e
 
-    render json: { status: :errro, message: e.message }
+    render json: { status: :error, message: e.message }
   end
 
   ##
@@ -182,6 +178,7 @@ class CardClientsController < ApplicationController
     bom = "\uFEFF"
     card = Card.find(params[:card_id])
     headers = []
+    headers << ''
     headers << '名刺ID'
     headers << '部署ID'
     headers << '担当者ID'
@@ -192,10 +189,12 @@ class CardClientsController < ApplicationController
       csv << headers
       params[:card_clients].each do |c|
         values = []
+        values << ''
         values << card.id
         values << card.company_division_id
         values << c[:id]
         values << c[:name]
+        card.templates.each { |t| t.details.each { |d| values << '' } }
         csv << values
       end
     end

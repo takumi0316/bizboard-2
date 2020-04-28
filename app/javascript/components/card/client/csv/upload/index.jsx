@@ -119,80 +119,50 @@ export default class UploadCardClient extends React.Component {
    */
   formatCSV = data => {
 
-    const parseData = JSON.parse(JSON.stringify(data));
-    let card_clients = [];
-    const clients = [];
+    const parse_clients = JSON.parse(JSON.stringify(data));
+    const isDivision = parse_clients.every(client => client['部署ID'] == this.state.division.id);
 
-    let front_template = {
-      'id': '',
-      'card_client_id': '',
-      'card_template_id': '',
-      'values': []
+    if(!isDivision) {
+      window.alertable({ icon: 'error', message: '部署の選択が間違っています。' });
+      return;
     };
 
-    let reverse_template = {
-      'id': '',
-      'card_client_id': '',
-      'card_template_id': '',
-      'values': []
-    };
+    const card_clients = parse_clients.map(card_client => {
 
-    let cardClientObj = {
-      'id': '',
-      'card_id': this.state.card.id,
-      'company_division_id': this.state.division.id,
-      'company_division_client_id': '',
-      'client_name': '',
-      'client_templates': [
-        JSON.parse(JSON.stringify(front_template)),
-        this.template_reverse_file ? JSON.parse(JSON.stringify(reverse_template)) : ''
-      ]
-    };
-
-    let prevCompanyDivisionClientId = '';
-    parseData.map((card_client, index) => {
-
-      if(card_client.company_division_id != this.state.division.id) {
-
-        window.alertable({ icon: 'error', message: '選択された部署が違います。選択し直して下さい。' });
-        return;
+      const card = this.state.card;
+      const client = {
+        id: '',
+        card_id: card.id,
+        company_division_id: this.state.division.id,
+        company_division_client_id: card_client['担当者ID'],
+        client_name: card_client['担当者名'],
+        templates: [],
       };
 
-      if(index == 0) {
+      if(!card.reverse_values) {
 
-        clients.push(card_client.company_division_client_id);
-        cardClientObj.company_division_client_id = card_client.company_division_client_id;
-        cardClientObj.client_name = card_client.client_name;
-        cardClientObj.client_templates[0].card_template_id = card_client.card_template_id;
-        cardClientObj.client_templates[0].values.push(JSON.parse(JSON.stringify(card_client)));
-      } else if(prevCompanyDivisionClientId == card_client.company_division_client_id) {
-
-        if(card_client.template_status) cardClientObj.client_templates[0].values.push(JSON.parse(JSON.stringify(card_client)));
-        if(!card_client.template_status) cardClientObj.client_templates[1].values.push(JSON.parse(JSON.stringify(card_client)));
-      } else if(prevCompanyDivisionClientId != card_client.company_division_client_id) {
-
-        clients.push(card_client.company_division_client_id);
-        card_clients.push(JSON.parse(JSON.stringify(cardClientObj)));
-        cardClientObj.company_division_client_id = card_client.company_division_client_id;
-        cardClientObj.client_name = card_client.client_name;
-        cardClientObj.client_templates[0].card_template_id = card_client.card_template_id;
-        cardClientObj.client_templates[0].values = [];
-        if(this.template_reverse_file) {
-
-          cardClientObj.client_templates[1].card_template_id = card_client.card_template_id;
-          cardClientObj.client_templates[1].values = [];
-        };
+        client.templates.push({ id: '', card_client_id: '', card_template_id: card.front_template_id, values: [] });
+        client.templates[0].values = card.front_values.map(value => {
+          return { ...value, value: card_client[value.name] };
+        });
       };
 
-      if(parseData.length == index + 1) {
+      if(card.reverse_values) {
 
-        clients.push(card_client.company_division_client_id);
-        card_clients.push(JSON.parse(JSON.stringify(cardClientObj)));
+        client.templates.push({ id: '', card_client_id: '', card_template_id: card.front_template_id, values: [] });
+        client.templates[0].values = card.front_values.map(value => {
+          return { ...value, value: card_client[value.name] };
+        });
+        client.templates.push({ id: '', card_client_id: '', card_template_id: card.reverse_template_id, values: [] });
+        client.templates[1].values = card.front_values.map(value => {
+          return { ...value, value: card_client[value.name] };
+        });
       };
 
-      prevCompanyDivisionClientId = card_client.company_division_client_id;
+      return JSON.parse(JSON.stringify(client));
     });
-    this.setCardClients(JSON.parse(JSON.stringify(card_clients)));
+
+    this.setState({ card_clients: card_clients });
   };
 
   /**
@@ -292,23 +262,21 @@ export default class UploadCardClient extends React.Component {
 
     const company_division_client_ids = [];
     this.state.card_clients.map(card_client => {
-      field.append('card_client[card_id]', this.state.card.id);
-      field.append('card_client[company_division_id]', this.state.division.id);
+      company_division_client_ids.push(card_client.company_division_client_id);
+      field.append('card_client[card_id]', card_client.card_id);
+      field.append('card_client[company_division_id]', card_client.company_division_id);
       field.append('card_client[company_division_client_id]', card_client.company_division_client_id);
       field.append('company_division_client_ids[]', card_client.company_division_client_id);
-      company_division_client_ids.push(card_client.company_division_client_id);
-      card_client.client_templates.map(template => {
-        if(template.card_template_id) {
-          field.append('card_client[templates_attributes][][id]', '');
-          field.append('card_client[templates_attributes][][card_client_id]', '');
-          field.append('card_client[templates_attributes][][card_template_id]', template.card_template_id);
-          template.values.map(value => {
-            field.append('card_client[templates_attributes][][values_attributes][][id]', '');
-            field.append('card_client[templates_attributes][][values_attributes][][client_template_id]', value.client_template_id || '');
-            field.append('card_client[templates_attributes][][values_attributes][][template_detail_id]', value.template_detail_id || '');
-            field.append('card_client[templates_attributes][][values_attributes][][value]', value.value || '');
-          });
-        };
+      card_client.templates.map(template => {
+        field.append('card_client[templates_attributes][][id]', '');
+        field.append('card_client[templates_attributes][][card_client_id]', '');
+        field.append('card_client[templates_attributes][][card_template_id]', template.card_template_id);
+        template.values.map(value => {
+          field.append('card_client[templates_attributes][][values_attributes][][id]', '');
+          field.append('card_client[templates_attributes][][values_attributes][][client_template_id]', '');
+          field.append('card_client[templates_attributes][][values_attributes][][template_detail_id]', value.id);
+          field.append('card_client[templates_attributes][][values_attributes][][value]', value.value || '');
+        });
       });
     });
 
@@ -316,6 +284,7 @@ export default class UploadCardClient extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
+      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '一括登録に成功しました。' });
       if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => {
 

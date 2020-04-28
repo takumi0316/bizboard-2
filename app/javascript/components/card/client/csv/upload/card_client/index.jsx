@@ -17,7 +17,7 @@ const CardClient = props => {
 
   useEffect(() => {
 
-    state.status ? setPDF(props.template_front_file, props.loadingRef, props.card_clients[state.paginate_count].client_templates[0].values) : setPDF(props.template_reverse_file, props.loadingRef, props.card_clients[state.paginate_count].client_templates[1].values)
+    state.status ? setPDF(props.template_front_file, props.loadingRef, props.card_clients[state.paginate_count].templates[0].values) : setPDF(props.template_reverse_file, props.loadingRef, props.card_clients[state.paginate_count].templates[1].values)
   }, [state])
 
   /**
@@ -133,8 +133,8 @@ const CardClient = props => {
       <Paginate paginate_count={ state.paginate_count } max_count={ state.max_count } changePaginateCount={ changePaginateCount }/>
       <ClientInformation client_name={ props.card_clients[state.paginate_count].client_name }/>
       { state.status ?
-        <CardTemplate client_template={ props.card_clients[state.paginate_count].client_templates[0] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangeValue }/> :
-        <CardTemplate client_template={ props.card_clients[state.paginate_count].client_templates[1] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangevalue }/>
+        <CardTemplate client_template={ props.card_clients[state.paginate_count].templates[0] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangeValue }/> :
+        <CardTemplate client_template={ props.card_clients[state.paginate_count].templates[1] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangevalue }/>
       }
       <button className='u-mt-10 c-btnMain-primaryB' onClick={ e => props.save(e) }>保存</button>
     </Fragment>
