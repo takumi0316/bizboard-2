@@ -24,9 +24,9 @@ export default class DownloadCardClient extends React.Component {
     super(props);
 
     this.state = {
-      company: '',
-      divisions:'',
-      division:'',
+      company: props.company || '',
+      divisions: props.divisions || '',
+      division: props.division || '',
       card: '',
       card_clients: ''
     };
