@@ -1,40 +1,11 @@
 json = { status: :success }
 
-arr = []
-CompanyDivision.find(params[:company_division_id]).cards.map do |r|
-
-  CompanyDivision.find(params[:company_division_id]).clients.map do |c|
-    values = []
-    obj = { card_id: r.id, values: values, client_name: '' }
-    r.templates.map do |t|
-      t.details.map do |d|
-        value = {
-          '': '',
-          card_client_id: '',
-          card_template_id: t.id,
-          client_template_value_id: '',
-          company_division_client_id: c.id,
-          client_name: c.name,
-          company_division_id: r.company_division_id,
-          template_status: t.status,
-          template_detail_id: d.id,
-          name: d.name,
-          value: '',
-          font: d.font,
-          font_size: d.font_size,
-          font_color: d.font_color,
-          coord_x: d.coord_x,
-          coord_y: d.coord_y,
-          length: d.length,
-          line_space: d.line_space
-        }
-        values.push(value)
-      end
-    end
-    obj = { card_id: r.id, values: values, client_name: c.name }
-    arr.push(obj)
-  end
+json[:card_clients] = CompanyDivision.find(params[:company_division_id]).clients.map do |c|
+  {
+    id: c.id,
+    name: c.name,
+    status: true
+  }
 end
-json[:card_clients] = arr
 
 json

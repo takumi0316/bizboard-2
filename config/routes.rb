@@ -160,6 +160,7 @@ Rails.application.routes.draw do
       get :download
       get :upload
       post :bulk
+      post :csv_download
     end
   end
 

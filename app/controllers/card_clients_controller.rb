@@ -112,8 +112,7 @@ class CardClientsController < ApplicationController
   end
 
   ##
-  #
-  #
+  # CSV Bulk Upload
   #
   def bulk
 
@@ -124,6 +123,10 @@ class CardClientsController < ApplicationController
     end
 
     redirect_to action: 'index', flash: { icon: :success }
+
+  rescue => e
+
+    render json: { status: :errro, message: e.message }
   end
 
   ##
@@ -170,8 +173,44 @@ class CardClientsController < ApplicationController
     add_breadcrumb 'ダウンロード'
   end
 
+  ##
+  # CSV Download
+  #
+  #
+  def csv_download
+
+    bom = "\uFEFF"
+    card = Card.find(params[:card_id])
+    headers = []
+    headers << '名刺ID'
+    headers << '部署ID'
+    headers << '担当者ID'
+    headers << '担当者名'
+
+    card.templates.each { |t| t.details.each { |d| headers << d.name } }
+    download_csv = CSV.generate(bom) do |csv|
+      csv << headers
+      params[:card_clients].each do |c|
+        values = []
+        values << card.id
+        values << card.company_division_id
+        values << c[:id]
+        values << c[:name]
+        csv << values
+      end
+    end
+
+    send_data(download_csv, filename: '担当者情報ダウンロード.csv', type: :csv)
+  rescue => e
+
+    render json: { status: :error, message: e.message }
+  end
+
   private
 
+    ##
+    # Strong Parameters
+    #
     def card_client_params
 
       params.require(:card_client).permit :card_id, :company_division_id, :company_division_client_id, {

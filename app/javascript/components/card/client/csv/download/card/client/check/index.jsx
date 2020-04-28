@@ -10,7 +10,7 @@ const Check = props => {
         return(
           <li {...{key}} className={ Style.Check }>
             <input id={key} name='check' type='checkbox' onChange={ e => props.isClientDownload(e) } defaultChecked value={ card_client.id }/>
-            <label className={ Style.Check_checkbox } htmlFor={ key }>{ `${props.company.name} ${props.division.name} ${card_client.client_name}` }</label>
+            <label className={ Style.Check_checkbox } htmlFor={ key }>{ `${props.company.name} ${props.division.name} ${card_client.name}` }</label>
           </li>
         );
       }) }

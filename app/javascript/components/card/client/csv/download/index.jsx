@@ -23,13 +23,10 @@ export default class DownloadCardClient extends React.Component {
 
     super(props);
 
-    this.replace_values = [];
     this.state = {
-      company: props.company || '',
-      divisions: props.divisions || '',
-      division: props.division || '',
-      clients: '',
-      client: props.client || '',
+      company: '',
+      divisions:'',
+      division:'',
       card: '',
       card_clients: ''
     };
@@ -39,39 +36,16 @@ export default class DownloadCardClient extends React.Component {
    * 会社・部署セット
    * @version 2020/03/23
    **/
-  applyDivision = props => {
-
-    this.cardSearch(props);
-  };
+  applyDivision = props => this.cardSearch(props);
 
   /**
    * 会社・部署セット
    * @version 2020/03/23
    **/
-  applyCard = card => {
-
-    this.cardClientSearch(card);
-  };
+  applyCard = card => this.cardClientSearch(card);
 
   /**
-   *  検索
-   *  @version 2018/06/10
-   */
-  clientSearch = props => {
-
-    const url = '/company_division_clients/search_clients?company_division_id=' + props.division.id;
-    const request = window.xhrRequest.get(url);
-    request.then(res => {
-
-      this.setState({ company: props.company, division: props.division, clients: res.data.clients, cards: res.data.cards });
-    }).catch(error => {
-
-      window.alertable({ icon: 'error', message: error.message });
-    });
-  };
-
-  /**
-   * 名刺セット 
+   * 名刺セット
    * @version 2020/04/07
    */
   cardSearch = props => {
@@ -81,7 +55,8 @@ export default class DownloadCardClient extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      this.setState({ company: props.company, division: props.division, cards: res.data.cards });
+      if(res.data.status == 'success') this.setState({ company: props.company, division: props.division, cards: res.data.cards });
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
       this.loadingRef.finish();
@@ -91,79 +66,88 @@ export default class DownloadCardClient extends React.Component {
   };
 
   /**
-   * 名刺担当者セット 
+   * 名刺担当者セット
    * @version 2020/04/07
    */
   cardClientSearch = card => {
 
-    const url = '/card_clients.json?cardClientSearch=true&company_division_id=' + this.state.division.id + '&card_id=' + card.id;
+    const url = '/card_clients.json?company_division_id=' + this.state.division.id + '&card_id=' + card.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
-      let card_clients = [];
-      res.data.card_clients.forEach(card_client => {
-
-        const obj = {
-          'id': card_client.id || '',
-          'client_name': card_client.client_name,
-          'status': true,
-          'values': card_client.values
-        };
-        card_client.values.forEach(value => {
-
-          this.replace_values.push(value);
-        });
-        card_clients.push(obj);
-      });
-
       this.loadingRef.finish();
-      this.setState({ card: card, card_clients: card_clients });
+      if(res.data.status == 'success') this.setState({ card: card, card_clients: res.data.card_clients });
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: '担当者情報を取得出来ませんでした。もう一度テンプレートを選択してください。' });
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error.message });
+      window.alertable({ icon: 'error', message: error });
     });
 
     this.loadingRef.start();
   };
 
+  /**
+   * ダウンロード有無
+   * @version 2020/04/27
+   */
   isClientDownload = e => {
 
-    const card_clients = [];
-    this.replace_values = [];
-    this.state.card_clients.forEach(card_client => {
-
-      if(card_client.id == e.target.value) card_client.status = !card_client;
-      if(card_client.status) {
-
-        card_client.values.forEach(value => {
-
-          this.replace_values.push(value);
-        });
-      };
-      card_clients.push(card_client);
+    const card_clients = this.state.card_clients.map( card_client => {
+      if(e.target.value == card_client.id) card_client.status = !card_client.status;
+      return card_client;
     });
 
-    this.setState({ card_clients: card_clients});
+    this.setState({ card_clients: card_clients });
   };
 
   /**
-   * CSVダウンロード 
-   * @version 2020/04/13 
-   * 
+   * CSVダウンロード
+   * @version 2020/04/13
    */
   download = e => {
 
     e.stopPropagation();
 
-    const card_clients = this.state.card_clients;
+    const card_clients = this.state.card_clients.filter(card_client => card_client.status == true);
     if(!validProperty(this.state.division, '部署情報を選択して下さい。')) return;
     if(!validProperty(this.state.card, '名刺情報を選択してください。')) return;
-    let i = 0;
+    if(!validProperty(card_clients.length > 0, '担当者を選択してください。')) return;
+
+    const field = new FormData();
+    field.append('card_id', this.state.card.id);
     card_clients.map(card_client => {
-      if(card_client.status) i++;
+      field.append('card_clients[][id]', card_client.id);
+      field.append('card_clients[][name]', card_client.name);
     });
-    if(!validProperty(i == card_clients.length, '担当者を選択してください。')) return;
+
+    const request = window.xhrRequest.post('/card_clients/csv_download', field, { responseType: 'blob' });
+    request.then(res => {
+
+      this.loadingRef.finish();
+
+      // for IE,Edge
+      if(window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(res.data, '担当者情報ダウンロード.csv');
+
+      // for chrome, firefox
+      if(!window.navigator.msSaveOrOpenBlob) {
+        const url = URL.createObjectURL(new Blob([res.data], { type: 'text/csv' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', '担当者情報ダウンロード.csv');
+        document.body.appendChild(link);
+        link.click();
+        URL.revokeObjectURL(url);
+        link.parentNode.removeChild(link);
+      };
+
+      window.alertable({ icon: 'success', message: 'ダウンロードしました。' });
+    }).catch(err => {
+
+      this.loadingRef.finish();
+      window.alertable({ icon: 'error', message: err });
+    });
+    this.loadingRef.start();
   };
 
   render() {
@@ -172,7 +156,7 @@ export default class DownloadCardClient extends React.Component {
         <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
         <CardClient card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } isClientDownload={ this.isClientDownload }/>
-        <CSVDownload division={ this.state.division } card={ this.state.card } card_clients={ this.state.card_clients } replace_values={ this.replace_values }/>
+        <CSVDownload card_clients={ this.state.card_clients } download={ this.download }/>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );

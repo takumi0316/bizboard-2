@@ -15,4 +15,5 @@ export function validProperty(value, message) {
 
   if(value) return true;
   window.alertable({ icon: 'error', message: message});
+  return false;
 };

@@ -311,7 +311,7 @@ export default class UploadCardClient extends React.Component {
     const field = new FormData();
 
     const company_division_client_ids = [];
-    this.state.card_clients.map((card_client, index) => {
+    this.state.card_clients.map(card_client => {
       field.append('card_client[card_id]', this.state.card.id);
       field.append('card_client[company_division_id]', this.state.division.id);
       field.append('card_client[company_division_client_id]', card_client.company_division_client_id);
@@ -336,12 +336,11 @@ export default class UploadCardClient extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'success', message: '保存に成功しました。' })
-      //window.location.href = `/card_clients/${res.data.card_client.id}/edit/`;
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error.message });
+      window.alertable({ icon: 'error', message: error });
     });
     this.loadingRef.start();
   };
