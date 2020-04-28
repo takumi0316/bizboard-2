@@ -110,10 +110,10 @@ class CardsController < ApplicationController
 
     raise if params[:url].blank?
     content = open params[:url]
-    send_data content.read, type: content.content_type, disposition: 'inline'
-  rescue
+    send_data content.read, type: :pdf, disposition: 'inline'
+  rescue => e
 
-    render_json_404
+    render json: { status: :error, message: e.message }
   end
 
   private

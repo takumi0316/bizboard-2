@@ -7,10 +7,6 @@ import Template       from './customer/card/template';
 import TempalteStatus from './template_status';
 import Loading        from '../../../loading';
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
-
 import {
   DivisionTypeName,
   ClientTypeName,
@@ -21,11 +17,9 @@ import {
 } from './properties.es6';
 
 import {
-  validProperty,
   ptTomm,
   mmTopx,
 } from './util';
-
 
 export default class ClientGenerate extends React.Component {
 
@@ -49,6 +43,11 @@ export default class ClientGenerate extends React.Component {
     };
 	};
 
+  /**
+   * React LifeCycle
+   * @version 2020/04/28
+   *
+   */
   componentDidUpdate = (prevProps, prevState) => {
 
     if(this.state.status == prevState.status || !this.state.client_templates) return;
@@ -62,20 +61,45 @@ export default class ClientGenerate extends React.Component {
   /**
    * String => Bool
    * @version 2020/04/27
+   *
    */
-  toBoolean = data => {
+  toBoolean = data => data.toLowerCase() === 'true';
 
-    return data.toLowerCase() === 'true';
-  };
+  /**
+   * ステータスセット
+   * @version 2020/03/27
+   */
+  setStatus = () => this.setState({ status: !this.state.status });
+
+  /**
+   * 会社・部署セット
+   * @version 2020/03/23
+   *
+   **/
+  applyDivision = props => this.clientSearch(props);
+
+  /**
+   * 担当者セット
+   * @version 2020/04/07
+   */
+  applyClient = client =>this.setState({ client: client });
+
+  /**
+   * 名刺セット
+   * @version 2020/04/07
+   *
+   */
+  applyCard = card => this.cardSearch(card);
 
   /**
    * ヘッダーセット
    * @version 2020/03/30
+   *
    */
   onChangeValue = e => {
 
     const status = this.state.status;
-    let client_templates = { ...this.state.client_templates };
+    let client_templates = JSON.parse(JSON.stringify(this.state.client_templates));
     const detail_id = e.target.getAttribute('index');
     const value = e.target.value;
 
@@ -85,12 +109,13 @@ export default class ClientGenerate extends React.Component {
 
     if(!status) client_templates[1].values[detail_id].value = value;
 
-    this.setState({ ...client_templates }, this.drawText());
+    this.setState({ client_templates: client_templates }, () => this.drawText());
   };
 
   /**
    * PDFにテキストを展開
    * @version 2020/04/06
+   *
    */
   drawText = () => {
 
@@ -105,7 +130,7 @@ export default class ClientGenerate extends React.Component {
     draw_ctx.setTransform(1,0,0,1,0,0);
     draw_ctx.restore();
 
-    values.forEach(value => {
+    values.map(value => {
 
       draw_ctx.font = `${mmTopx(ptTomm(value.font_size)) * 2}px ${value.font}`;
       const y = mmTopx(value.coord_y) * 2;
@@ -114,10 +139,10 @@ export default class ClientGenerate extends React.Component {
       const lineSpace = mmTopx(value.line_space);
       const card_value = value.value;
 
-      for(let lines=card_value.split( "\n" ), i=0, l=lines.length; l>i; i++ ) {
-        let line = lines[i] ;
-        let addY = fontSize ;
-        if ( i ) addY += fontSize * lineSpace * i ;
+      for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
+        let line = lines[i];
+        let addY = fontSize;
+        if ( i ) addY += fontSize * lineSpace * i;
         draw_ctx.fillText(line, x, y + addY);
       };
     });
@@ -126,6 +151,7 @@ export default class ClientGenerate extends React.Component {
   /**
    * PDFを展開する
    * @version 2020/03/30
+   *
    */
   setPDF = (file, loadingRef, values) => {
 
@@ -152,17 +178,36 @@ export default class ClientGenerate extends React.Component {
 
       // Set dimensions to Canvas
       canvas.height = (mmTopx(55 * 2));
-      // canvas.style.height = `${(mmTopx(55 * 2))}px`;
-      // viewport.height = `${(mmTopx(55 * 2))}px`;
-
       canvas.width = (mmTopx(91 * 2));
-      // canvas.style.width = `${(mmTopx(91 * 2))}px`;
-      // viewport.width = `${(mmTopx(91 * 2))}px`;
 
       draw_canvas.height = (mmTopx(55 * 2));
-      // draw_canvas.style.height = `${(mmTopx(55 * 2))}px`;
       draw_canvas.width = (mmTopx(91 * 2));
-      // draw_canvas.style.width = `${(mmTopx(91 * 2))}px`;
+
+      // Set dimensions to Canvas
+      draw_ctx.beginPath();
+      draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
+      draw_ctx.save();
+      draw_ctx.setTransform(1,0,0,1,0,0);
+      draw_ctx.restore();
+
+      if(values) {
+        values.map(value => {
+
+          draw_ctx.font = `${mmTopx(ptTomm(value.font_size)) * 2}px ${value.font}`;
+          const y = mmTopx(value.coord_y) * 2;
+          const x =	mmTopx(value.coord_x) * 2;
+          const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
+          const lineSpace = mmTopx(value.line_space);
+          const card_value = value.value;
+
+          for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
+            let line = lines[i];
+            let addY = fontSize;
+            if ( i ) addY += fontSize * lineSpace * i;
+            draw_ctx.fillText(line, x, y + addY);
+          };
+        });
+      };
 
       // Prepare object needed by render method
       const renderContext = {
@@ -173,48 +218,13 @@ export default class ClientGenerate extends React.Component {
       // Render PDF page
       page.render(renderContext);
       loadingRef.finish();
-    });
-  };
-
-  /**
-   * ステータスセット
-   * @version 2020/03/27
-   */
-  setStatus = () => {
-
-    this.setState({ status: !this.state.status });
-  };
-
-  /**
-   * 会社・部署セット
-   * @version 2020/03/23
-   **/
-  applyDivision = props => {
-
-    this.clientSearch(props);
-  };
-
-  /**
-   * 担当者セット
-   * @version 2020/04/07
-   */
-  applyClient = client => {
-
-    this.setState({ client: client });
-  };
-
-  /**
-   * 名刺セット
-   * @version 2020/04/07
-   */
-  applyCard = card => {
-
-    this.cardSearch(card);
+    }).catch(err => window.alertable({ icon: 'error', message: err }));
   };
 
   /**
    *  検索
    *  @version 2018/06/10
+   *
    */
   clientSearch = props => {
 
@@ -222,16 +232,19 @@ export default class ClientGenerate extends React.Component {
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
-      this.setState({ company: props.company, division: props.division, clients: res.data.clients, cards: res.data.cards });
-    }).catch(error => {
+      if(res.data.status == 'success') {
 
-      window.alertable({ icon: 'error', message: error.message });
-    });
+        if(this.state.client) this.setState({ company: props.company, division: props.division, clients: res.data.clients, client: '', cards: res.data.cards, card: '', client_templates: '' });
+        if(!this.state.client) this.setState({ company: props.company, division: props.division, clients: res.data.clients, cards: res.data.cards });
+      };
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+    }).catch(error => window.alertable({ icon: 'error', message: error.message }));
   };
 
   /**
    * 名刺セット
    * @version 2020/04/07
+   *
    */
   cardSearch = card => {
 
@@ -239,29 +252,23 @@ export default class ClientGenerate extends React.Component {
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
-      const front_templates = res.data.front_templates;
-      const reverse_templates = res.data.reverse_templates;
       const templatesInit = [
-        { ...front_templates },
-        { ...reverse_templates },
-      ];
+        { ...res.data.front_templates },
+        { ...res.data.reverse_templates },
+      ].filter(template => template.file);
 
-      let clientTemplatesInit = [];
+      const clientTemplatesInit = templatesInit.map(template => {
 
-      templatesInit.map(template => {
-
-        if(!template.file) return;
-        let templateObj = {
+        const templateObj = {
           'id': '',
-          'card_client_id': '',
           'card_template_id': template.id,
           'status': template.status,
           'file': template.file,
           'values': []
         };
 
-        template.details.map(detail => {
-          const valueObj = {
+        templateObj.values = template.details.map(detail => {
+          return {
             'id': '',
             'client_template_id': template.id,
             'template_detail_id': detail.id,
@@ -275,48 +282,49 @@ export default class ClientGenerate extends React.Component {
             'length': detail.lenght,
             'line_space': detail.line_space
           };
-
-          templateObj.values.push({ ...valueObj });
         });
 
-        clientTemplatesInit.push({ ...JSON.parse(JSON.stringify(templateObj)) });
+        return JSON.parse(JSON.stringify(templateObj));
       });
 
       this.setState({ card: card, client_templates: clientTemplatesInit }, () => this.getConvertPDF());
-    }).catch(error => {
-
-      window.alertable({ icon: 'error', message: error.message });
-    });
+    }).catch(error =>  window.alertable({ icon: 'error', message: error.message }));
   };
 
   /**
    * サーバーからPDF取得
    * @version 2020/04/08
+   *
    */
   getConvertPDF = () => {
 
     this.loadingRef.start();
-    const client_templates = JSON.parse(JSON.stringify(this.state.client_templates));
-    client_templates.forEach(client_template => {
+    const client_templates = this.state.client_templates.filter(client_template => client_template.file);
+    client_templates.map(client_template => {
 
-      if(!client_template.file) return;
-      Request.get('/cards/transfer')
-        .query({url: client_template.file})
-        .responseType('blob')
-        .end((error, res) => {
+      const field = new FormData();
+      field.append('url', client_template.file);
+      const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
+      request.then(res => {
 
-          const file = res.body;
+        if(res.data.status != 'error') {
+          const file = res.data;
           const bool = this.toBoolean(client_template.status);
-          if(bool) this.template_front_file = file;
-          if(bool) this.setPDF(file, this.loadingRef, client_templates[0].values);
+          if(bool) {
+            this.template_front_file = file;
+            this.setPDF(file, this.loadingRef, client_template.values);
+          };
           if(!bool) this.template_reverse_file = file;
-        });
+        };
+        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
+      }).catch(err => window.alertable({ icon: 'error', message: err }));
     });
   };
 
   /**
    * 保存
    * @version 2020/04/08
+   *
    */
   save = e => {
 
@@ -326,11 +334,11 @@ export default class ClientGenerate extends React.Component {
     field.append('card_client[card_id]', this.state.card.id);
     field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);
-    this.state.client_templates.forEach((template, index) => {
+    this.state.client_templates.map(template => {
       field.append('card_client[templates_attributes][][id]', template.id);
       field.append('card_client[templates_attributes][][card_client_id]', this.state.card_client_id);
       field.append('card_client[templates_attributes][][card_template_id]', template.card_template_id);
-      template.values.forEach(value => {
+      template.values.map(value => {
         field.append('card_client[templates_attributes][][values_attributes][][id]', value.id);
         field.append('card_client[templates_attributes][][values_attributes][][client_template_id]', value.client_template_id);
         field.append('card_client[templates_attributes][][values_attributes][][template_detail_id]', value.template_detail_id);
@@ -359,7 +367,7 @@ export default class ClientGenerate extends React.Component {
         <Card cards={ this.state.cards } card={ this.state.card } new={ this.props.new } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
         { this.state.client_templates ?
           <Fragment>
-            { this.state.client_templates[1].file ?
+            { this.state.client_templates.length > 2 ?
               <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
               : null
             }

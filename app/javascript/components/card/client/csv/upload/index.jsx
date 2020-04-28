@@ -8,10 +8,6 @@ import Card       from './customer/card';
 import CSVImport  from './csv_import';
 import Loading    from '../../../../loading';
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
-
 import {
   DivisionTypeName,
   CardTypeName,
@@ -47,24 +43,21 @@ export default class UploadCardClient extends React.Component {
   /**
    * 会社・部署セット
    * @version 2020/03/23
+   *
    **/
-  applyDivision = props => {
-
-    this.cardSearch(props);
-  };
+  applyDivision = props => this.cardSearch(props);
 
   /**
    * 会社・部署セット
    * @version 2020/03/23
+   *
    **/
-  applyCard = card => {
-
-    this.setState({ card: card }, () => this.parsePDF(card));
-  };
+  applyCard = card => this.setState({ card: card }, () => this.parsePDF(card));
 
   /**
    * 名刺セット
    * @version 2020/04/07
+   *
    */
   cardSearch = props => {
 
@@ -73,7 +66,8 @@ export default class UploadCardClient extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      this.setState({ company: props.company, division: props.division, cards: res.data.cards });
+      if(res.data.status == 'success') this.setState({ company: props.company, division: props.division, cards: res.data.cards });
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
       this.loadingRef.finish();
@@ -83,41 +77,29 @@ export default class UploadCardClient extends React.Component {
   };
 
   /**
-   * 名刺担当者セット
+   * 名刺 && 担当者セット
    * @version 2020/04/07
+   *
    */
   parsePDF = card => {
 
-    const templates = [{ 'file': card.front_template, 'status': true }, { 'file': card.reverse_template || '', 'status': false }];
+    const templates = [{ 'file': card.front_template, 'status': true }, { 'file': card.reverse_template || '', 'status': false }].filter(template => template.file);
     templates.forEach(template => {
 
-      if(!template.file) {
-        this.template_reverse_file = '';
-        this.loadingRef.finish();
-        return;
-      };
+      const field = new FormData();
+      field.append('url', template.file);
+      const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
+      request.then(res => {
 
-      Request.get('/cards/transfer')
-        .query({url: template.file})
-        .responseType('blob')
-        .end((error, res) => {
+        if(res.data.status != 'error') {
 
-          if(res.data.status == 'success') {
-            const file = res.body;
-            const bool = template.status;
-            if(bool) this.template_front_file = file;
-            if(!bool) {
-              this.template_reverse_file = file;
-              this.loadingRef.finish();
-            };
-          };
-
-          if(res.data.status != 'error') { 
-
-            this.loadingRef.finish();
-            window.alertable({ icon: 'error', message: 'PDFを取得できませんでした。もう一度テンプレートを選択してください。' });
-          };
-        });
+          const file = res.data;
+          const bool = template.status;
+          if(bool) this.template_front_file = file;
+          if(!bool) this.template_reverse_file = file;
+        };
+        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
+      }).catch(err => window.alertable({ icon: 'error', message: err }));
     })
   };
 
@@ -126,12 +108,9 @@ export default class UploadCardClient extends React.Component {
    * @version 2020/04/13
    *
    */
-  setCardClients = card_clients => {
-
-    this.setState({ card_clients: card_clients }, () => {
+  setCardClients = card_clients => this.setState({ card_clients: card_clients }, () => {
       window.alertable({ icon:'success', message: 'ファイルのアップロードが正常に成功しました。'});
     });
-  };
 
   /**
    * CSVを適当な形式に整形
@@ -219,6 +198,7 @@ export default class UploadCardClient extends React.Component {
   /**
    * ヘッダーセット
    * @version 2020/03/30
+   *
    */
   onChangeValue = (e, count, status) => {
 
@@ -233,12 +213,12 @@ export default class UploadCardClient extends React.Component {
     if(!status) card_clients[count].client_templates[1].values[value_id].value = value;
 
     this.setState({ card_clients: card_clients }, this.drawText(status, card_clients[count].client_templates));
-    // this.setState({ ...client_templates });
   };
 
   /**
    * PDFにテキストを展開
    * @version 2020/04/06
+   *
    */
   drawText = (status, client_templates) => {
 

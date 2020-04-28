@@ -145,7 +145,7 @@ Rails.application.routes.draw do
   # 名刺
   resources :cards, except: :show
   namespace :cards do
-    get :transfer
+    post :transfer
   end
 
   # 名刺テンプレート

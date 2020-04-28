@@ -7,10 +7,6 @@ import Template       from './customer/card/template';
 import TempalteStatus from './template_status';
 import Loading        from '../../../loading';
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
-
 import {
   DivisionTypeName,
   ClientTypeName,
@@ -58,27 +54,41 @@ export default class ClientGenerate extends React.Component {
     };
 	};
 
+  /**
+   * React LifeCycle
+   * @version 2020/04/28
+   *
+   */
   componentDidMount = () => {
 
-    const client_templates = this.state.client_templates;
+    const client_templates = this.state.client_templates.filter(card_template => card_template.file);
+    client_templates.map(client_template => {
 
-    client_templates.forEach(client_template => {
+      const field = new FormData();
+      field.append('url', client_template.file);
+      const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
+      request.then(res => {
 
-      if(!client_template.file) return;
-      Request.get('/cards/transfer')
-        .query({url: client_template.file})
-        .responseType('blob')
-        .end((error, res) => {
-
-          const file = res.body;
+        if(res.data.status != 'error') {
+          const file = res.data;
           const bool = this.toBoolean(client_template.status);
-          if(bool) this.template_front_file = file;
-          if(bool) this.setPDF(file, this.loadingRef, client_templates[0].values);
+          if(bool) {
+            this.template_front_file = file;
+            this.setPDF(file, this.loadingRef, client_templates[0].values);
+          };
           if(!bool) this.template_reverse_file = file;
-        });
+        };
+        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
+
+      }).catch(err => window.alertable({ icon: 'error', message: err }));
     });
   };
 
+  /**
+   * React LifeCycle
+   * @version 2020/04/28
+   *
+   */
   componentDidUpdate = (prevProps, prevState) => {
 
     if(this.state.status == prevState.status || !this.state.client_templates) return;
@@ -89,19 +99,22 @@ export default class ClientGenerate extends React.Component {
     if(file) this.setPDF(file, this.loadingRef, values);
   };
 
-  toBoolean = data => {
-
-    return data.toLowerCase() === 'true';
-  };
+  /**
+   * String => Bool
+   * @version 2020/04/28
+   *
+   */
+  toBoolean = data => data.toLowerCase() === 'true';
 
   /**
    * ヘッダーセット
    * @version 2020/03/30
+   *
    */
   onChangeValue = e => {
 
     const status = this.state.status;
-    let client_templates = { ...this.state.client_templates };
+    let client_templates = JSON.parse(JSON.stringify(this.state.client_templates));
     const detail_id = e.target.getAttribute('index');
     const value = e.target.value;
 
@@ -111,12 +124,13 @@ export default class ClientGenerate extends React.Component {
 
     if(!status) client_templates[1].values[detail_id].value = value;
 
-    this.setState({ ...client_templates }, this.drawText());
+    this.setState({client_templates: client_templates }, this.drawText());
   };
 
   /**
    * PDFにテキストを展開
    * @version 2020/04/06
+   *
    */
   drawText = () => {
 
@@ -221,34 +235,7 @@ export default class ClientGenerate extends React.Component {
    * ステータスセット
    * @version 2020/03/27
    */
-  setStatus = () => {
-
-    this.setState({ status: !this.state.status });
-  };
-
-  /**
-   * サーバーからPDF取得
-   * @version 2020/04/08
-   */
-  getConvertPDF = () => {
-
-    const client_templates = this.state.client_templates;
-    client_templates.forEach((client_template, index) => {
-
-      if(!client_template.file) return;
-      Request.get('/cards/transfer')
-        .query({url: client_template.file})
-        .responseType('blob')
-        .end((error, res) => {
-
-          const file = res.body;
-          const bool = this.toBoolean(client_template.status);
-          if(bool) this.template_front_file = file;
-          if(bool) this.setPDF(file, this.loadingRef, client_templates[0].values);
-          if(!bool) this.template_reverse_file = file;
-        });
-    });
-  };
+  setStatus = () => this.setState({ status: !this.state.status });
 
   /**
    * 保存
@@ -262,7 +249,7 @@ export default class ClientGenerate extends React.Component {
     field.append('card_client[card_id]', this.state.card.id);
     field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);
-    this.state.client_templates.map((template, index) => {
+    this.state.client_templates.map(template => {
       if(!template.id) return;
       field.append('card_client[templates_attributes][][id]', template.id);
       field.append('card_client[templates_attributes][][card_client_id]', this.state.card_client_id);

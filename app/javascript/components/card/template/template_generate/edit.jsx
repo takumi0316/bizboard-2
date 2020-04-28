@@ -6,10 +6,6 @@ import TempalteStatus     from './template_status/index';
 import CardTemplate       from './card_template/index';
 import Loading            from '../../../loading';
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
-
 import {
   validProperty,
   ptTomm,
@@ -48,28 +44,33 @@ export default class EditTemplateGenerate extends React.Component {
 
   componentDidMount = () => {
 
-    this.loadingRef.start();
     const templates = this.state.templates;
-    if(!templates[0].file) {
+    const isBlank = templates.every(template => !template.file);
+    const res_templates = templates.filter(template => template.file);
 
-      this.loadingRef.finish();
-      return;
-    };
+    if(isBlank) return;
 
-    templates.forEach(template => {
+    res_templates.map(template => {
 
-      if(!template.file) return;
-      Request.get('/cards/transfer')
-        .query({url: template.file})
-        .responseType('blob')
-        .end((error, res) => {
+      const field = new FormData();
+      field.append('url', template.file);
+      const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
+      request.then(res => {
 
-          const file = res.body;
+        if(res.data.status != 'error') {
+
+          const file = res.data;
           const bool = this.toBoolean(template.status);
-          if(bool) this.template_front_file = file;
-          if(bool) this.setPDF(file, this.loadingRef, templates[0].details);
+          if(bool) {
+
+            this.template_front_file = file;
+            this.setPDF(file, this.loadingRef, templates[0].details);
+          };
           if(!bool) this.template_reverse_file = file;
-        });
+        };
+
+        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
+      }).catch(err => window.alertable({ icon: 'error', message: err }));
     });
   };
 
@@ -265,6 +266,7 @@ export default class EditTemplateGenerate extends React.Component {
    */
   setPDF = (file, loadingRef, details) => {
 
+    loadingRef.start();
     const blob = new Blob([file]);
     const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
     const getPDF = pdfjsLib.getDocument(blob_path);
@@ -288,17 +290,11 @@ export default class EditTemplateGenerate extends React.Component {
 
       // Set dimensions to Canvas
       canvas.height = (mmTopx(55 * 2));
-      // canvas.style.height = `${(mmTopx(55 * 2))}px`;
-      // viewport.height = `${(mmTopx(55 * 2))}px`;
 
       canvas.width = (mmTopx(91 * 2));
-      // canvas.style.width = `${(mmTopx(91 * 2))}px`;
-      // viewport.width = `${(mmTopx(91 * 2))}px`;
 
       draw_canvas.height = (mmTopx(55 * 2));
-      // draw_canvas.style.height = `${(mmTopx(55 * 2))}px`;
       draw_canvas.width = (mmTopx(91 * 2));
-      // draw_canvas.style.width = `${(mmTopx(91 * 2))}px`;
 
       details.forEach(detail => {
 
@@ -326,13 +322,7 @@ export default class EditTemplateGenerate extends React.Component {
       // Render PDF page
       page.render(renderContext);
       loadingRef.finish();
-    }).catch(error =>{
-
-      window.alertable({
-        icon: 'error',
-        message: error
-      })
-    });
+    }).catch(error => window.alertable({ icon: 'error', message: error }));
   };
 
   /**
