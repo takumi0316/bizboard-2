@@ -55,7 +55,7 @@ export default class DownloadCardClient extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      if(res.data.status == 'success') this.setState({ company: props.company, division: props.division, cards: res.data.cards });
+      if(res.data.status == 'success') this.state.card_clients ? this.setState({ company: props.company, division: props.division, cards: res.data.cards, card: '', card_clients: '' }) : this.setState({ company: props.company, division: props.division, cards: res.data.cards });
       if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
