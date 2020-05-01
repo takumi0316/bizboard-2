@@ -35,13 +35,17 @@ export default class EditTemplateGenerate extends React.Component {
 
     this.state = {
       card_id: props.card.id || '',
-      company: props.company || '',
-      division: props.division || '',
+      company: props.company,
       templates: [...init],
       status: true
     };
   };
 
+  /**
+   * React LifeCycle 
+   * @version 2020/04/30 
+   * 
+   */
   componentDidMount = () => {
 
     const templates = this.state.templates;
@@ -74,6 +78,11 @@ export default class EditTemplateGenerate extends React.Component {
     });
   };
 
+  /**
+   * React LifeCycle 
+   * @version 2020/04/30 
+   * 
+   */
   componentDidUpdate = (prevProps, prevState) => {
 
     const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
@@ -85,14 +94,17 @@ export default class EditTemplateGenerate extends React.Component {
     if(file) this.setPDF(file, this.loadingRef, details);
   };
 
-  toBoolean = data => {
-
-    return data.toLowerCase() === 'true';
-  };
+  /**
+   * String => Bool 
+   * @version 2020/04/30 
+   * 
+   */
+  toBoolean = data => data.toLowerCase() === 'true';
 
   /**
    *  ファイルドロップ時
    *  @version 2018/06/10
+   * 
    */
   onDrop = files => {
 
@@ -117,24 +129,21 @@ export default class EditTemplateGenerate extends React.Component {
   /**
    * 会社・部署セット
    * @version 2020/03/23
+   * 
    **/
-  applyDivision = props => {
-
-    this.setState({ company: props.company, division: props.division });
-  };
+  applyCompany = props => this.setState({ company: props });
 
   /**
    * ステータスセット
    * @version 2020/03/27
+   * 
    */
-  setStatus = () => {
-
-    this.setState({ status: !this.state.status });
-  };
+  setStatus = () => this.setState({ status: !this.state.status });
 
   /**
    * 名刺ヘッダーカラム追加
    * @version 2020/03/30
+   * 
    */
   addDetail = e => {
 
@@ -164,12 +173,13 @@ export default class EditTemplateGenerate extends React.Component {
     };
 
     status ? templates[0].details.push(init) : templates[1].details.push(init);
-    this.setState({ ...templates });
+    this.setState({ templates: templates });
   };
 
   /**
    * ヘッダーセット
    * @version 2020/03/30
+   * 
    */
   onChangeDetail = e => {
 
@@ -201,6 +211,7 @@ export default class EditTemplateGenerate extends React.Component {
   /**
    * PDFにテキストを展開
    * @version 2020/04/06
+   * 
    */
   drawText = () => {
 
@@ -210,9 +221,9 @@ export default class EditTemplateGenerate extends React.Component {
     let draw_ctx = draw_canvas.getContext('2d')
 
     draw_ctx.beginPath();
-    draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
+    draw_ctx.clearRect(0, 0, draw_canvas.width, draw_canvas.height);
     draw_ctx.save();
-    draw_ctx.setTransform(1,0,0,1,0,0);
+    draw_ctx.setTransform(1, 0, 0, 1, 0, 0);
     draw_ctx.restore();
 
     details.forEach(detail => {
@@ -222,12 +233,12 @@ export default class EditTemplateGenerate extends React.Component {
       const x =	mmTopx(detail.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
       const lineSpace = mmTopx(detail.line_space);
-      const name = `ここに${detail.name}が入ります。`;
+      const name = detail.name;
 
       for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
-        let line = lines[i] ;
-        let addY = fontSize ;
-        if (i) addY += fontSize * lineSpace * i ;
+        let line = lines[i];
+        let addY = fontSize;
+        if(i) addY += fontSize * lineSpace * i;
         draw_ctx.fillText(line, x, y + addY);
       };
     });
@@ -236,6 +247,7 @@ export default class EditTemplateGenerate extends React.Component {
   /**
    * PDFをリセットする
    * @version 2020/04/04
+   * 
    */
   unSetPDF = () => {
 
@@ -257,12 +269,13 @@ export default class EditTemplateGenerate extends React.Component {
       this.template_reverse_file = '';
     };
 
-    this.setState({ ...templates });
+    this.setState({ templates: templates });
   };
 
   /**
    * PDFを展開する
    * @version 2020/03/30
+   * 
    */
   setPDF = (file, loadingRef, details) => {
 
@@ -290,7 +303,6 @@ export default class EditTemplateGenerate extends React.Component {
 
       // Set dimensions to Canvas
       canvas.height = (mmTopx(55 * 2));
-
       canvas.width = (mmTopx(91 * 2));
 
       draw_canvas.height = (mmTopx(55 * 2));
@@ -303,7 +315,7 @@ export default class EditTemplateGenerate extends React.Component {
         const x =	mmTopx(detail.coord_x) * 2;
         const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
         const lineSpace = mmTopx(detail.line_space);
-        const name = `ここに${detail.name}が入ります。`;
+        const name = detail.name;
 
         for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
           let line = lines[i];
@@ -328,47 +340,43 @@ export default class EditTemplateGenerate extends React.Component {
   /**
    * 保存
    * @version 2020/03/26
+   * 
    */
   save = e => {
 
     e.stopPropagation();
 
     if(!validProperty(this.inputRef.value.trim(), 'タイトル')) return;
-    if(!validProperty(this.state.division, '部署')) return;
+    if(!validProperty(this.state.company, '会社')) return;
     if(!validProperty(this.template_front_file, 'テンプレート')) return;
 
     const field = new FormData();
 
     field.append('card[name]', this.inputRef.value);
-    field.append('card[company_division_id]', this.state.division.id);
-    this.state.templates.forEach((template) => {
+    field.append('card[company_id]', this.state.company.id);
+    const templates = this.state.templates.filter(template => template.file);
+    console.log(templates);
+    templates.forEach(template => {
 
-      if(template.file) {
-        field.append('card[templates_attributes][][id]', template.id);
-        field.append('card[templates_attributes][][card_id]', template.card_id);
-        field.append('card[templates_attributes][][status]', template.status);
-        if(this.toBoolean(template.status)) field.append('card[templates_attributes][][file]', this.template_front_file);
-        if(!this.toBoolean(template.status)) {
+      field.append('card[templates_attributes][][id]', template.id);
+      field.append('card[templates_attributes][][card_id]', template.card_id);
+      field.append('card[templates_attributes][][status]', template.status);
+      if(this.toBoolean(template.status)) field.append('card[templates_attributes][][file]', this.template_front_file);
+      if(!this.toBoolean(template.status)) field.append('card[templates_attributes][][file]', this.template_front_file || this.prev_template_reverse_file);
 
-          field.append('card[templates_attributes][][file]', this.template_front_file || this.prev_template_reverse_file);
-          // if(isDestroy) field.append('card[templates_attributes][][_destroy]', '_destroy');
-          // if(this.props.reverse_side.file && !this.template_reverse_file) field.append('card[templates_attributes][][only_file]', '_destroy');
-        };
+      template.details.forEach(detail => {
 
-        template.details.forEach(detail => {
-
-          field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
-          field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id);
-          field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
-          field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
-          field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
-          field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
-          field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
-          field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
-          field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
-          field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
-        });
-      };
+        field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
+        field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id);
+        field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
+        field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
+        field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
+        field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
+        field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
+        field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
+        field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
+        field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
+      });
     });
 
     const request = window.xhrRequest.put(this.props.action, field);
@@ -377,7 +385,8 @@ export default class EditTemplateGenerate extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'success', message: '更新に成功しました。' });
+      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '更新に成功しました。' });
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: '更新に失敗しました。' });
     }).catch(error => {
 
       this.loadingRef.finish();
@@ -392,10 +401,10 @@ export default class EditTemplateGenerate extends React.Component {
       <Fragment>
         <div className='u-mt-10'>
           <label className='c-form-label'>テンプレート名</label>
-          <input type='text' className='c-form-text' defaultValue={ this.props.card.name || '' } ref={node => this.inputRef = node} placeholder='テンプレート名'/>
+          <input type='text' className='c-form-text' defaultValue={ this.props.card.name || '' } ref={ node => this.inputRef = node } placeholder='テンプレート名'/>
         </div>
-        <CustomerInfomation company={ this.state.company } division={ this.state.division }/>
-        <DivisionSearch applyDivision={ this.applyDivision } type_name={ '会社・部署情報を登録' } not_found={ '会社・部署情報が見つかりませんでした。'}/>
+        <CustomerInfomation company={ this.state.company }/>
+        <DivisionSearch applyCompany={ this.applyCompany } type_name={ '会社情報を登録' } not_found={ '会社情報が見つかりませんでした。'}/>
         <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
         { this.state.status ?
           <CardTemplate template={ this.state.templates[0] } file={ this.template_front_file } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
@@ -405,7 +414,7 @@ export default class EditTemplateGenerate extends React.Component {
         <div className='u-mt-10'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>
         </div>
-        <Loading ref={node => this.loadingRef = node}/>
+        <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );
   };

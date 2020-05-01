@@ -3,8 +3,8 @@ class CreateTableToCards < ActiveRecord::Migration[5.2]
 
     create_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
-      t.references :company_division, index: true
-      t.string     :name,             comment: '名刺名称'
+      t.references :company, index: true
+      t.string     :name,    comment: '名刺名称'
 
       t.timestamps
     end

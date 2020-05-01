@@ -11,9 +11,7 @@ class CardClientsController < ApplicationController
   #----------------------------------------
 
   # 名刺マスタ
-  expose_with_pagination(:card_clients) {
-    CardClient.search(company_division_id: params[:company_division_id]).all
-  }
+  expose_with_pagination(:card_clients) { CardClient.search(company_division_id: params[:company_division_id]).all }
 
   # 名刺マスタ
   expose(:card_client) { CardClient.find_or_initialize_by id: params[:id] }
@@ -45,17 +43,7 @@ class CardClientsController < ApplicationController
   #
   def new
 
-    @divisions = []
-    Card.all.pluck(:company_division_id).uniq.each do |r|
-
-      division = CompanyDivision.find(r)
-
-      obj = {
-        division: division,
-        company: division.company
-      }
-      @divisions.append(obj)
-    end
+    @divisions = card_client.division_search
 
     add_breadcrumb '名刺情報一覧', path: card_clients_path
     add_breadcrumb '新規作成'
@@ -117,10 +105,22 @@ class CardClientsController < ApplicationController
   def bulk
 
     required_params = card_client_params
-    required_params[:templates_attributes].each_with_index { |r, index| CardClient.create! card_id: required_params[:card_id], company_division_id: required_params[:company_division_id], company_division_client_id: params[:company_division_client_ids][index], templates_attributes: r }
+    count = 0
+    required_params[:templates_attributes].each_with_index do |r, index|
+
+      CardClient.create! card_id: required_params[:card_id], company_division_id: required_params[:company_division_id], company_division_client_id: params[:company_division_client_ids][index], templates_attributes: r if index == 0
+      if index != 0
+
+        CardClient.last.templates.create! card_template_id: r[:card_template_id], values_attributes: r[:values_attributes] if params[:company_division_client_ids][index - 1] == params[:company_division_client_ids][index]
+        CardClient.create! card_id: required_params[:card_id], company_division_id: required_params[:company_division_id], company_division_client_id: params[:company_division_client_ids][index], templates_attributes: r if params[:company_division_client_ids][index - 1] != params[:company_division_client_ids][index]
+      end
+      count += 1
+    end
 
     render json: { status: :success }
   rescue => e
+
+    (1..count).each { |r| CardClient.last.destroy! if r != 1 }
 
     render json: { status: :error, message: e.message }
   end
@@ -131,17 +131,7 @@ class CardClientsController < ApplicationController
   #
   def upload
 
-    @divisions = []
-    Card.all.pluck(:company_division_id).uniq.each do |r|
-
-      division = CompanyDivision.find(r)
-
-      obj = {
-        division: division,
-        company: division.company
-      }
-      @divisions.append(obj)
-    end
+    @divisions = card_client.division_search
 
     add_breadcrumb '名刺情報一覧', path: card_clients_path
     add_breadcrumb 'アップロード'
@@ -153,17 +143,7 @@ class CardClientsController < ApplicationController
   #
   def download
 
-    @divisions = []
-    Card.all.pluck(:company_division_id).uniq.each do |r|
-
-      division = CompanyDivision.find(r)
-
-      obj = {
-        division: division,
-        company: division.company
-      }
-      @divisions.append(obj)
-    end
+    @divisions = card_client.division_search
 
     add_breadcrumb '名刺情報一覧', path: card_clients_path
     add_breadcrumb 'ダウンロード'
@@ -171,7 +151,7 @@ class CardClientsController < ApplicationController
 
   ##
   # CSV Download
-  #
+  # @version 2020/04/30
   #
   def csv_download
 
@@ -180,7 +160,7 @@ class CardClientsController < ApplicationController
     headers = []
     headers << ''
     headers << '名刺ID'
-    headers << '部署ID'
+    headers << '会社ID'
     headers << '担当者ID'
     headers << '担当者名'
 
@@ -191,15 +171,19 @@ class CardClientsController < ApplicationController
         values = []
         values << ''
         values << card.id
-        values << card.company_division_id
+        values << card.company_id
         values << c[:id]
         values << c[:name]
-        card.templates.each { |t| t.details.each { |d| values << '' } }
+        card.templates.each do |t|
+
+          t.client_templates.each { |ct| ct.values.each { |v| values << v.value } } if t.client_templates.present?
+          t.details.each { |d| values << '' } if t.client_templates.blank?
+        end
         csv << values
       end
     end
 
-    send_data(download_csv, filename: '担当者情報ダウンロード.csv', type: :csv)
+    send_data download_csv, filename: '担当者情報ダウンロード.csv', type: :csv
   rescue => e
 
     render json: { status: :error, message: e.message }

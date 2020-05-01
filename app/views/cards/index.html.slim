@@ -17,7 +17,6 @@
         th 名刺ID
         th アイキャッチ
         th 会社
-        th 部署
         th 名称
         th colspan=2
     tbody
@@ -25,8 +24,7 @@
         tr
           td.u-va-middle.u-ta-center = r.id
           td.u-va-middle.u-ta-center = image_tag r.templates.first.decorate.file_thumb
-          td.u-va-middle.u-ta-center = r.company_division.company.name
-          td.u-va-middle.u-ta-center = r.company_division.name
+          td.u-va-middle.u-ta-center = r.company.name
           td.u-va-middle.u-ta-center = r.name
           td.u-va-middle.u-ta-center = link_to '編集', edit_card_path(r), class: 'c-btnMain-standard'
           td.u-va-middle.u-ta-center = link_to '削除', card_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }

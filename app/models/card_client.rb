@@ -42,7 +42,7 @@ class CardClient < ApplicationRecord
   belongs_to :company_division_client
 
   # 名刺担当者テンプレート情報
-  has_many :templates, class_name: 'ClientTemplate', dependent: :delete_all
+  has_many :templates, class_name: 'ClientTemplate', dependent: :destroy
 
   has_many :task_card_clients, dependent: :delete_all
 
@@ -64,14 +64,32 @@ class CardClient < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
+  ##
+  # 検索
+  # @version 2020/05/01
+  #
   def self.search(**parameters)
 
-    if parameters[:company_division_id].present?
-
-      self.where(company_division_id: parameters[:company_division_id])
-    end
+    self.where(company_division_id: parameters[:company_division_id]) if parameters[:company_division_id].present?
 
     self
+  end
+
+
+  ##
+  # 部署検索
+  # @version 2020/05/01
+  #
+  def division_search
+
+    arr = []
+    Card.all.pluck(:company_id).uniq.each do |r|
+
+      company = Company.find(r)
+      company.divisions.each { |d| arr.append({ company: company, division: d }) }
+    end
+
+    arr
   end
 
 end

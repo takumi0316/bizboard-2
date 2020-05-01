@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_23_023725) do
+ActiveRecord::Schema.define(version: 2020_04_30_095432) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -81,11 +81,11 @@ ActiveRecord::Schema.define(version: 2020_04_23_023725) do
   end
 
   create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "company_division_id"
     t.string "name", comment: "名刺名称"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["company_division_id"], name: "index_cards_on_company_division_id"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_cards_on_company_id"
   end
 
   create_table "catalogs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

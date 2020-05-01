@@ -2,11 +2,11 @@
 #
 # Table name: cards
 #
-#  id                  :bigint(8)        not null, primary key
-#  company_division_id :bigint(8)
-#  name                :string(191)
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
+#  id         :bigint(8)        not null, primary key
+#  name       :string(191)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  company_id :bigint(8)
 #
 
 class Card < ApplicationRecord
@@ -32,7 +32,7 @@ class Card < ApplicationRecord
   #----------------------------------------
 
   # 部署
-  belongs_to :company_division
+  belongs_to :company
 
   # 名刺テンプレート中間テーブル
   has_many :templates, class_name: 'CardTemplate', dependent: :delete_all

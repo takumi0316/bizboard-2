@@ -35,42 +35,40 @@ export default class NewTemplateGenerate extends React.Component {
     this.reverse_template = '';
 
     this.state = {
-      card_id: props.card.id || '',
-      company: props.company || '',
-      division: props.division || '',
+      card_id: '',
+      company: '',
       templates: [...init],
       status: true
     };
   };
 
   /**
-   *
+   * React LifeCycle
    * @version 2020/04/03
+   *
    */
   componentDidUpdate = (prevProps, prevState) => {
 
     const file = this.state.status ? this.front_template : this.reverse_template;
     const prevFile = this.state.status ? prevState.templates[0].file : prevState.templates[1].file;
     const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
-    if(this.state.status == prevState.status) {
 
-      if(!prevFile && file) this.setPDF(file, this.loadingRef, details);
-    };
+    if(this.state.status == prevState.status) if(!prevFile && file) this.setPDF(file, this.loadingRef, details);
 
-    if(this.state.status != prevState.status) {
-
-      if(file) this.setPDF(file, this.loadingRef, details);
-    };
+    if(this.state.status != prevState.status) if(file) this.setPDF(file, this.loadingRef, details);
   };
 
-  toBoolean = data => {
-
-    return data.toLowerCase() === 'true';
-  };
+  /**
+   * String => Bool
+   * @version 2020/04/30
+   *
+   */
+  toBoolean = data => data.toLowerCase() === 'true';
 
   /**
    *  ファイルドロップ時
    *  @version 2018/06/10
+   *
    */
   onDrop = files => {
 
@@ -95,24 +93,21 @@ export default class NewTemplateGenerate extends React.Component {
   /**
    * 会社・部署セット
    * @version 2020/03/23
+   *
    **/
-  applyDivision = props => {
-
-    this.setState({ company: props.company, division: props.division });
-  };
+  applyCompany = props => this.setState({ company: props });
 
   /**
    * ステータスセット
    * @version 2020/03/27
+   *
    */
-  setStatus = () => {
-
-    this.setState({ status: !this.state.status });
-  };
+  setStatus = () => this.setState({ status: !this.state.status });
 
   /**
    * PDFにテキストを展開
    * @version 2020/04/06
+   *
    */
   drawText = () => {
 
@@ -136,7 +131,7 @@ export default class NewTemplateGenerate extends React.Component {
       const x =	mmTopx(detail.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
       const lineSpace = mmTopx(detail.line_space);
-      const name = `ここに${detail.name}が入ります。`;
+      const name = detail.name;
 
       for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
 
@@ -151,12 +146,13 @@ export default class NewTemplateGenerate extends React.Component {
   /**
    * 名刺ヘッダーカラム追加
    * @version 2020/03/30
+   *
    */
   addDetail = e => {
 
     e.preventDefault();
 
-    const templates = this.state.templates;
+    const templates = JSON.parse(JSON.stringify(this.state.templates));
     const status = this.state.status;
     const file = status ? templates[0].file : templates[1].file;
 
@@ -186,6 +182,7 @@ export default class NewTemplateGenerate extends React.Component {
   /**
    * ヘッダーセット
    * @version 2020/03/30
+   *
    */
   onChangeDetail = e => {
 
@@ -217,6 +214,7 @@ export default class NewTemplateGenerate extends React.Component {
   /**
    * PDFをリセットする
    * @version 2020/04/04
+   *
    */
   unSetPDF = () => {
 
@@ -240,6 +238,7 @@ export default class NewTemplateGenerate extends React.Component {
   /**
    * PDFを展開する
    * @version 2020/03/30
+   *
    */
   setPDF = (file, loadingRef, details) => {
 
@@ -280,7 +279,7 @@ export default class NewTemplateGenerate extends React.Component {
           const x =	mmTopx(detail.coord_x) * 2;
           const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
           const lineSpace = mmTopx(detail.line_space);
-          const name = `ここに${detail.name}が入ります。`;
+          const name = detail.name;
 
           for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
 
@@ -317,34 +316,33 @@ export default class NewTemplateGenerate extends React.Component {
     e.stopPropagation();
 
     if(!validProperty(this.inputRef.value.trim(), 'タイトル')) return;
-    if(!validProperty(this.state.division, '部署')) return;
+    if(!validProperty(this.state.company, '会社')) return;
     if(!validProperty(this.state.templates[0].file, 'テンプレート')) return;
 
     const field = new FormData();
 
     field.append('card[name]', this.inputRef.value);
-    field.append('card[company_division_id]', this.state.division.id);
-    this.state.templates.forEach((template) => {
+    field.append('card[company_id]', this.state.company.id);
+    const templates = this.state.templates.filter(template => template.file);
+    templates.forEach((template) => {
 
-      if(template.file) {
-        field.append('card[templates_attributes][][id]', template.id || '');
-        field.append('card[templates_attributes][][card_id]', template.card_id || '');
-        field.append('card[templates_attributes][][status]', template.status);
-        field.append('card[templates_attributes][][file]', this.toBoolean(template.status) ? this.front_template : this.reverse_template);
-        template.details.forEach(detail => {
+      field.append('card[templates_attributes][][id]', template.id || '');
+      field.append('card[templates_attributes][][card_id]', template.card_id || '');
+      field.append('card[templates_attributes][][status]', template.status);
+      field.append('card[templates_attributes][][file]', this.toBoolean(template.status) ? this.front_template : this.reverse_template);
+      template.details.forEach(detail => {
 
-          field.append('card[templates_attributes][][details_attributes][][id]', detail.id || '');
-          field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id || '');
-          field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
-          field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
-          field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
-          field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
-          field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
-          field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
-          field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
-          field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
-        });
-      };
+        field.append('card[templates_attributes][][details_attributes][][id]', detail.id || '');
+        field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id || '');
+        field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
+        field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
+        field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
+        field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
+        field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
+        field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
+        field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
+        field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
+      });
     });
 
     const request = window.xhrRequest.post(this.props.action, field);
@@ -377,8 +375,8 @@ export default class NewTemplateGenerate extends React.Component {
           <label className='c-form-label'>テンプレート名</label>
           <input type='text' className='c-form-text' defaultValue={ this.props.card.name || '' } ref={node => this.inputRef = node} placeholder='テンプレート名'/>
         </div>
-        <CustomerInfomation company={ this.state.company } division={ this.state.division }/>
-        <DivisionSearch applyDivision={ this.applyDivision } type_name={ '会社・部署情報を登録' } not_found={ '会社・部署情報が見つかりませんでした。'}/>
+        <CustomerInfomation company={ this.state.company }/>
+        <DivisionSearch applyCompany={ this.applyCompany } type_name={ '会社情報を登録' } not_found={ '会社情報が見つかりませんでした。'}/>
         <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
         { this.state.status ?
           <CardTemplate template={ this.state.templates[0] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>

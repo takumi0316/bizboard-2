@@ -61,7 +61,7 @@ export default class UploadCardClient extends React.Component {
    */
   cardSearch = props => {
 
-    const url = '/card_clients/upload.json?company_division_id=' + props.division.id;
+    const url = '/card_clients/upload.json?company_id=' + props.company.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
@@ -73,6 +73,7 @@ export default class UploadCardClient extends React.Component {
       this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error.message });
     });
+
     this.loadingRef.start();
   };
 
@@ -98,6 +99,7 @@ export default class UploadCardClient extends React.Component {
           if(bool) this.template_front_file = file;
           if(!bool) this.template_reverse_file = file;
         };
+
         if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
       }).catch(err => window.alertable({ icon: 'error', message: err }));
     })
@@ -120,7 +122,7 @@ export default class UploadCardClient extends React.Component {
   formatCSV = data => {
 
     const parse_clients = JSON.parse(JSON.stringify(data));
-    const isDivision = parse_clients.every(client => client['部署ID'] == this.state.division.id);
+    const isDivision = parse_clients.every(client => client['会社ID'] == this.state.company.id);
 
     if(!isDivision) {
       window.alertable({ icon: 'error', message: '部署の選択が間違っています。' });
@@ -154,7 +156,7 @@ export default class UploadCardClient extends React.Component {
           return { ...value, value: card_client[value.name] };
         });
         client.templates.push({ id: '', card_client_id: '', card_template_id: card.reverse_template_id, values: [] });
-        client.templates[1].values = card.front_values.map(value => {
+        client.templates[1].values = card.reverse_values.map(value => {
           return { ...value, value: card_client[value.name] };
         });
       };
@@ -203,7 +205,7 @@ export default class UploadCardClient extends React.Component {
     draw_ctx.setTransform(1,0,0,1,0,0);
     draw_ctx.restore();
 
-    values.forEach(value => {
+    values.map(value => {
 
       draw_ctx.font = `${mmTopx(ptTomm(value.font_size)) * 2}px ${value.font}`;
       const y = mmTopx(value.coord_y) * 2;
@@ -266,8 +268,8 @@ export default class UploadCardClient extends React.Component {
       field.append('card_client[card_id]', card_client.card_id);
       field.append('card_client[company_division_id]', card_client.company_division_id);
       field.append('card_client[company_division_client_id]', card_client.company_division_client_id);
-      field.append('company_division_client_ids[]', card_client.company_division_client_id);
       card_client.templates.map(template => {
+        field.append('company_division_client_ids[]', card_client.company_division_client_id);
         field.append('card_client[templates_attributes][][id]', '');
         field.append('card_client[templates_attributes][][card_client_id]', '');
         field.append('card_client[templates_attributes][][card_template_id]', template.card_template_id);
@@ -284,7 +286,8 @@ export default class UploadCardClient extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '一括登録に成功しました。' });
+      const redirect = () => window.location.href = '/card_clients';
+      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '一括登録に成功しました。', close_callback: redirect });
       if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => {
 

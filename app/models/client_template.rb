@@ -38,7 +38,7 @@ class ClientTemplate < ApplicationRecord
   belongs_to :card_template
 
   # 名刺テンプレート
-  has_many :values, class_name: 'ClientTemplateValue', dependent: :delete_all
+  has_many :values, class_name: 'ClientTemplateValue', dependent: :destroy
 
   accepts_nested_attributes_for :values, allow_destroy: true, reject_if: :all_blank
 

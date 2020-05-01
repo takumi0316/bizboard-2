@@ -35,22 +35,25 @@ export default class DownloadCardClient extends React.Component {
   /**
    * 会社・部署セット
    * @version 2020/03/23
+   *
    **/
   applyDivision = props => this.cardSearch(props);
 
   /**
    * 会社・部署セット
    * @version 2020/03/23
+   *
    **/
   applyCard = card => this.cardClientSearch(card);
 
   /**
    * 名刺セット
    * @version 2020/04/07
+   *
    */
   cardSearch = props => {
 
-    const url = '/card_clients/download.json?company_division_id=' + props.division.id;
+    const url = '/card_clients/download.json?company_id=' + props.company.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
@@ -62,12 +65,14 @@ export default class DownloadCardClient extends React.Component {
       this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error });
     });
+
     this.loadingRef.start();
   };
 
   /**
    * 名刺担当者セット
    * @version 2020/04/07
+   *
    */
   cardClientSearch = card => {
 
@@ -90,6 +95,7 @@ export default class DownloadCardClient extends React.Component {
   /**
    * ダウンロード有無
    * @version 2020/04/27
+   *
    */
   isClientDownload = e => {
 
@@ -104,6 +110,7 @@ export default class DownloadCardClient extends React.Component {
   /**
    * CSVダウンロード
    * @version 2020/04/13
+   *
    */
   download = e => {
 

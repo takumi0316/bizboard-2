@@ -26,15 +26,11 @@ export default class ClientGenerate extends React.Component {
   constructor(props) {
     super(props);
 
-    const templateInit = [
-      { ...props.front_template },
-      { ...props.reverse_template }
-    ];
-
+    console.log(props.reverse_value);
     const clientTemplateInit = [
       { ...props.front_value },
       { ...props.reverse_value }
-    ]
+    ].filter(template => template.id);
 
     this.template_front_file = '';
     this.template_reverse_file = '';
@@ -42,7 +38,6 @@ export default class ClientGenerate extends React.Component {
     this.state = {
       cards: props.cards,
       card: props.card,
-      templates: [...templateInit],
       company: props.company,
       divisions: props.divisions,
       division: props.division,
@@ -62,7 +57,7 @@ export default class ClientGenerate extends React.Component {
   componentDidMount = () => {
 
     const client_templates = this.state.client_templates.filter(card_template => card_template.file);
-    client_templates.map(client_template => {
+    this.state.client_templates.map(client_template => {
 
       const field = new FormData();
       field.append('url', client_template.file);
@@ -124,7 +119,7 @@ export default class ClientGenerate extends React.Component {
 
     if(!status) client_templates[1].values[detail_id].value = value;
 
-    this.setState({client_templates: client_templates }, this.drawText());
+    this.setState({ client_templates: client_templates }, () => this.drawText());
   };
 
   /**
@@ -141,9 +136,9 @@ export default class ClientGenerate extends React.Component {
 
     // Set dimensions to Canvas
     draw_ctx.beginPath();
-    draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
+    draw_ctx.clearRect(0, 0, draw_canvas.width, draw_canvas.height);
     draw_ctx.save();
-    draw_ctx.setTransform(1,0,0,1,0,0);
+    draw_ctx.setTransform(1, 0, 0, 1, 0, 0);
     draw_ctx.restore();
 
     values.forEach(value => {
@@ -234,12 +229,14 @@ export default class ClientGenerate extends React.Component {
   /**
    * ステータスセット
    * @version 2020/03/27
+   *
    */
   setStatus = () => this.setState({ status: !this.state.status });
 
   /**
    * 保存
    * @version 2020/04/08
+   *
    */
   save = e => {
 
@@ -250,7 +247,6 @@ export default class ClientGenerate extends React.Component {
     field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);
     this.state.client_templates.map(template => {
-      if(!template.id) return;
       field.append('card_client[templates_attributes][][id]', template.id);
       field.append('card_client[templates_attributes][][card_client_id]', this.state.card_client_id);
       field.append('card_client[templates_attributes][][card_template_id]', template.card_template_id);
@@ -281,20 +277,17 @@ export default class ClientGenerate extends React.Component {
         <Division company={ this.state.company } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Client clients={ this.state.clients } client={ this.state.client } typeName={ ClientTypeName } notFound={ ClientNotFound } applyClient={ this.applyClient }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        { this.state.client_templates ?
-          <Fragment>
-            { this.state.client_templates[1].file ?
-              <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
-              : null
-            }
-            { this.state.status ?
-              <Template client_template={ this.state.client_templates[0] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
-              :
-              <Template client_template={ this.state.client_templates[1] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
-            }
-          </Fragment>
-          : <div>テンプレートを選択してください。</div>
-        }
+        <Fragment>
+          { this.state.client_templates[1] ?
+            <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
+            : null
+          }
+          { this.state.status ?
+            <Template client_template={ this.state.client_templates[0] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
+            :
+            <Template client_template={ this.state.client_templates[1] } status={ this.state.status } onChangeValue={ this.onChangeValue }/>
+          }
+        </Fragment>
         <div className='u-mt-30'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>更新する</button>
         </div>

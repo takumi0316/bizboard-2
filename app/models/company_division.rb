@@ -50,9 +50,6 @@ class CompanyDivision < ApplicationRecord
   # 担当者
   has_many :clients, class_name: 'CompanyDivisionClient'
 
-  # 名刺テンプレート
-  has_many :cards
-
   # 名刺担当者
   has_many :card_clients
 

@@ -120,10 +120,14 @@ class CompanyDivisionClientsController < ApplicationController
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
+  ##
+  #
+  # @version 2020/04/30
+  #
   def search_clients
 
     @clients = CompanyDivisionClient.where company_division_id: params[:company_division_id]
-    @cards = Card.where company_division_id: params[:company_division_id]
+    @cards = Card.where company_id: params[:company_id]
     render json: { status: :success, clients: @clients, cards: @cards }
   end
 

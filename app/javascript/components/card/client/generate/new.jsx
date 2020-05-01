@@ -142,7 +142,7 @@ export default class ClientGenerate extends React.Component {
       for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
         let line = lines[i];
         let addY = fontSize;
-        if ( i ) addY += fontSize * lineSpace * i;
+        if(i) addY += fontSize * lineSpace * i;
         draw_ctx.fillText(line, x, y + addY);
       };
     });
@@ -203,7 +203,7 @@ export default class ClientGenerate extends React.Component {
           for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
             let line = lines[i];
             let addY = fontSize;
-            if ( i ) addY += fontSize * lineSpace * i;
+            if (i) addY += fontSize * lineSpace * i;
             draw_ctx.fillText(line, x, y + addY);
           };
         });
@@ -228,7 +228,7 @@ export default class ClientGenerate extends React.Component {
    */
   clientSearch = props => {
 
-    const url = '/company_division_clients/search_clients?company_division_id=' + props.division.id;
+    const url = '/company_division_clients/search_clients?company_division_id=' + props.division.id + '&company_id=' + props.company.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
@@ -237,6 +237,7 @@ export default class ClientGenerate extends React.Component {
         if(this.state.client) this.setState({ company: props.company, division: props.division, clients: res.data.clients, client: '', cards: res.data.cards, card: '', client_templates: '' });
         if(!this.state.client) this.setState({ company: props.company, division: props.division, clients: res.data.clients, cards: res.data.cards });
       };
+
       if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => window.alertable({ icon: 'error', message: error.message }));
   };
@@ -299,8 +300,7 @@ export default class ClientGenerate extends React.Component {
   getConvertPDF = () => {
 
     this.loadingRef.start();
-    const client_templates = this.state.client_templates.filter(client_template => client_template.file);
-    client_templates.map(client_template => {
+    this.state.client_templates.map(client_template => {
 
       const field = new FormData();
       field.append('url', client_template.file);

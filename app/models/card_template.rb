@@ -42,6 +42,9 @@ class CardTemplate < ApplicationRecord
   # 名刺テンプレート詳細
   has_many :details, class_name: 'TemplateDetail', dependent: :delete_all
 
+  # 担当者情報
+  has_many :client_templates
+
   accepts_nested_attributes_for :details, allow_destroy: true, reject_if: :all_blank
 
   #----------------------------------------

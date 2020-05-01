@@ -1,11 +1,5 @@
 json = { status: :success }
 
-arr = []
-CompanyDivision.find(params[:company_division_id]).cards.map do |r|
-
-  arr.push({ id: r.id, company_division_id: r.company_division_id, name: r.name })
-end
-
-json[:cards] = arr
+json[:cards] = Company.find(params[:company_id]).cards.map { |r | { id: r.id, company_id: r.company_id, name: r.name } }
 
 json
