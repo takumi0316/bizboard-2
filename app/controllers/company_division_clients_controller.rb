@@ -83,7 +83,7 @@ class CompanyDivisionClientsController < ApplicationController
 
     if client.confirmation_token.nil?
       client.confirmation_token = 'FactoryToken'
-      client.confirmed_at = Date.today.to_time
+      client.confirmed_at = Time.now
       client.confirmation_sent_at = Date.today.to_time
       client.save!
     end
