@@ -10,7 +10,7 @@ const Template = props => {
       <div>
         <div className='c-position'>
           <Canvas id='draw' class_name='c-border c-border-top c-border-left c-border-right c-position__canvas'/>
-          <Canvas id='pdf' class_name='c-border c-border-top c-border-left c-border-righ'/>
+          <Canvas id='pdf' class_name='c-border c-border-top c-border-left c-border-right'/>
         </div>
       </div>
       <Header client_template={ props.client_template } status={ props.status } onChangeValue={ props.onChangeValue }/>

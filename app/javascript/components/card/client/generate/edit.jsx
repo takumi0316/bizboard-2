@@ -262,7 +262,8 @@ export default class ClientGenerate extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      window.location.href = `/card_clients/${res.data.card_client.id}/edit/`;
+      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '更新に成功しました。' });
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
       this.loadingRef.finish();
