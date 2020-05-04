@@ -313,8 +313,8 @@ class QuotesController < ApplicationController
         zipfile.get_output_stream("csv/#{card.name}.csv") do |f|
           f.puts(
             CSV.generate(bom) do |csv|
-              headers << ''
-              headers << card.name
+              headers << 'No.'
+              headers << 'テンプレート名'
               card.templates.map do |t|
                 t.details.map do |d|
                   headers << d.name
@@ -324,7 +324,10 @@ class QuotesController < ApplicationController
               quote.card_clients.where(card_id: r).map do |c|
                 client = CardClient.find(c.id)
                 client.templates.each_with_index do |ct, index|
-                  values << index
+                  if ct.card_template.status == 'true'
+                    values << index
+                    values << card.name
+                  end
                   ct.values.map do |v|
                     values << v.value
                   end
