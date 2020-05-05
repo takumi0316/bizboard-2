@@ -59,7 +59,7 @@ class Expendable < ApplicationRecord
 
   belongs_to :division
 
-  belongs_to :work_subcontractor
+  belongs_to :work_subcontractor, optional: true
 
   #----------------------------------------
   #  ** Scopes **
