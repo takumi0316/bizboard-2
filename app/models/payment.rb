@@ -39,7 +39,7 @@ class Payment < ApplicationRecord
 
   belongs_to :subcontractor, foreign_key: 'subcontractor_id'
 
-  belongs_to :work_subcontractor
+  belongs_to :work_subcontractor, optional: true
 
   #----------------------------------------
   #  ** Scopes **
