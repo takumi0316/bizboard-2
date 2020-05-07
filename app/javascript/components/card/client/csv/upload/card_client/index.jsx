@@ -73,7 +73,7 @@ const CardClient = props => {
       let scale = 2;
 
       // Get viewport (dimensions)
-      let viewport = page.getViewport(scale);
+      let viewport = page.getViewport({ scale: scale });
 
       // Get canvas#the-canvas
       let canvas = document.getElementById('pdf');

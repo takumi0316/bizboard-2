@@ -119,9 +119,9 @@ export default class NewTemplateGenerate extends React.Component {
 
     // Set dimensions to Canvas
     draw_ctx.beginPath();
-    draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
+    draw_ctx.clearRect(0, 0, draw_canvas.width, draw_canvas.height);
     draw_ctx.save();
-    draw_ctx.setTransform(1,0,0,1,0,0);
+    draw_ctx.setTransform(1, 0, 0, 1, 0, 0);
     draw_ctx.restore();
 
     details.forEach(detail => {
@@ -137,7 +137,7 @@ export default class NewTemplateGenerate extends React.Component {
 
         let line = lines[i];
         let addY = fontSize;
-        if ( i ) addY += fontSize * lineSpace * i;
+        if(i) addY += fontSize * lineSpace * i;
         draw_ctx.fillText(line, x, y + addY);
       };
     });
@@ -253,7 +253,7 @@ export default class NewTemplateGenerate extends React.Component {
       let scale = 2;
 
       // Get viewport (dimensions)
-      let viewport = page.getViewport(scale);
+      let viewport = page.getViewport({ scale: scale });
 
       // Get canvas#the-canvas
       let canvas = document.getElementById('pdf');
