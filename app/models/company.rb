@@ -112,7 +112,7 @@ class Company < ApplicationRecord
       # 同じ案件番号の内容でeach処理
       begin
         r.each do |ri|
-            new_client << CompanyDivisionClient.new(company_division_id: division_id, name: ri[:name], email: ri[:mail], confirmation_token: 'FactoryToken', confirmed_at: Date.today.to_time, confirmation_sent_at: Date.today.to_time, password: ri[:password], password_confirmation: ri[:password] )
+            new_client << CompanyDivisionClient.new(company_division_id: division_id, name: ri[:name], email: ri[:mail], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password], password_confirmation: ri[:password] )
         end
         CompanyDivisionClient.import new_client
       end

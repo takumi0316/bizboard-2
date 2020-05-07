@@ -84,7 +84,7 @@ class CompanyDivisionClientsController < ApplicationController
     if client.confirmation_token.nil?
       client.confirmation_token = 'FactoryToken'
       client.confirmed_at = Time.now
-      client.confirmation_sent_at = Date.today.to_time
+      client.confirmation_sent_at = Time.now
       client.save!
     end
 
@@ -104,8 +104,8 @@ class CompanyDivisionClientsController < ApplicationController
     client.update! client_params
 
     client.confirmation_token = 'FactoryToken'
-    client.confirmed_at = Date.today.to_time
-    client.confirmation_sent_at = Date.today.to_time
+    client.confirmed_at = Time.now
+    client.confirmation_sent_at = Time.now
     client.save!
 
     redirect_to edit_company_division_client_path(client), flash: { notice: { message: '担当者情報を作成しました' } }

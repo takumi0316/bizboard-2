@@ -286,7 +286,7 @@ class QuotesController < ApplicationController
 
     clone_quote.save
 
-    clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Date.today.to_time, deliver_at: Date.today.to_time, tax: 1.1)
+    clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Time.now, deliver_at: Time.now, tax: 1.1)
 
     if quote.work.present?
       # , :subcontractor, :subcontractor_detail
