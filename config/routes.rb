@@ -97,7 +97,9 @@ Rails.application.routes.draw do
   resources :work_subcontractor_details, only: [:create, :destroy]
 
   # 取引先(会社)
-  resources :companies
+  resources :companies do
+    collection { post :import_client }
+  end
 
   # 取引先(部署)
   resources :company_divisions

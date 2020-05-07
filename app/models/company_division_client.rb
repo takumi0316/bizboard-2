@@ -39,6 +39,8 @@ class CompanyDivisionClient < ApplicationRecord
   #  ** Includes **
   #----------------------------------------
 
+  has_secure_password
+
   #----------------------------------------
   #  ** Constants **
   #----------------------------------------
@@ -49,6 +51,10 @@ class CompanyDivisionClient < ApplicationRecord
 
   # 敬称
   enum title: { nothing: 0, honorific: 10, normal: 20 }
+
+  # ユーザー区分(admin: 20消しました)
+  enum user_type: { general: 0, division: 10, admin: 20}
+
 
   #----------------------------------------
   #  ** Validations **
