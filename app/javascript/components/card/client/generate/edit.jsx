@@ -74,12 +74,10 @@ export default class ClientGenerate extends React.Component {
         };
         if(res.data.status == 'error') {
           window.alertable({ icon: 'error', message: res.data.message });
-          console.log('error: ', res.data.message);
         }
 
       }).catch(err => {
         window.alertable({ icon: 'error', message: err })
-        console.log(err)
       });
     });
   };
