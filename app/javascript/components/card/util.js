@@ -47,7 +47,7 @@ export const mmTopx = mm => {
   const parser = new UAParser();
   const os = parser.getOS().name;
 
-  if(os == 'Windows') return 96 / 25.4 * mm;
+  if(os == 'Windows') return 72 / 25.4 * mm;
   if(os == 'Mac OS') return 72 / 25.4 * mm;
 };
 
