@@ -30,7 +30,7 @@ namespace :deploy do
   before :compile_assets, :set_max_heep_size do
     on roles(:assets) do
       within release_path do
-        execute "export NODE_OPTIONS='--max-old-space-size=900'"
+        execute "export NODE_OPTIONS='--max-old-space-size=950'"
       end
     end
   end
