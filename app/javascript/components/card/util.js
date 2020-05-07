@@ -108,6 +108,7 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
       viewport: viewport
     };
 
+    console.log('before render')
     // Render PDF page
     page.render(renderContext);
   }).catch(error => window.alertable({ icon: 'error', message: error }));
