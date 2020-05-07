@@ -26,7 +26,6 @@ export default class ClientGenerate extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(props.reverse_value);
     const clientTemplateInit = [
       { ...props.front_value },
       { ...props.reverse_value }
@@ -73,9 +72,15 @@ export default class ClientGenerate extends React.Component {
           };
           if(!bool) this.template_reverse_file = file;
         };
-        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
+        if(res.data.status == 'error') {
+          window.alertable({ icon: 'error', message: res.data.message });
+          console.log('error: ', res.data.message);
+        }
 
-      }).catch(err => window.alertable({ icon: 'error', message: err }));
+      }).catch(err => {
+        window.alertable({ icon: 'error', message: err })
+        console.log(err)
+      });
     });
   };
 
