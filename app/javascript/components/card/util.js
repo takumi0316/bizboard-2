@@ -47,6 +47,7 @@ export const mmTopx = mm => {
   const parser = new UAParser();
   const os = parser.getOS().name;
 
+  console.log(os)
   if(os == 'windows') return 96 / 25.4 * mm;
   if(os == 'Mac OS') return 72 / 25.4 * mm;
 };
@@ -58,12 +59,11 @@ export const mmTopx = mm => {
  */
 export const setPDF = (file, details, canvas, draw_canvas) => {
 
-  console.log(file, details, canvas, draw_canvas)
   const blob = new Blob([file]);
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
 
-  getPDF.promise.then(pdf => {
+  getPDF.then(pdf => {
 
     return pdf.getPage(1);
   }).then(page => {
@@ -82,8 +82,12 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
     canvas.height = (mmTopx(55 * 2));
     canvas.width = (mmTopx(91 * 2));
 
+    console.lgo(canvas.height)
+    console.lgo(canvas.width)
     draw_canvas.height = (mmTopx(55 * 2));
     draw_canvas.width = (mmTopx(91 * 2));
+    console.log(draw_canvas.height)
+    console.log(draw_canvas.width)
 
     details.forEach(detail => {
 
@@ -108,7 +112,6 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
       viewport: viewport
     };
 
-    console.log('before render')
     // Render PDF page
     page.render(renderContext);
   }).catch(error => window.alertable({ icon: 'error', message: error }));
