@@ -15,7 +15,7 @@ import {
 
 import {
   validProperty
-} from './util';
+} from '../../../util';
 
 export default class DownloadCardClient extends React.Component {
 

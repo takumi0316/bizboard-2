@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Information from './information';
-import Check     from './check';
+import Check       from './check';
 
 const CardClient = props => {
 

@@ -19,7 +19,7 @@ import {
 import {
   ptTomm,
   mmTopx,
-} from './util';
+} from '../../util';
 
 export default class ClientGenerate extends React.Component {
 

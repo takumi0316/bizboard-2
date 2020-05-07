@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 import Infomation from './infomation';
-import Search      from './search';
+import Search     from './search';
 
 const Division = props => {
 

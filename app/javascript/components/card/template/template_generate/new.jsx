@@ -6,19 +6,11 @@ import TempalteStatus     from './template_status/index';
 import CardTemplate       from './card_template/index';
 import Loading            from '../../../loading'
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request)
-
 import {
   validProperty,
-  ptTomm,
-  mmTopx,
-} from './util';
-
-import {
-  HEADERS
-} from './properties.es6';
+  setPDF,
+  drawText,
+} from '../../util';
 
 export default class NewTemplateGenerate extends React.Component {
 
@@ -31,8 +23,11 @@ export default class NewTemplateGenerate extends React.Component {
       { ...props.reverse_side },
     ];
 
-    this.front_template = '';
-    this.reverse_template = '';
+    this.front_file = '';
+    this.reverse_file = '';
+
+    this.canvas = '';
+    this.draw_canvas = ''
 
     this.state = {
       card_id: '',
@@ -49,13 +44,16 @@ export default class NewTemplateGenerate extends React.Component {
    */
   componentDidUpdate = (prevProps, prevState) => {
 
-    const file = this.state.status ? this.front_template : this.reverse_template;
-    const prevFile = this.state.status ? prevState.templates[0].file : prevState.templates[1].file;
-    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
+    this.canvas = document.getElementById('pdf');
+    this.draw_canvas = document.getElementById('draw');
+    const status = this.state.status;
+    const file = status ? this.front_file : this.reverse_file;
+    const prevFile = prevState.templates[status ? 0 : 1].file;
+    const details = this.state.templates[status ? 0 : 1].details;
 
-    if(this.state.status == prevState.status) if(!prevFile && file) this.setPDF(file, this.loadingRef, details);
+    if(status == prevState.status) if(!prevFile && file) setPDF(file, details, this.canvas, this.draw_canvas);
 
-    if(this.state.status != prevState.status) if(file) this.setPDF(file, this.loadingRef, details);
+    if(status != prevState.status) if(file) setPDF(file, details, this.canvas, this.draw_canvas);
   };
 
   /**
@@ -72,22 +70,14 @@ export default class NewTemplateGenerate extends React.Component {
    */
   onDrop = files => {
 
-    let templates = JSON.parse(JSON.stringify(this.state.templates));
+    let parse_templates = JSON.parse(JSON.stringify(this.state.templates));
     const file = files[0];
+    const status = this.state.status;
+    parse_templates[status ? 0 : 1].file = file;
+    if(status) this.front_file = file
+    if(!status) this.reverse_file = file
 
-    if(this.state.status) {
-
-      templates[0].file = file;
-      this.front_template = file;
-    };
-
-    if(!this.state.status) {
-
-      templates[1].file = file;
-      this.reverse_template = file;
-    };
-
-    this.setState({ templates: templates });
+    this.setState({ templates: parse_templates });
   };
 
   /**
@@ -105,45 +95,6 @@ export default class NewTemplateGenerate extends React.Component {
   setStatus = () => this.setState({ status: !this.state.status });
 
   /**
-   * PDFにテキストを展開
-   * @version 2020/04/06
-   *
-   */
-  drawText = () => {
-
-    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
-
-    // Fetch canvas' 2d context
-    let draw_canvas = document.getElementById('draw');
-    let draw_ctx = draw_canvas.getContext('2d');
-
-    // Set dimensions to Canvas
-    draw_ctx.beginPath();
-    draw_ctx.clearRect(0, 0, draw_canvas.width, draw_canvas.height);
-    draw_ctx.save();
-    draw_ctx.setTransform(1, 0, 0, 1, 0, 0);
-    draw_ctx.restore();
-
-    details.forEach(detail => {
-
-      draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
-      const y = mmTopx(detail.coord_y) * 2;
-      const x =	mmTopx(detail.coord_x) * 2;
-      const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
-      const lineSpace = mmTopx(detail.line_space);
-      const name = detail.name;
-
-      for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
-
-        let line = lines[i];
-        let addY = fontSize;
-        if(i) addY += fontSize * lineSpace * i;
-        draw_ctx.fillText(line, x, y + addY);
-      };
-    });
-  };
-
-  /**
    * 名刺ヘッダーカラム追加
    * @version 2020/03/30
    *
@@ -152,9 +103,9 @@ export default class NewTemplateGenerate extends React.Component {
 
     e.preventDefault();
 
-    const templates = JSON.parse(JSON.stringify(this.state.templates));
+    const parse_templates = JSON.parse(JSON.stringify(this.state.templates));
     const status = this.state.status;
-    const file = status ? templates[0].file : templates[1].file;
+    const file = parse_templates[status ? 0 : 1].file;
 
     if(!file) {
 
@@ -166,17 +117,17 @@ export default class NewTemplateGenerate extends React.Component {
       id: '',
       card_template_id: '',
       name: '',
-      font: 'Osaka',
-      font_size: '8',
+      font: '新ゴR',
+      font_size: '9',
       font_color: 'black',
       coord_y: '10',
-      coord_x: '27',
+      coord_x: '28',
       length: '15',
       line_space: '9'
     };
 
-    status ? templates[0].details.push(init) : templates[1].details.push(init);
-    this.setState({ templates: templates });
+    parse_templates[status ? 0 : 1].details.push(init);
+    this.setState({ templates: parse_templates });
   };
 
   /**
@@ -187,28 +138,17 @@ export default class NewTemplateGenerate extends React.Component {
   onChangeDetail = e => {
 
     const status = this.state.status;
-    let templates = { ...this.state.templates };
-    let file = '';
+    let parse_templates = JSON.parse(JSON.stringify(this.state.templates));
     const detail_id = e.target.getAttribute('index');
     const detail_name =  e.target.id;
     const value = e.target.value;
 
-    if(!value) window.alertable({ icon: 'info', message: `ID: ${detail_id}の${HEADERS[detail_name]}を入力して下さい。`});
+    parse_templates[status ? 0 : 1].details[detail_id][detail_name] = value;
+    const file = parse_templates[status ? 0 : 1].file;
+    const details = parse_templates[status ? 0 : 1].details;
 
-    if(status) {
-
-      templates[0].details[detail_id][detail_name] = value;
-      file = templates[0].file;
-    };
-
-    if(!status) {
-
-      templates[1].details[detail_id][detail_name] = value;
-      file = templates[1].file;
-    };
-
-    if(file) this.setState({ ...templates }, () => this.drawText());
-    if(!file) this.setState({ ...templates });
+    if(file) this.setState({ templates: parse_templates }, () => drawText(details, this.draw_canvas));
+    if(!file) this.setState({ templates: parse_templates });
   };
 
   /**
@@ -218,93 +158,12 @@ export default class NewTemplateGenerate extends React.Component {
    */
   unSetPDF = () => {
 
-    let templates = this.state.templates;
+    let templates = JSON.parse(JSON.stringify(this.state.templates));
+    const status = this.state.status;
+    templates[status ? 0 : 1].file = '';
+    status ? this.front_file : this.reverse_file = '';
 
-    if(this.state.status) {
-
-      templates[0].file = '';
-      this.front_template = '';
-    };
-
-    if(!this.state.status) {
-
-      templates[1].file = '';
-      this.reverse_template = '';
-    };
-
-    this.setState({ ...templates })
-  };
-
-  /**
-   * PDFを展開する
-   * @version 2020/03/30
-   *
-   */
-  setPDF = (file, loadingRef, details) => {
-
-    loadingRef.start();
-    const blob = new Blob([file]);
-    const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
-    const getPDF = pdfjsLib.getDocument(blob_path);
-    getPDF.then(function(pdf) {
-      return pdf.getPage(1);
-    }).then(function(page) {
-      // Set scale (zoom) level
-      let scale = 2;
-
-      // Get viewport (dimensions)
-      let viewport = page.getViewport({ scale: scale });
-
-      // Get canvas#the-canvas
-      let canvas = document.getElementById('pdf');
-      let draw_canvas = document.getElementById('draw');
-
-      // Fetch canvas' 2d context
-      let ctx = canvas.getContext('2d');
-      let draw_ctx = draw_canvas.getContext('2d');
-
-      // Set dimensions to Canvas
-      canvas.height = (mmTopx(55 * 2));
-
-      canvas.width = (mmTopx(91 * 2));
-
-      draw_canvas.height = (mmTopx(55 * 2));
-      draw_canvas.width = (mmTopx(91 * 2));
-
-      if(details) {
-        details.forEach(detail => {
-
-          draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
-          const y = mmTopx(detail.coord_y) * 2;
-          const x =	mmTopx(detail.coord_x) * 2;
-          const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
-          const lineSpace = mmTopx(detail.line_space);
-          const name = detail.name;
-
-          for(let lines = name.split("\n"), i = 0, l = lines.length; l > i; i++) {
-
-            let line = lines[i];
-            let addY = fontSize;
-            if ( i ) addY += fontSize * lineSpace * i;
-            draw_ctx.fillText(line, x, y + addY);
-          };
-        });
-      };
-
-      // Prepare object needed by render method
-      const renderContext = {
-        canvasContext: ctx,
-        viewport: viewport
-      };
-
-      loadingRef.finish();
-      // Render PDF page
-      page.render(renderContext);
-    }).catch(error => {
-
-      loadingRef.finish();
-      window.alertable({ icon: 'error', message: error });
-    })
+    this.setState({ templates: parse_templates });
   };
 
   /**
@@ -325,13 +184,11 @@ export default class NewTemplateGenerate extends React.Component {
     field.append('card[company_id]', this.state.company.id);
     const templates = this.state.templates.filter(template => template.file);
     templates.forEach((template) => {
-
       field.append('card[templates_attributes][][id]', template.id || '');
       field.append('card[templates_attributes][][card_id]', template.card_id || '');
       field.append('card[templates_attributes][][status]', template.status);
-      field.append('card[templates_attributes][][file]', this.toBoolean(template.status) ? this.front_template : this.reverse_template);
+      field.append('card[templates_attributes][][file]', this.toBoolean(template.status) ? this.front_file : this.reverse_file);
       template.details.forEach(detail => {
-
         field.append('card[templates_attributes][][details_attributes][][id]', detail.id || '');
         field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id || '');
         field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
@@ -351,7 +208,6 @@ export default class NewTemplateGenerate extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      console.log(res.data)
       if(res.data.status == 'success') {
 
         const redirect = window.location.href = `/cards/${res.data.card.id}/edit/`;

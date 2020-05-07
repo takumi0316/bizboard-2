@@ -12,10 +12,10 @@ const Information = props => {
           <div>会社名: { props.company.name || '会社名なし' }</div>
           <div className='u-mt-10'>部署名: { props.division.name || '部署名なし' }</div>
         </div>
-       :
-       <div className='c-attention'>
-         <div>会社・部署を選択して下さい。</div>
-       </div>
+        :
+        <div className='c-attention'>
+          <div>会社・部署を選択して下さい。</div>
+        </div>
       }
     </Fragment>
   );

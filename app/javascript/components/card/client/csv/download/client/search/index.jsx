@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import Style from './style.sass';
 
 /**
  *  @version
  */
 const Search = props => {
-  
+
   const init = {
     show: false,
-    clients: { ...props.clients }, 
-    body: '' 
+    clients: { ...props.clients },
+    body: ''
   };
-  
+
   const [state, setState] = useState(init);
-  
+
   /**
    *  モーダルを表示する
    *  @version 2018/06/10
    */
   const open = e => {
-    
+
     e.preventDefault();
 
     setState({ ...state, clients: props.clients, show: !state.show });
   };
-  
+
   /**
    *  モーダルを閉じる
    *  @version 2018/06/10
@@ -48,7 +48,7 @@ const Search = props => {
    *  @version 2018/06/10
    */
   const onSelect = e => {
-    
+
     const client = state.clients[e.target.dataset.number];
     props.applyClient(client);
     close();

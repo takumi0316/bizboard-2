@@ -2,29 +2,30 @@ import React, { useState } from 'react';
 import Style from './style.sass';
 
 /**
- *  @version
+ *
+ * @version 2020/05/07
  */
 const Search = props => {
-  
+
   const init = {
     show: false,
     divisions: props.divisions || '',
     body: null
   };
-  
+
   const [state, setState] = useState(init);
-  
+
   /**
    *  モーダルを表示する
    *  @version 2018/06/10
    */
   const open = e => {
-    
+
     e.preventDefault();
 
     setState({ ...state, show: true });
   };
-  
+
   /**
    *  モーダルを閉じる
    *  @version 2018/06/10
@@ -48,7 +49,7 @@ const Search = props => {
    *  @version 2018/06/10
    */
   const onSelect = e => {
-    
+
     const division = state.divisions[e.target.dataset.number];
     props.applyDivision(division);
     close();
