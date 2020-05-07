@@ -58,10 +58,7 @@ export const mmTopx = mm => {
  */
 export const setPDF = (file, details, canvas, draw_canvas) => {
 
-  console.log(file)
-  console.log(details)
-  console.log(canvas)
-  console.log(draw_canvas)
+  console.log(file, details, canvas, draw_canvas)
   const blob = new Blob([file]);
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
