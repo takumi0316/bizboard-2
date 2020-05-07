@@ -47,7 +47,6 @@ export const mmTopx = mm => {
   const parser = new UAParser();
   const os = parser.getOS().name;
 
-  console.log(os)
   if(os == 'Windows') return 96 / 25.4 * mm;
   if(os == 'Mac OS') return 72 / 25.4 * mm;
 };
@@ -82,12 +81,8 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
     canvas.height = (mmTopx(55 * 2));
     canvas.width = (mmTopx(91 * 2));
 
-    console.log(canvas.height)
-    console.log(canvas.width)
     draw_canvas.height = (mmTopx(55 * 2));
     draw_canvas.width = (mmTopx(91 * 2));
-    console.log(draw_canvas.height)
-    console.log(draw_canvas.width)
 
     details.forEach(detail => {
 
