@@ -194,7 +194,7 @@ export default class EditTemplateGenerate extends React.Component {
    */
   unSetPDF = () => {
 
-    let templates = JSON.parse(JSON.stringifyt(this.state.templates));
+    let templates = JSON.parse(JSON.stringify(this.state.templates));
 
     templates[status ? 0 : 1].file = '';
     status ? this.front_file : this.reverse_file = '';

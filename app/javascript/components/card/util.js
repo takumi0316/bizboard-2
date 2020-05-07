@@ -62,14 +62,16 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
 
-  getPDF.promise.then(function(pdf) {
+  getPDF.promise.then(pdf => {
+
     return pdf.getPage(1);
-  }).then(function(page) {
+  }).then(page => {
+
     // Set scale (zoom) level
     let scale = 2;
 
     // Get viewport (dimensions)
-    let viewport = page.getViewport({ scale: scale });
+    let viewport = page.getViewport({ scale: scale, rotate: 1 });
 
     // Fetch canvas' 2d context
     let ctx = canvas.getContext('2d');
