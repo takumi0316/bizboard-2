@@ -72,13 +72,9 @@ export default class ClientGenerate extends React.Component {
           };
           if(!bool) this.template_reverse_file = file;
         };
-        if(res.data.status == 'error') {
-          window.alertable({ icon: 'error', message: res.data.message });
-        }
+        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
 
-      }).catch(err => {
-        window.alertable({ icon: 'error', message: err })
-      });
+      }).catch(err => window.alertable({ icon: 'error', message: err }));
     });
   };
 

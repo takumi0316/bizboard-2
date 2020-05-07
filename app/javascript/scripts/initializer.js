@@ -128,43 +128,25 @@ window.Initializer = window.Initializer||{};
 
     // linkクリック時
     document.addEventListener('turbolinks:click', function(e) {
-      console.log('turbolinks:click', e);
-      console.log(Turbolinks.controller);
     });
     document.addEventListener('turbolinks:before-visit', function(e) {
-      console.log('turbolinks:before-visit', e);
-      console.log(Turbolinks.controller);
     });
     // ページ遷移前 以前: page:before-unload
     document.addEventListener('turbolinks:request-start', function(e) {
-      console.log('turbolinks:request-start', e);
-      console.log(Turbolinks.controller);
     });
     document.addEventListener('turbolinks:visit', function(e) {
-      console.log('turbolinks:visit', e);
-      console.log(Turbolinks.controller);
     });
     document.addEventListener('turbolinks:request-end', function(e) {
-      console.log('turbolinks:request-end', e);
-      console.log(Turbolinks.controller);
     });
     document.addEventListener('turbolinks:before-cache', function(e) {
-      console.log('turbolinks:before-cache', e);
-      console.log(Turbolinks.controller);
     });
     document.addEventListener('turbolinks:before-render', function(e) {
-      console.log('turbolinks:before-render', e);
-      console.log(Turbolinks.controller);
     });
     // ページ切り替え時（初回ページは対象外） 以前: page:before-unload
     document.addEventListener('turbolinks:render', function(e) {
-      console.log('turbolinks:render', e);
-      console.log(Turbolinks.controller);
     });
     // ページ切り替え時（初回ページも対象） 以前: ready page:load
     document.addEventListener('turbolinks:load', function(e) {
-      console.log('turbolinks:load', e);
-      console.log(Turbolinks.controller);
     });
   };
 
