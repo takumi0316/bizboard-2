@@ -92,7 +92,7 @@ class ProductsController < ApplicationController
     # 取引先情報更新
     product.update! product_params
     product_history = ProductHistory.new(product_id: product.id, date: Date.today, status: 0, quantity: product.quantity)
-    product_history.save
+    product_history.save!
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '商品を作成しました' } }
   rescue => e

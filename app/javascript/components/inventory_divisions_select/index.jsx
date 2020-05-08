@@ -40,9 +40,11 @@ export default class InventoryDivisionsSelect extends React.Component {
     // 記事内容を送信
     Request.get('/inventories.json?company_id=' + id)
       .end((error, res) => {
-
-				if (error) return false;
+        if (!error) {
         this.setState({divisions: res.body.divisions});
+        } else {
+        this.setState({divisions: []});
+        }
       });
   };
 

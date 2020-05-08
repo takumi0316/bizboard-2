@@ -96,9 +96,9 @@ class ProductHistoriesController < ApplicationController
 
     stock = product_history.product.quantity
 
-    total_stock = stock - product_history.quantity if product_history.status == 'delivery_stock'
+    total_stock = stock - product_history.quantity if product_history.delivery_stock?
 
-    total_stock = stock + product_history.quantity if product_history.status == 'add_stock'
+    total_stock = stock + product_history.quantity if product_history.add_stock?
 
     product_history.product.update!(quantity: total_stock)
 
