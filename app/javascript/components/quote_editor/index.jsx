@@ -79,7 +79,7 @@ export default class QuoteEditor extends React.Component {
    *  公開日時を適用するcallback
    *  @version 2018/06/10
    */
-  setDeliverAt = (datetime) => {
+  setDeliverAt = datetime => {
 
     this.setState({
       deliver_at: datetime.datetime,
@@ -90,7 +90,7 @@ export default class QuoteEditor extends React.Component {
    *  見積もり作成日時を適用するcallback
    *  @version 2018/06/10
    */
-  setDate = (datetime) => {
+  setDate = datetime => {
 
     this.setState({
       date: datetime.datetime,
@@ -101,7 +101,7 @@ export default class QuoteEditor extends React.Component {
    *  見積もり期日を適用するcallback
    *  @version 2018/06/10
    */
-  setExpiration = (datetime) => {
+  setExpiration = datetime => {
 
     this.setState({
       expiration: datetime.datetime,
@@ -112,7 +112,7 @@ export default class QuoteEditor extends React.Component {
    *  見積もり発行日を適用するcallback
    *  @version 2018/06/10
    */
-  setIssuesDate = (datetime) => {
+  setIssuesDate = datetime => {
 
     this.setState({
       issues_date: datetime.datetime,
@@ -123,7 +123,7 @@ export default class QuoteEditor extends React.Component {
    *  納品日を適用するcallback
    *  @version 2018/06/10
    */
-  setDeliveryNoteDate = (datetime) => {
+  setDeliveryNoteDate = datetime => {
 
     this.setState({
       delivery_note_date: datetime.datetime,

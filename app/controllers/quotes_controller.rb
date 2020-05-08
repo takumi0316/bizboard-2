@@ -148,44 +148,45 @@ class QuotesController < ApplicationController
 
     # 情報更新
     if params[:id] == 'null'
+      required_params = quote_params
       new_quote = Quote.new
-      new_quote.user_id = params[:quote][:user_id]
-      new_quote.division_id = params[:quote][:division_id]
-      new_quote.date = params[:quote][:date]
-      new_quote.issues_date = params[:quote][:issues_date]
-      new_quote.expiration = params[:quote][:expiration]
-      new_quote.delivery_note_date = params[:quote][:delivery_note_date]
-      new_quote.subject = params[:quote][:subject]
-      new_quote.remarks = params[:quote][:remarks]
-      new_quote.memo = params[:quote][:memo]
-      new_quote.attention = params[:quote][:attention]
-      new_quote.company_division_client_id = params[:quote][:company_division_client_id]
-      new_quote.quote_type = params[:quote][:quote_type]
-      new_quote.channel = params[:quote][:channel]
-      new_quote.deliver_at = params[:quote][:deliver_at]
-      new_quote.reception = params[:quote][:reception]
-      new_quote.deliver_type = params[:quote][:deliver_type]
-      new_quote.deliver_type_note = params[:quote][:deliver_type_note]
-      new_quote.discount = params[:quote][:discount]
-      new_quote.tax_type = params[:quote][:tax_type]
-      new_quote.tax = params[:quote][:tax]
-      new_quote.payment_terms = params[:quote][:payment_terms]
-      new_quote.temporary_price = params[:quote][:temporary_price]
+      new_quote.user_id = required_params[:user_id]
+      new_quote.division_id = required_params[:division_id]
+      new_quote.date = required_params[:date]
+      new_quote.issues_date = required_params[:issues_date]
+      new_quote.expiration = required_params[:expiration]
+      new_quote.delivery_note_date = required_params[:delivery_note_date]
+      new_quote.subject = required_params[:subject]
+      new_quote.remarks = required_params[:remarks]
+      new_quote.memo = required_params[:memo]
+      new_quote.attention = required_params[:attention]
+      new_quote.company_division_client_id = required_params[:company_division_client_id]
+      new_quote.quote_type = required_params[:quote_type]
+      new_quote.channel = required_params[:channel]
+      new_quote.deliver_at = required_params[:deliver_at]
+      new_quote.reception = required_params[:reception]
+      new_quote.deliver_type = required_params[:deliver_type]
+      new_quote.deliver_type_note = required_params[:deliver_type_note]
+      new_quote.discount = required_params[:discount]
+      new_quote.tax_type = required_params[:tax_type]
+      new_quote.tax = required_params[:tax]
+      new_quote.payment_terms = required_params[:payment_terms]
+      new_quote.temporary_price = required_params[:temporary_price]
       new_quote.save!
-      unless params[:quote][:quote_number].blank?
-        new_quote.update!(quote_number: params[:quote][:quote_number])
+      unless required_params[:quote_number].blank?
+        new_quote.update!(quote_number: required_params[:quote_number])
       else
         new_quote.update!(quote_number: new_quote.quote_number)
       end
-      if params[:quote][:price].blank?
+      if required_params[:price].blank?
         # 普通の時
-        new_quote.update!(price: params[:quote][:price])
+        new_quote.update!(price: required_params[:price])
       else
         # BPR・ERPの時
-        new_quote.update!(price: params[:quote][:price])
+        new_quote.update!(price: required_params[:price])
       end
       # slack通知
-      if params[:quote][:payment_terms] == 'advance'
+      if required_params[:payment_terms] == 'advance'
         Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{new_quote.quote_number}] お客様情報[#{new_quote&.client&.company_division&.company&.name} #{new_quote&.client&.name}] 担当者[#{new_quote&.user&.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
       end
       unless params[:specifications].nil?
@@ -199,29 +200,30 @@ class QuotesController < ApplicationController
       render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
     else
 
+      required_params = quote_params
 			findQuote = Quote.find(params[:id])
-      findQuote.user_id = params[:quote][:user_id]
-      findQuote.division_id = params[:quote][:division_id]
-      findQuote.date = params[:quote][:date]
-      findQuote.issues_date = params[:quote][:issues_date]
-      findQuote.expiration = params[:quote][:expiration]
-      findQuote.delivery_note_date = params[:quote][:delivery_note_date]
-      findQuote.subject = params[:quote][:subject]
-      findQuote.remarks = params[:quote][:remarks]
-      findQuote.memo = params[:quote][:memo]
-      findQuote.attention = params[:quote][:attention]
-      findQuote.company_division_client_id = params[:quote][:company_division_client_id]
-      findQuote.quote_type = params[:quote][:quote_type]
-      findQuote.channel = params[:quote][:channel]
-      findQuote.deliver_at = params[:quote][:deliver_at]
-      findQuote.reception = params[:quote][:reception]
-      findQuote.deliver_type = params[:quote][:deliver_type]
-      findQuote.deliver_type_note = params[:quote][:deliver_type_note]
-      findQuote.discount = params[:quote][:discount]
-      findQuote.tax_type = params[:quote][:tax_type]
-      findQuote.tax = params[:quote][:tax]
-      findQuote.payment_terms = params[:quote][:payment_terms]
-      findQuote.temporary_price = params[:quote][:temporary_price]
+      findQuote.user_id = required_params[:user_id]
+      findQuote.division_id = required_params[:division_id]
+      findQuote.date = required_params[:date]
+      findQuote.issues_date = required_params[:issues_date]
+      findQuote.expiration = required_params[:expiration]
+      findQuote.delivery_note_date = required_params[:delivery_note_date]
+      findQuote.subject = required_params[:subject]
+      findQuote.remarks = required_params[:remarks]
+      findQuote.memo = required_params[:memo]
+      findQuote.attention = required_params[:attention]
+      findQuote.company_division_client_id = required_params[:company_division_client_id]
+      findQuote.quote_type = required_params[:quote_type]
+      findQuote.channel = required_params[:channel]
+      findQuote.deliver_at = required_params[:deliver_at]
+      findQuote.reception = required_params[:reception]
+      findQuote.deliver_type = required_params[:deliver_type]
+      findQuote.deliver_type_note = required_params[:deliver_type_note]
+      findQuote.discount = required_params[:discount]
+      findQuote.tax_type = required_params[:tax_type]
+      findQuote.tax = required_params[:tax]
+      findQuote.payment_terms = required_params[:payment_terms]
+      findQuote.temporary_price = required_params[:temporary_price]
       findQuote.save!
 
       unless params[:specifications].nil?
@@ -240,7 +242,7 @@ class QuotesController < ApplicationController
       end
 
       # taskが存在していたらtaskの納期も更新する
-      quote.task.update(date: params[:quote][:deliver_at]) if quote.task.present?
+      quote.task.update(date: required_params[:deliver_at]) if quote.task.present?
 
       #請求先情報を静的に保存(更新)
       quote.update(last_company: quote&.client&.company_division.company.name, last_division: quote&.client&.company_division.name, last_client: quote&.client&.name) if quote.invoice.present?
@@ -374,11 +376,7 @@ class QuotesController < ApplicationController
 
   def lock
 
-    if quote.lock
-      quote.lock = false
-    else
-      quote.lock = !quote.lock
-    end
+    quote.lock = !quote.lock
 
     quote.save!
 
