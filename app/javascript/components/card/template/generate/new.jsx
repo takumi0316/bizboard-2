@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import DivisionSearch     from './division_search/index';
+import CompanySearch     from './company_search';
 import CustomerInfomation from './customer_infomation/index';
 import TempalteStatus     from './template_status/index';
 import CardTemplate       from './card_template/index';
@@ -10,7 +10,10 @@ import {
   validProperty,
   setPDF,
   drawText,
+  toBoolean,
 } from '../../util';
+
+import { HEADERS } from '../../properties.es6';
 
 export default class NewTemplateGenerate extends React.Component {
 
@@ -55,13 +58,6 @@ export default class NewTemplateGenerate extends React.Component {
 
     if(status != prevState.status) if(file) setPDF(file, details, this.canvas, this.draw_canvas);
   };
-
-  /**
-   * String => Bool
-   * @version 2020/04/30
-   *
-   */
-  toBoolean = data => data.toLowerCase() === 'true';
 
   /**
    *  ファイルドロップ時
@@ -135,19 +131,18 @@ export default class NewTemplateGenerate extends React.Component {
    * @version 2020/03/30
    *
    */
-  onChangeDetail = e => {
+  onChangeDetail = (e, index, header_index) => {
 
-    const status = this.state.status;
     let parse_templates = JSON.parse(JSON.stringify(this.state.templates));
-    const detail_id = e.target.getAttribute('index');
-    const detail_name =  e.target.id;
-    const value = e.target.value;
-
-    parse_templates[status ? 0 : 1].details[detail_id][detail_name] = value;
+    const status = this.state.status;
     const file = parse_templates[status ? 0 : 1].file;
     const details = parse_templates[status ? 0 : 1].details;
+    const name = HEADERS[header_index];
+    const value = e.target.value;
 
-    if(file) this.setState({ templates: parse_templates }, () => drawText(details, this.draw_canvas));
+    parse_templates[status ? 0 : 1].details[index][name] = value;
+
+    if(file) this.setState({ templates: parse_templates }, drawText(details, this.draw_canvas));
     if(!file) this.setState({ templates: parse_templates });
   };
 
@@ -160,8 +155,11 @@ export default class NewTemplateGenerate extends React.Component {
 
     let templates = JSON.parse(JSON.stringify(this.state.templates));
     const status = this.state.status;
+
     templates[status ? 0 : 1].file = '';
-    status ? this.front_file : this.reverse_file = '';
+    templates[!status ? 0 : 1].file = this.state.templates[!status ? 0 : 1].file;
+    if(status) this.front_file = '';
+    if(!status) this.reverse_file = '';
 
     this.setState({ templates: parse_templates });
   };
@@ -183,12 +181,12 @@ export default class NewTemplateGenerate extends React.Component {
     field.append('card[name]', this.inputRef.value);
     field.append('card[company_id]', this.state.company.id);
     const templates = this.state.templates.filter(template => template.file);
-    templates.forEach((template) => {
+    templates.map((template) => {
       field.append('card[templates_attributes][][id]', template.id || '');
       field.append('card[templates_attributes][][card_id]', template.card_id || '');
       field.append('card[templates_attributes][][status]', template.status);
-      field.append('card[templates_attributes][][file]', this.toBoolean(template.status) ? this.front_file : this.reverse_file);
-      template.details.forEach(detail => {
+      field.append('card[templates_attributes][][file]', toBoolean(template.status) ? this.front_file : this.reverse_file);
+      template.details.map(detail => {
         field.append('card[templates_attributes][][details_attributes][][id]', detail.id || '');
         field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id || '');
         field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
@@ -233,7 +231,7 @@ export default class NewTemplateGenerate extends React.Component {
           <input type='text' className='c-form-text' defaultValue={ this.props.card.name || '' } ref={node => this.inputRef = node} placeholder='テンプレート名'/>
         </div>
         <CustomerInfomation company={ this.state.company }/>
-        <DivisionSearch applyCompany={ this.applyCompany } type_name={ '会社情報を登録' } not_found={ '会社情報が見つかりませんでした。'}/>
+        <CompanySearch applyCompany={ this.applyCompany } type_name={ '会社情報を登録' } not_found={ '会社情報が見つかりませんでした。'}/>
         <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
         { this.state.status ?
           <CardTemplate template={ this.state.templates[0] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
@@ -243,7 +241,7 @@ export default class NewTemplateGenerate extends React.Component {
         <div className='u-mt-10'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>保存する</button>
         </div>
-        <Loading ref={node => this.loadingRef = node}/>
+        <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );
   };

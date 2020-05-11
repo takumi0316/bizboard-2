@@ -9,7 +9,7 @@ const DropZone = props => {
       <div className={ Style.TemplateInfo }>
         <div className={ Style.TemplateInfo__eyecatch }>
           <Dropzone onDrop={ props.onDrop }>
-            {({getRootProps, getInputProps}) => (
+            {({ getRootProps, getInputProps }) => (
               <div { ...getRootProps() } className={Style.Template__dropzone}>
                 <input { ...getInputProps() } />
                 <p>この部分にテンプレートをドラッグ&ドロップしてください</p>

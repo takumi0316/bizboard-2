@@ -62,7 +62,7 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
 
-  getPDF.then(pdf => {
+  getPDF.promise.then(pdf => {
 
     return pdf.getPage(1);
   }).then(page => {

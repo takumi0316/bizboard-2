@@ -1,7 +1,7 @@
 import React from 'react';
 
-import DropZone from '../drop_zone/index';
-import Header   from '../header/index'
+import DropZone from './drop_zone';
+import Header   from './header'
 
 const CardTemplate = props => {
 

@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import Style from './style.sass';
+import Style               from './style.sass';
 
 /**
  *  @version
  *
  */
-const DivisionSearch = props => {
+const CompanySearch = props => {
 
   const init = {
     show: false,
     companies: [],
-    body: null
   };
 
   const [state, setState] = useState(init);
@@ -20,11 +19,7 @@ const DivisionSearch = props => {
    *  @version 2018/06/10
    *
    */
-  const open = e => {
-
-    e.preventDefault();
-    search('');
-  };
+  const open = () => search('');
 
   /**
    *  モーダルを閉じる
@@ -91,7 +86,7 @@ const DivisionSearch = props => {
   return (
     <div className='u-mt-10'>
       { state.show ?
-        <div className={ Style.DivisionSearch } onMouseDown={ e => close(e) }>
+        <div className={ Style.DivisionSearch } onMouseDown={ () => close() }>
           <div className={ Style.DivisionSearch__inner } onMouseDown={ e => stopPropagation(e) }>
             <div>
               <div className={ Style.DivisionSearch__form }>
@@ -113,13 +108,13 @@ const DivisionSearch = props => {
                 : <div className='c-attention u-mt-30'>{ props.not_found }</div>
               }
             </div>
-            <div onClick={ e => close(e) } className={ Style.DivisionSearch__closeIcon }>×</div>
+            <div onClick={ () => close() } className={ Style.DivisionSearch__closeIcon }>×</div>
           </div>
         </div>
-        : <div className='c-btnMain-standard' onClick={ e => open(e) }>{ props.type_name }</div>
+        : <div className='c-btnMain-standard' onClick={ () => open() }>{ props.type_name }</div>
       }
     </div>
   );
 };
 
-export default DivisionSearch;
+export default CompanySearch;
