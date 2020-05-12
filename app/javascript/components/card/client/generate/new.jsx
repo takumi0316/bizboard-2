@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import Division       from './customer/division';
+import Division       from '../division';
 import Client         from './customer/client';
 import Card           from './customer/card';
 import Template       from './customer/card/template';
