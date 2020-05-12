@@ -1,13 +1,15 @@
 export const HEADERS = ['name', 'font', 'font_size', 'font_color', 'coord_x', 'coord_y', 'length', 'line_space'];
 
-export const DivisionTypeName = '会社・部署を選択する';
+export const FONT_STYLE = { '新ゴL': '新ゴL', '新ゴR': '新ゴR', '新ゴRegular': '新ゴRegular', 'Frutiger 45 Light': 'Frutiger 45 Light', 'Frutiger 55 Roman': 'Frutiger 55 Roman' }
 
-export const ClientTypeName = '担当者を選択する';
+export const DIVISION_TYPE_NAME = '会社・部署を選択する';
 
-export const CardTypeName = '名刺を選択する';
+export const CLIENT_TYPE_NAME = '担当者を選択する';
 
-export const DivisionNotFound = '会社・部署情報が見つかりませんでした。';
+export const CARD_TYPE_NAME = '名刺を選択する';
 
-export const ClientNotFound = '担当者情報が見つかりませんでした。';
+export const DIVISION_NOT_FOUND = '会社・部署情報が見つかりませんでした。';
 
-export const CardNotFound = '名刺情報が見つかりませんでした。';
+export const CLIENT_NOT_FOUND = '担当者情報が見つかりませんでした。';
+
+export const CARD_NOT_FOUND = '名刺情報が見つかりませんでした。';

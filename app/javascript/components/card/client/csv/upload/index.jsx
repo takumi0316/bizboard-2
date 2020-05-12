@@ -9,10 +9,10 @@ import CSVImport  from './csv_import';
 import Loading    from '../../../../loading';
 
 import {
-  DivisionTypeName,
-  CardTypeName,
-  DivisionNotFound,
-  CardNotFound,
+  DIVISION_TYPE_NAME,
+  CARD_TYPE_NAME,
+  DIVISION_NOT_FOUND,
+  CARD_NOT_FOUND,
 } from '../../../properties.es6'
 
 import { drawTextValue } from '../../../util';
@@ -258,8 +258,8 @@ export default class UploadCardClient extends React.Component {
   render() {
     return(
       <Fragment>
-        <Division upload={ this.props.upload } company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
-        <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
+        <Division upload={ this.props.upload } company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DIVISION_TYPE_NAME } notFound={ DIVISION_NOT_FOUND } applyDivision={ this.applyDivision }/>
+        <Card cards={ this.state.cards } card={ this.state.card } typeName={ CARD_TYPE_NAME } notFound={ CARD_NOT_FOUND } applyCard={ this.applyCard }/>
         { this.state.card_clients ?
           <CardClient card_clients={ this.state.card_clients } loadingRef={ this.loadingRef } front_file={ this.front_file } reverse_file={ this.reverse_file } onChangeValue={ this.onChangeValue } save={ this.save }/> :
           <CSVImport card_clients={ this.state.card_clients } division={ this.state.division } card={ this.state.card } parseCSV={ this.parseCSV }/>

@@ -7,10 +7,10 @@ import CSVDownloadButton from './csv_download_button';
 import Loading           from '../../../../loading';
 
 import {
-  DivisionTypeName,
-  CardTypeName,
-  DivisionNotFound,
-  CardNotFound,
+  DIVISION_TYPE_NAME,
+  CARD_TYPE_NAME,
+  DIVISION_NOT_FOUND,
+  CARD_NOT_FOUND,
 } from '../../../properties.es6'
 
 import { validProperty } from '../../../util';
@@ -158,8 +158,8 @@ export default class DownloadCardClient extends React.Component {
   render() {
     return(
       <Fragment>
-        <Division download={ this.props.download } company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
-        <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
+        <Division download={ this.props.download } company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DIVISION_TYPE_NAME } notFound={ DIVISION_NOT_FOUND } applyDivision={ this.applyDivision }/>
+        <Card cards={ this.state.cards } card={ this.state.card } typeName={ CARD_TYPE_NAME } notFound={ CARD_NOT_FOUND } applyCard={ this.applyCard }/>
         <CheckDownloadCSV card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } isClientDownload={ this.isClientDownload }/>
         <CSVDownloadButton card_clients={ this.state.card_clients } download={ this.download }/>
         <Loading ref={ node => this.loadingRef = node }/>

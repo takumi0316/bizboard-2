@@ -8,13 +8,13 @@ import TempalteStatus from './template_status';
 import Loading        from '../../../loading';
 
 import {
-  DivisionTypeName,
-  ClientTypeName,
-  CardTypeName,
-  DivisionNotFound,
-  ClientNotFound,
-  CardNotFound,
-} from './properties.es6';
+  DIVISION_TYPE_NAME,
+  CLIENT_TYPE_NAME,
+  CARD_TYPE_NAME,
+  DIVISION_NOT_FOUND,
+  CLIENT_NOT_FOUND,
+  CARD_NOT_FOUND,
+} from '../../properties.es6';
 
 import {
   toBoolean,
@@ -259,9 +259,9 @@ export default class ClientGenerate extends React.Component {
   render() {
     return(
       <div>
-        <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } new={ this.props.new } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
-        <Client clients={ this.state.clients } client={ this.state.client } new={ this.props.new } typeName={ ClientTypeName } notFound={ ClientNotFound } applyClient={ this.applyClient }/>
-        <Card cards={ this.state.cards } card={ this.state.card } new={ this.props.new } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
+        <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } new={ this.props.new } typeName={ DIVISION_TYPE_NAME } notFound={ DIVISION_NOT_FOUND } applyDivision={ this.applyDivision }/>
+        <Client clients={ this.state.clients } client={ this.state.client } new={ this.props.new } typeName={ CLIENT_TYPE_NAME } notFound={ CLIENT_NOT_FOUND } applyClient={ this.applyClient }/>
+        <Card cards={ this.state.cards } card={ this.state.card } new={ this.props.new } typeName={ CARD_TYPE_NAME } notFound={ CARD_NOT_FOUND } applyCard={ this.applyCard }/>
         { this.state.templates ?
           <Fragment>
             { this.state.templates.length == 2 ?

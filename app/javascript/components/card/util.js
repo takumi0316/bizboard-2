@@ -180,7 +180,7 @@ export const drawText = (details, draw_canvas) => {
   draw_ctx.setTransform(1, 0, 0, 1, 0, 0);
   draw_ctx.restore();
 
-  details.forEach(detail => {
+  details.map(detail => {
 
     draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
     const y = mmTopx(detail.coord_y) * 2;
