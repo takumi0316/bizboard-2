@@ -13,7 +13,7 @@
 #  note                 :text(65535)
 #  free_word            :text(65535)
 #  status               :integer          default(0)
-#  user_type            :integer          default(0)
+#  user_type            :integer          default("general")
 #  password_digest      :string(191)
 #  provider             :string(191)
 #  uid                  :string(191)

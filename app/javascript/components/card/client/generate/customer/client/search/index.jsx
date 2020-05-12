@@ -9,7 +9,6 @@ const Search = props => {
   const init = {
     show: false,
     clients: { ...props.clients }, 
-    body: '' 
   };
   
   const [state, setState] = useState(init);
@@ -29,19 +28,13 @@ const Search = props => {
    *  モーダルを閉じる
    *  @version 2018/06/10
    */
-  const close = () => {
-
-    setState({ ...init });
-  };
+  const close = () => setState({ ...init });
 
   /**
    *  親要素のクリックイベントを引き継がない
    *  @version 2018/06/10
    */
-  const stopPropagation = e => {
-
-    e.stopPropagation();
-  };
+  const stopPropagation = e => e.stopPropagation();
 
   /**
    *  選択時

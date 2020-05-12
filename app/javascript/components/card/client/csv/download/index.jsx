@@ -1,21 +1,19 @@
 import React, { Fragment } from 'react';
 
-import Division    from './division';
-import Card        from './card';
-import CardClient  from './card/client';
-import CSVDownload from './csv';
-import Loading     from '../../../../loading';
+import Division          from '../../division';
+import Card              from './card';
+import CheckDownloadCSV  from './check_download_csv';
+import CSVDownloadButton from './csv_download_button';
+import Loading           from '../../../../loading';
 
 import {
   DivisionTypeName,
   CardTypeName,
   DivisionNotFound,
   CardNotFound,
-} from './properties.es6'
+} from '../../../properties.es6'
 
-import {
-  validProperty
-} from '../../../util';
+import { validProperty } from '../../../util';
 
 export default class DownloadCardClient extends React.Component {
 
@@ -53,6 +51,7 @@ export default class DownloadCardClient extends React.Component {
    */
   cardSearch = props => {
 
+    this.loadingRef.start();
     const url = '/card_clients/download.json?company_id=' + props.company.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
@@ -65,8 +64,6 @@ export default class DownloadCardClient extends React.Component {
       this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error });
     });
-
-    this.loadingRef.start();
   };
 
   /**
@@ -76,6 +73,7 @@ export default class DownloadCardClient extends React.Component {
    */
   cardClientSearch = card => {
 
+    this.loadingRef.start();
     const url = '/card_clients.json?company_division_id=' + this.state.division.id + '&card_id=' + card.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
@@ -88,8 +86,6 @@ export default class DownloadCardClient extends React.Component {
       this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error });
     });
-
-    this.loadingRef.start();
   };
 
   /**
@@ -133,22 +129,24 @@ export default class DownloadCardClient extends React.Component {
 
       this.loadingRef.finish();
 
-      // for IE,Edge
-      if(window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(res.data, '担当者情報ダウンロード.csv');
+      if(res.data) {
+        // for IE,Edge
+        if(window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(res.data, '担当者情報ダウンロード.csv');
 
-      // for chrome, firefox
-      if(!window.navigator.msSaveOrOpenBlob) {
-        const url = URL.createObjectURL(new Blob([res.data], { type: 'text/csv' }));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', '担当者情報ダウンロード.csv');
-        document.body.appendChild(link);
-        link.click();
-        URL.revokeObjectURL(url);
-        link.parentNode.removeChild(link);
+        // for chrome, firefox
+        if(!window.navigator.msSaveOrOpenBlob) {
+          const url = URL.createObjectURL(new Blob([res.data], { type: 'text/csv' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', '担当者情報ダウンロード.csv');
+          document.body.appendChild(link);
+          link.click();
+          URL.revokeObjectURL(url);
+          link.parentNode.removeChild(link);
+        };
+
+        window.alertable({ icon: 'success', message: 'ダウンロードしました。' });
       };
-
-      window.alertable({ icon: 'success', message: 'ダウンロードしました。' });
     }).catch(err => {
 
       this.loadingRef.finish();
@@ -160,10 +158,10 @@ export default class DownloadCardClient extends React.Component {
   render() {
     return(
       <Fragment>
-        <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
+        <Division download={ this.props.download } company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
-        <CardClient card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } isClientDownload={ this.isClientDownload }/>
-        <CSVDownload card_clients={ this.state.card_clients } download={ this.download }/>
+        <CheckDownloadCSV card_clients={ this.state.card_clients } company={ this.state.company } division={ this.state.division } isClientDownload={ this.isClientDownload }/>
+        <CSVDownloadButton card_clients={ this.state.card_clients } download={ this.download }/>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );

@@ -11,7 +11,7 @@ class CardClientsController < ApplicationController
   #----------------------------------------
 
   # 名刺マスタ
-  expose_with_pagination(:card_clients) { CardClient.search(company_division_id: params[:company_division_id]).all }
+  expose_with_pagination(:card_clients) { CardClient.search(params[:name]).all.reverse_order }
 
   # 名刺マスタ
   expose(:card_client) { CardClient.find_or_initialize_by id: params[:id] }

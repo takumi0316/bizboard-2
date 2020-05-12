@@ -3,8 +3,8 @@ import Papa                from 'papaparse';
 import Encoding            from 'encoding-japanese';
 
 import CardClient from './card_client';
-import Division   from './customer/division';
-import Card       from './customer/card';
+import Division   from '../../division';
+import Card       from './card';
 import CSVImport  from './csv_import';
 import Loading    from '../../../../loading';
 
@@ -13,20 +13,17 @@ import {
   CardTypeName,
   DivisionNotFound,
   CardNotFound,
-} from './properties.es6'
+} from '../../../properties.es6'
 
-import {
-  ptTomm,
-  mmTopx,
-} from './util';
+import { drawTextValue } from '../../../util';
 
 export default class UploadCardClient extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.template_front_file = '';
-    this.template_reverse_file = '';
+    this.front_file = '';
+    this.reverse_file = '';
 
     this.state = {
       company: '',
@@ -61,6 +58,7 @@ export default class UploadCardClient extends React.Component {
    */
   cardSearch = props => {
 
+    this.loadingRef.start();
     const url = '/card_clients/upload.json?company_id=' + props.company.id;
     const request = window.xhrRequest.get(url);
     request.then(res => {
@@ -73,8 +71,6 @@ export default class UploadCardClient extends React.Component {
       this.loadingRef.finish();
       window.alertable({ icon: 'error', message: error.message });
     });
-
-    this.loadingRef.start();
   };
 
   /**
@@ -85,7 +81,7 @@ export default class UploadCardClient extends React.Component {
   parsePDF = card => {
 
     const templates = [{ 'file': card.front_template, 'status': true }, { 'file': card.reverse_template || '', 'status': false }].filter(template => template.file);
-    templates.forEach(template => {
+    templates.map(template => {
 
       const field = new FormData();
       field.append('url', template.file);
@@ -96,8 +92,8 @@ export default class UploadCardClient extends React.Component {
 
           const file = res.data;
           const bool = template.status;
-          if(bool) this.template_front_file = file;
-          if(!bool) this.template_reverse_file = file;
+          if(bool) this.front_file = file;
+          if(!bool) this.reverse_file = file;
         };
 
         if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
@@ -180,48 +176,9 @@ export default class UploadCardClient extends React.Component {
 
     if(!value) window.alertable({ icon: 'info', message: '値を入力して下さい。'});
 
-    if(status) card_clients[count].client_templates[0].values[value_id].value = value;
-
-    if(!status) card_clients[count].client_templates[1].values[value_id].value = value;
-
-    this.setState({ card_clients: card_clients }, this.drawText(status, card_clients[count].client_templates));
-  };
-
-  /**
-   * PDFにテキストを展開
-   * @version 2020/04/06
-   *
-   */
-  drawText = (status, client_templates) => {
-
-    const values = status ? client_templates[0].values : client_templates[1].values;
-
-    let draw_canvas = document.getElementById('draw');
-    let draw_ctx = draw_canvas.getContext('2d');
-
-    draw_ctx.beginPath();
-    draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
-    draw_ctx.save();
-    draw_ctx.setTransform(1,0,0,1,0,0);
-    draw_ctx.restore();
-
-    values.map(value => {
-
-      draw_ctx.font = `${mmTopx(ptTomm(value.font_size)) * 2}px ${value.font}`;
-      const y = mmTopx(value.coord_y) * 2;
-      const x =	mmTopx(value.coord_x) * 2;
-      const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
-      const lineSpace = mmTopx(value.line_space);
-      const card_value = value.value;
-
-      if(!card_value) return;
-      for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
-        let line = lines[i] ;
-        let addY = fontSize ;
-        if (i) addY += fontSize * lineSpace * i ;
-        draw_ctx.fillText(line, x, y + addY);
-      };
-    });
+    card_clients[count].templates[status ? 0 : 1].values[value_id].value = value;
+    const values = card_clients[count].templates[status ? 0 : 1].values;
+    this.setState({ card_clients: card_clients }, drawTextValue(values, document.getElementById('draw')));
   };
 
   /**
@@ -301,10 +258,10 @@ export default class UploadCardClient extends React.Component {
   render() {
     return(
       <Fragment>
-        <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
+        <Division upload={ this.props.upload } company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } typeName={ DivisionTypeName } notFound={ DivisionNotFound } applyDivision={ this.applyDivision }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CardTypeName } notFound={ CardNotFound } applyCard={ this.applyCard }/>
         { this.state.card_clients ?
-          <CardClient card_clients={ this.state.card_clients } loadingRef={ this.loadingRef }  template_front_file={ this.template_front_file } template_reverse_file={ this.template_reverse_file } onChangeValue={ this.onChangeValue } save={ this.save }/> :
+          <CardClient card_clients={ this.state.card_clients } loadingRef={ this.loadingRef } front_file={ this.front_file } reverse_file={ this.reverse_file } onChangeValue={ this.onChangeValue } save={ this.save }/> :
           <CSVImport card_clients={ this.state.card_clients } division={ this.state.division } card={ this.state.card } parseCSV={ this.parseCSV }/>
         }
         <Loading ref={ node => this.loadingRef = node }/>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_30_095432) do
+ActiveRecord::Schema.define(version: 2020_05_12_021945) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_095432) do
     t.bigint "company_division_client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "free_word"
     t.index ["card_id"], name: "index_card_clients_on_card_id"
     t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
     t.index ["company_division_id"], name: "index_card_clients_on_company_division_id"
@@ -85,6 +86,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_095432) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "company_id"
+    t.text "free_word"
     t.index ["company_id"], name: "index_cards_on_company_id"
   end
 

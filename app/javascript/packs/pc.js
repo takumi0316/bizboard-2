@@ -1,4 +1,4 @@
-const Rails = require('@rails/ujs');
+import Rails from '@rails/ujs';
 import 'scripts/utilities';
 import 'scripts/initializer';
 import 'scripts/pagy';
@@ -29,9 +29,6 @@ import DataModal from 'components/data_modal';
 // flashメッセージ
 import Alert from 'components/alert';
 
-// かわいいキャラ
-// import Kawaii from 'components/kawaii';
-
 // ロゴエディタ
 import LogoEditor from 'components/logo_editor';
 
@@ -43,9 +40,6 @@ import QuoteEditor from 'components/quote_editor';
 
 //見積もり検索
 import QuoteSearch from 'components/quote_search';
-
-// 案件詳細
-// import ProjectViewer from 'components/project_viewer';
 
 // 部署
 import CompanyDivisions from 'components/company_divisions';
@@ -119,9 +113,6 @@ import NewCardClientGenerate from 'components/card/client/generate/new';
 // 名刺担当者情報登録(更新)
 import EditCardClientGenerate from 'components/card/client/generate/edit';
 
-// 名刺担当者情報登録(更新)
-import CardClientSearch from 'components/card/client/search';
-
 // 名刺担当者情報CSVダウンロード
 import DownloadCardClient from 'components/card/client/csv/download';
 
@@ -159,7 +150,6 @@ WebpackerReact.setup({
   EditCardTemplateGenerate,
   NewCardClientGenerate,
   EditCardClientGenerate,
-  CardClientSearch,
   DownloadCardClient,
   UploadCardClient,
 });

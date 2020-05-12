@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Style               from './style.sass';
+import React, { useEffect, useState } from 'react';
+import Style from './style.sass';
 
 /**
  *  @version
@@ -28,7 +28,7 @@ const Search = props => {
    *  モーダルを閉じる
    *  @version 2018/06/10
    */
-  const close = () =>  setState({ ...init });
+  const close = () => setState({ ...init });
 
   /**
    *  親要素のクリックイベントを引き継がない

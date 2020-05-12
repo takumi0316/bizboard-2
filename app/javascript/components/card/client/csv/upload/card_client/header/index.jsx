@@ -1,7 +1,9 @@
 import React from 'react';
 import Style from './style.sass';
 
-import { generateKey } from '../../../../../util';
+import {
+  generateKey
+} from '../../../../../util';
 
 const Header = props => {
 
@@ -17,12 +19,12 @@ const Header = props => {
           </thead>
           <tbody>
             { props.client_template.values.map((value, index) => {
-              const key = `value-${props.status}-${generateKey(index)}`;
+              const key = `value-${props.status}-${props.paginate_count}-${generateKey(index)}`;
 
               return(
                 <tr key={ key }>
-                  <td className='u-ta-center u-va-center'>{ value.name }</td>
-                  <td className='u-ta-center'><input className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e, index) }/></td>
+                  <td className='u-ta-center'>{ value.name }</td>
+                  <td className='u-ta-center'><input id={ value.id } index={ index } className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e, props.paginate_count, props.status) }/></td>
                 </tr>
               );
             })}

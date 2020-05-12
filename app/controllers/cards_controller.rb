@@ -9,9 +9,7 @@ class CardsController < ApplicationController
   #----------------------------------------
 
   # 名刺マスタ
-  expose_with_pagination(:cards) {
-    Card.all
-  }
+  expose_with_pagination(:cards) { Card.search(params[:name]).all.reverse_order }
 
   # 名刺マスタ
   expose(:card) { Card.find_or_initialize_by id: params[:id] }

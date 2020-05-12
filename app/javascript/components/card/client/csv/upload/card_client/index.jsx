@@ -1,14 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import Promise                                  from 'core-js/es6/promise';
 
 import Paginate          from './paginate';
-import ClientInformation from '../customer/client';
-import CardTemplate      from '../customer/card/template';
+import ClientInformation from './information';
+import CardTemplate      from './template';
 import TemplateStatus    from './template_status';
 
-import {
-  ptTomm,
-  mmTopx,
-} from '../util';
+import { setPDFValue } from '../../../../util';
 
 const CardClient = props => {
 
@@ -17,8 +15,12 @@ const CardClient = props => {
 
   useEffect(() => {
 
-    state.status ? setPDF(props.template_front_file, props.loadingRef, props.card_clients[state.paginate_count].templates[0].values) : setPDF(props.template_reverse_file, props.loadingRef, props.card_clients[state.paginate_count].templates[1].values)
-  }, [state])
+    props.loadingRef.start();
+    new Promise(resolve => {
+      setPDFValue(state.status ? props.front_file : props.reverse_file, document.getElementById('pdf'), document.getElementById('draw'), props.card_clients[state.paginate_count].templates[state.status ? 0 : 1].values);
+      resolve(true);
+    }).then(res => props.loadingRef.finish());
+  }, [state]);
 
   /**
    * @version 2020/04/14
@@ -53,75 +55,6 @@ const CardClient = props => {
     };
 
     setState({ ...init });
-  };
-
-  /**
-   * PDFを展開する
-   * @version 2020/03/30
-   */
-  const setPDF = (file, loadingRef, values) => {
-
-    loadingRef.start();
-    const blob = new Blob([file]);
-    const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
-    const getPDF = pdfjsLib.getDocument(blob_path);
-
-    getPDF.then(function(pdf) {
-      return pdf.getPage(1);
-    }).then(function(page) {
-      // Set scale (zoom) level
-      let scale = 2;
-
-      // Get viewport (dimensions)
-      let viewport = page.getViewport({ scale: scale });
-
-      // Get canvas#the-canvas
-      let canvas = document.getElementById('pdf');
-      let draw_canvas = document.getElementById('draw');
-
-      // Fetch canvas' 2d context
-      let ctx = canvas.getContext('2d');
-      let draw_ctx = draw_canvas.getContext('2d');
-
-      // Set dimensions to Canvas
-      canvas.height = (mmTopx(55 * 2));
-      canvas.width = (mmTopx(91 * 2));
-
-      draw_canvas.height = (mmTopx(55 * 2));
-      draw_canvas.width = (mmTopx(91 * 2));
-
-      values.forEach(value => {
-
-        draw_ctx.font = `${mmTopx(ptTomm(value.font_size)) * 2}px ${value.font}`;
-        const y = mmTopx(value.coord_y) * 2;
-        const x =	mmTopx(value.coord_x) * 2;
-        const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
-        const lineSpace = mmTopx(value.line_space);
-        const card_value = value.value;
-
-        if(!card_value) return;
-        for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
-          let line = lines[i] ;
-          let addY = fontSize ;
-          if (i) addY += fontSize * lineSpace * i ;
-          draw_ctx.fillText(line, x, y + addY);
-        };
-      });
-
-      // Prepare object needed by render method
-      const renderContext = {
-        canvasContext: ctx,
-        viewport: viewport
-      };
-
-      // Render PDF page
-      page.render(renderContext);
-      loadingRef.finish();
-    }).catch(error => {
-
-      loadingRef.finish();;
-      window.alertable({ 'icon': 'error', message: error});
-    });
   };
 
   return(

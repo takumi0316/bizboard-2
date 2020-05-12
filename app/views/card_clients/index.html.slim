@@ -5,7 +5,13 @@
   = link_to 'CSVアップロード', upload_card_clients_path, class: 'u-ml-10 c-btnMain-standard c-btn-red'
   = link_to 'CSVダウンロード', download_card_clients_path, class: 'u-ml-10 c-btnMain-standard'
 
-= react_component :CardClientSearch, divisions: CompanyDivision.all
+= form_with url: card_clients_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+
+  .c-search__item
+    = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで', class: 'c-form-label'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '日本工業社'
+
+  = f.submit '検索', class: 'c-btnMain-standard'
 
 .c-table.u-mt-30
   table

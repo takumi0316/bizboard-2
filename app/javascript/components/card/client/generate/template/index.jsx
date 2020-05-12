@@ -1,7 +1,7 @@
 import React from 'react';
 import Style from './style.sass';
 
-const Canvas = props => {
+const Canvas = () => {
 
   return(
     <div className='u-mt-30 c-flex c-flex__alignItems_start'>
