@@ -84,11 +84,14 @@ export default class EditTemplateGenerate extends React.Component {
    */
   componentDidUpdate = (prevProps, prevState) => {
 
-    const details = this.state.status ? this.state.templates[0].details : this.state.templates[1].details;
-    const file = this.state.status ? this.front_file : this.reverse_file;
-    const state_file = this.state.status ? this.state.templates[0].file : this.state.templates[1].file;
+    this.canvas = document.getElementById('pdf');
+    this.draw_canvas = document.getElementById('draw');
+    const status = this.state.status;
+    const details = this.state.templates[status ? 0 : 1].details;
+    const file = status ? this.front_file : this.reverse_file;
+    const prev_file = prevState.templates[status ? 0 : 1].file;
 
-    if(this.state.status == prevState.status && file != state_file) return;
+    if(status == prevState.status && file == prev_file) return;
     if(file) {
 
       this.loadingRef.start();

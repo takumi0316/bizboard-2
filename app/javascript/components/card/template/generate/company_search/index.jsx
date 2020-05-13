@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Style               from './style.sass';
 
 /**
@@ -13,6 +13,8 @@ const CompanySearch = props => {
   };
 
   const [state, setState] = useState(init);
+
+  const inputEl = useRef(null);
 
   /**
    *  モーダルを表示する
@@ -33,15 +35,15 @@ const CompanySearch = props => {
    * @version 2020/03/23
    *
    */
-  const _onChange = e => {
+  const _onChange = () => {
 
-    if(!e.target.value) {
+    if(!inputEl.current.value) {
 
       setState({ ...state, companies: [] });
       return false;
     };
 
-    search(e.target.value);
+    search(inputEl.current.value);
   };
 
   /**
@@ -90,8 +92,8 @@ const CompanySearch = props => {
           <div className={ Style.DivisionSearch__inner } onMouseDown={ e => stopPropagation(e) }>
             <div>
               <div className={ Style.DivisionSearch__form }>
-                <input type='text' className={ Style.DivisionSearch__input } placeholder='会社名で検索' onChange={ e => _onChange(e) }/>
-                <div onClick={ e => _onChange(e) } className='c-btnMain-standard u-ml-10'>検索</div>
+                <input type='text' ref={ inputEl } className={ Style.DivisionSearch__input } placeholder='会社名で検索' onChange={ () => _onChange() }/>
+                <div onClick={ () => _onChange() } className='c-btnMain-standard u-ml-10'>検索</div>
               </div>
               { state.companies ?
                 <ul className={ Style.DivisionSearch__list }>
