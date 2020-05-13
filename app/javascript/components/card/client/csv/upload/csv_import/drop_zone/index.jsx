@@ -10,7 +10,7 @@ const DropZone = props => {
     if(acceptedFiles.length == 1) props.parseCSV(acceptedFiles);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({ onDrop: onDrop, accept: 'text/csv, application/vnd.ms-excel' });
+  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({ onDrop: onDrop, accept: '.csv, text/csv, application/vnd.ms-excel' });
 
   return(
     <div className={ Style.Template}>
