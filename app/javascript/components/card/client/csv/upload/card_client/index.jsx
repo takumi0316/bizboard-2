@@ -59,7 +59,7 @@ const CardClient = props => {
 
   return(
     <Fragment>
-      { props.template_reverse_file ?
+      { props.card_clients[state.paginate_count].templates[1] ?
         <TemplateStatus status={ state.status } setStatus={ setStatus }/> :
         null
       }
