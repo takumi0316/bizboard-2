@@ -165,6 +165,7 @@ class CardClientsController < ApplicationController
     headers << '担当者名'
 
     card.templates.each { |t| t.details.each { |d| headers << d.name } }
+
     download_csv = CSV.generate(bom) do |csv|
       csv << headers
       params[:card_clients].each do |c|
@@ -174,11 +175,16 @@ class CardClientsController < ApplicationController
         values << card.company_id
         values << c[:id]
         values << c[:name]
-        card.templates.each do |t|
 
-          t.client_templates.each { |ct| ct.values.each { |v| values << v.value } } if t.client_templates.present?
-          t.details.each { |d| values << '' } if t.client_templates.blank?
+        # 既に名刺情報登録されている場合
+        if CardClient.where(card_id: card.id).where(company_division_client_id: c[:id]).present?
+          CardClient.where(card_id: card.id).where(company_division_client_id: c[:id]).first.templates.each do |ct|
+            ct.values.each { |v| values << v.value }
+          end
         end
+
+        # まだ名刺情報登録されていない場合
+        card.templates.each { |t| t.details.each { |d| values << '' } } if CardClient.where(card_id: card.id).where(company_division_client_id: c[:id]).blank?
         csv << values
       end
     end

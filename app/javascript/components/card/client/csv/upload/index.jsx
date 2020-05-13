@@ -194,7 +194,7 @@ export default class UploadCardClient extends React.Component {
       const codes = new Uint8Array(e.target.result);
       const encoding = Encoding.detect(codes);
       const unicodeString = Encoding.convert(codes, {
-        to: 'uncode',
+        to: 'unicode',
         from: encoding,
         type: 'string'
       });
@@ -202,9 +202,7 @@ export default class UploadCardClient extends React.Component {
         header: true,
         dynamicTyping: true,
         skipEmptyLines: true,
-        complete: (results) => {
-          this.formatCSV(results.data);
-        },
+        complete: results => this.formatCSV(results.data),
       });
     };
     reader.readAsArrayBuffer(file);
