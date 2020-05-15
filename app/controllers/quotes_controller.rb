@@ -305,35 +305,29 @@ class QuotesController < ApplicationController
     bom = "\uFEFF"
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
-
       quote.card_clients.pluck(:card_id).uniq.map do |r|
         card = Card.find(r)
-        headers = []
-        values = []
         zipfile.get_output_stream("csv/#{card.name}.csv") do |f|
           f.puts(
             CSV.generate(bom) do |csv|
+              headers = []
               headers << 'No.'
               headers << 'テンプレート名'
-              card.templates.map do |t|
-                t.details.map do |d|
-                  headers << d.name
-                end
-              end
+              headers << '箱数'
+              headers << '申込日'
+              card.templates.map { |t| t.details.map { |d| headers << d.name } }
               csv << headers
-              quote.card_clients.where(card_id: r).map do |c|
+              quote.card_clients.where(card_id: r).map.with_index do |c, index|
+                values = []
                 client = CardClient.find(c.id)
-                client.templates.each_with_index do |ct, index|
-                  if ct.card_template.status == 'true'
-                    values << index
-                    values << card.name
-                  end
-                  ct.values.map do |v|
-                    values << v.value
-                  end
-                end
+                values << index + 1
+                values << c.card.name
+                values << quote.card_clients.where(card_id: c.card.id).where(company_division_client_id: c.company_division_client_id).count
+                values << quote.created_at.strftime('%Y年 %m月 %d日')
+                client.templates.map { |ct| ct.values.map { |v| values << v.value } }
+                csv << values
               end
-              csv << values
+              csv
             end
           )
         end
