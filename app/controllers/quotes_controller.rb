@@ -302,12 +302,12 @@ class QuotesController < ApplicationController
 
     filename = "#{quote.subject}.zip"
     fullpath = "#{Rails.root}/tmp/#{filename}"
-    bom = "\uFEFF"
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
       quote.card_clients.pluck(:card_id).uniq.map do |r|
         card = Card.find(r)
-        zipfile.get_output_stream("#{quote.subject}/#{card.name}.csv") do |f|
+        zipfile.get_output_stream("#{quote.subject}-#{card.name}/#{card.name}.csv") do |f|
+          bom = "\uFEFF"
           f.puts(
             CSV.generate(bom) do |csv|
               headers = []
