@@ -6,6 +6,11 @@
   = f.select :category_id, Category.all.pluck(:name, :id),{},{:class=>'c-form-dateselect'}
 
   .c-form-label
+    = f.label :turn, '表示優先度'
+  = f.number_field :turn, placeholder: '数字が大きいと上に表示されます', class: 'c-form-text u-mb-30'
+
+
+  .c-form-label
     = f.label :name, 'カタログ名'
     span.c-form__required.u-ml-10 必須
   = f.text_field :name, placeholder: 'カタログ名を入力してください', class: 'c-form-text u-mb-30', required: :true
