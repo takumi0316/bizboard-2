@@ -73,6 +73,12 @@ const PaymentDetails = props => {
             </td>
           </tr>
           <tr>
+            <td className='u-fw-bold'>利益額(暫定)</td>
+            <td>
+              <textarea placeholder='利益額' className='c-form-textarea' onChange={ e => props.setProfitPrice(e.target.value) } type='text' defaultValue={ props.profit_price } />
+            </td>
+          </tr>
+          <tr>
           	<td className='u-fw-bold'>備考 ※見積もりに記載されます</td>
             <td>
 							<textarea placeholder='案件に関する備考を入力してください ※見積もりに記載されます' className='c-form-textarea' row={5}

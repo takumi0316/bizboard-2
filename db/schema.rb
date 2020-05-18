@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_08_051715) do
+ActiveRecord::Schema.define(version: 2020_05_13_055039) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.string "price", comment: "文言なども入る"
     t.string "deliver_at", comment: "文言なども入る"
     t.bigint "category_id"
+    t.integer "turn", default: 0
     t.index ["category_id"], name: "index_catalogs_on_category_id"
   end
 
@@ -242,8 +243,8 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
   create_table "product_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "product_id"
     t.date "date", comment: "発注日"
-    t.integer "status", comment: "依頼ステータス"
-    t.integer "quantity", comment: "数量"
+    t.integer "status", default: 0, comment: "依頼ステータス"
+    t.integer "quantity", default: 0, comment: "数量"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_product_histories_on_product_id"
@@ -252,7 +253,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
   create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "inventory_id"
     t.string "name", comment: "商品名"
-    t.integer "quantity", comment: "在庫数"
+    t.integer "quantity", default: 0, comment: "在庫数"
     t.text "remarks", comment: "備考"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -491,6 +492,13 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "temporary_price"
+    t.string "last_company"
+    t.string "last_division"
+    t.string "last_client"
+    t.date "issues_date"
+    t.date "delivery_note_date"
+    t.boolean "lock", default: false, null: false
+    t.integer "profit_price", default: 0
     t.index ["company_division_client_id"], name: "index_quotes_on_company_division_client_id"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end

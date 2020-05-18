@@ -139,6 +139,9 @@ Rails.application.routes.draw do
   # カタログ
   resources :catalogs
 
+  # 利益額
+  resources :profit_graphs, only: [:index]
+
   # 品目取り込み
   resources :inquiries, only: :index do
     collection { post :import_bpr }

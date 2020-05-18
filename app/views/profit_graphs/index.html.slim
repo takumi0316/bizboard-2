@@ -1,0 +1,110 @@
+- current_date = params[:current].present?? Date.parse(params[:current]) : Date.today
+- targets = Target.where(target_year: current_date.year, target_month: current_date.month)
+
+.l-dashboard__month
+  = link_to '<< 前月', root_path(current: params[:current] ? (Date.parse(params[:current]) - 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthPrev'
+  span = "#{current_date.year}年#{current_date.month}月"
+  = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
+
+  h2.l-dashboard__heading 全体
+  .l-dashboard__graphs
+
+    / 形状範囲
+    - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+    / 見込み
+    / range内の納期に紐づく案件IDを取得
+    - quote_ids = Quote.deliverd_in(range).pluck(:id)
+    / 活動履歴と案件を組み合わせて受注予定日と合う物を取得
+    - activity = Activity.where(quote_id: quote_ids).joins(:quote)
+    / 活動履歴から同じquote_idを持つのから最新の作成日を取得
+    - hash = activity.group(:quote_id).having('count(*) >= 2').maximum(:created_at)
+    /取得した作成日以前の活動履歴のidを取得
+    - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
+
+    - if activity_ids.blank?
+      - activities = Activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+    - else
+      - activities = Activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+
+    / 確度ABC
+    - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum.to_i
+
+    / ステータス受注
+    - status_order = activities.where(status: 50).pluck(:price).sum.to_i
+
+    / 目標売上
+    - orders = targets.map(&:sales).inject(:+).to_i
+    - profits = targets.map(&:profit).inject(:+).to_i
+
+    .l-dashboard__graph
+    = react_component('ProfitGraph',{ label: '受注額', plans: accurary, orders: status_order, targets: orders,})
+
+    .l-dashboard__graph
+    = react_component('ProfitGraph',{ label: '利益額', plans: accurary, orders: status_order, targets: profits,})
+
+  h2.l-dashboard__heading 受注額
+  .l-dashboard__graphs
+    .l-dashboard__graph
+    - targets.each do |r|
+      / 形状範囲
+      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+      / 見込み
+      / range内の納期に紐づく案件IDを取得
+      - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(range).pluck(:id)
+      / 活動履歴と案件を組み合わせて受注予定日と合う物を取得
+      - activity = Activity.where(quote_id: quote_ids).joins(:quote)
+      / 活動履歴から同じquote_idを持つのから最新の作成日を取得
+      - hash = activity.group(:quote_id).having('count(*) >= 2').maximum(:created_at)
+      /取得した作成日以前の活動履歴のidを取得
+      - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
+
+      - if activity_ids.blank?
+        - activities = Activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+      - else
+        - activities = Activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+
+      / 確度ABC
+      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum.to_i
+
+      / ステータス受注
+      - status_order = activities.where(status: 50).pluck(:price).sum.to_i
+
+      / 目標売上
+      - orders = targets.map(&:sales).inject(:+).to_i
+
+      = react_component('ProfitGraph',{ label: r.division.name, plans: accurary, orders: status_order, targets: orders,})
+
+  h2.l-dashboard__heading 利益額
+  .l-dashboard__graphs
+    .l-dashboard__graph
+    - targets.each do |r|
+      / 形状範囲
+      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
+      / 見込み
+      / range内の納期に紐づく案件IDを取得
+      - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(range).pluck(:id)
+      / 活動履歴と案件を組み合わせて受注予定日と合う物を取得
+      - activity = Activity.where(quote_id: quote_ids).joins(:quote)
+      / 活動履歴から同じquote_idを持つのから最新の作成日を取得
+      - hash = activity.group(:quote_id).having('count(*) >= 2').maximum(:created_at)
+      /取得した作成日以前の活動履歴のidを取得
+      - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
+
+      - if activity_ids.blank?
+        - activities = Activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+      - else
+        - activities = Activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+
+      / 確度ABC
+      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum.to_i
+
+      / ステータス受注
+      - status_order = activities.where(status: 50).pluck(:price).sum.to_i
+
+      / 目標売上
+      - profits = targets.map(&:profit).inject(:+).to_i
+
+      = react_component('ProfitGraph',{ label: r.division.name, plans: accurary, orders: status_order, targets: profits,})
