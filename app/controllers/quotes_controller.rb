@@ -298,6 +298,7 @@ class QuotesController < ApplicationController
   ##
   # CSV一括ダウンロード
   # @version 2020/04/23
+  #
   def bulk_download
 
     filename = "#{quote.subject}.zip"
@@ -322,7 +323,7 @@ class QuotesController < ApplicationController
                 client = CardClient.find(c.id)
                 values << index + 1
                 values << c.card.name
-                values << quote.card_clients.where(card_id: c.card.id).where(company_division_client_id: c.company_division_client_id).count
+                values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: c.id).count
                 values << quote.created_at.strftime('%Y年 %m月 %d日')
                 client.templates.map { |ct| ct.values.map { |v| values << v.value } }
                 csv << values
