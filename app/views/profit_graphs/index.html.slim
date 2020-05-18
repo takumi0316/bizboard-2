@@ -29,9 +29,12 @@
 
     / 確度ABC
     - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum.to_i
+    - profit_accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum.to_i
+
 
     / ステータス受注
     - status_order = activities.where(status: 50).pluck(:price).sum.to_i
+    - profit_status_order = activities.where(status: 50).pluck(:profit_price).sum.to_i
 
     / 目標売上
     - orders = targets.map(&:sales).inject(:+).to_i
@@ -41,7 +44,7 @@
     = react_component('ProfitGraph',{ label: '受注額', plans: accurary, orders: status_order, targets: orders,})
 
     .l-dashboard__graph
-    = react_component('ProfitGraph',{ label: '利益額', plans: accurary, orders: status_order, targets: profits,})
+    = react_component('ProfitGraph',{ label: '利益額', plans: profit_accurary, orders: profit_status_order, targets: profits,})
 
   h2.l-dashboard__heading 受注額
   .l-dashboard__graphs
@@ -99,10 +102,10 @@
         - activities = Activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
 
       / 確度ABC
-      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum.to_i
+      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum.to_i
 
       / ステータス受注
-      - status_order = activities.where(status: 50).pluck(:price).sum.to_i
+      - status_order = activities.where(status: 50).pluck(:profit_price).sum.to_i
 
       / 目標売上
       - profits = targets.map(&:profit).inject(:+).to_i
