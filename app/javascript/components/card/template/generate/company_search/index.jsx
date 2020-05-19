@@ -54,7 +54,7 @@ const CompanySearch = props => {
   const search = search => {
 
     // 記事内容を送信
-    const url = '/companies.json?search=' + search;
+    const url = '/companies.json?name=' + search;
     const request = window.xhrRequest.get(url);
     request.then(res => {
 

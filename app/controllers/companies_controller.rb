@@ -12,9 +12,8 @@ class CompaniesController < ApplicationController
   #----------------------------------------
 
   # 取引先一覧
-  expose_with_pagination(:companies) {
-    Company.search(params[:name]).all.reverse_order
-  }
+  expose_with_pagination(:companies) { Company.search(params[:name]).all.reverse_order }
+
   # 取引先
   expose(:company) { Company.find_or_initialize_by id: params[:id] || params[:company_id] }
 
@@ -113,6 +112,7 @@ class CompaniesController < ApplicationController
   end
 
   def import_client
+
     # fileはtmpに自動で一時保存される
     Company.import_client(params[:file], params[:company_id])
     redirect_to companies_path, flash: { notice: { message: '' } }
