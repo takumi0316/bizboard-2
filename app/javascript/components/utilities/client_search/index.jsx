@@ -34,10 +34,7 @@ const ClientSearch = props => {
    *  モーダルを閉じる
    *  @version 2018/06/10
    */
-  const close = () => {
-
-    setState({ ...init });
-  };
+  const close = () => setState({ ...init });
 
   const onChange = e => {
 
@@ -70,10 +67,7 @@ const ClientSearch = props => {
    *  親要素のクリックイベントを引き継がない
    *  @version 2018/06/10
    */
-  const stopPropagation = e => {
-
-    e.stopPropagation();
-  };
+  const stopPropagation = e => e.stopPropagation();
 
   /**
    *  選択時
@@ -107,7 +101,7 @@ const ClientSearch = props => {
                       const key = `clients-${i}`;
                       return (
                         <li { ...{key} } className={ Style.ClientSearch__item }>
-                          <h2 className={ Style.ClientSearch__itemName } data-number={ i } onClick={ e => onSelect(e) }>{ client.company ? client.company.name : '会社名なし' } { client.division ? client.division.name : '部署名なし' } { client ? client.name : '担当者なし' } 様</h2>
+                          <h2 className={ Style.ClientSearch__itemName } data-number={ i } onClick={ e => onSelect(e) }>{ client.company ? client.company.name : '会社名なし' } { client.division ? client.division.name : '部署名なし' } { client.client ? client.client.name : '担当者なし' } 様</h2>
                         </li>
                       );
                     })}

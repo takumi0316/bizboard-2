@@ -1,6 +1,7 @@
 require 'csv'
+require 'nkf'
 
-CSV.generate do |csv|
+csv = CSV.generate do |card|
   headers = %w(
     No.
     請求日
@@ -14,7 +15,7 @@ CSV.generate do |csv|
     納品方法
     受注区分
   )
-  csv << headers
+  card << headers
   @all.each_with_index do |r, index|
     values = [
       (index + 1),
@@ -29,6 +30,8 @@ CSV.generate do |csv|
       r.quote.deliver_type_i18n,
       r.quote.quote_type_i18n
     ]
-    csv << values
+    card << values
   end
 end
+NKF::nkf('--sjis -Lw', csv)
+csv
