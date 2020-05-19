@@ -13,6 +13,7 @@ class CompanyDivisionsController < ApplicationController
 
   # 部署一覧
   expose_with_pagination(:divisions) { CompanyDivision.search(params[:search]).all.order(company_id: :desc) }
+
   # 部署
   expose(:division) { CompanyDivision.find_or_initialize_by id: params[:id] }
 

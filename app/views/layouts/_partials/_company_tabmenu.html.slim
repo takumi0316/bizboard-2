@@ -4,6 +4,7 @@ ul.l-dashboard__tabmenu
       .l-dashboard__tabmenuText--active 担当者
   li
     = link_to_unless_current '部署', company_divisions_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active 部署
   li
     = link_to_unless_current '取引先', companies_path, class: 'l-dashboard__tabmenuText' do
       .l-dashboard__tabmenuText--active 取引先
