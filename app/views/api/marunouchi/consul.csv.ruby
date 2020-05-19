@@ -36,7 +36,7 @@ CSV.generate do |csv|
       r.quote.channel_i18n.encode(Encoding::Windows_31J, undef: :replace).encode(Encoding::UTF_8),
       r.quote.reception_i18n.encode(Encoding::Windows_31J, undef: :replace).encode(Encoding::UTF_8),
       r.quote.deliver_type_i18n.encode(Encoding::Windows_31J, undef: :replace).encode(Encoding::UTF_8),
-      r.quote.quote_type_i18.encode(Encoding::Windows_31J, undef: :replace).encode(Encoding::UTF_8)n
+      r.quote.quote_type_i18n.encode(Encoding::Windows_31J, undef: :replace).encode(Encoding::UTF_8)
     ]
     csv << values
   end
