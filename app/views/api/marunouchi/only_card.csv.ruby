@@ -1,7 +1,8 @@
 require 'csv'
 require 'nkf'
+bom = "\uFEFF"
 
-csv = CSV.generate do |card|
+csv = CSV.generate(bom) do |card|
   headers = %w(
     No.
     請求日
