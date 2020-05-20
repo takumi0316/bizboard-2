@@ -33,7 +33,7 @@
 
 
     / ステータス受注
-    - status_order = activities.where(status: 50).pluck(:price).sum.to_i
+    - status_order = activities.where(status: :order).pluck(:price).sum.to_i
     - profit_status_order = activities.where(status: 50).pluck(:profit_price).sum.to_i
 
     / 目標売上
@@ -49,10 +49,9 @@
   h2.l-dashboard__heading 受注額
   .l-dashboard__graphs
     .l-dashboard__graph
+    - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
     - targets.each do |r|
       / 形状範囲
-      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
-
       / 見込み
       / range内の納期に紐づく案件IDを取得
       - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(range).pluck(:id)
@@ -72,7 +71,7 @@
       - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum.to_i
 
       / ステータス受注
-      - status_order = activities.where(status: 50).pluck(:price).sum.to_i
+      - status_order = activities.where(status: :order).pluck(:price).sum.to_i
 
       / 目標売上
       - orders = targets.map(&:sales).inject(:+).to_i
@@ -82,9 +81,10 @@
   h2.l-dashboard__heading 利益額
   .l-dashboard__graphs
     .l-dashboard__graph
+    / 形状範囲
+    - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
+
     - targets.each do |r|
-      / 形状範囲
-      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
 
       / 見込み
       / range内の納期に紐づく案件IDを取得
@@ -105,7 +105,7 @@
       - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum.to_i
 
       / ステータス受注
-      - status_order = activities.where(status: 50).pluck(:profit_price).sum.to_i
+      - status_order = activities.where(status: :order).pluck(:profit_price).sum.to_i
 
       / 目標売上
       - profits = targets.map(&:profit).inject(:+).to_i

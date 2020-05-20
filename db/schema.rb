@@ -492,13 +492,13 @@ ActiveRecord::Schema.define(version: 2020_05_13_055039) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "temporary_price"
+    t.integer "profit_price", default: 0
     t.string "last_company"
     t.string "last_division"
     t.string "last_client"
     t.date "issues_date"
     t.date "delivery_note_date"
     t.boolean "lock", default: false, null: false
-    t.integer "profit_price", default: 0
     t.index ["company_division_client_id"], name: "index_quotes_on_company_division_client_id"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end

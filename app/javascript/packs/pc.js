@@ -131,5 +131,5 @@ WebpackerReact.setup({
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
   MarunouchiSearchable,
-  ProfitGraph
+  ProfitGraph,
 })
