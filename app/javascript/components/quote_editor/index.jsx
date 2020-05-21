@@ -56,6 +56,7 @@ export default class QuoteEditor extends React.Component {
       deliver_at: props.quote.deliver_at || new Date(year, month, day),
       discount: props.quote.discount || 0,
       temporary_price: props.quote.temporary_price || 0,
+      profit_price: props.quote.profit_price || 0,
       date: props.quote.date,
       channel: props.quote.channel || '',
       expiration: props.quote.expiration,
@@ -233,6 +234,16 @@ export default class QuoteEditor extends React.Component {
     price = price - castDiscount;
     this.setState({ discount: castDiscount, price: price });
 	};
+
+  /**
+   * 利益額を変更
+   * @version 2019/12/23
+   */
+  setProfitPrice = (profit_price) => {
+
+    const castProfitPrice = Number(profit_price);
+    this.setState({ profit_price: castProfitPrice });
+  };
 
   /**
    * 合計金額を変更
@@ -416,6 +427,7 @@ export default class QuoteEditor extends React.Component {
       'quote[quote_type]': this.state.quote_type,
       'quote[quote_number]': this.state.quote_number || '',
       'quote[temporary_price]': this.state.temporary_price,
+      'quote[profit_price]': this.state.profit_price,
       'quote[tax_type]': this.state.tax_type,
       'quote[tax]': this.state.tax,
       'quote[payment_terms]': this.state.payment_terms,
@@ -643,10 +655,10 @@ export default class QuoteEditor extends React.Component {
           <ProjectSearch applyProject={ this.state.quote.id ? this.applyProject : this.applyNewProject } prefectures={ this.props.prefectures } />
           <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
         </div>
-        <PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
+        <PaymentDetails discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
                         memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
                         show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
-                        setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount }
+                        setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
         />
         <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice }
                       task={ this.state.task } onSubmit={ this.onSubmit }
