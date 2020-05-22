@@ -1,1 +1,1 @@
-= react_component('DeliveryPdfGenerator', { quote: quote, projects: quote.quote_projects, company: quote.client&.company_division&.company, division: quote.client&.company_division, client: quote.client })
+= react_component('DeliveryPdfGenerator', { quote: quote, projects: quote.quote_projects, company: quote.client.company_division.company.name || '', division: quote.client.present? ? quote.client.company_division.name : '', client: quote.client.present? ? quote.client.name : '' })

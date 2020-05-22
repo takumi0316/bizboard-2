@@ -21,16 +21,16 @@ const QuotationPdfGenrator = props => {
           </div>
           <div className='u-ml-30 c-flex__column'>
             <label className='c-form-label'>発行日</label>
-	          <DatetimePicker type='text' class='c-form-text__work-index__datepicker' action='date' name='issues_date'/>
+						<div>{ props.quote.issues_date }</div>
           </div>
             <div className='u-ml-30 c-flex__column'>
             <label className='c-form-label'>有効期限</label>
-	          <DatetimePicker type='text' default_datetime={ props.quote.expiratino } class='c-form-text__work-index__datepicker' action='date' name='expiration'/>
+						<div>{ props.quote.expiration }</div>
           </div>
         </div>
         <div className='u-mt-30'>
           <label className='c-form-label'>件名</label>
-          <input type='text' name='subject' className='c-form-text' defaultValue={ props.quote.subject }/>
+					<div>{ props.quote.subject }</div>
         </div>
         <div className='u-mt-30 c-table'>
           <table>

@@ -67,6 +67,8 @@ class InvoicesController < ApplicationController
   #
   def update
 
+    render json: { status: false, message: '案件がロックされている為に更新できません。' } if invoice&.quote.lock
+
     # 情報更新
     invoice.update! invoice_params
 
@@ -79,10 +81,10 @@ class InvoicesController < ApplicationController
     # 案件の会社のidとprofitの会社のidが違っていたら実行
     if co_id[0] != profit.company_id
       # 請求情報上書き(会社のidも)
-      profit&.update(price: invoice&.quote&.price, date: invoice&.date, company_id: co_id[0])
+      profit&.update(price: invoice&.quote.price, date: invoice.date, company_id: co_id[0])
     else
       # 請求情報上書き
-      profit&.update(price: invoice&.quote&.price, date: invoice&.date)
+      profit&.update(price: invoice&.quote.price, date: invoice.date)
     end
 
     render json: { status: true }
@@ -102,8 +104,11 @@ class InvoicesController < ApplicationController
 
     invoice.quote.invoicing! unless invoice.quote.invoicing?
 
+    #請求先情報を静的に保存
+    invoice.quote.update(last_company: invoice&.quote&.client&.company_division.company.name, last_division: invoice&.quote&.client&.company_division.name, last_client: invoice&.quote&.client&.name)
+
     # 請求情報保存
-    Profit.create!(company_id: invoice&.quote&.client&.company_division&.company&.id, quote_id: invoice&.quote_id, price: invoice&.quote&.price, date: invoice&.date)
+    Profit.create!(company_id: invoice&.quote&.client&.company_division.company.id, quote_id: invoice&.quote_id, price: invoice&.quote&.price, date: invoice&.date)
 
     render json: { status: true, invoice: invoice }
   rescue => e
@@ -155,7 +160,7 @@ class InvoicesController < ApplicationController
       @quote = Quote.where(id: @invoice.pluck(:quote_id))
       respond_to do |format|
         format.html do
-          render  pdf: "#{@invoice.last.quote&.client&.company_division&.company&.name}_請求書鏡", #pdfファイルの名前。これがないとエラーが出ます
+          render  pdf: "#{@invoice.last.quote&.client&.company_division.company.name}_請求書鏡", #pdfファイルの名前。これがないとエラーが出ます
                   encoding: 'UTF-8',
                   layout: 'layouts/pdf.html.slim',
                   template: 'invoices/roundup_pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。

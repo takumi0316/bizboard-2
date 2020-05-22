@@ -27,11 +27,11 @@
     .c-float__right
       .c-box__width-377
         p.u-fs-small 案件番号：　#{quote.quote_number}
-        p.u-fs-small 発行日：　　#{params[:date]}
+        p.u-fs-small 発行日：　　#{quote.delivery_note_date}
 
   .u-mt-50
 
-  p.u-fs-small.u-fw-bold 件名:　#{params[:subject]}
+  p.u-fs-small.u-fw-bold 件名:　#{quote.subject}
 
   .u-mt-30
 

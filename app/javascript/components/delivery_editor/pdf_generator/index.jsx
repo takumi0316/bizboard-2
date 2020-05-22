@@ -9,9 +9,9 @@ const DeliveryPdfGenrator = props => {
     <Fragment>
       <h1 className="l-dashboard__heading">納品書: { props.quote.subject }</h1>
       <div className="u-mt-15 c-attention">
-        <p>会社名: { props.company.name }</p>
-        <p>部署名: { props.division.name }</p>
-        <p>担当者名: { props.client.name }</p>
+        <p>会社名: { props.company }</p>
+        <p>部署名: { props.division }</p>
+        <p>担当者名: { props.client }</p>
       </div>
       <form method='get' target='_blank' action={ `/delivery_notes/${props.quote.id}/pdf` }>
         <div className='u-mt-30 c-flex'>
@@ -21,12 +21,12 @@ const DeliveryPdfGenrator = props => {
           </div>
           <div className='u-ml-30 c-flex__column'>
             <label className='c-form-label'>納品日</label>
-            <DatetimePicker type='text' class='c-form-text__work-index__datepicker' name='date'/>
+						<div>{ props.quote.delivery_note_date }</div>
           </div>
         </div>
         <div className='u-mt-30'>
           <label className='c-form-label'>件名</label>
-          <input type='text' name='subject' className='c-form-text' defaultValue={ props.quote.subject }/>
+					<div>{ props.quote.subject }</div>
         </div>
         <div className='u-mt-30 c-table'>
           <table>

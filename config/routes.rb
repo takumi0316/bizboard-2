@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   resources :quotes do
     post :status
     post :copy
+    post :lock
     member do
       get :pdf
     end

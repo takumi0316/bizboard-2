@@ -27,12 +27,12 @@
     .c-float__right
       .c-box__width-377
         p.u-fs-small 見積書番号：　#{quote.quote_number}
-        p.u-fs-small 発行日：　　　#{params[:issues_date]}
-        p.u-fs-small 有効期限：　　#{params[:expiration]}
+        p.u-fs-small 発行日：　　　#{quote.issues_date}
+        p.u-fs-small 有効期限：　　#{quote.expiration}
 
   .u-mt-50
 
-  p.u-fs-small.u-fw-bold 件名:　#{params[:subject]}
+  p.u-fs-small.u-fw-bold 件名:　#{quote.subject}
 
   .u-mt-30
 
