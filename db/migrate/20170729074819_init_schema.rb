@@ -558,6 +558,7 @@ class InitSchema < ActiveRecord::Migration[5.2]
       t.integer 		:payment_terms
       t.float				:tax,													default: 1.1
       t.integer			:reception
+      t.integer     :temporary_price
 
       t.timestamps
     end
@@ -789,9 +790,9 @@ class InitSchema < ActiveRecord::Migration[5.2]
     create_table :inquiries do |t|
 
       t.references :quote,        index: true
+      t.references :division,     foreign_key: true
       t.integer    :result,       default: 0
       t.string     :quote_number, comment: '案件番号'
-     	t.datetime   :import_time
 
       t.timestamps
     end

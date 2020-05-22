@@ -35,7 +35,25 @@ h1.l-dashboard__heading 担当者
   .c-form-label
     = f.label :email, 'メールアドレス'
     span.c-form__recommend.u-ml-10 入力推奨
-  = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text u-mb-30'
+  = f.text_field :email, placeholder: 'メールアドレス', style: "top: -100px; left: -100px; position: fixed;"
+  = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text u-mb-30', required: :true
+
+
+  .c-form-label
+    = f.label :password, 'パスワード'
+    span.c-form__recommend.u-ml-10 入力推奨
+  = f.password_field :dummypass, placeholder: '変更しない場合は入力をしないでください', style: "top: -100px; left: -100px; position: fixed;"
+  = f.password_field :password, placeholder: '変更しない場合は入力をしないでください', class: 'c-form-text u-mb-30', required: :true
+
+  .c-form-label
+    = f.label :password_confirmation, 'パスワード(確認)'
+    span.c-form__recommend.u-ml-10 入力推奨
+  = f.password_field :password_confirmation, placeholder: '変更しない場合は入力をしないでください', class: 'c-form-text u-mb-30', required: :true
+
+  .c-form-label
+    = f.label :user_type, 'ユーザータイプ'
+  .c-form-selectWrap.u-mb-30
+    = f.select :user_type, CompanyDivisionClient.user_types_i18n.invert, {}, { class: 'c-form-select' }
 
   .c-form-label
     = f.label :note, 'メモ'

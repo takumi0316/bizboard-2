@@ -56,8 +56,8 @@ class InvoicesController < ApplicationController
 
     add_breadcrumb '請求書一覧', path: invoices_path
     add_breadcrumb '編集'
-
   rescue => e
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 

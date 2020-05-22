@@ -107,9 +107,15 @@ class CompaniesController < ApplicationController
   rescue => e
 
     flash[:warning] = { message: e.message }
-  ensure 
+  ensure
 
     redirect_to action: :index
+  end
+
+  def import_client
+    # fileはtmpに自動で一時保存される
+    Company.import_client(params[:file], params[:company_id])
+    redirect_to companies_path, flash: { notice: { message: '' } }
   end
 
   #----------------------------------------

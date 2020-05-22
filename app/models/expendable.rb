@@ -14,9 +14,11 @@
 #  memo                         :text(65535)
 #  work_subcontractor_detail_id :bigint(8)
 #  user_id                      :bigint(8)
+#  work_subcontractor_id        :bigint(8)
 #
 
 class Expendable < ApplicationRecord
+
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
@@ -46,7 +48,9 @@ class Expendable < ApplicationRecord
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
+
   # validates :price, presence: true
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
@@ -54,6 +58,8 @@ class Expendable < ApplicationRecord
   belongs_to :subcontractor
 
   belongs_to :division
+
+  belongs_to :work_subcontractor, optional: true
 
   belongs_to :work_subcontractor_detail, optional: true
 
@@ -79,7 +85,7 @@ class Expendable < ApplicationRecord
 
       # 日付検索
       _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
-		else
+    else
 
       # 日付検索
       _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
@@ -92,5 +98,35 @@ class Expendable < ApplicationRecord
 
   end
 
+  ##
+  # プロダクションスクリプト
+  # @version 2020/03/11
+  #
+  def self.production_script
 
+    Expendable.where.not(work_subcontractor_detail_id: nil).pluck(:work_subcontractor_detail_id).each do |r|
+
+      work_subcontractor_detail = WorkSubcontractorDetail.find_or_initialize_by(id: r)
+      expendable = Expendable.find_or_initialize_by(work_subcontractor_detail_id: r)
+      payment = Payment.find_or_initialize_by(work_subcontractor_detail_id: r)
+      work_subcontractor = WorkSubcontractor.find_or_initialize_by(id: work_subcontractor_detail.work_subcontractor)
+      if !work_subcontractor_detail.new_record? && !expendable.new_record? && !work_subcontractor.new_record?
+
+        actual_cost = work_subcontractor.detail.sum(:actual_cost).to_i
+        quote_type = work_subcontractor.work&.quote&.quote_type == :contract || :salse ? 100 : 10
+        expendable.update! work_subcontractor_id: work_subcontractor.id, work_subcontractor_detail_id: nil, price: actual_cost, date: work_subcontractor.delivery_date, status: quote_type
+        payment.update! work_subcontractor_id: work_subcontractor.id, work_subcontractor_detail_id: nil, price: actual_cost, date: work_subcontractor.delivery_date
+        work_subcontractor.detail_ids.each do |d|
+
+          d_expendable = Expendable.find_or_initialize_by(work_subcontractor_detail_id: d)
+          d_payment = Payment.find_or_initialize_by(work_subcontractor_detail_id: d)
+          d_expendable.destroy! if r != d && !d_expendable.new_record?
+          d_payment.destroy! if r != d && !d_payment.new_record?
+        end
+      end
+    end
+  rescue => e
+
+    puts "message: #{e.message}"
+  end
 end

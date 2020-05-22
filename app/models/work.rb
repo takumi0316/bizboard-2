@@ -53,6 +53,8 @@ class Work < ApplicationRecord
 
   has_many :subcontractor_detail, class_name: 'WorkSubcontractorDetail', dependent: :destroy
 
+  accepts_nested_attributes_for :work_details
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

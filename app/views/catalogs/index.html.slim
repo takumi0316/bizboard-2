@@ -1,3 +1,4 @@
+= render 'layouts/_partials/category_tabmenu'
 
 = link_to 'カタログを作成する', new_catalog_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
@@ -5,6 +6,8 @@
   table
     thead
       tr
+        th カテゴリー
+        th 表示優先度
         th カタログ名
         th カタログ説明文
         th 納期目安
@@ -14,6 +17,8 @@
     tbody
       - catalogs.each do |r|
         tr
+          td = r.category&.name
+          td = r.turn
           td = r.name
           td = r.description
           td = r.deliver_at

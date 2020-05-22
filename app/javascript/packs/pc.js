@@ -2,6 +2,7 @@ import 'scripts/utilities';
 import 'scripts/initializer';
 import 'scripts/pagy';
 import 'scripts/image_converter';
+import 'scripts/xhr_request';
 
 (function() {
 
@@ -99,6 +100,9 @@ import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 // 丸の内CSV書き出し日付検索
 import MarunouchiSearchable from 'components/api/marunouchi/searchable';
 
+// 受注管理グラフ
+import ProfitGraph from 'components/profit_graph';
+
 WebpackerReact.setup({
   Alert,
   Kawaii,
@@ -126,5 +130,6 @@ WebpackerReact.setup({
 	QuotationSearch,
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
-  MarunouchiSearchable
+  MarunouchiSearchable,
+  ProfitGraph,
 })

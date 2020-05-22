@@ -84,79 +84,31 @@ class WorksController < ApplicationController
   #
   def update
 
-    if params[:status] == 'status'
+    work.update! work_params
 
-      work.update! status: params[:work][:status]
+    work.quote.working! if work.working?
+    work.quote.end_work! if work.completed? && !work.quote.invoicing?
 
-      work.quote.working! if work.working?
-
-      work.quote.end_work! if work.completed? && !work.quote.invoicing?
-
-      render json: { status: :success, work: work.status }
-    elsif params[:status] == 'price'
-
-      work.update! price: params[:price]
-      render json: { status: :success, price: work.price }
-
-    elsif params[:status] == 'notices'
-
-      work.update! notices: params[:work_notices]
-      render json: { status: :success, notices: work.notices }
-
-    elsif params[:status] == 'division'
-
-      work.update! division_id: params[:division_id]
-      render json: { status: :success, division: work.division }
-    end
+    render json: { status: :success, work: work }
   rescue => e
 
-    if params[:status] == 'status'
-
-      render json: { status: :error, work: work.status }
-    elsif params[:status] == 'price'
-
-      render json: { status: :error, price: work.price }
-    elsif params[:status] == 'notices'
-
-      work.update! notices: params[:work_notices]
-      render json: { status: :success, notices: work.notices }
-    elsif params[:division]
-
-      render json: { status: :error, division: work.division }
-    end
+    render json: { status: :error, message: e.message }
   end
 
   def directions
 
-    work_detail_clients = Work.find(params[:id]).work_details.pluck(:client_name).uniq
-    work_detail_clients = work_detail_clients.reject{ |client| client == '' }
-    @client = String.new
-    @clients = String.new
-    @directions = (Date.today).to_s + works.find(params[:id]).quote.subject
-    if work_detail_clients.present?
-
-     if work_detail_clients.length == 1
-
-       @client = work_detail_clients[0]
-       return @client
-     else
-
-       work_detail_clients.each_with_index do |client, index|
-
-        if work_detail_clients.length - 1 == index
-
-           @clients << "#{client}"
-        else
-
-           @clients << "#{client}, "
-        end
+    work_detail_clients = work.work_details.pluck(:client_name).uniq
+    work_detail_clients = work_detail_clients.reject { |client| client == '' }
+    @client = ''
+    @clients = ''
+    @directions = (Date.today).to_s + work.quote.subject
+    @client = work_detail_clients if work_detail_clients.length == 1
+    work_detail_clients.each_with_index do |client, index|
+      if work_detail_clients.length - 1 == index
+        @clients << client
+      else
+        @clients << "#{client}, "
       end
-
-       return @clients
-     end
-    else
-
-      return @client
     end
   end
 
@@ -164,8 +116,9 @@ class WorksController < ApplicationController
   #  ** Methods **
   #----------------------------------------
 
-  def count_params
-    params :count
-  end
+  def work_params
 
+    params.require(:work).permit :price, :status, :notices, :division_id,
+    work_details_attributes: [:id, :work_id, :order_contents, :deliver_method, :specification, :number_of_copies, :count, :deliver_at, :client_name, :estimated_cost, :actual_cost]
+  end
 end

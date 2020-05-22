@@ -332,7 +332,7 @@ class QuotesController < ApplicationController
 
     clone_quote.save
 
-    clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Date.today.to_time, deliver_at: Date.today.to_time, tax: 1.1)
+    clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Time.now, deliver_at: Time.now, tax: 1.1)
 
     if quote.work.present?
       # , :subcontractor, :subcontractor_detail
@@ -396,7 +396,7 @@ class QuotesController < ApplicationController
   def quote_params
 
     params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
-      :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price,
+      :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price, :profit_price,
       quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
   end
 

@@ -84,16 +84,22 @@ Rails.application.routes.draw do
   end
 
   # 作業詳細
-  resources :work_details
+  resources :work_details, only: [:create, :destroy]
 
   # 外注先作業
-  resources :work_subcontractors
+  resources :work_subcontractors, only: [:create, :update, :show, :destroy] do
+    member do
+      post :set_client
+    end
+  end
 
   # 外注先作業詳細
-  resources :work_subcontractor_details
+  resources :work_subcontractor_details, only: [:create, :destroy]
 
   # 取引先(会社)
-  resources :companies
+  resources :companies do
+    collection { post :import_client }
+  end
 
   # 取引先(部署)
   resources :company_divisions
@@ -128,8 +134,14 @@ Rails.application.routes.draw do
   # 自社部署
   resources :divisions
 
+  # カテゴリー
+  resources :categories
+
   # カタログ
   resources :catalogs
+
+  # 利益額
+  resources :profit_graphs, only: [:index]
 
   # 品目取り込み
   resources :inquiries, only: :index do

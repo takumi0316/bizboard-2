@@ -111,7 +111,7 @@ class CatalogsController < ApplicationController
 
   def catalog_params
 
-    params.require(:catalog).permit :name, :description, :price, :deliver_at, :image
+    params.require(:catalog).permit :name, :description, :price, :turn, :deliver_at, :image, :category_id
   end
 
 end

@@ -36,8 +36,8 @@ export default class QuoteEditor extends React.Component {
     const day = date.getDate();
 
     this.state = {
-			quote: props.quote,
-			quote_subject: props.quote.subject,
+      quote: props.quote,
+      quote_subject: props.quote.subject,
       quote_projects: props.quote_projects,
       company: props.company,
       division: props.division,
@@ -56,6 +56,7 @@ export default class QuoteEditor extends React.Component {
       deliver_at: props.quote.deliver_at || new Date(year, month, day),
       discount: props.quote.discount || 0,
       temporary_price: props.quote.temporary_price || 0,
+      profit_price: props.quote.profit_price || 0,
       date: props.quote.date,
       channel: props.quote.channel || '',
       issues_date: props.quote.issues_date,
@@ -63,15 +64,15 @@ export default class QuoteEditor extends React.Component {
       delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
-      show: props.quote.discount === 0 || props.quote.discount === null ? false : true,
+      show: props.quote.discount === 0 || props.quote.discount ? false : true,
       show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
-			task: props.task,
-			users: props.users,
-			prefectures: props.prefectures,
-			deliver_type_note: props.quote.deliver_type_note || '',
-			remarks: props.quote.remarks || '',
-			memo: props.quote.memo || '',
-			itemStatus: true
+      task: props.task,
+      users: props.users,
+      prefectures: props.prefectures,
+      deliver_type_note: props.quote.deliver_type_note || '',
+      remarks: props.quote.remarks || '',
+      memo: props.quote.memo || '',
+      itemStatus: true
     };
   };
 
@@ -259,6 +260,16 @@ export default class QuoteEditor extends React.Component {
 	};
 
   /**
+   * 利益額を変更
+   * @version 2019/12/23
+   */
+  setProfitPrice = (profit_price) => {
+
+    const castProfitPrice = Number(profit_price);
+    this.setState({ profit_price: castProfitPrice });
+  };
+
+  /**
    * 合計金額を変更
    * @version 2019/12/23
    */
@@ -303,27 +314,27 @@ export default class QuoteEditor extends React.Component {
 
     if (unit != 0) {
 
-    	if (!unit.match(/^[0-9]+$/)) {
+      if (!unit.match(/^[0-9]+$/)) {
 
-      	alert('半角数字以外を入力しないで下さい。');
-				return false
-			};
+        alert('半角数字以外を入力しないで下さい。');
+        return false
+      };
 
-			let quote_projects = this.state.quote_projects.slice();
-			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
-			quote_projects[passIndex].unit = Number(unit);
-			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
+      let quote_projects = this.state.quote_projects.slice();
+      let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
+      quote_projects[passIndex].unit = Number(unit);
+      quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
       price = Number(price) + Number(quote_projects[passIndex].price);
       this.setState({ quote_projects: quote_projects, price: price });
-		} else {
+    } else {
 
-			let quote_projects =  this.state.quote_projects.slice();
-			let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
-			quote_projects[passIndex].unit = Number(unit);
-			quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
+      let quote_projects =  this.state.quote_projects.slice();
+      let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
+      quote_projects[passIndex].unit = Number(unit);
+      quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(unit);
       price = Number(price) + Number(quote_projects[passIndex].price);
       this.setState({ quote_projects: quote_projects, price: price });
-		};
+    };
 	};
 
   /**
@@ -333,7 +344,7 @@ export default class QuoteEditor extends React.Component {
   setName = (passIndex, name) => {
 
     let quote_projects = this.state.quote_projects.slice();
-		quote_projects[passIndex].name = name;
+    quote_projects[passIndex].name = name;
     this.setState({ quote_projects: quote_projects });
   };
 
@@ -344,27 +355,27 @@ export default class QuoteEditor extends React.Component {
   setQuoteRemarks = (passIndex, remarks) => {
 
     let quote_projects = this.state.quote_projects.slice();
-		quote_projects[passIndex].remarks = remarks;
+    quote_projects[passIndex].remarks = remarks;
     this.setState({ quote_projects: quote_projects });
 	};
 
-	/**
-	 *
-	 * @version 2020/01/20
-	 */
-	setItemStatus = (e, bool) => {
+  /**
+   *
+   * @version 2020/01/20
+   */
+  setItemStatus = (e, bool) => {
 
-		e.preventDefault();
+    e.preventDefault();
 
-		const isQuoteProjects = this.state.quote_projects.length > 0 ? true : false;
-		if(!isQuoteProjects) {
+    const isQuoteProjects = this.state.quote_projects.length > 0 ? true : false;
+    if(!isQuoteProjects) {
 
-			alert('品目を追加してください！');
-			return false;
-		};
+      alert('品目を追加してください！');
+      return false;
+    };
 
-		this.setState({ itemStatus: bool });
-	};
+    this.setState({ itemStatus: bool });
+  };
 
 	/**
 	 * 品目を並べ直す
@@ -372,7 +383,7 @@ export default class QuoteEditor extends React.Component {
 	 */
 	reorderQuoteProjects = props => {
 
-		this.setState({ quote_projects: props });
+    this.setState({ quote_projects: props });
 	};
 
   /**
@@ -381,10 +392,10 @@ export default class QuoteEditor extends React.Component {
    */
   validation = () => {
 
-		let message = [];
-		let deliver_type = this.state.deliver_type;
-		deliver_type = deliver_type === 'location' || deliver_type === 'other' && this.state.deliver_type_note === '';
-		const deliver_type_note = this.state.deliver_type_note === '';
+    let message = [];
+    let deliver_type = this.state.deliver_type;
+    deliver_type = deliver_type === 'location' || deliver_type === 'other' && this.state.deliver_type_note === '';
+    const deliver_type_note = this.state.deliver_type_note === '';
 
     if(this.state.quote_subject === '') message.push('案件タイトルを入力してください。');
 
@@ -392,8 +403,8 @@ export default class QuoteEditor extends React.Component {
 
 		if(deliver_type) {
 
-			if(deliver_type_note) message.push('納品方法を記入してください');
-		};
+      if(deliver_type_note) message.push('納品方法を記入してください');
+    };
 
     return message;
   };
@@ -409,7 +420,7 @@ export default class QuoteEditor extends React.Component {
    */
   onSubmit = (e) => {
 
-		e.preventDefault();
+	  e.preventDefault();
     let arrayRails = [];
     let field = {};
     let messages = this.validation();
@@ -422,8 +433,8 @@ export default class QuoteEditor extends React.Component {
 
     this.state.quote_projects.map((project) => {
 
-    	arrayRails.push(JSON.stringify({
-      	'projectSpecificationId': project.id ? project.id : 'null',
+      arrayRails.push(JSON.stringify({
+        'projectSpecificationId': project.id ? project.id : 'null',
         'projectSpecificationName': project.name,
         'projectSpecificationRemarks': project.remarks,
         'projectSpecificationUnitPrice': project.unit_price,
@@ -442,6 +453,7 @@ export default class QuoteEditor extends React.Component {
       'quote[quote_type]': this.state.quote_type,
       'quote[quote_number]': this.state.quote_number || '',
       'quote[temporary_price]': this.state.temporary_price,
+      'quote[profit_price]': this.state.profit_price,
       'quote[tax_type]': this.state.tax_type,
       'quote[tax]': this.state.tax,
       'quote[payment_terms]': this.state.payment_terms,
@@ -500,7 +512,7 @@ export default class QuoteEditor extends React.Component {
   applyClient = (client) => {
 
     this.setState({
-      client: client,
+      client: client.client,
       company: client.company,
       division: client.division,
     });
@@ -643,15 +655,15 @@ export default class QuoteEditor extends React.Component {
   render() {
     return (
       <Fragment>
-    		<Subject subject={ this.state.quote_subject } setSubject={ this.setSubject } />
-    		<CustomerInformation	client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' }
-    													division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient }
-    													users={ this.state.users } prefectures={ this.state.prefectures }
-    		/>
-    		<div className='u-mt-15'>
-          <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?search=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
-      	</div>
-    		<SalesDepartment home_division={ this.state.home_division } />
+        <Subject subject={ this.state.quote_subject } setSubject={ this.setSubject } />
+        <CustomerInformation	client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' }
+                              division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient }
+                              users={ this.state.users } prefectures={ this.state.prefectures }
+        />
+        <div className='u-mt-15'>
+          <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?name=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
+        </div>
+        <SalesDepartment home_division={ this.state.home_division } />
         <div className='u-mt-10'>
           <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
         </div>
@@ -671,17 +683,17 @@ export default class QuoteEditor extends React.Component {
     		/>
         <div className='u-mt-15'>
           <ProjectSearch applyProject={ this.state.quote.id ? this.applyProject : this.applyNewProject } prefectures={ this.props.prefectures } />
-    			<div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
+          <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
         </div>
-    		<PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
-    										memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
-    										show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
-    										setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount }
-    		/>
-    		<ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice }
-    									task={ this.state.task } onSubmit={ this.onSubmit }
-    		/>
+        <PaymentDetails discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
+                        memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
+                        show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
+                        setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
+        />
+        <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice }
+                      task={ this.state.task } onSubmit={ this.onSubmit }
+        />
       </Fragment>
     );
-  }
-}
+  };
+};
