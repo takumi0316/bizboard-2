@@ -11,8 +11,6 @@
 #  tel                  :string(191)
 #  email                :string(191)
 #  note                 :text(65535)
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
 #  free_word            :text(65535)
 #  status               :integer          default(0)
 #  user_type            :integer          default(0)
@@ -29,8 +27,10 @@
 #  confirmed_at         :datetime
 #  confirmation_sent_at :datetime
 #  unconfirmed_email    :string(191)
-#  lastaccesstask       :datetime         default(Fri, 06 Sep 2019 15:38:25 JST +09:00)
+#  lastaccesstask       :datetime         default(Mon, 06 Apr 2020 15:31:43 JST +09:00)
 #  opt                  :integer          default(0)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #
 
 class CompanyDivisionClient < ApplicationRecord
@@ -38,6 +38,8 @@ class CompanyDivisionClient < ApplicationRecord
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
+
+  has_secure_password
 
   #----------------------------------------
   #  ** Constants **
@@ -49,6 +51,10 @@ class CompanyDivisionClient < ApplicationRecord
 
   # 敬称
   enum title: { nothing: 0, honorific: 10, normal: 20 }
+
+  # ユーザー区分(admin: 20消しました)
+  enum user_type: { general: 0, division: 10, admin: 20}
+
 
   #----------------------------------------
   #  ** Validations **

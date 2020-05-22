@@ -2,6 +2,7 @@ import 'scripts/utilities';
 import 'scripts/initializer';
 import 'scripts/pagy';
 import 'scripts/image_converter';
+import 'scripts/xhr_request';
 
 (function() {
 
@@ -102,6 +103,8 @@ import MarunouchiSearchable from 'components/api/marunouchi/searchable';
 // 在庫管理の部署選択
 import InventoryDivisionsSelect from 'components/inventory_divisions_select';
 
+// 受注管理グラフ
+import ProfitGraph from 'components/profit_graph';
 
 WebpackerReact.setup({
   Alert,
@@ -131,5 +134,6 @@ WebpackerReact.setup({
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
   MarunouchiSearchable,
-  InventoryDivisionsSelect
+  InventoryDivisionsSelect,
+    ProfitGraph,
 })

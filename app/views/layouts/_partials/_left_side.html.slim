@@ -46,6 +46,11 @@
           = evil_icon 'ei-eye', size: :s
           span.u-ml-10 製造経費入力
 
+      li.l-dashboard__menuItem
+        = link_to profit_graphs_path, class: current_controller('profit_graphs') do
+          = evil_icon 'ei-chart', size: :s
+          span.u-ml-10 受注管理グラフ
+
     - if ['manager', 'sales', 'admin'].include?(current_user.user_type)
 
       .u-mt-15
