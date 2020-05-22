@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.string "price", comment: "文言なども入る"
     t.string "deliver_at", comment: "文言なども入る"
     t.bigint "category_id"
+    t.integer "turn", default: 0
     t.index ["category_id"], name: "index_catalogs_on_category_id"
   end
 
@@ -491,6 +492,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_051715) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "temporary_price"
+    t.integer "profit_price", default: 0
     t.string "last_company"
     t.string "last_division"
     t.string "last_client"
