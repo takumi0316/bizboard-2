@@ -401,6 +401,13 @@ ja:
         unknown_project_number: 品目不一致
         complete: 完了
 
+    product_history:
+      status:
+        first_stock: 初期在庫
+        delivery_stock: 出庫
+        add_stock: 在庫追加
+
+
   attributes:
     created_at: 登録日時
     updated_at: 更新日時

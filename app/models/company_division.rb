@@ -49,6 +49,10 @@ class CompanyDivision < ApplicationRecord
   # 部署
   has_many :clients, class_name: 'CompanyDivisionClient'
 
+  # quote
+  has_one :inventory
+
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

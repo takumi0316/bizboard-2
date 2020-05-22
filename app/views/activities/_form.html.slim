@@ -15,12 +15,12 @@
       .c-form-label
         = f.label :status, '対応内容'
         span.c-form__required.u-ml-10 必須
-      = f.select :status, Activity.statuses_i18n.invert, {prompt: '対応ステータス'}, { class: 'c-form-dateselect' }
+      = f.select :status, Activity.statuses_i18n.invert, {}, { class: 'c-form-dateselect' }
 
     .u-mr-30
       .c-form-label
         = f.label :accurary, '確度'
-      = f.select :accurary, Activity.accuraries_i18n.invert, {prompt: '確度'}, { class: 'c-form-dateselect' }
+      = f.select :accurary, Activity.accuraries_i18n.invert, {}, { class: 'c-form-dateselect' }
 
     .u-mr-30
       .c-form-label

@@ -1,0 +1,18 @@
+
+.u-mt-15 = link_to '商品を作成する', new_product_history_path(product_id: params[:product_id]), class: 'c-btnMain-standard c-btn-blue'
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 発注日
+        th 依頼内容
+        th 数量
+    tbody
+      - @product_history.each do |r|
+        tr
+          td = r.date
+          td = r.status_i18n
+          td = r.quantity
+
+= render 'layouts/_partials/pagination'

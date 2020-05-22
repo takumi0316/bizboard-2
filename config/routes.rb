@@ -139,9 +139,17 @@ Rails.application.routes.draw do
   # カタログ
   resources :catalogs
 
+  # 在庫管理
+  resources :inventories
+
+  # 在庫管理用商品
+  resources :products
+
+  # 在庫管理用商品履歴
+  resources :product_histories
+
   # 利益額
   resources :profit_graphs, only: [:index]
-
   # 品目取り込み
   resources :inquiries, only: :index do
     collection { post :import_bpr }

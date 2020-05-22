@@ -87,6 +87,11 @@
               span.u-ml-10 こんプロメニュー
 
           li.l-dashboard__menuItem
+            = link_to inventories_path, class: current_controller('inventories') || current_controller('inventories') do
+              = evil_icon 'ei-archive', size: :s
+              span.u-ml-10  在庫管理
+
+          li.l-dashboard__menuItem
             = link_to users_path, class: cp(users_path) do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 ユーザー一覧
