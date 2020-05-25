@@ -1,10 +1,6 @@
 import React from 'react';
 import Style from '../style.sass';
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
-
 /**
  *  @version 2018/06/10
  */
@@ -21,7 +17,11 @@ export default class ProjectSearch extends React.Component {
     // キーバインドイベントを一時保存用
     this.previousKeyDownEvent = null;
 
-    this.state = { show: false, projects: [], body: null };
+    this.state = {
+      show: false,
+      projects: [],
+      body: null
+    };
   };
 
 
@@ -46,7 +46,7 @@ export default class ProjectSearch extends React.Component {
 
     if (this.refs.word.value == '') {
 
-      this.setState({projects: []});
+      this.setState({ projects: [] });
       return false
     };
 
@@ -66,25 +66,6 @@ export default class ProjectSearch extends React.Component {
       if(res.data.status == 'success') this.setState({ projects: res.data.projects });
       if(res.data.status != 'success') window.alertable({ icon: 'error', message: '品目を取得できませんでした。' });
     }).catch(err => window.alertable({ icon: 'error', message: err }));
-    Request.get('/projects.json?free_word=' + search)
-      .end((error, response) => {
-
-        if (error) return false;
-        this.setState({projects: response.body.projects});
-      });
-  };
-
-  /**
-   *  日時を適用する
-   *  @version 2018/06/10
-   */
-  _apply = e => {
-
-    e.stopPropagation();
-
-    this.props.apply({ project: project });
-
-    this.setState({ show: false });
   };
 
   /**
@@ -113,13 +94,13 @@ export default class ProjectSearch extends React.Component {
 
     return (this.state.show ?
       <div className={Style.ProjectSearch} onMouseDown={ e => this._close(e) }>
-        <div className={Style.ProjectSearch__inner} onMouseDown={this._stopPropagation}>
+        <div className={Style.ProjectSearch__inner} onMouseDown={ e => this._stopPropagation(e) }>
           <div>
             <div className={Style.ProjectSearch__form}>
               <input type='text' className={Style.ProjectSearch__input} placeholder='品目名で検索' ref='word' onChange={ e => this._onChange(e) }/>
               <div onClick={ e => this._onChange(e) } className='c-btnMain-standard u-ml-10'>検索</div>
             </div>
-            { this.state.projects.length > 0 ?
+            { this.state.projects ?
               <ul className={Style.ProjectSearch__list}>
                 {this.state.projects.map((project, i) => {
                   var key = `projects-${i}`;

@@ -1,9 +1,5 @@
 import React, { Fragment }  from 'react'
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
-
 // import Component
 import ClientSearch 				from '../utilities/client_search';
 import ProjectSearch 				from './project_search';
@@ -36,18 +32,19 @@ export default class QuoteEditor extends React.Component {
     const day = date.getDate();
 
     this.state = {
+      quote_id: props.quote.id || '',
       quote: props.quote,
-      quote_subject: props.quote.subject,
+      quote_subject: props.quote.subject || '',
       quote_projects: props.quote_projects,
-      company: props.company,
-      division: props.division,
+      company: props.company || '',
+      division: props.division || '',
       home_division: props.home_division,
-      client: props.client,
-      work: props.work,
-      invoice: props.invoice,
+      client: props.client || '',
+      work: props.work || '',
+      invoice: props.invoice || '',
       user_id: props.user_id || '',
       quote_type: props.quote.quote_type || 'contract',
-      quote_number: props.quote.quote_number || null ,
+      quote_number: props.quote.quote_number || '',
       tax_type: props.quote.tax_type || 'taxation',
       tax: props.quote.tax || 1.08,
       payment_terms:  props.quote.payment_terms || 'postpaid',
@@ -65,7 +62,7 @@ export default class QuoteEditor extends React.Component {
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount ? false : true,
       show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
-      task: props.task,
+      task: props.task || '',
       users: props.users,
       prefectures: props.prefectures,
       deliver_type_note: props.quote.deliver_type_note || '',
@@ -105,71 +102,71 @@ export default class QuoteEditor extends React.Component {
    */
   setDeliveryNoteDate = datetime => this.setState({ delivery_note_date: datetime.datetime });
 
-	/**
-	* タイトルの変更処理
-	* @version 2019/12/20
-	*/
-	setSubject = subject => this.setState({ quote_subject: subject });
-
-	/**
-	*
-	* @version 2019/12/20
-	*/
-	setDeliverType = deliver_type => this.setState({ deliver_type: deliver_type });
-
-	/**
-	*
-	* @version 2019/12/20
-	*/
-	setDeliverTypeNote = deliver_type_note => this.setState({ deliver_type_note: deliver_type_note });
-
-	/**
-	 *
-	 * @version 2019/12/20
-	 */
-	setChannel = channel => this.setState({ channel: channel, show_quote_number: channel == 'bpr_erp' });
-
-	/**
-	 *
-	 * @version 2019/12/20
-	 */
-	setQuoteNumber = quote_number => this.setState({ quote_number: quote_number });
-
-	/**
-	 *
-	 * @version 2019/12/20
-	 */
-	setReception = reception => this.setState({ reception: reception });
-
-	/**
-	 *
-	 * @version 2019/12/20
-	 */
-	setQuoteType = quote_type => this.setState({ quote_type: quote_type });
-
-	/**
-	 *
-	 * @version 2019/12/23
-	 */
-	setRemarks = remarks => this.setState({ remarks: remarks });
-
-	/**
-	 *
-	 * @version 2019/12/23
-	 */
-	setMemo = memo => this.setState({ memo: memo });
-
-	/**
-	 *
-	 * @version 2019/12/23
-	 */
-	setPaymentTerms = payment_terms => this.setState({ payment_terms: payment_terms });
-
-	/**
-	 *
-	 * @version 2019/12/23
-	 */
-	setTaxType = tax_type => this.setState({ tax_type: tax_type });
+  /**
+  * タイトルの変更処理
+  * @version 2019/12/20
+  */
+  setSubject = subject => this.setState({ quote_subject: subject });
+  
+  /**
+  *
+  * @version 2019/12/20
+  */
+  setDeliverType = deliver_type => this.setState({ deliver_type: deliver_type });
+  
+  /**
+  *
+  * @version 2019/12/20
+  */
+  setDeliverTypeNote = deliver_type_note => this.setState({ deliver_type_note: deliver_type_note });
+  
+  /**
+   *
+   * @version 2019/12/20
+   */
+  setChannel = channel => this.setState({ channel: channel, show_quote_number: channel == 'bpr_erp' });
+  
+  /**
+   *
+   * @version 2019/12/20
+   */
+  setQuoteNumber = quote_number => this.setState({ quote_number: quote_number });
+  
+  /**
+   *
+   * @version 2019/12/20
+   */
+  setReception = reception => this.setState({ reception: reception });
+  
+  /**
+   *
+   * @version 2019/12/20
+   */
+  setQuoteType = quote_type => this.setState({ quote_type: quote_type });
+  
+  /**
+   *
+   * @version 2019/12/23
+   */
+  setRemarks = remarks => this.setState({ remarks: remarks });
+  
+  /**
+   *
+   * @version 2019/12/23
+   */
+  setMemo = memo => this.setState({ memo: memo });
+  
+  /**
+   *
+   * @version 2019/12/23
+   */
+  setPaymentTerms = payment_terms => this.setState({ payment_terms: payment_terms });
+  
+  /**
+   *
+   * @version 2019/12/23
+   */
+  setTaxType = tax_type => this.setState({ tax_type: tax_type });
 
 
   /**
@@ -178,9 +175,9 @@ export default class QuoteEditor extends React.Component {
    */
   setShow = bool => {
 
-		const undoPrice = Number(this.state.price) + Number(this.state.discount);
+    const undoPrice = Number(this.state.price) + Number(this.state.discount);
     bool ? this.setState({ show: bool }) : this.setState({ show: bool, discount: 0, price: undoPrice });
-	};
+  };
 
   /**
    * 値引き金額を変更
@@ -188,8 +185,8 @@ export default class QuoteEditor extends React.Component {
    */
   setDiscount = discount => {
 
-		const castDiscount = Number(discount);
-		const	copyProjects = this.state.quote_projects.slice();
+    const castDiscount = Number(discount);
+    const copyProjects = this.state.quote_projects.slice();
     let price = 0;
     copyProjects.map((project) => {
 
@@ -197,7 +194,7 @@ export default class QuoteEditor extends React.Component {
     });
     price = price - castDiscount;
     this.setState({ discount: castDiscount, price: price });
-	};
+  };
 
   /**
    * 利益額を変更
@@ -228,16 +225,16 @@ export default class QuoteEditor extends React.Component {
    */
   setUnitPrice = (passIndex, unitPrice) => {
 
-  	if (unitPrice.match(/^([1-9]¥d*|0)(¥.¥d+)?$/)) {
+    if (unitPrice.match(/^([1-9]¥d*|0)(¥.¥d+)?$/)) {
 
       alert('半角数字以外を入力しないで下さい。');
       return false
     };
 
-		let quote_projects = this.state.quote_projects.slice();
-		let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
-		quote_projects[passIndex].unit_price = Number(unitPrice);
-		quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(quote_projects[passIndex].unit);
+    let quote_projects = this.state.quote_projects.slice();
+    let price = Number(this.state.price) - Number(quote_projects[passIndex].price);
+    quote_projects[passIndex].unit_price = Number(unitPrice);
+    quote_projects[passIndex].price = Number(quote_projects[passIndex].unit_price) * Number(quote_projects[passIndex].unit);
     price = Number(price) + Number(quote_projects[passIndex].price);
     this.setState({ quote_projects: quote_projects, price: price });
   };
@@ -271,7 +268,7 @@ export default class QuoteEditor extends React.Component {
       price = Number(price) + Number(quote_projects[passIndex].price);
       this.setState({ quote_projects: quote_projects, price: price });
     };
-	};
+  };
 
   /**
    *
@@ -293,7 +290,7 @@ export default class QuoteEditor extends React.Component {
     let quote_projects = this.state.quote_projects.slice();
     quote_projects[passIndex].remarks = remarks;
     this.setState({ quote_projects: quote_projects });
-	};
+  };
 
   /**
    *
@@ -313,11 +310,11 @@ export default class QuoteEditor extends React.Component {
     this.setState({ itemStatus: bool });
   };
 
-	/**
-	 * 品目を並べ直す
-	 * @version 2020/01/20
-	 */
-	reorderQuoteProjects = props => this.setState({ quote_projects: props });
+  /**
+   * 品目を並べ直す
+   * @version 2020/01/20
+   */
+  reorderQuoteProjects = props => this.setState({ quote_projects: props });
 
   /**
    *  バリデーション
@@ -330,109 +327,16 @@ export default class QuoteEditor extends React.Component {
     deliver_type = deliver_type === 'location' || deliver_type === 'other' && this.state.deliver_type_note === '';
     const deliver_type_note = this.state.deliver_type_note === '';
 
-    if(this.state.quote_subject === '') message.push('案件タイトルを入力してください。');
+    if(!this.state.quote_subject) message.push('案件タイトルを入力してください。');
 
-    if(this.state.quote.lock) message.push('案件がロックされている為に更新できません。');
+    if(this.state.quote.lock) message.push('案件がロックされている為、更新できません。');
 
-		if(deliver_type) {
+    if(deliver_type) {
 
       if(deliver_type_note) message.push('納品方法を記入してください');
     };
 
     return message;
-  };
-
-  onPDF = passQuoteId => location.href = `/quotes/` + passQuoteId + '/wicked_pdf';
-
-  /**
-   *  登録処理
-   *  @version 2018/06/10
-   */
-  onSubmit = e => {
-
-	  e.preventDefault();
-    let arrayRails = [];
-    let field = {};
-    let messages = this.validation();
-    // エラーが存在する場合
-    if (messages.length > 0) {
-
-      alert(messages.join('\n'));
-      return false;
-    };
-
-    this.state.quote_projects.map((project) => {
-
-      arrayRails.push(JSON.stringify({
-        'projectSpecificationId': project.id ? project.id : 'null',
-        'projectSpecificationName': project.name,
-        'projectSpecificationRemarks': project.remarks,
-        'projectSpecificationUnitPrice': project.unit_price,
-        'projectSpecificationUnit': project.unit,
-        'projectSpecificationPrice': project.price,
-        'projectName': project.project_name,
-        'projectId': project.project_id,
-			}));
-		});
-
-    field = {
-      'id': this.state.quote.id === null ? 'null' : this.state.quote.id,
-      'quote[division_id]': this.state.home_division ? this.state.home_division.id : this.props.division_id,
-      'quote[company_division_client_id]': this.state.client ? this.state.client.id : this.props.quote.company_division_client_id || '',
-      'quote[subject]': this.state.quote_subject || '',
-      'quote[quote_type]': this.state.quote_type,
-      'quote[quote_number]': this.state.quote_number || '',
-      'quote[temporary_price]': this.state.temporary_price,
-      'quote[profit_price]': this.state.profit_price,
-      'quote[tax_type]': this.state.tax_type,
-      'quote[tax]': this.state.tax,
-      'quote[payment_terms]': this.state.payment_terms,
-      'quote[channel]': this.state.channel,
-      'quote[date]': this.state.date || '',
-      'quote[issues_date]': this.state.issues_date || '',
-      'quote[expiration]': this.state.expiration || '',
-      'quote[delivery_note_date]': this.state.delivery_note_date || '',
-      'quote[deliver_at]': this.state.deliver_at || '',
-      'quote[reception]': this.state.reception,
-      'quote[deliver_type]': this.state.deliver_type,
-      'quote[remarks]': this.state.remarks,
-      'quote[memo]': this.state.memo,
-      'quote[user_id]': this.props.user_id,
-      'quote[discount]': this.state.discount,
-      'quote[price]': this.state.price,
-      'specifications[]': arrayRails,
-    };
-
-    // 納品方法
-    if (this.state.deliver_type == 'location' || this.state.deliver_type == 'other') {
-
-      field['quote[deliver_type_note]'] = this.state.deliver_type_note || '';
-		};
-
-    let url = '/quotes';
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if (!err && res.body.status == 'success') {
-          if (!this.props.quote.id) {
-
-						alert('案件情報を作成しました');
-            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects });
-            location.href = `${res.body.quote.id}/edit`;
-          } else {
-
-            alert('案件情報を更新しました');
-            this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects });
-          }
-        } else {
-
-          alert('案件情報の保存に失敗しました。');
-          this.setState({ quote: res.body.quote, quote_projects: res.body.quote_projects });
-        };
-      });
   };
 
   /**
@@ -444,134 +348,154 @@ export default class QuoteEditor extends React.Component {
       company: client.company,
       division: client.division,
     });
-
+  
+  /**
+   * 売り上げ部署
+   * @version 2020/05/25
+   * @param division
+   */
   applyHomeDivision = division => this.setState({ home_division: division });
 
   /**
-   *  品目選択時(案件が既に存在している場合)
+   *  品目選択時
    *  @version 2018/06/10
    */
   applyProject = project => {
 
-		const price = Number(this.state.price) + Number(project.price);
-		const url = '/quote_projects';
-		let quote_projects = this.state.quote_projects.slice();
-		let mergeProjects = [];
-		project.specifications.map((specification) => {
+    const price = Number(this.state.price) + Number(project.price);
+    const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects));
+    
+    project.specifications.map(specification => {
+    
+      const strong = 1000;
+      	
+      // uniqueなidを生成
+      const uid = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
+      	
+      const field = {
+        'id': '',
+        'uid': uid,
+        'project_id': project.id,
+        'name': specification.name,
+        'unit_price': specification.unit_price,
+        'unit': specification.unit,
+        'price': specification.price,
+        'project_name': specification.project_name ? specification.project_name : '',
+        'remarks': specification.remarks ? specification.remarks : ''
+      };
+          		
+      quote_projects.push(field);
+    });
 
-			const field = {
-				'project_id': project.id,
-				'quote_id': this.state.quote.id,
-				'name': specification.name,
-				'unit_price': specification.unit_price,
-				'unit': 1,
-				'price': specification.price,
-				'project_name': specification.project_name ? specification.project_name : '',
-				'remarks': specification.remarks ? specification.remarks : ''
-			};
-			mergeProjects.push(JSON.stringify({ ...field }));
-		});
-		const field = {
-			'quote_id': this.state.quote.id,
-			'projects[]': mergeProjects
-		};
-
-		Request
-		  .post(url)
-			.field(field)
-			.set('X-Requested-With', 'XMLHttpRequest')
-			.setCsrfToken()
-			.end((err, res) => {
-				if(!err && res.body.status === 'success') {
-
-					let applyMergeProjects = [...quote_projects];
-					res.body.projects.map((project) => {
-
-						applyMergeProjects.push({ ...project });
-					});
-					this.setState({ quote_projects: applyMergeProjects, price: price });
-			  } else {
-
-					alert(res.body.message);
-				};
-			});
-	};
-
-  /**
-   *  品目選択時(新規案件の場合)
-   *  @version 2018/06/10
-   */
-  applyNewProject = project => {
-
-		const price = Number(this.state.price) + Number(project.price);
-		let quote_projects = this.state.quote_projects.slice();
-		let mergeProjects = [...quote_projects];
-		project.specifications.map((specification) => {
-
-			const strong = 1000;
-			// uniqueなidを生成
-			const id = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
-			const field = {
-				'id': id,
-				'project_id': project.id,
-				'name': specification.name,
-				'unit_price': specification.unit_price,
-				'unit': specification.unit,
-				'price': specification.price,
-				'project_name': specification.project_name ? specification.project_name : '',
-				'remarks': specification.remarks ? specification.remarks : ''
-			};
-			mergeProjects = [...mergeProjects, { ...field }];
-		});
-
-		this.setState({ quote_projects: mergeProjects, price: price });
+    this.setState({ quote_projects: quote_projects, price: price });
   };
 
   /**
    * 指定されたprojectを消す
    * @version 2019/12/23
    */
-  _projectDestroy = (e, passIndex) => {
-
-		e.preventDefault();
-		const result = window.confirm('本当に消しますか？');
-		if(result) {
-
-			alert('消します！');
-		} else {
-
-			return;
-		};
-
-		let quote_projects = this.state.quote_projects.slice();
-		quote_projects.splice(passIndex, 1);
-		const delProjectPrice = Number(this.state.quote_projects[passIndex].price);
-		let minusPrice = Number(this.state.price) - delProjectPrice;
-
-    if(this.state.quote.id !== null && this.state.quote_projects[passIndex].id !== null) {
-
-      let url = '/quote_projects/' + this.state.quote_projects[passIndex].id;
-      let field = { 'quote_id': this.state.quote.id, 'quote_price': minusPrice };
-      Request
-      .del(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if ( !err && res.body.status === 'success' ) {
-
-          this.setState({ quote_projects: quote_projects, price: minusPrice });
-        } else {
-
-          alert('正常に削除できませんでした');
-        }
-      });
-    } else {
-
-      this.setState({ quote_projects: quote_projects, price: minusPrice });
-    };
+  projectDestroy = e => {
+  
+    e.preventDefault();
+    const index = e.target.value;
+    window.confirmable({ icon: 'warning', message: '本当に削除しますか？', callback: () => {
+      
+      const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects));
+      quote_projects.splice(index, 1);
+      const delProjectPrice = Number(this.state.quote_projects[index].price);
+      const minusPrice = Number(this.state.price) - delProjectPrice;
+    
+      if(!this.state.quote_projects[index].id) this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }));
+      
+      if(this.state.quote.id && this.state.quote_projects[index].id) {
+      
+        const url = `/quote_projects/${this.state.quote_projects[index].id}`;
+        const request = window.xhrRequest.delete(url);
+        request.then(res => {
+      
+          if(res.data.status == 'success') this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }) );
+          if(res.data.status != 'success') window.alertable({ icon: 'error', message: '品目の削除に失敗しました。' });
+        }).catch(err => window.alertable({ icon: 'error', message: err }));
+      };
+    }});
   };
-
+  
+  /**
+   *  登録処理
+   *  @version 2018/06/10
+   */
+  onSubmit = e => {
+    
+    e.preventDefault();
+    const messages = this.validation();
+    
+    // エラーが存在する場合
+    if(messages.length > 0) {
+      
+      window.alertable({ icon: 'error', message: messages.join('\n') });
+      return false;
+    };
+    
+    const field = new FormData();
+    field.append('quote[id]', this.state.quote_id);
+    field.append('quote[division_id]', this.state.home_division ? this.state.home_division.id : this.props.division_id);
+    field.append('quote[company_division_client_id]', this.state.client ? this.state.client.id : '');
+    field.append('quote[subject]', this.state.quote_subject || '');
+    field.append('quote[quote_type]', this.state.quote_type);
+    field.append('quote[quote_number]', this.state.quote_number || '');
+    field.append('quote[temporary_price]', this.state.temporary_price || '');
+    field.append('quote[profit_price]', this.state.profit_price || '');
+    field.append('quote[tax_type]', this.state.tax_type);
+    field.append('quote[tax]', this.state.tax);
+    field.append('quote[payment_terms]', this.state.payment_terms);
+    field.append('quote[channel]', this.state.channel);
+    field.append('quote[date]', this.state.date || '');
+    field.append('quote[issues_date]', this.state.issues_date || '');
+    field.append('quote[expiration]', this.state.expiration || '');
+    field.append('quote[delivery_note_date]', this.state.delivery_note_date || '');
+    field.append('quote[deliver_at]', this.state.deliver_at || '');
+    field.append('quote[reception]', this.state.reception);
+    field.append('quote[deliver_type]', this.state.deliver_type);
+    field.append('quote[remarks]', this.state.remarks);
+    field.append('quote[memo]', this.state.memo);
+    field.append('quote[user_id]', this.props.user_id);
+    field.append('quote[discount]', this.state.discount);
+    field.append('quote[price]', this.state.price);
+    this.state.quote_projects.map(project => {
+      
+      field.append('quote[quote_projects_attributes][][id]', project.id);
+      field.append('quote[quote_projects_attributes][][project_id]', project.project_id);
+      field.append('quote[quote_projects_attributes][][quote_id]', project.quote_id);
+      field.append('quote[quote_projects_attributes][][name]', project.name);
+      field.append('quote[quote_projects_attributes][][remarks]', project.remarks);
+      field.append('quote[quote_projects_attributes][][unit_price]', project.unit_price);
+      field.append('quote[quote_projects_attributes][][unit]', project.unit);
+      field.append('quote[quote_projects_attributes][][price]', project.price);
+      field.append('quote[quote_projects_attributes][][project_name]', project.project_name);
+    });
+    
+    // 納品方法
+    if(this.state.deliver_type == 'location' || this.state.deliver_type == 'other') field['quote[deliver_type_note]'] = this.state.deliver_type_note ;
+    
+    const request = this.state.quote_id ? window.xhrRequest.put(this.props.action, field) : window.xhrRequest.post(this.props.action, field);
+    request.then(res => {
+      
+      if(res.data.status == 'success') {
+        
+        if(this.state.quote_id) window.alertable({ icon: 'success', message: '案件を更新しました。' });
+        
+        // 編集ページへリダイレクト
+        if(!this.state.quote_id) {
+          
+          const redirect = () => location.href = `${res.data.quote.id}/edit`;
+          window.alertable({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() });
+        };
+      };
+      
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` });
+    }).catch(err => window.alertable({ icon: 'error', message: err }));
+  };
+  
   /**
    *  表示処理
    *  @version 2018/06/10
@@ -580,9 +504,9 @@ export default class QuoteEditor extends React.Component {
     return (
       <Fragment>
         <Subject subject={ this.state.quote_subject } setSubject={ this.setSubject } />
-        <CustomerInformation	client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' }
-                              division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient }
-                              users={ this.state.users } prefectures={ this.state.prefectures }
+        <CustomerInformation client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' }
+                             division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient }
+                             users={ this.state.users } prefectures={ this.state.prefectures }
         />
         <div className='u-mt-15'>
           <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?name=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
@@ -591,22 +515,22 @@ export default class QuoteEditor extends React.Component {
         <div className='u-mt-10'>
           <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
         </div>
-    		<CaseDetails	date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setIssuesDate={ this.setIssuesDate }
-    									issues_date={ this.state.issues_date } setExpiration={ this.setExpiration }
-    									expiration={ this.state.expiration } setDeliveryNoteDate={ this.setDeliveryNoteDate }
-    									delivery_note_date={ this.state.delivery_note_date } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
-    									deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
-    									quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
-    									setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
-    									setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
-    									setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
-    		/>
-    		<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
-    								setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy } itemStatus={ this.state.itemStatus }
-    								reorderQuoteProjects={ this.reorderQuoteProjects }
-    		/>
+        <CaseDetails date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setIssuesDate={ this.setIssuesDate }
+                     issues_date={ this.state.issues_date } setExpiration={ this.setExpiration }
+                     expiration={ this.state.expiration } setDeliveryNoteDate={ this.setDeliveryNoteDate }
+                     delivery_note_date={ this.state.delivery_note_date } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
+                     deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
+                     quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
+                     setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
+                     setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
+                     setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
+        />
+        <ItemTables quote_projects={ this.state.quote_projects } quote_id={ this.state.quote_id } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
+                    setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } projectDestroy={ this.projectDestroy } itemStatus={ this.state.itemStatus }
+                    reorderQuoteProjects={ this.reorderQuoteProjects }
+        />
         <div className='u-mt-15'>
-          <ProjectSearch applyProject={ this.state.quote.id ? this.applyProject : this.applyNewProject } prefectures={ this.props.prefectures } />
+          <ProjectSearch applyProject={ this.applyProject } prefectures={ this.props.prefectures } />
           <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
         </div>
         <PaymentDetails discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
@@ -614,9 +538,7 @@ export default class QuoteEditor extends React.Component {
                         show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
                         setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
         />
-        <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice }
-                      task={ this.state.task } onSubmit={ this.onSubmit }
-        />
+        <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } task={ this.state.task } onSubmit={ this.onSubmit }/>
       </Fragment>
     );
   };

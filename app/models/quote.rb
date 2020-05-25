@@ -9,8 +9,6 @@
 #  remarks                    :text(65535)
 #  memo                       :text(65535)
 #  free_word                  :text(65535)
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
 #  price                      :integer
 #  attention                  :integer
 #  pdf_url                    :text(65535)
@@ -30,6 +28,15 @@
 #  tax                        :float(24)        default(1.1)
 #  reception                  :integer
 #  temporary_price            :integer
+#  profit_price               :integer          default(0)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  last_company               :string(191)
+#  last_division              :string(191)
+#  last_client                :string(191)
+#  issues_date                :date
+#  delivery_note_date         :date
+#  lock                       :boolean          default(FALSE), not null
 #
 
 class Quote < ApplicationRecord
@@ -50,12 +57,19 @@ class Quote < ApplicationRecord
   #----------------------------------------
 
   enum attention: { messrs: 0, dear: 10 }
+
   enum status: { unworked: 0, draft: 10, estimated: 20, working: 30, end_work: 40, invoicing: 50, complete: 60, lost: 70, rejection: 80 }
+
   enum quote_type: { contract: 0, copy: 10 }
+
   enum channel: { estimate: 0, bpr_erp: 10, reception: 20, channel_other: 30 }
+
   enum reception: { acceptance: 0, mail: 10, delivery: 20, reservation: 30, konpro: 40, reception_other: 50 }
+
   enum deliver_type: { seat: 0, location: 10, pickup: 20, bizstant: 30, other: 40 }
+
   enum tax_type: { taxation: 0, exemption: 10 }
+
   enum payment_terms: { postpaid: 0, advance: 10 }
 
   #----------------------------------------
@@ -66,19 +80,25 @@ class Quote < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # Jiiユーザー
   belongs_to :user, optional: true
 
+  # 取引先担当者
   belongs_to :client, optional: true, class_name: 'CompanyDivisionClient', foreign_key: :company_division_client_id
 
   # 部署
   belongs_to :division, optional: true
 
+  # 請求書
   has_one  :invoice,    dependent: :destroy
 
+  # 請求情報
   has_one  :profit,    dependent: :destroy
 
+  # 作業書
   has_one  :work, dependent: :destroy
 
+  # 活動履歴
   has_one  :activity, -> { order(created_at: :desc) }, dependent: :destroy
 
   # ec始まったらコメントアウト外す
@@ -86,15 +106,15 @@ class Quote < ApplicationRecord
 
   has_one :inquiry, dependent: :destroy
 
-  has_many :quote_items
-
+  # 品目
   has_many :quote_projects, dependent: :destroy
 
   has_many :task_card_clients
 
+  # 名刺担当者情報
   has_many :card_clients, through: :task_card_clients
 
-  accepts_nested_attributes_for :quote_items
+  accepts_nested_attributes_for :quote_projects
 
   #----------------------------------------
   #  ** Delegates **

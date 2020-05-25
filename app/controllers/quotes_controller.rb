@@ -20,7 +20,6 @@ class QuotesController < ApplicationController
     Quote
     .all
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .includes(:quote_items)
     .order(date: :desc)
   }
 
@@ -57,7 +56,6 @@ class QuotesController < ApplicationController
 
   # 見積もり
   expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id] }
-
 
   #----------------------------------------
   #  ** Layouts **
@@ -108,142 +106,45 @@ class QuotesController < ApplicationController
 
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '編集'
-  rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
-  # 更新処理
+  # 更新
   # @version 2018/06/10
   def update
 
     # 情報更新
     quote.update! quote_params
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '見積もりを更新しました' } }
+    # taskが存在していたらtaskの納期も更新する
+    quote.task.update! date: quote.deliver_at if quote.task.present?
+
+    #請求先情報を静的に保存(更新)
+    quote.update! last_company: quote&.client&.company_division.company.name, last_division: quote&.client&.company_division.name, last_client: quote&.client&.name if quote.invoice.present?
+
+    render json: { status: :success }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    render json: { status: :error, message: e.message }
   end
 
   ##
-  # 新規作成 / 更新
+  # 新規作成
   # @version 2018/06/10
   def create
 
-    # 情報更新
-    if params[:id] == 'null'
-      required_params = quote_params
-      new_quote = Quote.new
-      new_quote.user_id = required_params[:user_id]
-      new_quote.division_id = required_params[:division_id]
-      new_quote.date = required_params[:date]
-      new_quote.issues_date = required_params[:issues_date]
-      new_quote.expiration = required_params[:expiration]
-      new_quote.delivery_note_date = required_params[:delivery_note_date]
-      new_quote.subject = required_params[:subject]
-      new_quote.remarks = required_params[:remarks]
-      new_quote.memo = required_params[:memo]
-      new_quote.attention = required_params[:attention]
-      new_quote.company_division_client_id = required_params[:company_division_client_id]
-      new_quote.quote_type = required_params[:quote_type]
-      new_quote.channel = required_params[:channel]
-      new_quote.deliver_at = required_params[:deliver_at]
-      new_quote.reception = required_params[:reception]
-      new_quote.deliver_type = required_params[:deliver_type]
-      new_quote.deliver_type_note = required_params[:deliver_type_note]
-      new_quote.discount = required_params[:discount]
-      new_quote.tax_type = required_params[:tax_type]
-      new_quote.tax = required_params[:tax]
-      new_quote.payment_terms = required_params[:payment_terms]
-      new_quote.temporary_price = required_params[:temporary_price]
-      new_quote.save!
-      unless required_params[:quote_number].blank?
-        new_quote.update!(quote_number: required_params[:quote_number])
-      else
-        new_quote.update!(quote_number: new_quote.quote_number)
-      end
-      if required_params[:price].blank?
-        # 普通の時
-        new_quote.update!(price: required_params[:price])
-      else
-        # BPR・ERPの時
-        new_quote.update!(price: required_params[:price])
-      end
-      # slack通知
-      if required_params[:payment_terms] == 'advance'
-        Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{new_quote.quote_number}] お客様情報[#{new_quote&.client&.company_division&.company&.name} #{new_quote&.client&.name}] 担当者[#{new_quote&.user&.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
-      end
-      unless params[:specifications].nil?
-        params[:specifications].each do |specification|
+    quote.update! quote_params
 
-          parse_json = JSON.parse(specification)
-          createQuote = new_quote
-          createQuote.quote_projects.create!(name: parse_json['projectSpecificationName'], remarks: parse_json['projectSpecificationRemarks'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], project_id: parse_json['projectSpecificationId'], project_name: parse_json['projectName'], project_id: parse_json['projectId'].to_i)
-        end
-      end
-      render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
-    else
+    # slack通知
+    if quote.payment_terms == :advance
 
-      required_params = quote_params
-			findQuote = Quote.find(params[:id])
-      findQuote.user_id = required_params[:user_id]
-      findQuote.division_id = required_params[:division_id]
-      findQuote.date = required_params[:date]
-      findQuote.issues_date = required_params[:issues_date]
-      findQuote.expiration = required_params[:expiration]
-      findQuote.delivery_note_date = required_params[:delivery_note_date]
-      findQuote.subject = required_params[:subject]
-      findQuote.remarks = required_params[:remarks]
-      findQuote.memo = required_params[:memo]
-      findQuote.attention = required_params[:attention]
-      findQuote.company_division_client_id = required_params[:company_division_client_id]
-      findQuote.quote_type = required_params[:quote_type]
-      findQuote.channel = required_params[:channel]
-      findQuote.deliver_at = required_params[:deliver_at]
-      findQuote.reception = required_params[:reception]
-      findQuote.deliver_type = required_params[:deliver_type]
-      findQuote.deliver_type_note = required_params[:deliver_type_note]
-      findQuote.discount = required_params[:discount]
-      findQuote.tax_type = required_params[:tax_type]
-      findQuote.tax = required_params[:tax]
-      findQuote.payment_terms = required_params[:payment_terms]
-      findQuote.temporary_price = required_params[:temporary_price]
-      findQuote.save!
-
-      unless params[:specifications].nil?
-        params[:specifications].each do |specification|
-
-          parse_json = JSON.parse(specification)
-          findQuoteProject = QuoteProject.find_or_initialize_by(id: parse_json['projectSpecificationId'])
-          if findQuoteProject.id == 0
-
-            QuoteProject.create!(name: parse_json['projectSpecificationName'], remarks: parse_json['projectSpecificationRemarks'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], quote_id: params[:id], project_id: parse_json['projectSpecificationId'], project_name: parse_json['projectName'], project_id: parse_json['projectId'])
-          else
-
-            findQuoteProject.update!(name: parse_json['projectSpecificationName'], remarks: parse_json['projectSpecificationRemarks'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], project_id: parse_json['projectSpecificationId'], project_name: parse_json['projectName'], project_id: parse_json['projectId'])
-          end
-        end
-      end
-
-      # taskが存在していたらtaskの納期も更新する
-      quote.task.update(date: required_params[:deliver_at]) if quote.task.present?
-
-      #請求先情報を静的に保存(更新)
-      quote.update(last_company: quote&.client&.company_division.company.name, last_division: quote&.client&.company_division.name, last_client: quote&.client&.name) if quote.invoice.present?
-
-      render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
+      Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{quote.quote_number}] お客様情報[#{quote&.client&.company_division&.company&.name} #{quote&.client&.name}] 担当者[#{quote&.user&.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
     end
+
+    render json: { status: :success, quote: quote }
   rescue => e
 
-    if params[:id] == 'null'
-
-      render json: { status: :error, quote: Quote.new, quote_projects: [] }
-    else
-
-      render json: { status: :error, quote: Quote.find(params[:id].to_i), quote_projects: Quote.find(params[:id].to_i).quote_projects }
-    end
+    render json: { status: :error, message: e.message }
   end
 
   ##
@@ -396,15 +297,14 @@ class QuotesController < ApplicationController
 
   def lock
 
-    quote.lock = !quote.lock
+    quote.update! lock: !quote.lock
 
-    quote.save!
-
-    #成功したら編集ページに飛ぶ
+    # 成功したら編集ページに飛ぶ
     redirect_to quotes_path
   rescue => e
-    #エラー時は直前のページへ
-    redirect_back fallback_location: url_for({action: :new}), flash: {notice: {message: e.message}}
+
+    # エラー時は直前のページへ
+    redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
   end
 
   #----------------------------------------
@@ -417,6 +317,7 @@ class QuotesController < ApplicationController
 
       params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
         :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price,
-        quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
+        :issues_date, :delivery_note_date,
+        quote_projects_attributes: [:id, :quote_id, :project_id, :unit, :price, :name, :unit_price, :project_name, :remarks]
     end
 end

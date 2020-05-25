@@ -58,7 +58,7 @@ export default class DataModal extends React.Component {
     };
 
     // グローバルからの呼び出し
-    window.confirmable = (options) => {
+    window.confirmable = options => {
 
       this.open(Object.assign({ confirm: true }, options));
     };
