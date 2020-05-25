@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   resources :quotes do
     post :status
     post :copy
+    post :lock
     member do
       get :pdf
       get :bulk_download
@@ -165,6 +166,18 @@ Rails.application.routes.draw do
       post :csv_download
     end
   end
+
+  # 在庫管理
+  resources :inventories
+
+  # 在庫管理用商品
+  resources :products
+
+  # 在庫管理用商品履歴
+  resources :product_histories
+
+  # 利益額
+  resources :profit_graphs, only: [:index]
 
   # 品目取り込み
   resources :inquiries, only: :index do

@@ -53,6 +53,9 @@ class CompanyDivision < ApplicationRecord
   # 名刺担当者
   has_many :card_clients
 
+  # quote
+  has_one :inventory
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

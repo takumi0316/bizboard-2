@@ -24,10 +24,24 @@ const CaseDetails = (props) => {
             </td>
           </tr>
           <tr>
+            <td className='u-fw-bold'>見積もり発行日</td>
+            <td>
+              <span className='u-mr-30'>{ props.issues_date ? Dayjs(props.issues_date).format('YYYY年MM月DD日') : '未定' }</span>
+              <DatetimePicker apply={ props.setIssuesDate } defaultDatetime={ props.issues_date } />
+            </td>
+          </tr>
+          <tr>
             <td className='u-fw-bold'>見積もり有効期間</td>
             <td>
               <span className='u-mr-30'>{ props.expiration ? Dayjs(props.expiration).format('YYYY年MM月DD日') : '未定' }</span>
               <DatetimePicker apply={ props.setExpiration } defaultDatetime={ props.expiration } />
+            </td>
+          </tr>
+          <tr>
+            <td className='u-fw-bold'>納品日</td>
+            <td>
+              <span className='u-mr-30'>{ props.delivery_note_date ? Dayjs(props.delivery_note_date).format('YYYY年MM月DD日') : '未定' }</span>
+              <DatetimePicker apply={ props.setDeliveryNoteDate } defaultDatetime={ props.delivery_note_date } />
             </td>
           </tr>
           <tr>

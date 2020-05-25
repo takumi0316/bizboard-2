@@ -46,6 +46,11 @@
           = evil_icon 'ei-eye', size: :s
           span.u-ml-10 製造経費入力
 
+      li.l-dashboard__menuItem
+        = link_to profit_graphs_path, class: current_controller('profit_graphs') do
+          = evil_icon 'ei-chart', size: :s
+          span.u-ml-10 受注管理グラフ
+
     - if ['manager', 'sales', 'admin'].include?(current_user.user_type)
 
       .u-mt-15
@@ -80,6 +85,11 @@
             = link_to categories_path, class: current_controller('categories') || current_controller('catalogs') do
               = evil_icon 'ei-tag', size: :s
               span.u-ml-10 こんプロメニュー
+
+          li.l-dashboard__menuItem
+            = link_to inventories_path, class: current_controller('inventories') || current_controller('inventories') do
+              = evil_icon 'ei-archive', size: :s
+              span.u-ml-10  在庫管理
 
           li.l-dashboard__menuItem
             = link_to users_path, class: cp(users_path) do

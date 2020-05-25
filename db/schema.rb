@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.string "price", comment: "文言なども入る"
     t.string "deliver_at", comment: "文言なども入る"
     t.bigint "category_id"
+    t.integer "turn", default: 0
     t.index ["category_id"], name: "index_catalogs_on_category_id"
   end
 
@@ -297,6 +298,29 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.index ["work_subcontractor_id"], name: "index_payments_on_work_subcontractor_id"
   end
 
+<<<<<<< HEAD
+=======
+  create_table "product_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "product_id"
+    t.date "date", comment: "発注日"
+    t.integer "status", default: 0, comment: "依頼ステータス"
+    t.integer "quantity", default: 0, comment: "数量"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_histories_on_product_id"
+  end
+
+  create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "inventory_id"
+    t.string "name", comment: "商品名"
+    t.integer "quantity", default: 0, comment: "在庫数"
+    t.text "remarks", comment: "備考"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_id"], name: "index_products_on_inventory_id"
+  end
+
+>>>>>>> 46bac3ece4d35cfd12add99a8a17afc0f2e5566f
   create_table "profits", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "quote_id"
@@ -529,6 +553,17 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.integer "temporary_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
+=======
+    t.integer "temporary_price"
+    t.integer "profit_price", default: 0
+    t.string "last_company"
+    t.string "last_division"
+    t.string "last_client"
+    t.date "issues_date"
+    t.date "delivery_note_date"
+    t.boolean "lock", default: false, null: false
+>>>>>>> 46bac3ece4d35cfd12add99a8a17afc0f2e5566f
     t.index ["company_division_client_id"], name: "index_quotes_on_company_division_client_id"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end

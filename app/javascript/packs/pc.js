@@ -119,6 +119,12 @@ import DownloadCardClient from 'components/card/client/csv/download';
 // 名刺担当者情報CSVアップロード
 import UploadCardClient from 'components/card/client/csv/upload';
 
+// 在庫管理の部署選択
+import InventoryDivisionsSelect from 'components/inventory_divisions_select';
+
+// 受注管理グラフ
+import ProfitGraph from 'components/profit_graph';
+
 WebpackerReact.setup({
   Alert,
   DataModal,
@@ -145,11 +151,13 @@ WebpackerReact.setup({
 	QuotationSearch,
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
-	MarunouchiSearchable,
+  MarunouchiSearchable,
   NewCardTemplateGenerate,
   EditCardTemplateGenerate,
   NewCardClientGenerate,
   EditCardClientGenerate,
   DownloadCardClient,
   UploadCardClient,
+  InventoryDivisionsSelect,
+  ProfitGraph,
 });

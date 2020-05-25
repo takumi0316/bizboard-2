@@ -56,8 +56,11 @@ export default class QuoteEditor extends React.Component {
       deliver_at: props.quote.deliver_at || new Date(year, month, day),
       discount: props.quote.discount || 0,
       temporary_price: props.quote.temporary_price || 0,
+      profit_price: props.quote.profit_price || 0,
       channel: props.quote.channel || '',
+      issues_date: props.quote.issues_date,
       expiration: props.quote.expiration,
+      delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
       show: props.quote.discount === 0 || props.quote.discount ? false : true,
@@ -90,6 +93,18 @@ export default class QuoteEditor extends React.Component {
    */
   setExpiration = datetime => this.setState({ expiration: datetime.datetime });
 
+  /**
+   *  見積もり発行日を適用するcallback
+   *  @version 2018/06/10
+   */
+  setIssuesDate = datetime => this.setState({ issues_date: datetime.datetime });
+
+  /**
+   *  納品日を適用するcallback
+   *  @version 2018/06/10
+   */
+  setDeliveryNoteDate = datetime => this.setState({ delivery_note_date: datetime.datetime });
+
 	/**
 	* タイトルの変更処理
 	* @version 2019/12/20
@@ -112,11 +127,7 @@ export default class QuoteEditor extends React.Component {
 	 *
 	 * @version 2019/12/20
 	 */
-	setChannel = channel => {
-
-		const result = channel == 'bpr_erp' ? true : false;
-    this.setState({ channel: channel, show_quote_number: result });
-	};
+	setChannel = channel => this.setState({ channel: channel, show_quote_number: channel == 'bpr_erp' });
 
 	/**
 	 *
@@ -187,6 +198,12 @@ export default class QuoteEditor extends React.Component {
     price = price - castDiscount;
     this.setState({ discount: castDiscount, price: price });
 	};
+
+  /**
+   * 利益額を変更
+   * @version 2019/12/23
+   */
+  setProfitPrice = profit_price => this.setState({ profit_price: Number(profit_price) });
 
   /**
    * 合計金額を変更
@@ -315,7 +332,9 @@ export default class QuoteEditor extends React.Component {
 
     if(this.state.quote_subject === '') message.push('案件タイトルを入力してください。');
 
-    if(deliver_type) {
+    if(this.state.quote.lock) message.push('案件がロックされている為に更新できません。');
+
+		if(deliver_type) {
 
       if(deliver_type_note) message.push('納品方法を記入してください');
     };
@@ -364,12 +383,15 @@ export default class QuoteEditor extends React.Component {
       'quote[quote_type]': this.state.quote_type,
       'quote[quote_number]': this.state.quote_number || '',
       'quote[temporary_price]': this.state.temporary_price,
+      'quote[profit_price]': this.state.profit_price,
       'quote[tax_type]': this.state.tax_type,
       'quote[tax]': this.state.tax,
       'quote[payment_terms]': this.state.payment_terms,
       'quote[channel]': this.state.channel,
       'quote[date]': this.state.date || '',
+      'quote[issues_date]': this.state.issues_date || '',
       'quote[expiration]': this.state.expiration || '',
+      'quote[delivery_note_date]': this.state.delivery_note_date || '',
       'quote[deliver_at]': this.state.deliver_at || '',
       'quote[reception]': this.state.reception,
       'quote[deliver_type]': this.state.deliver_type,
@@ -569,26 +591,28 @@ export default class QuoteEditor extends React.Component {
         <div className='u-mt-10'>
           <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
         </div>
-        <CaseDetails	date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setExpiration={ this.setExpiration }
-                      expiration={ this.state.expiration } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
-                      deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
-                      quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
-                      setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
-                      setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
-                      setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
-        />
-        <ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
-                    setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy } itemStatus={ this.state.itemStatus }
-                    reorderQuoteProjects={ this.reorderQuoteProjects }
-        />
+    		<CaseDetails	date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setIssuesDate={ this.setIssuesDate }
+    									issues_date={ this.state.issues_date } setExpiration={ this.setExpiration }
+    									expiration={ this.state.expiration } setDeliveryNoteDate={ this.setDeliveryNoteDate }
+    									delivery_note_date={ this.state.delivery_note_date } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
+    									deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
+    									quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
+    									setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
+    									setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
+    									setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
+    		/>
+    		<ItemTables quote_projects={ this.state.quote_projects } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
+    								setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } _projectDestroy={ this._projectDestroy } itemStatus={ this.state.itemStatus }
+    								reorderQuoteProjects={ this.reorderQuoteProjects }
+    		/>
         <div className='u-mt-15'>
           <ProjectSearch applyProject={ this.state.quote.id ? this.applyProject : this.applyNewProject } prefectures={ this.props.prefectures } />
           <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
         </div>
-        <PaymentDetails discount={ this.state.discount } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
+        <PaymentDetails discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
                         memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
                         show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
-                        setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount }
+                        setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
         />
         <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice }
                       task={ this.state.task } onSubmit={ this.onSubmit }
