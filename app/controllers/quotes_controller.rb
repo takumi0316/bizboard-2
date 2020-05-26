@@ -172,6 +172,7 @@ class QuotesController < ApplicationController
       new_quote.tax = required_params[:tax]
       new_quote.payment_terms = required_params[:payment_terms]
       new_quote.temporary_price = required_params[:temporary_price]
+      new_quote.profit_price = required_params[:profit_price]
       new_quote.save!
       unless required_params[:quote_number].blank?
         new_quote.update!(quote_number: required_params[:quote_number])
@@ -224,6 +225,7 @@ class QuotesController < ApplicationController
       findQuote.tax = required_params[:tax]
       findQuote.payment_terms = required_params[:payment_terms]
       findQuote.temporary_price = required_params[:temporary_price]
+      findQuote.profit_price = required_params[:profit_price]
       findQuote.save!
 
       unless params[:specifications].nil?

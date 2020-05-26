@@ -74,7 +74,7 @@
       - status_order = activities.where(status: :order).pluck(:price).sum.to_i
 
       / 目標売上
-      - orders = targets.map(&:sales).inject(:+).to_i
+      - orders = r.sales.to_i
 
       = react_component('ProfitGraph',{ label: r.division.name, plans: accurary, orders: status_order, targets: orders,})
 
@@ -108,6 +108,6 @@
       - status_order = activities.where(status: :order).pluck(:profit_price).sum.to_i
 
       / 目標売上
-      - profits = targets.map(&:profit).inject(:+).to_i
+      - profits = r.profit.to_i
 
       = react_component('ProfitGraph',{ label: r.division.name, plans: accurary, orders: status_order, targets: profits,})
