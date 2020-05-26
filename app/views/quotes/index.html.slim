@@ -99,8 +99,8 @@
               td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
           - else
             tr
-              td
-                - if current_user.admin?
+              - if current_user.admin?
+                td
                   = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
                     = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
               td
@@ -169,10 +169,10 @@
               td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
         - else
           tr
-            td
-              - if current_user.admin?
-                = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
-                  = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
+            - if current_user.admin?
+                td
+                  = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
+                    = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
             td
               - if r.deliver_at.blank?
                 = r&.quote_number

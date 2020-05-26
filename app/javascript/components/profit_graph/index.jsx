@@ -37,8 +37,8 @@ export default class ProfitGraph extends Component {
             }}
           >
             <CartesianGrid strokeDasharray="3 3" style={{fontSize: '15px'}} />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name" style={{fontSize: '15px'}} />
+            <YAxis style={{fontSize: '10px'}} />
             <Tooltip />
             <Legend />
             <Bar dataKey="目標額" fill="rgba(0,153,255,1)" />
