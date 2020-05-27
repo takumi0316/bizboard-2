@@ -9,6 +9,7 @@
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  free_word                  :text(65535)
+#  status                     :integer          default("custom")
 #
 
 class CardClient < ApplicationRecord
@@ -24,6 +25,8 @@ class CardClient < ApplicationRecord
   #----------------------------------------
   #  ** Enums **
   #----------------------------------------
+
+  enum status: { custom: 0, default: 10 }
 
   #----------------------------------------
   #  ** Validations **

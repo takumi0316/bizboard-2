@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_14_195037) do
+ActiveRecord::Schema.define(version: 2020_05_26_060944) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "free_word"
+    t.integer "status", limit: 1, default: 0
     t.index ["card_id"], name: "index_card_clients_on_card_id"
     t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
     t.index ["company_division_id"], name: "index_card_clients_on_company_division_id"
@@ -75,7 +76,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
 
   create_table "card_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "card_id"
-    t.integer "status", limit: 1, default: 0, comment: "テンプレートの状態"
+    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_card_templates_on_card_id"
@@ -245,6 +246,14 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.index ["quote_id"], name: "index_inquiries_on_quote_id"
   end
 
+  create_table "inventories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "company_division_id"
+    t.text "remarks", comment: "備考"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_division_id"], name: "index_inventories_on_company_division_id"
+  end
+
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "quote_id"
     t.date "date", comment: "請求日"
@@ -298,8 +307,6 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.index ["work_subcontractor_id"], name: "index_payments_on_work_subcontractor_id"
   end
 
-<<<<<<< HEAD
-=======
   create_table "product_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "product_id"
     t.date "date", comment: "発注日"
@@ -320,7 +327,6 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.index ["inventory_id"], name: "index_products_on_inventory_id"
   end
 
->>>>>>> 46bac3ece4d35cfd12add99a8a17afc0f2e5566f
   create_table "profits", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "quote_id"
@@ -551,19 +557,15 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.float "tax", default: 1.1
     t.integer "reception"
     t.integer "temporary_price"
+    t.integer "profit_price", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-<<<<<<< HEAD
-=======
-    t.integer "temporary_price"
-    t.integer "profit_price", default: 0
     t.string "last_company"
     t.string "last_division"
     t.string "last_client"
     t.date "issues_date"
     t.date "delivery_note_date"
     t.boolean "lock", default: false, null: false
->>>>>>> 46bac3ece4d35cfd12add99a8a17afc0f2e5566f
     t.index ["company_division_client_id"], name: "index_quotes_on_company_division_client_id"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end

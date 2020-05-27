@@ -45,7 +45,8 @@ export default class ClientGenerate extends React.Component {
       client: props.client,
       templates: [...clientTemplateInit],
       status: true,
-      card_client_id: this.props.card_client.id
+      default: props.card_client.status == 'default' ? true : false,
+      card_client_id: props.card_client.id
     };
 	};
 
@@ -141,6 +142,7 @@ export default class ClientGenerate extends React.Component {
     const field = new FormData();
 
     field.append('card_client[card_id]', this.state.card.id);
+    field.append('card_client[status]', this.state.default ? 'default' : 'custom');
     field.append('card_client[company_division_id]', this.state.division.id);
     field.append('card_client[company_division_client_id]', this.state.client.id);
     this.state.templates.map(template => {
@@ -172,6 +174,13 @@ export default class ClientGenerate extends React.Component {
   render() {
     return(
       <div>
+        <div className='u-mt-20'>
+          { this.state.default ?
+            <button className='c-btnMain-primaryA' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
+            :
+            <button className='c-btnMain-primaryB' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
+          }
+        </div>
         <Division company={ this.state.company } division={ this.state.division } typeName={ DIVISION_TYPE_NAME } notFound={ DIVISION_NOT_FOUND } applyDivision={ this.applyDivision }/>
         <Client clients={ this.state.clients } client={ this.state.client } typeName={ CLIENT_TYPE_NAME } notFound={ CLIENT_NOT_FOUND } applyClient={ this.applyClient }/>
         <Card cards={ this.state.cards } card={ this.state.card } typeName={ CARD_TYPE_NAME } notFound={ CARD_NOT_FOUND } applyCard={ this.applyCard }/>

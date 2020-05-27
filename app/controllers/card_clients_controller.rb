@@ -57,6 +57,8 @@ class CardClientsController < ApplicationController
 
     card_client.update! card_client_params
 
+    CardClient.where(company_division_client_id: card_client.company_division_client_id).where(status: 10).each { |r| r.custom! if r.id != card_client.id } if card_client.default?
+
     render json: { status: :success, card_client: card_client }
   rescue => e
 
@@ -81,8 +83,9 @@ class CardClientsController < ApplicationController
 
     card_client.update! card_client_params
 
-    render json: { status: :success, card_client: card_client }
+    CardClient.where(company_division_client_id: card_client.company_division_client_id).where(status: 10).each { |r| r.custom! if r.id != card_client.id } if card_client.default?
 
+    render json: { status: :success, card_client: card_client }
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -202,7 +205,7 @@ class CardClientsController < ApplicationController
     #
     def card_client_params
 
-      params.require(:card_client).permit :card_id, :company_division_id, :company_division_client_id, {
+      params.require(:card_client).permit :card_id, :company_division_id, :company_division_client_id, :status, {
         templates_attributes: [:id, :card_client_id, :card_template_id,
           {
             values_attributes: [:id, :client_template_id, :template_detail_id, :value]
