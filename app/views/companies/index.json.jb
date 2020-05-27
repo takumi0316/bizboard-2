@@ -3,6 +3,7 @@ json = { status: :success }
 json[:companies] = companies.map do |r|
 
   {
+    id: r.id,
     name: r.name,
     divisions: r.divisions,
   }

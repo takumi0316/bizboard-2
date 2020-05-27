@@ -61,8 +61,6 @@ class Expendable < ApplicationRecord
 
   belongs_to :work_subcontractor, optional: true
 
-  belongs_to :work_subcontractor_detail, optional: true
-
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

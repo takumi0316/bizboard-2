@@ -1,0 +1,6 @@
+json = { status: :success }
+
+json[:front_templates] = card.formatting(card.templates.first.status)
+json[:reverse_templates] = card.formatting(card.templates.last.status) if card.templates.count == 2
+
+json

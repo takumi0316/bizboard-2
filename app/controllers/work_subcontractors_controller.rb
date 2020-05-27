@@ -58,7 +58,7 @@ class WorkSubcontractorsController < ApplicationController
 
     work_subcontractor.update! work_subcontractor_params
 
-    actual_cost = work_subcontractor.detail.sum(:actual_cost).to_i
+    actual_cost = work_subcontractor.details.sum(:actual_cost).to_i
     division      = SubcontractorDivision.find(client.subcontractor_division_id)
     subcontractor = Subcontractor.find(division.subcontractor_id)
     quote_type = work_subcontractor.work.quote.quote_type == :contract || :salse ? 100 : 10
@@ -104,7 +104,7 @@ class WorkSubcontractorsController < ApplicationController
 
     def work_subcontractor_params
 
-      params.require(:work_subcontractor).permit :work_id, :notices, :order_date, :delivery_date, :delivery_destination, :subcontractor_division_client_id, :order_date, :delivery_date,
-      detail_attributes: [:id, :work_subcontractor_id, :order_contents, :deliver_method, :specification, :count, :number_of_copies, :actual_cost]
-    end
+    params.require(:work_subcontractor).permit :work_id, :notices, :order_date, :delivery_date, :delivery_destination, :subcontractor_division_client_id, :order_date, :delivery_date,
+    details_attributes: [:id, :work_subcontractor_id, :order_contents, :deliver_method, :specification, :count, :number_of_copies, :actual_cost]
+  end
 end

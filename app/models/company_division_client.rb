@@ -13,7 +13,7 @@
 #  note                 :text(65535)
 #  free_word            :text(65535)
 #  status               :integer          default(0)
-#  user_type            :integer          default(0)
+#  user_type            :integer          default("general")
 #  password_digest      :string(191)
 #  provider             :string(191)
 #  uid                  :string(191)
@@ -27,7 +27,7 @@
 #  confirmed_at         :datetime
 #  confirmation_sent_at :datetime
 #  unconfirmed_email    :string(191)
-#  lastaccesstask       :datetime         default(Mon, 06 Apr 2020 15:31:43 JST +09:00)
+#  lastaccesstask       :datetime         default(Sun, 17 May 2020 23:01:06 JST +09:00)
 #  opt                  :integer          default(0)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
@@ -65,6 +65,7 @@ class CompanyDivisionClient < ApplicationRecord
   #----------------------------------------
 
   belongs_to :company_division
+
   belongs_to :user, optional: true
 
   # 案件
@@ -72,6 +73,9 @@ class CompanyDivisionClient < ApplicationRecord
 
   # 見積
   has_many :quotes, -> { order(id: :desc) }
+
+  # 名刺担当者
+  has_many :card_clients
 
   #----------------------------------------
   #  ** Scopes **

@@ -1,6 +1,6 @@
 import React from 'react';
 
-// React Componet
+// React Component
 import DatetimePicker from '../datetime_picker';
 // datetime
 import Dayjs from 'dayjs';

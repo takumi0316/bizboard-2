@@ -21,25 +21,19 @@ h1.l-dashboard__heading 製造経費情報一覧
       - expendables.each do |r|
 
         tr
-          td = r.date
-          td = r.division.name
-          td = r.subcontractor.name
-          td = r.status_i18n
-          td = r.price.to_s(:delimited)
-          td = r.memo
-          td
+          td.u-ta-center = r.date
+          td.u-ta-center = r.division.name
+          td.u-ta-center = r.subcontractor.name
+          td.u-ta-center = r.status_i18n
+          td.u-ta-center = r.price.to_s(:delimited)
+          td.u-ta-center = r.memo
+          td.u-ta-center
             - if r.work_subcontractor.present?
               = link_to '編集', work_path(r.work_subcontractor.work.id), class: 'c-btnMain-standard'
-            - elsif r.work_subcontractor_detail.present?
-              = link_to '編集', work_path(r.work_subcontractor_detail.work_id), class: 'c-btnMain-standard'
             - else
               = link_to '編集', edit_expendable_path(r), class: 'c-btnMain-standard'
-          td
-            - if r.work_subcontractor.present?
-              / = link_to '削除', work_path(r.work_subcontractor.work.id), class: 'c-btnMain-negative'
-            - elsif r.work_subcontractor_detail.present?
-              = link_to '削除', work_path(r.work_subcontractor_detail.work_id), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
-            - else
+          td.u-ta-center
+            - if r.work_subcontractor.blank?
               = link_to '削除', expendable_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

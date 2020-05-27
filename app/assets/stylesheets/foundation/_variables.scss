@@ -112,8 +112,8 @@ $buttonColors: (
     'hover': #FFCC00,
   ),
   'negative': (
-    'default':  #ccc,
-    'hover':    lighten(#ccc, 10%),
+    'default': #ccc,
+    'hover': lighten(#ccc, 10%),
   ),
 );
 
@@ -136,6 +136,18 @@ $rankingColors: (
   '1st':   #d9b340,
   '2nd':   #6B7380,
   '3rd':   #a15326,
+);
+
+// svgSize
+// @example
+//  svg-size: map-get($svgSizes, 'm')
+$svgSizes: (
+  'xs':           18px,
+  's':            21px,
+  'm':            24px,
+  'l':           34px,
+  'xl':          75px,
+  'xxl':         100px,
 );
 
 // ==============================================

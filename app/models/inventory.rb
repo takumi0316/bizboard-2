@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: inventories
+#
+#  id                  :bigint(8)        not null, primary key
+#  company_division_id :bigint(8)
+#  remarks             :text(65535)
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
+
 class Inventory < ApplicationRecord
 
   #----------------------------------------

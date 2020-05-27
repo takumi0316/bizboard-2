@@ -6,3 +6,9 @@
   @each $key, $color in $fontColors
     &#{$key}
       fill: #{$color}
+
+.u-svg-
+  @each $key, $size in $svgSizes
+    &#{$key}
+      height: #{$size}
+      width: #{$size}

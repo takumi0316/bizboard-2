@@ -46,3 +46,4 @@ rails_best_practices_output.html
 #/config/master.key
 yarn-debug.log*
 .yarn-integrity
+.idea

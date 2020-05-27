@@ -7,13 +7,14 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
-server 'factory2', user: 'media', roles: %w{app assets batch db}
+server 'factory2', user: 'media', roles: %w{app assets batch db}, ssh_options: { keepalive: :true, keepalive_interval: 60 }
 
 set :assets_roles, [:assets]
 
 # rails
 set :rails_env, 'production'
-set :branch, 'master'
+set :branch, 'issues#A-1-1'
+# set :branch, 'master'
 set :deploy_to, '/home/media'
 set :log_level, :debug
 set :default_shell, '/bin/bash -l'
@@ -24,6 +25,15 @@ set :sidekiq_role, :batch
 after 'deploy:publishing', 'deploy:restart'
 
 namespace :deploy do
+
+  # precompile前にnodeで使用する最大メモリサイズを指定する
+  before :compile_assets, :set_max_heep_size do
+    on roles(:assets) do
+      within release_path do
+        execute "export NODE_OPTIONS='--max-old-space-size=1300'"
+      end
+    end
+  end
 
   task :restart do
     invoke 'unicorn:legacy_restart'

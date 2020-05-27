@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     post :lock
     member do
       get :pdf
+      get :bulk_download
     end
   end
 
@@ -105,7 +106,11 @@ Rails.application.routes.draw do
   resources :company_divisions
 
   # 取引先(担当者)
-  resources :company_division_clients
+  resources :company_division_clients do
+    collection do
+      get :search_clients
+    end
+  end
 
   # 外注先(会社)
   resources :subcontractors
@@ -140,6 +145,28 @@ Rails.application.routes.draw do
   # カタログ
   resources :catalogs
 
+  # 名刺
+  resources :cards, except: :show
+  namespace :cards do
+    post :transfer
+  end
+
+  # 名刺テンプレート
+  resources :card_templates
+  namespace :card_templates do
+    get :transfer
+  end
+
+  # 名刺情報
+  resources :card_clients do
+    collection do
+      get :download
+      get :upload
+      post :bulk
+      post :csv_download
+    end
+  end
+
   # 在庫管理
   resources :inventories
 
@@ -151,6 +178,7 @@ Rails.application.routes.draw do
 
   # 利益額
   resources :profit_graphs, only: [:index]
+
   # 品目取り込み
   resources :inquiries, only: :index do
     collection { post :import_bpr }

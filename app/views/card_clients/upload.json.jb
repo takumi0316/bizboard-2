@@ -1,0 +1,23 @@
+json = { status: :success }
+
+arr = []
+Company.find(params[:company_id]).cards.map do |r|
+
+  front_values = []
+  reverse_values = []
+  if r.templates.count == 1
+    r.templates.each { |t| t.details.each { |d| front_values << d } }
+    arr.push({ id: r.id, name: r.name, front_template_id: r.templates.first.id, front_template: r.templates.first.decorate.file_original, front_values: front_values, reverse_template: '', reverse_values: '' })
+  end
+
+  if r.templates.count == 2
+    r.templates.first.details.each { |d| front_values << d }
+    r.templates.last.details.each { |d| reverse_values << d }
+
+    arr.push({ id: r.id,name: r.name, front_template_id: r.templates.first.id, front_template: r.templates.first.decorate.file_original, front_values: front_values, reverse_template_id: r.templates.last.id, reverse_template: r.templates.last.decorate.file_original, reverse_values: reverse_values })
+  end
+
+  json[:cards] = arr
+end
+
+json

@@ -22,7 +22,7 @@
 #  confirmed_at         :datetime
 #  confirmation_sent_at :datetime
 #  unconfirmed_email    :string(191)
-#  lastaccesstask       :datetime         default(Mon, 06 Apr 2020 15:31:43 JST +09:00)
+#  lastaccesstask       :datetime         default(Sun, 17 May 2020 23:01:05 JST +09:00)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #
@@ -35,6 +35,7 @@ class User < ApplicationRecord
 
   # パスワード暗号化
   has_secure_password
+
   # MD5
   include GenerateKey
 
@@ -54,7 +55,7 @@ class User < ApplicationRecord
   enum status: { inactive: 0, active: 10 }
 
   # ユーザー区分
-  enum user_type: { general: 0, manager: 10, sales: 20, admin: 30, operator: 40}
+  enum user_type: { general: 0, manager: 10, sales: 20, admin: 30, operator: 40 }
 
   #----------------------------------------
   #  ** Validations **

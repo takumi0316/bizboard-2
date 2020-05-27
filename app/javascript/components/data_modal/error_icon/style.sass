@@ -1,0 +1,66 @@
+// ==============================================
+// Error Icon
+// ==============================================
+@import '../../../../assets/stylesheets/foundation/variables'
+
+.ErrorIcon
+
+  width: 80px
+  height: 80px
+  border-width: 4px
+  border-style: solid
+  border-radius: 50%
+  padding: 0
+  position: relative
+  box-sizing: content-box
+  margin: 20px auto
+  border-color: map-get($layoutColors, 'red')
+  animation: animateErrorIcon 0.5s
+
+  &__xmark
+    position: relative
+    display: block
+    animation: animateXMark 0.5s
+
+  &__line
+    position: absolute
+    height: 5px
+    width: 47px
+    background-color: map-get($layoutColors, 'red')
+    display: block
+    top: 37px
+    border-radius: 2px
+    &Left
+      transform: rotate(45deg)
+      left: 17px
+    &Right
+      transform: rotate(-45deg)
+      transform: rotate(-45deg)
+      right: 16px
+
+@keyframes animateErrorIcon
+  from
+    transform: rotateX(100deg)
+    opacity: 0
+  to
+    transform: rotateX(0deg)
+    opacity: 1
+
+
+@keyframes animateXMark
+  0%
+    transform: scale(0.4)
+    margin-top: 26px
+    opacity: 0
+  50%
+    transform: scale(0.4)
+    margin-top: 26px
+    opacity: 0
+  80%
+    transform: scale(1.15)
+    margin-top: -6px
+  100%
+    transform: scale(1)
+    margin-top: 0
+    opacity: 1
+

@@ -114,6 +114,18 @@ module ApplicationHelper
   end
 
   ##
+  # SVGアイコン表示
+  # @version 2018/06/10
+  #
+  def render_application_icon(name, options={})
+
+    color = options[:color] ? "u-svg-#{options[:color]}" : ''
+    size = options[:size] ? "u-svg-#{options[:size]}" : ''
+
+    "<svg class='#{color} #{size} #{options[:class]}'><use xlink:href='#application-#{name}'/></svg>".html_safe
+  end
+
+  ##
   # 認証用URL生成
   # @version 2018/06/10
   #
@@ -131,7 +143,7 @@ module ApplicationHelper
   # @version 2019/08/22
   #
   def cp(path)
-   "l-dashboard__menuCurrent" if current_page?(path)
+    "l-dashboard__menuCurrent" if current_page?(path)
   end
   
   ##

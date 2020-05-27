@@ -36,8 +36,7 @@ class ApplicationController < ActionController::Base
   # ユーザー認証
   before_action :authenticate
 
-  #before_action :judgment_browser, unless: -> { params[:controller].include? SiteConfig.home }
-  #既読判定
+  # 既読判定
   before_action :read_message
 
   # bulletの停止
@@ -65,19 +64,6 @@ class ApplicationController < ActionController::Base
   helper_method :sp?
 
   private
-
-    ##
-    # ブラウザ判定
-    # @version 2019/06/25
-    #
-    def judgment_browser
-
-      # IEの場合にアラートを表示させる
-      if request.env['HTTP_USER_AGENT'].include? "MSIE"
-
-        redirect_to root_path, flash: {notice: {message: 'IEでは使わないでください！'}} and return
-      end
-    end
 
     ##
     # リクエスト情報の取得
@@ -167,11 +153,13 @@ class ApplicationController < ActionController::Base
 
       # メールアドレスが未認証の場合
       if current_user.provider && !current_user.confirmed?
-        redirect_to view_context.confirmation_url(user.confirmation_token), flash: {notice: { message: '登録がまだお済みではありません'}} and return
+
+        redirect_to view_context.confirmation_url(user.confirmation_token), flash: { notice: { message: '登録がまだお済みではありません' } } and return
       end
 
       # 管理者による承認が済んでいない場合
       if !SiteConfig.allow_inactive_user && current_user.inactive?
+
         redirect_to inactive_path and return
       end
     end
@@ -225,9 +213,11 @@ class ApplicationController < ActionController::Base
     # @version 2018/06/10
     #
     def read_message
-			# 遷移元のアクションとコントローラー判定
+
+      # 遷移元のアクションとコントローラー判定
       path = Rails.application.routes.recognize_path(request.referer)
       if path[:controller] == 'tasks' && path[:action] == 'show'
+
         unless params[:controller] == 'tasks' && params[:action] == 'show'
           users = User.find_by(email: current_user[:email])
           users.update_columns(lastaccesstask: DateTime.now)

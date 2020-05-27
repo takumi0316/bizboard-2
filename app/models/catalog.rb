@@ -8,6 +8,7 @@
 #  price       :string(191)
 #  deliver_at  :string(191)
 #  category_id :bigint(8)
+#  turn        :integer          default(0)
 #
 
 class Catalog < ApplicationRecord

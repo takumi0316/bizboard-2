@@ -45,8 +45,11 @@ class Company < ApplicationRecord
   # 部署
   has_many :divisions, class_name: 'CompanyDivision'
 
-  #請求情報
+  # 請求情報
   has_many :profits
+
+  # 名刺テンプレート
+  has_many :cards
 
   #----------------------------------------
   #  ** Scopes **

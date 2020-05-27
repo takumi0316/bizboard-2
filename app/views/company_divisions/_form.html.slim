@@ -6,7 +6,7 @@ h1.l-dashboard__heading.u-mt-30 部署情報
     = f.label :name, '取引先'
     span.c-form__required.u-ml-10 必須
   .c-form-selectWrap.u-mb-30
-    = f.select :company_id, Company.all.pluck(:name, :id), { selected: division&.company_id, disabled: true }, { class: 'c-form-select' }
+    = f.select :company_id, Company.all.pluck(:name, :id), { selected: params[:company_id] ? params[:company_id] : division&.company_id , disabled: true }, { class: 'c-form-select' }
 
   .c-form-label
     = f.label :name, '名称'

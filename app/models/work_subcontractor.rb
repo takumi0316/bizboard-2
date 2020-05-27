@@ -46,9 +46,9 @@ class WorkSubcontractor < ApplicationRecord
 
   belongs_to :client, optional: true, class_name: 'SubcontractorDivisionClient', foreign_key: :subcontractor_division_client_id
 
-  has_many :detail, class_name: 'WorkSubcontractorDetail', dependent: :destroy
+  has_many :details, class_name: 'WorkSubcontractorDetail', dependent: :destroy
 
-  accepts_nested_attributes_for :detail
+  accepts_nested_attributes_for :details
 
   #----------------------------------------
   #  ** Scopes **

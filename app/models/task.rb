@@ -10,7 +10,7 @@
 #  catalog_id       :bigint(8)
 #  client_name      :string(191)
 #  client_mail      :string(191)
-#  clientlastaccess :datetime         default(Mon, 06 Apr 2020 15:31:45 JST +09:00)
+#  clientlastaccess :datetime         default(Sun, 17 May 2020 23:01:06 JST +09:00)
 #  will_order       :integer          default(0)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -45,14 +45,20 @@ class Task < ApplicationRecord
 
   # quote
   belongs_to :quote
-  accepts_nested_attributes_for :quote, update_only: true
 
-  #catalog
+  # catalog
   belongs_to :catalog
 
   # message
   has_many :messages
+
+  has_many :task_card_clients
+
+  has_many :card_clients, through: :task_card_clients
+
   accepts_nested_attributes_for :messages, allow_destroy: true
+
+  accepts_nested_attributes_for :quote, update_only: true
 
   #----------------------------------------
   #  ** Delegates **

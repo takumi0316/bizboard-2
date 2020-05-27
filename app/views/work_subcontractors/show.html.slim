@@ -43,28 +43,28 @@ javascript:
       table
         tr
           th 発注先社名
-          td#project_name = WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.subcontractor.name : nil
+          td#project_name = work_subcontractor.client.subcontractor_division.subcontractor.name
         tr
           th 部署名
-          td = WorkSubcontractor.find(params[:id]).client.subcontractor_division.name.present? ? WorkSubcontractor.find(params[:id]).client.subcontractor_division.name : nil
+          td = work_subcontractor.client.subcontractor_division.name
         tr
           th ご担当者名
-          td = WorkSubcontractor.find(params[:id]).client.name.present? ? WorkSubcontractor.find(params[:id]).client.name : nil
+          td = work_subcontractor.client.name
         tr
           th TEL
-          td = WorkSubcontractor.find(params[:id]).client.present? ? WorkSubcontractor.find(params[:id]).client.tel : nil
+          td = work_subcontractor.client.tel
 
     .c-table-work_subcontractors1
       table
         tr
           th.u-va-middle 発注日
-          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).order_date.strftime('%Y年%m月%d日')
+          td.u-va-middle.u-ta-left = work_subcontractor.order_date.strftime('%Y年%m月%d日')
         tr
           th.u-va-middle 納期
-          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).delivery_date.present? ? WorkSubcontractor.find(params[:id]).delivery_date.strftime('%Y年%m月%d日') : nil
+          td.u-va-middle.u-ta-left = work_subcontractor.delivery_date.strftime('%Y年%m月%d日')
         tr
           th.u-va-middle 納品先
-          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).delivery_destination
+          td.u-va-middle.u-ta-left = work_subcontractor.delivery_destination
 
     .c-table-work_subcontractors3
       table
@@ -90,7 +90,7 @@ javascript:
           th 原稿枚数
           th 部数数量
       tbody
-        - WorkSubcontractor.find(params[:id]).detail.each_with_index do |r, index|
+        - work_subcontractor.details.each_with_index do |r, index|
           tr
             td.u-va-top.u-ta-right = index + 1
             td.u-va-top.u-ta-left = r.order_contents
@@ -105,7 +105,7 @@ javascript:
           th 特記事項
       tbody
         tr
-          td.u-va-top.u-ta-left = simple_format(WorkSubcontractor.find(params[:id]).notices)
+          td.u-va-top.u-ta-left = simple_format(work_subcontractor.notices)
 
   .u-mt-10
     .u-fs-title
@@ -116,14 +116,14 @@ javascript:
       table
         tr
           th 案件名
-          td = WorkSubcontractor.find(params[:id]).work.quote.subject
+          td = work_subcontractor.work.quote.subject
     .c-table-work_subcontractors5
       table
         tr
           th.u-va-middle 案件管理番号
-          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.quote_number if WorkSubcontractor.find(params[:id]).work.quote.quote_number
+          td.u-va-middle.u-ta-left = work_subcontractor.work.quote.quote_number
           th.u-va-middle 発注担当
-          td.u-va-middle.u-ta-left = WorkSubcontractor.find(params[:id]).work.quote.user.name
+          td.u-va-middle.u-ta-left = work_subcontractor.work.quote.user.name
 
   .u-mt-10.c-flex__between
     .div
@@ -139,7 +139,7 @@ javascript:
         tr
           th 外注見積もり金額
         tr
-          td.u-ta-center = "#{(WorkSubcontractor.find(params[:id]).detail.sum(:actual_cost)).to_i}円"
+          td.u-ta-center = "#{work_subcontractor.details.sum(:actual_cost).to_i}円"
     .c-flex
       .c-table-work_subcontractors3
         table

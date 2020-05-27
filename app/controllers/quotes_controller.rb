@@ -1,3 +1,6 @@
+require 'csv'
+require 'zip'
+
 ##
 # quotes Controller
 #
@@ -17,7 +20,6 @@ class QuotesController < ApplicationController
     Quote
     .all
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .includes(:quote_items)
     .order(date: :desc)
   }
 
@@ -55,7 +57,6 @@ class QuotesController < ApplicationController
   # 見積もり
   expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id] }
 
-
   #----------------------------------------
   #  ** Layouts **
   #----------------------------------------
@@ -74,26 +75,14 @@ class QuotesController < ApplicationController
   #
   def index
 
-    @division = current_user.division&.id
     @user_type = current_user.user_type
     @count = params[:count]
 
-    if @user_type == 'general' && @count.present? || @user_type == 'manager' && @count.present? || @user_type == 'operator' && @count.present?
-
-      @quotes = quotes
-    elsif @user_type == 'manager'
-
-      @quotes = quote_manager
-    elsif @user_type == 'general'
-
-      @quotes = quote_general
-    elsif @user_type == 'operator'
-
-      @quotes = quote_operator
-    elsif @user_type != 'general'
-
-      @quotes = quotes
-    end
+    @quotes = quotes if @user_type == :general && @count.present? || @user_type == :manager && @count.present? || @user_type == :operator && @count.present?
+    @quotes = quote_manager if @user_type == :manager
+    @quotes = quote_general if @user_type == :general
+    @quotes = quote_operator if @user_type == :operator
+    @quotes = quotes if @user_type != :general && @user_type != :manager && @user_type != :operator
 
     @count_number = @quotes.size
 
@@ -106,8 +95,6 @@ class QuotesController < ApplicationController
   #
   def new
 
-    @quote = Quote.new
-
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '新規作成'
   end
@@ -115,157 +102,54 @@ class QuotesController < ApplicationController
   ##
   # 編集
   # @version 2018/06/10
-  #
   def edit
 
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '編集'
-	rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
-  # 更新処理
+  # 更新
   # @version 2018/06/10
-  #
   def update
 
     # 情報更新
     quote.update! quote_params
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '見積もりを更新しました' } }
+    # taskが存在していたらtaskの納期も更新する
+    quote.task.update! date: quote.deliver_at if quote.task.present?
+
+    # 請求先情報を静的に保存(更新)
+    quote.update! last_company: quote&.client&.company_division.company.name, last_division: quote&.client&.company_division.name, last_client: quote&.client&.name if quote.invoice.present?
+
+    render json: { status: :success }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    render json: { status: :error, message: e.message }
   end
 
   ##
-  # 新規作成 / 更新
+  # 新規作成
   # @version 2018/06/10
-  #
   def create
 
-    # 情報更新
-    if params[:id] == 'null'
-      required_params = quote_params
-      new_quote = Quote.new
-      new_quote.user_id = required_params[:user_id]
-      new_quote.division_id = required_params[:division_id]
-      new_quote.date = required_params[:date]
-      new_quote.issues_date = required_params[:issues_date]
-      new_quote.expiration = required_params[:expiration]
-      new_quote.delivery_note_date = required_params[:delivery_note_date]
-      new_quote.subject = required_params[:subject]
-      new_quote.remarks = required_params[:remarks]
-      new_quote.memo = required_params[:memo]
-      new_quote.attention = required_params[:attention]
-      new_quote.company_division_client_id = required_params[:company_division_client_id]
-      new_quote.quote_type = required_params[:quote_type]
-      new_quote.channel = required_params[:channel]
-      new_quote.deliver_at = required_params[:deliver_at]
-      new_quote.reception = required_params[:reception]
-      new_quote.deliver_type = required_params[:deliver_type]
-      new_quote.deliver_type_note = required_params[:deliver_type_note]
-      new_quote.discount = required_params[:discount]
-      new_quote.tax_type = required_params[:tax_type]
-      new_quote.tax = required_params[:tax]
-      new_quote.payment_terms = required_params[:payment_terms]
-      new_quote.temporary_price = required_params[:temporary_price]
-      new_quote.profit_price = required_params[:profit_price]
-      new_quote.save!
-      unless required_params[:quote_number].blank?
-        new_quote.update!(quote_number: required_params[:quote_number])
-      else
-        new_quote.update!(quote_number: new_quote.quote_number)
-      end
-      if required_params[:price].blank?
-        # 普通の時
-        new_quote.update!(price: required_params[:price])
-      else
-        # BPR・ERPの時
-        new_quote.update!(price: required_params[:price])
-      end
-      # slack通知
-      if required_params[:payment_terms] == 'advance'
-        Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{new_quote.quote_number}] お客様情報[#{new_quote&.client&.company_division&.company&.name} #{new_quote&.client&.name}] 担当者[#{new_quote&.user&.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
-      end
-      unless params[:specifications].nil?
-        params[:specifications].each do |specification|
+    quote.update! quote_params
 
-          parse_json = JSON.parse(specification)
-          createQuote = new_quote
-          createQuote.quote_projects.create!(name: parse_json['projectSpecificationName'], remarks: parse_json['projectSpecificationRemarks'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], project_id: parse_json['projectSpecificationId'], project_name: parse_json['projectName'], project_id: parse_json['projectId'].to_i)
-        end
-      end
-      render json: { status: :success, quote: Quote.last, quote_projects: Quote.last.quote_projects }
-    else
+    # slack通知
+    if quote.payment_terms == :advance
 
-      required_params = quote_params
-			findQuote = Quote.find(params[:id])
-      findQuote.user_id = required_params[:user_id]
-      findQuote.division_id = required_params[:division_id]
-      findQuote.date = required_params[:date]
-      findQuote.issues_date = required_params[:issues_date]
-      findQuote.expiration = required_params[:expiration]
-      findQuote.delivery_note_date = required_params[:delivery_note_date]
-      findQuote.subject = required_params[:subject]
-      findQuote.remarks = required_params[:remarks]
-      findQuote.memo = required_params[:memo]
-      findQuote.attention = required_params[:attention]
-      findQuote.company_division_client_id = required_params[:company_division_client_id]
-      findQuote.quote_type = required_params[:quote_type]
-      findQuote.channel = required_params[:channel]
-      findQuote.deliver_at = required_params[:deliver_at]
-      findQuote.reception = required_params[:reception]
-      findQuote.deliver_type = required_params[:deliver_type]
-      findQuote.deliver_type_note = required_params[:deliver_type_note]
-      findQuote.discount = required_params[:discount]
-      findQuote.tax_type = required_params[:tax_type]
-      findQuote.tax = required_params[:tax]
-      findQuote.payment_terms = required_params[:payment_terms]
-      findQuote.temporary_price = required_params[:temporary_price]
-      findQuote.profit_price = required_params[:profit_price]
-      findQuote.save!
-
-      unless params[:specifications].nil?
-        params[:specifications].each do |specification|
-
-          parse_json = JSON.parse(specification)
-          findQuoteProject = QuoteProject.find_or_initialize_by(id: parse_json['projectSpecificationId'])
-          if findQuoteProject.id == 0
-
-            QuoteProject.create!(name: parse_json['projectSpecificationName'], remarks: parse_json['projectSpecificationRemarks'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], quote_id: params[:id], project_id: parse_json['projectSpecificationId'], project_name: parse_json['projectName'], project_id: parse_json['projectId'])
-          else
-
-            findQuoteProject.update!(name: parse_json['projectSpecificationName'], remarks: parse_json['projectSpecificationRemarks'], unit_price: parse_json['projectSpecificationUnitPrice'], unit: parse_json['projectSpecificationUnit'].to_i, price: parse_json['projectSpecificationPrice'], project_id: parse_json['projectSpecificationId'], project_name: parse_json['projectName'], project_id: parse_json['projectId'])
-          end
-        end
-      end
-
-      # taskが存在していたらtaskの納期も更新する
-      quote.task.update(date: required_params[:deliver_at]) if quote.task.present?
-
-      #請求先情報を静的に保存(更新)
-      quote.update(last_company: quote&.client&.company_division.company.name, last_division: quote&.client&.company_division.name, last_client: quote&.client&.name) if quote.invoice.present?
-
-      render json: { status: :success, quote: Quote.find(params[:id]), quote_projects: Quote.find(params[:id]).quote_projects }
+      Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{quote.quote_number}] お客様情報[#{quote&.client&.company_division&.company&.name} #{quote&.client&.name}] 担当者[#{quote&.user&.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
     end
+
+    render json: { status: :success, quote: quote }
   rescue => e
 
-    if params[:id] == 'null'
-
-      render json: { status: :error, quote: Quote.new, quote_projects: [] }
-    else
-
-      render json: { status: :error, quote: Quote.find(params[:id].to_i), quote_projects: Quote.find(params[:id].to_i).quote_projects }
-    end
+    render json: { status: :error, message: e.message }
   end
 
   ##
   # 削除
   # @version 2018/06/10
-  #
   def destroy
 
     quote.destroy!
@@ -274,13 +158,13 @@ class QuotesController < ApplicationController
 
     flash[:warning] = { message: e.message }
   ensure
+
     redirect_to action: :index
   end
 
   ##
   # ステータスを更新する
   # @version 2018/06/10
-  #
   def status
 
     if quote.unworked? && quote.work.blank? || quote.draft? && quote.work.blank?
@@ -292,7 +176,7 @@ class QuotesController < ApplicationController
       redirect_to work_path(quote.work), flash: { notice: { message: '作業書を作成しました' } } and return
     end
 
-    if quote.payment_terms == 'advance' && quote.invoicing? && quote.work.blank?
+    if quote.advance? && quote.invoicing? && quote.work.blank?
 
       quote.build_work(division_id: current_user.division_id).save!
 
@@ -308,39 +192,18 @@ class QuotesController < ApplicationController
   #
   def copy
 
-    # deep_quote = quote.fake_deep_clone
-
-    # deep_quote.save!
-
-    # if quote.quote_projects.present?
-
-      # quote.quote_projects.each do |r|
-
-        # deep_quote.quote_projects.create!(quote_id: deep_quote.id, project_id: r.project_id, price: r.price, unit: r.unit, name: r.name, unit_price: r.unit_price, project_name: r.project_name, remarks: r.remarks)
-      # end
-    # end
-
-    # if quote.quote_items.present?
-
-      # quote.quote_items.each do |r|
-
-        # deep_clone.quote_items.create!(quote_id: deep_quote.id, cost: r.cost, gross_profit: r.gross_profit, detail: r.detail, name: r.name, unit_price: r.unit_price, quantity: r.quantity)
-      # end
-    # end
-
     clone_quote = quote.deep_clone(:quote_projects)
 
-		clone_quote.unworked!
+    clone_quote.unworked!
 
     clone_quote.save
 
     clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Time.now, deliver_at: Time.now, tax: 1.1)
 
     if quote.work.present?
-      # , :subcontractor, :subcontractor_detail
-			clone_work = quote.work.deep_clone(:work_details)
-			clone_work.quote_id = clone_quote.id
-			clone_work.draft!
+      clone_work = quote.work.deep_clone(:work_details)
+      clone_work.quote_id = clone_quote.id
+      clone_work.draft!
       clone_work.save!
       quote.work.subcontractor.each do |subcontractor|
 
@@ -363,6 +226,9 @@ class QuotesController < ApplicationController
     redirect_to edit_quote_path(clone_quote), flash: { notice: { message: '案件を複製しました' } }
   end
 
+  ##
+  # PDFダウンロード
+  # @version 2020/04/23
   def pdf
 
     respond_to do |format|
@@ -376,17 +242,69 @@ class QuotesController < ApplicationController
     end
   end
 
+  ##
+  # CSV一括ダウンロード
+  # @version 2020/04/23
+  #
+  def bulk_download
+
+    filename = "#{quote.subject}.zip"
+    fullpath = "#{Rails.root}/tmp/#{filename}"
+
+    Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
+      quote.card_clients.pluck(:card_id).uniq.map do |r|
+        card = Card.find(r)
+        zipfile.get_output_stream("#{quote.subject}-#{card.name}/#{card.name}.csv") do |f|
+          bom = "\uFEFF"
+          f.puts(
+            CSV.generate(bom) do |csv|
+              headers = []
+              headers << 'No.'
+              headers << 'テンプレート名'
+              headers << '箱数'
+              headers << '申込日'
+              card.templates.map { |t| t.details.map { |d| headers << d.name } }
+              csv << headers
+              quote.card_clients.where(card_id: r).map.with_index do |c, index|
+                values = []
+                client = CardClient.find(c.id)
+                values << index + 1
+                values << c.card.name
+                values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: c.id).count
+                values << quote.created_at.strftime('%Y年 %m月 %d日')
+                client.templates.map { |ct| ct.values.map { |v| values << v.value } }
+                csv << values
+              end
+              csv
+            end
+          )
+        end
+      end
+    end
+
+    # 新規ダウンロードの場合は、作業書作成 && 案件ステータスを作業中
+    if quote.unworked? && quote.work.blank? || quote.draft? && quote.work.blank?
+      quote.build_work(division_id: current_user.division_id, status: 10).save!
+      quote.working!
+    end
+
+    quote.build_work(division_id: current_user.division_id, status: 10).save! if quote.advance? && quote.invoicing? && quote.work.blank?
+
+    # zipをダウンロードして、直後に削除する
+    send_data File.read(fullpath), filename: filename, type: 'application/zip'
+    File.delete(fullpath)
+  end
+
   def lock
 
-    quote.lock = !quote.lock
+    quote.update! lock: !quote.lock
 
-    quote.save!
-
-    #成功したら編集ページに飛ぶ
+    # 成功したら編集ページに飛ぶ
     redirect_to quotes_path
   rescue => e
-    #エラー時は直前のページへ
-    redirect_back fallback_location: url_for({action: :new}), flash: {notice: {message: e.message}}
+
+    # エラー時は直前のページへ
+    redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
   end
 
   #----------------------------------------
@@ -395,16 +313,11 @@ class QuotesController < ApplicationController
 
   private
 
-  def quote_params
+    def quote_params
 
-    params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
-      :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price, :profit_price,
-      quote_items_attributes: [:id, :name, :unit_price, :quantity, :cost, :gross_profit, :detail]
-  end
-
-  def count_params
-
-    params :count
-  end
-
+      params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
+        :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price,
+        :issues_date, :delivery_note_date,
+        quote_projects_attributes: [:id, :quote_id, :project_id, :unit, :price, :name, :unit_price, :project_name, :remarks]
+    end
 end

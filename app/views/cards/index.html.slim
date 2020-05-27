@@ -1,0 +1,32 @@
+= render 'layouts/_partials/card_tabmenu'
+
+.u-mt-15 = link_to '名刺マスタを作成する', new_card_path, class: 'c-btnMain-standard c-btn-blue'
+
+= form_with url: cards_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+
+  .c-search__item
+    = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで', class: 'c-form-label'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '日本工業社'
+
+  = f.submit '検索', class: 'c-btnMain-standard'
+
+.c-table.u-mt-30
+  table
+    thead
+      tr
+        th 名刺ID
+        th アイキャッチ
+        th 会社
+        th 名称
+        th colspan=2
+    tbody
+      - cards.each do |r|
+        tr
+          td.u-va-middle.u-ta-center = r.id
+          td.u-va-middle.u-ta-center = image_tag r.templates.first.decorate.file_thumb
+          td.u-va-middle.u-ta-center = r.company.name
+          td.u-va-middle.u-ta-center = r.name
+          td.u-va-middle.u-ta-center = link_to '編集', edit_card_path(r), class: 'c-btnMain-standard'
+          td.u-va-middle.u-ta-center = link_to '削除', card_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
+
+= render 'layouts/_partials/pagination'

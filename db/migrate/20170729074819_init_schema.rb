@@ -179,17 +179,17 @@ class InitSchema < ActiveRecord::Migration[5.2]
     #
     create_table :project_copies do |t|
 
-      t.references:project,         index: true
-      t.integer :posting_state,                 default: 0
-      t.integer :draft_split,       limit: 1,   default: 0
-      t.integer :draft_restore,     limit: 1,   default: 0
-      t.integer :color,             limit: 1,   default: 0
-      t.integer :print_size,        limit: 1,   default: 0
-      t.text    :print_size_note
-      t.integer :surface,           limit: 1,   default: 0
-      t.integer :open_type,         limit: 1,   default: 0
-      t.text    :posting_state_note
-      t.integer :price
+      t.references :project,           index: true
+      t.integer    :posting_state,                 default: 0
+      t.integer    :draft_split,       limit: 1,   default: 0
+      t.integer    :draft_restore,     limit: 1,   default: 0
+      t.integer    :color,             limit: 1,   default: 0
+      t.integer    :print_size,        limit: 1,   default: 0
+      t.text       :print_size_note
+      t.integer    :surface,           limit: 1,   default: 0
+      t.integer    :open_type,         limit: 1,   default: 0
+      t.text       :posting_state_note
+      t.integer    :price
 
       t.timestamps
     end

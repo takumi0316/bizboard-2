@@ -1,0 +1,15 @@
+@import 'app/assets/stylesheets/foundation/variables'
+
+.Loading
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  display: flex
+  justify-content: center
+  align-items: center
+  font-size: 2.4rem
+  color: map-get($fontColors, 'white')
+  z-index: $layerLevel-overlay

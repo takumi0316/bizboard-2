@@ -1,21 +1,23 @@
 # == Schema Information
 #
-# Table name: quote_items
+# Table name: template_details
 #
-#  id           :bigint(8)        not null, primary key
-#  quote_id     :bigint(8)
-#  cost         :integer
-#  gross_profit :decimal(11, 8)
-#  detail       :string(191)
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  name         :string(191)
-#  unit_price   :integer
-#  quantity     :integer
+#  id               :bigint(8)        not null, primary key
+#  card_template_id :bigint(8)
+#  name             :string(191)
+#  font             :string(191)
+#  font_size        :string(191)
+#  font_color       :string(191)
+#  coord_x          :string(191)
+#  coord_y          :string(191)
+#  length           :string(191)
+#  line_space       :string(191)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
-class QuoteItem < ApplicationRecord
-
+class TemplateDetail < ApplicationRecord
+	
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
@@ -28,7 +30,6 @@ class QuoteItem < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
@@ -37,7 +38,11 @@ class QuoteItem < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :quote
+  # 名刺テンプレート情報
+  belongs_to :template, class_name: 'CardTemplate', optional: true
+
+  # 名刺担当者情報
+  has_many :client_template_value, dependent: :destroy
 
   #----------------------------------------
   #  ** Delegates **

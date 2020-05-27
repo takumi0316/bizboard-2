@@ -1,13 +1,18 @@
+import Rails from '@rails/ujs';
 import 'scripts/utilities';
 import 'scripts/initializer';
 import 'scripts/pagy';
 import 'scripts/image_converter';
 import 'scripts/xhr_request';
+import 'scripts/rails_ujs_jack';
 
 (function() {
 
   Initializer.loadWebfont();
+  RailsUjsJack.jack(Rails);
+  Rails.start();
   Initializer.lazy();
+  Ts.loadFont();
 
   // 初期表示時や、ajaxでのリクエスト時に発動
   document.addEventListener('turbolinks:load', function() {
@@ -19,11 +24,11 @@ import 'scripts/xhr_request';
 // react
 import WebpackerReact from 'webpacker-react';
 
+// 汎用モーダル
+import DataModal from 'components/data_modal';
+
 // flashメッセージ
 import Alert from 'components/alert';
-
-// かわいいキャラ
-import Kawaii from 'components/kawaii';
 
 // ロゴエディタ
 import LogoEditor from 'components/logo_editor';
@@ -36,9 +41,6 @@ import QuoteEditor from 'components/quote_editor';
 
 //見積もり検索
 import QuoteSearch from 'components/quote_search';
-
-// 案件詳細
-import ProjectViewer from 'components/project_viewer';
 
 // 部署
 import CompanyDivisions from 'components/company_divisions';
@@ -100,6 +102,24 @@ import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
 // 丸の内CSV書き出し日付検索
 import MarunouchiSearchable from 'components/api/marunouchi/searchable';
 
+// 名刺マスタ登録(新規作成)
+import NewCardTemplateGenerate from 'components/card/template/generate/new';
+
+// 名刺マスタ登録(更新)
+import EditCardTemplateGenerate from 'components/card/template/generate/edit';
+
+// 名刺情報登録(新規作成)
+import NewCardClientGenerate from 'components/card/client/generate/new';
+
+// 名刺担当者情報登録(更新)
+import EditCardClientGenerate from 'components/card/client/generate/edit';
+
+// 名刺担当者情報CSVダウンロード
+import DownloadCardClient from 'components/card/client/csv/download';
+
+// 名刺担当者情報CSVアップロード
+import UploadCardClient from 'components/card/client/csv/upload';
+
 // 在庫管理の部署選択
 import InventoryDivisionsSelect from 'components/inventory_divisions_select';
 
@@ -108,12 +128,11 @@ import ProfitGraph from 'components/profit_graph';
 
 WebpackerReact.setup({
   Alert,
-  Kawaii,
+  DataModal,
   LogoEditor,
   ProjectEditor,
   QuoteEditor,
   QuoteSearch,
-  ProjectViewer,
   CompanyDivisions,
   WorksSearch,
   WorkStatus,
@@ -134,6 +153,12 @@ WebpackerReact.setup({
 	QuotationPdfGenerator,
 	InvoicePdfGenerator,
   MarunouchiSearchable,
+  NewCardTemplateGenerate,
+  EditCardTemplateGenerate,
+  NewCardClientGenerate,
+  EditCardClientGenerate,
+  DownloadCardClient,
+  UploadCardClient,
   InventoryDivisionsSelect,
-    ProfitGraph,
-})
+  ProfitGraph,
+});
