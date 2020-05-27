@@ -58,6 +58,7 @@ class CardTemplatesController < ApplicationController
     card_template.update! card_template_params
 
     redirect
+
   end
 
   ##

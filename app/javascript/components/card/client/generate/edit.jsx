@@ -48,7 +48,7 @@ export default class ClientGenerate extends React.Component {
       default: props.card_client.status == 'default' ? true : false,
       card_client_id: props.card_client.id
     };
-	};
+  };
 
   /**
    * React LifeCycle
@@ -200,6 +200,6 @@ export default class ClientGenerate extends React.Component {
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </div>
-		);
+    );
   };
 };

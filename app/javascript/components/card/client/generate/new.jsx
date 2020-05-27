@@ -43,7 +43,7 @@ export default class ClientGenerate extends React.Component {
       default: false,
       card_client_id: this.props.card_client.id || ''
     };
-	};
+  };
 
   /**
    * React LifeCycle
@@ -290,6 +290,6 @@ export default class ClientGenerate extends React.Component {
         </div>
         <Loading ref={ node => this.loadingRef = node } message='展開しています' />
       </div>
-		);
+    );
   };
 };
