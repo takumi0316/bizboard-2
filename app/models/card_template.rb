@@ -34,7 +34,7 @@ class CardTemplate < ApplicationRecord
   #----------------------------------------
 
   # 名刺
-  belongs_to :card
+  belongs_to :card, optional: true
 
   # テンプレート
   has_one_attached :file, dependent: :detach
@@ -58,6 +58,15 @@ class CardTemplate < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
+  def self.search name
+
+    # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
+    terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+    query = (['name like ?'] * terms.size).join(' and ')
+
+    where(query, *terms.map { |term| "%#{term}%" })
+  end
 
   def formatting status
 

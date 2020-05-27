@@ -85,7 +85,7 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
     draw_canvas.width = (mmTopx(91 * 2));
 
     details.forEach(detail => {
-
+  
       draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
       const y = mmTopx(detail.coord_y) * 2;
       const x =	mmTopx(detail.coord_x) * 2;
@@ -223,7 +223,7 @@ export const drawTextValue = (values, draw_canvas) => {
     const card_value = value.value;
 
     if(!card_value) return;
-    for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
+    for(let lines = card_value.split('\n'), i = 0, l = lines.length; l > i; i++) {
       let line = lines[i] ;
       let addY = fontSize ;
       if (i) addY += fontSize * lineSpace * i ;
