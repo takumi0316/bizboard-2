@@ -371,7 +371,7 @@ export default class QuoteEditor extends React.Component {
       	
       // uniqueなidを生成
       const uid = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
-      	
+
       const field = {
         'id': '',
         'uid': uid,
