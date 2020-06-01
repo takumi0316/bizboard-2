@@ -3,13 +3,11 @@ import Promise             from 'core-js/es6/promise';
 
 import CompanySearch     from './company_search';
 import CustomerInfomation from './customer_infomation/index';
-import TempalteStatus     from './template_status/index';
 import CardTemplate       from './card_template/index';
 import Loading            from '../../../loading';
 
 import {
   validProperty,
-  toBoolean,
   setPDF,
   drawText
 } from '../../util';
@@ -22,21 +20,13 @@ export default class EditTemplateGenerate extends React.Component {
 
     super(props);
 
-    this.front_file = '';
-    this.reverse_file = '';
-
-    this.canvas = '';
-    this.draw_canvas = '';
-    const init = [
-      { ...props.front_side },
-      { ...props.reverse_side },
-    ];
-
     this.state = {
-      card_id: props.card.id || '',
+      card_id: props.card.id,
       company: props.company,
-      templates: [...init],
-      status: true
+      template: props.template,
+      backup_file: '',
+      template_type: props.template_type,
+      didmount_status: false,
     };
   };
 
@@ -47,59 +37,31 @@ export default class EditTemplateGenerate extends React.Component {
    */
   componentDidMount = () => {
 
-    const templates = this.state.templates;
-    const isBlank = templates.every(template => !template.file);
-    const fil_templates = templates.filter(template => template.file);
-
-    if(isBlank) return;
     this.loadingRef.start();
-    fil_templates.map(template => {
-      const field = new FormData();
-      field.append('url', template.file);
-      const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
-      request.then(res => {
-        if(res.data.status != 'error') {
-          const file = res.data;
-          const bool = toBoolean(template.status);
-          if(bool) {
-            this.front_file = file;
-            this.canvas = document.getElementById('pdf');
-            this.draw_canvas = document.getElementById('draw');
-            new Promise(resolve => {
-              setPDF(file, templates[0].details, this.canvas, this.draw_canvas);
-              resolve(true);
-            }).then(() => this.loadingRef.finish());
-          };
-          if(!bool) this.reverse_file = file;
-        };
-        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message, close_callback: () => bool ? this.loadingRef.finish() : null });
-      }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }));
-    });
-  };
-
-  /**
-   * React LifeCycle
-   * @version 2020/04/30
-   *
-   */
-  componentDidUpdate = (prevProps, prevState) => {
-
-    this.canvas = document.getElementById('pdf');
-    this.draw_canvas = document.getElementById('draw');
-    const status = this.state.status;
-    const details = this.state.templates[status ? 0 : 1].details;
-    const file = status ? this.front_file : this.reverse_file;
-    const prev_file = prevState.templates[status ? 0 : 1].file;
-
-    if(status == prevState.status && file == prev_file) return;
-    if(file) {
-
-      this.loadingRef.start();
-      new Promise(resolve => {
-        setPDF(file, details, this.canvas, this.draw_canvas);
-        resolve(true);
-      }).then(() => this.loadingRef.finish());
+    if(!this.state.template.file) {
+      this.loadingRef.finish();
+      return;
     };
+    const field = new FormData();
+    field.append('url', this.state.template.file);
+    const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
+    request.then(res => {
+  
+      if(res.data.status == 'error') {
+    
+        window.alertable({ icon: 'error', message: 'テンプレートの取得に失敗しました。もう一度ページを更新してください。', close_callback: () => this.loadingRef.finish() });
+        return;
+      };
+  
+      const file = res.data;
+      new Promise(resolve => {
+        setPDF(file, this.state.template.details, document.getElementById('pdf'), document.getElementById('draw'));
+        resolve(true);
+      }).then(() => {
+        this.setState({ didmount_status: !this.state.didmount_status }, () => this.loadingRef.finish());
+      }).catch(() => window.alertable({ icon: 'error', message: 'テンプレートの展開に失敗しました。もう一度ページを更新してください。', close_callback: () => this.loadingRef.finish() }));
+      
+    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }));
   };
 
   /**
@@ -110,13 +72,10 @@ export default class EditTemplateGenerate extends React.Component {
   onDrop = files => {
 
     const file = files[0];
-    let parse_templates = JSON.parse(JSON.stringify(this.state.templates));
+    let parse_template = JSON.parse(JSON.stringify(this.state.template));
 
-    parse_templates[status ? 0 : 1].file = file;
-    if(status) this.front_file = file;
-    if(!status) this.reverse_file = file;
-
-    this.setState({ templates: parse_templates });
+    parse_template.file = file;
+    this.setState({ template: parse_template }, () => setPDF(file, this.state.template.details, document.getElementById('pdf'), document.getElementById('draw')));
   };
 
   /**
@@ -127,13 +86,6 @@ export default class EditTemplateGenerate extends React.Component {
   applyCompany = props => this.setState({ company: props });
 
   /**
-   * ステータスセット
-   * @version 2020/03/27
-   *
-   */
-  setStatus = () => this.setState({ status: !this.state.status });
-
-  /**
    * 名刺ヘッダーカラム追加
    * @version 2020/03/30
    *
@@ -142,9 +94,8 @@ export default class EditTemplateGenerate extends React.Component {
 
     e.preventDefault();
 
-    const parse_templates = JSON.parse(JSON.stringify(this.state.templates));
-    const status = this.state.status;
-    const file = status ? parse_templates[0].file : parse_templates[1].file;
+    const parse_template = JSON.parse(JSON.stringify(this.state.template));
+    const file = parse_template.file;
 
     if(!file) {
 
@@ -165,8 +116,8 @@ export default class EditTemplateGenerate extends React.Component {
       line_space: '9'
     };
 
-    parse_templates[status ? 0 : 1].details.push(init);
-    this.setState({ templates: parse_templates });
+    parse_template.details.push(init);
+    this.setState({ template: parse_template });
   };
 
   /**
@@ -176,17 +127,15 @@ export default class EditTemplateGenerate extends React.Component {
    */
   onChangeDetail = (e, index, header_index) => {
 
-    let parse_templates = JSON.parse(JSON.stringify(this.state.templates));
-    const status = this.state.status;
-    const file = parse_templates[status ? 0 : 1].file;
-    const details = parse_templates[status ? 0 : 1].details;
+    let parse_template = JSON.parse(JSON.stringify(this.state.template));
+    const file = parse_template.file;
+    const details = parse_template.details;
     const name = HEADERS[header_index];
-    const value = e.target.value;
 
-    parse_templates[status ? 0 : 1].details[index][name] = value;
+    parse_template.details[index][name] = e.target.value;
 
-    if(file) this.setState({ templates: parse_templates }, drawText(details, this.draw_canvas));
-    if(!file) this.setState({ templates: parse_templates });
+    if(file) this.setState({ template: parse_template }, drawText(details, document.getElementById('draw')));
+    if(!file) this.setState({ template: parse_template });
   };
 
   /**
@@ -196,17 +145,49 @@ export default class EditTemplateGenerate extends React.Component {
    */
   unSetPDF = () => {
 
-    let templates = JSON.parse(JSON.stringify(this.state.templates));
-    const status = this.state.status;
+    let template = JSON.parse(JSON.stringify(this.state.template));
+    template.file = '';
 
-    templates[status ? 0 : 1].file = '';
-    templates[!status ? 0 : 1].file = this.state.templates[!status ? 0 : 1].file;
-    if(status) this.front_file = '';
-    if(!status) this.reverse_file = '';
-
-    this.setState({ templates: templates });
+    this.setState({ template: template, backup_file: '' });
   };
-
+  
+  /**
+   * 裏面ページへ遷移
+   * @version 2020/05/28
+   *
+   */
+  front_transition = e => {
+  
+    e.stopPropagation();
+  
+    const file = this.state.template.file;
+    if(!file) {
+    
+      window.alertable({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
+      return
+    };
+  
+    location.href = `/cards/${this.state.template.card_id}/front_preview`;
+  };
+  
+  /* 裏面ページへ遷移
+  * @version 2020/05/28
+  *
+  */
+  reverse_transition = e => {
+    
+    e.stopPropagation();
+    
+    const file = this.state.template.file;
+    if(!file) {
+      
+      window.alertable({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
+      return
+    };
+    
+    location.href = `/cards/${this.state.template.card_id}/reverse_preview`;
+  };
+  
   /**
    * 保存
    * @version 2020/03/26
@@ -218,43 +199,40 @@ export default class EditTemplateGenerate extends React.Component {
 
     if(!validProperty(this.inputRef.value.trim(), 'タイトル')) return;
     if(!validProperty(this.state.company, '会社')) return;
-    if(!validProperty(this.front_file, 'テンプレート')) return;
+    if(!validProperty(this.state.template.file, 'テンプレート')) return;
 
     const field = new FormData();
 
     field.append('card[name]', this.inputRef.value);
     field.append('card[company_id]', this.state.company.id);
-    const templates = this.state.templates.filter(template => template.file);
-    templates.map(template => {
-      field.append('card[templates_attributes][][id]', template.id);
-      field.append('card[templates_attributes][][card_id]', template.card_id);
-      field.append('card[templates_attributes][][status]', template.status);
-      field.append('card[templates_attributes][][file]', toBoolean(template.status) ? this.front_file : this.reverse_file);
-      template.details.map(detail => {
-        field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
-        field.append('card[templates_attributes][][details_attributes][][card_template_id]', template.id);
-        field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
-        field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
-        field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
-        field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
-        field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
-        field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
-        field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
-        field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
-      });
+    field.append('card[templates_attributes][][id]', this.state.template.id);
+    field.append('card[templates_attributes][][card_id]', this.state.template.card_id);
+    field.append('card[templates_attributes][][status]', this.state.template_type);
+    if(this.state.backup_file) field.append('card[templates_attributes][][file]', this.state.template.file);
+    this.state.template.details.map(detail => {
+      field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
+      field.append('card[templates_attributes][][details_attributes][][card_template_id]', this.state.template.id);
+      field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
+      field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
+      field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
+      field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
+      field.append('card[templates_attributes][][details_attributes][][coord_x]', detail.coord_x);
+      field.append('card[templates_attributes][][details_attributes][][coord_y]', detail.coord_y);
+      field.append('card[templates_attributes][][details_attributes][][length]', detail.length);
+      field.append('card[templates_attributes][][details_attributes][][line_space]', detail.line_space);
     });
 
     this.loadingRef.start();
-    const request = window.xhrRequest.put(this.props.action, field);
+    const url = '/cards/' + this.state.card_id
+    const request = window.xhrRequest.put(url, field);
+    
     // 保存処理
     request.then(res => {
 
-      this.loadingRef.finish();
-      if(res.data.status == 'success') window.alertable({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : '更新に失敗しました。' });
+      window.alertable({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : '更新に失敗しました。', close_callback: () => this.loadingRef.finish() });
     }).catch(error => {
 
-      this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error.message });
+      window.alertable({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish()});
     });
 	};
 
@@ -267,12 +245,14 @@ export default class EditTemplateGenerate extends React.Component {
         </div>
         <CustomerInfomation company={ this.state.company }/>
         <CompanySearch applyCompany={ this.applyCompany } type_name={ '会社情報を登録' } not_found={ '会社情報が見つかりませんでした。'}/>
-        <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
-        { this.state.status ?
-          <CardTemplate template={ this.state.templates[0] } file={ this.front_file } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
-          :
-          <CardTemplate template={ this.state.templates[1] } file={ this.reverse_file } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
+        { this.props.both == 2 ?
+          <div className='u-mt-10'>
+            <button className='c-btnMain-primaryC'
+              onClick={ e => this.state.template_type ? this.reverse_transition(e) : this.front_transition(e) }>{ this.state.template_type ? '裏面を設定する' : '表面を設定する' }</button>
+          </div>
+          : null
         }
+        <CardTemplate template={ this.state.template } didmount_type={ this.state.didmount_status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
         <div className='u-mt-10'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>
         </div>

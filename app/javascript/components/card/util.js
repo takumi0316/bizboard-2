@@ -13,20 +13,29 @@ export const toBoolean = data => data.toLowerCase() === 'true';
  * @version 2020/04/04
  * 
  **/
-export function generateKey(pre) {
-
-  return `${ pre }_${ new Date().getTime() }`;
-};
+export const generateKey = pre => `${ pre }_${ new Date().getTime() }`;
 
 /**
  * valid property 
  * @version 2020/04/04
  * 
  */
-export function validProperty(value, property) {
+export const validProperty = (value, property) => {
 
   if(value) return true;
   window.alertable({ icon: 'error', message: `${property}を入力してください。`});
+};
+
+/**
+ * エラーアラート
+ * @version 2020/05/28
+ * @param err
+ *
+ */
+export const missTransition = err => {
+  
+  console.log(err);
+  window.alertable({ icon: 'error', message: 'ページ遷移に失敗しました。' });
 };
 
 /**

@@ -4,13 +4,13 @@ import React, { Fragment }  from 'react'
 import ClientSearch 				from '../utilities/client_search';
 import ProjectSearch 				from './project_search';
 import HomeDivision 				from './home_division';
-import Subject 							from './subject/index.jsx';
-import CustomerInformation	from './customer_information';
-import SalesDepartment			from './sales_department';
-import CaseDetails					from './case_details';
-import PaymentDetails				from './payment_details';
-import ButtonsBelow					from './buttons_below';
-import ItemTables           from './item_tables';
+import Subject                                  from './subject/index.jsx';
+import CustomerInformation                      from './customer_information';
+import SalesDepartment                          from './sales_department';
+import CaseDetails                              from './case_details';
+import PaymentDetails                           from './payment_details';
+import ButtonsBelow                             from './buttons_below';
+import ItemTables                               from './item_tables';
 
 /**
  *  記事エディター
@@ -525,6 +525,8 @@ export default class QuoteEditor extends React.Component {
         };
       };
       
+      // エラー文
+      console.log(res.data.message);
       if(res.data.status != 'success') window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` });
     }).catch(err => window.alertable({ icon: 'error', message: err }));
   };

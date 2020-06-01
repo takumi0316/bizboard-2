@@ -31,7 +31,7 @@
           td.u-ta-center = r.company_division_client.company_division.name
           td.u-ta-center = r.company_division_client.name
           td.u-ta-center = r.templates.first.card_template.card.name
-          td.u-ta-center = link_to '編集', edit_card_client_path(r), class: 'c-btnMain-standard'
+          td.u-ta-center = link_to '編集', card_client_front_preview_path(r), class: 'c-btnMain-standard'
           td.u-ta-center = link_to '削除', card_client_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'
