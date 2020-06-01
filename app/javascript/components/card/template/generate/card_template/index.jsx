@@ -19,7 +19,7 @@ const CardTemplate = props => {
         :
         <DropZone onDrop={ props.onDrop }/>
       }
-      <div className='u-ml-30'>
+      <div className='u-ml-50'>
         <Header template={ props.template } status={ props.status } addDetail={ props.addDetail } onChangeDetail={ props.onChangeDetail }/>
       </div>
     </div>

@@ -149,6 +149,7 @@ Rails.application.routes.draw do
   resources :cards, except: :show do
     get :front_preview
     get :reverse_preview
+    get :copy
     collection do
       post :transfer
     end
@@ -163,6 +164,8 @@ Rails.application.routes.draw do
 
   # 名刺情報
   resources :card_clients do
+    get :front_preview
+    get :reverse_preview
     collection do
       get :download
       get :upload

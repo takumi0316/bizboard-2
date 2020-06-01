@@ -38,6 +38,10 @@ export default class EditTemplateGenerate extends React.Component {
   componentDidMount = () => {
 
     this.loadingRef.start();
+    if(!this.state.template.file) {
+      this.loadingRef.finish();
+      return;
+    };
     const field = new FormData();
     field.append('url', this.state.template.file);
     const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
@@ -159,7 +163,7 @@ export default class EditTemplateGenerate extends React.Component {
     const file = this.state.template.file;
     if(!file) {
     
-      window.alertable({ icon: 'error', message: 'テンプレートを登録してください。' });
+      window.alertable({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
       return
     };
   
@@ -177,7 +181,7 @@ export default class EditTemplateGenerate extends React.Component {
     const file = this.state.template.file;
     if(!file) {
       
-      window.alertable({ icon: 'error', message: 'テンプレートを登録してください。' });
+      window.alertable({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
       return
     };
     

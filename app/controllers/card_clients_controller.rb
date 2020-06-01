@@ -14,7 +14,7 @@ class CardClientsController < ApplicationController
   expose_with_pagination(:card_clients) { CardClient.search(params[:name]).all.reverse_order }
 
   # 名刺マスタ
-  expose(:card_client) { CardClient.find_or_initialize_by id: params[:id] }
+  expose(:card_client) { CardClient.find_or_initialize_by id: params[:id] || params[:card_client_id] }
 
   #----------------------------------------
   #  ** Layouts **
@@ -126,6 +126,18 @@ class CardClientsController < ApplicationController
     (1..count).each { |r| CardClient.last.destroy! if r != 1 }
 
     render json: { status: :error, message: e.message }
+  end
+
+  def front_preview
+
+    add_breadcrumb '名刺情報一覧', path: card_clients_path
+    add_breadcrumb '編集（表面）'
+  end
+
+  def reverse_preview
+
+    add_breadcrumb '名刺情報一覧', path: card_clients_path
+    add_breadcrumb '編集（裏面）'
   end
 
   ##
