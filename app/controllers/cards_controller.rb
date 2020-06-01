@@ -12,7 +12,7 @@ class CardsController < ApplicationController
   expose_with_pagination(:cards) { Card.search(params[:name]).all.reverse_order }
 
   # 名刺マスタ
-  expose(:card) { Card.find_or_initialize_by id: params[:id] }
+  expose(:card) { Card.find_or_initialize_by id: params[:id] || params[:card_id] }
 
   #----------------------------------------
   #  ** Layouts **
@@ -98,6 +98,26 @@ class CardsController < ApplicationController
   rescue => e
 
     render json: { status: :error, message: e.message }
+  end
+
+  ##
+  # 表面
+  # @version
+  #
+  def front_preview
+
+    add_breadcrumb '名刺マスタ一覧', path: cards_path
+    add_breadcrumb '表面'
+  end
+
+  ##
+  # 裏面
+  # @version 2020/06/01
+  #
+  def reverse_preview
+
+    add_breadcrumb '名刺マスタ一覧', path: cards_path
+    add_breadcrumb '裏面'
   end
 
   ##

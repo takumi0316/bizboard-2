@@ -26,7 +26,7 @@
           td.u-va-middle.u-ta-center = image_tag r.templates.first.decorate.file_thumb
           td.u-va-middle.u-ta-center = r.company.name
           td.u-va-middle.u-ta-center = r.name
-          td.u-va-middle.u-ta-center = link_to '編集', edit_card_path(r), class: 'c-btnMain-standard'
+          td.u-va-middle.u-ta-center = link_to '編集', card_front_preview_path(r), class: 'c-btnMain-standard'
           td.u-va-middle.u-ta-center = link_to '削除', card_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'
