@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-05-17 23:01:06"
+    t.datetime "lastaccesstask", default: "2020-04-08 01:56:33"
     t.integer "opt", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -237,12 +237,11 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
 
   create_table "inquiries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "quote_id"
-    t.bigint "division_id"
     t.integer "result", default: 0
     t.string "quote_number", comment: "案件番号"
+    t.datetime "import_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["division_id"], name: "index_inquiries_on_division_id"
     t.index ["quote_id"], name: "index_inquiries_on_quote_id"
   end
 
@@ -666,7 +665,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2020-05-17 23:01:06"
+    t.datetime "clientlastaccess", default: "2020-04-08 01:56:34"
     t.integer "will_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -719,7 +718,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-05-17 23:01:05"
+    t.datetime "lastaccesstask", default: "2020-04-08 01:56:33"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_users_on_division_id"
@@ -798,7 +797,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
   add_foreign_key "expendables", "users"
   add_foreign_key "expendables", "work_subcontractor_details"
   add_foreign_key "expendables", "work_subcontractors"
-  add_foreign_key "inquiries", "divisions"
   add_foreign_key "messages", "company_division_clients"
   add_foreign_key "messages", "users"
   add_foreign_key "payments", "expendables"
