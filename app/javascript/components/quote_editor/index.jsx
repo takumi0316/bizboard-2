@@ -57,7 +57,7 @@ export default class QuoteEditor extends React.Component {
       channel: props.quote.channel || '',
       issues_date: props.quote.issues_date,
       expiration: props.quote.expiration,
-      delivery_type_note: props.quote.delivery_type_note || '',
+      deliver_type_note: props.quote.deliver_type_note || '',
       delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
