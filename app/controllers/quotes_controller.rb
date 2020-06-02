@@ -261,19 +261,22 @@ class QuotesController < ApplicationController
               headers = []
               headers << 'No.'
               headers << 'テンプレート名'
-              headers << '箱数'
+              # headers << '箱数'
               headers << '申込日'
               card.templates.map { |t| t.details.map { |d| headers << d.name } }
               csv << headers
               quote.card_clients.where(card_id: r).map.with_index do |c, index|
-                values = []
-                client = CardClient.find(c.id)
-                values << index + 1
-                values << c.card.name
-                values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: c.id).count
-                values << quote.created_at.strftime('%Y年 %m月 %d日')
-                client.templates.map { |ct| ct.values.map { |v| values << v.value } }
-                csv << values
+                (1..quote.task_card_clients.where(card_client_id: c.id).first.count).each do |cc|
+
+                  values = []
+                  client = CardClient.find(c.id)
+                  values << index + 1
+                  values << c.card.name
+                  # values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: c.id).count
+                  values << quote.created_at.strftime('%Y年 %m月 %d日')
+                  client.templates.map { |ct| ct.values.map { |v| values << v.value } }
+                  csv << values
+                end
               end
               csv
             end
