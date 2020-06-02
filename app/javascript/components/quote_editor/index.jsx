@@ -4,13 +4,13 @@ import React, { Fragment }  from 'react'
 import ClientSearch 				from '../utilities/client_search';
 import ProjectSearch 				from './project_search';
 import HomeDivision 				from './home_division';
-import Subject                                  from './subject/index.jsx';
-import CustomerInformation                      from './customer_information';
-import SalesDepartment                          from './sales_department';
-import CaseDetails                              from './case_details';
-import PaymentDetails                           from './payment_details';
-import ButtonsBelow                             from './buttons_below';
-import ItemTables                               from './item_tables';
+import Subject              from './subject/index.jsx';
+import CustomerInformation  from './customer_information';
+import SalesDepartment      from './sales_department';
+import CaseDetails          from './case_details';
+import PaymentDetails       from './payment_details';
+import ButtonsBelow         from './buttons_below';
+import ItemTables           from './item_tables';
 
 /**
  *  記事エディター
@@ -66,7 +66,6 @@ export default class QuoteEditor extends React.Component {
       task: props.task || '',
       users: props.users,
       prefectures: props.prefectures,
-      deliver_type_note: props.quote.deliver_type_note || '',
       remarks: props.quote.remarks || '',
       memo: props.quote.memo || '',
       itemStatus: true
@@ -406,6 +405,7 @@ export default class QuoteEditor extends React.Component {
         'id': '',
         'uid': uid,
         'project_id': project.id,
+        'quote_id': this.state.quote_id,
         'name': specification.name,
         'unit_price': specification.unit_price,
         'unit': specification.unit,
@@ -484,7 +484,6 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[date]', this.state.date || '');
     field.append('quote[issues_date]', this.state.issues_date || '');
     field.append('quote[expiration]', this.state.expiration || '');
-    field.append('quote[delivery_note]', this.state.delivery_note || '');
     field.append('quote[delivery_note_date]', this.state.delivery_note_date || '');
     field.append('quote[deliver_at]', this.state.deliver_at || '');
     field.append('quote[reception]', this.state.reception);
@@ -508,7 +507,7 @@ export default class QuoteEditor extends React.Component {
     });
     
     // 納品方法
-    if(this.state.deliver_type == 'location' || this.state.deliver_type == 'other') field['quote[deliver_type_note]'] = this.state.deliver_type_note ;
+    if(this.state.deliver_type == 'location' || this.state.deliver_type == 'other') field['quote[deliver_type_note]'] = this.state.deliver_type_note;
     
     const request = this.state.quote_id ? window.xhrRequest.put(this.props.action, field) : window.xhrRequest.post(this.props.action, field);
     request.then(res => {
