@@ -107,6 +107,7 @@ class CardsController < ApplicationController
   def copy
 
     clone_card = card.deep_clone(:templates)
+    clone_card.name = "#{card.name}（名刺ID#{card.id}: コピー）"
     clone_card.save!
 
     card.templates.each do |r|

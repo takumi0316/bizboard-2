@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_14_195037) do
+ActiveRecord::Schema.define(version: 2020_05_26_060944) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "free_word"
+    t.integer "status", limit: 1, default: 0
     t.index ["card_id"], name: "index_card_clients_on_card_id"
     t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
     t.index ["company_division_id"], name: "index_card_clients_on_company_division_id"
@@ -75,7 +76,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
 
   create_table "card_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "card_id"
-    t.integer "status", limit: 1, default: 0, comment: "テンプレートの状態"
+    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_card_templates_on_card_id"
@@ -554,10 +555,10 @@ ActiveRecord::Schema.define(version: 2020_05_14_195037) do
     t.integer "payment_terms"
     t.float "tax", default: 1.1
     t.integer "reception"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "temporary_price"
     t.integer "profit_price", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "last_company"
     t.string "last_division"
     t.string "last_client"
