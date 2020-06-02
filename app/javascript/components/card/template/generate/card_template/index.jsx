@@ -1,4 +1,5 @@
 import React from 'react';
+import Style from './style.sass';
 
 import DropZone from './drop_zone';
 import Header   from './header'
@@ -6,9 +7,9 @@ import Header   from './header'
 const CardTemplate = props => {
 
   return(
-    <div className='u-mt-30 c-flex c-flex-alignItems_start'>
+    <div className='u-mt-30 c-flex'>
       { props.template.file ?
-        <div>
+        <div className={ Style.CardTemplate }>
           <div className='c-position'>
             <canvas id='draw' className='c-border c-border-top c-border-left c-border-right c-position__canvas' />
             <canvas id='pdf' className='c-border c-border-top c-border-left c-border-right' />
@@ -18,7 +19,9 @@ const CardTemplate = props => {
         :
         <DropZone onDrop={ props.onDrop }/>
       }
-      <Header template={ props.template } status={ props.status } addDetail={ props.addDetail } onChangeDetail={ props.onChangeDetail }/>
+      <div className='u-ml-50'>
+        <Header template={ props.template } status={ props.status } addDetail={ props.addDetail } onChangeDetail={ props.onChangeDetail }/>
+      </div>
     </div>
   );
 };

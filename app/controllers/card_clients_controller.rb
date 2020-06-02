@@ -14,7 +14,7 @@ class CardClientsController < ApplicationController
   expose_with_pagination(:card_clients) { CardClient.search(params[:name]).all.reverse_order }
 
   # 名刺マスタ
-  expose(:card_client) { CardClient.find_or_initialize_by id: params[:id] }
+  expose(:card_client) { CardClient.find_or_initialize_by id: params[:id] || params[:card_client_id] }
 
   #----------------------------------------
   #  ** Layouts **
@@ -57,6 +57,8 @@ class CardClientsController < ApplicationController
 
     card_client.update! card_client_params
 
+    CardClient.where(company_division_client_id: card_client.company_division_client_id).where(status: 10).each { |r| r.custom! if r.id != card_client.id } if card_client.default?
+
     render json: { status: :success, card_client: card_client }
   rescue => e
 
@@ -81,8 +83,9 @@ class CardClientsController < ApplicationController
 
     card_client.update! card_client_params
 
-    render json: { status: :success, card_client: card_client }
+    CardClient.where(company_division_client_id: card_client.company_division_client_id).where(status: 10).each { |r| r.custom! if r.id != card_client.id } if card_client.default?
 
+    render json: { status: :success, card_client: card_client }
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -123,6 +126,18 @@ class CardClientsController < ApplicationController
     (1..count).each { |r| CardClient.last.destroy! if r != 1 }
 
     render json: { status: :error, message: e.message }
+  end
+
+  def front_preview
+
+    add_breadcrumb '名刺情報一覧', path: card_clients_path
+    add_breadcrumb '編集（表面）'
+  end
+
+  def reverse_preview
+
+    add_breadcrumb '名刺情報一覧', path: card_clients_path
+    add_breadcrumb '編集（裏面）'
   end
 
   ##
@@ -202,7 +217,7 @@ class CardClientsController < ApplicationController
     #
     def card_client_params
 
-      params.require(:card_client).permit :card_id, :company_division_id, :company_division_client_id, {
+      params.require(:card_client).permit :card_id, :company_division_id, :company_division_client_id, :status, {
         templates_attributes: [:id, :card_client_id, :card_template_id,
           {
             values_attributes: [:id, :client_template_id, :template_detail_id, :value]

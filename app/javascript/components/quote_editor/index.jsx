@@ -4,13 +4,13 @@ import React, { Fragment }  from 'react'
 import ClientSearch 				from '../utilities/client_search';
 import ProjectSearch 				from './project_search';
 import HomeDivision 				from './home_division';
-import Subject 							from './subject/index.jsx';
-import CustomerInformation	from './customer_information';
-import SalesDepartment			from './sales_department';
-import CaseDetails					from './case_details';
-import PaymentDetails				from './payment_details';
-import ButtonsBelow					from './buttons_below';
-import ItemTables           from './item_tables';
+import Subject                                  from './subject/index.jsx';
+import CustomerInformation                      from './customer_information';
+import SalesDepartment                          from './sales_department';
+import CaseDetails                              from './case_details';
+import PaymentDetails                           from './payment_details';
+import ButtonsBelow                             from './buttons_below';
+import ItemTables                               from './item_tables';
 
 /**
  *  記事エディター
@@ -57,6 +57,7 @@ export default class QuoteEditor extends React.Component {
       channel: props.quote.channel || '',
       issues_date: props.quote.issues_date,
       expiration: props.quote.expiration,
+      delivery_type_note: props.quote.delivery_type_note || '',
       delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
@@ -75,96 +76,112 @@ export default class QuoteEditor extends React.Component {
   /**
    *  公開日時を適用するcallback
    *  @version 2018/06/10
+   *
    */
   setDeliverAt = datetime => this.setState({ deliver_at: datetime.datetime });
 
   /**
    *  見積もり作成日時を適用するcallback
    *  @version 2018/06/10
+   *
    */
   setDate = datetime => this.setState({ date: datetime.datetime });
 
   /**
    *  見積もり期日を適用するcallback
    *  @version 2018/06/10
+   *
    */
   setExpiration = datetime => this.setState({ expiration: datetime.datetime });
 
   /**
    *  見積もり発行日を適用するcallback
    *  @version 2018/06/10
+   *
    */
   setIssuesDate = datetime => this.setState({ issues_date: datetime.datetime });
 
   /**
    *  納品日を適用するcallback
    *  @version 2018/06/10
+   *
    */
   setDeliveryNoteDate = datetime => this.setState({ delivery_note_date: datetime.datetime });
 
   /**
   * タイトルの変更処理
   * @version 2019/12/20
+  *
   */
   setSubject = subject => this.setState({ quote_subject: subject });
   
   /**
   *
   * @version 2019/12/20
+  *
   */
   setDeliverType = deliver_type => this.setState({ deliver_type: deliver_type });
   
   /**
   *
   * @version 2019/12/20
+  *
   */
   setDeliverTypeNote = deliver_type_note => this.setState({ deliver_type_note: deliver_type_note });
   
   /**
    *
    * @version 2019/12/20
+   *
    */
   setChannel = channel => this.setState({ channel: channel, show_quote_number: channel == 'bpr_erp' });
   
   /**
    *
    * @version 2019/12/20
+   *
    */
   setQuoteNumber = quote_number => this.setState({ quote_number: quote_number });
   
   /**
    *
    * @version 2019/12/20
+   *
    */
   setReception = reception => this.setState({ reception: reception });
   
   /**
    *
    * @version 2019/12/20
+   *
    */
   setQuoteType = quote_type => this.setState({ quote_type: quote_type });
   
   /**
    *
    * @version 2019/12/23
+   *
    */
   setRemarks = remarks => this.setState({ remarks: remarks });
   
   /**
    *
    * @version 2019/12/23
+   *
    */
   setMemo = memo => this.setState({ memo: memo });
   
   /**
    *
    * @version 2019/12/23
+   *
    */
   setPaymentTerms = payment_terms => this.setState({ payment_terms: payment_terms });
   
   /**
    *
    * @version 2019/12/23
+   *
    */
   setTaxType = tax_type => this.setState({ tax_type: tax_type });
 
@@ -172,6 +189,7 @@ export default class QuoteEditor extends React.Component {
   /**
    *  モーダルを表示する
    *  @version 2019/12/23
+   *
    */
   setShow = bool => {
 
@@ -182,6 +200,7 @@ export default class QuoteEditor extends React.Component {
   /**
    * 値引き金額を変更
    * @version 2019/12/23
+   *
    */
   setDiscount = discount => {
 
@@ -199,12 +218,14 @@ export default class QuoteEditor extends React.Component {
   /**
    * 利益額を変更
    * @version 2019/12/23
+   *
    */
   setProfitPrice = profit_price => this.setState({ profit_price: Number(profit_price) });
 
   /**
    * 合計金額を変更
    * @version 2019/12/23
+   *
    */
   setTemporaryPrice = temporary_price => {
 
@@ -221,6 +242,7 @@ export default class QuoteEditor extends React.Component {
 
   /**
    * Unitを変更する
+   * @version 2020/06/01
    *
    */
   setUnitPrice = (passIndex, unitPrice) => {
@@ -241,6 +263,7 @@ export default class QuoteEditor extends React.Component {
 
   /**
    * Unitを変更する
+   * @version 2020/06/01
    *
    */
   setUnit = (passIndex, unit) => {
@@ -271,7 +294,8 @@ export default class QuoteEditor extends React.Component {
   };
 
   /**
-   *
+   * 品目名更新
+   * @version 2020/06/01
    *
    */
   setName = (passIndex, name) => {
@@ -282,7 +306,8 @@ export default class QuoteEditor extends React.Component {
   };
 
   /**
-   *
+   * 品目備考更新
+   * @version 2020/06/01
    *
    */
   setQuoteRemarks = (passIndex, remarks) => {
@@ -293,8 +318,9 @@ export default class QuoteEditor extends React.Component {
   };
 
   /**
-   *
+   * 品目検索中？　品目中じゃない？
    * @version 2020/01/20
+   *
    */
   setItemStatus = (e, bool) => {
 
@@ -319,6 +345,7 @@ export default class QuoteEditor extends React.Component {
   /**
    *  バリデーション
    *  @version 2018/06/10
+   *
    */
   validation = () => {
 
@@ -342,6 +369,7 @@ export default class QuoteEditor extends React.Component {
   /**
    *  お客様選択時
    *  @version 2018/06/10
+   *
    */
   applyClient = client => this.setState({
       client: client.client,
@@ -353,12 +381,14 @@ export default class QuoteEditor extends React.Component {
    * 売り上げ部署
    * @version 2020/05/25
    * @param division
+   *
    */
   applyHomeDivision = division => this.setState({ home_division: division });
 
   /**
    *  品目選択時
    *  @version 2018/06/10
+   *
    */
   applyProject = project => {
 
@@ -371,7 +401,7 @@ export default class QuoteEditor extends React.Component {
       	
       // uniqueなidを生成
       const uid = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
-      	
+
       const field = {
         'id': '',
         'uid': uid,
@@ -393,6 +423,7 @@ export default class QuoteEditor extends React.Component {
   /**
    * 指定されたprojectを消す
    * @version 2019/12/23
+   *
    */
   projectDestroy = e => {
   
@@ -423,6 +454,7 @@ export default class QuoteEditor extends React.Component {
   /**
    *  登録処理
    *  @version 2018/06/10
+   *
    */
   onSubmit = e => {
     
@@ -452,10 +484,11 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[date]', this.state.date || '');
     field.append('quote[issues_date]', this.state.issues_date || '');
     field.append('quote[expiration]', this.state.expiration || '');
+    field.append('quote[delivery_note]', this.state.delivery_note || '');
     field.append('quote[delivery_note_date]', this.state.delivery_note_date || '');
     field.append('quote[deliver_at]', this.state.deliver_at || '');
     field.append('quote[reception]', this.state.reception);
-    field.append('quote[deliver_type]', this.state.deliver_type);
+    field.append('quote[deliver_type_note]', this.state.deliver_type_note);
     field.append('quote[remarks]', this.state.remarks);
     field.append('quote[memo]', this.state.memo);
     field.append('quote[user_id]', this.props.user_id);
@@ -492,6 +525,8 @@ export default class QuoteEditor extends React.Component {
         };
       };
       
+      // エラー文
+      console.log(res.data.message);
       if(res.data.status != 'success') window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` });
     }).catch(err => window.alertable({ icon: 'error', message: err }));
   };
@@ -499,6 +534,7 @@ export default class QuoteEditor extends React.Component {
   /**
    *  表示処理
    *  @version 2018/06/10
+   *
    */
   render() {
     return (

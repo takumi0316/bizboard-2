@@ -13,7 +13,8 @@ set :assets_roles, [:assets]
 
 # rails
 set :rails_env, 'production'
-set :branch, 'master'
+set :branch, 'issues#A-1-1'
+# set :branch, 'master'
 set :deploy_to, '/home/media'
 set :log_level, :debug
 set :default_shell, '/bin/bash -l'
@@ -29,7 +30,7 @@ namespace :deploy do
   before :compile_assets, :set_max_heep_size do
     on roles(:assets) do
       within release_path do
-        execute "export NODE_OPTIONS='--max-old-space-size=1300'"
+        execute "export NODE_OPTIONS='--max-old-space-size=1500'"
       end
     end
   end
