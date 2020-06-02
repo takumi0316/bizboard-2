@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
 
   create_table "card_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "card_id"
-    t.integer "status", limit: 1, default: 0, comment: "テンプレートの状態"
+    t.integer "status", limit: 1, default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_card_templates_on_card_id"
@@ -244,6 +244,14 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_inquiries_on_division_id"
     t.index ["quote_id"], name: "index_inquiries_on_quote_id"
+  end
+
+  create_table "inventories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "company_division_id"
+    t.text "remarks", comment: "備考"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_division_id"], name: "index_inventories_on_company_division_id"
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
