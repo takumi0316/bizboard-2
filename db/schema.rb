@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_060944) do
+ActiveRecord::Schema.define(version: 2020_05_14_195037) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "free_word"
-    t.integer "status", limit: 1, default: 0
     t.index ["card_id"], name: "index_card_clients_on_card_id"
     t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
     t.index ["company_division_id"], name: "index_card_clients_on_company_division_id"
@@ -177,7 +176,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-05-17 23:01:06"
+    t.datetime "lastaccesstask", default: "2020-04-08 01:56:33"
     t.integer "opt", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -237,13 +236,20 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
 
   create_table "inquiries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "quote_id"
-    t.bigint "division_id"
     t.integer "result", default: 0
     t.string "quote_number", comment: "案件番号"
+    t.datetime "import_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["division_id"], name: "index_inquiries_on_division_id"
     t.index ["quote_id"], name: "index_inquiries_on_quote_id"
+  end
+
+  create_table "inventories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "company_division_id"
+    t.text "remarks", comment: "備考"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_division_id"], name: "index_inventories_on_company_division_id"
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -548,10 +554,10 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.integer "payment_terms"
     t.float "tax", default: 1.1
     t.integer "reception"
-    t.integer "temporary_price"
-    t.integer "profit_price", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "temporary_price"
+    t.integer "profit_price", default: 0
     t.string "last_company"
     t.string "last_division"
     t.string "last_client"
@@ -658,7 +664,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2020-05-17 23:01:06"
+    t.datetime "clientlastaccess", default: "2020-04-08 01:56:34"
     t.integer "will_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -711,7 +717,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-05-17 23:01:05"
+    t.datetime "lastaccesstask", default: "2020-04-08 01:56:33"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_users_on_division_id"
@@ -790,7 +796,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_060944) do
   add_foreign_key "expendables", "users"
   add_foreign_key "expendables", "work_subcontractor_details"
   add_foreign_key "expendables", "work_subcontractors"
-  add_foreign_key "inquiries", "divisions"
   add_foreign_key "messages", "company_division_clients"
   add_foreign_key "messages", "users"
   add_foreign_key "payments", "expendables"

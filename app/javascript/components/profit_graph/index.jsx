@@ -36,14 +36,19 @@ export default class ProfitGraph extends Component {
               top: 20, right: 30, left: 20, bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" style={{fontSize: '15px'}} />
+            <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" style={{fontSize: '15px'}} />
-            <YAxis style={{fontSize: '10px'}} />
+            <YAxis
+              style={{fontSize: '10px'}}
+              type='number'
+              domain={[0, this.props.target]}
+              tickFormatter={val => val.toLocaleString()}
+            />
             <Tooltip />
             <Legend />
-            <Bar dataKey="目標額" fill="rgba(0,153,255,1)" />
-            <Bar dataKey="予定金額" stackId="a" fill="rgba(203, 203, 0, 0.6)" />
-            <Bar dataKey="受注確定額" stackId="a" fill="rgba(34, 80, 162, 0.6)" />
+            <Bar dataKey="目標額" fill="rgba(65, 105, 255, 0.8)" />
+            <Bar dataKey="予定金額" stackId="a" fill="rgba(255, 215, 0, 0.8)" />
+            <Bar dataKey="受注確定額" stackId="a" fill="rgba(255, 105, 180, 0.8)" />
           </BarChart>
       </div>
     );
