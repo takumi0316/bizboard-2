@@ -208,7 +208,7 @@ export default class EditTemplateGenerate extends React.Component {
     field.append('card[templates_attributes][][id]', this.state.template.id);
     field.append('card[templates_attributes][][card_id]', this.state.template.card_id);
     field.append('card[templates_attributes][][status]', this.state.template_type);
-    if(this.state.backup_file) field.append('card[templates_attributes][][file]', this.state.template.file);
+    if(this.state.backup_file || !this.props.template.file) field.append('card[templates_attributes][][file]', this.state.template.file);
     this.state.template.details.map(detail => {
       field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
       field.append('card[templates_attributes][][details_attributes][][card_template_id]', this.state.template.id);
