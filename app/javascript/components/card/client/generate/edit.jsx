@@ -16,6 +16,7 @@ import {
 } from '../../properties.es6';
 
 import {
+  toBoolean,
   drawTextValue,
   setPDFValue,
 } from '../../util';
@@ -36,6 +37,7 @@ export default class ClientGenerate extends React.Component {
       template: props.template,
       status: true,
       default: props.card_client.status == 'default' ? true : false,
+      change_status: false,
       card_client_id: props.card_client.id
     };
   };
@@ -78,7 +80,7 @@ export default class ClientGenerate extends React.Component {
 
     template.values[value_index].value = value;
     const values = template.values;
-    this.setState({ template: template }, () => drawTextValue(values, document.getElementById('draw')));
+    this.setState({ template: template, change_status: true }, () => drawTextValue(values, document.getElementById('draw')));
   };
   
   /**
@@ -95,6 +97,12 @@ export default class ClientGenerate extends React.Component {
       
       window.alertable({ icon: 'error', message: 'テンプレートを登録してください。' });
       return
+    };
+    
+    if(this.state.change_status) {
+      
+      window.alertable({ icon: 'error', message: '変更内容を保存してください。' });
+      return;
     };
     
     location.href = `/card_clients/${this.props.card_client.id}/front_preview`;
@@ -114,7 +122,13 @@ export default class ClientGenerate extends React.Component {
       window.alertable({ icon: 'error', message: 'テンプレートを登録してください。' });
       return
     };
+  
+    if(this.state.change_status) {
     
+      window.alertable({ icon: 'error', message: '変更内容を保存してください。' });
+      return;
+    };
+  
     location.href = `/card_clients/${this.props.card_client.id}/reverse_preview`;
   };
   
@@ -146,7 +160,10 @@ export default class ClientGenerate extends React.Component {
     const request = window.xhrRequest.put(url, field);
     request.then(res => {
 
-      window.alertable({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : res.data.messsage, close_callback: () => this.loadingRef.finish() });
+      this.setState({ change_status: res.data.status == 'success' ? false : true }, () => {
+        
+        window.alertable({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : res.data.messsage, close_callback: () => this.loadingRef.finish() });
+      });
     }).catch(error => {
 
       window.alertable({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish() });
@@ -171,7 +188,7 @@ export default class ClientGenerate extends React.Component {
         { this.props.both == 2 ?
           <div className='u-mt-10'>
             <button className='c-btnMain-primaryC'
-              onClick={ e => this.state.template_type ? this.reverse_transition(e) : this.front_transition(e) }>{ this.state.template_type ? '裏面を設定する' : '表面を設定する' }</button>
+              onClick={ e => this.props.template_type ? this.reverse_transition(e) : this.front_transition(e) }>{ this.props.template_type ? '裏面を設定する' : '表面を設定する' }</button>
           </div>
           : null
         }
