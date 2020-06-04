@@ -189,41 +189,44 @@ class QuotesController < ApplicationController
   ##
   # 見積書を複製する
   # @version 2018/06/10
+  # 複製に必要な機能
+  # 複製時に、複製元の以下の情報をもとに案件を作成する。
+  # 複製先は元とは紐づかない。
+  # 複製したい情報
+  # ・案件タイトル（コピー）
+  # ・お客様情報
+  # ・売上部署
+  # ・品目内容
+  # ・合計金額
+  # ・値引き
+  # ・支払方法
+  # ・備考
+  # ・メモ
+  # ・作業部署（作業書）
+  # ・作業情報（作業書）
+  # ・外注情報（作業書）
   #
   def copy
 
-    clone_quote = quote.deep_clone(:quote_projects)
+    cl_quote = quote.deep_clone(:quote_projects)
 
-    clone_quote.unworked!
+    cl_quote.update! subject: "#{quote.subject}（複製： 案件番号）#{quote.id}", date: '', expiration: '', attention: '', pdf_url: '', status: 0, quote_type: 0, user_id: current_user.id, deliver_at: '', deliver_type: '', issues_date: '', delivery_note_date: '', lock: false
 
-    clone_quote.save
+    cl_work = quote.work.deep_clone(:work_details)
 
-    clone_quote.update_columns(pdf_url: nil, user_id: current_user.id, date: Time.now, deliver_at: Time.now, tax: 1.1)
+    cl_work.update! quote_id: cl_quote.id, status: 0
 
-    if quote.work.present?
-      clone_work = quote.work.deep_clone(:work_details)
-      clone_work.quote_id = clone_quote.id
-      clone_work.draft!
-      clone_work.save!
-      quote.work.subcontractor.each do |subcontractor|
+    quote.work.work_subcontractors.each do  |r|
 
-        deep_subcontractor = subcontractor.deep_dup
-        deep_subcontractor.work_id = clone_work.id
-        deep_subcontractor.save!
-        quote.work.subcontractor_detail.each do |sub_detail|
-
-          if subcontractor.id == sub_detail.work_subcontractor_id
-
-            deep_sub_detail = sub_detail.deep_dup
-            deep_sub_detail.work_id = clone_work.id
-            deep_sub_detail.work_subcontractor_id = deep_subcontractor.id
-            deep_sub_detail.save!
-          end
-        end
-      end
+      cl_work_subcontractor = WorkSubcontractor.find(r.id).deep_clone(:details)
+      cl_work_subcontractor.update! work_id: cl_work.id
+      cl_work_subcontractor.details.each { |d| d.update! work_id: cl_work.id }
     end
 
-    redirect_to edit_quote_path(clone_quote), flash: { notice: { message: '案件を複製しました' } }
+    redirect_to edit_quote_path(cl_quote), flash: { notice: { message: '案件を複製しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
