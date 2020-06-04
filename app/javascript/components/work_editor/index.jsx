@@ -6,10 +6,6 @@ import AddSubcontractor	from './add_subcontractor';
 import WorkDetails			from './work_details';
 import SalesTable				from './sales_table';
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
-
 export default class WorkEditor extends React.Component {
 
   /**
@@ -434,19 +430,16 @@ export default class WorkEditor extends React.Component {
     field.append('work[division_id]', division.id);
     const request = window.xhrRequest.put(url, field);
     request.then(res => {
-      if(res.data.status == 'success') {
-
-        this.setState({ division: res.data.work.division }, () => {
-          window.alertable({ icon: 'success', message: '作業部署を登録出来ました' });
-        });
-      } else {
-
+      if(res.data.status != 'success') {
+  
         window.alertable({ icon: 'error', message: res.data.message });
+        return;
       };
-    }).catch(err => {
-
-      window.alertable({ icon: 'error', message: err });
-    });
+      
+      this.setState({ division: division }, () => {
+        window.alertable({ icon: 'success', message: '作業部署を登録出来ました' });
+      });
+    }).catch(err => window.alertable({ icon: 'error', message: err }));
   };
 
   /**
@@ -455,22 +448,11 @@ export default class WorkEditor extends React.Component {
   */
   passedPrice = (price, type, message) => {
 
-    if (type === 'work_detail_cost') this.setState({ work_detail_cost: price });
+    if(type === 'work_detail_cost') this.setState({ work_detail_cost: price });
 
-    if (type === 'subcontractor_detail_cost') this.setState({ subcontractor_detail_cost: price });
+    if(type === 'subcontractor_detail_cost') this.setState({ subcontractor_detail_cost: price });
 
     this.setPrice(message);
-  };
-
-  /**
-   * Int正規表現
-   * 現状必要なし
-   * @versions 2019/12/26
-   */
-  checkIntRegex = value => {
-
-    const match_result = value.match(/[^0-9]+$/);
-    if(match_result) this.callConfirm('半角数字以外を入力しないで下さい。');
   };
 
   /**

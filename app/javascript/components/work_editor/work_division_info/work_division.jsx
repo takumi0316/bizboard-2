@@ -1,10 +1,6 @@
 import React, { Fragment }	from 'react';
 import Style 								from '../style.sass';
 
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
-
 /**
  *  @version 2018/06/10
  */
@@ -22,7 +18,7 @@ export default class HomeDivision extends React.Component {
     this.previousKeyDownEvent = null;
 
     this.state = { show: false, divisions: [], type: false };
-  }
+  };
 
 
   /**
@@ -40,10 +36,7 @@ export default class HomeDivision extends React.Component {
    *  モーダルを閉じる
    *  @version 2018/06/10
    */
-  _close = () => {
-
-    this.setState({ show: false, clients: [] });
-	};
+  _close = () => this.setState({ show: false, clients: [] });
 
   /**
    *  フリーワード検索
@@ -52,49 +45,29 @@ export default class HomeDivision extends React.Component {
   _search = () => {
 
     // 記事内容を送信
-    Request.get('/divisions.json')
-      .end((err, res) => {
-
-        if (err) return false;
-        this.setState({ divisions: res.body.divisions });
-      });
+    const request = window.xhrRequest.get('/divisions.json');
+    request.then(res => {
+      this.setState({ divisions: res.data.divisions });
+    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: () => false }));
   };
-
-  /**
-   *  日時を適用する
-   *  @version 2018/06/10
-   */
-  _apply = (e) => {
-
-    e.stopPropagation();
-
-    let divisions = {};
-
-    this.props.apply({ divisions: divisions });
-
-    this.setState({ show: false });
-  }
 
   /**
    *  親要素のクリックイベントを引き継がない
    *  @version 2018/06/10
    */
-  _stopPropagation = (e) => {
-
-    e.stopPropagation();
-  }
+  _stopPropagation = (e) => e.stopPropagation();
 
   /**
    *  選択時
    *  @version 2018/06/10
    */
-  _onSelect = (e) => {
+  _onSelect = e => {
 
     const division = this.state.divisions[e.target.dataset.number];
 
     this.props.passedDivision(division);
     this._close();
-  }
+  };
 
   /**
    *  表示処理
