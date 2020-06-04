@@ -210,11 +210,11 @@ class QuotesController < ApplicationController
 
     cl_quote = quote.deep_clone(:quote_projects)
 
-    cl_quote.update! subject: "#{quote.subject}（複製： 案件番号）#{quote.id}", date: '', expiration: '', attention: '', pdf_url: '', status: 0, quote_type: 0, user_id: current_user.id, deliver_at: '', deliver_type: '', issues_date: '', delivery_note_date: '', lock: false
+    cl_quote.update! subject: "#{quote.subject}（複製： 案件番号）#{quote.id}", date: '', expiration: '', attention: '', pdf_url: '', status: :unworked, quote_type: 0, user_id: current_user.id, deliver_at: '', deliver_type: '', issues_date: '', delivery_note_date: '', lock: false
 
     cl_work = quote.work.deep_clone(:work_details)
 
-    cl_work.update! quote_id: cl_quote.id, status: 0
+    cl_work.update! quote_id: cl_quote.id, status: :draft
 
     quote.work.work_subcontractors.each do  |r|
 
