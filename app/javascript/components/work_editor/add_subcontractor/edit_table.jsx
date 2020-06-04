@@ -59,8 +59,8 @@ const EditTable = props => {
                     <div className='u-mt-10 c-flex__start'>
                       <ClientSearch applyClient={ props.applyClient } index={ index } path={ '/subcontractor_division_clients.json?search=' } notFound={ '外注先情報が見つかりませんでした' } typeName={ '外注先情報' }/>
                       <div>
-                        <button className='u-mt-10 u-mr-10 c-btnMain-primaryB' value={ '' } onClick={ e => _update(e, index) }>外注先[更新]</button>
-                        <button className='u-mt-10 c-btnMain-primaryA' value={ work_subcontractor.id } onClick={ e => props.workSubcontractorDestroy(e, index, props.state, props.setState) }>外注先[削除]</button>
+                        <button className='u-mt-10 u-ml-10 c-btnMain-primaryB' value={ '' } onClick={ e => _update(e, index) }>外注先[更新]</button>
+                        <button className='u-mt-10 u-ml-10 c-btnMain-primaryA' value={ work_subcontractor.id } onClick={ e => props.workSubcontractorDestroy(e, index, props.state, props.setState) }>外注先[削除]</button>
                       </div>
                     </div>
                     <DetailForm index={ index } work_subcontractor={ work_subcontractor } workSubcontractorDetailDestroy={ props.workSubcontractorDetailDestroy } setOrderContents={ props.setOrderContents } setDeliverMethod={ props.setDeliverMethod } setSpecification={ props.setSpecification } setCount={ props.setCount } setNumberOfCopies={ props.setNumberOfCopies } setActualCost={ props.setActualCost } workSubcontractorDetailCreate={ props.workSubcontractorDetailCreate }/>

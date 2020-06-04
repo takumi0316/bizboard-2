@@ -20,6 +20,8 @@ class WorkSubcontractor < ApplicationRecord
   #  ** Includes **
   #----------------------------------------
 
+  include DeepCloneable
+
   #----------------------------------------
   #  ** Constants **
   #----------------------------------------
