@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- ホスト: factory-instance-1.cyss4kcjgyjd.ap-northeast-1.rds.amazonaws.com
--- 生成日時: 2020 年 6 月 05 日 14:07
+-- 生成日時: 2020 年 6 月 05 日 14:25
 -- サーバのバージョン: 5.6.10
 -- PHP のバージョン: 5.3.29
 
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- テーブルの構造 `company_division_clients`
 --
 
-CREATE TABLE IF NOT EXISTS `company_division_clients` (
+CREATE TABLE `company_division_clients` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `company_division_id` bigint(20) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `company_division_clients` (
   PRIMARY KEY (`id`),
   KEY `index_company_division_clients_on_company_division_id` (`company_division_id`),
   KEY `index_company_division_clients_on_user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2662 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- テーブルのデータのダンプ `company_division_clients`
@@ -215,7 +215,7 @@ INSERT INTO `company_division_clients` (`id`, `company_division_id`, `user_id`, 
 (214, 1242, 20, '鮎川　保美', '', 10, '03-5297-7871', 'y-ayukawa@nctcl.co.jp', '東京本社　顧問\r\n子会社株式会社アイ・エル・シー　取締役', '2019-06-29 21:54:46', '2019-06-29 21:54:46', '新ケミカル商事株式会社  ＿  大橋奏子 鮎川　保美  honorific 03-5297-7871 y-ayukawa@nctcl.co.jp 東京本社　顧問\r\n子会社株式会社アイ・エル・シー　取締役', 0, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-09-06 15:38:25', 0),
 (215, 929, 20, '宮谷　早苗', '', 10, '03-6841-5255', 'miyatani.sanae.cck@stainless.nipponsteel.com', '商品技術室', '2019-06-29 21:56:19', '2019-06-29 21:56:19', '日鉄ステンレス株式会社  商品開発部  大橋奏子 宮谷　早苗  honorific 03-6841-5255 miyatani.sanae.cck@stainless.nipponsteel.com 商品技術室', 0, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-09-06 15:38:25', 0),
 (216, 1164, 20, '柴崎　徹', '', 10, '070-1288-6170', 'shibasaki.9an.toru@slag.nipponsteel.com', '技術室', '2019-06-29 21:59:33', '2020-02-10 07:09:47', '日鉄スラグ製品株式会社  技術部  大橋奏子 柴崎　徹  技術室', 0, 0, '$2a$10$05HWNrRMUHahxpLCnFVDFu.iuTtNsI0cZK1CDxEwMebpNVJe5k/xi', NULL, NULL, 1, '2020-02-10 07:09:47', '2020-02-10 07:09:47', '116.91.143.59', '116.91.143.59', NULL, '3s4smjZYgzcBtrbEUx-e', '2020-02-10 07:09:47', '2020-02-10 00:56:04', NULL, '2020-02-10 08:16:28', 10),
-(217, 528, 20, '平本　良雄', '', 10, '03-5276-4510', 'kioiclub.69k@taste-life.co.jp', '支配人', '2019-06-29 22:01:58', '2020-06-05 04:15:33', '株式会社テェイスト・ライフ  紀尾井倶楽部  大橋奏子 平本　良雄  支配人', 0, 0, '$2a$10$/HoJPDhW5ySPVCIlkJv9PezmqN2qy4V17xh1w0MmuIGPykOicgg8W', NULL, NULL, 1, '2020-06-05 04:06:12', '2020-06-05 04:06:12', '202.215.162.95', '202.215.162.95', NULL, 'Zo3ys3zJsnoEEBLN893y', '2020-06-05 04:06:12', '2020-06-05 04:02:10', NULL, '2020-06-05 04:15:33', 0),
+(217, 528, 20, '平本　良雄', '', 10, '03-5276-4510', 'kioiclub.69k@taste-life.co.jp', '支配人', '2019-06-29 22:01:58', '2020-06-05 05:25:07', '株式会社テェイスト・ライフ  紀尾井倶楽部  大橋奏子 平本　良雄  支配人', 0, 0, '$2a$10$/HoJPDhW5ySPVCIlkJv9PezmqN2qy4V17xh1w0MmuIGPykOicgg8W', NULL, NULL, 3, '2020-06-05 05:19:38', '2020-06-05 05:16:40', '202.215.162.95', '202.215.162.95', NULL, 'Zo3ys3zJsnoEEBLN893y', '2020-06-05 04:06:12', '2020-06-05 04:02:10', NULL, '2020-06-05 05:25:07', 0),
 (218, 525, 20, '時田　優花', '', 10, '03-3370-3141', 'yoyogikurabu@taste-life.co.jp', 'レストラン', '2019-06-29 22:03:25', '2020-04-08 07:36:42', '株式会社テェイスト・ライフ  代々木倶楽部  大橋奏子 時田　優花  レストラン', 0, 0, '$2a$10$FDl11MnKdSPoCtjIcICPx.XrYeqn9YHLFiqd/nNM0l2nUPKW8eXiC', NULL, NULL, 14, '2020-04-08 07:36:42', '2020-02-17 12:20:40', '120.51.71.185', '120.51.71.185', NULL, 'eJeH32S1_hYuPs2vJkRh', '2020-01-08 07:32:21', '2020-01-08 07:31:15', NULL, '2020-04-10 01:29:42', 0),
 (219, 525, 20, '中条　弘輔', '', 10, '03-3370-3141', 'k.chujo@taste-life.co.jp', '代々木倶楽部　支配人\r\n携帯：070-4502-8051', '2019-06-29 22:04:48', '2019-06-29 22:04:48', '株式会社テェイスト・ライフ  代々木倶楽部  大橋奏子 中条　弘輔  honorific 03-3370-3141 k.chujo@taste-life.co.jp 代々木倶楽部　支配人\r\n携帯：070-4502-8051', 0, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-09-06 15:38:25', 0),
 (221, 1243, 12, '加藤 理', NULL, 10, '03-5117-5028', 'kato.osamu.tq4@jp.nssol.nipponsteel.com', NULL, '2019-07-01 09:22:58', '2019-07-01 09:22:58', '日鉄ソリューションズ株式会社  総務部　オフィス整備推進班  miyawaki 加藤 理  honorific 03-5117-5028 kato.osamu.tq4@jp.nssol.nipponsteel.com ', 0, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-09-06 15:38:25', 0),
