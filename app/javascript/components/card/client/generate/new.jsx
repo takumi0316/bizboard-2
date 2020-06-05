@@ -247,8 +247,8 @@ export default class ClientGenerate extends React.Component {
     request.then(res => {
 
       this.loadingRef.finish();
-      const redirect = window.location.href = `/card_clients/${res.data.card_client.id}/edit/`;
-      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '作成に成功しました。', close_callback: redirect });
+      const redirect = window.location.href = `/card_clients/${res.data.card_client.id}/front_preview/`;
+      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '作成に成功しました。', close_callback: () => redirect() });
       if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
