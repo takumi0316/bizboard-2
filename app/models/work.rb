@@ -46,11 +46,11 @@ class Work < ApplicationRecord
   # 部署
   belongs_to :division, optional: true
 
-  has_many :work_details, class_name: 'WorkDetail', dependent: :destroy
+  has_many :work_details, dependent: :destroy
 
-  has_many :work_subcontractors, class_name: 'WorkSubcontractor', dependent: :destroy
+  has_many :work_subcontractors, dependent: :destroy
 
-  has_many :work_subcontractor_details, class_name: 'WorkSubcontractorDetail', dependent: :destroy
+  has_many :work_subcontractor_details, dependent: :destroy
 
   accepts_nested_attributes_for :work_details
 
