@@ -64,6 +64,17 @@ class CompanyDivision < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
+  before_validation :set_free_word
+
+  ##
+  # フリーワード検索用文字列をセットする
+  # @version 2018/06/10
+  #
+  def set_free_word
+
+    self.free_word = "#{self.company.name} #{self.company.kana} #{self.name} #{self.kana} #{self.note}"
+  end
+
   ##
   # 名称検索
   # @version 2018/06/10
@@ -72,8 +83,17 @@ class CompanyDivision < ApplicationRecord
 
     # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
     terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['name like ?'] * terms.size).join(' and ')
+    query = (['free_word like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
+  end
+
+  ##
+  # free_wordにワードを仕込むスクリプト
+  # @version 2020/06/09
+  #
+  def self.all_set_free_word
+
+    CompanyDivision.where(free_word: nil).each { |r| r.update! free_word: "#{r.company.name} #{r.company.kana} #{r.name} #{r.kana}" }
   end
 end
