@@ -11,7 +11,7 @@ h1.l-dashboard__heading 取引先 請求情報一覧
 				th 会社名
 				th 金額
 		tbody
-			- @company.each do |r|
+			- @company.each do |key,r|
 				tr
-					td = link_to r.name, invoices_path(name: r.name, date1: @date1.strftime('%Y/%m/%d'), date2: @date2.strftime('%Y/%m/%d'))
-					td = "#{r.profits&.where(date: @date1..@date2).order(price: 'DESC').pluck(:price).sum.to_s(:delimited)}円"
+					td = link_to key, invoices_path(name: key, date1: @date1.strftime('%Y/%m/%d'), date2: @date2.strftime('%Y/%m/%d'))
+					td = "#{r.pluck(:price).sum.to_s(:delimited)}円"

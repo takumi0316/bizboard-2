@@ -43,8 +43,8 @@ class ProfitsController < ApplicationController
       @date1 = Time.current.beginning_of_month
       @date2 = Time.current.end_of_month
     end
+    @company = Quote.where(status: :invoicing).joins({:client => {:company_division => :company}}).joins(:invoice).merge(Invoice.date_in(@date1..@date2)).merge(Quote.order(price: 'DESC')).group_by{|u| u.client.company_division.company.name }
 
-    @company = Company.joins(:profits).eager_load(:profits).where(profits: { date: @date1..@date2 }).where.not(profits: { price: 0 })
     respond_to do |format|
       format.html do
         # 置いておかないとエラーになる

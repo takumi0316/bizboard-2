@@ -1,122 +1,89 @@
 - current_date = params[:current].present?? Date.parse(params[:current]) : Date.today
 - targets = Target.where(target_year: current_date.year, target_month: current_date.month)
-
 .l-dashboard__month
   = link_to '<< 前月', root_path(current: params[:current] ? (Date.parse(params[:current]) - 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthPrev'
   span = "#{current_date.year}年#{current_date.month}月"
   = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
-
-  h2.l-dashboard__heading 全体 ※請求書が発行された案件の金額が含まれます
+  h2.l-dashboard__heading 全体
   .l-dashboard__graphs
-
     / 形状範囲
     - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
-
     / 売上
     - quotes = Quote.where(tax_type: 0).invoicing.joins(:invoice).merge(Invoice.date_in(range))
     - sales = quotes.map(&:price).inject(:+).to_i
-
     / 原価
     - expendables = Expendable.date_in(range)
     - labors = Labor.date_in(range)
     - expendable_cost = expendables.map(&:price).inject(:+).to_i
     - labor_cost = labors.map(&:price).inject(:+).to_i
     - cost = expendable_cost + labor_cost
-
     .l-dashboard__graph
       p 売り上げ
       p #{sales.to_s(:delimited)}円
     = react_component 'TargetGraph', label: '売り上げ', value: sales, color: 'rgba(34, 80, 162, 0.6)'
-
     .l-dashboard__graph
       p 原価
       p #{cost.to_s(:delimited)}円
     = react_component 'TargetGraph', label: '原価', value: cost, color: 'rgba(0, 204, 204, 0.6)'
-
     .l-dashboard__graph
       p 粗利
       p #{(sales - cost).to_s(:delimited)}円
     = react_component 'TargetGraph', label: '粗利', value: (sales - cost), color: (sales - cost) >= 0 ? 'rgba(64, 127, 94, 0.6)' : 'rgba(209, 60, 90, 0.6)'
-
-  h2.l-dashboard__heading 売り上げ見込み ※作業書が発行された案件の金額が含まれます
+  h2.l-dashboard__heading 売り上げ
   .l-dashboard__graphs
     .l-dashboard__graph
-
     - targets.each do |r|
-
-
       / 形状範囲
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
-
       / 売上
-      /- quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
-      - works = Quote.deliverd_in(range).where(tax_type: 0).where(division_id: r.division.id).joins(:work).merge(Work.where.not(status: 0))
-      - sales = works.map(&:price).inject(:+).to_i
-
+      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)
       - labors = Labor.where(division_id: r.division.id).date_in(range)
       - expendable_cost = expendables.map(&:price).inject(:+).to_i
       - labor_cost = labors.map(&:price).inject(:+).to_i
       - cost = expendable_cost + labor_cost
-
       = react_component 'TargetGraph', target: r.sales, label: r.division.name, value: sales, color: 'rgba(34, 80, 162, 0.6)'
-
   h2.l-dashboard__heading 原価
   .l-dashboard__graphs
     .l-dashboard__graph
-
     - targets.each do |r|
-
       / 形状範囲
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
-
       / 売上
-      /- quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
-      - works = Quote.deliverd_in(range).where(tax_type: 0).where(division_id: r.division.id).joins(:work).merge(Work.where.not(status: 0))
-      - sales = works.map(&:price).inject(:+).to_i
-
+      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)
       - labors = Labor.where(division_id: r.division.id).date_in(range)
       - expendable_cost = expendables.map(&:price).inject(:+).to_i
       - labor_cost = labors.map(&:price).inject(:+).to_i
       - cost = expendable_cost + labor_cost
-
       = react_component 'TargetGraph', target: r.cost, label: r.division.name, value: cost, color: 'rgba(0, 204, 204, 0.6)'
-
   h2.l-dashboard__heading 利益
   .l-dashboard__graphs
     .l-dashboard__graph
-
     - targets.each do |r|
-
       / 形状範囲
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
-
       / 売上
-      /- quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
-      - works = Quote.deliverd_in(range).where(tax_type: 0).where(division_id: r.division.id).joins(:work).merge(Work.where.not(status: 0))
-      - sales = works.map(&:price).inject(:+).to_i
-
+      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - sales = quotes.map(&:price).inject(:+).to_i
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)
       - labors = Labor.where(division_id: r.division.id).date_in(range)
       - expendable_cost = expendables.map(&:price).inject(:+).to_i
       - labor_cost = labors.map(&:price).inject(:+).to_i
       - cost = expendable_cost + labor_cost
-
       = react_component 'TargetGraph', target: r.profit, label: r.division.name, value: (sales - cost), color: (sales - cost) >= 0 ? 'rgba(64, 127, 94, 0.6)' : 'rgba(209, 60, 90, 0.6)'
-
   h2.l-dashboard__heading 見込み
   .l-dashboard__graphs
     .l-dashboard__graph
     - prospect_targets = targets.where.not(division_id: 2).where.not(division_id: 7).where.not(division_id: 8)
     - prospect_targets.each do |r|
-
       / 形状範囲
       - range = current_date.beginning_of_month..current_date.end_of_month
-
       / 見込み
       / range内の納期に紐づく案件IDを取得
       - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(range).pluck(:id)
@@ -143,7 +110,6 @@
       - status_estimate = activities.where(status: 30).pluck(:price).sum.to_i
       - status_closing = activities.where(status: 40).pluck(:price).sum.to_i
       - status_order = activities.where(status: 50).pluck(:price).sum.to_i
-
       = react_component('ProspectGraph',
         { quotes: quotes,
           range: range,
