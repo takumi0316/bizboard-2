@@ -27,7 +27,7 @@
 #  confirmed_at         :datetime
 #  confirmation_sent_at :datetime
 #  unconfirmed_email    :string(191)
-#  lastaccesstask       :datetime         default(Sun, 17 May 2020 23:01:06 JST +09:00)
+#  lastaccesstask       :datetime         default(Tue, 09 Jun 2020 16:29:14 JST +09:00)
 #  opt                  :integer          default(0)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
