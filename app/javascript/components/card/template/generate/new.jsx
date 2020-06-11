@@ -208,8 +208,8 @@ export default class NewTemplateGenerate extends React.Component {
       this.loadingRef.finish();
       if(res.data.status == 'success') {
 
-        const redirect = () => window.location.href = `/cards/${res.data.card.id}/edit/`;
-        if(res.data.status == 'success') window.alertable({ icon: 'success', message: 'テンプレートを保存しました。', close_callback: () => redirect });
+        const redirect = window.location.href = `/cards/${res.data.card.id}/front_preview`;
+        if(res.data.status == 'success') window.alertable({ icon: 'success', message: 'テンプレートを保存しました。', close_callback: () => redirect() });
         if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
       } else {
 

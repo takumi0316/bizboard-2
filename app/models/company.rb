@@ -80,7 +80,7 @@ class Company < ApplicationRecord
 
     # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
     terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['name like ?'] * terms.size).join(' and ')
+    query = (['free_word like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
   end

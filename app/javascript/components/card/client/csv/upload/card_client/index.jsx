@@ -67,7 +67,7 @@ const CardClient = props => {
       <ClientInformation client_name={ props.card_clients[state.paginate_count].client_name }/>
       { state.status ?
         <CardTemplate client_template={ props.card_clients[state.paginate_count].templates[0] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangeValue }/> :
-        <CardTemplate client_template={ props.card_clients[state.paginate_count].templates[1] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangevalue }/>
+        <CardTemplate client_template={ props.card_clients[state.paginate_count].templates[1] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangeValue }/>
       }
       <button className='u-mt-10 c-btnMain-primaryB' onClick={ e => props.save(e) }>保存</button>
     </Fragment>
