@@ -34,13 +34,13 @@ class CardTemplate < ApplicationRecord
   #----------------------------------------
 
   # 名刺
-  belongs_to :card, optional: true
+  belongs_to :card
 
   # テンプレート
   has_one_attached :file, dependent: :detach
 
   # 名刺テンプレート詳細
-  has_many :details, class_name: 'TemplateDetail', dependent: :delete_all
+  has_many :details, class_name: 'TemplateDetail', dependent: :destroy
 
   # 担当者情報
   has_many :client_templates

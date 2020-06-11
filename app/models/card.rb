@@ -38,10 +38,10 @@ class Card < ApplicationRecord
   belongs_to :company
 
   # 名刺テンプレート中間テーブル
-  has_many :templates, class_name: 'CardTemplate', dependent: :delete_all
+  has_many :templates, class_name: 'CardTemplate', dependent: :destroy
 
   # 名刺担当者
-  has_many :card_clients, dependent: :delete_all
+  has_many :card_clients, dependent: :destroy
 
   accepts_nested_attributes_for :templates, allow_destroy: true, reject_if: :all_blank
 
