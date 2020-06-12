@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_07_122306) do
+ActiveRecord::Schema.define(version: 2020_06_10_054358) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -105,7 +105,10 @@ ActiveRecord::Schema.define(version: 2020_06_07_122306) do
     t.bigint "company_division_client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", limit: 1, default: 0
+    t.bigint "company_division_id"
     t.index ["company_division_client_id"], name: "index_carts_on_company_division_client_id"
+    t.index ["company_division_id"], name: "index_carts_on_company_division_id"
   end
 
   create_table "catalogs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -115,6 +118,8 @@ ActiveRecord::Schema.define(version: 2020_06_07_122306) do
     t.string "deliver_at", comment: "文言なども入る"
     t.bigint "category_id"
     t.integer "turn", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_catalogs_on_category_id"
   end
 
@@ -177,7 +182,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_122306) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-06-03 14:27:35"
+    t.datetime "lastaccesstask", default: "2020-06-09 16:29:14"
     t.integer "opt", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -666,11 +671,12 @@ ActiveRecord::Schema.define(version: 2020_06_07_122306) do
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2020-06-03 14:27:36"
+    t.datetime "clientlastaccess", default: "2020-06-09 16:29:16"
     t.integer "will_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ts_code"
+    t.string "shipping_address"
     t.index ["catalog_id"], name: "index_tasks_on_catalog_id"
     t.index ["quote_id"], name: "index_tasks_on_quote_id"
   end
@@ -719,7 +725,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_122306) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-06-03 14:27:35"
+    t.datetime "lastaccesstask", default: "2020-06-09 16:29:14"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_users_on_division_id"

@@ -479,7 +479,7 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[quote_type]', this.state.quote_type);
     field.append('quote[quote_number]', this.state.quote_number || '');
     field.append('quote[temporary_price]', this.state.temporary_price || '');
-    field.append('quote[profit_price]', this.state.profit_price || '');
+    field.append('quote[profit_price]', this.state.profit_price);
     field.append('quote[tax_type]', this.state.tax_type);
     field.append('quote[tax]', this.state.tax);
     field.append('quote[payment_terms]', this.state.payment_terms);
