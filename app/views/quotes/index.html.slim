@@ -2,7 +2,7 @@
 
 = link_to '案件を作成する', new_quote_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
-= react_component('QuoteSearch', { count_number: @count_number })
+= react_component('QuoteSearch', { count_number: @count_number,search_status: params[:commit] })
 
 .c-table.u-mt-30
   table

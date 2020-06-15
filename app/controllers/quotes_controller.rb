@@ -313,6 +313,66 @@ class QuotesController < ApplicationController
     redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
   end
 
+  def all_lock
+
+    raise '管理者以外は案件の一括ロックは出来ません' if !current_user.admin?
+
+    _self = params
+    # フリーワードが入っていて、ステータスが未選択
+    if params[:name].present? && params[:status] == ''
+
+      # 名称検索
+      _self = Quote.all.deliverd_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
+      # 日付検索
+
+      _self.update(lock: true)
+      return _self
+    # フリーワードが入っていて、ステータスが選択されている
+    elsif params[:name].present? && params[:status] != ''
+
+      _self = Quote.all.deliverd_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+
+      # 名称検索
+      terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" }).where(status: params[:status])
+
+
+      _self.update(lock: true)
+      return _self
+
+    # フリーワードが空で、ステータスが未選択
+    elsif params[:name].blank? && params[:status] == ''
+
+      # 日付検索
+      _self = Quote.all.deliverd_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      _self.update(lock: true)
+      return _self
+    # フリーワードが空で、ステータスが入力されている
+    elsif params[:name].blank? && params[:status] != nil && params[:status] != ''
+
+      # 日付検索
+      _self = Quote.all.deliverd_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      # ステータス検索
+      _self = _self.where(status: params[:status])
+
+      _self.update(lock: true)
+      return _self
+    end
+
+    return _self
+    # 成功したら編集ページに飛ぶ
+    redirect_to quotes_path
+  rescue => e
+
+    # エラー時は直前のページへ
+    redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
+  end
+
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

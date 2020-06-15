@@ -135,6 +135,11 @@ const QuoteSearch = props => {
           <input type='hidden' name='count' value='1'/>
           <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
           <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/quotes' } >元に戻す</a>
+          { props.search_status == '検索' ?
+            <a className='u-va-middle u-ml-10 c-btnMain-primaryB' rel="nofollow" data-method="post" href={ `/quotes/all_lock?name=${state.name}&status=${state.status}&date1=${state.startDate}&date2=${state.endDate}` } >一括ロック</a>
+            :
+            null
+          }
         </div>
       </form>
     </div>
