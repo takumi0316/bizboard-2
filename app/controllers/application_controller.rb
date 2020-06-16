@@ -220,7 +220,7 @@ class ApplicationController < ActionController::Base
 
         unless params[:controller] == 'tasks' && params[:action] == 'show'
           users = User.find_by(email: current_user[:email])
-          users.update_columns(lastaccesstask: DateTime.now)
+          users.update_columns(lastaccesstask: Time.zone.now)
         end
       end
     end
