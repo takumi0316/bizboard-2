@@ -162,7 +162,7 @@ class Quote < ApplicationRecord
   #
   def self.search(**parameters)
 
-		_self = self
+    _self = self
 
     # フリーワードが入っていて、ステータスが未選択
     if parameters[:name].present? && parameters[:status] == ''
@@ -172,7 +172,7 @@ class Quote < ApplicationRecord
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
-			# 日付検索
+      # 日付検索
 
       return _self
     # フリーワードが入っていて、ステータスが選択されている
@@ -202,7 +202,7 @@ class Quote < ApplicationRecord
       # ステータス検索
       _self = _self.where(status: parameters[:status])
       return _self
-		end
+    end
 
     return _self
   end
