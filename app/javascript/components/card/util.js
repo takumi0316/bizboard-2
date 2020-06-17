@@ -71,10 +71,7 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
 
-  getPDF.promise.then(pdf => {
-
-    return pdf.getPage(1);
-  }).then(page => {
+  getPDF.promise.then(pdf => pdf.getPage(1)).then(page => {
 
     // Set scale (zoom) level
     let scale = 2;
@@ -93,21 +90,31 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
     draw_canvas.height = (mmTopx(55 * 2));
     draw_canvas.width = (mmTopx(91 * 2));
 
-    details.forEach(detail => {
+    details.map(detail => {
   
-      draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
+      draw_ctx.font = `${ mmTopx(ptTomm(detail.font_size)) * 2 }px ${ detail.font }`;
       const y = mmTopx(detail.coord_y) * 2;
       const x =	mmTopx(detail.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
       const lineSpace = mmTopx(detail.line_space);
       const name = detail.name;
-
+  
+      /*
+      console.log(detail)
+      draw_ctx.font = `${ mmTopx(ptTomm(detail.font_size)) * 2 }px ${ detail.font }`;
+      if(detail.id == 707) {
+  
+        draw_canvas.style.letterSpacing = lineSpace + 'px';
+      };
+      draw_ctx.fillText(name, x, y);
+       */
+      
       for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
         let line = lines[i];
         let addY = fontSize;
         if(i) addY += fontSize * lineSpace * i;
         draw_ctx.fillText(line, x, y + addY);
-      }
+      };
     });
 
     // Prepare object needed by render method
@@ -131,9 +138,7 @@ export const setPDFValue = (file, canvas, draw_canvas, values) => {
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
 
-  getPDF.promise.then(function(pdf) {
-    return pdf.getPage(1);
-  }).then(function(page) {
+  getPDF.promise.then(pdf => pdf.getPage(1)).then(function(page) {
 
     let scale = 2;
 
@@ -190,13 +195,18 @@ export const drawText = (details, draw_canvas) => {
   draw_ctx.restore();
 
   details.map(detail => {
-
-    draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
+  
+    draw_ctx.font = `${ mmTopx(ptTomm(detail.font_size)) * 2 }px ${ detail.font }`;
     const y = mmTopx(detail.coord_y) * 2;
     const x =	mmTopx(detail.coord_x) * 2;
     const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
     const lineSpace = mmTopx(detail.line_space);
     const name = detail.name;
+  
+    /*
+    draw_canvas.style.letterSpacing = lineSpace + 'px';
+    draw_ctx.fillText(name, x, y);
+     */
 
     for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
       let line = lines[i];
