@@ -320,9 +320,9 @@ class QuotesController < ApplicationController
     _self = params
     # フリーワードが入っていて、ステータスが未選択
     if params[:name].present? && params[:status] == ''
-
+      binding.pry
       # 名称検索
-      _self = Quote.all.deliverd_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
       terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
@@ -333,7 +333,7 @@ class QuotesController < ApplicationController
     # フリーワードが入っていて、ステータスが選択されている
     elsif params[:name].present? && params[:status] != ''
 
-      _self = Quote.all.deliverd_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
 
       # 名称検索
       terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
@@ -348,14 +348,14 @@ class QuotesController < ApplicationController
     elsif params[:name].blank? && params[:status] == ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
       _self.update(lock: true)
       return _self
     # フリーワードが空で、ステータスが入力されている
     elsif params[:name].blank? && params[:status] != nil && params[:status] != ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
       # ステータス検索
       _self = _self.where(status: params[:status])
 
