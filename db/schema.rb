@@ -543,7 +543,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_054358) do
     t.text "remarks", comment: "備考"
     t.text "memo", comment: "メモ"
     t.text "free_word", comment: "検索用"
-    t.integer "price"
+    t.integer "price", default: 0, null: false
     t.integer "attention"
     t.text "pdf_url"
     t.integer "user_id"
@@ -562,7 +562,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_054358) do
     t.float "tax", default: 1.1
     t.integer "reception"
     t.integer "temporary_price"
-    t.integer "profit_price", default: 0
+    t.integer "profit_price", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "last_company"

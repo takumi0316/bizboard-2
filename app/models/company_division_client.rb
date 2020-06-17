@@ -27,7 +27,7 @@
 #  confirmed_at         :datetime
 #  confirmation_sent_at :datetime
 #  unconfirmed_email    :string(191)
-#  lastaccesstask       :datetime         default(Tue, 16 Jun 2020 21:30:03 JST +09:00)
+#  lastaccesstask       :datetime         default(Tue, 09 Jun 2020 16:29:14 JST +09:00)
 #  opt                  :integer          default(0)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
@@ -94,7 +94,7 @@ class CompanyDivisionClient < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.company_division&.company&.name} #{self.company_division&.company&.kana} #{self.company_division&.name} #{self.company_division&.kana} #{self.name} #{self.kana} #{self.note}"
+    self.free_word = "#{self.company_division.company.name} #{self.company_division.company.kana} #{self.company_division.name} #{self.company_division.kana} #{self.name} #{self.kana} #{self.note}"
   end
 
   ##

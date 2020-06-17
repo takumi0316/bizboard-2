@@ -468,6 +468,9 @@ export default class QuoteEditor extends React.Component {
       return false;
     };
     
+    let price = 0;
+    this.state.quote_projects.map(quote_project => price += Number(quote_project.price));
+
     const field = new FormData();
     field.append('quote[id]', this.state.quote_id);
     field.append('quote[division_id]', this.state.home_division ? this.state.home_division.id : this.props.division_id);
@@ -476,7 +479,7 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[quote_type]', this.state.quote_type);
     field.append('quote[quote_number]', this.state.quote_number || '');
     field.append('quote[temporary_price]', this.state.temporary_price || '');
-    field.append('quote[profit_price]', this.state.profit_price || '');
+    field.append('quote[profit_price]', this.state.profit_price);
     field.append('quote[tax_type]', this.state.tax_type);
     field.append('quote[tax]', this.state.tax);
     field.append('quote[payment_terms]', this.state.payment_terms);
@@ -492,7 +495,7 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[memo]', this.state.memo);
     field.append('quote[user_id]', this.props.user_id);
     field.append('quote[discount]', this.state.discount);
-    field.append('quote[price]', this.state.price);
+    field.append('quote[price]', price);
     this.state.quote_projects.map(project => {
       
       field.append('quote[quote_projects_attributes][][id]', project.id);
@@ -514,7 +517,7 @@ export default class QuoteEditor extends React.Component {
       
       if(res.data.status == 'success') {
         
-        if(this.state.quote_id) window.alertable({ icon: 'success', message: '案件を更新しました。' });
+        if(this.state.quote_id) this.setState({ price: price }, () => window.alertable({ icon: 'success', message: '案件を更新しました。' }));
         
         // 編集ページへリダイレクト
         if(!this.state.quote_id) {

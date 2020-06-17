@@ -25,223 +25,80 @@
         th colspan=4
     tbody
       - @quotes.each do |r|
-        /タスクが作成されているか否か
-        - if r.task.present?
-          - if r.task&.messages&.last(1)&.pluck(:created_at)&.join(' ').to_s > current_user.lastaccesstask.to_datetime.to_s
-            tr
-              - if current_user.admin?
-                td
-                  = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
-                    = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
-              td.p-tasks__unread
-                - if r.deliver_at.blank?
-                  = r&.quote_number
-                - else
-                  - if r.deliver_at.to_date == Date.today
-                    .u-fc-red= r&.quote_number
-                  - elsif r.deliver_at.to_date == Date.today + 1
-                    .u-fc-vivid = r&.quote_number
-                  - else
-                    = r&.quote_number
-              //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
-              td
-                - if r&.activity&.status.blank? ||  r&.activity&.status == :order
-                  = r&.status_i18n
-                - else
-                  = r&.activity&.status_i18n
-              td
-                - if r.work.nil?
 
-                - else
-                  = r.work.status_i18n
-              td = r&.activity&.accurary_i18n
-              td = r&.subject&.truncate(25)
-              td
-                - if r.company_division_client_id&.present?
-                  = r.client&.company_division&.company&.name
-                  |&nbsp;
-                  = r&.client&.name
-                - else
-                  | お客様情報なし
-              td = r.deliver_at&.to_date
-              td
-                - if r&.user_id&.present?
-                  = r&.user&.name
-                - else
-                  |更新者不明
-              td
-                - if r.status == :lost
-                  | 失注
-                - elsif r.activity&.status == :rejection
-                  | 不採用
-                - else
-                  - if r.work.nil?
-                    = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
-                  - else
-                    = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
-              td
-                - if r.quote_projects.nil?
-                  = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
-                - else
-                  = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
-              td
-                - if r.invoicing? && r.invoice.present?
-                  = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
-                - elsif r.end_work?
-                  = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
-                - elsif r.payment_terms == :advance
-                  = link_to '先払い請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-red'
-                - else
-                  | 未発行
-              td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-              td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-              td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-              - if r.task.card_clients.present?
-                td = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain-standard'
-              td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
-          - else
+        tr
+          - if current_user.admin?
 
-            tr
-              - if current_user.admin?
-                td
-                  = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
-                    = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
-              td
-                - if r.deliver_at.blank?
-                  = r&.quote_number
-                - else
-                  - if r.deliver_at.to_date == Date.today
-                    .u-fc-red= r&.quote_number
-                  - elsif r.deliver_at.to_date == Date.today + 1
-                    .u-fc-vivid = r&.quote_number
-                  - else
-                    = r&.quote_number
-              //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
-              td
-                - if r&.activity&.status.blank? ||  r&.activity&.status == :order
-                  = r&.status_i18n
-                - else
-                  = r&.activity&.status_i18n
-              td
-                - if r.work.nil?
+            td
+              = form_for quote, url: quote_lock_path(r), method: :post do |f|
 
-                - else
-                  = r.work.status_i18n
-              td = r&.activity&.accurary_i18n
-              td = r&.subject&.truncate(25)
-              td
-                - if r.company_division_client_id&.present?
-                  = r.client&.company_division&.company&.name
-                  |&nbsp;
-                  = r&.client&.name
-                - else
-                  | お客様情報なし
-              td = r.deliver_at&.to_date
-              td
-                - if r&.user_id&.present?
-                  = r&.user&.name
-                - else
-                  |更新者不明
-              td
-                - if r.status == :lost
-                  | 失注
-                - elsif r.activity&.status == :rejection
-                  | 不採用
-                - else
-                  - if r.work.nil?
-                    = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
-                  - else
-                    = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
-              td
-                - if r.quote_projects.nil?
-                  = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
-                - else
-                  = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
-              td
-                - if r.invoicing? && r.invoice.present?
-                  = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
-                - elsif r.end_work?
-                  = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
-                - elsif r.payment_terms_i18n == '先払い'
-                  = link_to '先払い請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-red'
-                - else
-                  | 未発行
-              td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-              td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-              td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-              - if r.task.card_clients.present?
-                td = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain-standard'
-              td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
-        - else
-          tr
-            - if current_user.admin?
-              td
-                = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
-                  = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
-            td
-              - if r.deliver_at.blank?
-                = r&.quote_number
-              - else
-                - if r.deliver_at.to_date == Date.today
-                  .u-fc-red= r&.quote_number
-                - elsif r.deliver_at.to_date == Date.today + 1
-                  .u-fc-vivid = r&.quote_number
-                - else
-                  = r&.quote_number
-            //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
-            td
-              - if r&.activity&.status.blank? ||  r&.activity&.status == :order
-                = r&.status_i18n
-              - else
-                = r&.activity&.status_i18n
-            td
-              - if r.work.nil?
+                = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
+          td class="u-ta-center #{ 'p-tasks__unread' if r.task.messages.last.created_at.strftime("%Y %m %d") > current_user.lastaccesstask.strftime("%Y %m %d") if r.task.present? && r.task.messages.present? }"
+            = r.quote_number if r.deliver_at.nil?
+            - if r.deliver_at.present?
 
-              - else
-                = r.work.status_i18n
-            td = r&.activity&.accurary_i18n
-            td = r&.subject&.truncate(25)
-            td
-              - if r.company_division_client_id&.present?
-                = r.client&.company_division&.company&.name
-                |&nbsp;
-                = r&.client&.name
-              - else
-                | お客様情報なし
-            td = r.deliver_at&.to_date
-            td
-              - if r&.user_id&.present?
-                = r&.user&.name
-              - else
-                |更新者不明
-            td
-              - if r.status == :lost
-                | 失注
-              - elsif r.activity&.status == :rejection
-                | 不採用
-              - else
-                - if r.work.nil?
-                  = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post
-                - else
-                  = link_to '作業書', work_path(id: r&.work&.id), class: 'c-btnMain-standard c-btn-blue'
-            td
-              - if r.quote_projects.nil?
-                = link_to '見積書作成', edit_quote_path(r), class: 'c-btnMain-standard c-btn-orange'
-              - else
-                = link_to '見積書', edit_quote_path(r), class: 'c-btnMain-standard c-btn-blue'
-            td
-              - if r.invoicing? && r.invoice.present?
-                = link_to '請求書', edit_invoice_path(r&.invoice), class: 'c-btnMain-standard c-btn-blue'
-              - elsif r.end_work?
-                = link_to '請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-orange'
-              - elsif r.payment_terms == :advance
-                = link_to '先払い請求書作成', new_invoice_path(quote_id: r&.id), class: 'c-btnMain-standard c-btn-red'
-              - else
-                | 未発行
+              - if r.deliver_at.strftime("%Y %m %d") == Time.zone.now.strftime("%Y %m %d")
 
-            td = link_to '活動履歴', activities_path+"?name=#{r.id}", class: 'c-btnMain-standard c-btn-blue'
-            td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-            td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-            td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
+                .u-fc-red = r.quote_number
+              - elsif r.deliver_at.strftime("%Y %m %d") == (Time.zone.now + 1.day).strftime("%Y %m %d")
+
+                .u-fc-vivid = r.quote_number
+              - else r.deliver_at.strftime("%Y %m %d") != Time.zone.now.strftime("%Y %m %d")
+
+                = r.quote_number
+          //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
+          td.u-ta-center
+            = r.status_i18n if r.activity.nil?
+            - if r.activity.present?
+
+              = r.status_i18n if r.activity.status_order?
+              = r.activity.status_i18n if !r.activity.status_order?
+          td.u-ta-center = r.work.status_i18n if r.work.present?
+          td.u-ta-center = r.activity.accurary_i18n if r.activity.present?
+          td = r.subject.truncate(25)
+          td
+            - if r.client.nil?
+
+              | お客様情報なし
+            - if r.client.present?
+
+              = "#{ r.client.company_division.company.name }\s#{ r.client.name }"
+          td = r.deliver_at
+          td.u-ta-center
+            - if r.user.nil?
+
+              | 更新者不明
+            - if r.user.present?
+
+              = r.user.name
+          td.u-ta-center
+            = r.status_i18n if r.lost?
+            - if r.activity.nil?
+
+              = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post if r.work.nil?
+              = link_to '作業書', work_path(r.work), class: 'c-btnMain-standard c-btn-blue' if r.work.present?
+            - if r.activity.present?
+
+              = r.activity.status_i18n
+          td = link_to "見積書#{ r.quote_projects.nil? ? '作成' : '' }", edit_quote_path(r), class: "c-btnMain-standard c-btn-#{ r.quote_projects.nil? ? 'orange' : 'blue' }"
+          td.u-ta-center
+            - if r.invoicing? && r.invoice.present?
+
+              = link_to '請求書', edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue'
+            - elsif r.end_work? || r.advance?
+
+              = link_to "#{ r.end_work? ? '' : '先払い' }請求書作成", new_invoice_path(quote_id: r.id), class: "c-btnMain-standard c-btn-#{ r.end_work? ? 'orange' : 'red' }"
+            - else
+
+              | 未発行
+          td = link_to '活動履歴', activities_path(name: r.id), class: 'c-btnMain-standard c-btn-blue'
+          td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
+          td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
+          - if r.task.present?
+
+            - if r.task.card_clients.present?
+
+              td = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain-standard'
+          td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'
