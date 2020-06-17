@@ -175,9 +175,9 @@
         - else
           tr
             - if current_user.admin?
-                td
-                  = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
-                    = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
+              td
+                = form_for quote, url: quote_lock_path(r.id), method: :post do |f|
+                  = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
             td
               - if r.deliver_at.blank?
                 = r&.quote_number
