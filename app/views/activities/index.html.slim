@@ -6,7 +6,7 @@
 
   .c-search__item
     = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '対応者/案件名/メモ'
+    = f.text_field :name, value: params[:quote_id], class: 'c-form-text', placeholder: '対応者/案件名/メモ'
 
   = f.submit '検索', class: 'c-btnMain-standard'
 
@@ -14,6 +14,7 @@
   table
     thead
       tr
+        th ID
         th 対応日時
         th 対応内容
         th 確度
@@ -29,28 +30,31 @@
     tbody
       - activities.each do |r|
         tr
+          td.u-ta-center = r.id
           td = r.date
-          td = r.status_i18n
-          td = r.accurary_i18n
-          td = r.next_action_i18n
-          td = r.next_action_date
-          td = r.quote&.quote_number
-          td = r.quote&.subject&.truncate(25)
-          td
-            - if r.quote&.company_division_client_id?
+          td.u-ta-center = r.status_i18n
+          td.u-ta-center = r.accurary_i18n
+          td.u-ta-center = r.next_action_i18n
+          td.u-ta-center = r.next_action_date
+          td.u-ta-center = r.quote.quote_number
+          td = r.quote.subject.truncate(25)
+          td.u-ta-center
+            - if r.quote.client.nil?
+
+              | お客様情報が存在しません
+            - if r.quote.client.present?
+
               = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
-            - else
-              p お客様情報が存在しません
-          td
-            - if r.quote&.user_id.present?
+          td.u-ta-center
+            - if r.quote.user.nil?
+
+              | 担当者不明
+            - if r.quote.user.present?
+
               = r.quote.user.name
-            - else
-              |担当者不明
           td = r.memo.truncate(30)
-          td
-            - if r.attachment.present?
-              = link_to '資料へ飛ぶ', r.attachment, target: :_blank, class: 'c-btnMain-primaryB'
+          td = link_to '資料へ飛ぶ', r.attachment, target: :_blank, class: 'c-btnMain-primaryB' if r.attachment.present?
           td = link_to '編集', edit_activity_path(r), class: 'c-btnMain-standard'
-          td = link_to '削除', activity_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+          td = link_to '削除', activity_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

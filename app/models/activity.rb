@@ -70,6 +70,7 @@ class Activity < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
 
