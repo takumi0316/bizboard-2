@@ -459,6 +459,7 @@ export default class QuoteEditor extends React.Component {
   onSubmit = e => {
     
     e.preventDefault();
+    
     const messages = this.validation();
     
     // エラーが存在する場合
@@ -490,12 +491,13 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[delivery_note_date]', this.state.delivery_note_date || '');
     field.append('quote[deliver_at]', this.state.deliver_at || '');
     field.append('quote[reception]', this.state.reception);
-    field.append('quote[deliver_type_note]', this.state.deliver_type_note);
+    field.append('quote[deliver_type_note]', this.state.deliver_type_note === 'location' || this.state.deliver_type_note === 'other' ? this.state.deliver_type_note : '');
     field.append('quote[remarks]', this.state.remarks);
     field.append('quote[memo]', this.state.memo);
     field.append('quote[user_id]', this.props.user_id);
     field.append('quote[discount]', this.state.discount);
     field.append('quote[price]', price);
+    field.append('quote[deliver_type]', this.state.deliver_type);
     this.state.quote_projects.map(project => {
       
       field.append('quote[quote_projects_attributes][][id]', project.id);
