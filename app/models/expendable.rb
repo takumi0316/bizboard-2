@@ -81,21 +81,24 @@ class Expendable < ApplicationRecord
 
     _self = self
 
-    if parameters[:division] == '' && parameters[:subcontractor] == '' && parameters[:status] == ''
+    # if parameters[:division] == '' && parameters[:subcontractor] == '' && parameters[:status] == ''
 
-      # 日付検索
-      _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
-    else
+    #   # 日付検索
+    #   _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+    # else
 
-      # 日付検索
-      _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
-      _self = _self.where(status: parameters[:status]) if parameters[:status] != '' && parameters[:status] != nil
-      _self = _self.where(division_id: parameters[:division]) if parameters[:division] != '' && parameters[:division] != nil
-      _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != '' && parameters[:subcontractor] != nil
-    end
+    #   # 日付検索
+    #   _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
+    #   _self = _self.where(status: parameters[:status]) if parameters[:status] != '' && parameters[:status] != nil
+    #   _self = _self.where(division_id: parameters[:division]) if parameters[:division] != '' && parameters[:division] != nil
+    #   _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != '' && parameters[:subcontractor] != nil
+    # end
 
-    _self
-
+     _self = _self.where(date: parameters[:date1]..parameters[:date2]) if parameters[:date1].present?
+     _self = _self.where(status: parameters[:status]) if parameters[:status].present?
+     _self = _self.where(division_id: parameters[:division]) if parameters[:division].present?
+     _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor].present?
+    # _self.where(date: parameters[:date1]..parameters[:date2], status: parameters[:status], division_id: parameters[:division], subcontractor_id: parameters[:subcontractor])
   end
 
   ##
