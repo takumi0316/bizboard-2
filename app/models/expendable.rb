@@ -49,7 +49,7 @@ class Expendable < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
 
-  # validates :price, presence: true
+  validates :price, presence: true, numericality: { greater_than: 0 }
 
   #----------------------------------------
   #  ** Associations **
@@ -60,6 +60,8 @@ class Expendable < ApplicationRecord
   belongs_to :division
 
   belongs_to :work_subcontractor, optional: true
+
+  has_one :payment, dependent: :destroy
 
   #----------------------------------------
   #  ** Scopes **

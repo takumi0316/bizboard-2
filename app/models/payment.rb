@@ -41,6 +41,8 @@ class Payment < ApplicationRecord
 
   belongs_to :work_subcontractor, optional: true
 
+  belongs_to :expendable, dependent: :destroy
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------
