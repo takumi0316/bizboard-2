@@ -68,7 +68,8 @@ export default class QuoteEditor extends React.Component {
       prefectures: props.prefectures,
       remarks: props.quote.remarks || '',
       memo: props.quote.memo || '',
-      itemStatus: true
+      itemStatus: true,
+      is_update: false,
     };
   };
 
@@ -459,6 +460,9 @@ export default class QuoteEditor extends React.Component {
   onSubmit = e => {
     
     e.preventDefault();
+    
+    if(this.state.is_update) return;
+    
     const messages = this.validation();
     
     // エラーが存在する場合
@@ -468,6 +472,7 @@ export default class QuoteEditor extends React.Component {
       return false;
     };
     
+    this.setState({ is_update: !this.state.is_update });
     let price = 0;
     this.state.quote_projects.map(quote_project => price += Number(quote_project.price));
 
@@ -517,7 +522,7 @@ export default class QuoteEditor extends React.Component {
       
       if(res.data.status == 'success') {
         
-        if(this.state.quote_id) this.setState({ price: price }, () => window.alertable({ icon: 'success', message: '案件を更新しました。' }));
+        if(this.state.quote_id) this.setState({ price: price, is_update: !this.state.is_update }, () => window.alertable({ icon: 'success', message: '案件を更新しました。' }));
         
         // 編集ページへリダイレクト
         if(!this.state.quote_id) {
