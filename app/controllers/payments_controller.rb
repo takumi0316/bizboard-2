@@ -7,14 +7,11 @@ class PaymentsController < ApplicationController
   #----------------------------------------
 
   # 支払い情報
-  expose_with_pagination(:payments) {
-    Payment
-    .all
-  }
+  expose_with_pagination(:payments) { Payment.all.where(accouting_status: :active) }
 
 
   # 支払い情報
-  expose(:payment) { Payment.find_or_initialize_by id: params[:id] || params[:payment_id]}
+  expose(:payment) { Payment.find_or_initialize_by id: params[:id] || params[:payment_id] }
 
 
   #----------------------------------------

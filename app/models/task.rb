@@ -10,7 +10,7 @@
 #  catalog_id       :bigint(8)
 #  client_name      :string(191)
 #  client_mail      :string(191)
-#  clientlastaccess :datetime         default(Tue, 09 Jun 2020 16:29:16 JST +09:00)
+#  clientlastaccess :datetime         default(Tue, 16 Jun 2020 21:30:03 JST +09:00)
 #  will_order       :integer          default(0)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

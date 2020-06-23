@@ -61,7 +61,7 @@ class WorkSubcontractorsController < ApplicationController
     actual_cost = work_subcontractor.details.sum(:actual_cost).to_i
     division      = SubcontractorDivision.find(client.subcontractor_division_id)
     subcontractor = Subcontractor.find(division.subcontractor_id)
-    quote_type = work_subcontractor.work.quote.quote_type == :contract || :salse ? 100 : 10
+    quote_type = work_subcontractor.work.quote.quote_type == :contract ? 100 : 10
 
     expendable.update! division_id: work_subcontractor.work.quote&.division&.id, subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor.id, price: actual_cost, date: work_subcontractor.delivery_date, status: quote_type
     payment.update! subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor.id, work_subcontractor_id: work_subcontractor.id, expendable_id: expendable.id, price: actual_cost, date: work_subcontractor.delivery_date
@@ -70,7 +70,7 @@ class WorkSubcontractorsController < ApplicationController
 
   rescue => e
 
-    render json: { stattus: :error, message: e.message }
+    render json: { status: :error, message: e.message }
   end
 
   ##

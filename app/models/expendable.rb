@@ -9,12 +9,13 @@
 #  name                         :string(191)
 #  price                        :integer          default(0), not null
 #  date                         :date
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
 #  memo                         :text(65535)
 #  work_subcontractor_detail_id :bigint(8)
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
 #  user_id                      :bigint(8)
 #  work_subcontractor_id        :bigint(8)
+#  accouting_status             :integer          default("active")
 #
 
 class Expendable < ApplicationRecord
@@ -45,11 +46,13 @@ class Expendable < ApplicationRecord
     cost: 100
   }
 
+  enum accouting_status: { active: 0, inactive: 10 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
 
-  validates :price, presence: true, numericality: { greater_than: 0 }
+  validates :price, presence: true
 
   #----------------------------------------
   #  ** Associations **
@@ -81,24 +84,20 @@ class Expendable < ApplicationRecord
 
     _self = self
 
-    # if parameters[:division] == '' && parameters[:subcontractor] == '' && parameters[:status] == ''
+    if parameters[:division] == '' && parameters[:subcontractor] == '' && parameters[:status] == ''
 
-    #   # 日付検索
-    #   _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
-    # else
+      # 日付検索
+      _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+    else
 
-    #   # 日付検索
-    #   _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
-    #   _self = _self.where(status: parameters[:status]) if parameters[:status] != '' && parameters[:status] != nil
-    #   _self = _self.where(division_id: parameters[:division]) if parameters[:division] != '' && parameters[:division] != nil
-    #   _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != '' && parameters[:subcontractor] != nil
-    # end
+      # 日付検索
+      _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
+      _self = _self.where(status: parameters[:status]) if parameters[:status] != '' && parameters[:status] != nil
+      _self = _self.where(division_id: parameters[:division]) if parameters[:division] != '' && parameters[:division] != nil
+      _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != '' && parameters[:subcontractor] != nil
+    end
 
-     _self = _self.where(date: parameters[:date1]..parameters[:date2]) if parameters[:date1].present?
-     _self = _self.where(status: parameters[:status]) if parameters[:status].present?
-     _self = _self.where(division_id: parameters[:division]) if parameters[:division].present?
-     _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor].present?
-    # _self.where(date: parameters[:date1]..parameters[:date2], status: parameters[:status], division_id: parameters[:division], subcontractor_id: parameters[:subcontractor])
+    _self
   end
 
   ##

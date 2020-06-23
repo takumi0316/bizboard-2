@@ -7,10 +7,11 @@
 #  work_subcontractor_detail_id :bigint(8)
 #  price                        :integer          default(0), not null
 #  date                         :date
+#  expendable_id                :bigint(8)
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
-#  expendable_id                :bigint(8)
 #  work_subcontractor_id        :bigint(8)
+#  accouting_status             :integer          default("active")
 #
 
 class Payment < ApplicationRecord
@@ -26,6 +27,8 @@ class Payment < ApplicationRecord
   #----------------------------------------
   #  ** Enums **
   #----------------------------------------
+
+  enum accouting_status: { active: 0, inactive: 10 }
 
   #----------------------------------------
   #  ** Validations **
