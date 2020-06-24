@@ -126,7 +126,7 @@ export default class HomeDivision extends React.Component {
 
                 <ul className={Style.ClientSearch__list}>
                   {this.state.divisions.map((division, i) => {
-                    var key = `clients-${i}`;
+                    const key = `clients-${i}`;
                     return (
                       <li {...{key}} className={Style.ClientSearch__item}>
                         <h2 className={Style.ClientSearch__itemName} data-number={i} onClick={::this._onSelect}>{division.name}</h2>

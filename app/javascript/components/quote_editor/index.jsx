@@ -70,7 +70,6 @@ export default class QuoteEditor extends React.Component {
       remarks: props.quote.remarks || '',
       memo: props.quote.memo || '',
       itemStatus: true,
-      is_update: false,
     };
   };
 
