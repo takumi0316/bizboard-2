@@ -42,6 +42,7 @@ class ActivitiesController < ApplicationController
 
     add_breadcrumb '活動履歴'
     @activity = Activity.all.where(quote_id: params[:id]) if params[:id].present?
+    params[:name] = Quote.find(params[:id]).subject if params[:id].present?
     @activity = Activity.all if params[:id].nil?
 
   end
