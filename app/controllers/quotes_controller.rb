@@ -210,17 +210,20 @@ class QuotesController < ApplicationController
 
     cl_quote = quote.deep_clone(:quote_projects)
 
-    cl_quote.update! subject: "#{quote.subject}（複製： 案件番号）#{quote.id}", date: '', expiration: '', attention: '', pdf_url: '', status: :unworked, quote_type: :contract, user_id: current_user.id, deliver_at: '', deliver_type: '', issues_date: '', delivery_note_date: '', lock: false
+    cl_quote.update! subject: "#{quote.subject}（複製： 案件番号）#{quote.id}", date: Time.zone.now, expiration: '', attention: '', pdf_url: '', status: :unworked, quote_type: :contract, user_id: current_user.id, deliver_at: '', deliver_type: '', issues_date: '', delivery_note_date: '', lock: false
 
-    cl_work = quote.work.deep_clone(:work_details)
+    if quote.work.present?
 
-    cl_work.update! quote_id: cl_quote.id, status: :draft
+      cl_work = quote.work.deep_clone(:work_details)
 
-    quote.work.work_subcontractors.each do  |r|
+      cl_work.update! quote_id: cl_quote.id, status: :draft
 
-      cl_work_subcontractor = WorkSubcontractor.find(r.id).deep_clone(:details)
-      cl_work_subcontractor.update! work_id: cl_work.id
-      cl_work_subcontractor.details.each { |d| d.update! work_id: cl_work.id }
+      quote.work.work_subcontractors.each do  |r|
+
+        cl_work_subcontractor = WorkSubcontractor.find(r.id).deep_clone(:details)
+        cl_work_subcontractor.update! work_id: cl_work.id
+        cl_work_subcontractor.details.each { |d| d.update! work_id: cl_work.id }
+      end
     end
 
     redirect_to edit_quote_path(cl_quote), flash: { notice: { message: '案件を複製しました' } }
