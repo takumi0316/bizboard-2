@@ -91,7 +91,7 @@
             - else
 
               | 未発行
-          td = link_to '活動履歴', activities_path(name: r.id), class: 'c-btnMain-standard c-btn-blue'
+          td = link_to '活動履歴', activities_path(id: r.id), class: 'c-btnMain-standard c-btn-blue'
           td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
           td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
           - if r.task.present?
