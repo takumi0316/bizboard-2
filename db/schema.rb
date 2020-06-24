@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_16_121629) do
+ActiveRecord::Schema.define(version: 2020_06_23_030309) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(version: 2020_06_16_121629) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "work_subcontractor_id"
+    t.integer "accouting_status", limit: 1, default: 0
     t.index ["division_id"], name: "index_expendables_on_division_id"
     t.index ["subcontractor_id"], name: "index_expendables_on_subcontractor_id"
     t.index ["user_id"], name: "index_expendables_on_user_id"
@@ -306,6 +307,7 @@ ActiveRecord::Schema.define(version: 2020_06_16_121629) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "work_subcontractor_id"
+    t.integer "accouting_status", limit: 1, default: 0
     t.index ["expendable_id"], name: "index_payments_on_expendable_id"
     t.index ["subcontractor_id"], name: "index_payments_on_subcontractor_id"
     t.index ["work_subcontractor_detail_id"], name: "index_payments_on_work_subcontractor_detail_id"
