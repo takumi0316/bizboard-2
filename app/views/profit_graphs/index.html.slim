@@ -2,9 +2,9 @@
 - targets = Target.where(target_year: current_date.year, target_month: current_date.month)
 
 .l-dashboard__month
-  = link_to '<< 前月', root_path(current: params[:current] ? (Date.parse(params[:current]) - 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthPrev'
+  = link_to '<< 前月', profit_graphs_path(current: params[:current] ? (Date.parse(params[:current]) - 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthPrev'
   span = "#{current_date.year}年#{current_date.month}月"
-  = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
+  = link_to '次月 >>', profit_graphs_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
 
   h2.l-dashboard__heading 全体
   .l-dashboard__graphs
@@ -23,22 +23,23 @@
     - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
 
     - if activity_ids.blank?
+      - activity_ids = activity.ids
       - activities = Activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
     - else
       - activities = Activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
 
     / 確度ABC
-    - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum.to_i
-    - profit_accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum.to_i
+    - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum
+    - profit_accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum
 
 
     / ステータス受注
-    - status_order = activities.where(status: :order).pluck(:price).sum.to_i
-    - profit_status_order = activities.where(status: 50).pluck(:profit_price).sum.to_i
+    - status_order = activities.where(status: :order).pluck(:price).sum
+    - profit_status_order = activities.where(status: 50).pluck(:profit_price).sum
 
     / 目標売上
-    - orders = targets.map(&:sales).inject(:+).to_i
-    - profits = targets.map(&:profit).inject(:+).to_i
+    - orders = targets.map(&:sales).inject(:+)
+    - profits = targets.map(&:profit).inject(:+)
 
     .l-dashboard__graph
     = react_component('ProfitGraph',{ label: '受注額', plans: accurary, orders: status_order, targets: orders,})
@@ -55,7 +56,7 @@
       / 見込み
       / range内の納期に紐づく案件IDを取得
       - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(range).pluck(:id)
-      / 活動履歴と案件を組み合わせて受注予定日と合う物を取得
+      / 活動履歴と案件を組み合わせて案件IDと合う物を取得
       - activity = Activity.where(quote_id: quote_ids).joins(:quote)
       / 活動履歴から同じquote_idを持つのから最新の作成日を取得
       - hash = activity.group(:quote_id).having('count(*) >= 2').maximum(:created_at)
@@ -63,18 +64,19 @@
       - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
 
       - if activity_ids.blank?
-        - activities = Activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+        - activity_ids = activity.ids
+        - activities = activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
       - else
-        - activities = Activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+        - activities = activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
 
       / 確度ABC
-      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum.to_i
+      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum
 
       / ステータス受注
-      - status_order = activities.where(status: :order).pluck(:price).sum.to_i
+      - status_order = activities.where(status: :order).pluck(:price).sum
 
       / 目標売上
-      - orders = r.sales.to_i
+      - orders = r.sales
 
       = react_component('ProfitGraph',{ label: r.division.name, plans: accurary, orders: status_order, targets: orders,})
 
@@ -97,17 +99,18 @@
       - activity_ids = activity.where(quote_id: hash.keys).where.not(created_at: hash.values).pluck(:id)
 
       - if activity_ids.blank?
-        - activities = Activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+        - activity_ids = activity.ids
+        - activities = activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
       - else
-        - activities = Activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+        - activities = activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
 
       / 確度ABC
-      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum.to_i
+      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum
 
       / ステータス受注
-      - status_order = activities.where(status: :order).pluck(:profit_price).sum.to_i
+      - status_order = activities.where(status: :order).pluck(:profit_price).sum
 
       / 目標売上
-      - profits = r.profit.to_i
+      - profits = r.profit
 
       = react_component('ProfitGraph',{ label: r.division.name, plans: accurary, orders: status_order, targets: profits,})
