@@ -8,7 +8,7 @@ import { generateKey } from '../../../../util.js';
 const Header = props => {
 
   return(
-    <div className={ Style.CardTemplate }>
+    <div className={ `u-ml-30 ${ Style.CardTemplate }` }>
       <div className='c-table'>
         <table>
           <thead>

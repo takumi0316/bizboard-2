@@ -7,9 +7,9 @@ import Header   from './header'
 const CardTemplate = props => {
 
   return(
-    <div className='u-mt-30 c-flex'>
+    <div className='u-mt-30 c-flex c-flex-alignItems_start'>
       { props.template.file ?
-        <div className={ Style.CardTemplate }>
+        <div>
           <div className='c-position'>
             <canvas id='draw' className='c-border c-border-top c-border-left c-border-right c-position__canvas' />
             <canvas id='pdf' className='c-border c-border-top c-border-left c-border-right' />
@@ -19,9 +19,7 @@ const CardTemplate = props => {
         :
         <DropZone onDrop={ props.onDrop }/>
       }
-      <div className='u-ml-50'>
-        <Header template={ props.template } status={ props.status } addDetail={ props.addDetail } onChangeDetail={ props.onChangeDetail }/>
-      </div>
+      <Header template={ props.template } status={ props.status } addDetail={ props.addDetail } onChangeDetail={ props.onChangeDetail }/>
     </div>
   );
 };
