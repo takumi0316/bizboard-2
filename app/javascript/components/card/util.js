@@ -82,7 +82,7 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
     // Fetch canvas' 2d context
     let ctx = canvas.getContext('2d');
     let draw_ctx = draw_canvas.getContext('2d');
-
+  
     // Set dimensions to Canvas
     canvas.height = (mmTopx(55 * 2));
     canvas.width = (mmTopx(91 * 2));
@@ -92,31 +92,15 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
 
     details.map(detail => {
   
-      draw_ctx.font = `${ mmTopx(ptTomm(detail.font_size)) * 2 }px ${ detail.font }`;
       const y = mmTopx(detail.coord_y) * 2;
       const x =	mmTopx(detail.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
       const lineSpace = mmTopx(detail.line_space);
       const name = detail.name;
   
-      /*
-      console.log(detail)
-      draw_ctx.font = `${ mmTopx(ptTomm(detail.font_size)) * 2 }px ${ detail.font }`;
-      if(detail.id == 707) {
-  
-        draw_canvas.style.letterSpacing = lineSpace + 'px';
-      };
+      draw_ctx.font = `${ fontSize }px ${ detail.font }`;
       draw_ctx.fillText(name, x, y);
-       */
       
-      for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
-        let line = lines[i];
-        let addY = fontSize;
-        if(i) addY += fontSize * lineSpace * i;
-        draw_ctx.fillText(line, x, y + addY);
-      };
-    });
-
     // Prepare object needed by render method
     const renderContext = {
       canvasContext: ctx,
@@ -183,37 +167,28 @@ export const setPDFValue = (file, canvas, draw_canvas, values) => {
 /**
  * PDFにテキストを展開
  * @version 2020/04/06
- * 
+ *
  */
 export const drawText = (details, draw_canvas) => {
-
+  
   let draw_ctx = draw_canvas.getContext('2d')
+  
   draw_ctx.beginPath();
   draw_ctx.clearRect(0, 0, draw_canvas.width, draw_canvas.height);
   draw_ctx.save();
   draw_ctx.setTransform(1, 0, 0, 1, 0, 0);
   draw_ctx.restore();
-
+  
   details.map(detail => {
   
-    draw_ctx.font = `${ mmTopx(ptTomm(detail.font_size)) * 2 }px ${ detail.font }`;
     const y = mmTopx(detail.coord_y) * 2;
     const x =	mmTopx(detail.coord_x) * 2;
     const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
     const lineSpace = mmTopx(detail.line_space);
     const name = detail.name;
-  
-    /*
-    draw_canvas.style.letterSpacing = lineSpace + 'px';
+    
+    draw_ctx.font = `${ fontSize }px ${ detail.font }`;
     draw_ctx.fillText(name, x, y);
-     */
-
-    for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
-      let line = lines[i];
-      let addY = fontSize;
-      if(i) addY += fontSize * lineSpace * i;
-      draw_ctx.fillText(line, x, y + addY);
-    };
   });
 };
 

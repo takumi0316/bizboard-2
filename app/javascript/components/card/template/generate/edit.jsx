@@ -36,12 +36,9 @@ export default class EditTemplateGenerate extends React.Component {
    *
    */
   componentDidMount = () => {
-
+    
+    if(!this.state.template.file) return;
     this.loadingRef.start();
-    if(!this.state.template.file) {
-      this.loadingRef.finish();
-      return;
-    };
     const field = new FormData();
     field.append('url', this.state.template.file);
     const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
