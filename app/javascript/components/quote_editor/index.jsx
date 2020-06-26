@@ -11,6 +11,7 @@ import CaseDetails          from './case_details';
 import PaymentDetails       from './payment_details';
 import ButtonsBelow         from './buttons_below';
 import ItemTables           from './item_tables';
+import Loading              from '../loading';
 
 /**
  *  記事エディター
@@ -68,7 +69,7 @@ export default class QuoteEditor extends React.Component {
       prefectures: props.prefectures,
       remarks: props.quote.remarks || '',
       memo: props.quote.memo || '',
-      itemStatus: true
+      itemStatus: true,
     };
   };
 
@@ -459,6 +460,9 @@ export default class QuoteEditor extends React.Component {
   onSubmit = e => {
     
     e.preventDefault();
+    
+    this.loadingRef.start();
+    
     const messages = this.validation();
     
     // エラーが存在する場合
@@ -468,6 +472,7 @@ export default class QuoteEditor extends React.Component {
       return false;
     };
     
+    this.setState({ is_update: !this.state.is_update });
     let price = 0;
     this.state.quote_projects.map(quote_project => price += Number(quote_project.price));
 
@@ -490,12 +495,13 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[delivery_note_date]', this.state.delivery_note_date || '');
     field.append('quote[deliver_at]', this.state.deliver_at || '');
     field.append('quote[reception]', this.state.reception);
-    field.append('quote[deliver_type_note]', this.state.deliver_type_note);
+    field.append('quote[deliver_type_note]', this.state.deliver_type_note === 'location' || this.state.deliver_type_note === 'other' ? this.state.deliver_type_note : '');
     field.append('quote[remarks]', this.state.remarks);
     field.append('quote[memo]', this.state.memo);
     field.append('quote[user_id]', this.props.user_id);
     field.append('quote[discount]', this.state.discount);
     field.append('quote[price]', price);
+    field.append('quote[deliver_type]', this.state.deliver_type);
     this.state.quote_projects.map(project => {
       
       field.append('quote[quote_projects_attributes][][id]', project.id);
@@ -510,14 +516,14 @@ export default class QuoteEditor extends React.Component {
     });
     
     // 納品方法
-    if(this.state.deliver_type == 'location' || this.state.deliver_type == 'other') field['quote[deliver_type_note]'] = this.state.deliver_type_note;
+    if(this.state.deliver_type === 'location' || this.state.deliver_type === 'other') field['quote[deliver_type_note]'] = this.state.deliver_type_note;
     
     const request = this.state.quote_id ? window.xhrRequest.put(this.props.action, field) : window.xhrRequest.post(this.props.action, field);
     request.then(res => {
       
-      if(res.data.status == 'success') {
+      if(res.data.status === 'success') {
         
-        if(this.state.quote_id) this.setState({ price: price }, () => window.alertable({ icon: 'success', message: '案件を更新しました。' }));
+        if(this.state.quote_id) this.setState({ price: price }, () => window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () => this.loadingRef.finish() }));
         
         // 編集ページへリダイレクト
         if(!this.state.quote_id) {
@@ -529,8 +535,8 @@ export default class QuoteEditor extends React.Component {
       
       // エラー文
       console.log(res.data.message);
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` });
-    }).catch(err => window.alertable({ icon: 'error', message: err }));
+      if(res.data.status != 'success') window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。`, close_callback: this.loadingRef.finish() });
+    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }));
   };
   
   /**
@@ -577,6 +583,7 @@ export default class QuoteEditor extends React.Component {
                         setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
         />
         <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } task={ this.state.task } onSubmit={ this.onSubmit }/>
+        <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );
   };
