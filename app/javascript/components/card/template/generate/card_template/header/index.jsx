@@ -8,7 +8,7 @@ import { generateKey } from '../../../../util.js';
 const Header = props => {
 
   return(
-    <div className={ `u-ml-30 ${ Style.CardTemplate }` }>
+    <div className={ Style.CardTemplate}>
       <div className='c-table'>
         <table>
           <thead>
@@ -20,7 +20,7 @@ const Header = props => {
               <th>色</th>
               <th>座標(x)</th>
               <th>座標(y)</th>
-              { /* <th>長さ</th> */ }
+              <th>長さ</th>
               <th>行間</th>
             </tr>
           </thead>
@@ -46,7 +46,7 @@ const Header = props => {
                     <td><input className='u-ta-center c-form-text' defaultValue={ detail.font_color } onBlur={ e => props.onChangeDetail(e, index, 3) }/></td>
                     <td><input className='u-ta-right c-form-text' defaultValue={ detail.coord_x } onBlur={ e => props.onChangeDetail(e, index, 4) }/></td>
                     <td><input className='u-ta-right c-form-text' defaultValue={ detail.coord_y } onBlur={ e => props.onChangeDetail(e, index, 5) }/></td>
-                    { /* <td><input className='u-ta-right c-form-text' defaultValue={ detail.length } onBlur={ e => props.onChangeDetail(e, index, 6) }/></td> */ }
+                    <td><input className='u-ta-right c-form-text' defaultValue={ detail.length } onBlur={ e => props.onChangeDetail(e, index, 6) }/></td>
                     <td><input className='u-ta-right c-form-text' defaultValue={ detail.line_space } onBlur={ e => props.onChangeDetail(e, index, 7) }/></td>
                   </tr>
                 );

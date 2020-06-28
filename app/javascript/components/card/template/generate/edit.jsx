@@ -38,6 +38,7 @@ export default class EditTemplateGenerate extends React.Component {
   componentDidMount = () => {
 
     this.loadingRef.start();
+    
     if(!this.state.template.file) {
       this.loadingRef.finish();
       return;
@@ -253,8 +254,9 @@ export default class EditTemplateGenerate extends React.Component {
           : null
         }
         <CardTemplate template={ this.state.template } didmount_type={ this.state.didmount_status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
-        <div className='u-mt-10'>
+        <div className='c-overlay-submit'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>
+          <button className='u-ml-30 c-btnMain-standard' onClick={ () => this.unSetPDF() }>テンプレートを変更する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
