@@ -37,16 +37,16 @@
           td.u-ta-center = r.next_action_i18n
           td.u-ta-center = r.next_action_date
           td.u-ta-center = r.quote&.quote_number
-          td = r.quote.subject.truncate(25)
+          td = r.quote&.subject&.truncate(25)
           td.u-ta-center
-            - if r.quote.client.nil?
+            - if r.quote&.client.nil?
 
               | お客様情報が存在しません
-            - if r.quote.client.present?
+            - if r.quote&.client.present?
 
               = "#{ r.quote.client.company_division.company.name } #{ r.quote.client.name }様"
           td.u-ta-center
-            - if r.quote.user.nil?
+            - if r.quote&.user.nil?
 
               | 担当者不明
             - if r.quote.user.present?
