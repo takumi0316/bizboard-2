@@ -36,7 +36,7 @@
           td.u-ta-center = r.accurary_i18n
           td.u-ta-center = r.next_action_i18n
           td.u-ta-center = r.next_action_date
-          td.u-ta-center = r.quote.quote_number
+          td.u-ta-center = r.quote&.quote_number
           td = r.quote.subject.truncate(25)
           td.u-ta-center
             - if r.quote.client.nil?
@@ -44,7 +44,7 @@
               | お客様情報が存在しません
             - if r.quote.client.present?
 
-              = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
+              = "#{ r.quote.client.company_division.company.name } #{ r.quote.client.name }様"
           td.u-ta-center
             - if r.quote.user.nil?
 
@@ -53,7 +53,7 @@
 
               = r.quote.user.name
           td = r.memo.truncate(30)
-          td = link_to '資料へ飛ぶ', r.attachment, target: :_blank, class: 'c-btnMain-primaryB' if r.attachment.present?
+          td = link_to '資料へ飛ぶ', r.attachment, target: '_blank', class: 'c-btnMain-primaryB' if r.attachment.present?
           td = link_to '編集', edit_activity_path(r), class: 'c-btnMain-standard'
           td = link_to '削除', activity_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
