@@ -46,7 +46,7 @@ class ActivitiesController < ApplicationController
   def new
 
     @id = params[:quote_id]
-    @activity = Activity.new(:quote_id => @id)
+    @activity = Activity.new(quote_id: @id)
     @quote = Quote.find(@id) rescue @quote = Quote.find_by(@id)
 
     add_breadcrumb '活動履歴', path: activities_path
@@ -63,6 +63,8 @@ class ActivitiesController < ApplicationController
     activity.update! activity_params
 
     change_inactive?
+
+    @sort = activity.quote_id
 
     redirect_to activities_path(name: @sort), flash: { notice: { message: '活動履歴を作成しました' } }
   rescue => e
