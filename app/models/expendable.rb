@@ -87,11 +87,11 @@ class Expendable < ApplicationRecord
     if parameters[:division] == '' && parameters[:subcontractor] == '' && parameters[:status] == ''
 
       # 日付検索
-      _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = _self.where(date: Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_day..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
     else
 
       # 日付検索
-      _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
+      _self = _self.where(date: Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_day..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
       _self = _self.where(status: parameters[:status]) if parameters[:status] != '' && parameters[:status] != nil
       _self = _self.where(division_id: parameters[:division]) if parameters[:division] != '' && parameters[:division] != nil
       _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != '' && parameters[:subcontractor] != nil
