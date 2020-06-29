@@ -26,6 +26,8 @@ export default class ClientGenerate extends React.Component {
   constructor(props) {
     super(props);
 
+    Ts.loadFont();
+
     this.state = {
       cards: props.cards,
       card: props.card,
@@ -50,6 +52,7 @@ export default class ClientGenerate extends React.Component {
   componentDidMount = () => {
 
     this.loadingRef.start();
+ 
     const field = new FormData();
     field.append('url', this.state.template.file);
     const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
@@ -194,7 +197,7 @@ export default class ClientGenerate extends React.Component {
         }
          <Template client_template={ this.state.template } onChangeValue={ this.onChangeValue }/>
         </Fragment>
-        <div className='u-mt-30'>
+        <div className='c-overlay-submit'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>更新する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>

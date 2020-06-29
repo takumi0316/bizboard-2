@@ -20,7 +20,7 @@ const Header = props => {
               <th>色</th>
               <th>座標(x)</th>
               <th>座標(y)</th>
-              { /* <th>長さ</th> */ }
+              <th>長さ</th>
               <th>行間</th>
             </tr>
           </thead>
@@ -35,9 +35,9 @@ const Header = props => {
                       <select name='font' className='c-form-select' defaultValue={ FONT_STYLE[detail.font] } onChange={ e => props.onChangeDetail(e, index, 1) }>
                         { /* <option value='nothing'>会社名を選択してください</option> */}
                         { Object.keys(FONT_STYLE).map((font, index) => {
-                          const key = `font-${index}`;
+                          const key = `font-${ index }-${ detail.font }`;
                           return (
-                            <option {...{key}} value={ font }>{ font }</option>
+                            <option { ...{ key } } value={ font }>{ font }</option>
                           );
                         })}
                       </select>
@@ -46,7 +46,7 @@ const Header = props => {
                     <td><input className='u-ta-center c-form-text' defaultValue={ detail.font_color } onBlur={ e => props.onChangeDetail(e, index, 3) }/></td>
                     <td><input className='u-ta-right c-form-text' defaultValue={ detail.coord_x } onBlur={ e => props.onChangeDetail(e, index, 4) }/></td>
                     <td><input className='u-ta-right c-form-text' defaultValue={ detail.coord_y } onBlur={ e => props.onChangeDetail(e, index, 5) }/></td>
-                    { /* <td><input className='u-ta-right c-form-text' defaultValue={ detail.length } onBlur={ e => props.onChangeDetail(e, index, 6) }/></td> */ }
+                    <td><input className='u-ta-right c-form-text' defaultValue={ detail.length } onBlur={ e => props.onChangeDetail(e, index, 6) }/></td>
                     <td><input className='u-ta-right c-form-text' defaultValue={ detail.line_space } onBlur={ e => props.onChangeDetail(e, index, 7) }/></td>
                   </tr>
                 );

@@ -30,6 +30,8 @@ export default class ClientGenerate extends React.Component {
     this.front_file = '';
     this.reverse_file = '';
 
+    Ts.loadFont();
+  
     this.state = {
       cards: '',
       card: '',
@@ -273,7 +275,7 @@ export default class ClientGenerate extends React.Component {
         <Card cards={ this.state.cards } card={ this.state.card } new={ this.props.new } typeName={ CARD_TYPE_NAME } notFound={ CARD_NOT_FOUND } applyCard={ this.applyCard }/>
         { this.state.templates ?
           <Fragment>
-            { this.state.templates.length == 2 ?
+            { this.state.templates.length === 2 ?
               <TempalteStatus status={ this.state.status } setStatus={ this.setStatus }/>
               : null
             }
@@ -285,7 +287,7 @@ export default class ClientGenerate extends React.Component {
           </Fragment>
           : <div>テンプレートを選択してください。</div>
         }
-        <div className='u-mt-30'>
+        <div className='c-overlay-submit'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>作成する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node } message='展開しています' />
