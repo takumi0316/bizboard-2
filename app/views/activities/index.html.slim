@@ -44,14 +44,14 @@
               | お客様情報が存在しません
             - else
 
-              = "#{ r.quote.client.company_division.company.name } #{ r.quote.client.name }様"
+              = "#{ r.quote&.client&.company_division&.company&.name } #{ r.quote&.client&.name }様"
           td.u-ta-center
             - if r.quote&.user&.nil?
 
               | 担当者不明
             - else
 
-              = r.quote.user.name
+              = r.quote&.user&.name
           td = r.memo.truncate(30)
           td = link_to '資料へ飛ぶ', r.attachment, target: '_blank', class: 'c-btnMain-primaryB' if r.attachment.present?
           td = link_to '編集', edit_activity_path(r), class: 'c-btnMain-standard'
