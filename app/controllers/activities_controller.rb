@@ -64,8 +64,6 @@ class ActivitiesController < ApplicationController
 
     change_inactive?
 
-    @sort = activity.quote_id
-
     redirect_to activities_path(name: @sort), flash: { notice: { message: '活動履歴を作成しました' } }
   rescue => e
 
