@@ -62,7 +62,7 @@ export default class QuoteEditor extends React.Component {
       delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
-      show: props.quote.discount === 0 || props.quote.discount ? false : true,
+      show: props.quote.discount === 0 ? false : true,
       show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
       task: props.task || '',
       users: props.users,
@@ -475,7 +475,7 @@ export default class QuoteEditor extends React.Component {
     this.setState({ is_update: !this.state.is_update });
     let price = 0;
     this.state.quote_projects.map(quote_project => price += Number(quote_project.price));
-
+    
     const field = new FormData();
     field.append('quote[id]', this.state.quote_id);
     field.append('quote[division_id]', this.state.home_division ? this.state.home_division.id : this.props.division_id);
@@ -500,7 +500,7 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[memo]', this.state.memo);
     field.append('quote[user_id]', this.props.user_id);
     field.append('quote[discount]', this.state.discount);
-    field.append('quote[price]', price);
+    field.append('quote[price]', this.state.discount === 0 ? price : price - this.state.discount);
     field.append('quote[deliver_type]', this.state.deliver_type);
     this.state.quote_projects.map(project => {
       
