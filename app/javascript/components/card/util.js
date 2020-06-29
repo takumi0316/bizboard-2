@@ -100,12 +100,10 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
       const lineSpace = mmTopx(detail.line_space);
       const name = detail.name;
   
-      // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-      // draw_ctx.font = `${ fontSize }px ${detail.font}`;
+      draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+      draw_ctx.font = `${ fontSize }px ${detail.font}`;
       draw_ctx.fillText(name, x, y);
       const metrics = draw_ctx.measureText(name);
-      console.log(metrics)
-      console.log(draw_ctx.measureText('width'));
     });
 
     // Prepare object needed by render method

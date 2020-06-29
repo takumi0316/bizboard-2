@@ -8,7 +8,7 @@ import { generateKey } from '../../../../util.js';
 const Header = props => {
 
   return(
-    <div className={ Style.CardTemplate}>
+    <div className={ Style.CardTemplate }>
       <div className='c-table'>
         <table>
           <thead>
@@ -35,9 +35,9 @@ const Header = props => {
                       <select name='font' className='c-form-select' defaultValue={ FONT_STYLE[detail.font] } onChange={ e => props.onChangeDetail(e, index, 1) }>
                         { /* <option value='nothing'>会社名を選択してください</option> */}
                         { Object.keys(FONT_STYLE).map((font, index) => {
-                          const key = `font-${index}`;
+                          const key = `font-${ index }-${ detail.font }`;
                           return (
-                            <option {...{key}} value={ font }>{ font }</option>
+                            <option { ...{ key } } value={ font }>{ font }</option>
                           );
                         })}
                       </select>

@@ -26,6 +26,8 @@ export default class ClientGenerate extends React.Component {
   constructor(props) {
     super(props);
 
+    Ts.loadFont();
+
     this.state = {
       cards: props.cards,
       card: props.card,
@@ -50,6 +52,7 @@ export default class ClientGenerate extends React.Component {
   componentDidMount = () => {
 
     this.loadingRef.start();
+ 
     const field = new FormData();
     field.append('url', this.state.template.file);
     const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
