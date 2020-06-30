@@ -94,16 +94,29 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
 
     details.forEach(detail => {
   
+      const name = detail.name;
+      
+      if(!name) return;
+      
       const y = mmTopx(detail.coord_y) * 2;
       const x =	mmTopx(detail.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
       const lineSpace = mmTopx(detail.line_space);
-      const name = detail.name;
   
-      draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-      draw_ctx.font = `${ fontSize }px ${detail.font}`;
-      draw_ctx.fillText(name, x, y);
-      const metrics = draw_ctx.measureText(name);
+      draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+      
+      for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
+        
+        let line = lines[i];
+        let addY = fontSize;
+        if(i) addY += fontSize * lineSpace * i;
+        draw_ctx.fillText(line, x, y + addY);
+      };
+  
+      // 自動組版
+      // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+      // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+      // draw_ctx.fillText(name, x, y);
     });
 
     // Prepare object needed by render method
@@ -146,15 +159,29 @@ export const setPDFValue = (file, canvas, draw_canvas, values) => {
 
     values.map(value => {
   
+      const card_value = value.value;
+      
+      if(!card_value) return;
+      
       const y = mmTopx(value.coord_y) * 2;
       const x =	mmTopx(value.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
       const lineSpace = mmTopx(value.line_space);
-      const name = value.value;
   
-      draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
       draw_ctx.font = `${ fontSize }px ${ value.font }`;
-      draw_ctx.fillText(name, x, y);
+      
+      for(let lines = card_value.split('\n'), i = 0, l = lines.length; l > i; i++) {
+        
+        let line = lines[i] ;
+        let addY = fontSize ;
+        if (i) addY += fontSize * lineSpace * i ;
+        draw_ctx.fillText(line, x, y + addY);
+      };
+  
+      // 自動組版
+      // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+      // draw_ctx.font = `${ fontSize }px ${ value.font }`;
+      // draw_ctx.fillText(card_value, x, y);
     });
 
     const renderContext = {
@@ -181,16 +208,30 @@ export const drawText = (details, draw_canvas) => {
   draw_ctx.restore();
 
   details.map(detail => {
-
+  
+    const name = detail.name;
+    
+    if(!name) return;
+    
     const y = mmTopx(detail.coord_y) * 2;
     const x =	mmTopx(detail.coord_x) * 2;
     const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
     const lineSpace = mmTopx(detail.line_space);
-    const name = detail.name;
   
-    draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
     draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-    draw_ctx.fillText(name, x, y);
+   
+    for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
+      
+      let line = lines[i];
+      let addY = fontSize;
+      if(i) addY += fontSize * lineSpace * i;
+      draw_ctx.fillText(line, x, y + addY);
+    };
+    
+    // 自動組版
+    // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+    // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+    // draw_ctx.fillText(name, x, y);
   });
 };
 
@@ -211,15 +252,29 @@ export const drawTextValue = (values, draw_canvas) => {
 
   values.map(value => {
   
+    const card_value = value.value;
+    
+    if(!card_value) return;
+    
     const y = mmTopx(value.coord_y) * 2;
     const x =	mmTopx(value.coord_x) * 2;
     const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
     const lineSpace = mmTopx(value.line_space);
-    const name = value.value;
   
-    draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
     draw_ctx.font = `${ fontSize }px ${ value.font }`;
-    draw_ctx.fillText(name, x, y);
+    
+    for(let lines = card_value.split('\n'), i = 0, l = lines.length; l > i; i++) {
+      
+      let line = lines[i] ;
+      let addY = fontSize ;
+      if (i) addY += fontSize * lineSpace * i ;
+      draw_ctx.fillText(line, x, y + addY);
+    };
+  
+    // 自動組版
+    // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+    // draw_ctx.font = `${ fontSize }px ${ value.font }`;
+    // draw_ctx.fillText(card_value, x, y);
   });
 };
 
