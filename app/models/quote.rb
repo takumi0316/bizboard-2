@@ -9,7 +9,7 @@
 #  remarks                    :text(65535)
 #  memo                       :text(65535)
 #  free_word                  :text(65535)
-#  price                      :integer          default(0), not null
+#  price                      :integer
 #  attention                  :integer
 #  pdf_url                    :text(65535)
 #  user_id                    :integer
@@ -28,7 +28,7 @@
 #  tax                        :float(24)        default(1.1)
 #  reception                  :integer
 #  temporary_price            :integer
-#  profit_price               :integer          default(0), not null
+#  profit_price               :integer          default(0)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  last_company               :string(191)
@@ -206,4 +206,5 @@ class Quote < ApplicationRecord
 
     return _self
   end
+
 end

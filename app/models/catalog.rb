@@ -9,8 +9,6 @@
 #  deliver_at  :string(191)
 #  category_id :bigint(8)
 #  turn        :integer          default(0)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
 #
 
 class Catalog < ApplicationRecord

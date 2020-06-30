@@ -58,16 +58,19 @@ class WorkSubcontractorsController < ApplicationController
 
     work_subcontractor.update! work_subcontractor_params
 
-    actual_cost = work_subcontractor.details.sum(:actual_cost)
-    quote_type = work_subcontractor.work.quote.quote_type == :contract ? :cost : :material
+    actual_cost = work_subcontractor.details.sum(:actual_cost).to_i
+    division      = SubcontractorDivision.find(client.subcontractor_division_id)
+    subcontractor = Subcontractor.find(division.subcontractor_id)
+    quote_type = work_subcontractor.work.quote.quote_type == :contract || :salse ? 100 : 10
 
-    expendable.update! division_id: work_subcontractor.work.quote.division_id, subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor_id, price: actual_cost, date: work_subcontractor.delivery_date, status: quote_type
-    payment.update! subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor_id, work_subcontractor_id: work_subcontractor.id, expendable_id: expendable.id, price: actual_cost, date: work_subcontractor.delivery_date
+    expendable.update! division_id: work_subcontractor.work.quote&.division&.id, subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor.id, price: actual_cost, date: work_subcontractor.delivery_date, status: quote_type
+    payment.update! subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor.id, work_subcontractor_id: work_subcontractor.id, expendable_id: expendable.id, price: actual_cost, date: work_subcontractor.delivery_date
 
-    render json: { status: :success, client: client, division: client.subcontractor_division, subcontractor: client.subcontractor_division.subcontractor }
+    render json: { status: :success, client: client, division: division, subcontractor: subcontractor }
+
   rescue => e
 
-    render json: { status: :error, message: e.message }
+    render json: { stattus: :error, message: e.message }
   end
 
   ##
@@ -76,7 +79,7 @@ class WorkSubcontractorsController < ApplicationController
   #
   def show
 
-    @directions = "#{ Time.zone.today } #{ work_subcontractor.work.quote.subject }"
+    @directions = Date.today.to_s + work_subcontractor.work.quote.subject
   end
 
   ##

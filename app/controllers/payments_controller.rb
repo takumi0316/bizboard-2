@@ -7,11 +7,14 @@ class PaymentsController < ApplicationController
   #----------------------------------------
 
   # 支払い情報
-  expose_with_pagination(:payments) { Payment.all.where(accouting_status: :active) }
+  expose_with_pagination(:payments) {
+    Payment
+    .all
+  }
 
 
   # 支払い情報
-  expose(:payment) { Payment.find_or_initialize_by id: params[:id] || params[:payment_id] }
+  expose(:payment) { Payment.find_or_initialize_by id: params[:id] || params[:payment_id]}
 
 
   #----------------------------------------
@@ -36,8 +39,13 @@ class PaymentsController < ApplicationController
   #
   def index
 
-    @start_date = params[:begginning].present? ? Time.zone.strptime(params[:begginning], '%Y-%m-%d').beginning_of_month : Time.zone.now.beginning_of_month
-    @end_date = params[:begginning].present? ? Time.zone.strptime(params[:end], '%Y-%m-%d').end_of_month : Time.zone.now.end_of_month
+    @start_date = Time.current.beginning_of_month
+    @end_date = Time.current.end_of_month
+
+    if params[:begginning].present?
+      @start_date = params[:begginning].to_time.beginning_of_month
+      @end_date = params[:end].to_time.end_of_month
+    end
 
     @subcontractor = Subcontractor.eager_load(:payments).where.not(payments: { price: 0 })
 

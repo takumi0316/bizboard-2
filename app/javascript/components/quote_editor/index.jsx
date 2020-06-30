@@ -1,9 +1,9 @@
 import React, { Fragment }  from 'react'
 
 // import Component
-import ClientSearch         from '../utilities/client_search';
-import ProjectSearch        from './project_search';
-import HomeDivision         from './home_division';
+import ClientSearch 				from '../utilities/client_search';
+import ProjectSearch 				from './project_search';
+import HomeDivision 				from './home_division';
 import Subject              from './subject/index.jsx';
 import CustomerInformation  from './customer_information';
 import SalesDepartment      from './sales_department';
@@ -230,7 +230,7 @@ export default class QuoteEditor extends React.Component {
   setTemporaryPrice = temporary_price => {
 
     const castTemporaryPrice = Number(temporary_price);
-    const copyProjects = this.state.quote_projects.slice();
+    const	copyProjects = this.state.quote_projects.slice();
     let price = 0;
     copyProjects.map((project) => {
 
@@ -398,7 +398,7 @@ export default class QuoteEditor extends React.Component {
     project.specifications.map(specification => {
     
       const strong = 1000;
-        
+      	
       // uniqueなidを生成
       const uid = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
 
@@ -414,7 +414,7 @@ export default class QuoteEditor extends React.Component {
         'project_name': specification.project_name ? specification.project_name : '',
         'remarks': specification.remarks ? specification.remarks : ''
       };
-              
+          		
       quote_projects.push(field);
     });
 

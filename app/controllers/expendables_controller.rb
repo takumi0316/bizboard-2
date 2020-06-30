@@ -13,9 +13,11 @@ class ExpendablesController < ApplicationController
 
   # 見積もり
   expose_with_pagination(:expendables) {
-    Expendable.search(status: params[:status], subcontractor: params[:subcontractor], division: params[:division], date1: params[:date1], date2: params[:date2]).where(accouting_status: :active).all.order(date: :desc)
+    Expendable
+      .search(status: params[:status], subcontractor: params[:subcontractor], division: params[:division], date1: params[:date1], date2: params[:date2])
+      .all
+      .order(date: :desc)
   }
-
   # 見積もり
   expose(:expendable) { Expendable.find_or_initialize_by id: params[:id] || params[:expendable_id]}
 
@@ -60,24 +62,6 @@ class ExpendablesController < ApplicationController
   end
 
   ##
-  # 新規作成
-  # @version 2018/06/10
-  #
-  def create
-
-    # 取引先情報更新
-    expendable.update! expendable_params
-
-    payment = expendable.build_payment
-    payment.update! subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date
-
-    redirect_to expendables_path, flash: { notice: { message: '製造経費を登録しました' } }
-  rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
-  end
-
-  ##
   # 編集
   # @version 2018/06/10
   #
@@ -98,10 +82,35 @@ class ExpendablesController < ApplicationController
 
     # 取引先情報更新
     expendable.update! expendable_params
+    # priceがnilなら0にする
+    expendable.update(price: 0) if expendable.price.nil?
 
-    expendable.payment.update! subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date
+    payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
+    payment.update!(expendable_id: expendable.id, subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date) if payment.present?
+    payment.save!(expendable_id: expendable.id, subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date) if payment.nil?
 
     redirect_to expendables_path, flash: { notice: { message: '製造経費を更新しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+  end
+
+  ##
+  # 新規作成
+  # @version 2018/06/10
+  #
+  def create
+
+    # 取引先情報更新
+    expendable.update! expendable_params
+    # priceがnilなら0にする
+    expendable.update(price: 0) if expendable.price.nil?
+
+    payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
+    payment.update!(expendable_id: expendable.id, subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date) if payment.present?
+    payment.save!(expendable_id: expendable.id, subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date) if payment.nil?
+
+    redirect_to expendables_path, flash: { notice: { message: '製造経費を登録しました' } }
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
@@ -113,7 +122,10 @@ class ExpendablesController < ApplicationController
   #
   def destroy
 
-    expendable.destroy!
+    payment = Payment.find_or_initialize_by(expendable_id: expendable.id)
+    payment.destroy if payment.present?
+
+    expendable.destroy
 
     redirect_to expendables_path, flash: { notice: { message: '製造経費を削除しました' } }
   rescue => e

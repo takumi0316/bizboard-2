@@ -70,7 +70,6 @@ class Activity < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
 
@@ -80,7 +79,7 @@ class Activity < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{ self.memo } #{ self.quote_id } #{ self.quote.user.name } #{ self.quote.subject }"
+    self.free_word = "#{self.memo} #{self.quote_id} #{self.quote&.user&.name} #{self.quote&.subject}"
   end
 
   ##
@@ -94,32 +93,6 @@ class Activity < ApplicationRecord
     query = (['free_word like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
-  end
-
-  ##
-  # プロダクションスクリプト
-  # @version 2020/06/23
-  #
-  def self.production_script
-
-    Activity.where(status: :lost).or(Activity.where(status: :rejection)).each do |r|
-
-      if r.quote.work.present?
-
-        if r.quote.work.work_subcontractors.present?
-
-          r.quote.work.work_subcontractors.each do |w|
-
-            w.expendable.inactive! if w.expendable.present?
-            w.payment.inactive! if w.payment.present?
-          end
-        end
-      end
-    end
-
-  rescue => e
-
-    p e
   end
 
 end

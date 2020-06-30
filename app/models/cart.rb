@@ -6,8 +6,6 @@
 #  company_division_client_id :bigint(8)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
-#  status                     :integer          default(0)
-#  company_division_id        :bigint(8)
 #
 
 class Cart < ApplicationRecord
