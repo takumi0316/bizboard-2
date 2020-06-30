@@ -46,7 +46,7 @@ class ActivitiesController < ApplicationController
   def new
 
     @id = params[:quote_id]
-    @activity = Activity.new(:quote_id => @id)
+    @activity = Activity.new(quote_id: @id)
     @quote = Quote.find(@id) rescue @quote = Quote.find_by(@id)
 
     add_breadcrumb '活動履歴', path: activities_path
@@ -62,33 +62,7 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    if activity.status == 'lost'
-      quote = Quote.find_or_initialize_by(id: activity.quote.id)
-      quote.update(status: 'lost') unless activity.quote.status == 'lost'
-      unless activity.quote.work.nil?
-        #失注になった場合に外注書が作成されていたら紐づくデータを削除
-        subcontractor_detail_id = WorkSubcontractor.where(work_id: activity.quote.work.id)
-        work_subcontractor_detail_id = WorkSubcontractorDetail.where(work_subcontractor_id: subcontractor_detail_id.id)
-        unless subcontractor_detail_id.nil?
-          Payment.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
-          Expendable.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
-        end
-      end
-    end
-
-    if activity.status == 'rejection'
-      quote = Quote.find_or_initialize_by(id: activity.quote.id)
-      quote.update(status: 'rejection') unless activity.quote.status == 'rejection'
-      unless activity.quote.work.nil?
-        #不採用になった場合に外注書が作成されていたら紐づくデータを削除
-        subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
-        work_subcontractor_detail_id = WorkSubcontractorDetail.where(work_subcontractor_id: subcontractor_detail_id.id)
-        unless subcontractor_detail_id.nil?
-          Payment.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
-          Expendable.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
-        end
-      end
-    end
+    change_inactive?
 
     @sort = activity.quote_id
 
@@ -123,33 +97,9 @@ class ActivitiesController < ApplicationController
     # 取引先情報更新
     activity.update! activity_params
 
-    if activity.status == 'lost'
-      quote = Quote.find_or_initialize_by(id: activity.quote.id)
-      quote.update(status: 'lost') unless activity.quote.status == 'lost'
-      unless activity.quote.work.nil?
-        #失注になった場合に外注書が作成されていたら紐づくデータを削除
-        subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
-        work_subcontractor_detail_id = WorkSubcontractorDetail.where(work_subcontractor_id: subcontractor_detail_id.id)
-        unless subcontractor_detail_id.nil?
-          Payment.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
-          Expendable.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
-        end
-      end
-    end
+    change_inactive?
 
-    if activity.status == 'rejection'
-      quote = Quote.find_or_initialize_by(id: activity.quote.id)
-      quote.update(status: 'rejection') unless activity.quote.status == 'rejection'
-      unless activity.quote.work.nil?
-        #不採用になった場合に外注書が作成されていたら紐づくデータを削除
-        subcontractor_detail_id = WorkSubcontractor.find_or_initialize_by(work_id: activity.quote.work.id)
-        work_subcontractor_detail_id = WorkSubcontractorDetail.where(work_subcontractor_id: subcontractor_detail_id.id)
-        unless subcontractor_detail_id.nil?
-          Payment.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
-          Expendable.where(work_subcontractor_detail_id: work_subcontractor_detail_id.ids).delete_all
-        end
-      end
-    end
+    change_active?
 
     @sort = activity.quote_id
 
@@ -183,6 +133,52 @@ class ActivitiesController < ApplicationController
   def activity_params
 
     params.require(:activity).permit :name, :date, :status, :memo, :attachment, :quote_id, :accurary, :next_action, :next_action_date, :scheduled_date
+  end
+
+  ##
+  # 経費計上しない
+  # @version 2020/06/23
+  #
+  def change_inactive?
+
+    if activity.status_lost? || activity.status_rejection?
+
+      work = activity.quote.work
+      if work.present?
+
+        if work.work_subcontractors.present?
+
+          work.work_subcontractors.each do |r|
+
+            r.expendable.inactive!
+            r.expendable.payment.inactive!
+          end
+        end
+      end
+    end
+  end
+
+  ##
+  # 経費計上する
+  # @version 2020/06/23
+  #
+  def change_active?
+
+    unless activity.status_lost? || activity.status_rejection?
+
+      work = activity.quote.work
+      if work.present?
+
+        if work.work_subcontractors.present?
+
+          work.work_subcontractors.each do |r|
+
+            r.expendable.active!
+            r.expendable.payment.active!
+          end
+        end
+      end
+    end
   end
 
 end

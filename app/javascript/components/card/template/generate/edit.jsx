@@ -19,6 +19,8 @@ export default class EditTemplateGenerate extends React.Component {
   constructor(props) {
 
     super(props);
+ 
+    Ts.loadFont();
 
     this.state = {
       card_id: props.card.id,
@@ -37,11 +39,10 @@ export default class EditTemplateGenerate extends React.Component {
    */
   componentDidMount = () => {
 
+    if(!this.state.template.file) return;
+    
     this.loadingRef.start();
-    if(!this.state.template.file) {
-      this.loadingRef.finish();
-      return;
-    };
+    
     const field = new FormData();
     field.append('url', this.state.template.file);
     const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
@@ -107,7 +108,7 @@ export default class EditTemplateGenerate extends React.Component {
       id: '',
       card_template_id: '',
       name: '',
-      font: '新ゴR',
+      font: '新ゴ R',
       font_size: '9',
       font_color: 'black',
       coord_y: '10',
@@ -234,7 +235,7 @@ export default class EditTemplateGenerate extends React.Component {
 
       window.alertable({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish()});
     });
-	};
+  };
 
   render() {
     return (
@@ -253,8 +254,9 @@ export default class EditTemplateGenerate extends React.Component {
           : null
         }
         <CardTemplate template={ this.state.template } didmount_type={ this.state.didmount_status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
-        <div className='u-mt-10'>
+        <div className='c-overlay-submit'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>
+          <button className='u-ml-30 c-btnMain-standard' onClick={ () => this.unSetPDF() }>テンプレートを変更する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>

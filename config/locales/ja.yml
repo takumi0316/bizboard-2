@@ -130,7 +130,6 @@ ja:
       binding_work:
         binding_works_unnecessary: なし
         binding_works_necessary: あり
-
     project_binding_work:
       bind_type:
         original_bind_type: 原稿通り

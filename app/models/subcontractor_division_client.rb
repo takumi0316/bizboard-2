@@ -42,6 +42,7 @@ class SubcontractorDivisionClient < ApplicationRecord
   #----------------------------------------
 
   belongs_to :subcontractor_division
+
   belongs_to :user
 
   # 案件
@@ -64,7 +65,7 @@ class SubcontractorDivisionClient < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.subcontractor_division&.subcontractor&.name} #{self.subcontractor_division&.subcontractor&.kana} #{self.subcontractor_division&.name} #{self.subcontractor_division&.kana} #{self.user&.name} #{self.name} #{self.kana} #{self.note}"
+    self.free_word = "#{ self.subcontractor_division.subcontractor.name } #{ self.subcontractor_division.subcontractor.kana } #{ self.subcontractor_division.name } #{ self.subcontractor_division.kana } #{ self.user.name } #{ self.name } #{ self.kana } #{ self.note }"
   end
 
   ##
