@@ -13,7 +13,7 @@ set :assets_roles, [:assets]
 
 # rails
 set :rails_env, 'staging'
-set :branch, 'issues#34'
+set :branch, 'issues#35'
 # set :branch, 'master'
 set :deploy_to, '/home/media'
 set :log_level, :debug

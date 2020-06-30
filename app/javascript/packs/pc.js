@@ -12,7 +12,6 @@ import 'scripts/rails_ujs_jack';
   RailsUjsJack.jack(Rails);
   Rails.start();
   Initializer.lazy();
-  Ts.loadFont();
 
   // 初期表示時や、ajaxでのリクエスト時に発動
   document.addEventListener('turbolinks:load', function() {
