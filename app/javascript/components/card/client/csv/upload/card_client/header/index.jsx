@@ -8,7 +8,7 @@ import {
 const Header = props => {
 
   return(
-    <div className={ `u-ml-30 ${Style.Header}` }>
+    <div className={ Style.Header }>
       <div className='c-table'>
         <table>
           <thead>

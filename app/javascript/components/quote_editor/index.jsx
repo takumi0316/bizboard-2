@@ -1,9 +1,9 @@
 import React, { Fragment }  from 'react'
 
 // import Component
-import ClientSearch 				from '../utilities/client_search';
-import ProjectSearch 				from './project_search';
-import HomeDivision 				from './home_division';
+import ClientSearch         from '../utilities/client_search';
+import ProjectSearch        from './project_search';
+import HomeDivision         from './home_division';
 import Subject              from './subject/index.jsx';
 import CustomerInformation  from './customer_information';
 import SalesDepartment      from './sales_department';
@@ -62,7 +62,7 @@ export default class QuoteEditor extends React.Component {
       delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
-      show: props.quote.discount === 0 || props.quote.discount ? false : true,
+      show: props.quote.discount === 0 ? false : true,
       show_quote_number: props.quote.channel == 'bpr_erp' ? true : false,
       task: props.task || '',
       users: props.users,
@@ -230,7 +230,7 @@ export default class QuoteEditor extends React.Component {
   setTemporaryPrice = temporary_price => {
 
     const castTemporaryPrice = Number(temporary_price);
-    const	copyProjects = this.state.quote_projects.slice();
+    const copyProjects = this.state.quote_projects.slice();
     let price = 0;
     copyProjects.map((project) => {
 
@@ -398,7 +398,7 @@ export default class QuoteEditor extends React.Component {
     project.specifications.map(specification => {
     
       const strong = 1000;
-      	
+        
       // uniqueなidを生成
       const uid = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
 
@@ -414,7 +414,7 @@ export default class QuoteEditor extends React.Component {
         'project_name': specification.project_name ? specification.project_name : '',
         'remarks': specification.remarks ? specification.remarks : ''
       };
-          		
+              
       quote_projects.push(field);
     });
 
@@ -475,8 +475,9 @@ export default class QuoteEditor extends React.Component {
     this.setState({ is_update: !this.state.is_update });
     let price = 0;
     this.state.quote_projects.map(quote_project => price += Number(quote_project.price));
-
+    
     const field = new FormData();
+    
     field.append('quote[id]', this.state.quote_id);
     field.append('quote[division_id]', this.state.home_division ? this.state.home_division.id : this.props.division_id);
     field.append('quote[company_division_client_id]', this.state.client ? this.state.client.id : '');
@@ -495,12 +496,11 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[delivery_note_date]', this.state.delivery_note_date || '');
     field.append('quote[deliver_at]', this.state.deliver_at || '');
     field.append('quote[reception]', this.state.reception);
-    field.append('quote[deliver_type_note]', this.state.deliver_type_note === 'location' || this.state.deliver_type_note === 'other' ? this.state.deliver_type_note : '');
     field.append('quote[remarks]', this.state.remarks);
     field.append('quote[memo]', this.state.memo);
     field.append('quote[user_id]', this.props.user_id);
     field.append('quote[discount]', this.state.discount);
-    field.append('quote[price]', price);
+    field.append('quote[price]', this.state.discount === 0 ? price : price - this.state.discount);
     field.append('quote[deliver_type]', this.state.deliver_type);
     this.state.quote_projects.map(project => {
       
@@ -516,7 +516,7 @@ export default class QuoteEditor extends React.Component {
     });
     
     // 納品方法
-    if(this.state.deliver_type === 'location' || this.state.deliver_type === 'other') field['quote[deliver_type_note]'] = this.state.deliver_type_note;
+    field.append('quote[deliver_type_note]', this.state.deliver_type === 'location' || this.state.deliver_type === 'other' ? this.state.deliver_type_note : '');
     
     const request = this.state.quote_id ? window.xhrRequest.put(this.props.action, field) : window.xhrRequest.post(this.props.action, field);
     request.then(res => {
@@ -533,9 +533,12 @@ export default class QuoteEditor extends React.Component {
         };
       };
       
-      // エラー文
-      console.log(res.data.message);
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。`, close_callback: this.loadingRef.finish() });
+      if(res.data.status != 'success') {
+        
+        // エラー文
+        console.log(res.data.message);
+        window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` });
+      };
     }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }));
   };
   

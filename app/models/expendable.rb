@@ -9,12 +9,13 @@
 #  name                         :string(191)
 #  price                        :integer          default(0), not null
 #  date                         :date
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
 #  memo                         :text(65535)
 #  work_subcontractor_detail_id :bigint(8)
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
 #  user_id                      :bigint(8)
 #  work_subcontractor_id        :bigint(8)
+#  accouting_status             :integer          default("active")
 #
 
 class Expendable < ApplicationRecord
@@ -45,11 +46,13 @@ class Expendable < ApplicationRecord
     cost: 100
   }
 
+  enum accouting_status: { active: 0, inactive: 10 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
 
-  # validates :price, presence: true
+  validates :price, presence: true
 
   #----------------------------------------
   #  ** Associations **
@@ -60,6 +63,8 @@ class Expendable < ApplicationRecord
   belongs_to :division
 
   belongs_to :work_subcontractor, optional: true
+
+  has_one :payment, dependent: :destroy
 
   #----------------------------------------
   #  ** Scopes **
@@ -82,18 +87,17 @@ class Expendable < ApplicationRecord
     if parameters[:division] == '' && parameters[:subcontractor] == '' && parameters[:status] == ''
 
       # 日付検索
-      _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = _self.where(date: Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_day..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
     else
 
       # 日付検索
-      _self = _self.where(date: parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
+      _self = _self.where(date: Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_day..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if parameters[:date1] != nil && parameters[:date2] != nil
       _self = _self.where(status: parameters[:status]) if parameters[:status] != '' && parameters[:status] != nil
       _self = _self.where(division_id: parameters[:division]) if parameters[:division] != '' && parameters[:division] != nil
       _self = _self.where(subcontractor_id: parameters[:subcontractor]) if parameters[:subcontractor] != '' && parameters[:subcontractor] != nil
     end
 
     _self
-
   end
 
   ##

@@ -1,10 +1,11 @@
 export const HEADERS = ['name', 'font', 'font_size', 'font_color', 'coord_x', 'coord_y', 'length', 'line_space'];
 
 export const FONT_STYLE = {
-  '新ゴL': '新ゴ L',
-  '新ゴR': '新ゴ R',
-  'Frutiger 45 Light': 'Frutiger 45 Light',
-  'Frutiger 55 Roman': 'Frutiger 55 Roman'
+  '新ゴ L': '新ゴ L',
+  '新ゴ R': '新ゴ R',
+  'Lucida Grande': 'Lucida Grande',
+  'UD新ゴ 簡体字 M': 'UD新ゴ 簡体字 M',
+  'ヒラギノ角ゴ 繁体中文 W3': 'ヒラギノ角ゴ 繁体中文 W3'
 }
 
 export const DIVISION_TYPE_NAME = '会社・部署を選択する';
