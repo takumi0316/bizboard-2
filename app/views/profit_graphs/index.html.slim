@@ -32,10 +32,10 @@
     - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum
     - profit_accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum
 
+    / 案件が作業完了以降のステータスのもの 40,50,60
+    - status_order = activities.where("(quotes.status = ?) OR (quotes.status = ?) OR (quotes.status = ?)", 40, 50, 60).pluck(:price).sum
+    - profit_status_order = activities.where("(quotes.status = ?) OR (quotes.status = ?) OR (quotes.status = ?)", 40, 50, 60).pluck(:profit_price).sum
 
-    / ステータス受注
-    - status_order = activities.where(status: :order).pluck(:price).sum
-    - profit_status_order = activities.where(status: 50).pluck(:profit_price).sum
 
     / 目標売上
     - orders = targets.map(&:sales).inject(:+)
@@ -73,7 +73,8 @@
       - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:price).sum
 
       / ステータス受注
-      - status_order = activities.where(status: :order).pluck(:price).sum
+      / - status_order = activities.where(status: :order).pluck(:price).sum
+      - status_order = activities.where("(quotes.status = ?) OR (quotes.status = ?) OR (quotes.status = ?)", 40, 50, 60).pluck(:price).sum
 
       / 目標売上
       - orders = r.sales
@@ -108,7 +109,8 @@
       - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 0, 10, 20, 50).pluck(:profit_price).sum
 
       / ステータス受注
-      - status_order = activities.where(status: :order).pluck(:profit_price).sum
+      / - status_order = activities.where(status: :order).pluck(:profit_price).sum
+      - status_order = activities.where("(quotes.status = ?) OR (quotes.status = ?) OR (quotes.status = ?)", 40, 50, 60).pluck(:price).sum
 
       / 目標売上
       - profits = r.profit
