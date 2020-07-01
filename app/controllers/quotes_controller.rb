@@ -317,30 +317,20 @@ class QuotesController < ApplicationController
 
     raise '管理者以外は案件の一括ロックは出来ません' if !current_user.admin?
 
-    _self = params
+    _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
     # フリーワードが入っていて、ステータスが未選択
     if params[:name].present? && params[:status] == ''
-      binding.pry
       # 名称検索
-      _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
       terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
-      # 日付検索
-
       _self.update(lock: true)
-      return _self
     # フリーワードが入っていて、ステータスが選択されている
     elsif params[:name].present? && params[:status] != ''
-
-      _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
-
       # 名称検索
       terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" }).where(status: params[:status])
-
-
       _self.update(lock: true)
       return _self
 
@@ -348,22 +338,16 @@ class QuotesController < ApplicationController
     elsif params[:name].blank? && params[:status] == ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
       _self.update(lock: true)
       return _self
     # フリーワードが空で、ステータスが入力されている
     elsif params[:name].blank? && params[:status] != nil && params[:status] != ''
 
-      # 日付検索
-      _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
       # ステータス検索
       _self = _self.where(status: params[:status])
-
       _self.update(lock: true)
       return _self
     end
-
-    return _self
     # 成功したら編集ページに飛ぶ
     redirect_to quotes_path
   rescue => e
