@@ -64,6 +64,10 @@ export const mmTopx = mm => {
  * PDFを展開する
  * @version 2020/03/30
  * 
+ * サイズ: pt
+ * 座標: mm
+ * 長さ: mm
+ * 行間: mm*
  */
 export const setPDF = (file, details, canvas, draw_canvas) => {
 
@@ -92,7 +96,7 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
     draw_canvas.height = (mmTopx(55 * 2));
     draw_canvas.width = (mmTopx(91 * 2));
 
-    details.forEach(detail => {
+    details.map(detail => {
   
       const name = detail.name;
       
@@ -102,21 +106,23 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
       const x =	mmTopx(detail.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
       const lineSpace = mmTopx(detail.line_space);
-  
-      draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-      
-      for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
-        
-        let line = lines[i];
-        let addY = fontSize;
-        if(i) addY += fontSize * lineSpace * i;
-        draw_ctx.fillText(line, x, y + addY);
-      };
+      const contentLength = mmTopx(detail.length);
   
       // 自動組版
       // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-      // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-      // draw_ctx.fillText(name, x, y);
+      draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+      const txt_width = draw_ctx.measureText(name).width 
+      if((contentLength - txt_width) < 0) {
+
+        const count = name.length;
+        console.log(txt_width)
+        console.log(lineSpace * (count - 1))
+        // console.log(txt_width - (lineSpace * count))
+        draw_ctx.fillText(name, x, y);
+      } else {
+
+        draw_ctx.fillText(name, x, y);
+      };
     });
 
     // Prepare object needed by render method
@@ -133,6 +139,11 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
 /**
  * PDFを展開する
  * @version 2020/03/30
+ * 
+ * サイズ: pt
+ * 座標: mm
+ * 長さ: px
+ * 行間: px
  */
 export const setPDFValue = (file, canvas, draw_canvas, values) => {
 
@@ -197,6 +208,10 @@ export const setPDFValue = (file, canvas, draw_canvas, values) => {
  * PDFにテキストを展開
  * @version 2020/04/06
  * 
+ * サイズ: pt
+ * 座標: mm
+ * 長さ: px
+ * 行間: px
  */
 export const drawText = (details, draw_canvas) => {
 
@@ -220,18 +235,10 @@ export const drawText = (details, draw_canvas) => {
   
     draw_ctx.font = `${ fontSize }px ${ detail.font }`;
    
-    for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
-      
-      let line = lines[i];
-      let addY = fontSize;
-      if(i) addY += fontSize * lineSpace * i;
-      draw_ctx.fillText(line, x, y + addY);
-    };
-    
     // 自動組版
-    // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-    // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-    // draw_ctx.fillText(name, x, y);
+    draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+    draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+    draw_ctx.fillText(name, x, y);
   });
 };
 
@@ -239,6 +246,10 @@ export const drawText = (details, draw_canvas) => {
  * PDFにテキストを展開
  * @version 2020/04/06
  *
+ * サイズ: pt
+ * 座標: mm
+ * 長さ: px
+ * 行間: px
  */
 export const drawTextValue = (values, draw_canvas) => {
 
@@ -282,6 +293,10 @@ export const drawTextValue = (values, draw_canvas) => {
  *  ファイルドロップ時
  *  @version 2018/06/10
  * 
+ * サイズ: pt
+ * 座標: mm
+ * 長さ: px
+ * 行間: px 
  */
 export const onDrop = (files, templates, front_file, reverse_file, status) => {
 
