@@ -25,6 +25,8 @@ export default class UploadCardClient extends React.Component {
     this.front_file = '';
     this.reverse_file = '';
 
+    Ts.loadFont();
+ 
     this.state = {
       company: '',
       divisions: props.divisions || '',

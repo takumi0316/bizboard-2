@@ -2,7 +2,7 @@
 
 = link_to '案件を作成する', new_quote_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
-= react_component('QuoteSearch', { count_number: @count_number })
+= react_component :QuoteSearch, count_number: @count_number
 
 .c-table.u-mt-30
   table
@@ -72,14 +72,20 @@
 
               = r.user.name
           td.u-ta-center
-            = r.status_i18n if r.lost?
             - if r.activity.nil?
 
               = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post if r.work.nil?
               = link_to '作業書', work_path(r.work), class: 'c-btnMain-standard c-btn-blue' if r.work.present?
             - if r.activity.present?
 
-              = r.activity.status_i18n
+              - if r.activity.status_lost? || r.activity.status_rejection?
+
+                = r.activity.status_i18n if r.work.nil?
+                = link_to '作業書', work_path(r.work), class: 'c-btnMain-standard c-btn-blue' if r.work.present?
+              - else
+
+                = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post if r.work.nil?
+                = link_to '作業書', work_path(r.work), class: 'c-btnMain-standard c-btn-blue' if r.work.present?
           td = link_to "見積書#{ r.quote_projects.nil? ? '作成' : '' }", edit_quote_path(r), class: "c-btnMain-standard c-btn-#{ r.quote_projects.nil? ? 'orange' : 'blue' }"
           td.u-ta-center
             - if r.invoicing? && r.invoice.present?

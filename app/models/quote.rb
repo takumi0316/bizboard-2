@@ -9,7 +9,7 @@
 #  remarks                    :text(65535)
 #  memo                       :text(65535)
 #  free_word                  :text(65535)
-#  price                      :integer
+#  price                      :integer          default(0), not null
 #  attention                  :integer
 #  pdf_url                    :text(65535)
 #  user_id                    :integer
@@ -28,7 +28,7 @@
 #  tax                        :float(24)        default(1.1)
 #  reception                  :integer
 #  temporary_price            :integer
-#  profit_price               :integer          default(0)
+#  profit_price               :integer          default(0), not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  last_company               :string(191)
@@ -168,7 +168,7 @@ class Quote < ApplicationRecord
     if parameters[:name].present? && parameters[:status] == ''
 
       # 名称検索
-      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
@@ -178,7 +178,7 @@ class Quote < ApplicationRecord
     # フリーワードが入っていて、ステータスが選択されている
     elsif parameters[:name].present? && parameters[:status] != ''
 
-      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
 
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
@@ -192,19 +192,21 @@ class Quote < ApplicationRecord
     elsif parameters[:name].blank? && parameters[:status] == ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+
       return _self
     # フリーワードが空で、ステータスが入力されている
     elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+
       # ステータス検索
       _self = _self.where(status: parameters[:status])
+
       return _self
     end
 
     return _self
   end
-
 end

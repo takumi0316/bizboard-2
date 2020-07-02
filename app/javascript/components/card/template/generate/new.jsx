@@ -21,6 +21,8 @@ export default class NewTemplateGenerate extends React.Component {
 
     super(props);
 
+    Ts.loadFont();
+ 
     const init = [
       { ...props.front_side },
       { ...props.reverse_side },
@@ -221,7 +223,7 @@ export default class NewTemplateGenerate extends React.Component {
       window.alertable({ icon: 'error', message: error.message });
     });
     this.loadingRef.start();
-	};
+  };
 
   render() {
     return (
@@ -238,7 +240,7 @@ export default class NewTemplateGenerate extends React.Component {
           :
           <CardTemplate template={ this.state.templates[1] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
         }
-        <div className='u-mt-10'>
+        <div className='c-overlay-submit'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>保存する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>

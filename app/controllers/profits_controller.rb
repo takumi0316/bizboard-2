@@ -36,14 +36,10 @@ class ProfitsController < ApplicationController
 
     add_breadcrumb '請求情報'
 
-    if params[:date1].present?
-      @date1 = params[:date1].to_time.beginning_of_day
-      @date2 = params[:date2].to_time.end_of_day
-    else
-      @date1 = Time.current.beginning_of_month
-      @date2 = Time.current.end_of_month
-    end
-    @company = Quote.where(status: :invoicing).joins({client: {company_division: :company}}).joins(:invoice).merge(Invoice.date_in(@date1..@date2)).merge(Quote.order(price: 'DESC')).group_by{|u| u.client.company_division.company.name }
+    @date1 = params[:date1].present? ? Time.zone.strptime(params[:date1], '%Y-%m-%d').beginning_of_month : Time.zone.now.beginning_of_month
+    @date2 = params[:date2].present? ? Time.zone.strptime(params[:date2], '%Y-%m-%d').end_of_month : Time.zone.now.end_of_month
+
+    @company = Quote.where(status: :invoicing).joins({ client: { company_division: :company } }).joins(:invoice).merge(Invoice.date_in(@date1..@date2)).merge(Quote.order(price: :desc)).group_by{ |u| u.client.company_division.company.name }
 
     respond_to do |format|
       format.html do
