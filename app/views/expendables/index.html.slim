@@ -2,7 +2,7 @@ h1.l-dashboard__heading 製造経費情報一覧
 
 = link_to '製造経費を入力する', new_expendable_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
-= react_component('ExpendablesSearch',{subcontractor: Subcontractor.all, division: Division.all,})
+= react_component :ExpendablesSearch, subcontractor: Subcontractor.all, division: Division.all
 
 = link_to "CSV書き出し", expendables_path(date1: params[:date1], date2: params[:date2], format: :csv), class: 'c-btnMain-standard u-mt-30'
 
