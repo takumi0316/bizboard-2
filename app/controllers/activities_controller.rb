@@ -35,8 +35,8 @@ class ActivitiesController < ApplicationController
   def index
 
     add_breadcrumb '活動履歴'
-    @activities = Activity.all.where(quote_id: params[:id]) if params[:id].present?
-    @activities = Activity.all if params[:id].blank?
+    @activities = Activity.all
+    @activities = @activities.where(quote_id: params[:id]) if params[:id]
 
   end
 
@@ -48,7 +48,7 @@ class ActivitiesController < ApplicationController
 
     add_breadcrumb '活動履歴', path: activities_path
     add_breadcrumb '新規作成'
-    @activities = Activity.new(:quote_id => params[:quote_id])
+    @activities = Activity.new(quote_id: :params[:quote_id])
 
   rescue => e
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
