@@ -138,13 +138,16 @@ class Quote < ApplicationRecord
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
 
+  # 静的に会社情報を保存する
+  before_validation :set_company_information
+
   ##
   # フリーワード検索用文字列をセットする
   # @version 2018/06/10
   #
   def set_free_word
 
-    self.free_word = "#{self.quote_number} #{self.subject} #{self.user&.name} #{self.division&.name} #{self.created_at} #{self.client&.company_division&.company&.name} #{self.client&.company_division&.name} #{self.client&.name}"
+    self.free_word = "#{self.quote_number} #{self.subject} #{self.user.name} #{self.division.name} #{self.created_at} #{self.client&.company_division&.company&.name} #{self.client&.company_division&.name} #{self.client&.name} #{self.last_client} #{self.last_division} #{self.last_client}"
   end
 
   ##
@@ -154,6 +157,14 @@ class Quote < ApplicationRecord
   def set_quote_number
 
     update_columns(quote_number: "#{created_at.strftime('%Y%m%d')}#{id}")
+  end
+
+  def set_company_information
+
+    return if self.client.nil? && self.persisted?
+    self.last_company = self.client.company_division.company.name
+    self.last_division = self.client.company_division.name
+    self.last_client = self.client.name
   end
 
   ##

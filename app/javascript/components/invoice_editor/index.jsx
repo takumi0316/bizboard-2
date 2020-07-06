@@ -2,11 +2,7 @@ import React, { Fragment, useState } from 'react';
 
 // import libraries
 import CustomerAddress from './customer_address';
-import DatetimePicker  from '../../utilities/datetime_picker';
-
-// Ajax
-import Request from 'superagent';
-require('superagent-rails-csrf')(Request);
+import DatetimePicker  from '../utilities/datetime_picker';
 
 const InvoicePdfGenrator = props => {
 
@@ -75,55 +71,37 @@ const InvoicePdfGenrator = props => {
    *
    * @version 2020/02/18
    */
-  const setDate = prop => {
-
-    setState({ ...state, date: prop.value });
-  };
+  const setDate = prop => setState({ ...state, date: prop.value });
 
   /**
    *
    * @version 2020/02/18
    */
-  const setExpiration = prop => {
-
-    setState({ ...state, expiration: prop.value });
-  };
+  const setExpiration = prop => setState({ ...state, expiration: prop.value });
 
   /**
    * 件名を更新する
    * @version 2020/02/18
    */
-  const setSubject = e => {
-
-    setState({ ...state, subject: e.target.value });
-  };
+  const setSubject = e => setState({ ...state, subject: e.target.value });
 
   /**
    * 備考を更新する
    * @version 2020/02/18
    */
-  const setRemarks = e => {
-
-    setState({ ...state, remarks: e.target.value });
-  };
+  const setRemarks = e => setState({ ...state, remarks: e.target.value });
 
   /**
    * メモを更新する
    * @version 2020/02/18
    */
-  const setMemo = e => {
-
-    setState({ ...state, memo: e.target.value });
-  };
+  const setMemo = e => setState({ ...state, memo: e.target.value });
 
   /**
    * 形式を更新する
    * @version 2020/02/28
    */
-  const setAttention = e => {
-
-    setState({ ...state, attention: e.target.value });
-  };
+  const setAttention = e => setState({ ...state, attention: e.target.value });
 
   /**
    * 請求書を作成
@@ -148,32 +126,20 @@ const InvoicePdfGenrator = props => {
     };
 
     const url = '/invoices';
-    const field = {
-      'invoice[quote_id]': props.quote.id,
-      'invoice[date]': state.date,
-      'invoice[expiration]': state.expiration,
-      'invoice[subject]': state.subject,
-      'invoice[remarks]': state.remarks,
-      'invoice[memo]': state.memo,
-      'invoice[attention]': state.attention
-    };
+    const field = new FormData();
+    field.append('invoice[quote_id]', props.quote.id);
+    field.append('invoice[date]', state.date);
+    field.append('invoice[expiration]', state.expiration);
+    field.append('invoice[subject]', state.subject);
+    field.append('invoice[remarks]', state.remarks);
+    field.append('invoice[memo]', state.memo);
+    field.append('invoice[attention]', state.attention);
 
-    Request
-      .post(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if(!err && res.body.status) {
-
-          alert('請求書を作成しました。');
-          location.href = `${res.body.invoice.id}/edit`;
-        } else {
-
-          alert('請求書の作成に失敗しました。');
-          alert(res.body.message);
-        };
-      });
+    const request = window.xhrRequest.post(url, field);
+    request.then(res => {
+      const redirect = () => window.location.href = `${ res.data.invoice.id }/edit`;
+      window.alertable({ icon: 'success', message: '案件の作成に成功しました。', close_callback: () => redirect() });
+    }).catch(err => window.alertable({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
   };
 
   /**
@@ -183,33 +149,21 @@ const InvoicePdfGenrator = props => {
   const setUpdateInvoice = e => {
 
     e.preventDefault();
-
-    const url = `/invoices/${props.invoice.id}`;
-    const field = {
-      'invoice[quote_id]': props.quote.id,
-      'invoice[date]': state.date,
-      'invoice[expiration]': state.expiration,
-      'invoice[subject]': state.subject,
-      'invoice[remarks]': state.remarks,
-      'invoice[memo]': state.memo,
-      'invoice[attention]': state.attention
-    };
-
-    Request
-      .put(url)
-      .field(field)
-      .set('X-Requested-With', 'XMLHttpRequest')
-      .setCsrfToken()
-      .end((err, res) => {
-        if(!err && res.body.status) {
-
-          alert('請求書を更新しました。');
-        } else {
-
-          alert('請求書の更新に失敗しました。');
-          alert(res.body.message);
-        }
-      });
+  
+    const url = `/invoices/${ props.invoice.id }`;
+    const field = new FormData();
+    field.append('invoice[quote_id]', props.quote.id);
+    field.append('invoice[date]', state.date);
+    field.append('invoice[expiration]', state.expiration);
+    field.append('invoice[subject]', state.subject);
+    field.append('invoice[remarks]', state.remarks);
+    field.append('invoice[memo]', state.memo);
+    field.append('invoice[attention]', state.attention);
+  
+    const request = window.xhrRequest.put(url, field);
+    request.then(res => {
+      window.alertable({ icon: 'success', message: '案件の更新に成功しました。' });
+    }).catch(err => window.alertable({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
   };
 
   /**

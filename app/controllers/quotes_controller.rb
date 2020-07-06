@@ -100,35 +100,6 @@ class QuotesController < ApplicationController
   end
 
   ##
-  # 編集
-  # @version 2018/06/10
-  def edit
-
-    add_breadcrumb '案件', path: quotes_path
-    add_breadcrumb '編集'
-  end
-
-  ##
-  # 更新
-  # @version 2018/06/10
-  def update
-
-    # 情報更新
-    quote.update! quote_params
-
-    # taskが存在していたらtaskの納期も更新する
-    quote.task.update! date: quote.deliver_at if quote.task.present?
-
-    # 請求先情報を静的に保存(更新)
-    quote.update! last_company: quote&.client&.company_division.company.name, last_division: quote&.client&.company_division.name, last_client: quote&.client&.name if quote.invoice.present?
-
-    render json: { status: :success }
-  rescue => e
-
-    render json: { status: :error, message: e.message }
-  end
-
-  ##
   # 新規作成
   # @version 2018/06/10
   def create
@@ -142,6 +113,36 @@ class QuotesController < ApplicationController
     end
 
     render json: { status: :success, quote: quote }
+  rescue => e
+
+    render json: { status: :error, message: e.message }
+  end
+
+  ##
+  # 編集
+  # @version 2018/06/10
+  #
+  def edit
+
+    add_breadcrumb '案件', path: quotes_path
+    add_breadcrumb '編集'
+
+  end
+
+
+  ##
+  # 更新
+  # @version 2018/06/10
+  #
+  def update
+
+    # 情報更新
+    quote.update! quote_params
+
+    # taskが存在していたらtaskの納期も更新する
+    quote.task.update! date: quote.deliver_at if quote.task.present?
+
+    render json: { status: :success }
   rescue => e
 
     render json: { status: :error, message: e.message }

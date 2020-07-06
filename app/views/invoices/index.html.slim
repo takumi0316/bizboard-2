@@ -1,6 +1,6 @@
 = render 'layouts/_partials/tabmenu'
 
-= react_component('InvoiceSearch')
+= react_component :InvoiceSearch
 
 .u-mt-30 = link_to '請求書鑑作成', invoices_roundup_path(name: params[:name], date1: params[:date1], date2: params[:date2]), target: :_blank, class: 'c-btnMain-standard'
 p 検索して絞り込んだ請求書をまとめて請求書鑑を作成します。

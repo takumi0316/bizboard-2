@@ -49,6 +49,26 @@ class InvoicesController < ApplicationController
   end
 
   ##
+  # 新規作成
+  # @version 2018/06/10
+  #
+  def create
+
+    # 情報更新
+    invoice.update! invoice_params
+
+    invoice.quote.update! status: :invoicing, last_company: invoice.quote.client.company_division.company.name, last_division: invoice.quote.client.company_division.name, last_client: invoice.quote.client.name
+
+    # 請求情報保存
+    Profit.create! company_id: invoice.quote.client.company_division.company_id, quote_id: invoice.quote_id, price: invoice.quote.price, date: invoice.date
+
+    render json: { status: true, invoice: invoice }
+  rescue => e
+
+    render json: { status: false, message: e.message }
+  end
+
+  ##
   # 編集
   # @version 2018/06/10
   #
@@ -67,50 +87,32 @@ class InvoicesController < ApplicationController
   #
   def update
 
-    render json: { status: false, message: '案件がロックされている為に更新できません。' } if invoice&.quote.lock
+    render json: { status: false, message: '案件がロックされている為に更新できません。' } if invoice.quote.lock
 
     # 情報更新
     invoice.update! invoice_params
 
     # 会社探し
-    co = Company.joins(divisions: [clients: :quotes]).merge(Quote.where(id: invoice&.quote_id))
+    co = Company.joins(divisions: [clients: :quotes]).merge(Quote.where(id: invoice.quote_id))
+
     # profit見つける
-    profit = Profit.find_by(quote_id: invoice&.quote_id)
+    profit = Profit.find_by(quote_id: invoice.quote_id)
+
     # 配列で会社のidを取り出す
     co_id = co.pluck(:id)
+
     # 案件の会社のidとprofitの会社のidが違っていたら実行
     if co_id[0] != profit.company_id
+
       # 請求情報上書き(会社のidも)
-      profit&.update(price: invoice&.quote.price, date: invoice.date, company_id: co_id[0])
+      profit.update(price: invoice.quote.price, date: invoice.date, company_id: co_id[0])
     else
+
       # 請求情報上書き
-      profit&.update(price: invoice&.quote.price, date: invoice.date)
+      profit.update(price: invoice&.quote.price, date: invoice.date)
     end
 
     render json: { status: true }
-  rescue => e
-
-    render json: { status: false, message: e.message }
-  end
-
-  ##
-  # 新規作成
-  # @version 2018/06/10
-  #
-  def create
-
-    # 情報更新
-    invoice.update! invoice_params
-
-    invoice.quote.invoicing! unless invoice.quote.invoicing?
-
-    #請求先情報を静的に保存
-    invoice.quote.update(last_company: invoice&.quote&.client&.company_division.company.name, last_division: invoice&.quote&.client&.company_division.name, last_client: invoice&.quote&.client&.name)
-
-    # 請求情報保存
-    Profit.create!(company_id: invoice&.quote&.client&.company_division.company.id, quote_id: invoice&.quote_id, price: invoice&.quote&.price, date: invoice&.date)
-
-    render json: { status: true, invoice: invoice }
   rescue => e
 
     render json: { status: false, message: e.message }
@@ -146,7 +148,7 @@ class InvoicesController < ApplicationController
     end
   end
 
-	def roundup
+  def roundup
 
     if params[:name].blank? && params[:date1].blank? && params[:date2].blank?
 

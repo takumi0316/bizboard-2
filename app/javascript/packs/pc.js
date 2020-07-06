@@ -96,7 +96,7 @@ import QuotationSearch from 'components/quotations/quotation_search';
 import QuotationPdfGenerator from 'components/quotations/pdf_generator';
 
 // 請求書PDF作成
-import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
+import InvoiceEditor from 'components/invoice_editor/';
 
 // 丸の内CSV書き出し日付検索
 import MarunouchiSearchable from 'components/api/marunouchi/searchable';
@@ -150,7 +150,7 @@ WebpackerReact.setup({
 	DeliveryPdfGenerator,
 	QuotationSearch,
 	QuotationPdfGenerator,
-	InvoicePdfGenerator,
+	InvoiceEditor,
   MarunouchiSearchable,
   NewCardTemplateGenerate,
   EditCardTemplateGenerate,
