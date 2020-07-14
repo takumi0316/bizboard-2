@@ -60,6 +60,32 @@ export const mmTopx = mm => {
   if(os == 'Mac OS') return 72 / 25.4 * mm;
 };
 
+const wrapText = (context, text, x, y, maxWidth, lineHeight) => {
+  
+  const words = text.split(' ');
+  let line = '';
+  
+  console.log(text.split('\n'));
+  for(var n = 0; n < text.length; n++) {
+    
+    let testLine = line + words[n] + ' ';
+    console.log(testLine)
+    let metrics = context.measureText(testLine);
+    let testWidth = metrics.width;
+    if(testWidth > maxWidth && n > 0) {
+    
+      context.fillText(line, x, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    } else {
+    
+      line = testLine;
+    };
+  
+    context.fillText(line, x, y);
+  };
+};
+
 /**
  * PDFを展開する
  * @version 2020/03/30
@@ -109,20 +135,10 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
       const contentLength = mmTopx(detail.length);
   
       // 自動組版
-      // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+      draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
       draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-      const txt_width = draw_ctx.measureText(name).width 
-      if((contentLength - txt_width) < 0) {
-
-        const count = name.length;
-        console.log(txt_width)
-        console.log(lineSpace * (count - 1))
-        // console.log(txt_width - (lineSpace * count))
-        draw_ctx.fillText(name, x, y);
-      } else {
-
-        draw_ctx.fillText(name, x, y);
-      };
+      wrapText(draw_ctx, name, x, y, contentLength, 30);
+      // draw_ctx.fillText(name, x, y, contentLength, 400);
     });
 
     // Prepare object needed by render method
