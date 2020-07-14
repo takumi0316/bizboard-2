@@ -44,7 +44,7 @@
               | お客様情報が存在しません
             - else
 
-              = "#{ r.quote.client.company_division.company.name } #{ r.quote.client.name }様"
+              = "#{ r.quote.client&.company_division&.company&.name } #{ r.quote.client&.name }様"
           td.u-ta-center
             - if r.quote.user.nil?
 
