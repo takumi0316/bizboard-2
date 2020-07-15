@@ -135,7 +135,9 @@ export default class EditTemplateGenerate extends React.Component {
 
     parse_template.details[index][name] = e.target.value;
 
-    if(file) this.setState({ template: parse_template }, drawText(details, document.getElementById('draw')));
+    // const details = parse_template.details;
+    // if(file) this.setState({ template: parse_template }, drawText(details, document.getElementById('draw')));
+    if(file) this.setState({ template: parse_template }, drawText(parse_template.details[index], document.getElementById('draw'), index));
     if(!file) this.setState({ template: parse_template });
   };
 

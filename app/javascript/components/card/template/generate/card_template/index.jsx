@@ -12,7 +12,8 @@ const CardTemplate = props => {
         <div className='c-flex__center'>
           <div className={ `${ Style.CardTemplate__layer } ${ Style.CardTemplate__layer_top }` }>
             <div className='c-position'>
-              <canvas id='draw' className='c-position__canvas'/>
+              { /* <canvas id='draw' className='c-position__canvas'/> */ }
+              <div id='draw' className='c-position__canvas'></div>
               <canvas id='pdf'/>
             </div>
           </div>
