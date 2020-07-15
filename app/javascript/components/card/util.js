@@ -60,85 +60,6 @@ export const mmTopx = mm => {
   if(os == 'Mac OS') return 72 / 25.4 * mm;
 };
 
-const wordBreak = (ctx, text, x, y, maxWidth, lineHeight, fontSize) => {
-  
-  const max_width  = 250;
-  // const fontSize   =  12;
-  const lines      =  [];
-  const color = 'black';
-  let width = 0, result, i, j;
-  
-  console.log(i)
-  console.log(maxWidth)
-  console.log(ctx.measureText(text.substr(0, i).width));
-  // Start calculation
-  while(text.length) {
-    
-    // けつから順に最大幅より下になるまで検索する。
-    for(i = text.length; ctx.measureText(text.substr(0, i)).width > 250; i--);
-  
-    result = text.substr(0, i);
-  
-    if(i !== text.length) for(j = 0; result.indexOf(" ", j) !== -1; j = result.indexOf(" ", j) + 1);
-    
-    console.log(result)
-    lines.push(result.substr(0, j || result.length));
-    width = Math.max(width, ctx.measureText(lines[lines.length - 1]).width);
-    text  = text.substr(lines[lines.length - 1].length, text.length);
-    console.log(text)
-  };
-  
-  // Calculate canvas size, add margin
-  // ctx.canvas.width  = 14 + width;
-  // ctx.canvas.height =  8 + ( fontSize + 5 ) * lines.length;
-  // ctx.font   = fontSize + "px Arial";
-  
-  // Render
-  
-  [...Array(lines.length)].map((value, index) => { ctx.fillText(lines[i], x, y + fontSize + (fontSize + 5) * i) });
-  /**
-  for(i = 0, j = lines.length; i < j; ++i) {
-    ctx.fillText(lines[i], 8, 5 + fontSize + (fontSize + 5) * i);
-  };
-  **/
-};
-
-/**
- * 自動組版
- * @param context
- * @param text
- * @param x
- * @param y
- * @param maxWidth
- * @param lineHeight
- */
-const wrapText = (context, text, x, y, maxWidth, lineHeight) => {
-  
-  const words = text.split('');
-  const sp_words = text.split('　')
-  let line = '';
-  
-  console.log(sp_words)
-  for(var n = 0; n < words.length; n++) {
-    
-    let testLine = line + words[n];
-    let metrics = context.measureText(testLine);
-    let testWidth = metrics.width;
-    if(testWidth > maxWidth && n > 0) {
-    
-      context.fillText(line, x, y);
-      line = words[n] + ' ';
-      console.log(words)
-      y += lineHeight;
-    } else {
-    
-      line = testLine;
-    };
-  
-    context.fillText(line, x, y);
-  };
-};
-
 /**
  * PDFを展開する
  * @version 2020/03/30
@@ -363,16 +284,27 @@ export const drawText = (detail, draw, index) => {
    });
    */
 
+  const childElement = draw.childElementCount;
   const name = detail.name;
   const y = Math.floor(mmTopx(detail.coord_y)) * 2;
   const x =	Math.floor(mmTopx(detail.coord_x)) * 2;
   const fontSize = Math.floor(mmTopx(ptTomm(detail.font_size))) * 2;
   const lineSpace = Math.floor(mmTopx(detail.line_space));
   
-  let p = document.getElementById(`draw-${ index }`);
+  let p;
+  // 既に作成済み
+  if(index < childElement) {
+    
+    p = document.getElementById(`draw-${ index }`);
+  } else {
+    
+    p = document.createElement('p');
+    p.id = `draw-${ index }`;
+    draw.appendChild(p);
+  };
+  
   p.textContent = name || '';
   p.style = `font-size: ${ fontSize }; font-family: ${ detail.font }; letter-spacing: ${ lineSpace }; transform: translate(${ x }px, ${ y }px)`;
- 
 };
 
 /**
@@ -423,6 +355,7 @@ export const drawTextValue = (value, draw, index) => {
    });
    */
   
+  const childElement = draw.childElementCount;
   const card_value = value.value;
   const y = Math.floor(mmTopx(value.coord_y) * 2);
   const x =	Math.floor(mmTopx(value.coord_x) * 2);
@@ -430,7 +363,17 @@ export const drawTextValue = (value, draw, index) => {
   const lineSpace = Math.floor(mmTopx(value.line_space));
   const contentLength = Math.floor(mmTopx(value.length));
   
-  let p = document.getElementById(`draw-${ index }`);
+  let p
+  if(index < childElement) {
+  
+    p = document.getElementById(`draw-${ index }`);
+  } else {
+  
+    p = document.createElement('p');
+    p.id = `draw-${ index }`;
+    draw.appendChild(p);
+  };
+  
   p.textContent = card_value || '';
   p.style = `width: ${ contentLength }px; word-wrap: break-word; font-size: ${ fontSize }; font-family: ${ value.font }; letter-spacing: ${ lineSpace }; transform: translate(${ x }px, ${ y }px)`;
 };
