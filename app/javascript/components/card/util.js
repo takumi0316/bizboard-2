@@ -137,7 +137,7 @@ export const setPDF = (file, details, canvas, draw) => {
       p.id = `draw-${ index }`;
       // transform: translate(x, y)
       // ヘッダー表示のためword-wrapはなし
-      p.style = `break-word; font-size: ${ fontSize }; font-family: ${ detail.font }; letter-spacing: ${ lineSpace }; transform: translate(${ x }px, ${ y }px)`;
+      p.style = `font-size: ${ fontSize }px; font-family: ${ detail.font }; letter-spacing: ${ lineSpace }px; transform: translate(${ x }px, ${ y }px)`;
       draw.appendChild(p);
     });
 
@@ -232,7 +232,7 @@ export const setPDFValue = (file, canvas, draw, values) => {
   
       p.textContent = card_value || '';
       p.id = `draw-${ index }`;
-      p.style = `width: ${ contentLength }px; word-wrap: break-word; font-size: ${ fontSize }; font-family: ${ value.font }; letter-spacing: ${ lineSpace }; transform: translate(${ x }px, ${ y }px)`;
+      p.style = `width: ${ contentLength }px; word-wrap: break-word; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; transform: translate(${ x }px, ${ y }px)`;
       draw.appendChild(p);
     });
     
@@ -304,7 +304,7 @@ export const drawText = (detail, draw, index) => {
   };
   
   p.textContent = name || '';
-  p.style = `font-size: ${ fontSize }; font-family: ${ detail.font }; letter-spacing: ${ lineSpace }; transform: translate(${ x }px, ${ y }px)`;
+  p.style = `font-size: ${ fontSize }px; font-family: ${ detail.font }; letter-spacing: ${ lineSpace }px; transform: translate(${ x }px, ${ y }px)`;
 };
 
 /**
@@ -375,7 +375,7 @@ export const drawTextValue = (value, draw, index) => {
   };
   
   p.textContent = card_value || '';
-  p.style = `width: ${ contentLength }px; word-wrap: break-word; font-size: ${ fontSize }; font-family: ${ value.font }; letter-spacing: ${ lineSpace }; transform: translate(${ x }px, ${ y }px)`;
+  p.style = `width: ${ contentLength }px; word-wrap: break-word; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; transform: translate(${ x }px, ${ y }px)`;
 };
 
 /**
