@@ -219,9 +219,6 @@ export const setPDFValue = (file, canvas, draw, values) => {
     values.map((value, index) => {
     
       const card_value = value.value;
-    
-      if(!card_value) return;
-    
       const y = Math.floor(mmTopx(value.coord_y) * 2);
       const x =	Math.floor(mmTopx(value.coord_x) * 2);
       const fontSize = Math.floor(mmTopx(ptTomm(value.font_size))) * 2;
@@ -232,7 +229,7 @@ export const setPDFValue = (file, canvas, draw, values) => {
   
       p.textContent = card_value || '';
       p.id = `draw-${ index }`;
-      p.style = `width: ${ contentLength }px; word-wrap: break-word; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; transform: translate(${ x }px, ${ y }px)`;
+      p.style = `width: ${ contentLength }px; word-wrap: break-word; border: 1px dotted;font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; transform: translate(${ x }px, ${ y }px)`;
       draw.appendChild(p);
     });
     
@@ -363,19 +360,9 @@ export const drawTextValue = (value, draw, index) => {
   const lineSpace = Math.floor(mmTopx(value.line_space));
   const contentLength = Math.floor(mmTopx(value.length));
   
-  let p
-  if(index < childElement) {
-  
-    p = document.getElementById(`draw-${ index }`);
-  } else {
-  
-    p = document.createElement('p');
-    p.id = `draw-${ index }`;
-    draw.appendChild(p);
-  };
-  
+  let p = document.getElementById(`draw-${ index }`);
   p.textContent = card_value || '';
-  p.style = `width: ${ contentLength }px; word-wrap: break-word; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; transform: translate(${ x }px, ${ y }px)`;
+  p.style = `width: ${ contentLength }px; word-wrap: break-word; border: 1px dotted; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; transform: translate(${ x }px, ${ y }px)`;
 };
 
 /**
