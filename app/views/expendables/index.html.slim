@@ -16,7 +16,7 @@ h1.l-dashboard__heading 製造経費情報一覧
         th 勘定科目
         th 金額(税抜き)
         th 備考
-        th colspan= 2
+        th colspan=2
     tbody
       - expendables.each do |r|
 
@@ -28,8 +28,8 @@ h1.l-dashboard__heading 製造経費情報一覧
           td.u-ta-center = r.price.to_s(:delimited)
           td.u-ta-center = r.memo
           td.u-ta-center
-            = link_to '編集', work_path(r.work_subcontractor.work.id), class: 'c-btnMain-standard' if r.work_subcontractor.present?
-            = link_to '編集', edit_expendable_path(r), class: 'c-btnMain-standard' if r.work_subcontractor.nil?
+            = link_to '編集', work_path(r.work_subcontractor.work.id), class: 'c-btnMain-standard' if r.work_subcontractor_id.present?
+            = link_to '編集', edit_expendable_path(r), class: 'c-btnMain-standard' if r.work_subcontractor_id.nil?
           td.u-ta-center
-            = link_to '削除', expendable_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' } if r.work_subcontractor.nil?
+            = link_to '削除', expendable_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' } if r.work_subcontractor_id.nil?
 = render 'layouts/_partials/pagination'
