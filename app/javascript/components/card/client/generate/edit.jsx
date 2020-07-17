@@ -82,9 +82,8 @@ export default class ClientGenerate extends React.Component {
     if(!value) window.alertable({ icon: 'info', message: '値を入力して下さい。'});
 
     template.values[value_index].value = value;
-    // const values = template.values;
-    // this.setState({ template: template, change_status: true }, () => drawTextValue(values,document.getElementById('draw')));
-    this.setState({ template: template, change_status: true }, () => drawTextValue(template.values[value_index], document.getElementById('draw'), value_index));
+    const values = template.values;
+    this.setState({ template: template, change_status: true }, () => drawTextValue(values, document.getElementById('draw')));
   };
   
   /**
