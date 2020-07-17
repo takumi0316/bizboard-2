@@ -254,7 +254,7 @@ export const setPDFValue = (file, canvas, draw, values) => {
       child_p.textContent = card_value || '';
       // transform: translate(x, y)
       // ヘッダー表示のためword-wrapはなし
-      child_p.style = `font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; word-wrap: break-word; position: absolute;`;
+      child_p.style = `width: ${ contentLength }px; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; word-wrap: break-word; position: absolute;`;
       parent_div.appendChild(child_p);
   
       // 先に描画をしないと高さを取得出来ないため

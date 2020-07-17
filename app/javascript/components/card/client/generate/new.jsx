@@ -112,7 +112,7 @@ export default class ClientGenerate extends React.Component {
     templates[status ? 0 : 1].values[value_index].value = value;
     const values = templates[status ? 0 : 1].values;
 
-    this.setState({ templates: templates }, () => drawTextValue(values, document.getElementById('draw')));
+    this.setState({ templates: templates }, () => drawTextValue(values, document.getElementById('draw'), value_index));
   };
 
   /**
