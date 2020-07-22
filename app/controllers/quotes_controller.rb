@@ -109,7 +109,7 @@ class QuotesController < ApplicationController
     # driveにフォルダーを作成
     require 'google_drive'
     session = GoogleDrive::Session.from_config('config.json')
-    root_folder_id = '1H2Cgt2Xa1ZCmoKqtn3swLTQ5rqscCeFa'
+    root_folder_id = '0AMp2Ot6o6NNAUk9PVA'
     sub_folder_name = "#{quote.quote_number} #{quote.subject} #{quote&.client.company_division.name}"
     root_folder = session.collection_by_id(root_folder_id)
     sub_folder = root_folder.create_subfolder(sub_folder_name)
