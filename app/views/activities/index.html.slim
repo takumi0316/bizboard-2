@@ -1,6 +1,6 @@
 = render 'layouts/_partials/tabmenu'
 
-= link_to '活動履歴を作成する', new_activity_path(quote_id: @id), class: 'c-btnMain-standard c-btn-blue u-mt-15'
+= link_to '活動履歴を作成する', new_activity_path(quote_id: params[:id]), class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
 = form_with url: activities_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 
@@ -28,7 +28,7 @@
         th 添付
         th colspan= 3
     tbody
-      - activities.each do |r|
+      - @activities.each do |r|
         tr
           td.u-ta-center = r.id
           td = r.date
