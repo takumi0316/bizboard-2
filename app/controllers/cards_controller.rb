@@ -162,7 +162,7 @@ class CardsController < ApplicationController
       params.require(:card).permit :company_id, :name, {
         templates_attributes: [:id, :card_id, :status, :file,
           {
-            details_attributes: [:id, :card_template_id, :name, :font, :font_size, :font_color, :coord_x, :coord_y, :length, :line_space]
+            details_attributes: [:id, :card_template_id, :name, :font, :font_size, :font_color, :coord_x, :coord_y, :length, :line_space, :item_type]
           }
         ]
       }

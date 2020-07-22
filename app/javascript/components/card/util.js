@@ -88,32 +88,6 @@ export const setPDF = (file, details, canvas, draw) => {
     // Fetch canvas' 2d context
     let ctx = canvas.getContext('2d');
   
-    /*
-    let draw_ctx = draw.getContext('2d');
-    canvas.height = (mmTopx(55 * 2));
-    canvas.width = (mmTopx(91 * 2));
-    draw_canvas.height = (mmTopx(55 * 2));
-    draw_canvas.width = (mmTopx(91 * 2));
- 
-     details.map((detail, index) => {
- 
-     const name = detail.name;
- 
-     if(!name) return;
- 
-     const y = (mmTopx(detail.coord_y)) * 2;
-     const x =	(mmTopx(detail.coord_x)) * 2;
-     const fontSize = (mmTopx(ptTomm(detail.font_size))) * 2;
-     const lineSpace = (mmTopx(detail.line_space));
-     const contentLength = (mmTopx(detail.length));
- 
-     // 自動組版
-     // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-     // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-     // draw_ctx.fillText(name, x, y, contentLength, 400);
-     });
-     */
-  
     // Set dimensions to Canvas
     canvas.height = Math.floor(mmTopx(55 * 2));
     canvas.width = Math.floor(mmTopx(91 * 2));
@@ -176,7 +150,7 @@ export const setPDF = (file, details, canvas, draw) => {
  * 行間: px
  */
 export const setPDFValue = (file, canvas, draw, values) => {
-
+  
   const blob = new Blob([file]);
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
@@ -191,41 +165,6 @@ export const setPDFValue = (file, canvas, draw, values) => {
 
     let ctx = canvas.getContext('2d');
   
-    /*
-    let draw_ctx = draw_canvas.getContext('2d');
-    canvas.height = (mmTopx(55 * 2));
-    canvas.width = (mmTopx(91 * 2));
-    draw_canvas.height = (mmTopx(55 * 2));
-    draw_canvas.width = (mmTopx(91 * 2));
-  
-    values.map(value => {
-    
-      const card_value = value.value;
-    
-      if(!card_value) return;
-    
-      const y = mmTopx(value.coord_y) * 2;
-      const x =	mmTopx(value.coord_x) * 2;
-      const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
-      const lineSpace = mmTopx(value.line_space);
-    
-      draw_ctx.font = `${ fontSize }px ${ value.font }`;
-    
-      for(let lines = card_value.split('\n'), i = 0, l = lines.length; l > i; i++) {
-      
-        let line = lines[i] ;
-        let addY = fontSize ;
-        if (i) addY += fontSize * lineSpace * i ;
-        draw_ctx.fillText(line, x, y + addY);
-      };
-    
-      // 自動組版
-      // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-      // draw_ctx.font = `${ fontSize }px ${ value.font }`;
-      // draw_ctx.fillText(card_value, x, y);
-    });
-     */
-    
     canvas.height = Math.floor(mmTopx(55 * 2));
     canvas.width = Math.floor(mmTopx(91 * 2));
     draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
@@ -237,29 +176,60 @@ export const setPDFValue = (file, canvas, draw, values) => {
       const x =	Math.floor(mmTopx(value.coord_x) * 2);
       const fontSize = Math.floor(mmTopx(ptTomm(value.font_size))) * 2;
       const lineSpace = Math.floor(mmTopx(value.line_space));
+      const font = value.font;
       const contentLength = Math.floor(mmTopx(value.length));
   
+      // 既にhtmlが描画されているか確認。
+      const is_child_present = draw.childElementCount === values.length;
+      
       // absoluteするための親div
-      let parent_div = document.createElement('div');
-      parent_div.id = `parent_div-${ index }`;
-      // 以下、子ども
-      let child_p = document.createElement('p');
-      child_p.id = `child_p-${ index }`;
-      let child_div = document.createElement('div');
-      child_div.id = `child_div-${ index }`;
+      let parent_div, child_p, child_div;
+      
+      if(is_child_present) {
   
-      parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
-      draw.appendChild(parent_div);
+        parent_div = document.getElementById(`parent_div-${ index }`);
+        parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
+        child_p = document.getElementById(`child_p-${ index }`);
+        child_div = document.getElementById(`child_div-${ index }`);
+        child_p.textContent = card_value || '';
+        
+        // 入力値がなければ、ボーダーを0にする。
+        if(card_value) {
+          
+          child_p.style = `width: ${ contentLength }px; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; word-wrap: break-word; position: absolute;`;
+          child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+        } else {
   
-      child_p.textContent = card_value || '';
-      // transform: translate(x, y)
-      // ヘッダー表示のためword-wrapはなし
-      child_p.style = `width: ${ contentLength }px; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; word-wrap: break-word; position: absolute;`;
-      parent_div.appendChild(child_p);
+          child_p.style = `width: 0px; font-size: 0px; font-family: ${ font }; letter-spacing: 0px; word-wrap: break-word; position: absolute;`;
+          child_div.style = 'width: 0px; height: 0px; border: 0px solid; position: absolute;';
+        };
+      } else {
+        
+        parent_div = document.createElement('div');
+        parent_div.id = `parent_div-${ index }`;
+        
+        // 以下、子ども
+        child_p = document.createElement('p');
+        child_p.id = `child_p-${ index }`;
+        child_div = document.createElement('div');
+        child_div.id = `child_div-${ index }`;
   
-      // 先に描画をしないと高さを取得出来ないため
-      child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
-      parent_div.appendChild(child_div);
+        parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
+        draw.appendChild(parent_div);
+  
+        child_p.textContent = card_value || '';
+        
+        // transform: translate(x, y)
+        // ヘッダー表示のためword-wrapはなし
+        // バリュー値があればプロパティ指定
+        if(card_value) child_p.style = `width: ${ contentLength }px; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; word-wrap: break-word; position: absolute;`;
+        parent_div.appendChild(child_p);
+  
+        // 先に描画をしないと高さを取得出来ないため
+        // バリュー値があればプロパティ指定
+        if(card_value) child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+        parent_div.appendChild(child_div);
+      };
     });
     
     const renderContext = {
@@ -282,34 +252,6 @@ export const setPDFValue = (file, canvas, draw, values) => {
  */
 export const drawText = (detail, draw, index) => {
   
-  /*
-   let draw_ctx = draw_canvas.getContext('2d')
-   draw_ctx.beginPath();
-   draw_ctx.clearRect(0, 0, draw_canvas.width, draw_canvas.height);
-   draw_ctx.save();
-   draw_ctx.setTransform(1, 0, 0, 1, 0, 0);
-   draw_ctx.restore();
-   
-   details.map(detail => {
-   
-   const name = detail.name;
-   
-   if(!name) return;
-   
-   const y = (mmTopx(detail.coord_y)) * 2;
-   const x =	(mmTopx(detail.coord_x)) * 2;
-   const fontSize =  (mmTopx(ptTomm(detail.font_size))) * 2;
-   const lineSpace = (mmTopx(detail.line_space));
-   
-   draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-   
-   // 自動組版
-   // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-   // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-   // draw_ctx.fillText(name, x, y);
-   });
-   */
-
   const childElement = draw.childElementCount;
   const name = detail.name;
   const y = Math.floor(mmTopx(detail.coord_y)) * 2;
@@ -320,7 +262,7 @@ export const drawText = (detail, draw, index) => {
   const font = detail.font;
   
   let parent_div, child_div, child_p;
-  // 既に作成済み
+  // 既に作成済みどうか
   if(index < childElement) {
     
     parent_div = document.getElementById(`parent_div-${ index }`);
@@ -369,44 +311,6 @@ export const drawText = (detail, draw, index) => {
  */
 export const drawTextValue = (value, draw, index) => {
 
-  /*
-  let draw_ctx = draw_canvas.getContext('2d');
-
-  draw_ctx.beginPath();
-  draw_ctx.clearRect(0,0,draw_canvas.width,draw_canvas.height);
-  draw_ctx.save();
-  draw_ctx.setTransform(1,0,0,1,0,0);
-  draw_ctx.restore();
- 
-   values.map(value => {
- 
-   const card_value = value.value;
- 
-   if(!card_value) return;
- 
-   const y = mmTopx(value.coord_y) * 2;
-   const x =	mmTopx(value.coord_x) * 2;
-   const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
-   const lineSpace = mmTopx(value.line_space);
- 
-   draw_ctx.font = `${ fontSize }px ${ value.font }`;
- 
-   for(let lines = card_value.split('\n'), i = 0, l = lines.length; l > i; i++) {
- 
-   let line = lines[i] ;
-   let addY = fontSize ;
-   if (i) addY += fontSize * lineSpace * i ;
-   draw_ctx.fillText(line, x, y + addY);
-   };
- 
-   // 自動組版
-   // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-   // draw_ctx.font = `${ fontSize }px ${ value.font }`;
-   // draw_ctx.fillText(card_value, x, y);
-   });
-   */
-  
-  const childElement = draw.childElementCount;
   const card_value = value.value;
   const y = Math.floor(mmTopx(value.coord_y) * 2);
   const x =	Math.floor(mmTopx(value.coord_x) * 2);
@@ -416,15 +320,25 @@ export const drawTextValue = (value, draw, index) => {
   const font = value.font;
   
   let parent_div, child_div, child_p;
+  // absoluteするための親div
   parent_div = document.getElementById(`parent_div-${ index }`);
+  // 以下、子ども
+  child_p = document.getElementById(`child_p-${ index }`);
+  child_div = document.getElementById(`child_div-${ index }`);
+  
   parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
   
-  child_p = document.getElementById(`child_p-${ index }`);
   child_p.textContent = card_value || '';
-  child_p.style = `width: ${ contentLength }px; font-size: ${ fontSize }px; font-family: ${ font }; letter-spacing: ${ lineSpace }px; position: absolute; word-wrap: break-word;`;
+  // 入力値がなければ、ボーダーを0にする。
+  if(card_value) {
+    
+    child_p.style = `width: ${ contentLength }px; font-size: ${ fontSize }px; font-family: ${ font }; letter-spacing: ${ lineSpace }px; word-wrap: break-word; position: absolute;`;
+    child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+  } else {
   
-  child_div = document.getElementById(`child_div-${ index }`);
-  child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+    child_p.style = `width: 0px; font-size: 0px; letter-spacing: 0px; word-wrap: break-word; position: absolute;`;
+    child_div.style = `width: 0px; height: 0px; border: 0px solid; position: absolute;`;
+  };
 };
 
 /**

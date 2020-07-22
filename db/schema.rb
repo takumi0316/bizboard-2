@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_23_030309) do
+ActiveRecord::Schema.define(version: 2020_07_22_024441) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -685,7 +685,7 @@ ActiveRecord::Schema.define(version: 2020_06_23_030309) do
 
   create_table "template_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "card_template_id"
-    t.string "name"
+    t.text "name"
     t.string "font"
     t.string "font_size"
     t.string "font_color"
@@ -695,6 +695,7 @@ ActiveRecord::Schema.define(version: 2020_06_23_030309) do
     t.string "line_space"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "item_type", limit: 1, default: 0
     t.index ["card_template_id"], name: "index_template_details_on_card_template_id"
   end
 

@@ -216,6 +216,7 @@ export default class EditTemplateGenerate extends React.Component {
       field.append('card[templates_attributes][][details_attributes][][id]', detail.id);
       field.append('card[templates_attributes][][details_attributes][][card_template_id]', this.state.template.id);
       field.append('card[templates_attributes][][details_attributes][][name]', detail.name);
+      field.append('card[templates_attributes][][details_attributes][][item_type]', detail.item_type);
       field.append('card[templates_attributes][][details_attributes][][font]', detail.font);
       field.append('card[templates_attributes][][details_attributes][][font_size]', detail.font_size);
       field.append('card[templates_attributes][][details_attributes][][font_color]', detail.font_color);
