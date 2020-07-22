@@ -94,6 +94,25 @@ const PaymentDetails = props => {
 							/>
             </td>
           </tr>
+          { props.quote.drive_folder_id ?
+            null
+            :
+            <tr>
+              <td className='u-fw-bold'>
+                gドライブリンク
+                <br></br>
+                <span>例：https://drive.google.com/drive/u/0/folders/〇〇〇〇〇〇〇〇</span>
+                <br></br>
+                <span>ドライブのフォルダーURLの〇〇〇〇〇〇〇〇部分のみを記載してください</span>
+              </td>
+              <td>
+                <textarea placeholder='1H2Cgt2Xa1ZCmoKqtn3swLTQ5rqscCeFa' className='c-form-textarea'
+                          autoComplete='off' spellCheck='false' type='text' defaultValue={ props.drive_folder_id } onBlur={ e => props.setDriveFolderId(e.target.value) }
+                />
+              </td>
+            </tr>
+
+          }
         </tbody>
       </table>
     </div>
