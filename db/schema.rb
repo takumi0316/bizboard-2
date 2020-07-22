@@ -105,10 +105,7 @@ ActiveRecord::Schema.define(version: 2020_06_23_030309) do
     t.bigint "company_division_client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", limit: 1, default: 0
-    t.bigint "company_division_id"
     t.index ["company_division_client_id"], name: "index_carts_on_company_division_client_id"
-    t.index ["company_division_id"], name: "index_carts_on_company_division_id"
   end
 
   create_table "catalogs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -118,8 +115,6 @@ ActiveRecord::Schema.define(version: 2020_06_23_030309) do
     t.string "deliver_at", comment: "文言なども入る"
     t.bigint "category_id"
     t.integer "turn", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_catalogs_on_category_id"
   end
 
@@ -182,7 +177,7 @@ ActiveRecord::Schema.define(version: 2020_06_23_030309) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-06-16 21:30:03"
+    t.datetime "lastaccesstask", default: "2020-06-24 09:46:47"
     t.integer "opt", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -673,12 +668,11 @@ ActiveRecord::Schema.define(version: 2020_06_23_030309) do
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2020-06-16 21:30:03"
+    t.datetime "clientlastaccess", default: "2020-06-24 09:46:47"
     t.integer "will_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ts_code"
-    t.string "shipping_address"
     t.index ["catalog_id"], name: "index_tasks_on_catalog_id"
     t.index ["quote_id"], name: "index_tasks_on_quote_id"
   end
@@ -727,7 +721,7 @@ ActiveRecord::Schema.define(version: 2020_06_23_030309) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-06-16 21:30:03"
+    t.datetime "lastaccesstask", default: "2020-06-24 09:46:46"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_users_on_division_id"
