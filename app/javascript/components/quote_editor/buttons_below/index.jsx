@@ -40,6 +40,10 @@ const ButtonsBelow = props => {
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/tasks/${ props.task.id }` }>チャット</a>
             : null
           }
+          { props.quote.drive_folder_id ?
+            <a className='c-btnMain-standard c-btn-blue u-ml-30' target='_blank' href={ `https://drive.google.com/drive/u/0/folders/${ props.quote.drive_folder_id }` }>ドライブ</a>
+            : null
+          }
         </div>
         : <div className='c-btnMain-standard c-btn-blue' onClick={ e => props.onSubmit(e) }>作成する</div>
       }
