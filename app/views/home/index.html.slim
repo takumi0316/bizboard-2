@@ -9,7 +9,7 @@
     / 形状範囲
     - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
     / 売上
-    - quotes = Quote.where(tax_type: 0).invoicing.joins(:invoice).merge(Invoice.date_in(range))
+    - quotes = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(range))
     - sales = quotes.pluck(:price).sum
     / 原価
     - expendables = Expendable.date_in(range)
@@ -36,7 +36,7 @@
       / 形状範囲
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
       / 売上
-      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.pluck(:price).sum
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)
@@ -52,7 +52,7 @@
       / 形状範囲
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
       / 売上
-      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.pluck(:price).sum
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)
@@ -68,7 +68,7 @@
       / 形状範囲
       - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
       / 売上
-      - quotes = Quote.where(tax_type: 0).invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.pluck(:price).sum
       / 原価
       - expendables = Expendable.where(division_id: r.division.id).date_in(range)
