@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_23_030309) do
+ActiveRecord::Schema.define(version: 2020_07_21_030819) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -568,6 +568,7 @@ ActiveRecord::Schema.define(version: 2020_06_23_030309) do
     t.date "issues_date"
     t.date "delivery_note_date"
     t.boolean "lock", default: false, null: false
+    t.string "drive_folder_id"
     t.index ["company_division_client_id"], name: "index_quotes_on_company_division_client_id"
     t.index ["division_id"], name: "index_quotes_on_division_id"
   end

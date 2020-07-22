@@ -69,6 +69,7 @@ export default class QuoteEditor extends React.Component {
       prefectures: props.prefectures,
       remarks: props.quote.remarks || '',
       memo: props.quote.memo || '',
+      drive_folder_id: props.quote.drive_folder_id || '',
       itemStatus: true,
     };
   };
@@ -114,70 +115,77 @@ export default class QuoteEditor extends React.Component {
   *
   */
   setSubject = subject => this.setState({ quote_subject: subject });
-  
+
   /**
   *
   * @version 2019/12/20
   *
   */
   setDeliverType = deliver_type => this.setState({ deliver_type: deliver_type });
-  
+
   /**
   *
   * @version 2019/12/20
   *
   */
   setDeliverTypeNote = deliver_type_note => this.setState({ deliver_type_note: deliver_type_note });
-  
+
   /**
    *
    * @version 2019/12/20
    *
    */
   setChannel = channel => this.setState({ channel: channel, show_quote_number: channel == 'bpr_erp' });
-  
+
   /**
    *
    * @version 2019/12/20
    *
    */
   setQuoteNumber = quote_number => this.setState({ quote_number: quote_number });
-  
+
   /**
    *
    * @version 2019/12/20
    *
    */
   setReception = reception => this.setState({ reception: reception });
-  
+
   /**
    *
    * @version 2019/12/20
    *
    */
   setQuoteType = quote_type => this.setState({ quote_type: quote_type });
-  
+
   /**
    *
    * @version 2019/12/23
    *
    */
   setRemarks = remarks => this.setState({ remarks: remarks });
-  
+
   /**
    *
    * @version 2019/12/23
    *
    */
   setMemo = memo => this.setState({ memo: memo });
-  
+
+  /**
+   *
+   * @version 2019/12/23
+   *
+   */
+  setDriveFolderId = drive_folder_id => this.setState({ drive_folder_id: drive_folder_id });
+
   /**
    *
    * @version 2019/12/23
    *
    */
   setPaymentTerms = payment_terms => this.setState({ payment_terms: payment_terms });
-  
+
   /**
    *
    * @version 2019/12/23
@@ -376,7 +384,7 @@ export default class QuoteEditor extends React.Component {
       company: client.company,
       division: client.division,
     });
-  
+
   /**
    * 売り上げ部署
    * @version 2020/05/25
@@ -394,11 +402,11 @@ export default class QuoteEditor extends React.Component {
 
     const price = Number(this.state.price) + Number(project.price);
     const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects));
-    
+
     project.specifications.map(specification => {
-    
+
       const strong = 1000;
-        
+
       // uniqueなidを生成
       const uid = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
 
@@ -414,7 +422,7 @@ export default class QuoteEditor extends React.Component {
         'project_name': specification.project_name ? specification.project_name : '',
         'remarks': specification.remarks ? specification.remarks : ''
       };
-              
+
       quote_projects.push(field);
     });
 
@@ -427,57 +435,57 @@ export default class QuoteEditor extends React.Component {
    *
    */
   projectDestroy = e => {
-  
+
     e.preventDefault();
     const index = e.target.value;
     window.confirmable({ icon: 'warning', message: '本当に削除しますか？', callback: () => {
-      
+
       const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects));
       quote_projects.splice(index, 1);
       const delProjectPrice = Number(this.state.quote_projects[index].price);
       const minusPrice = Number(this.state.price) - delProjectPrice;
-    
+
       if(!this.state.quote_projects[index].id) this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }));
-      
+
       if(this.state.quote.id && this.state.quote_projects[index].id) {
-      
+
         const url = `/quote_projects/${this.state.quote_projects[index].id}`;
         const request = window.xhrRequest.delete(url);
         request.then(res => {
-      
+
           if(res.data.status == 'success') this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }) );
           if(res.data.status != 'success') window.alertable({ icon: 'error', message: '品目の削除に失敗しました。' });
         }).catch(err => window.alertable({ icon: 'error', message: err }));
       };
     }});
   };
-  
+
   /**
    *  登録処理
    *  @version 2018/06/10
    *
    */
   onSubmit = e => {
-    
+
     e.preventDefault();
-    
+
     this.loadingRef.start();
-    
+
     const messages = this.validation();
-    
+
     // エラーが存在する場合
     if(messages.length > 0) {
-      
+
       window.alertable({ icon: 'error', message: messages.join('\n') });
       return false;
     };
-    
+
     this.setState({ is_update: !this.state.is_update });
     let price = 0;
     this.state.quote_projects.map(quote_project => price += Number(quote_project.price));
-    
+
     const field = new FormData();
-    
+
     field.append('quote[id]', this.state.quote_id);
     field.append('quote[division_id]', this.state.home_division ? this.state.home_division.id : this.props.division_id);
     field.append('quote[company_division_client_id]', this.state.client ? this.state.client.id : '');
@@ -498,12 +506,13 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[reception]', this.state.reception);
     field.append('quote[remarks]', this.state.remarks);
     field.append('quote[memo]', this.state.memo);
+    field.append('quote[drive_folder_id]', this.state.drive_folder_id);
     field.append('quote[user_id]', this.props.user_id);
     field.append('quote[discount]', this.state.discount);
     field.append('quote[price]', this.state.discount === 0 ? price : price - this.state.discount);
     field.append('quote[deliver_type]', this.state.deliver_type);
     this.state.quote_projects.map(project => {
-      
+
       field.append('quote[quote_projects_attributes][][id]', project.id);
       field.append('quote[quote_projects_attributes][][project_id]', project.project_id);
       field.append('quote[quote_projects_attributes][][quote_id]', project.quote_id);
@@ -514,34 +523,34 @@ export default class QuoteEditor extends React.Component {
       field.append('quote[quote_projects_attributes][][price]', project.price);
       field.append('quote[quote_projects_attributes][][project_name]', project.project_name);
     });
-    
+
     // 納品方法
     field.append('quote[deliver_type_note]', this.state.deliver_type === 'location' || this.state.deliver_type === 'other' ? this.state.deliver_type_note : '');
-    
+
     const request = this.state.quote_id ? window.xhrRequest.put(this.props.action, field) : window.xhrRequest.post(this.props.action, field);
     request.then(res => {
-      
+
       if(res.data.status === 'success') {
-        
+
         if(this.state.quote_id) this.setState({ price: price }, () => window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () => this.loadingRef.finish() }));
-        
+
         // 編集ページへリダイレクト
         if(!this.state.quote_id) {
-          
+
           const redirect = () => location.href = `${res.data.quote.id}/edit`;
           window.alertable({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() });
         };
       };
-      
+
       if(res.data.status != 'success') {
-        
+
         // エラー文
         console.log(res.data.message);
         window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` });
       };
     }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }));
   };
-  
+
   /**
    *  表示処理
    *  @version 2018/06/10
@@ -580,10 +589,10 @@ export default class QuoteEditor extends React.Component {
           <ProjectSearch applyProject={ this.applyProject } prefectures={ this.props.prefectures } />
           <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
         </div>
-        <PaymentDetails discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
-                        memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price }
+        <PaymentDetails quote={ this.state.quote } discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
+                        memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price } drive_folder_id={ this.state.drive_folder_id }
                         show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
-                        setRemarks={ this.setRemarks } setMemo={ this.setMemo } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
+                        setRemarks={ this.setRemarks } setMemo={ this.setMemo } setDriveFolderId={ this.setDriveFolderId } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
         />
         <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } task={ this.state.task } onSubmit={ this.onSubmit }/>
         <Loading ref={ node => this.loadingRef = node }/>

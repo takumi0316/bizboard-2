@@ -106,6 +106,16 @@ class QuotesController < ApplicationController
 
     quote.update! quote_params
 
+    # driveにフォルダーを作成
+    require 'google_drive'
+    session = GoogleDrive::Session.from_config('config.json')
+    root_folder_id = '0AMp2Ot6o6NNAUk9PVA'
+    sub_folder_name = "#{quote.quote_number} #{quote.subject} #{quote&.client.company_division.name}"
+    root_folder = session.collection_by_id(root_folder_id)
+    sub_folder = root_folder.create_subfolder(sub_folder_name)
+    quote.update!(drive_folder_id: sub_folder.id)
+
+
     # slack通知
     if quote.payment_terms == :advance
 
@@ -325,7 +335,7 @@ class QuotesController < ApplicationController
 
     def quote_params
 
-      params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
+      params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :drive_folder_id, :pdf_url, :price, :user_id, :status, :quote_number,
         :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price,
         :issues_date, :delivery_note_date, :profit_price,
         quote_projects_attributes: [:id, :quote_id, :project_id, :unit, :price, :name, :unit_price, :project_name, :remarks]
