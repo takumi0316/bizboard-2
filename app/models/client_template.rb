@@ -75,7 +75,8 @@ class ClientTemplate < ApplicationRecord
           coord_x: detail.coord_x,
           coord_y: detail.coord_y,
           length: detail.length,
-          line_space: detail.line_space
+          line_space: detail.line_space,
+          item_type: detail.item_type
         }
         values.push(format_value)
       end

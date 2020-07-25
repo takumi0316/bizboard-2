@@ -329,8 +329,9 @@ export const drawText = (detail, draw, index) => {
  * 長さ: px
  * 行間: px
  */
-export const drawTextValue = (value, draw, index) => {
+export const drawTextValue = (value, canvas, draw, index) => {
 
+  let ctx = canvas.getContext('2d');
   const card_value = value.value;
   const y = Math.floor(mmTopx(value.coord_y) * 2);
   const x =	Math.floor(mmTopx(value.coord_x) * 2);
@@ -340,19 +341,40 @@ export const drawTextValue = (value, draw, index) => {
   const font = value.font;
   
   let parent_div, child_div, child_p;
+  
   // absoluteするための親div
   parent_div = document.getElementById(`parent_div-${ index }`);
   // 以下、子ども
   child_p = document.getElementById(`child_p-${ index }`);
+  // 子どもがなければ、作る！！！
+  if(!child_p) {
+  
+    child_p = document.createElement(`child_p${ index }`);
+    parent_div.appendChild(child_p);
+  };
+  
   child_div = document.getElementById(`child_div-${ index }`);
   
   parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
   
   child_p.textContent = card_value || '';
+  
   // 入力値がなければ、ボーダーを0にする。
   if(card_value) {
     
-    child_p.style = `width: ${ contentLength }px; font-size: ${ fontSize }px; font-family: ${ font }; letter-spacing: ${ lineSpace }px; word-wrap: break-word; position: absolute;`;
+    ctx.font =  `font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px;`;
+    if((contentLength - ctx.measureText(card_value).width) > 0) {
+    
+      // プラスだった分を割って、かける
+      child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+    } else {
+    
+      // widthを指定すると折り返さえれるので、あえてwidthは指定しない
+      // border: 1px solid分を0.95でかける
+      child_p.style = `font-size: ${ fontSize }px; display: inline-block; transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+    };
+  
+    ctx.restore();
     child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
   } else {
   

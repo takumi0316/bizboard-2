@@ -79,6 +79,33 @@ class CardsController < ApplicationController
   def update
 
     card.update! card_params
+    front_details_count = card.templates.first.details.count
+    reverse_details_count = card.templates.last.details.count
+    card.card_clients.each do |card_client|
+
+      card_client.templates.each_with_index do |template, index|
+
+        value_count = template.values.count
+        if index == 0
+
+          if front_details_count != value_count
+            new_details = card.templates.first.details.where(created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+            # nilだったら脱出
+            return if new_details.nil?
+            new_details.each { |detail| ClientTemplateValue.create! client_template_id: template.id, template_detail_id: detail.id }
+          end
+        end
+        if index == 1
+
+          if reverse_details_count != value_count
+            new_details = card.templates.first.details.where(created_at: Time.zone.now.begging_of_day..Time.zone.now.end_of_day)
+            # nilだったら脱出
+            return if new_details.nil?
+            new_details.each { |detail| ClientTemplateValue.create! client_template_id: template.id, template_detail_id: detail.id }
+          end
+        end
+      end
+    end
 
     render json: { status: :success, card: card }
   rescue => e
