@@ -109,6 +109,7 @@ export const setPDF = (file, details, canvas, draw) => {
       // absoluteするための親div
       let parent_div = document.createElement('div');
       parent_div.id = `parent_div-${ index }`;
+      
       // 以下、子ども
       let child_p = document.createElement('p');
       child_p.id = `child_p-${ index }`;
@@ -200,7 +201,8 @@ export const setPDFValue = (file, canvas, draw, values) => {
           child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
         } else {
   
-          child_p.style = `width: 0px; font-size: 0px; font-family: ${ font }; letter-spacing: 0px; word-wrap: break-word; position: absolute;`;
+          //  word-wrap: break-word;
+          child_p.style = `width: 0px; font-size: 0px; font-family: ${ font }; letter-spacing: 0px; position: absolute;`;
           child_div.style = 'width: 0px; height: 0px; border: 0px solid; position: absolute;';
         };
       } else {
@@ -211,6 +213,7 @@ export const setPDFValue = (file, canvas, draw, values) => {
         // 以下、子ども
         child_p = document.createElement('p');
         child_p.id = `child_p-${ index }`;
+        
         child_div = document.createElement('div');
         child_div.id = `child_div-${ index }`;
   
@@ -222,12 +225,29 @@ export const setPDFValue = (file, canvas, draw, values) => {
         // transform: translate(x, y)
         // ヘッダー表示のためword-wrapはなし
         // バリュー値があればプロパティ指定
-        if(card_value) child_p.style = `width: ${ contentLength }px; font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; word-wrap: break-word; position: absolute;`;
-        parent_div.appendChild(child_p);
+        //  word-wrap: break-word;
+        if(card_value) {
+          
+          ctx.font =  `font-size: ${ fontSize }px; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px;`;
+          if((contentLength - ctx.measureText(card_value).width) > 0) {
+            
+            // プラスだった分を割って、かける
+            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+          } else {
+  
+            // widthを指定すると折り返さえれるので、あえてwidthは指定しない
+            // border: 1px solid分を0.95でかける
+            child_p.style = `font-size: ${ fontSize }px; display: inline-block; transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+          };
+          
+          ctx.restore();
+          parent_div.appendChild(child_p);
+        };
   
         // 先に描画をしないと高さを取得出来ないため
         // バリュー値があればプロパティ指定
         if(card_value) child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+        
         parent_div.appendChild(child_div);
       };
     });
