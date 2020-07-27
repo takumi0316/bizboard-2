@@ -180,7 +180,7 @@ export default class UploadCardClient extends React.Component {
 
     card_clients[count].templates[status ? 0 : 1].values[value_id].value = value;
     const values = card_clients[count].templates[status ? 0 : 1].values;
-    this.setState({ card_clients: card_clients }, drawTextValue(card_clients[count].templates[status ? 0 : 1].values[value_id], document.getElementById('draw', ), value_id));
+    this.setState({ card_clients: card_clients }, drawTextValue(card_clients[count].templates[status ? 0 : 1].values[value_id], document.getElementById('pdf'), document.getElementById('draw', ), value_id));
   };
 
   /**

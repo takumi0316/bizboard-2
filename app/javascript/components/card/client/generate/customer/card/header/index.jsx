@@ -21,8 +21,14 @@ const Header = props => {
 
               return(
                 <tr key={ key }>
-                  <td className='u-ta-center u-va-center'>{ value.name }</td>
-                  <td className='u-ta-center'><input className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e, index) }/></td>
+                  <td className='u-ta-center u-va-middle'>{ value.name }</td>
+                  <td className='u-ta-center'>
+                    { value.item_type === 'text_area' ?
+                      <textarea className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e, index) }/>
+                      :
+                      <input type='text' className='u-ta-center c-form-text' defaultValue={ value.value } onBlur={ e => props.onChangeValue(e, index) }/>
+                    }
+                  </td>
                 </tr>
               );
             })}
