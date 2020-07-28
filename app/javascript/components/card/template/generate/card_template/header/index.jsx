@@ -31,7 +31,7 @@ const Header = props => {
               return(
                 <tr key={ key }>
                   <td className='u-va-middle u-va-center u-ta-center'>{ index + 1 }</td>
-                  <td className='u-va-middle'><textarea  className='c-form-text' defaultValue={ detail.name } onBlur={ e => props.onChangeDetail(e, index, 0) }/></td>
+                  <td className='u-va-middle'><input type='text' className='c-form-text' defaultValue={ detail.name } onBlur={ e => props.onChangeDetail(e, index, 0) }/></td>
                   <td className='u-va-middle c-form-selectWrap'>
                     <select name='item_type' className='c-form-select' defaultValue={ detail.item_type } onChange={ e => props.onChangeDetail(e, index, 1 )}>
                       { Object.keys(ITEM_TYPE).map((item_type, index) => {

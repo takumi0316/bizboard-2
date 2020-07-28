@@ -192,7 +192,7 @@ export const setPDFValue = (file, canvas, draw, values) => {
       // CSVアップロード時
       if(is_child_present) {
 
-        ctx.font =  `font-size: ${ fontSize }px; font-family: ${ font }; letter-spacing: ${ lineSpace }px;`;
+        ctx.font =  `${ fontSize }px ${ font }`;
 
         parent_div = document.getElementById(`parent_div-${ index }`);
         parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
@@ -208,21 +208,22 @@ export const setPDFValue = (file, canvas, draw, values) => {
           // widthを指定すると折り返さえれるので、あえてwidthは指定しない
           // border: 1px solid分を0.95でかける
           // プラスだった分を割って、かける
-          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+          // letter-spacing: ${ lineSpace }px; 一旦letter-spacingを外し
+          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
 
           // 先に描画をしないと高さを取得出来ないため
           // バリュー値があればプロパティ指定
           child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
         } else {
 
-          //  word-wrap: break-word;
-          child_p.style = `width: 0px; font-size: 0px; font-family: ${ font }; letter-spacing: 0px; position: absolute;`;
+          //  letter-spacing: 0px;
+          child_p.style = `width: 0px; font-size: 0px; font-family: ${ font }; position: absolute;`;
           child_div.style = 'width: 0px; border: 0px solid; position: absolute;';
         };
       } else {
 
         text_height = 0;
-        ctx.font =  `font-size: ${ fontSize }px; font-family: ${ font }; letter-spacing: ${ lineSpace }px;`;
+        ctx.font =  `${ fontSize }px ${ font } `;
         parent_div = document.createElement('div');
         parent_div.id = `parent_div-${ index }`;
 
@@ -240,7 +241,10 @@ export const setPDFValue = (file, canvas, draw, values) => {
           parent_div.appendChild(child_p);
 
           child_p.textContent = card_value[0] || '';
-          if(card_value[0]) child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+          
+          // letter-spacing: ${ lineSpace }px; 一旦letter-spacingを外し
+          if(card_value[0]) child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value[0]).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
+          
           text_height = child_p.clientHeight;
         } else {
 
@@ -249,17 +253,20 @@ export const setPDFValue = (file, canvas, draw, values) => {
             child_p = document.createElement('p');
             child_p.id = `child_p-${ index }-${ index2 }`;
 
-            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+            //  letter-spacing: ${ lineSpace }px;
+            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
             parent_div.appendChild(child_p);
             child_p.textContent = value;
-            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute; top: ${ text_height }px; left: 0px;`;
+            
+            // letter-spacing: ${ lineSpace }px;
+            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute; top: ${ text_height }px; left: 0px;`;
             text_height += child_p.clientHeight;
           });
 
         };
 
         // canvasに設定した内容をrestore()
-        ctx.restore();
+        // ctx.restore();
 
         // 先に描画をしないと高さを取得出来ないため
         if(card_value[0]) child_div.style = `width: ${ contentLength }px; height: ${ text_height }px; border: 1px solid; position: absolute;`;
@@ -306,7 +313,8 @@ export const drawText = (detail, draw, index) => {
 
     child_p = document.getElementById(`child_p-${ index }`);
     child_p.textContent = name || '';
-    child_p.style = `font-size: ${ fontSize }px; font-family: ${ font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+    //  letter-spacing: ${ lineSpace }px;
+    child_p.style = `font-size: ${ fontSize }px; font-family: ${ font }; position: absolute;`;
 
     child_div = document.getElementById(`child_div-${ index }`);
     child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
@@ -325,9 +333,10 @@ export const drawText = (detail, draw, index) => {
     draw.appendChild(parent_div);
 
     child_p.textContent = name;
+    
     // transform: translate(x, y)
-    // ヘッダー表示のためword-wrapはなし
-    child_p.style = `font-size: ${ fontSize }px; font-family: ${ font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+    //  letter-spacing: ${ lineSpace }px;
+    child_p.style = `font-size: ${ fontSize }px; font-family: ${ font }; position: absolute;`;
     parent_div.appendChild(child_p);
 
     // 先に描画をしないと高さを取得出来ないため
@@ -359,7 +368,7 @@ export const drawTextValue = (value, canvas, draw, index) => {
   let parent_div, child_div, child_p;
   let text_height = 0;
 
-  ctx.font = `font-size: ${ fontSize }px; font-family: ${ font }; letter-spacing: ${ lineSpace }px;`;
+  ctx.font = `${ fontSize }px ${ font }`;
 
   // absoluteするための親div
   parent_div = document.getElementById(`parent_div-${ index }`);
@@ -373,7 +382,9 @@ export const drawTextValue = (value, canvas, draw, index) => {
     child_p = document.getElementById(`child_p-${ index }`);
 
     child_p.textContent = card_value[0] || '';
-    if(card_value[0]) child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+    //  letter-spacing: ${ lineSpace }px;
+    // hazussu!
+    if(card_value[0]) child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
 
     text_height = child_p.clientHeight;
   } else {
@@ -388,7 +399,8 @@ export const drawTextValue = (value, canvas, draw, index) => {
 
         if(value) {
 
-          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+          //  letter-spacing: ${ lineSpace }px; はずす！
+          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
           child_p.textContent = value;
           text_height += child_p.clientHeight;
         };
@@ -415,11 +427,12 @@ export const drawTextValue = (value, canvas, draw, index) => {
         parent_div.appendChild(child_div);
 
         if(value) {
-
-          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute;`;
+          
+           // letter-spacing: ${ lineSpace } hazusu!
+          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; ${ lineSpace }px; position: absolute;`;
           // 高さを取得したいので、先にvalueを突っ込む
           child_p.textContent = value;
-          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; letter-spacing: ${ lineSpace }px; position: absolute; top: ${ text_height }px; left: 0px;`;
+          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; ${ lineSpace }px; position: absolute; top: ${ text_height }px; left: 0px;`;
           text_height += child_p.clientHeight;
         };
       });
