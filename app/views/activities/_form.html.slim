@@ -50,20 +50,3 @@
   = f.text_field :attachment, placeholder: '資料リンクを貼り付けてください', type: 'url', class: 'c-form-text'
 
   .u-ta-center.u-mt-30 = f.submit activity.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
-
-javascript:
-  window.onload = function(){
-
-  var url = document.getElementById('activity_attachment')
-  var date_y = document.getElementById('activity_date_1i')
-
-  //urlのバリデーション
-  url.addEventListener('invalid', function(e) {
-        e.target.setCustomValidity('');
-        if(url.validity.typeMismatch){
-          e.target.setCustomValidity('URLが正しくありません');
-        }
-      }, false);
-  };
-
-  //日付のバリデーション
