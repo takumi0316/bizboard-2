@@ -70,7 +70,7 @@
         - activities = activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
 
       / 確度ABC
-      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 'a', 'b', 'c', 'order').pluck(:price).sum
+      - accurary = activities.where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?) (quotes.status = ?) OR (quotes.status = ?) OR (quotes.status = ?)" , 'a', 'b', 'c', 'order', 'end_work', 'invoicing', 'complete').pluck(:price).sum
 
       / ステータス受注
       - status_order = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range)).pluck(:price).sum
