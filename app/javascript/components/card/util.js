@@ -400,7 +400,7 @@ export const drawTextValue = (value, canvas, draw, index) => {
         if(value) {
 
           //  letter-spacing: ${ lineSpace }px; はずす！
-          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
+          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
           child_p.textContent = value;
           text_height += child_p.clientHeight;
         };
@@ -429,10 +429,10 @@ export const drawTextValue = (value, canvas, draw, index) => {
         if(value) {
           
            // letter-spacing: ${ lineSpace } hazusu!
-          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; ${ lineSpace }px; position: absolute;`;
+          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; ${ lineSpace }px; position: absolute;`;
           // 高さを取得したいので、先にvalueを突っ込む
           child_p.textContent = value;
-          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }) scaleY(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; ${ lineSpace }px; position: absolute; top: ${ text_height }px; left: 0px;`;
+          child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; ${ lineSpace }px; position: absolute; top: ${ text_height }px; left: 0px;`;
           text_height += child_p.clientHeight;
         };
       });

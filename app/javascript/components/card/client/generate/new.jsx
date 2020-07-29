@@ -112,7 +112,7 @@ export default class ClientGenerate extends React.Component {
     templates[status ? 0 : 1].values[value_index].value = value;
     const values = templates[status ? 0 : 1].values;
 
-    this.setState({ templates: templates }, () => drawTextValue(values, document.getElementById('draw'), value_index));
+    this.setState({ templates: templates }, () => drawTextValue(values[value_index], document.getElementById('pdf'), document.getElementById('draw'), value_index));
   };
 
   /**
@@ -174,8 +174,9 @@ export default class ClientGenerate extends React.Component {
             'font_color': detail.font_color,
             'coord_x': detail.coord_x,
             'coord_y': detail.coord_y,
-            'length': detail.lenght,
-            'line_space': detail.line_space
+            'length': detail.length,
+            'line_space': detail.line_space,
+            'item_type': detail.item_type
           };
         });
 
