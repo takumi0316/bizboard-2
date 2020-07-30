@@ -1,12 +1,12 @@
 = render 'layouts/_partials/tabmenu'
 
-= link_to '活動履歴を作成する', new_activity_path(quote_id: params[:id]), class: 'c-btnMain-standard c-btn-blue u-mt-15'
+= link_to '活動履歴を作成する', new_activity_path(quote_id: params[:quote_id]), class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
 = form_with url: activities_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 
   .c-search__item
     = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :name, value: params[:quote_id], class: 'c-form-text', placeholder: '対応者/案件名/メモ'
+    = f.text_field :name, class: 'c-form-text', placeholder: '対応者/案件名/メモ'
 
   = f.submit '検索', class: 'c-btnMain-standard'
 
@@ -56,5 +56,3 @@
           td = link_to '資料へ飛ぶ', r.attachment, target: '_blank', class: 'c-btnMain-primaryB' if r.attachment.present?
           td = link_to '編集', edit_activity_path(r), class: 'c-btnMain-standard'
           td = link_to '削除', activity_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
-
-= render 'layouts/_partials/pagination'

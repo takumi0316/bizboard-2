@@ -35,7 +35,7 @@ const ButtonsBelow = props => {
               }
             </Fragment>
           }
-          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/activities?name=${ props.quote.id }` } >活動履歴</a>
+          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/activities?quote_id=${ props.quote.id }` } >活動履歴</a>
           { props.task ?
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/tasks/${ props.task.id }` }>チャット</a>
             : null
