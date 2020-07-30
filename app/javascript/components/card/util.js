@@ -243,7 +243,11 @@ export const setPDFValue = (file, canvas, draw, values) => {
           child_p.textContent = card_value[0] || '';
           
           // letter-spacing: ${ lineSpace }px; 一旦letter-spacingを外し
-          if(card_value[0]) child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(card_value[0]).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
+          if(card_value[0]) {
+            // child_p.style = `font-size: ${ fontSize }px; transform: scaleX(${ (contentLength /
+            // ctx.measureText(card_value[0]).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
+            child_p.style = `font-size: ${ fontSize }px; padding-left: 1px; letter-spacing: ${ (contentLength / ctx.measureText(value).width) * 0.95 }px; font-family: ${ value.font }; position: absolute;`;
+          };
           
           text_height = child_p.clientHeight;
         } else {
@@ -254,12 +258,9 @@ export const setPDFValue = (file, canvas, draw, values) => {
             child_p.id = `child_p-${ index }-${ index2 }`;
 
             //  letter-spacing: ${ lineSpace }px;
-            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute;`;
+            child_p.style = `font-size: ${ fontSize }px; padding-left: 1px; display: inline-block; transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute; top: ${ text_height }px; left: 0px;`;
             parent_div.appendChild(child_p);
             child_p.textContent = value;
-            
-            // letter-spacing: ${ lineSpace }px;
-            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / ctx.measureText(value).width) * 0.95 }); transform-origin: left center; font-family: ${ value.font }; position: absolute; top: ${ text_height }px; left: 0px;`;
             text_height += child_p.clientHeight;
           });
 
