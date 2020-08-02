@@ -16,7 +16,6 @@ import {
 } from '../../properties.es6';
 
 import {
-  toBoolean,
   drawTextValue,
   setPDFValue,
 } from '../../util';
@@ -61,7 +60,7 @@ export default class ClientGenerate extends React.Component {
       if(res.data.status != 'error') {
         const file = res.data;
           new Promise(resolve => {
-            setPDFValue(file, document.getElementById('pdf'), document.getElementById('draw'), this.state.template.values);
+            setPDFValue(file, document.getElementById('pdf'), document.getElementById('draw'), document.getElementById('logo'), this.state.template.values);
             resolve(true);
           }).then(res => this.loadingRef.finish());
         };

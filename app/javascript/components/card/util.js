@@ -150,8 +150,8 @@ export const setPDF = (file, details, canvas, draw) => {
  * 長さ: px
  * 行間: px
  */
-export const setPDFValue = (file, canvas, draw, values) => {
-
+export const setPDFValue = (file, canvas, draw, logo, values) => {
+ 
   const blob = new Blob([file]);
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
@@ -168,10 +168,11 @@ export const setPDFValue = (file, canvas, draw, values) => {
 
     canvas.height = Math.floor(mmTopx(55 * 2));
     canvas.width = Math.floor(mmTopx(91 * 2));
+    
     draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
-
+  
     values.map((value, index) => {
-
+  
       const card_value = value.value.split(/\n/);
       const y = Math.floor(mmTopx(value.coord_y) * 2);
       const x = Math.floor(mmTopx(value.coord_x) * 2);
