@@ -76,11 +76,6 @@
               = evil_icon 'ei-clock', size: :s
               span.u-ml-10 労務費入力
 
-          //li.l-dashboard__menuItem
-            //= link_to inquiries_path, class: current_controller('inquiries') do
-              //= evil_icon 'ei-link', size: :s
-              //span.u-ml-10 品目紐付け
-
           li.l-dashboard__menuItem
             = link_to categories_path, class: current_controller('categories') || current_controller('catalogs') do
               = evil_icon 'ei-tag', size: :s
@@ -107,7 +102,7 @@
               span.u-ml-10 サイト設定
 
           li.l-dashboard__menuItem
-            = link_to cards_path, class: cp(cards_path) do
+            = link_to card_templates_path, class: cp(card_templates_path) do
               = render_application_icon :card, size: :s
               span.u-ml-10 名刺
 

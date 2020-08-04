@@ -61,17 +61,19 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "card_information", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.bigint "card_template_layout_id"
+  create_table "card_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "card_layout_id"
     t.bigint "company_division_client_id"
     t.string "name", comment: "入力値"
     t.string "layout_type", comment: "レイアウトと結びつける"
-    t.index ["card_template_layout_id"], name: "index_card_information_on_card_template_layout_id"
-    t.index ["company_division_client_id"], name: "index_card_information_on_company_division_client_id"
+    t.index ["card_layout_id"], name: "index_card_informations_on_card_layout_id"
+    t.index ["company_division_client_id"], name: "index_card_informations_on_company_division_client_id"
   end
 
-  create_table "card_template_layouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "card_layouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "card_template_id"
+    t.bigint "layout_logo_id"
+    t.bigint "layout_flags_id"
     t.string "name", comment: "レイアウトの名前"
     t.string "x_coordinate", comment: "座標(X)"
     t.string "y_coordinate", comment: "座標(Y)"
@@ -83,7 +85,9 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
     t.string "reduction_rate", comment: "縮小率"
     t.integer "is_reduction_rated", comment: "縮小するか否か"
     t.integer "layout_type", comment: "縮小するか否か"
-    t.index ["card_template_id"], name: "index_card_template_layouts_on_card_template_id"
+    t.index ["card_template_id"], name: "index_card_layouts_on_card_template_id"
+    t.index ["layout_flags_id"], name: "index_card_layouts_on_layout_flags_id"
+    t.index ["layout_logo_id"], name: "index_card_layouts_on_layout_logo_id"
   end
 
   create_table "card_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -268,6 +272,14 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_labors_on_division_id"
+  end
+
+  create_table "layout_flags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "layout_logos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -654,11 +666,6 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
     t.string "shipping_address"
     t.index ["catalog_id"], name: "index_tasks_on_catalog_id"
     t.index ["quote_id"], name: "index_tasks_on_quote_id"
-  end
-
-  create_table "template_layout_logo", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.bigint "card_template_layout_id"
-    t.index ["card_template_layout_id"], name: "index_template_layout_logo_on_card_template_layout_id"
   end
 
   create_table "uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

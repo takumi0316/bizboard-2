@@ -100,10 +100,8 @@
           td = link_to '活動履歴', activities_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
           td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
           td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
-          - if r.task.present?
-
+          /- if r.task.present?
             - if r.task.card_clients.present?
-
               td = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain-standard'
           td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
 = render 'layouts/_partials/pagination'

@@ -37,6 +37,7 @@
 #  issues_date                :date
 #  delivery_note_date         :date
 #  lock                       :boolean          default(FALSE), not null
+#  drive_folder_id            :string(191)
 #
 
 class Quote < ApplicationRecord

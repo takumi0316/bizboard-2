@@ -17,7 +17,6 @@ Rails.application.routes.draw do
 
   resources :configs
 
-  # APIモード
   namespace :api do
     # 丸の内
     resources :marunouchi, only: :index do
@@ -146,33 +145,45 @@ Rails.application.routes.draw do
   resources :catalogs
 
   # 名刺
-  resources :cards, except: :show do
-    get :front_preview
-    get :reverse_preview
-    get :copy
-    collection do
-      post :transfer
-    end
-  end
+  ## resources :cards, except: :show do
+  ##   get :front_preview
+  ##   get :reverse_preview
+  ##   get :copy
+  ##   collection do
+  ##     post :transfer
+  ##   end
+  ## end
 
-  # 名刺テンプレート
-  resources :card_templates do
-    collection do
-      get :transfer
-    end
-  end
+  ## # 名刺テンプレート
+  ## resources :card_templates do
+  ##   collection do
+  ##     get :transfer
+  ##   end
+  ## end
 
-  # 名刺情報
-  resources :card_clients do
-    get :front_preview
-    get :reverse_preview
-    collection do
-      get :download
-      get :upload
-      post :bulk
-      post :csv_download
-    end
-  end
+  ## # 名刺情報
+  ## resources :card_clients do
+  ##   get :front_preview
+  ##   get :reverse_preview
+  ##   collection do
+  ##     get :download
+  ##     get :upload
+  ##     post :bulk
+  ##     post :csv_download
+  ##   end
+  ## end
+
+  ## 名刺テンプレート
+  resources :card_templates
+
+  ## 名刺レイアウト
+  resources :card_layouts
+
+  ## レイアウトフラグ
+  resources :layout_flags
+
+  ## レイアウト画像・ロゴ
+  resources :layout_logos
 
   # 在庫管理
   resources :inventories

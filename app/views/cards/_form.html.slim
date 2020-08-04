@@ -1,6 +1,0 @@
-- if card.new_record?
-
-  = react_component :NewCardTemplateGenerate, card: card, front_side: card.formatting(:true), reverse_side: card.formatting(:false), action: action, company: ''
-- else
-
-  = react_component :EditCardTemplateGenerate, card: card, front_side: card.formatting(:true), reverse_side: card.formatting(:false), action: action, company: card.company
