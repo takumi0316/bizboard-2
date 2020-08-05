@@ -39,10 +39,10 @@ class ContentFlagsController < ApplicationController
 
     content_flag.update! content_flag_params
 
-    redirect_to action: :edit, flash: { notice: { message: '画像・ロゴを作成しました。' } }
+    redirect_to content_flags_path, flash: { notice: { message: 'フラグを作成しました。' } }
   rescue => e
 
-    redirect_back action: :edit, flash: { notice: { message: e.message } }
+    redirect_to_index e
   end
 
   def edit
@@ -55,20 +55,20 @@ class ContentFlagsController < ApplicationController
 
     content_flag.update! content_flag_params
 
-    redirect_to action: :edit, flash: { notice: { message: '画像・ロゴを作成しました。' } }
+    redirect_to content_flags_path, flash: { notice: { message: 'フラグを更新しました。' } }
   rescue => e
 
-    redirect_back action: :edit, flash: { notice: { message: e.message } }
+    redirect_to_index e
   end
 
   def destroy
 
     content_flag.destroy!
 
-    redirect_to action: :index, flash: { notice: { message: '画像・ロゴを削除しました。' } }
+    redirect_to content_flags_path, flash: { notice: { message: 'フラグを削除しました。' } }
   rescue => e
 
-    redirect_back action: :index, flash: { notice: { message: e.message } }
+    redirect_to_index e
   end
 
   #----------------------------------------
@@ -82,4 +82,8 @@ class ContentFlagsController < ApplicationController
       params.require(:content_flag).permit :name
     end
 
+    def redirect_to_index e
+
+      redirect_to content_flags_path, flash: { notice: { message: e.message } }
+    end
 end

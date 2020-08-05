@@ -97,7 +97,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
       t.string :name, limit: 191
 
-      t.timestamp
+      t.timestamps
     end
 
     create_table :template_layouts, options: 'DEFAULT CHARSET=utf8mb4' do |t|
@@ -112,14 +112,14 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
       t.string :name, limit: 191
 
-      t.timestamp
+      t.timestamps
     end
 
     create_table :content_flags, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.string :name, limit: 191
 
-      t.timestamp
+      t.timestamps
     end
 
     create_table :layout_contents, options: 'DEFAULT CHARSET=utf8mb4' do |t|
@@ -148,7 +148,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.text       :textarea_value
       t.integer    :layout_type,             comment: 'レイアウトと結びつける'
 
-      t.timestamp
+      t.timestamps
     end
 
   end
@@ -234,7 +234,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
       t.string :name, limit: 191
 
-      t.timestamp
+      t.timestamps
     end
 
     drop_table :template_layouts, options: 'DEFAULT CHARSET=utf8mb4' do |t|
@@ -249,14 +249,14 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
       t.string :name, limit: 191
 
-      t.timestamp
+      t.timestamps
     end
 
     drop_table :content_flags, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.string :name, limit: 191
 
-      t.timestamp
+      t.timestamps
     end
 
     drop_table :layout_contents, options: 'DEFAULT CHARSET=utf8mb4' do |t|
@@ -285,7 +285,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.text       :textarea_value
       t.integer    :layout_type,             comment: 'レイアウトと結びつける'
 
-      t.timestamp
+      t.timestamps
     end
 
   end

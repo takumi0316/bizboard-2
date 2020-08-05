@@ -66,11 +66,15 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
     t.string "text_value"
     t.text "textarea_value"
     t.integer "layout_type", comment: "レイアウトと結びつける"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_division_client_id"], name: "index_card_informations_on_company_division_client_id"
   end
 
   create_table "card_layouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "card_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -183,10 +187,14 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
 
   create_table "content_flags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "content_logos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "divisions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

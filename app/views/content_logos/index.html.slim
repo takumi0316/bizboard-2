@@ -1,2 +1,26 @@
-h1 ContentLogos#index
-p Find me in app/views/content_logos/index.html.slim
+= render 'layouts/_partials/card_tabmenu'
+
+= react_component :ImageUploader
+
+= form_with url: content_logos_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+
+  .c-search__item
+    = f.label :name, '画像タイトル'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '画像タイトル'
+  = f.submit '検索', class: 'c-btnMain-standard'
+
+.p-uploads.u-mt-10
+
+  - if content_logos.present?
+    - content_logos.each do |r|
+      - next unless r.image.attached?
+      .p-uploads__image
+        = link_to edit_content_logo_path(r) do
+          = image_tag r.image
+        = link_to '削除', content_logo_path(r), class: 'p-uploads__button', method: :delete, data: { confirmable: '本当に削除しますか?' }
+  - else
+    .p-article__talk.u-mt-30
+      .p-article__talkImage
+        = react_component :Kawaii
+      p.p-article__talkText 画像はまだアップロードされていません
+

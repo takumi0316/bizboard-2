@@ -24,6 +24,9 @@ class ContentFlag < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
 
+  validates :name, presence: true
+  validates :name, length: { maximum: 191 }
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
@@ -44,7 +47,7 @@ class ContentFlag < ApplicationRecord
   # 名称検索
   #
   #
-  def self.search(name)
+  def self.search name
 
     terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
     

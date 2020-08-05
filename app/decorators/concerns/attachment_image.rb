@@ -12,6 +12,17 @@ module AttachmentImage
   #----------------------------------------
 
   ##
+  # オリジナル表示用
+  # @version 2018/06/10
+  #
+  def image_original
+
+    self.image.attached?? self.image.service_url : raise
+  rescue
+    ActionController::Base.helpers.image_url('noimage.svg')
+  end
+
+  ##
   # PC表示用
   # @version 2018/06/10
   #

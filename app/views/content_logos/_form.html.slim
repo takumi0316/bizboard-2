@@ -1,0 +1,22 @@
+= form_with model: content_logo, local: true do |f|
+
+  .c-form-label
+    = f.label :name, '画像タイトル'
+    span.c-form-required.u-mt-10 必須
+  = f.text_field :name, placeholder: '画像タイトルを入力してください。', class: 'c-form-text', required: true
+
+  .u-mt-15 = f.submit content_logo.new_record? ? '作成する' : '更新する', class: 'c-btnMain-standard'
+
+.c-attention.u-mt-30
+  .u-mt-5
+    span.u-fw-bold 更新日時:
+    = content_logo.updated_at
+  .u-mt-5
+    span.u-fw-bold サイズ:
+    - size = ActiveStorage::Analyzer::ImageAnalyzer.new(content_logo.image).metadata
+    = "#{ size[:width] }x#{ size[:height] }"
+  .u-mt-15
+    span.u-fw-bold URL:
+    /= text_field_tag :url, content_logo.decorate.image_original, class: 'c-form-text', readonly: :true
+.u-mt-15
+  = image_tag content_logo.image

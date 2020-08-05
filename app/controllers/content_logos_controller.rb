@@ -8,9 +8,9 @@ class ContentLogosController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  expose_with_pagination(:content_logos) { ContentLogo.search(params[:name]).all.reverse_order }
+  expose_with_pagination(:content_logos) { ContentLogo.with_attached_image.search(params[:name]).all.reverse_order }
 
-  expose(:content_logo) { ContentLogo.find_or_initialize_by(id: params[:id]) }
+  expose(:content_logo) { ContentLogo.with_attached_image.find_or_initialize_by(id: params[:id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -37,12 +37,12 @@ class ContentLogosController < ApplicationController
 
   def create
 
-    content_flag.update! content_logo_params
+    content_logo.update! content_logo_params
 
-    redirect_to action: :edit, flash: { notice: { message: '画像・ロゴを作成しました。' } }
+    render json: { status: :success }
   rescue => e
 
-    redirect_back action: :edit, flash: { notice: { message: e.message } }
+    redirect_to_index e
   end
 
   def edit
@@ -55,20 +55,20 @@ class ContentLogosController < ApplicationController
 
     content_logo.update! content_logo_params
 
-    redirect_to action: :edit, flash: { notice: { message: '画像・ロゴを作成しました。' } }
+    redirect_to content_logos_path, flash: { notice: { message: '画像を更新しました。' } }
   rescue => e
 
-    redirect_back action: :edit, flash: { notice: { message: e.message } }
+    redirect_to_index e
   end
 
   def destroy
 
-    content_flag.destroy!
+    content_logo.destroy!
 
-    redirect_to action: :index, flash: { notice: { message: '画像・ロゴを削除しました。' } }
+    redirect_to content_logos_path, flash: { notice: { message: '画像を削除しました。' } }
   rescue => e
 
-    redirect_back action: :index, flash: { notice: { message: e.message } }
+    redirect_to_index e
   end
 
   #----------------------------------------
@@ -79,7 +79,12 @@ class ContentLogosController < ApplicationController
 
     def content_logo_params
 
-      params.require(:content_logo).permit :name, :logo
+      params.require(:content_logo).permit :name, :image
     end
 
+
+    def redirect_to_index e
+
+      redirect_to content_logos_path, flash: { notice: { message: e.message } }
+    end
 end

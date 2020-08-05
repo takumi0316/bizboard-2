@@ -1,25 +1,25 @@
+= render 'layouts/_partials/card_tabmenu'
+
+= link_to 'フラグを作成する', new_content_flag_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
+
 = form_with url: content_flags_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
 
   .c-search__item
-    = f.label :name, 'フラグ名'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグ名'
+    = f.label :name, 'フラグタイトル'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグタイトル'
   = f.submit '検索', class: 'c-btnMain-standard'
-
-.u-mt-30
-  | 件数:
-  span.u-fw-bold = pagination.count
 
 .c-table.u-mt-10
   table
     thead
       tr
         th ID
-        th フラグ名 
-        th colspan=編集
+        th フラグタイトル
+        th colspan=2
     tbody
       - content_flags.each do |r|
         tr
-          td = r.id
-          td = r.name
+          td.u-ta-center = r.id
+          td.u-ta-center = r.name
           td.u-ta-center = link_to '編集', edit_content_flag_path(r), class: 'c-btnMain-standard'
           td.u-ta-center = link_to '削除', content_flag_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか？' }

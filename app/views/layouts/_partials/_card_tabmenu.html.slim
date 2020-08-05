@@ -6,8 +6,8 @@ ul.l-dashboard__tabmenu
     = link_to_unless_current 'レイアウト一覧', card_layouts_path, class: 'l-dashboard__tabmenuText' do
       .l-dashboard__tabmenuText--active レイアウト一覧
   li
-    = link_to_unless_current 'フラグ一覧', layout_flags_path, class: 'l-dashboard__tabmenuText' do
+    = link_to_unless_current 'フラグ一覧', content_flags_path, class: 'l-dashboard__tabmenuText' do
       .l-dashboard__tabmenuText--active フラグ一覧
   li
-    = link_to_unless_current 'ロゴ・画像一覧', layout_logos_path, class: 'l-dashboard__tabmenuText' do
+    = link_to_unless_current 'ロゴ・画像一覧', content_logos_path, class: 'l-dashboard__tabmenuText' do
       .l-dashboard__tabmenuText--active ロゴ・画像一覧

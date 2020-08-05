@@ -406,13 +406,16 @@ ja:
         delivery_stock: 出庫
         add_stock: 在庫追加
 
-
   attributes:
     created_at: 登録日時
     updated_at: 更新日時
 
   activerecord:
     attributes:
+      content_logo:
+        name: 画像タイトル
+      content_flag:
+        name: フラグタイトル
       contact:
         name: 氏名
         email: メールアドレス

@@ -180,10 +180,10 @@ Rails.application.routes.draw do
   resources :card_layouts
 
   ## レイアウトフラグ
-  resources :layout_flags
+  resources :content_flags
 
   ## レイアウト画像・ロゴ
-  resources :layout_logos
+  resources :content_logos
 
   # 在庫管理
   resources :inventories
