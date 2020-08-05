@@ -3,10 +3,10 @@
 # Table name: card_informations
 #
 #  id                         :bigint(8)        not null, primary key
-#  card_layout_id             :bigint(8)
 #  company_division_client_id :bigint(8)
-#  name                       :string(191)
-#  layout_type                :string(191)
+#  text_value                 :string(191)
+#  textarea_value             :text(65535)
+#  layout_type                :integer
 #
 
 class CardInformation < ApplicationRecord

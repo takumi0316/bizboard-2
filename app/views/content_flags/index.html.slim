@@ -1,2 +1,25 @@
-h1 ContentFlags#index
-p Find me in app/views/content_flags/index.html.slim
+= form_with url: content_flags_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+
+  .c-search__item
+    = f.label :name, 'フラグ名'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグ名'
+  = f.submit '検索', class: 'c-btnMain-standard'
+
+.u-mt-30
+  | 件数:
+  span.u-fw-bold = pagination.count
+
+.c-table.u-mt-10
+  table
+    thead
+      tr
+        th ID
+        th フラグ名 
+        th colspan=編集
+    tbody
+      - content_flags.each do |r|
+        tr
+          td = r.id
+          td = r.name
+          td.u-ta-center = link_to '編集', edit_content_flag_path(r), class: 'c-btnMain-standard'
+          td.u-ta-center = link_to '削除', content_flag_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか？' }

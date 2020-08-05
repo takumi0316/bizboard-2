@@ -1,0 +1,8 @@
+= form_with model: content_flag, local: true do |f|
+
+  .c-form-label
+    = f.label :name, 'フラグ名'
+    span.c-form-required.u-mt-10 必須
+  = f.text_field :name, placeholder: 'フラゲ名を入力してください。', class: 'c-form-text', required: true
+
+  .u-mt-15 = f.submit content_flag.new_record? ? '作成する' : '更新する'
