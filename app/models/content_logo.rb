@@ -1,0 +1,2 @@
+class ContentLogo < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+class ContentFlag < ApplicationRecord
+end
