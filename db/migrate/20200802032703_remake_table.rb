@@ -127,7 +127,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
     create_table :card_informations,  options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
-      t.references :card_layout,    index: true
+      t.references :card_layout,             index: true
       t.references :company_division_client, index: true
       t.string     :name,                    comment: '入力値'
       t.string     :layout_type,             comment: 'レイアウトと結びつける'
