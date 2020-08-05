@@ -11,13 +11,13 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+    ## create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
-      t.references :card,   index: true
-      t.integer    :status, limit: 1,   default: 0, comment: 'テンプレートの状態'
+    ##   t.references :card,   index: true
+    ##   t.integer    :status, limit: 1,   default: 0, comment: 'テンプレートの状態'
 
-      t.timestamps
-    end
+    ##   t.timestamps
+    ## end
 
     drop_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
