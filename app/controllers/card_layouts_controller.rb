@@ -32,13 +32,14 @@ class CardLayoutsController < ApplicationController
   def new
 
     add_breadcrumb '一覧', path: card_layouts_path
+    add_breadcrumb '新規作成'
   end
 
   def create
 
     card_layout.update! card_layout_params
 
-    redirect_back action: :edit, flash: { notice: { message: 'レイアウトを作成しました。' } }
+    render json: { status: :success }
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -52,6 +53,7 @@ class CardLayoutsController < ApplicationController
 
   def update
 
+    render json: { status: :error, message: e.message }
   end
 
   #----------------------------------------
@@ -62,7 +64,7 @@ class CardLayoutsController < ApplicationController
 
     def card_layout_params
 
-      params.require(:card_layout).permit :card_template_id, layout_id
+      params.require(:card_layout).permit :name
     end
 
 end

@@ -1,14 +1,26 @@
 # == Schema Information
 #
-# Table name: card_layouts
+# Table name: layout_contents
 #
-#  id         :bigint(8)        not null, primary key
-#  name       :string(191)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                 :bigint(8)        not null, primary key
+#  content_logo_id    :bigint(8)
+#  content_flag_id    :bigint(8)
+#  name               :string(191)
+#  x_coordinate       :string(191)
+#  y_coordinate       :string(191)
+#  font_family        :string(191)
+#  font_color         :string(191)
+#  font_size          :string(191)
+#  layout_length      :string(191)
+#  letter_spacing     :string(191)
+#  reduction_rate     :string(191)
+#  is_reduction_rated :integer
+#  layout_type        :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
-class CardLayout < ApplicationRecord
+class LayoutContent < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -33,9 +45,9 @@ class CardLayout < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  has_many :contents, class_name: 'LayoutContent', dependent: :destroy
+  has_one :flag, class_name: 'ContentFlag'
 
-  accepts_nested_attributes_for :contents, allow_destroy: true, reject_if: :all_blank
+  has_one :logo, class_name: 'ContentLogo'
 
   #----------------------------------------
   #  ** Delegates **
@@ -61,5 +73,4 @@ class CardLayout < ApplicationRecord
 
     self.where(query, *terms.map { |term| "%#{term}%" })
   end
-
 end

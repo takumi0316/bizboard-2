@@ -2,8 +2,10 @@
 #
 # Table name: content_flags
 #
-#  id   :bigint(8)        not null, primary key
-#  name :string(191)
+#  id         :bigint(8)        not null, primary key
+#  name       :string(191)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 class ContentFlag < ApplicationRecord
@@ -30,6 +32,8 @@ class ContentFlag < ApplicationRecord
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
+
+  has_many :contents, class_name: 'LayoutContent'
 
   #----------------------------------------
   #  ** Delegates **

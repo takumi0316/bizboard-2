@@ -24,9 +24,14 @@ class LayoutLogo < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
 
+  validates :name, presence: true
+  validates :name, length: { maximum: 191 }
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
+
+  has_many :contents, class_name: 'LayoutContent'
 
   #----------------------------------------
   #  ** Delegates **
@@ -40,5 +45,17 @@ class LayoutLogo < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
+  ##
+  # 名称検索
+  #
+  #
+  def self.search name
+
+    terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+
+    query = (['content_flags.name like ?'] * terms.size).join(' and ')
+
+    self.where(query, *terms.map { |term| "%#{term}%" })
+  end
 
 end

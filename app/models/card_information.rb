@@ -7,6 +7,8 @@
 #  text_value                 :string(191)
 #  textarea_value             :text(65535)
 #  layout_type                :integer
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
 #
 
 class CardInformation < ApplicationRecord
