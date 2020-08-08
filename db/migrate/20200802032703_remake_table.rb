@@ -2,22 +2,22 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
   def up
 
-    ## drop_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+    drop_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
-    ##   t.references :company, index: true
-    ##   t.string     :name,    comment: '名刺名称'
-    ##   t.text       :free_word
+      t.references :company, index: true
+      t.string     :name,    comment: '名刺名称'
+      t.text       :free_word
 
-    ##   t.timestamps
-    ## end
+      t.timestamps
+    end
 
-    ## create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+    create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
-    ##   t.references :card,   index: true
-    ##   t.integer    :status, limit: 1,   default: 0, comment: 'テンプレートの状態'
+      t.references :card,   index: true
+      t.integer    :status, limit: 1,   default: 0, comment: 'テンプレートの状態'
 
-    ##   t.timestamps
-    ## end
+      t.timestamps
+    end
 
     drop_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
@@ -129,14 +129,14 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.string     :name,               comment: 'レイアウトの名前'
       t.string     :x_coordinate,       comment: '座標(X)'
       t.string     :y_coordinate,       comment: '座標(Y)'
-      t.string     :font_family,        comment: '書体'
-      t.string     :font_color,         comment: 'フォントカラー'
       t.string     :font_size,          comment: 'フォントサイズ'
       t.string     :layout_length,      comment: '描画領域'
       t.string     :letter_spacing,     comment: '文字間'
       t.string     :reduction_rate,     comment: '縮小率'
       t.integer    :is_reduction_rated, comment: '縮小するか否か'
       t.integer    :layout_type,        comment: 'テキストかテキストエリアか'
+      t.integer    :font_family,        comment: '書体'
+      t.integer    :font_color,         comment: 'フォントカラー'
 
       t.timestamps
     end
