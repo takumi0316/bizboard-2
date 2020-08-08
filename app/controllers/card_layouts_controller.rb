@@ -64,7 +64,9 @@ class CardLayoutsController < ApplicationController
 
     def card_layout_params
 
-      params.require(:card_layout).permit :name
+      params.require(:card_layout).permit :name, contents_attributes: [
+        :id, :content_logo_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rate, :layout_type
+      ]
     end
 
 end

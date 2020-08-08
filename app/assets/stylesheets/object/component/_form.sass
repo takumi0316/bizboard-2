@@ -161,34 +161,64 @@
         width: 100%
 
   // トグル
-  &-toggle
+  // &-toggle
     user-select: none
-    font-size: map-get($fontSize, 'small')
     input[type='checkbox']
       display: none
-
     & > input + span
       min-width: 60px
-      height: 30px
+      height: 40px
       background: map-get($layoutColors, 'gray')
       position: relative
       display: inline-block
-      border-radius: 40px
+      border-radius: 46px
       transition: ease all .2s
       cursor: pointer
       padding: 0 15px 0 40px
-      line-height: 30px
+      line-height: 38px
       font-weight: bold
       &:before
         content: attr(data-off)''
       &:after
         content: ''
         position: absolute
-        width: 22px
-        height: 22px
+        width: 30px
+        height: 30px
         border-radius: 50%
         left: 4px
-        top: 4px
+        top: 5px
+        z-index: 1
+        background: map-get($layoutColors, 'white')
+        box-shadow: 0 0 5px rgba(map-get($layoutColors, 'black'), 0.4)
+        transition: .2s
+
+  &-toggle
+    user-select: none
+    font-size: map-get($fontSize, 'small')
+    input[type='checkbox']
+      display: none
+    & > input + span
+      min-width: 60px
+      height: 40px
+      background: map-get($layoutColors, 'gray')
+      position: relative
+      display: inline-block
+      border-radius: 46px
+      transition: ease all .2s
+      cursor: pointer
+      padding: 0 15px 0 40px
+      line-height: 38px
+      font-weight: bold
+      &:before
+        content: attr(data-off)''
+      &:after
+        content: ''
+        position: absolute
+        width: 30px
+        height: 30px
+        border-radius: 50%
+        left: 4px
+        top: 5px
         z-index: 1
         background: map-get($layoutColors, 'white')
         box-shadow: 0 0 5px rgba(map-get($layoutColors, 'black'), 0.4)
@@ -200,11 +230,9 @@
       &:before
         content: attr(data-on)''
       &:after
-        left: calc(100% - 26px)
+        left: calc(100% - 34px)
     &:hover > input + span
       opacity: .8
-
-
 
   // チェックボックス
   // ------------------------------------

@@ -129,6 +129,8 @@ import ProfitGraph from 'components/profit_graph';
 
 import ImageUploader from 'components/image_uploader';
 
+import CardLayout from 'components/card_layout';
+
 WebpackerReact.setup({
   Kawaii,
   Alert,
@@ -165,5 +167,6 @@ WebpackerReact.setup({
   UploadCardClient,
   InventoryDivisionsSelect,
   ProfitGraph,
-  ImageUploader
+  ImageUploader,
+  CardLayout
 });

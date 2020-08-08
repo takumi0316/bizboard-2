@@ -34,6 +34,10 @@ class LayoutContent < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
+  enum is_reduction_rated: { true: 0, false: 10 }
+
+  enum layout_type: { text: 0, text_area: 10 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
