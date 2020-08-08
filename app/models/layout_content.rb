@@ -8,14 +8,14 @@
 #  name               :string(191)
 #  x_coordinate       :string(191)
 #  y_coordinate       :string(191)
-#  font_family        :string(191)
-#  font_color         :string(191)
 #  font_size          :string(191)
 #  layout_length      :string(191)
 #  letter_spacing     :string(191)
 #  reduction_rate     :string(191)
 #  is_reduction_rated :integer
 #  layout_type        :integer
+#  font_family        :integer
+#  font_color         :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #

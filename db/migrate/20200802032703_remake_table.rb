@@ -266,15 +266,15 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.string     :name,               comment: 'レイアウトの名前'
       t.string     :x_coordinate,       comment: '座標(X)'
       t.string     :y_coordinate,       comment: '座標(Y)'
-      t.string     :font_family,        comment: '書体'
-      t.string     :font_color,         comment: 'フォントカラー'
       t.string     :font_size,          comment: 'フォントサイズ'
       t.string     :layout_length,      comment: '描画領域'
       t.string     :letter_spacing,     comment: '文字間'
       t.string     :reduction_rate,     comment: '縮小率'
       t.integer    :is_reduction_rated, comment: '縮小するか否か'
       t.integer    :layout_type,        comment: 'テキストかテキストエリアか'
-
+      t.integer    :font_family,        comment: '書体'
+      t.integer    :font_color,         comment: 'フォントカラー'
+      
       t.timestamps
     end
 
