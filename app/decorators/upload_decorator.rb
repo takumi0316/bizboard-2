@@ -1,4 +1,4 @@
-class ContentLogoDecorator < Draper::Decorator
+class UploadDecorator < Draper::Decorator
 
   #----------------------------------------
   #  ** Includes **

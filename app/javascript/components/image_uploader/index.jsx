@@ -88,12 +88,13 @@ export default class Uploader extends React.Component {
     }, blob => {
   
       let field = new FormData();
-      field.append('content_logo[name]', this.titleRef.value);
-      field.append('content_logo[image]', blob);
-      const result = window.xhrRequest.post('/content_logos', field)
+      field.append('upload[name]', this.titleRef.value);
+      field.append('upload[status]', 'card');
+      field.append('upload[file]', blob);
+      const result = window.xhrRequest.post('/uploads', field)
       result.then(res => {
         this.setState({ loading: false });
-        location.href = '/content_logos/';
+        location.href = '/uploads/';
       });
     });
   }

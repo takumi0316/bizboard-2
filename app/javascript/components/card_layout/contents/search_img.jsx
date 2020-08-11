@@ -78,7 +78,7 @@ export default class Uploads extends React.Component {
   
     this.page = page;
   
-    let url = `/content_logos.json?page=${ this.page }`;
+    let url = `/uploads.json?page=${ this.page }`;
     if(this.wordRef.value != '') url += `&name=${ this.wordRef.value }`;
   
     const request = window.xhrRequest.get(url);
@@ -86,7 +86,7 @@ export default class Uploads extends React.Component {
     
       this.total_pages = res.data.pagination.last;
     
-      this.setState({ images: res.data.logos });
+      this.setState({ images: res.data.uploads });
       setTimeout(() => {
         this.setState({ loading: false });
       }, 500);
@@ -102,7 +102,13 @@ export default class Uploads extends React.Component {
    */
   onSelect = e => {
     
-    // this.props.decision(JSON.parse(e.target.dataset.upload));
+    const upload = {
+      id: '',
+      upload_id: JSON.parse(e.target.dataset.upload).id,
+      url: e.target.src
+    };
+    
+    this.props.applyUpload(upload);
     this.close();
   }
   
@@ -114,24 +120,24 @@ export default class Uploads extends React.Component {
     
     return ( this.state.show ?
       <div>
-        <div className={ Style.SearchLogo } onMouseDown={ this.close }>
-          <div className={ Style.SearchLogo__body } onMouseDown={this._stopPropagation}>
+        <div className={ Style.SearchLogo }>
+          <div className={ Style.SearchLogo__body } onMouseDown={ e => this.stopPropagation(e) }>
             <div className={ Style.SearchLogo__form }>
-              <input type='text' className={ Style.SearchLogo__input } placeholder='画像名で検索' ref={ node => this.wordRef = node} onKeyDown={ this.onEnter }/>
+              <input type='text' className={ Style.SearchLogo__input } placeholder='画像名で検索' ref={ node => this.wordRef = node} onKeyDown={ e => this.onEnter(e) }/>
               <div onClick={ this.search.bind(this, 1) } className='c-btnMain-standard u-ml-10'>検索</div>
-              { this.page > 1 ? <div className={ Style.SearchLogo__prev } onClick={ this.prev }></div> : null }
+              { this.page > 1 ? <div className={ Style.SearchLogo__prev } onClick={ e => this.prev(e) }></div> : null }
               <div className={ Style.SearchLogo__pages }>{ this.page } / { this.total_pages }</div>
-              { this.page < this.total_pages ? <div className={ Style.SearchLogo__next } onClick={ this.next }></div> : null }
+              { this.page < this.total_pages ? <div className={ Style.SearchLogo__next } onClick={ e => this.next(e) }></div> : null }
             </div>
             
             { this.state.images.length > 0 ?
               <div className={ Style.SearchLogo__items }>
                 <ul className={ Style.SearchLogo__images }>
                   {this.state.images.map((image, i) => {
-                    const key = `logos-${i}`;
+                    const key = `upload-${i}`;
                     return (
                       <li {...{key}} className={ Style.SearchLogo__image }>
-                        <img src={ image.url } data-upload={ JSON.stringify(image) } onClick={ this.onSelect } />
+                        <img src={ image.url } data-upload={ JSON.stringify(image) } onClick={ e => this.onSelect(e) } />
                       </li>
                     );
                   })}

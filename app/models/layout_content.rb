@@ -4,7 +4,6 @@
 #
 #  id                 :bigint(8)        not null, primary key
 #  card_layout_id     :bigint(8)
-#  content_logo_id    :bigint(8)
 #  content_flag_id    :bigint(8)
 #  name               :string(191)
 #  x_coordinate       :string(191)
@@ -54,7 +53,11 @@ class LayoutContent < ApplicationRecord
 
   belongs_to :content_flag
 
-  has_one :content_logo, class_name: 'ContentLogo'
+  has_many :content_uploads
+
+  has_many :uploads, through: :content_uploads
+
+  accepts_nested_attributes_for :content_uploads, allow_destroy: true, reject_if: :all_blank
 
   #----------------------------------------
   #  ** Delegates **

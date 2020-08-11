@@ -187,7 +187,7 @@ Rails.application.routes.draw do
   resources :content_flags
 
   ## レイアウト画像・ロゴ
-  resources :content_logos
+  resources :uploads
 
   # 在庫管理
   resources :inventories

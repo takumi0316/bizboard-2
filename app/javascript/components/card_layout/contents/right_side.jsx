@@ -19,8 +19,7 @@ const RightSide = props => {
     is_reduction_rated: props.layout_content.is_reduction_rated,
     content_flag_name: props.layout_content.content_flag_name,
     content_flag_id: props.layout_content.content_flag_id,
-    content_logo_name: props.layout_content.content_logo_name,
-    content_logo_id: props.layout_content.content_logo_id,
+    uploads: props.layout_content.uploads,
   };
   
   const [state, setState] = useState(init);
@@ -42,11 +41,19 @@ const RightSide = props => {
   // フラグ検索反映
   const applyFlag = flag => setState({ ...state, content_flag_name: flag.name, content_flag_id: flag.id });
   
+  // 画像検索反映
+  const applyUpload = upload => {
+    
+    const parse_uploads = JSON.parse(JSON.stringify(state.uploads));
+    parse_uploads.push(upload);
+    setState({ ...state, uploads: parse_uploads });
+  };
+  
   const closeRightSide = e => {
     
     e.preventDefault();
   
-    if(!name_ref.current.value) {
+    if(state.layout_type != '20' && !name_ref.current.value) {
     
       window.alertable({ icon: 'info', message: 'コンテンツタイトルを入力してください。' });
       return
@@ -60,21 +67,20 @@ const RightSide = props => {
    
     const content = {
       'id': props.layout_content.id,
-      'name': name_ref.current.value,
+      'name': state.layout_type != '20' ? name_ref.current.value : props.layout_content.name,
       'x_coordinate': x_coordinate_ref.current.value,
       'y_coordinate': y_coordinate_ref.current.value,
-      'font_family': font_family_ref.current.value,
-      'font_size': font_size_ref.current.value,
-      'font_color': font_color_ref.current.value,
+      'font_family': state.layout_type != '20' ? font_family_ref.current.value : props.layout_content.font_family,
+      'font_size': state.layout_type != '20' ? font_size_ref.current.value : props.layout_content.font_size,
+      'font_color': state.layout_type != '20' ? font_color_ref.current.value : props.layout_content.font_color,
       'layout_length': length_ref.current.value,
-      'letter_spacing': letter_spacing_ref.current.value,
+      'letter_spacing': state.layout_type != '20' ? letter_spacing_ref.current.value : props.layout_content.letter_spacing,
       'reduction_rate': reduction_rate_ref.current ? reduction_rate_ref.current.value : props.layout_content.reduction_rate,
       'is_reduction_rated': state.is_reduction_rated,
       'layout_type': state.layout_type,
       'content_flag_name': state.content_flag_name,
       'content_flag_id': state.content_flag_id,
-      'content_logo_name': state.content_logo_name,
-      'content_logo_id': state.content_logo_id
+      'uploads': state.uploads,
     };
     
     props.saveContent(content);
@@ -200,7 +206,7 @@ const RightSide = props => {
             { state.layout_type == '20' ?
               <tr>
                 <td>画像</td>
-                <td><SearchImg /></td>
+                <td><SearchImg applyUpload={ applyUpload }/></td>
               </tr>
               : null
             }

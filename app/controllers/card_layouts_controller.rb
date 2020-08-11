@@ -8,9 +8,9 @@ class CardLayoutsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  expose_with_pagination(:card_layouts) { CardLayout.search(params[:name]).all.reverse_order }
+  expose_with_pagination(:card_layouts) { CardLayout.with_attached_pdf.search(params[:name]).all.reverse_order }
 
-  expose(:card_layout) { CardLayout.find_or_initialize_by(id: params[:id]) }
+  expose(:card_layout) { CardLayout.with_attached_pdf.find_or_initialize_by(id: params[:id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -63,8 +63,13 @@ class CardLayoutsController < ApplicationController
         layout_type: r.layout_type_before_type_cast,
         content_flag_name: r.content_flag.name,
         content_flag_id: r.content_flag.id,
-        logo_name: '',
-        logo_id: ''
+        uploads: r.content_uploads.map do |c|
+          {
+            id: c.id,
+            upload_id: c.upload_id,
+            url: c.upload.file.service_url
+          }
+        end
       }
     end
 
@@ -74,6 +79,7 @@ class CardLayoutsController < ApplicationController
 
   def update
 
+    binding.pry
     card_layout.update! card_layout_params
 
     render json: { status: :success }
@@ -120,7 +126,10 @@ class CardLayoutsController < ApplicationController
     def card_layout_params
 
       params.require(:card_layout).permit :name, :pdf, contents_attributes: [
-        :id, :logo_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rated, :layout_type
+        :id, :content_upload_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rated, :layout_type,
+        content_uploads_attributes: [
+          :id, :layout_content_id, :upload_id
+        ]
       ]
     end
 

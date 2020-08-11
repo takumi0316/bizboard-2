@@ -180,21 +180,32 @@ export const setPDF = (file, contents) => {
       // absoluteするための親div
       let parent_div = document.createElement('div');
       parent_div.id = `parent_div-${ index }`;
-      // 以下、子ども
-      let child_p = document.createElement('p');
-      child_p.id = `child_p-${ index }`;
-      let child_div = document.createElement('div');
-      child_div.id = `child_div-${ index }`;
       parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
-      draw.appendChild(parent_div);
-      child_p.textContent = name || '';
-      // transform: translate(x, y)
-      // ヘッダー表示のためword-wrapはなし
-      child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
-      parent_div.appendChild(child_p);
-      // 先に描画をしないと高さを取得出来ないため
-      child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
-      parent_div.appendChild(child_div);
+      if(content.layout_type != '20') {
+        
+        // 以下、子ども
+        let child_p = document.createElement('p');
+        child_p.id = `child_p-${ index }`;
+        let child_div = document.createElement('div');
+        child_div.id = `child_div-${ index }`;
+        draw.appendChild(parent_div);
+        child_p.textContent = name || '';
+        // transform: translate(x, y)
+        // ヘッダー表示のためword-wrapはなし
+        child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
+        parent_div.appendChild(child_p);
+        // 先に描画をしないと高さを取得出来ないため
+        child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+        parent_div.appendChild(child_div);
+      } else {
+  
+        draw.appendChild(parent_div);
+        let child_img = document.createElement('img');
+        child_img.id = `child_img-${ index }`;
+        child_img.src = content.uploads[0].url;
+        child_img.style = `width: ${ contentLength }px; position: absolute;`;
+        parent_div.appendChild(child_img);
+      };
     });
   }).catch(error => window.alertable({ icon: 'error', message: error }));
 };

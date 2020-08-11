@@ -53,6 +53,7 @@ const Index = props => {
       
       if(props.pdf) {
         
+        console.log(props)
         const field = new FormData();
         field.append('url', props.pdf);
         const request = window.xhrRequest.post('/card_layouts/transfer', field, { responseType: 'blob' });
@@ -122,8 +123,7 @@ const Index = props => {
       layout_type: '0',
       content_flag_name: '',
       content_flag_id: '',
-      content_logo_name: '',
-      content_logo_id: ''
+      uploads: []
     };
     
     stateContent.push(initContent);
@@ -154,8 +154,7 @@ const Index = props => {
     parse[state.content_id_being_edited].layout_type = content.layout_type;
     parse[state.content_id_being_edited].content_flag_name = content.content_flag_name;
     parse[state.content_id_being_edited].content_flag_id = content.content_flag_id;
-    // parse[state.content_id_being_edited].logo_name = content.logo_name;
-    // parse[state.content_id_being_edited].logo_id = content.logo_id;
+    parse[state.content_id_being_edited].uploads = content.uploads;
     
     setState({ ...state, layout_contents: parse, right_panel_exist: false });
   };
@@ -234,6 +233,12 @@ const Index = props => {
       field.append('card_layout[contents_attributes][][is_reduction_rated]', fil_is_reduction_rated[0]);
       field.append('card_layout[contents_attributes][][layout_type]', fil_type[0]);
       field.append('card_layout[contents_attributes][][content_flag_id]', content.content_flag_id);
+      console.log(content.uploads)
+      content.uploads.map(upload => {
+        field.append('card_layout[contents_attributes][][content_uploads_attributes][][id]', upload.id);
+        field.append('card_layout[contents_attributes][][content_uploads_attributes][][layout_content_id]', content.id);
+        field.append('card_layout[contents_attributes][][content_uploads_attributes][][upload_id]', upload.upload_id);
+      });
     });
     
     const result = props.new_record_type ?  window.xhrRequest.post(props.action, field) : window.xhrRequest.put(props.action, field);

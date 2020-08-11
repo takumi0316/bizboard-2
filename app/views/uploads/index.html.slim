@@ -2,7 +2,7 @@
 
 = react_component :ImageUploader
 
-= form_with url: content_logos_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+= form_with url: uploads_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
 
   .c-search__item
     = f.label :name, '画像タイトル'
@@ -11,13 +11,13 @@
 
 .p-uploads.u-mt-10
 
-  - if content_logos.present?
-    - content_logos.each do |r|
-      - next unless r.image.attached?
+  - if uploads.present?
+    - uploads.each do |r|
+      - next unless r.file.attached?
       .p-uploads__image
-        = link_to edit_content_logo_path(r) do
-          = image_tag r.image
-        = link_to '削除', content_logo_path(r), class: 'p-uploads__button', method: :delete, data: { confirmable: '本当に削除しますか?' }
+        = link_to edit_upload_path(r) do
+          = image_tag r.file
+        = link_to '削除', upload_path(r), class: 'p-uploads__button', method: :delete, data: { confirmable: '本当に削除しますか?' }
   - else
     .p-article__talk.u-mt-30
       .p-article__talkImage

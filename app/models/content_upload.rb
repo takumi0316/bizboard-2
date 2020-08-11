@@ -1,12 +1,15 @@
 # == Schema Information
 #
-# Table name: layout_logos
+# Table name: content_uploads
 #
-#  id   :bigint(8)        not null, primary key
-#  name :string(191)
+#  id                :bigint(8)        not null, primary key
+#  layout_content_id :bigint(8)
+#  upload_id         :bigint(8)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
-class LayoutLogo < ApplicationRecord
+class ContentUpload < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -24,14 +27,13 @@ class LayoutLogo < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
 
-  validates :name, presence: true
-  validates :name, length: { maximum: 191 }
-
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
 
-  has_many :contents, class_name: 'LayoutContent'
+  belongs_to :layout_content
+
+  belongs_to :upload
 
   #----------------------------------------
   #  ** Delegates **
@@ -44,18 +46,4 @@ class LayoutLogo < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-
-  ##
-  # 名称検索
-  #
-  #
-  def self.search name
-
-    terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-
-    query = (['content_flags.name like ?'] * terms.size).join(' and ')
-
-    self.where(query, *terms.map { |term| "%#{term}%" })
-  end
-
 end
