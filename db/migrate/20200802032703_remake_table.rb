@@ -2,7 +2,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
   def up
 
-     drop_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+    drop_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :company, index: true
       t.string     :name,    comment: '名刺名称'
@@ -222,7 +222,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
     remove_column :company_division_clients, :default_front_template
     remove_column :company_division_clients, :default_reverse_template
-    ## remove_column :uploads,                  :status,:integer, limit: 1, default: 0, comment: 'ステータス'
+    remove_column :uploads,                  :status,:integer, limit: 1, default: 0, comment: 'ステータス'
 
     drop_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
