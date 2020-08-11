@@ -81,8 +81,8 @@ class RemakeTable < ActiveRecord::Migration[5.2]
     ##   t.timestamps
     ## end
 
-    add_column :company_division_clients, :default_front_template,   :string,                        comment: 'デフォルトのテンプレ(表)'
-    add_column :company_division_clients, :default_reverse_template, :string,                        comment: 'デフォルトのテンプレ(裏)'
+    ## add_column :company_division_clients, :default_front_template,   :string,                        comment: 'デフォルトのテンプレ(表)'
+    ## add_column :company_division_clients, :default_reverse_template, :string,                        comment: 'デフォルトのテンプレ(裏)'
     add_column :uploads,                  :status,                   :integer, limit: 1, default: 0, comment: 'ステータス'
 
     create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
