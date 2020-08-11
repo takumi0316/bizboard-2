@@ -60,12 +60,68 @@ export const mmTopx = mm => {
   if(os == 'Mac OS') return 72 / 25.4 * mm;
 };
 
+const readFileAsync = file => {
+  
+  return new Promise((resolve, reject) => {
+    
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+};
+
+// PDFをcanvasに展開して、画像に変換する
+async function uploadPDF(e) {
+
+  // PDFファイルデータをArrayBuffer型で取得
+  const fileData = await readFileAsync(e)
+  
+  // PDFファイルのパース
+  const pdf = await pdfjsLib.getDocument({
+    data: fileData,
+    cMapUrl: '/cmaps/',
+    cMapPacked: true,
+  })
+  
+  // 1ページ目をcanvasにレンダリング
+  const page = await pdf.getPage(1)
+  const canvas = document.createElement('canvas');
+  const viewport = page.getViewport({ scale: 2 })
+  canvas.height = viewport.height
+  canvas.width = viewport.width
+  const context = canvas.getContext('2d')
+  let task = page.render({
+    canvasContext: context,
+    viewport: viewport,
+  });
+  
+  await task.promise
+  
+  // canvasにレンダリングされた画像をファイル化
+  const base64 = canvas.toDataURL('image/png')
+  const tmp = base64.split(',')
+  const data = atob(tmp[1])
+  const mime = tmp[0].split(':')[1].split(';')[0]
+  const buf = new Uint8Array(data.length)
+  for(let i = 0; i < data.length; i++) buf[i] = data.charCodeAt(i);
+  
+  const blob = new Blob([buf], { type: mime })
+  const imageFile = new File([blob], 'layout.png', {
+    lastModified: new Date().getTime(),
+  })
+  
+  return imageFile;
+};
+
+export const convertPDFtoPNG = pdf => uploadPDF(pdf);
+
 /**
  * PDFを展開する
  * @version 2020/03/30
  *
  */
-export const setPDF = (file, details, canvas, draw_canvas) => {
+export const setPDF = (file, contents) => {
   
   const blob = new Blob([file]);
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
@@ -74,50 +130,29 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
   getPDF.promise.then(pdf => {
     return pdf.getPage(1);
   }).then(page => {
-    
-    // Set scale (zoom) level
-    let scale = 2;
-    
-    // Get viewport (dimensions)
-    let viewport = page.getViewport({ scale: scale, rotate: 1 });
-    
+  
+    const canvas = document.getElementById('pdf');
+    const draw_canvas = document.getElementById('drawer');
+  
     // Fetch canvas' 2d context
     let ctx = canvas.getContext('2d');
     let draw_ctx = draw_canvas.getContext('2d');
-    
+  
     // Set dimensions to Canvas
     canvas.height = (mmTopx(55 * 2));
     canvas.width = (mmTopx(91 * 2));
-    
+  
     draw_canvas.height = (mmTopx(55 * 2));
     draw_canvas.width = (mmTopx(91 * 2));
-    
-    details.forEach(detail => {
-      
-      const name = detail.name;
-      
-      if(!name) return;
-      
-      const y = mmTopx(detail.coord_y) * 2;
-      const x =	mmTopx(detail.coord_x) * 2;
-      const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
-      const lineSpace = mmTopx(detail.line_space);
-      
-      draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-      
-      for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
-        
-        let line = lines[i];
-        let addY = fontSize;
-        if(i) addY += fontSize * lineSpace * i;
-        draw_ctx.fillText(line, x, y + addY);
-      };
-      
-      // 自動組版
-      // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
-      // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
-      // draw_ctx.fillText(name, x, y);
-    });
+  
+    // Set scale (zoom) level
+    const scale = 2;
+  
+    // Get viewport (dimensions)
+    console.log(page.getViewport({ scale: page.getViewport(2.0).width / canvas.width, width: canvas.width, height: canvas.height }))
+    console.log(page.getViewport({ scale: scale, width: canvas.width, height: canvas.height }))
+    console.log(page.getViewport({ scale: scale }))
+    let viewport = page.getViewport({ scale: page.getViewport(2.0).width / canvas.width, width: canvas.width, height: canvas.height });
     
     // Prepare object needed by render method
     const renderContext = {

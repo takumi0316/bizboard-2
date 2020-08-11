@@ -177,7 +177,11 @@ Rails.application.routes.draw do
   resources :card_templates
 
   ## 名刺レイアウト
-  resources :card_layouts
+  resources :card_layouts do
+    collection do
+      post :transfer
+    end
+  end
 
   ## レイアウトフラグ
   resources :content_flags

@@ -124,8 +124,9 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
     create_table :layout_contents, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
-      t.references :content_logo,       index: true
-      t.references :content_flag,       index: true
+      t.references :card_layout,  index: true
+      t.references :content_logo, index: true
+      t.references :content_flag, index: true
       t.string     :name,               comment: 'レイアウトの名前'
       t.string     :x_coordinate,       comment: '座標(X)'
       t.string     :y_coordinate,       comment: '座標(Y)'
@@ -261,6 +262,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
     drop_table :layout_contents, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
+      t.references :card_layout,        index: true
       t.references :content_logo,       index: true
       t.references :content_flag,       index: true
       t.string     :name,               comment: 'レイアウトの名前'
@@ -274,7 +276,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.integer    :layout_type,        comment: 'テキストかテキストエリアか'
       t.integer    :font_family,        comment: '書体'
       t.integer    :font_color,         comment: 'フォントカラー'
-      
+
       t.timestamps
     end
 

@@ -38,6 +38,8 @@ class LayoutContent < ApplicationRecord
 
   enum layout_type: { text: 0, text_area: 10 }
 
+  enum font_color: { black: 0, red: 1, yellow: 2, green: 3 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------

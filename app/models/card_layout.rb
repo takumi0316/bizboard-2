@@ -35,6 +35,8 @@ class CardLayout < ApplicationRecord
 
   has_many :contents, class_name: 'LayoutContent', dependent: :destroy
 
+  has_one_attached :pdf, dependent: :detach
+
   accepts_nested_attributes_for :contents, allow_destroy: true, reject_if: :all_blank
 
   #----------------------------------------

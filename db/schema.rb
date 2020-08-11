@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
   end
 
   create_table "layout_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "card_layout_id"
     t.bigint "content_logo_id"
     t.bigint "content_flag_id"
     t.string "name", comment: "レイアウトの名前"
@@ -291,6 +292,7 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
     t.integer "font_color", comment: "フォントカラー"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["card_layout_id"], name: "index_layout_contents_on_card_layout_id"
     t.index ["content_flag_id"], name: "index_layout_contents_on_content_flag_id"
     t.index ["content_logo_id"], name: "index_layout_contents_on_content_logo_id"
   end
