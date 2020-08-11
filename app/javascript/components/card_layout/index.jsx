@@ -206,34 +206,34 @@ const Index = props => {
     field.append('card_layout[pdf]', pdf_ref.current);
   
     state.layout_contents.map(content => {
-       
+
        // フォントカラーのカラー名を抽出
-       const fil_color = Object.entries(FontColors).find(([key, val]) => val === content.font_color);
-       const fil_is_reduction_rated = Object.entries(IsReductionRated).find(([key, val]) => val === content.is_reduction_rated);
-       const fil_type = Object.entries(LayoutTypes).find(([key, val]) => val === content.layout_type);
-       
-       // :content_logo_id, :content_flag_id
-       field.append('card_layout[contents_attributes][][id]', content.id);
-       field.append('card_layout[contents_attributes][][name]', content.name);
-       field.append('card_layout[contents_attributes][][x_coordinate]', content.x_coordinate);
-       field.append('card_layout[contents_attributes][][y_coordinate]', content.y_coordinate);
-       field.append('card_layout[contents_attributes][][font_family]', content.font_family);
-       field.append('card_layout[contents_attributes][][font_color]', fil_color[0]);
-       field.append('card_layout[contents_attributes][][font_size]', content.font_size);
-       field.append('card_layout[contents_attributes][][layout_length]', content.layout_length);
-       field.append('card_layout[contents_attributes][][letter_spacing]', content.letter_spacing);
-       field.append('card_layout[contents_attributes][][reduction_rate]', content.reduction_rate);
-       field.append('card_layout[contents_attributes][][is_reduction_rated]', fil_is_reduction_rated[0]);
-       field.append('card_layout[contents_attributes][][layout_type]', fil_type[0]);
-     });
-     
-     const result = props.new_record_type ?  window.xhrRequest.post(props.action, field) : window.xhrRequest.put(props.action, field);
-     result.then(res => {
-       
-       const message = props.new_record_type ? 'レイアウトを作成しました。' : 'レイアウトを更新しました。';
-       const redirect = () => location.href = `/card_layouts/${ res.data.card_layout_id }/edit`;
-       window.alertable({ icon: res.data.status, message: message, close_callback: res.data.card_layout_id ? redirect : '' });
-     }).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }));
+      const fil_color = Object.entries(FontColors).find(([key, val]) => val === content.font_color);
+      const fil_is_reduction_rated = Object.entries(IsReductionRated).find(([key, val]) => val === content.is_reduction_rated);
+      const fil_type = Object.entries(LayoutTypes).find(([key, val]) => val === content.layout_type);
+      
+      // :content_logo_id, :content_flag_id
+      field.append('card_layout[contents_attributes][][id]', content.id);
+      field.append('card_layout[contents_attributes][][name]', content.name);
+      field.append('card_layout[contents_attributes][][x_coordinate]', content.x_coordinate);
+      field.append('card_layout[contents_attributes][][y_coordinate]', content.y_coordinate);
+      field.append('card_layout[contents_attributes][][font_family]', content.font_family);
+      field.append('card_layout[contents_attributes][][font_color]', fil_color[0]);
+      field.append('card_layout[contents_attributes][][font_size]', content.font_size);
+      field.append('card_layout[contents_attributes][][layout_length]', content.layout_length);
+      field.append('card_layout[contents_attributes][][letter_spacing]', content.letter_spacing);
+      field.append('card_layout[contents_attributes][][reduction_rate]', content.reduction_rate);
+      field.append('card_layout[contents_attributes][][is_reduction_rated]', fil_is_reduction_rated[0]);
+      field.append('card_layout[contents_attributes][][layout_type]', fil_type[0]);
+    });
+    
+    const result = props.new_record_type ?  window.xhrRequest.post(props.action, field) : window.xhrRequest.put(props.action, field);
+    result.then(res => {
+      
+      const message = props.new_record_type ? 'レイアウトを作成しました。' : 'レイアウトを更新しました。';
+      const redirect = () => location.href = `/card_layouts/${ res.data.card_layout_id }/edit`;
+      window.alertable({ icon: res.data.status, message: message, close_callback: res.data.card_layout_id ? redirect : '' });
+    }).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }));
   };
   
   return(

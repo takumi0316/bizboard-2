@@ -139,9 +139,12 @@ export const setPDF = (file, contents) => {
     let draw_ctx = draw_canvas.getContext('2d');
   
     // Set dimensions to Canvas
-    canvas.height = (mmTopx(55 * 2));
-    canvas.width = (mmTopx(91 * 2));
+    canvas.height = (mmTopx(55 * 3));
+    canvas.width = (mmTopx(91 * 3));
   
+    canvas.style.height = (mmTopx(55 * 2));
+    canvas.style.width = (mmTopx(91 * 2));
+
     draw_canvas.height = (mmTopx(55 * 2));
     draw_canvas.width = (mmTopx(91 * 2));
   
@@ -152,7 +155,7 @@ export const setPDF = (file, contents) => {
     console.log(page.getViewport({ scale: page.getViewport(2.0).width / canvas.width, width: canvas.width, height: canvas.height }))
     console.log(page.getViewport({ scale: scale, width: canvas.width, height: canvas.height }))
     console.log(page.getViewport({ scale: scale }))
-    let viewport = page.getViewport({ scale: page.getViewport(2.0).width / canvas.width, width: canvas.width, height: canvas.height });
+    const viewport = page.getViewport({ scale: page.getViewport(2.0).width / canvas.width, width: canvas.width, height: canvas.height });
     
     // Prepare object needed by render method
     const renderContext = {
