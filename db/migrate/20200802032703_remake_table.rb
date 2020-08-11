@@ -2,7 +2,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
   def up
 
-    drop_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+     drop_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :company, index: true
       t.string     :name,    comment: '名刺名称'
@@ -81,8 +81,9 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_column :company_division_clients, :default_front_template,   :string, comment: 'デフォルトのテンプレ(表)'
-    add_column :company_division_clients, :default_reverse_template, :string, comment: 'デフォルトのテンプレ(裏)'
+    add_column :company_division_clients, :default_front_template,   :string,                        comment: 'デフォルトのテンプレ(表)'
+    add_column :company_division_clients, :default_reverse_template, :string,                        comment: 'デフォルトのテンプレ(裏)'
+    add_column :uploads,                  :status,                   :integer, limit: 1, default: 0, comment: 'ステータス'
 
     create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
@@ -108,13 +109,6 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    create_table :content_logos, options: 'DEFAULT CHARSET=utf8mb4' do |t|
-
-      t.string :name, limit: 191
-
-      t.timestamps
-    end
-
     create_table :content_flags, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.string :name, limit: 191
@@ -125,7 +119,6 @@ class RemakeTable < ActiveRecord::Migration[5.2]
     create_table :layout_contents, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :card_layout,  index: true
-      t.references :content_logo, index: true
       t.references :content_flag, index: true
       t.string     :name,               comment: 'レイアウトの名前'
       t.string     :x_coordinate,       comment: '座標(X)'
@@ -138,6 +131,14 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.integer    :layout_type,        comment: 'テキストかテキストエリアか'
       t.integer    :font_family,        comment: '書体'
       t.integer    :font_color,         comment: 'フォントカラー'
+
+      t.timestamps
+    end
+
+    create_table :content_uploads, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+
+      t.references :layout_content, index: true
+      t.references :upload,         index: true
 
       t.timestamps
     end
@@ -221,6 +222,7 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
     remove_column :company_division_clients, :default_front_template
     remove_column :company_division_clients, :default_reverse_template
+    ## remove_column :uploads,                  :status,:integer, limit: 1, default: 0, comment: 'ステータス'
 
     drop_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
@@ -246,13 +248,6 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    drop_table :content_logos, options: 'DEFAULT CHARSET=utf8mb4' do |t|
-
-      t.string :name, limit: 191
-
-      t.timestamps
-    end
-
     drop_table :content_flags, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.string :name, limit: 191
@@ -263,7 +258,6 @@ class RemakeTable < ActiveRecord::Migration[5.2]
     drop_table :layout_contents, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
       t.references :card_layout,        index: true
-      t.references :content_logo,       index: true
       t.references :content_flag,       index: true
       t.string     :name,               comment: 'レイアウトの名前'
       t.string     :x_coordinate,       comment: '座標(X)'
@@ -276,6 +270,14 @@ class RemakeTable < ActiveRecord::Migration[5.2]
       t.integer    :layout_type,        comment: 'テキストかテキストエリアか'
       t.integer    :font_family,        comment: '書体'
       t.integer    :font_color,         comment: 'フォントカラー'
+
+      t.timestamps
+    end
+
+    drop_table :content_uploads, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+
+      t.references :layout_content, index: true
+      t.references :upload,         index: true
 
       t.timestamps
     end
