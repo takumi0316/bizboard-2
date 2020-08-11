@@ -139,27 +139,23 @@ export const setPDF = (file, contents) => {
     let draw_ctx = draw_canvas.getContext('2d');
   
     // Set dimensions to Canvas
+    // 画像をスケールさせて、解像度をあげる
     canvas.height = (mmTopx(55 * 3));
     canvas.width = (mmTopx(91 * 3));
-  
-    canvas.style.height = (mmTopx(55 * 2));
-    canvas.style.width = (mmTopx(91 * 2));
+    canvas.style.height = (mmTopx(55 * 2)) + 'px';
+    canvas.style.width = (mmTopx(91 * 2)) + 'px';
 
     draw_canvas.height = (mmTopx(55 * 2));
     draw_canvas.width = (mmTopx(91 * 2));
   
-    // Set scale (zoom) level
-    const scale = 2;
-  
     // Get viewport (dimensions)
-    console.log(page.getViewport({ scale: page.getViewport(2.0).width / canvas.width, width: canvas.width, height: canvas.height }))
-    console.log(page.getViewport({ scale: scale, width: canvas.width, height: canvas.height }))
-    console.log(page.getViewport({ scale: scale }))
-    const viewport = page.getViewport({ scale: page.getViewport(2.0).width / canvas.width, width: canvas.width, height: canvas.height });
+    // 描画範囲にPDFをまとめる
+    const viewport = page.getViewport({ scale: canvas.width / page.getViewport(1.0).width });
     
     // Prepare object needed by render method
     const renderContext = {
       canvasContext: ctx,
+      transform: [1, 0, 0, 1, 0, 0],
       viewport: viewport
     };
     
