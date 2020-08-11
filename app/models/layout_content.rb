@@ -52,7 +52,7 @@ class LayoutContent < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  has_one :flag, class_name: 'ContentFlag'
+  belongs_to :content_flag
 
   has_one :logo, class_name: 'ContentLogo'
 

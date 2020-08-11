@@ -62,7 +62,7 @@ const SearchFlag = props => {
   const onSelect = e => {
     
     const flag = state.flags[e.target.dataset.number];
-    // props.applyFlag(flag);
+    props.applyFlag(flag);
     close();
   };
   

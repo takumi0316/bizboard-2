@@ -56,7 +56,7 @@ class ContentFlag < ApplicationRecord
     terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
     
     query = (['content_flags.name like ?'] * terms.size).join(' and ')
-    
+
     self.where(query, *terms.map { |term| "%#{term}%" })
   end
 

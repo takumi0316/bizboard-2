@@ -15,10 +15,10 @@ const RightSide = props => {
   
   const init = {
     is_reduction_rated: props.layout_content.is_reduction_rated,
-    flag_name: props.layout_content.flag_name,
-    flag_id: props.layout_content.flag_id,
-    logo_name: props.layout_content.logo_name,
-    logo_id: props.layout_content.logo_id,
+    content_flag_name: props.layout_content.content_flag_name,
+    content_flag_id: props.layout_content.content_flag_id,
+    content_logo_name: props.layout_content.content_logo_name,
+    content_logo_id: props.layout_content.content_logo_id,
   };
   
   const [state, setState] = useState(init);
@@ -35,17 +35,28 @@ const RightSide = props => {
   const letter_spacing_ref = useRef(null);
   
   useEffect(() => {
-    console.log(state)
   }, [state]);
   
   
   // フラグ検索反映
-  const applyFlag = flag => setState({ ...state, flag_name: flag.name, flag_id: flag.id });
+  const applyFlag = flag => setState({ ...state, content_flag_name: flag.name, content_flag_id: flag.id });
   
   const closeRightSide = e => {
     
     e.preventDefault();
+  
+    if(!name_ref.current.value) {
     
+      window.alertable({ icon: 'info', message: 'コンテンツタイトルを入力してください。' });
+      return
+    };
+  
+    if(!state.content_flag_id) {
+      
+      window.alertable({ icon: 'info', message: 'フラグを登録してください。' });
+      return;
+    };
+   
     const content = {
       'id': props.layout_content.id,
       'name': name_ref.current.value,
@@ -56,13 +67,13 @@ const RightSide = props => {
       'font_color': font_color_ref.current.value,
       'layout_length': length_ref.current.value,
       'letter_spacing': letter_spacing_ref.current.value,
-      'reduction_rate': reduction_rate_ref.current.value || props.layout_content.reduction_rate,
+      'reduction_rate': reduction_rate_ref.current ? reduction_rate_ref.current.value : props.layout_content.reduction_rate,
       'is_reduction_rated': state.is_reduction_rated,
       'layout_type': type_ref.current.value,
-      'flag_name': state.flag_name,
-      'flag_id': state.flag_id,
-      'logo_name': state.logo_name,
-      'logo_id': state.logo_id
+      'content_flag_name': state.content_flag_name,
+      'content_flag_id': state.content_flag_id,
+      'content_logo_name': state.content_logo_name,
+      'content_logo_id': state.content_logo_id
     };
     
     props.saveContent(content);
@@ -176,7 +187,7 @@ const RightSide = props => {
 
             <tr>
               <td className='u-ta-center'><label className='c-form-label'>フラグ</label></td>
-              <td><SearchFlag applyFlag={ applyFlag }/></td>
+              <td><SearchFlag applyFlag={ applyFlag } flag_name={ state.content_flag_name }/></td>
             </tr>
           
           </tbody>

@@ -8,7 +8,7 @@ const Index = props => {
       <div className='c-flex__center'>
         <div className={ `${ Style.Canvas__layer } ${ Style.Canvas__top }` }>
             <div className='c-position'>
-              <canvas id='drawer' className='c-position__canvas'/>
+              <div id='drawer' className='c-position__canvas'/>
               <canvas id='pdf'/>
             </div>
         </div>

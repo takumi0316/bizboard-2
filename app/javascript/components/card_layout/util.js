@@ -1,6 +1,12 @@
 // ライブラリをインポート
 const UAParser = require('ua-parser-js');
 
+// プロパティ
+import {
+  FontColors,
+  FontFamilies
+} from './contents/properties'
+
 /**
  * String => Bool
  * @version 2020/04/30
@@ -132,11 +138,10 @@ export const setPDF = (file, contents) => {
   }).then(page => {
   
     const canvas = document.getElementById('pdf');
-    const draw_canvas = document.getElementById('drawer');
+    const draw = document.getElementById('drawer');
   
     // Fetch canvas' 2d context
     let ctx = canvas.getContext('2d');
-    let draw_ctx = draw_canvas.getContext('2d');
   
     // Set dimensions to Canvas
     // 画像をスケールさせて、解像度をあげる
@@ -144,9 +149,8 @@ export const setPDF = (file, contents) => {
     canvas.width = (mmTopx(91 * 3));
     canvas.style.height = (mmTopx(55 * 2)) + 'px';
     canvas.style.width = (mmTopx(91 * 2)) + 'px';
-
-    draw_canvas.height = (mmTopx(55 * 2));
-    draw_canvas.width = (mmTopx(91 * 2));
+  
+    draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
   
     // Get viewport (dimensions)
     // 描画範囲にPDFをまとめる
@@ -161,5 +165,36 @@ export const setPDF = (file, contents) => {
     
     // Render PDF page
     page.render(renderContext);
+  
+    contents.map((content, index) => {
+      
+      const name = content.name;
+      if(!name) return;
+      
+      const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
+      const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
+      const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
+      const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
+      const contentLength = Math.floor(mmTopx(content.layout_length));
+      
+      // absoluteするための親div
+      let parent_div = document.createElement('div');
+      parent_div.id = `parent_div-${ index }`;
+      // 以下、子ども
+      let child_p = document.createElement('p');
+      child_p.id = `child_p-${ index }`;
+      let child_div = document.createElement('div');
+      child_div.id = `child_div-${ index }`;
+      parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
+      draw.appendChild(parent_div);
+      child_p.textContent = name || '';
+      // transform: translate(x, y)
+      // ヘッダー表示のためword-wrapはなし
+      child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
+      parent_div.appendChild(child_p);
+      // 先に描画をしないと高さを取得出来ないため
+      child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+      parent_div.appendChild(child_div);
+    });
   }).catch(error => window.alertable({ icon: 'error', message: error }));
 };

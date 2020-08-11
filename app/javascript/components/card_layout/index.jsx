@@ -17,7 +17,7 @@ import { setPDF } from './util';
 const closeLeftSidebar = drawerElement => drawerElement.click();
 
 //　右サイドバーの使用有無
-const rightSidebarExists = () => window.alertable({ icon: 'info', message: '編集パネルを終了してください。' });
+const rightSidebarExist = () => window.alertable({ icon: 'info', message: '編集パネルを終了してください。' });
 
 const Index = props => {
   
@@ -28,9 +28,9 @@ const Index = props => {
   const loading_ref = useRef(null);
   
   const init = {
-    layout_contents: props.layout_contents ? props.layout_contents : [],
+    layout_contents: props.layout_contents || [],
     layout_exist: !!props.pdf,
-    open_right_panel: false,
+    right_panel_exist: false,
     content_id_being_edited: '',
     layout_png: ''
   };
@@ -43,11 +43,13 @@ const Index = props => {
   useEffect(() => {
     
     closeLeftSidebar(document.getElementById('js-drawerOpen'));
+    
     if(!props.new_record_type) {
   
-      const fil_contents = JSON.parse(JSON.stringify(state.layout_contents)).map(content => {
-        return { ...content, layout_type: LayoutTypes[content.layout_type], font_color: FontColors[content.font_color], is_reduction_rated: IsReductionRated[content.is_reduction_rated] };
-      });
+      const fil_contents = JSON.parse(JSON.stringify(state.layout_contents));
+      // const fil_contents = JSON.parse(JSON.stringify(state.layout_contents)).map(content => {
+      //   return { ...content, layout_type: LayoutTypes[content.layout_type], font_color: FontColors[content.font_color], is_reduction_rated: IsReductionRated[content.is_reduction_rated] };
+      // });
       
       if(props.pdf) {
         
@@ -80,11 +82,17 @@ const Index = props => {
     
     e.preventDefault();
     
+    if(state.right_panel_exist){
+      
+      rightSidebarExist();
+      return;
+    };
+    
     // right panelを出現させる
     let split = document.getElementById('split');
     split.classList.add('c-flex');
     
-    setState({ ...state, open_right_panel: true, content_id_being_edited: e.target.dataset.number });
+    setState({ ...state, right_panel_exist: true, content_id_being_edited: e.target.dataset.number });
   };
   
   // コンテンツの追加
@@ -92,9 +100,9 @@ const Index = props => {
     
     e.preventDefault();
     
-    if(state.open_right_panel) {
+    if(state.right_panel_exist) {
       
-      rightSidebarExists();
+      rightSidebarExist();
       return;
     };
     
@@ -112,10 +120,10 @@ const Index = props => {
       reduction_rate: '0',
       is_reduction_rated: '0',
       layout_type: '0',
-      flag_name: '',
-      flag_id: '',
-      logo_name: '',
-      logo_id: ''
+      content_flag_name: '',
+      content_flag_id: '',
+      content_logo_name: '',
+      content_logo_id: ''
     };
     
     stateContent.push(initContent);
@@ -144,12 +152,12 @@ const Index = props => {
     parse[state.content_id_being_edited].reduction_rate = content.reduction_rate;
     parse[state.content_id_being_edited].is_reduction_rated = content.is_reduction_rated;
     parse[state.content_id_being_edited].layout_type = content.layout_type;
-    // parse[state.content_id_being_edited].flag_name = content.flag_name;
-    // parse[state.content_id_being_edited].flag_id = content.flag_id;
+    parse[state.content_id_being_edited].content_flag_name = content.content_flag_name;
+    parse[state.content_id_being_edited].content_flag_id = content.content_flag_id;
     // parse[state.content_id_being_edited].logo_name = content.logo_name;
     // parse[state.content_id_being_edited].logo_id = content.logo_id;
     
-    setState({ ...state, layout_contents: parse, open_right_panel: false });
+    setState({ ...state, layout_contents: parse, right_panel_exist: false });
   };
   
   // コンテンツの削除
@@ -182,9 +190,9 @@ const Index = props => {
     
     e.preventDefault();
     
-    if(state.open_right_panel) {
+    if(state.right_panel_exist) {
       
-      rightSidebarExists();
+      rightSidebarExist();
       return;
     };
     
@@ -208,9 +216,9 @@ const Index = props => {
     state.layout_contents.map(content => {
 
        // フォントカラーのカラー名を抽出
-      const fil_color = Object.entries(FontColors).find(([key, val]) => val === content.font_color);
-      const fil_is_reduction_rated = Object.entries(IsReductionRated).find(([key, val]) => val === content.is_reduction_rated);
-      const fil_type = Object.entries(LayoutTypes).find(([key, val]) => val === content.layout_type);
+      const fil_color = Object.entries(FontColors).find(([key, val]) => val == content.font_color);
+      const fil_is_reduction_rated = Object.entries(IsReductionRated).find(([key, val]) => val == content.is_reduction_rated);
+      const fil_type = Object.entries(LayoutTypes).find(([key, val]) => val == content.layout_type);
       
       // :content_logo_id, :content_flag_id
       field.append('card_layout[contents_attributes][][id]', content.id);
@@ -225,6 +233,7 @@ const Index = props => {
       field.append('card_layout[contents_attributes][][reduction_rate]', content.reduction_rate);
       field.append('card_layout[contents_attributes][][is_reduction_rated]', fil_is_reduction_rated[0]);
       field.append('card_layout[contents_attributes][][layout_type]', fil_type[0]);
+      field.append('card_layout[contents_attributes][][content_flag_id]', content.content_flag_id);
     });
     
     const result = props.new_record_type ?  window.xhrRequest.post(props.action, field) : window.xhrRequest.put(props.action, field);
@@ -252,7 +261,7 @@ const Index = props => {
           }
           <Contents layout_contents={ state.layout_contents } addContent={ addContent } removeContent={ removeContent } openRightPanel={ openRightPanel }/>
         </div>
-        { state.open_right_panel ?
+        { state.right_panel_exist ?
           <RightSide layout_content={ state.layout_contents[state.content_id_being_edited] } saveContent={ saveContent }/>
           : null
         }

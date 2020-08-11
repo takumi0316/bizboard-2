@@ -47,7 +47,7 @@ class CardLayoutsController < ApplicationController
 
   def edit
 
-    @layout_contents = card_layout.contents.each do |r|
+    @layout_contents = card_layout.contents.map do |r|
       {
         id: r.id,
         name: r.name,
@@ -61,8 +61,8 @@ class CardLayoutsController < ApplicationController
         reduction_rate: r.reduction_rate,
         is_reduction_rated: r.is_reduction_rated_before_type_cast,
         layout_type: r.layout_type_before_type_cast,
-        flag_name: '',
-        flag_id: '',
+        content_flag_name: r.content_flag.name,
+        content_flag_id: r.content_flag.id,
         logo_name: '',
         logo_id: ''
       }
@@ -120,7 +120,7 @@ class CardLayoutsController < ApplicationController
     def card_layout_params
 
       params.require(:card_layout).permit :name, :pdf, contents_attributes: [
-        :id, :content_logo_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rated, :layout_type
+        :id, :logo_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rated, :layout_type
       ]
     end
 
