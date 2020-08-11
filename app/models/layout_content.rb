@@ -37,7 +37,7 @@ class LayoutContent < ApplicationRecord
 
   enum is_reduction_rated: { true: 0, false: 10 }
 
-  enum layout_type: { text: 0, text_area: 10 }
+  enum layout_type: { text: 0, text_area: 10, image: 20 }
 
   enum font_color: { black: 0, red: 1, yellow: 2, green: 3 }
 
@@ -54,7 +54,7 @@ class LayoutContent < ApplicationRecord
 
   belongs_to :content_flag
 
-  has_one :logo, class_name: 'ContentLogo'
+  has_one :content_logo, class_name: 'ContentLogo'
 
   #----------------------------------------
   #  ** Delegates **

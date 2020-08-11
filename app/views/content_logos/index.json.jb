@@ -1,0 +1,14 @@
+json = { status: :success }
+
+json[:pagination] = self.pagination
+
+json[:logos] = content_logos.each_with_object([]) do |r, result|
+
+  result.push({
+    id: r.id,
+    name: r.name,
+    url: r.image.service_url,
+  }) if r.image.attached?
+end
+
+json

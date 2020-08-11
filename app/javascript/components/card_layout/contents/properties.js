@@ -2,6 +2,7 @@
 export const LayoutTypes = {
   'text': '0',
   'text_area': '10',
+  'image': '20'
 };
 
 // フォントカラー
