@@ -37,7 +37,7 @@ class Upload < ApplicationRecord
   #----------------------------------------
 
   # file
-  has_one_attached :file, dependent: :detach
+  has_one_attached :image, dependent: :detach
 
   has_many :content_uploads
 

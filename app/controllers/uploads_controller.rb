@@ -11,9 +11,9 @@ class UploadsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  expose_with_pagination(:uploads) { Upload.with_attached_file.search(params[:name]).all.where(status: :card).reverse_order }
+  expose_with_pagination(:uploads) { Upload.with_attached_image.search(params[:name]).all.where(status: :card).reverse_order }
 
-  expose(:upload) { Upload.with_attached_file.find_or_initialize_by(id: params[:id]) }
+  expose(:upload) { Upload.with_attached_image.find_or_initialize_by(id: params[:id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -82,7 +82,7 @@ class UploadsController < ApplicationController
 
     def upload_params
 
-      params.require(:upload).permit :name, :file, :status
+      params.require(:upload).permit :name, :image, :status
     end
 
 

@@ -13,10 +13,10 @@
 
   - if uploads.present?
     - uploads.each do |r|
-      - next unless r.file.attached?
+      - next unless r.image.attached?
       .p-uploads__image
         = link_to edit_upload_path(r) do
-          = image_tag r.file
+          = image_tag r.image
         = link_to '削除', upload_path(r), class: 'p-uploads__button', method: :delete, data: { confirmable: '本当に削除しますか?' }
   - else
     .p-article__talk.u-mt-30

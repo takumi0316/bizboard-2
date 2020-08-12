@@ -68,7 +68,7 @@ class CardLayoutsController < ApplicationController
             id: c.id,
             upload_id: c.upload_id,
             name: c.upload.name,
-            url: c.upload.file.service_url
+            url: c.upload.image.service_url
           }
         end
       }

@@ -78,7 +78,7 @@ export default class Uploader extends React.Component {
       return false;
     }
     
-    this.setState({loading: true});
+    this.setState({ loading: true });
     
     // 画像をリサイズ
     window.ImageConverter.imageUriToResizedBlob({
