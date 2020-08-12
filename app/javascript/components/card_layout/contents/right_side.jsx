@@ -37,6 +37,20 @@ const RightSide = props => {
   useEffect(() => {
   }, [state]);
   
+  const destroyUpload = e => {
+    
+    e.preventDefault();
+    
+    const parse_uploads = [];
+    
+    JSON.parse(JSON.stringify(state.uploads)).map((upload, index) => {
+      
+      if(e.target.dataset.number == index) parse_uploads.push({ ...upload,  _destroy: '1' });
+      if(e.target.dataset.number != index) parse_uploads.push(upload);
+    });
+    
+    setState({ ...state, uploads: parse_uploads });
+  };
   
   // フラグ検索反映
   const applyFlag = flag => setState({ ...state, content_flag_name: flag.name, content_flag_id: flag.id });
@@ -68,6 +82,13 @@ const RightSide = props => {
     if(!state.content_flag_id) {
       
       window.alertable({ icon: 'info', message: 'フラグを登録してください。' });
+      return;
+    };
+    
+    // ラスイチの時に削除された時の処理
+    if(state.uploads.every(upload => upload._destroy) && state.uploads.length === 1) {
+      
+      window.alertable({ icon: 'info', message: '画像を登録してください。' });
       return;
     };
    
@@ -244,18 +265,23 @@ const RightSide = props => {
             <tbody>
               { state.uploads.map((upload, index) => {
                 
-                const key = 'upload-' + index;
+                const key = 'upload-' + index + upload.id;
                 return(
-                  <tr { ...{key} }>
-                    <td className='u-ta-center u-va-middle'>{ index + 1 }</td>
-                    <td className='c-flex__center'>
-                      <div className={ `${ Style.Upload__image }` }>
-                        <img src={ upload.url }/>
-                        <button className={ Style.Upload__button }>削除</button>
-                        <h2 className={ Style.Upload__title }>{ upload.name }</h2>
-                      </div>
-                    </td>
-                  </tr>
+                  <Fragment>
+                    { !upload._destroy ?
+                      <tr { ...{key} }>
+                        <td className='u-ta-center u-va-middle'>{ index + 1 }</td>
+                        <td className='c-flex__center'>
+                          <div className={ `${ Style.Upload__image }` }>
+                            <img src={ upload.url }/>
+                            <button className={ Style.Upload__button } data-number={ index } onClick={ destroyUpload }>削除</button>
+                            <h2 className={ Style.Upload__title }>{ upload.name }</h2>
+                          </div>
+                        </td>
+                      </tr>
+                      : null
+                    }
+                  </Fragment>
                 );
               }) }
             </tbody>

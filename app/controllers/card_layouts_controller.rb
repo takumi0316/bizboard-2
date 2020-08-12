@@ -128,7 +128,7 @@ class CardLayoutsController < ApplicationController
       params.require(:card_layout).permit :name, :pdf, contents_attributes: [
         :id, :content_upload_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rated, :layout_type,
         content_uploads_attributes: [
-          :id, :layout_content_id, :upload_id
+          :id, :layout_content_id, :upload_id, :_destroy
         ]
       ]
     end

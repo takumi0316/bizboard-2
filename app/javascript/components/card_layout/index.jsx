@@ -239,6 +239,7 @@ const Index = props => {
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][id]', upload.id);
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][layout_content_id]', content.id);
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][upload_id]', upload.upload_id);
+        if(upload._destroy) field.append('card_layout[contents_attributes][][content_uploads_attributes][][_destroy]', upload._destroy);
       });
     });
     
