@@ -27,6 +27,7 @@ class CardLayout < ApplicationRecord
   #----------------------------------------
 
   validates :name, presence: true
+
   validates :name, length: { maximum: 191 }
 
   #----------------------------------------

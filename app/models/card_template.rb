@@ -30,23 +30,15 @@ class CardTemplate < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
 
+  validates :name, presence: true
+
+  validates :name, length: { maximum: 191 }
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
 
-  # 名刺
-  belongs_to :card, optional: true
-
-  # テンプレート
-  has_one_attached :file, dependent: :detach
-
-  # 名刺テンプレート詳細
-  has_many :details, class_name: 'TemplateDetail', dependent: :delete_all
-
-  # 担当者情報
-  has_many :client_templates
-
-  accepts_nested_attributes_for :details, allow_destroy: true, reject_if: :all_blank
+  belongs_to :company
 
   #----------------------------------------
   #  ** Delegates **
@@ -67,24 +59,6 @@ class CardTemplate < ApplicationRecord
     query = (['name like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
-  end
-
-  def formatting status
-
-    obj = { id: '', card_id: '', status: status, file: '', details: [] }
-    return if self.status != status.to_s
-    unless self.new_record?
-
-      details = []
-      self.details.each { |detail| details.push(detail) }
-      obj['id'] = self.id
-      obj['card_id'] = self.card.id
-      obj['status'] = self.status
-      obj['file'] = self.decorate.file_original
-      obj['details'] = details
-    end
-
-    obj
   end
 
 end

@@ -10,7 +10,6 @@ class CardTemplatesController < ApplicationController
 
   expose_with_pagination(:card_templates) { CardTemplate.search(params[:name]).all.reverse_order }
 
-  expose(:card) { Card.find_or_initialize_by(company_id: params[:company_id]) }
 
   expose(:card_template) { CardTemplate.find_or_initialize_by(id: params[:id]) }
 
@@ -39,9 +38,9 @@ class CardTemplatesController < ApplicationController
 
   def create
 
-    card.update! card_params
+    card_template.update! card_template_params
 
-    redirect_to action: edit, flash: { notice: { message: '名刺テンプレートを作成しました' } }
+    render json: { status: :success, card_template: card_template}
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -57,8 +56,20 @@ class CardTemplatesController < ApplicationController
 
     card_template.update! card_template_params
 
-    redirect
+    render json: { status: :success, card_template: card_template}
+  rescue => e
 
+    render json: { status: :error, message: e.message }
+  end
+
+  def destroy
+
+    card_template.destroy!
+
+    redirect_to card_templates_path, flash: { notice: { message: 'テンプレートを削除しました。' } }
+  rescue => e
+
+    redirect_to card_templates_path, flash: { notice: { message: e.message } }
   end
 
   ##
@@ -83,6 +94,6 @@ class CardTemplatesController < ApplicationController
 
     def card_template_params
 
-      params.require(:card_template).permit :name, :template_type, :status
+      params.require(:card_template).permit :name, :company_id
     end
 end

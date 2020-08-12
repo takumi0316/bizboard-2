@@ -20,10 +20,10 @@
     tbody
       - card_templates.each do |r|
         tr
-          td = r.id
-          td = r.company.name
+          td.u-ta-center = r.id
+          td.u-ta-center = r.company.name
           td.u-ta-center
             = link_to '詳細', company_division_clients_path, class: 'c-btnMain-standard'
-          td = link_to '編集', edit_card_template_path(r), class: 'c-btnMain-primaryA'
-          td = link_to '複製', dup_card_template_path(r), class: 'c-btnMain-primaryC'
-          td = link_to '削除', card_template_path(r), class: 'c-btnMain-primaryB'
+          td.u-ta-center = link_to '編集', edit_card_template_path(r), class: 'c-btnMain-primaryC'
+          /td.u-ta-center = link_to '複製', dup_card_template_path(r), class: 'c-btnMain-primaryB'
+          td.u-ta-center = link_to '削除', card_template_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか？' }

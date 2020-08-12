@@ -131,6 +131,8 @@ import ImageUploader from 'components/image_uploader';
 
 import CardLayout from 'components/card_layout';
 
+import CardTemplate from 'components/card_template'
+
 WebpackerReact.setup({
   Kawaii,
   Alert,
@@ -168,5 +170,6 @@ WebpackerReact.setup({
   InventoryDivisionsSelect,
   ProfitGraph,
   ImageUploader,
-  CardLayout
+  CardLayout,
+  CardTemplate
 });
