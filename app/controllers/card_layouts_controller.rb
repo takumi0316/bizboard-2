@@ -67,6 +67,7 @@ class CardLayoutsController < ApplicationController
           {
             id: c.id,
             upload_id: c.upload_id,
+            name: c.upload.name,
             url: c.upload.file.service_url
           }
         end
@@ -79,7 +80,6 @@ class CardLayoutsController < ApplicationController
 
   def update
 
-    binding.pry
     card_layout.update! card_layout_params
 
     render json: { status: :success }

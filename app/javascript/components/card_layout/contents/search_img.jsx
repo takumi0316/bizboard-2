@@ -105,6 +105,7 @@ export default class Uploads extends React.Component {
     const upload = {
       id: '',
       upload_id: JSON.parse(e.target.dataset.upload).id,
+      name: JSON.parse(e.target.dataset.upload).name,
       url: e.target.src
     };
     

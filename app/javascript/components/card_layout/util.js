@@ -166,6 +166,9 @@ export const setPDF = (file, contents) => {
     // Render PDF page
     page.render(renderContext);
   
+    // 前回のデータを引き継がないようにする
+    if(draw.childElementCount > 0) draw.textContent = null;
+  
     contents.map((content, index) => {
       
       const name = content.name;

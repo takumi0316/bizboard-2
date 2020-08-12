@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import Style                       from './style.sass';
+import Style from './style.sass';
 
 // ライブラリ
 import SearchFlag from './search_flag';
@@ -57,6 +57,12 @@ const RightSide = props => {
     
       window.alertable({ icon: 'info', message: 'コンテンツタイトルを入力してください。' });
       return
+    };
+    
+    if(state.layout_type == '20' && state.uploads.length === 0) {
+      
+      window.alertable({ icon: 'info', message: '画像を登録してください。' });
+      return;
     };
   
     if(!state.content_flag_id) {
@@ -170,31 +176,42 @@ const RightSide = props => {
               <td className='u-ta-center'><label className='c-form-label'>長さ</label></td>
               <td><input className='c-form-text' ref={ length_ref } defaultValue={ props.layout_content.layout_length } /></td>
             </tr>
-            
-            <tr>
-              <td className='u-ta-center'><label className='c-form-label'>文字間</label></td>
-              <td><input className='c-form-text' ref={ letter_spacing_ref } defaultValue={ props.layout_content.letter_spacing } /></td>
-            </tr>
-            
-            <tr>
-              <td className='u-ta-center'><label className='c-form-label'>縮小対応</label></td>
-              <td>
-                <label className='c-form-toggle'>
-                  <input name='content_is_reduction_rate' type='hidden' defaultValue='false'/>
-                  <input
-                         name='content_is_reduction_rate' type='checkbox' defaultChecked={ props.layout_content.is_reduction_rated === '0' }
-                         defaultValue={ state.is_reduction_rated === '0' } onClick={ () => setState({ ...state, is_reduction_rated: state.is_reduction_rated === '0' ? '10' : '0'}) }
-                  />
-                  <span data-on='縮小対応' data-off='縮小非対応'/>
-                </label>
-              </td>
-            </tr>
 
-            { state.is_reduction_rated === '0' ?
-              <tr>
-                <td className='u-ta-center'><label className='c-form-label'>最大</label></td>
-                <td><input className='c-form-text' ref={ reduction_rate_ref } defaultValue={ props.layout_content.reduction_rate }/></td>
-              </tr>
+            { state.layout_type != '20' ?
+              <Fragment>
+                <tr>
+                  <td className='u-ta-center'><label className='c-form-label'>文字間</label></td>
+                  <td><input className='c-form-text' ref={ letter_spacing_ref }
+                    defaultValue={ props.layout_content.letter_spacing }/></td>
+                </tr>
+    
+                <tr>
+                  <td className='u-ta-center'><label className='c-form-label'>縮小対応</label></td>
+                  <td>
+                    <label className='c-form-toggle'>
+                      <input name='content_is_reduction_rate' type='hidden' defaultValue='false'/>
+                      <input
+                        name='content_is_reduction_rate' type='checkbox'
+                        defaultChecked={ props.layout_content.is_reduction_rated === '0' }
+                        defaultValue={ state.is_reduction_rated === '0' } onClick={ () => setState({
+                        ...state,
+                        is_reduction_rated: state.is_reduction_rated === '0' ? '10' : '0'
+                      }) }
+                      />
+                      <span data-on='縮小対応' data-off='縮小非対応'/>
+                    </label>
+                  </td>
+                </tr>
+    
+                { state.is_reduction_rated === '0' ?
+                  <tr>
+                    <td className='u-ta-center'><label className='c-form-label'>最大</label></td>
+                    <td><input className='c-form-text' ref={ reduction_rate_ref }
+                      defaultValue={ props.layout_content.reduction_rate }/></td>
+                  </tr>
+                  : null
+                }
+              </Fragment>
               : null
             }
 
@@ -205,7 +222,7 @@ const RightSide = props => {
 
             { state.layout_type == '20' ?
               <tr>
-                <td>画像</td>
+                <td className='u-ta-center'>画像</td>
                 <td><SearchImg applyUpload={ applyUpload }/></td>
               </tr>
               : null
@@ -214,6 +231,38 @@ const RightSide = props => {
           </tbody>
         </table>
       </div>
+  
+      { state.layout_type == '20' ?
+        <div className='u-mt-20 c-table'>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>画像</th>
+              </tr>
+            </thead>
+            <tbody>
+              { state.uploads.map((upload, index) => {
+                
+                const key = 'upload-' + index;
+                return(
+                  <tr { ...{key} }>
+                    <td className='u-ta-center u-va-middle'>{ index + 1 }</td>
+                    <td className='c-flex__center'>
+                      <div className={ `${ Style.Upload__image }` }>
+                        <img src={ upload.url }/>
+                        <button className={ Style.Upload__button }>削除</button>
+                        <h2 className={ Style.Upload__title }>{ upload.name }</h2>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              }) }
+            </tbody>
+          </table>
+        </div>
+        : null
+      }
       <div className='u-mt-30 c-flex__center'>
         <button className='c-btnMain-standard' onClick={ closeRightSide }>保存する</button>
       </div>

@@ -207,6 +207,8 @@ const Index = props => {
       return;
     };
     
+    loading_ref.current.start();
+    
     const field = new FormData();
     
     field.append('card_layout[name]', title_ref.current.value);
@@ -233,7 +235,6 @@ const Index = props => {
       field.append('card_layout[contents_attributes][][is_reduction_rated]', fil_is_reduction_rated[0]);
       field.append('card_layout[contents_attributes][][layout_type]', fil_type[0]);
       field.append('card_layout[contents_attributes][][content_flag_id]', content.content_flag_id);
-      console.log(content.uploads)
       content.uploads.map(upload => {
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][id]', upload.id);
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][layout_content_id]', content.id);
@@ -244,10 +245,18 @@ const Index = props => {
     const result = props.new_record_type ?  window.xhrRequest.post(props.action, field) : window.xhrRequest.put(props.action, field);
     result.then(res => {
       
+      loading_ref.current.finish();
+      
       const message = props.new_record_type ? 'レイアウトを作成しました。' : 'レイアウトを更新しました。';
       const redirect = () => location.href = `/card_layouts/${ res.data.card_layout_id }/edit`;
+      
       window.alertable({ icon: res.data.status, message: message, close_callback: res.data.card_layout_id ? redirect : '' });
-    }).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }));
+    }).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => {
+      
+        loading_ref.current.finish();
+        console.log(err);
+      }
+    }));
   };
   
   return(
