@@ -44,9 +44,6 @@ class LayoutContent < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
 
-  validates :name, presence: true
-  validates :name, length: { maximum: 191 }
-
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------

@@ -177,7 +177,7 @@ export const setPDF = (file, contents) => {
       const name = content.name;
       
       // 入力値が空欄だったらやめる
-      if(!name) return;
+      if(!name && content.layout_type != '20') return;
       
       const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
       const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
