@@ -1,5 +1,8 @@
 import React, { Fragment } from 'react';
 
+// import ライブラリ
+import { generateKey } from '../util';
+
 const Index = props => {
   
   return(
@@ -16,11 +19,12 @@ const Index = props => {
           </thead>
           <tbody>
           { props.layout_contents.map((layout_content, index) => {
-            const key = `layout_content-${ layout_content.id }-${ index }`;
+            
+            const key =  generateKey(`layout_content-${ index }`);
             return(
-              <Fragment>
+              <Fragment { ...{key} }>
                 { !layout_content._destroy ?
-                  <tr { ...{ key } }>
+                  <tr>
                     <td className='u-ta-center'>{ index + 1 }</td>
                     <td className='u-ta-center'>{ layout_content.name }</td>
                     <td className='u-ta-center'>{ layout_content.content_flag_name }</td>

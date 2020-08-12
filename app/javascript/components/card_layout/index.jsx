@@ -32,12 +32,9 @@ const Index = props => {
     layout_exist: !!props.pdf,
     right_panel_exist: false,
     content_id_being_edited: '',
-    layout_png: ''
   };
   
   const [state, setState] = useState(init);
-  
-  const prevState = useRef(state);
   
   // 初回のみ作動 = componentDidMount
   useEffect(() => {
@@ -46,29 +43,19 @@ const Index = props => {
     
     if(!props.new_record_type) {
   
-      const fil_contents = JSON.parse(JSON.stringify(state.layout_contents));
-      // const fil_contents = JSON.parse(JSON.stringify(state.layout_contents)).map(content => {
-      //   return { ...content, layout_type: LayoutTypes[content.layout_type], font_color: FontColors[content.font_color], is_reduction_rated: IsReductionRated[content.is_reduction_rated] };
-      // });
-      
       if(props.pdf) {
         
-        console.log(props)
         const field = new FormData();
         field.append('url', props.pdf);
         const request = window.xhrRequest.post('/card_layouts/transfer', field, { responseType: 'blob' });
         request.then(res => {
           
           pdf_ref.current = res.data;
-          setState({ ...init, layout_contents: fil_contents });
+          setPDF(res.data, state.layout_contents);
         });
-        
-      } else {
-  
-        setState({ ...init, layout_contents: fil_contents });
       };
-      
     };
+    
   }, [props]);
   
   // state更新時
@@ -132,29 +119,14 @@ const Index = props => {
   };
   
   // コンテンツの編集
-  const saveContent = content => {
+  const saveContent = prop_content => {
     
-    if(!content.name) {
+    const parse = [];
+    JSON.parse(JSON.stringify(state.layout_contents)).map((content, index) => {
       
-      window.alertable({ icon: 'info', message: 'コンテントタイトルを入力してください。' });
-      return;
-    };
-    
-    let parse = JSON.parse(JSON.stringify(state.layout_contents));
-    parse[state.content_id_being_edited].name = content.name;
-    parse[state.content_id_being_edited].x_coordinate = content.x_coordinate;
-    parse[state.content_id_being_edited].y_coordinate = content.y_coordinate;
-    parse[state.content_id_being_edited].font_family = content.font_family;
-    parse[state.content_id_being_edited].font_size = content.font_size;
-    parse[state.content_id_being_edited].font_color = content.font_color;
-    parse[state.content_id_being_edited].layout_length = content.layout_length;
-    parse[state.content_id_being_edited].letter_spacing = content.letter_spacing;
-    parse[state.content_id_being_edited].reduction_rate = content.reduction_rate;
-    parse[state.content_id_being_edited].is_reduction_rated = content.is_reduction_rated;
-    parse[state.content_id_being_edited].layout_type = content.layout_type;
-    parse[state.content_id_being_edited].content_flag_name = content.content_flag_name;
-    parse[state.content_id_being_edited].content_flag_id = content.content_flag_id;
-    parse[state.content_id_being_edited].uploads = content.uploads;
+      if(index == state.content_id_being_edited) parse.push(prop_content);
+      if(index != state.content_id_being_edited) parse.push(content);
+    });
     
     setState({ ...state, layout_contents: parse, right_panel_exist: false });
   };
@@ -167,6 +139,7 @@ const Index = props => {
     const filter_contents = [];
     JSON.parse(JSON.stringify(state.layout_contents)).map((content, index) =>{
       
+      // rails nested_attributesで使用
       if(index == e.target.dataset.number) filter_contents.push({ ...content, _destroy: '1' });
       if(index != e.target.dataset.number) filter_contents.push(content);
     });
@@ -194,18 +167,27 @@ const Index = props => {
     
     e.preventDefault();
     
+    // 右サイドバー使用有無
     if(state.right_panel_exist) {
       
       rightSidebarExist();
       return;
     };
     
+    // レイアウト挿入有無
+    if(!pdf_ref.current) {
+      
+      window.alertable({ icon: 'info', message: 'レイアウトを挿入してください。' });
+    };
+    
+    // レイアウトタイトル入力有無
     if(!title_ref.current.value) {
       
       window.alertable({ icon: 'info', message: 'レイアウトタイトルを入力してください。' });
       return;
     };
     
+    // コンテントタイトル入力有無
     if(!state.content_id_being_edited && props.new_record_type) {
       
       window.alertable({ icon: 'info', message: 'コンテントタイトルを入力してください。' });

@@ -189,6 +189,7 @@ export const setPDF = (file, contents) => {
       let parent_div = document.createElement('div');
       parent_div.id = `parent_div-${ index }`;
       parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
+      
       if(content.layout_type != '20') {
         
         // 以下、子ども
@@ -214,6 +215,7 @@ export const setPDF = (file, contents) => {
         child_img.style = `width: ${ contentLength }px; position: absolute;`;
         parent_div.appendChild(child_img);
       };
+  
     });
   }).catch(error => window.alertable({ icon: 'error', message: error }));
 };

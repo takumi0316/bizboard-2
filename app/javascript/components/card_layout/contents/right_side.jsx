@@ -1,9 +1,10 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import Style from './style.sass';
 
 // ライブラリ
-import SearchFlag from './search_flag';
-import SearchImg  from './search_img.jsx';
+import SearchFlag       from './search_flag';
+import SearchImg        from './search_img.jsx';
+import { generateKey } from '../util';
 
 // import プロパティ
 import {
@@ -34,9 +35,7 @@ const RightSide = props => {
   const length_ref = useRef(null);
   const letter_spacing_ref = useRef(null);
   
-  useEffect(() => {
-  }, [state]);
-  
+  // 論理的に画像を削除
   const destroyUpload = e => {
     
     e.preventDefault();
@@ -45,6 +44,7 @@ const RightSide = props => {
     
     JSON.parse(JSON.stringify(state.uploads)).map((upload, index) => {
       
+      // rails nested_attributesで使用
       if(e.target.dataset.number == index) parse_uploads.push({ ...upload,  _destroy: '1' });
       if(e.target.dataset.number != index) parse_uploads.push(upload);
     });
@@ -63,22 +63,26 @@ const RightSide = props => {
     setState({ ...state, uploads: parse_uploads });
   };
   
+  // 右サイドバー閉じる
   const closeRightSide = e => {
     
     e.preventDefault();
   
+    // コンテンツタイトル入力有無
     if(state.layout_type != '20' && !name_ref.current.value) {
     
       window.alertable({ icon: 'info', message: 'コンテンツタイトルを入力してください。' });
       return
     };
     
+    // 画像選択有無
     if(state.layout_type == '20' && state.uploads.length === 0) {
       
       window.alertable({ icon: 'info', message: '画像を登録してください。' });
       return;
     };
   
+    // フラグ選択有無
     if(!state.content_flag_id) {
       
       window.alertable({ icon: 'info', message: 'フラグを登録してください。' });
@@ -268,12 +272,11 @@ const RightSide = props => {
             <tbody>
               { state.uploads.map((upload, index) => {
                 
-                const key = 'upload-' + index + upload.id;
-                console.log(key)
+                const key = generateKey(`upload-${ index }`);
                 return(
-                  <Fragment>
+                  <Fragment { ...{key} }>
                     { !upload._destroy ?
-                      <tr { ...{key} }>
+                      <tr>
                         <td className='u-ta-center u-va-middle'>{ index + 1 }</td>
                         <td className='c-flex__center'>
                           <div className={ `${ Style.Upload__image }` }>
