@@ -164,8 +164,13 @@ const Index = props => {
   
     e.preventDefault();
     
-    const filter_contents = JSON.parse(JSON.stringify(state.layout_contents));
-    filter_contents.splice(e.target.dataset.number, 1);
+    const filter_contents = [];
+    JSON.parse(JSON.stringify(state.layout_contents)).map((content, index) =>{
+      
+      if(index == e.target.dataset.number) filter_contents.push({ ...content, _destroy: '1' });
+      if(index != e.target.dataset.number) filter_contents.push(content);
+    });
+    
     setState({ ...state, layout_contents: filter_contents });
   };
   
@@ -235,6 +240,7 @@ const Index = props => {
       field.append('card_layout[contents_attributes][][is_reduction_rated]', fil_is_reduction_rated[0]);
       field.append('card_layout[contents_attributes][][layout_type]', fil_type[0]);
       field.append('card_layout[contents_attributes][][content_flag_id]', content.content_flag_id);
+      if(content._destroy) field.append('card_layout[contents_attributes][][_destroy]', content._destroy)
       content.uploads.map(upload => {
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][id]', upload.id);
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][layout_content_id]', content.id);

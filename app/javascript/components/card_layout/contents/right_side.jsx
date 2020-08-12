@@ -130,6 +130,7 @@ const RightSide = props => {
               <td className='c-form-selectWrap'>
                 <select name='layout_type' className='c-form-select'  defaultValue={ props.layout_content.layout_type } onChange={ e => setState({ ...state, layout_type: e.target.value }) }>
                   { Object.keys(LayoutTypes).map((layout_type, index) => {
+                    
                     const key = `layout_type-${ index }-${ layout_type }`;
                     return (
                       <option { ...{ key } } value={ LayoutTypes[layout_type] }>{ layout_type }</option>
@@ -152,6 +153,7 @@ const RightSide = props => {
                     <select name='font_family' className='c-form-select' ref={ font_family_ref }
                       defaultValue={ props.layout_content.font_family }>
                       { Object.keys(FontFamilies).map((font_family, index) => {
+                        
                         const key = `layout_type-${ index }-${ font_family }`;
                         return (
                           <option { ...{ key } } value={ FontFamilies[font_family] }>{ font_family }</option>
@@ -171,6 +173,7 @@ const RightSide = props => {
                   <td className='c-form-selectWrap'>
                     <select name='font_color' className='c-form-select' ref={ font_color_ref } defaultValue={ props.layout_content.font_color }>
                     { Object.keys(FontColors).map((font_color, index) => {
+                      
                       const key = `layout_type-${ index }-${ font_color }`;
                       return (
                         <option { ...{ key } } value={ FontColors[font_color] }>{ font_color }</option>
@@ -266,6 +269,7 @@ const RightSide = props => {
               { state.uploads.map((upload, index) => {
                 
                 const key = 'upload-' + index + upload.id;
+                console.log(key)
                 return(
                   <Fragment>
                     { !upload._destroy ?

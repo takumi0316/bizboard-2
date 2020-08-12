@@ -171,7 +171,12 @@ export const setPDF = (file, contents) => {
   
     contents.map((content, index) => {
       
+      // 削除予定のコンテンツ
+      if(content._destroy) return;
+      
       const name = content.name;
+      
+      // 入力値が空欄だったらやめる
       if(!name) return;
       
       const y = Math.floor(mmTopx(content.y_coordinate)) * 2;

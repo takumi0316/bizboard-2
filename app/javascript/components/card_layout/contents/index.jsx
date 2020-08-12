@@ -18,13 +18,18 @@ const Index = props => {
           { props.layout_contents.map((layout_content, index) => {
             const key = `layout_content-${ layout_content.id }-${ index }`;
             return(
-              <tr { ...{ key } }>
-                <td className='u-ta-center'>{ index + 1 }</td>
-                <td className='u-ta-center'>{ layout_content.name }</td>
-                <td className='u-ta-center'>{ layout_content.content_flag_name }</td>
-                <td className='u-ta-center'><button data-number={ index } className='c-btnMain-standard' onClick={ props.openRightPanel }>編集</button></td>
-                <td className='u-ta-center'><button data-number={ index } className='c-btnMain-primaryA' onClick={ props.removeContent } disabled={ true }>削除</button></td>
-              </tr>
+              <Fragment>
+                { !layout_content._destroy ?
+                  <tr { ...{ key } }>
+                    <td className='u-ta-center'>{ index + 1 }</td>
+                    <td className='u-ta-center'>{ layout_content.name }</td>
+                    <td className='u-ta-center'>{ layout_content.content_flag_name }</td>
+                    <td className='u-ta-center'><button data-number={ index } className='c-btnMain-standard' onClick={ props.openRightPanel }>編集</button></td>
+                    <td className='u-ta-center'><button data-number={ index } className='c-btnMain-primaryA' onClick={ props.removeContent }>削除</button></td>
+                  </tr>
+                  : null
+                }
+              </Fragment>
             );
           })}
           </tbody>
