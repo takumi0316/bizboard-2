@@ -7,8 +7,8 @@ json[:uploads] = uploads.each_with_object([]) do |r, result|
   result.push({
     id: r.id,
     name: r.name,
-    url: r.file.service_url,
-  }) if r.file.attached?
+    url: r.image.service_url,
+  }) if r.image.attached?
 end
 
 json
