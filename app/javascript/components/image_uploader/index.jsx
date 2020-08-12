@@ -87,10 +87,11 @@ export default class Uploader extends React.Component {
       max_height: IMAGE_MAX_HEIGHT,
     }, blob => {
   
-      let field = new FormData();
+      console.log('upload')
+      const field = new FormData();
       field.append('upload[name]', this.titleRef.value);
       field.append('upload[status]', 'card');
-      field.append('upload[file]', blob);
+      field.append('upload[image]', blob);
       const result = window.xhrRequest.post('/uploads', field)
       result.then(res => {
         this.setState({ loading: false });
