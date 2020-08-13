@@ -44,6 +44,8 @@ class CardTemplate < ApplicationRecord
 
   has_many :card_layouts, through: :template_layouts
 
+  accepts_nested_attributes_for :template_layouts, allow_destroy: true
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

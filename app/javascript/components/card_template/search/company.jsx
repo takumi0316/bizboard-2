@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import Style from './style.sass';
 
-const Search = props => {
+const Company = props => {
   
   const init = {
     show: false,
@@ -45,10 +45,10 @@ const Search = props => {
    *  @version 2018/06/10
    *
    */
-  const search = prop => {
+  const search = name => {
     
     // 記事内容を送信
-    const url = '/companies.json?name=' + prop;
+    const url = '/companies.json?name=' + name;
     const request = window.xhrRequest.get(url);
     request.then(res => {
       setState({ ...state, show: true, companies: res.data.companies });
@@ -104,4 +104,4 @@ const Search = props => {
   );
 };
 
-export default Search;
+export default Company;

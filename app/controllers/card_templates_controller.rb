@@ -25,6 +25,8 @@ class CardTemplatesController < ApplicationController
   #  ** Actions **
   #----------------------------------------
 
+  before_action :set_the_required_data, only: [:new, :edit]
+
   def index
 
     add_breadcrumb '一覧'
@@ -40,7 +42,7 @@ class CardTemplatesController < ApplicationController
 
     card_template.update! card_template_params
 
-    render json: { status: :success, card_template: card_template}
+    render json: { status: :success, card_template: card_template }
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -56,7 +58,7 @@ class CardTemplatesController < ApplicationController
 
     card_template.update! card_template_params
 
-    render json: { status: :success, card_template: card_template}
+    render json: { status: :success, card_template: card_template }
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -94,6 +96,38 @@ class CardTemplatesController < ApplicationController
 
     def card_template_params
 
-      params.require(:card_template).permit :name, :company_id
+      params.require(:card_template).permit :name, :company_id, template_layouts_attributes: [
+        :id, :card_template_id, :card_layout_id, :status, :_destroy
+      ]
+    end
+
+    def set_the_required_data
+
+      @heads = []
+      @tails = []
+
+      if card_template.persisted?
+
+        @heads = TemplateLayout.where(card_template_id: card_template.id).where(status: :head).map do |r|
+          {
+            id: r.id,
+            card_template_id: r.card_template_id,
+            card_layout_id: r.card_layout_id,
+            layout_name: r.card_layout.name,
+            status: r.status
+          }
+        end
+
+        @tails = TemplateLayout.where(card_template_id: card_template.id).where(status: :tail).map do |r|
+          {
+            id: r.id,
+            card_template_id: r.card_template_id,
+            card_layout_id: r.card_layout_id,
+            layout_name: r.card_layout.name,
+            status: r.status
+          }
+        end
+
+      end
     end
 end

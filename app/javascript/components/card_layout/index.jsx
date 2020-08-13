@@ -231,7 +231,6 @@ const Index = props => {
       });
     });
     
-    console.log(props.action)
     const result = props.new_record_type ?  window.xhrRequest.post(props.action, field) : window.xhrRequest.put(props.action, field);
     result.then(res => {
       

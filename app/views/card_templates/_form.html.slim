@@ -1,7 +1,7 @@
 = react_component :CardTemplate,
 	{ card_template: card_template,
   company: card_template.company,
-  action: card_template.new_record?? new_card_template_path : card_template_path,
+  action: card_template.new_record?? card_templates_path : card_template_path,
   new_record_type: card_template.new_record?,
-	heads: [],
-	tails: []}
+	heads: @heads,
+	tails: @tails}
