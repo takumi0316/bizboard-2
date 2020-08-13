@@ -199,7 +199,7 @@ const Index = props => {
     const field = new FormData();
     
     field.append('card_layout[name]', title_ref.current.value);
-    field.append('card_layout[pdf]', pdf_ref.current);
+    field.append('card_layout[file]', pdf_ref.current);
   
     state.layout_contents.map(content => {
 
@@ -231,6 +231,7 @@ const Index = props => {
       });
     });
     
+    console.log(props.action)
     const result = props.new_record_type ?  window.xhrRequest.post(props.action, field) : window.xhrRequest.put(props.action, field);
     result.then(res => {
       

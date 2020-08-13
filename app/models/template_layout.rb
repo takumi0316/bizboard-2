@@ -1,18 +1,16 @@
 # == Schema Information
 #
-# Table name: uploads
+# Table name: template_layouts
 #
-#  id          :bigint(8)        not null, primary key
-#  name        :string(191)
-#  author      :string(191)
-#  author_name :string(191)
-#  credit      :string(191)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  status      :integer          default("normal")
+#  id               :bigint(8)        not null, primary key
+#  card_template_id :bigint(8)
+#  card_layout_id   :bigint(8)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  status           :integer          default(0)
 #
 
-class Upload < ApplicationRecord
+class TemplateLayout < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -26,7 +24,7 @@ class Upload < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum status: { normal: 0, card: 10 }
+  enum status: { head: 0, tail: 10 }
 
   #----------------------------------------
   #  ** Validations **
@@ -36,12 +34,9 @@ class Upload < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  # file
-  has_one_attached :image, dependent: :detach
+  belongs_to :card_template
 
-  has_many :content_uploads
-
-  has_many :layout_contents, through: :content_uploads
+  belongs_to :card_layout
 
   #----------------------------------------
   #  ** Delegates **
@@ -67,5 +62,4 @@ class Upload < ApplicationRecord
 
     self.where(query, *terms.map { |term| "%#{term}%" })
   end
-
 end

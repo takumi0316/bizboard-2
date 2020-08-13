@@ -8,9 +8,9 @@ class CardLayoutsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  expose_with_pagination(:card_layouts) { CardLayout.with_attached_pdf.search(params[:name]).all.reverse_order }
+  expose_with_pagination(:card_layouts) { CardLayout.with_attached_file.search(params[:name]).all.reverse_order }
 
-  expose(:card_layout) { CardLayout.with_attached_pdf.find_or_initialize_by(id: params[:id]) }
+  expose(:card_layout) { CardLayout.with_attached_file.find_or_initialize_by(id: params[:id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -23,6 +23,8 @@ class CardLayoutsController < ApplicationController
   #----------------------------------------
   #  ** Actions **
   #----------------------------------------
+
+  before_action :set_the_required_data, only: [:new, :edit]
 
   def index
 
@@ -46,33 +48,6 @@ class CardLayoutsController < ApplicationController
   end
 
   def edit
-
-    @layout_contents = card_layout.contents.map do |r|
-      {
-        id: r.id,
-        name: r.name,
-        x_coordinate: r.x_coordinate,
-        y_coordinate: r.y_coordinate,
-        font_family: r.font_family,
-        font_size: r.font_size,
-        font_color: r.font_color_before_type_cast,
-        layout_length: r.layout_length,
-        letter_spacing: r.letter_spacing,
-        reduction_rate: r.reduction_rate,
-        is_reduction_rated: r.is_reduction_rated_before_type_cast,
-        layout_type: r.layout_type_before_type_cast,
-        content_flag_name: r.content_flag.name,
-        content_flag_id: r.content_flag.id,
-        uploads: r.content_uploads.map do |c|
-          {
-            id: c.id,
-            upload_id: c.upload_id,
-            name: c.upload.name,
-            url: c.upload.image.service_url
-          }
-        end
-      }
-    end
 
     add_breadcrumb '一覧', path: card_layouts_path
     add_breadcrumb '編集'
@@ -125,12 +100,56 @@ class CardLayoutsController < ApplicationController
 
     def card_layout_params
 
-      params.require(:card_layout).permit :name, :pdf, contents_attributes: [
+      params.require(:card_layout).permit :name, :file, contents_attributes: [
         :id, :content_upload_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rated, :layout_type, :_destroy,
         content_uploads_attributes: [
           :id, :layout_content_id, :upload_id, :_destroy
         ]
       ]
+    end
+
+    def set_the_required_data
+
+      @layout_contents = []
+      @pdf = ''
+      @action = card_layouts_path
+      @new_record = card_layout.new_record?
+
+      if card_layout.persisted?
+
+        @layout_contents = card_layout.contents.map do |r|
+          {
+            id: r.id,
+            name: r.name,
+            x_coordinate: r.x_coordinate,
+            y_coordinate: r.y_coordinate,
+            font_family: r.font_family,
+            font_size: r.font_size,
+            font_color: r.font_color_before_type_cast,
+            layout_length: r.layout_length,
+            letter_spacing: r.letter_spacing,
+            reduction_rate: r.reduction_rate,
+            is_reduction_rated: r.is_reduction_rated_before_type_cast,
+            layout_type: r.layout_type_before_type_cast,
+            content_flag_name: r.content_flag.name,
+            content_flag_id: r.content_flag.id,
+            uploads: r.content_uploads.map do |c|
+              {
+                id: c.id,
+                upload_id: c.upload_id,
+                name: c.upload.name,
+                url: c.upload.image.service_url
+              }
+            end
+          }
+        end
+
+        @pdf = card_layout.file.service_url
+        @action = card_layout_path
+        @new_record = false
+
+      end
+
     end
 
 end

@@ -15,11 +15,13 @@
 			tr
 				th ID
 				th レイアウト名
+				th レイアウト
 				th colspan=2
 		tbody
 			- card_layouts.each do |r|
 				tr
 					td.u-ta-center = r.id
 					td.u-ta-center = r.name
+					td.u-ta-center = image_tag r.decorate.file_medium
 					td.u-ta-center = link_to '編集', edit_card_layout_path(r), class: 'c-btnMain-standard'
 					td.u-ta-center = link_to '削除', card_layout_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか？' }

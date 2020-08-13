@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_02_032703) do
+ActiveRecord::Schema.define(version: 2020_08_12_121257) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -294,6 +294,8 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
     t.integer "font_color", comment: "フォントカラー"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "logo_height"
+    t.string "logo_width"
     t.index ["card_layout_id"], name: "index_layout_contents_on_card_layout_id"
     t.index ["content_flag_id"], name: "index_layout_contents_on_content_flag_id"
   end
@@ -689,6 +691,7 @@ ActiveRecord::Schema.define(version: 2020_08_02_032703) do
     t.bigint "card_layout_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", limit: 1, default: 0
     t.index ["card_layout_id"], name: "index_template_layouts_on_card_layout_id"
     t.index ["card_template_id"], name: "index_template_layouts_on_card_template_id"
   end

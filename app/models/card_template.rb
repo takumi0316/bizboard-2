@@ -40,6 +40,10 @@ class CardTemplate < ApplicationRecord
 
   belongs_to :company
 
+  has_many :template_layouts
+
+  has_many :card_layouts, through: :template_layouts
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

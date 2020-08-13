@@ -18,6 +18,8 @@
 #  font_color         :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  logo_height        :string(191)
+#  logo_width         :string(191)
 #
 
 class LayoutContent < ApplicationRecord

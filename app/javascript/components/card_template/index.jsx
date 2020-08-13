@@ -14,6 +14,8 @@ const Index = props => {
   const init = {
     layouts: props.layouts,
     company: props.company || '',
+    heads: props.heads,
+    tails: props.tails
   };
   
   const [state, setState] = useState(init);
