@@ -174,7 +174,14 @@ Rails.application.routes.draw do
   ## end
 
   ## 名刺テンプレート
-  resources :card_templates
+  resources :card_templates do
+    member do
+      post :copy
+    end
+  end
+
+  ## 名刺テンプレート担当者
+  resources :template_clients
 
   ## 名刺レイアウト
   resources :card_layouts do

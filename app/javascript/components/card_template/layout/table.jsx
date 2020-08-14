@@ -29,8 +29,8 @@ const Table = props => {
                   <tr>
                     <td className='u-ta-center'>{ template_layout.card_layout_id }</td>
                     <td className='u-ta-center'>{ template_layout.layout_name }</td>
-                    <td className='u-ta-center'><a className='c-btnMain-primaryB' href={ `/card_layouts/${ template_layout.card_layout_id }/edit` }>編集</a></td>
-                    <td className='u-ta-center'><button className='c-btnMain-primaryC' data-number={ index } onClick={ unlinkLayout }>削除</button></td>
+                    <td className='u-ta-center'><a className='c-btnMain-standard' href={ `/card_layouts/${ template_layout.card_layout_id }/edit` }>編集</a></td>
+                    <td className='u-ta-center'><button className='c-btnMain-primaryA' data-number={ index } onClick={ unlinkLayout }>削除</button></td>
                   </tr>
                   : null
                 }

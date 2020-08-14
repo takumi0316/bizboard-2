@@ -75,6 +75,21 @@ class CardTemplatesController < ApplicationController
   end
 
   ##
+  #　複製
+  #  @version 2020/08/14
+  def copy
+
+    dup_card_template = card_template.deep_clone(:template_layouts)
+
+    dup_card_template.update! name: "#{ card_template.name}＿複製＿#{ Time.zone.now.strftime("%Y年 %m月 %d日") }"
+
+    redirect_to edit_card_template_path(dup_card_template), flash: { notice: { message: '案件を複製しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+  end
+
+  ##
   # 画像引用参照
   # @version 2018/06/10
   #
