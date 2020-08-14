@@ -181,7 +181,12 @@ Rails.application.routes.draw do
   end
 
   ## 名刺テンプレート担当者
-  resources :template_clients
+  resources :template_clients do
+    member do
+      post :edit_head
+      post :edit_tail
+    end
+  end
 
   ## 名刺レイアウト
   resources :card_layouts do

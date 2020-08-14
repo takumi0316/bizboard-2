@@ -45,10 +45,24 @@ class TemplateClientsController < ApplicationController
     render json: { status: :error, message: e.message }
   end
 
-  def edit
+  ##
+  # 編集(表面)
+  # @version 2020/08/14
+  #
+  def edit_head
 
     add_breadcrumb '一覧', path: template_clients_path
-    add_breadcrumb '編集'
+    add_breadcrumb '編集(表面)'
+  end
+
+  ##
+  # 編集(裏面)
+  # @version 2020/08/14
+  #
+  def edit_tail
+
+    add_breadcrumb '一覧', path: template_clients_path
+    add_breadcrumb '編集(裏面)'
   end
 
   def update
