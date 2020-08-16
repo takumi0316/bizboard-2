@@ -16,6 +16,12 @@ h1.l-dashboard__heading 取引先
   = f.text_field :kana, placeholder: '会社名(カナ)', class: 'c-form-text u-mb-30'
 
   .c-form-label
+    = f.label :approval_status, '名刺承認機能'
+  .c-form-selectWrap.u-mb-30
+    = f.select :approval_status, Company.approval_statuses_i18n.invert, {}, { class: 'c-form-select' }
+
+
+  .c-form-label
     = f.label :note, 'メモ'
   = f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea u-mb-30', rows: 4
 

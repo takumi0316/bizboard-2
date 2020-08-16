@@ -42,6 +42,12 @@ ja:
         general: 一般
         division: 部署
         admin: 管理者
+        jii: 日本工業社管理
+        card_manager: 名刺担当者
+    company:
+      approval_status:
+         nothing: なし
+         approval: あり
     subcontractor_division_client:
       title:
         nothing: なし

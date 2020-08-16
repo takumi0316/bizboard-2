@@ -34,6 +34,8 @@ class Company < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
+  enum approval_status: { nothing: 0, approval: 10 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
