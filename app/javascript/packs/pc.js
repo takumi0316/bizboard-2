@@ -133,6 +133,8 @@ import CardLayout from 'components/card_layout';
 
 import CardTemplate from 'components/card_template'
 
+import TemplateClient from 'components/template_client';
+
 WebpackerReact.setup({
   Kawaii,
   Alert,
@@ -171,5 +173,6 @@ WebpackerReact.setup({
   ProfitGraph,
   ImageUploader,
   CardLayout,
-  CardTemplate
+  CardTemplate,
+  TemplateClient,
 });

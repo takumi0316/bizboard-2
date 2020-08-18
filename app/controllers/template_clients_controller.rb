@@ -11,7 +11,7 @@ class TemplateClientsController < ApplicationController
   expose_with_pagination(:card_templates) { CardTemplate.search(params[:name]).all.reverse_order }
 
 
-  expose(:card_template) { CardTemplate.find(params[:card_template_id]) }
+  expose(:card_template) { CardTemplate.find(params[:id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -24,6 +24,12 @@ class TemplateClientsController < ApplicationController
   #----------------------------------------
   #  ** Actions **
   #----------------------------------------
+
+  before_action :format_head_layouts, only: [:edit_head]
+  before_action :format_head_contents, only: [:edit_head]
+
+  before_action :format_tail_layouts, only: [:edit_tail]
+  before_action :format_tail_contents, only: [:edit_tail]
 
   def index
 
@@ -103,6 +109,58 @@ class TemplateClientsController < ApplicationController
 
     def template_clients_params
 
+    end
+
+    def access_template_layouts option
+
+      card_template.template_layouts.where(status: option)
+    end
+
+    def access_card_layouts layout
+
+      binding.pry
+      {
+        id: layout.id,
+        name: layout.name,
+        url: layout.file.blob.preview(resize: '900x600').processed.service_url
+      }
+    end
+
+    def format_head_layouts
+
+      result = access_template_layouts(:head).blank?
+      @layouts = result ? [] : access_template_layouts(:head).map do |r| access_card_layouts(r.card_layout) end
+    end
+
+    def format_tail_layouts
+
+      result = access_template_layouts(:tail).blank?
+      @layouts = result ? [] : access_template_layouts(:head).map do |r| access_card_layouts(r.card_layout) end
+    end
+
+    def format_contents layouts
+
+      contents = []
+      layouts.map { |layout|
+        layout.card_layout.contents.map { |content|
+          contents.push({
+            flag_id: content.content_flag_id,
+            flag_name: content.content_flag.name,
+          })
+        }
+      }
+    end
+
+    def format_head_contents
+
+      result = access_template_layouts(:head).blank?
+      @contents = result ? [] : format_contents(access_template_layouts(:head))
+    end
+
+    def format_tail_contents
+
+      result = access_template_layouts(:tail).blank?
+      @contents = result ? [] : format_contents(access_template_layouts(:tail))
     end
 
 end

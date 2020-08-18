@@ -1,16 +1,17 @@
 # == Schema Information
 #
-# Table name: template_layouts
+# Table name: layout_values
 #
-#  id               :bigint(8)        not null, primary key
-#  card_template_id :bigint(8)
-#  card_layout_id   :bigint(8)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  status           :integer          default("head")
+#  id                         :bigint(8)        not null, primary key
+#  company_division_client_id :bigint(8)
+#  text_value                 :string(191)
+#  textarea_value             :text(65535)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  content_flag_id            :bigint(8)
 #
 
-class TemplateLayout < ApplicationRecord
+class LayoutValue < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -24,19 +25,17 @@ class TemplateLayout < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum status: { head: 0, tail: 10 }
-
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
 
+  belongs_to :company_division_client
+
+  belongs_to :content_flag
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
-
-  belongs_to :card_template
-
-  belongs_to :card_layout
 
   #----------------------------------------
   #  ** Delegates **
@@ -50,16 +49,4 @@ class TemplateLayout < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
-  ##
-  # 名称検索
-  #
-  #
-  def self.search name
-
-    terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-
-    query = (['name like ?'] * terms.size).join(' and ')
-
-    self.where(query, *terms.map { |term| "%#{term}%" })
-  end
 end

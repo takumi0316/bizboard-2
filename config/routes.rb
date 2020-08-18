@@ -183,8 +183,8 @@ Rails.application.routes.draw do
   ## 名刺テンプレート担当者
   resources :template_clients do
     member do
-      post :edit_head
-      post :edit_tail
+      get :edit_head
+      get :edit_tail
     end
   end
 
