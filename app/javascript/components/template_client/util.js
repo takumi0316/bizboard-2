@@ -2,10 +2,10 @@
 const UAParser = require('ua-parser-js');
 
 // プロパティ
-import {
-  FontColors,
-  FontFamilies
-} from './contents/properties'
+// import {
+//   FontColors,
+//   FontFamilies
+// } from './contents/properties'
 
 /**
  * String => Bool
@@ -167,55 +167,55 @@ export const setPDF = (file, contents) => {
     page.render(renderContext);
 
     // 前回のデータを引き継がないようにする
-    if(draw.childElementCount > 0) draw.textContent = null;
+    // if(draw.childElementCount > 0) draw.textContent = null;
 
-    contents.map((content, index) => {
+    // contents.map((content, index) => {
 
-      // 削除予定のコンテンツ
-      if(content._destroy) return;
+    //   // 削除予定のコンテンツ
+    //   if(content._destroy) return;
 
-      const name = content.name;
+    //   const name = content.name;
 
-      // 入力値が空欄だったらやめる
-      if(!name && content.layout_type != '20') return;
+    //   // 入力値が空欄だったらやめる
+    //   if(!name && content.layout_type != '20') return;
 
-      const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
-      const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
-      const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
-      const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
-      const contentLength = Math.floor(mmTopx(content.layout_length));
+    //   const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
+    //   const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
+    //   const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
+    //   const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
+    //   const contentLength = Math.floor(mmTopx(content.layout_length));
 
-      // absoluteするための親div
-      let parent_div = document.createElement('div');
-      parent_div.id = `parent_div-${ index }`;
-      parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
+    //   // absoluteするための親div
+    //   let parent_div = document.createElement('div');
+    //   parent_div.id = `parent_div-${ index }`;
+    //   parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
 
-      if(content.layout_type != '20') {
+    //   if(content.layout_type != '20') {
 
-        // 以下、子ども
-        let child_p = document.createElement('p');
-        child_p.id = `child_p-${ index }`;
-        let child_div = document.createElement('div');
-        child_div.id = `child_div-${ index }`;
-        draw.appendChild(parent_div);
-        child_p.textContent = name || '';
-        // transform: translate(x, y)
-        // ヘッダー表示のためword-wrapはなし
-        child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
-        parent_div.appendChild(child_p);
-        // 先に描画をしないと高さを取得出来ないため
-        child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
-        parent_div.appendChild(child_div);
-      } else {
+    //     // 以下、子ども
+    //     let child_p = document.createElement('p');
+    //     child_p.id = `child_p-${ index }`;
+    //     let child_div = document.createElement('div');
+    //     child_div.id = `child_div-${ index }`;
+    //     draw.appendChild(parent_div);
+    //     child_p.textContent = name || '';
+    //     // transform: translate(x, y)
+    //     // ヘッダー表示のためword-wrapはなし
+    //     child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
+    //     parent_div.appendChild(child_p);
+    //     // 先に描画をしないと高さを取得出来ないため
+    //     child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+    //     parent_div.appendChild(child_div);
+    //   } else {
 
-        draw.appendChild(parent_div);
-        let child_img = document.createElement('img');
-        child_img.id = `child_img-${ index }`;
-        child_img.src = content.uploads[0].url;
-        child_img.style = `width: ${ contentLength }px; position: absolute;`;
-        parent_div.appendChild(child_img);
-      };
+    //     draw.appendChild(parent_div);
+    //     let child_img = document.createElement('img');
+    //     child_img.id = `child_img-${ index }`;
+    //     child_img.src = content.uploads[0].url;
+    //     child_img.style = `width: ${ contentLength }px; position: absolute;`;
+    //     parent_div.appendChild(child_img);
+    //   };
 
-    });
+    // });
   }).catch(error => window.alertable({ icon: 'error', message: error }));
 };

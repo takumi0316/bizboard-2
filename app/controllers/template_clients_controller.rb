@@ -10,8 +10,9 @@ class TemplateClientsController < ApplicationController
 
   expose_with_pagination(:card_templates) { CardTemplate.search(params[:name]).all.reverse_order }
 
-
   expose(:card_template) { CardTemplate.find(params[:id]) }
+
+  expose(:company_division_client) { CompanyDivisionClient.find(params[:client_id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -25,11 +26,8 @@ class TemplateClientsController < ApplicationController
   #  ** Actions **
   #----------------------------------------
 
-  before_action :format_head_layouts, only: [:edit_head]
-  before_action :format_head_contents, only: [:edit_head]
-
-  before_action :format_tail_layouts, only: [:edit_tail]
-  before_action :format_tail_contents, only: [:edit_tail]
+  before_action :format_layouts, only: [:head, :tail]
+  before_action :format_layouts, only: [:head, :tail]
 
   def index
 
@@ -55,7 +53,7 @@ class TemplateClientsController < ApplicationController
   # 編集(表面)
   # @version 2020/08/14
   #
-  def edit_head
+  def head
 
     add_breadcrumb '一覧', path: template_clients_path
     add_breadcrumb '編集(表面)'
@@ -65,7 +63,7 @@ class TemplateClientsController < ApplicationController
   # 編集(裏面)
   # @version 2020/08/14
   #
-  def edit_tail
+  def tail
 
     add_breadcrumb '一覧', path: template_clients_path
     add_breadcrumb '編集(裏面)'
@@ -93,8 +91,9 @@ class TemplateClientsController < ApplicationController
   #
   def transfer
 
-    raise if params[:url].blank?
-    content = open params[:url]
+    raise if params[:card_layout_id].blank?
+    url = CardLayout.find(params[:card_layout_id]).file.service_url
+    content = open url
     send_data content.read, type: content.content_type, disposition: 'inline'
   rescue
 
@@ -111,6 +110,11 @@ class TemplateClientsController < ApplicationController
 
     end
 
+    def cast_action
+
+      params[:action].to_sym
+    end
+
     def access_template_layouts option
 
       card_template.template_layouts.where(status: option)
@@ -118,24 +122,17 @@ class TemplateClientsController < ApplicationController
 
     def access_card_layouts layout
 
-      binding.pry
       {
         id: layout.id,
         name: layout.name,
-        url: layout.file.blob.preview(resize: '900x600').processed.service_url
+        url: layout.file.preview(resize: '3000x3000').processed.service_url
       }
     end
 
-    def format_head_layouts
+    def format_layouts
 
-      result = access_template_layouts(:head).blank?
-      @layouts = result ? [] : access_template_layouts(:head).map do |r| access_card_layouts(r.card_layout) end
-    end
-
-    def format_tail_layouts
-
-      result = access_template_layouts(:tail).blank?
-      @layouts = result ? [] : access_template_layouts(:head).map do |r| access_card_layouts(r.card_layout) end
+      result = access_template_layouts(cast_action).blank?
+      @layouts = result ? [] : access_template_layouts(cast_action).map do |r| access_card_layouts(r.card_layout) end
     end
 
     def format_contents layouts
@@ -151,16 +148,9 @@ class TemplateClientsController < ApplicationController
       }
     end
 
-    def format_head_contents
+    def format_contents
 
-      result = access_template_layouts(:head).blank?
-      @contents = result ? [] : format_contents(access_template_layouts(:head))
+      result = access_template_layouts(cast_action).blank?
+      @contents = result ? [] : format_contents(access_template_layouts(cast_action))
     end
-
-    def format_tail_contents
-
-      result = access_template_layouts(:tail).blank?
-      @contents = result ? [] : format_contents(access_template_layouts(:tail))
-    end
-
 end

@@ -72,9 +72,9 @@ class CompanyDivisionClient < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  belongs_to :head_layout, class_name: 'CardLayout', foreign_key: 'head_layout_id'
+  belongs_to :head_layout, class_name: 'CardLayout', foreign_key: 'head_layout_id', optional: true
 
-  belongs_to :tail_layout, class_name: 'CardLayout', foreign_key: 'tail_layout_id'
+  belongs_to :tail_layout, class_name: 'CardLayout', foreign_key: 'tail_layout_id', optional: true
 
   # 案件
   has_many :projects, -> { order(id: :desc) }

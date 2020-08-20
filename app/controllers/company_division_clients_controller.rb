@@ -143,6 +143,14 @@ class CompanyDivisionClientsController < ApplicationController
     render json: { status: :success, clients: @clients, cards: @cards }
   end
 
+  def set_layout
+
+    client.update! head_layout_id: params[:layout_id] if params[:layout_type] == 'head'
+    client.update! tail_layout_id: params[:layout_id] if params[:layout_type] == 'tail'
+
+    render json: { status: :success, client: client }
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

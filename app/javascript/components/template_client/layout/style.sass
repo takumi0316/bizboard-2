@@ -1,0 +1,69 @@
+@import 'app/assets/stylesheets/foundation/variables'
+
+.Layout
+  &__box
+    display: flex
+    position: relative
+    width: 200px
+    height: 130px
+    border: dashed 2px map-get($layoutColors, 'gray')
+    border-radius: 4px
+    text-align: center
+    align-items: center
+    cursor: pointer
+    background-color: #000
+
+  &__img
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    // object-fit: cover
+
+  &__checked
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    z-index: $layerLevel-overlay
+    background-color: rgba(map-get($layoutColors, 'black'), .3)
+    &:before
+      content: 'このレイアウトを選択されています。'
+      font-size: 1rem
+      top: 0
+      left: 0
+      height: 100%
+      width: 100%
+      transition: all ease .3s
+      display: flex
+      font-weight: bold
+      align-items: center
+
+.Select
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  display: flex
+  justify-content: center
+  align-items: center
+  font-size: 2.4rem
+  color: map-get($fontColors, 'white')
+  z-index: $layerLevel-overlay
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 750px
+    position: relative
+    padding: 30px
+    height: 500px
+    margin-top: 30px
+    overflow-y: scrol
+    text-align: center
+    img
+      width: 100%
+      height: 300px
+      border: dashed 2px map-get($layoutColors, 'gray')
