@@ -61,18 +61,7 @@ ActiveRecord::Schema.define(version: 2020_08_17_052108) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "card_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "company_division_client_id"
-    t.string "text_value"
-    t.text "textarea_value"
-    t.integer "layout_type", comment: "レイアウトと結びつける"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["company_division_client_id"], name: "index_card_informations_on_company_division_client_id"
-  end
-
-  create_table "card_layouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-
+  create_table "card_layouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -306,13 +295,13 @@ ActiveRecord::Schema.define(version: 2020_08_17_052108) do
     t.index ["content_flag_id"], name: "index_layout_contents_on_content_flag_id"
   end
 
-  create_table "layout_values", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "layout_values", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "company_division_client_id"
     t.string "text_value"
     t.text "textarea_value"
+    t.integer "layout_type", comment: "レイアウトと結びつける"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "layout_type"
     t.bigint "content_flag_id"
     t.bigint "upload_id"
     t.bigint "layout_content_id"
