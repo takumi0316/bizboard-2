@@ -16,6 +16,8 @@ class CardTemplate < ApplicationRecord
   #  ** Includes **
   #----------------------------------------
 
+  include DeepCloneable
+
   #----------------------------------------
   #  ** Constants **
   #----------------------------------------

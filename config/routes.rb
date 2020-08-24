@@ -109,6 +109,9 @@ Rails.application.routes.draw do
     collection do
       get :search_clients
     end
+    member do
+      get :set_layout
+    end
   end
 
   # 外注先(会社)
@@ -174,7 +177,22 @@ Rails.application.routes.draw do
   ## end
 
   ## 名刺テンプレート
-  resources :card_templates
+  resources :card_templates do
+    member do
+      post :copy
+    end
+  end
+
+  ## 名刺テンプレート担当者
+  resources :template_clients do
+    member do
+      get :head
+      get :tail
+    end
+    collection do
+      post :transfer
+    end
+  end
 
   ## 名刺レイアウト
   resources :card_layouts do

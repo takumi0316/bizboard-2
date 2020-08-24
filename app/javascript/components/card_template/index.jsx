@@ -100,7 +100,7 @@ const Index = props => {
       field.append('card_template[template_layouts_attributes][][card_template_id]', head.card_template_id);
       field.append('card_template[template_layouts_attributes][][card_layout_id]', head.card_layout_id);
       field.append('card_template[template_layouts_attributes][][status]', head.status);
-      if(head._destroy) field.append('card_template[][template_layouts_attributes][][_destroy]', head._destroy);
+      if(head._destroy) field.append('card_template[template_layouts_attributes][][_destroy]', head._destroy);
     });
   
     state.tails.map(tail => {
@@ -109,7 +109,7 @@ const Index = props => {
       field.append('card_template[template_layouts_attributes][][card_template_id]', tail.card_template_id);
       field.append('card_template[template_layouts_attributes][][card_layout_id]', tail.card_layout_id);
       field.append('card_template[template_layouts_attributes][][status]', tail.status);
-      if(tail._destroy) field.append('card_template[][template_layouts_attributes][][_destroy]', tail._destroy);
+      if(tail._destroy) field.append('card_template[template_layouts_attributes][][_destroy]', tail._destroy);
     });
   
     const request = props.new_record_type ? window.xhrRequest.post(props.action, field) : window.xhrRequest.put(props.action, field);

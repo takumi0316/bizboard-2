@@ -42,6 +42,10 @@ class CardLayout < ApplicationRecord
 
   has_many :card_templates, through: :template_layouts
 
+  has_many :head_layout_company_division_clients, class_name: 'CompanyDivisionClient', foreign_key: 'head_layout_id'
+
+  has_many :tail_layout_company_division_clients, class_name: 'CompanyDivisionClient', foreign_key: 'tail_layout_id'
+
   accepts_nested_attributes_for :contents, allow_destroy: true, reject_if: :all_blank
 
   #----------------------------------------

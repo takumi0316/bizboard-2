@@ -23,7 +23,7 @@
           td.u-ta-center = r.id
           td.u-ta-center = r.company.name
           td.u-ta-center
-            = link_to '詳細', company_division_clients_path, class: 'c-btnMain-standard'
-          td.u-ta-center = link_to '編集', edit_card_template_path(r), class: 'c-btnMain-primaryC'
-          /td.u-ta-center = link_to '複製', dup_card_template_path(r), class: 'c-btnMain-primaryB'
-          td.u-ta-center = link_to '削除', card_template_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか？' }
+            = link_to '詳細', template_clients_path(id: r), class: 'c-btnMain-primaryB'
+          td.u-ta-center = link_to '編集', edit_card_template_path(r), class: 'c-btnMain-standard'
+          td.u-ta-center = link_to '複製', copy_card_template_path(r), method: :post, class: 'c-btnMain-primaryC'
+          td.u-ta-center = link_to '削除', card_template_path(r), class: 'c-btnMain-primaryA', method: :delete, data: { confirmable: '本当に削除しますか？' }
