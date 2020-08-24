@@ -312,9 +312,14 @@ ActiveRecord::Schema.define(version: 2020_08_17_052108) do
     t.text "textarea_value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "layout_type"
     t.bigint "content_flag_id"
+    t.bigint "upload_id"
+    t.bigint "layout_content_id"
     t.index ["company_division_client_id"], name: "index_layout_values_on_company_division_client_id"
     t.index ["content_flag_id"], name: "index_layout_values_on_content_flag_id"
+    t.index ["layout_content_id"], name: "index_layout_values_on_layout_content_id"
+    t.index ["upload_id"], name: "index_layout_values_on_upload_id"
   end
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -826,6 +831,8 @@ ActiveRecord::Schema.define(version: 2020_08_17_052108) do
   add_foreign_key "expendables", "work_subcontractors"
   add_foreign_key "inquiries", "divisions"
   add_foreign_key "layout_values", "content_flags"
+  add_foreign_key "layout_values", "layout_contents"
+  add_foreign_key "layout_values", "uploads"
   add_foreign_key "messages", "company_division_clients"
   add_foreign_key "messages", "users"
   add_foreign_key "payments", "expendables"

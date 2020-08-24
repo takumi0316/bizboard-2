@@ -11,7 +11,7 @@ const Index = props => {
 
     props.layouts.map((layout, index) => {
 
-      if((index % 2) == 0) {
+      if((index % 3) == 0) {
 
         layout_box = document.getElementById(`layout-box${ index }`);
         if(layout_box.childElementCount > 0) layout_box.textContent = null;
@@ -68,7 +68,7 @@ const Index = props => {
         const key = `layout-${ index }`;
           return(
             <Fragment { ...{key} }>
-              { (index % 2) == 0 ?
+              { (index % 3) == 0 ?
                 <div id={ `layout-box${ index }` } style={{ display: 'flex', flexWrap: 'noWrap', marginTop: '10px' }} />
                 : null
               }

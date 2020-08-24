@@ -25,13 +25,19 @@ class LayoutValue < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
+  enum layout_type: { text: 0, text_area: 10, image: 20 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
 
   belongs_to :company_division_client
 
+  belongs_to :layout_content, optional: true
+
   belongs_to :content_flag
+
+  belongs_to :upload, optional: true
 
   #----------------------------------------
   #  ** Associations **
