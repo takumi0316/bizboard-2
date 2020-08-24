@@ -22,6 +22,8 @@ class ContentFlag < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
+  enum content_type: { text: 0, text_area: 10, image: 20 }
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
@@ -54,7 +56,7 @@ class ContentFlag < ApplicationRecord
   def self.search name
 
     terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    
+
     query = (['content_flags.name like ?'] * terms.size).join(' and ')
 
     self.where(query, *terms.map { |term| "%#{term}%" })
