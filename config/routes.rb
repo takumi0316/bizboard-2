@@ -110,7 +110,7 @@ Rails.application.routes.draw do
       get :search_clients
     end
     member do
-      get :set_layout
+      post :update_layout_values
     end
   end
 
@@ -188,9 +188,13 @@ Rails.application.routes.draw do
     member do
       get :head
       get :tail
+      get :set_layout
     end
     collection do
+      post :upload
+      post :download
       post :transfer
+      post :image_transfer
     end
   end
 

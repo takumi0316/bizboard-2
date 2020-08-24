@@ -85,6 +85,11 @@ class CompanyDivisionClient < ApplicationRecord
   # 名刺担当者
   has_many :card_clients
 
+  # 名刺情報
+  has_many :layout_values, class_name: 'LayoutValue'
+
+  accepts_nested_attributes_for :layout_values, allow_destroy: true, reject_if: :all_blank
+
   #----------------------------------------
   #  ** Scopes **
   #----------------------------------------

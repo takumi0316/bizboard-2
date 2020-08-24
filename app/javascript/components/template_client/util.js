@@ -2,10 +2,7 @@
 const UAParser = require('ua-parser-js');
 
 // プロパティ
-// import {
-//   FontColors,
-//   FontFamilies
-// } from './contents/properties'
+import { FontFamilies } from './properties';
 
 /**
  * String => Bool
@@ -145,12 +142,15 @@ export const setPDF = (file, contents) => {
 
     // Set dimensions to Canvas
     // 画像をスケールさせて、解像度をあげる
-    canvas.height = (mmTopx(55 * 3));
-    canvas.width = (mmTopx(91 * 3));
+    canvas.height = (mmTopx(55 * 4));
+    canvas.width = (mmTopx(91 * 4));
     canvas.style.height = (mmTopx(55 * 2)) + 'px';
+    // canvas.style.height = (mmTopx(55 * (canvas.width / page.getViewport(1.0).width))) + 'px';
     canvas.style.width = (mmTopx(91 * 2)) + 'px';
+    // canvas.style.width = (mmTopx(91 * (canvas.width / page.getViewport(1.0).width))) + 'px';
 
     draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
+    // draw.style = `height: ${ Math.floor(mmTopx(55 * (canvas.width / page.getViewport(1.0).width))) }px; width: ${ Math.floor(mmTopx(91 * (canvas.width / page.getViewport(1.0).width))) }px;`;
 
     // Get viewport (dimensions)
     // 描画範囲にPDFをまとめる
@@ -167,55 +167,184 @@ export const setPDF = (file, contents) => {
     page.render(renderContext);
 
     // 前回のデータを引き継がないようにする
-    // if(draw.childElementCount > 0) draw.textContent = null;
+    if(draw.childElementCount > 0) draw.textContent = null;
 
-    // contents.map((content, index) => {
+    contents.map((content, index) => {
 
-    //   // 削除予定のコンテンツ
-    //   if(content._destroy) return;
+      // 削除予定のコンテンツ
+      if(content._destroy) return;
 
-    //   const name = content.name;
+      const name = content.name;
 
-    //   // 入力値が空欄だったらやめる
-    //   if(!name && content.layout_type != '20') return;
+      // 入力値が空欄だったらやめる
+      if(!name && content.layout_type != 'image') return;
 
-    //   const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
-    //   const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
-    //   const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
-    //   const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
-    //   const contentLength = Math.floor(mmTopx(content.layout_length));
+      const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
+      // const y = Math.floor(mmTopx(content.y_coordinate)) * (canvas.width / page.getViewport(1.0).width);
+      const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
+      // const x = Math.floor(mmTopx(content.x_coordinate)) * (canvas.width / page.getViewport(1.0).width);
+      const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
+      // const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * (canvas.width / page.getViewport(1.0).width);
+      const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
+      const contentLength = Math.floor(mmTopx(content.layout_length));
 
-    //   // absoluteするための親div
-    //   let parent_div = document.createElement('div');
-    //   parent_div.id = `parent_div-${ index }`;
-    //   parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
+      // absoluteするための親div
+      let parent_div = document.createElement('div');
+      parent_div.id = `parent_div-${ index }`;
+      parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
 
-    //   if(content.layout_type != '20') {
+      if(content.layout_type != 'image') {
 
-    //     // 以下、子ども
-    //     let child_p = document.createElement('p');
-    //     child_p.id = `child_p-${ index }`;
-    //     let child_div = document.createElement('div');
-    //     child_div.id = `child_div-${ index }`;
-    //     draw.appendChild(parent_div);
-    //     child_p.textContent = name || '';
-    //     // transform: translate(x, y)
-    //     // ヘッダー表示のためword-wrapはなし
-    //     child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
-    //     parent_div.appendChild(child_p);
-    //     // 先に描画をしないと高さを取得出来ないため
-    //     child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
-    //     parent_div.appendChild(child_div);
-    //   } else {
+        // 以下、子ども
+        let child_p = document.createElement('p');
+        child_p.id = `child_p-${ index }`;
+        let child_div = document.createElement('div');
+        child_div.id = `child_div-${ index }`;
+        draw.appendChild(parent_div);
+        child_p.textContent = name || '';
+        // transform: translate(x, y)
+        // ヘッダー表示のためword-wrapはなし
+        child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font_family] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
+        parent_div.appendChild(child_p);
+        // 先に描画をしないと高さを取得出来ないため
+        child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+        parent_div.appendChild(child_div);
+      } else {
 
-    //     draw.appendChild(parent_div);
-    //     let child_img = document.createElement('img');
-    //     child_img.id = `child_img-${ index }`;
-    //     child_img.src = content.uploads[0].url;
-    //     child_img.style = `width: ${ contentLength }px; position: absolute;`;
-    //     parent_div.appendChild(child_img);
-    //   };
+        draw.appendChild(parent_div);
+        let child_img = document.createElement('img');
+        child_img.id = `child_img-${ index }`;
+        child_img.src = content.uploads[0].url;
+        child_img.style = `width: ${ contentLength }px; position: absolute;`;
+        parent_div.appendChild(child_img);
+      };
 
-    // });
+    });
+  }).catch(error => window.alertable({ icon: 'error', message: error }));
+};
+
+/**
+ * PDFを展開する
+ * @version 2020/03/30
+ *
+ */
+export const setPDFValue = (file, contents) => {
+
+  const blob = new Blob([file]);
+  const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
+  const getPDF = pdfjsLib.getDocument(blob_path);
+
+  getPDF.promise.then(pdf => {
+    return pdf.getPage(1);
+  }).then(page => {
+
+    const canvas = document.getElementById('pdf');
+    const draw = document.getElementById('drawer');
+
+    // Fetch canvas' 2d context
+    let ctx = canvas.getContext('2d');
+
+    // Set dimensions to Canvas
+    // 画像をスケールさせて、解像度をあげる
+    canvas.height = (mmTopx(55 * 4));
+    canvas.width = (mmTopx(91 * 4));
+    canvas.style.height = (mmTopx(55 * 2)) + 'px';
+    // canvas.style.height = (mmTopx(55 * (canvas.width / page.getViewport(1.0).width))) + 'px';
+    canvas.style.width = (mmTopx(91 * 2)) + 'px';
+    // canvas.style.width = (mmTopx(91 * (canvas.width / page.getViewport(1.0).width))) + 'px';
+
+    draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
+    // draw.style = `height: ${ Math.floor(mmTopx(55 * (canvas.width / page.getViewport(1.0).width))) }px; width: ${ Math.floor(mmTopx(91 * (canvas.width / page.getViewport(1.0).width))) }px;`;
+
+    // Get viewport (dimensions)
+    // 描画範囲にPDFをまとめる
+    const viewport = page.getViewport({ scale: canvas.width / page.getViewport(1.0).width });
+
+    // Prepare object needed by render method
+    const renderContext = {
+      canvasContext: ctx,
+      transform: [1, 0, 0, 1, 0, 0],
+      viewport: viewport
+    };
+
+    // Render PDF page
+    page.render(renderContext);
+
+    // 前回のデータを引き継がないようにする
+    if(draw.childElementCount > 0) draw.textContent = null;
+
+    contents.map((content, index) => {
+
+      // 入力値が空欄だったらやめる
+      let value;
+
+      if(content.layout_type === 'text') value = content.text_value;
+      if(content.layout_type === 'text_area') value = content.textarea_value;
+
+      const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
+      // const y = Math.floor(mmTopx(content.y_coordinate)) * (canvas.width / page.getViewport(1.0).width);
+      const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
+      // const x = Math.floor(mmTopx(content.x_coordinate)) * (canvas.width / page.getViewport(1.0).width);
+      const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
+      // const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * (canvas.width / page.getViewport(1.0).width);
+      const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
+      const contentLength = Math.floor(mmTopx(content.layout_length));
+
+      // absoluteするための親div
+      let parent_div = document.createElement('div');
+      parent_div.id = `parent_div-${ index }`;
+      parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
+
+      if(content.layout_type != 'image') {
+
+        // 以下、子ども
+        let child_p = document.createElement('p');
+        child_p.id = `child_p-${ index }`;
+        let child_div = document.createElement('div');
+        child_div.id = `child_div-${ index }`;
+        draw.appendChild(parent_div);
+        child_p.textContent = value || '';
+        // transform: translate(x, y)
+        // ヘッダー表示のためword-wrapはなし
+        child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font_family] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
+        parent_div.appendChild(child_p);
+        // 先に描画をしないと高さを取得出来ないため
+        child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+        parent_div.appendChild(child_div);
+      } else {
+
+        // 画像をbase変換しないと、スクショ時にCORSエラーが出る
+        const field = new FormData();
+        const upload = () => {
+          if(content.upload_id) {
+
+            const upload = content.uploads.filter(upload => upload.id === content.upload_id);
+            return upload[0];
+          };
+
+          if(!content.upload_id) return content.uploads[0];
+        };
+
+        field.append('url', upload().url);
+        const request = window.xhrRequest.post('/template_clients/image_transfer', field, { responseType: 'blob' });
+        request.then(res => {
+
+          const image = new Blob([res.data]);
+          const blob_path = (window.URL || window.webkitURL).createObjectURL(image);
+
+          draw.appendChild(parent_div);
+
+          const logoHeight = Math.floor(mmTopx(content.logo_height));
+          const logoWidth = Math.floor(mmTopx(content.logo_width));
+          let child_img = document.createElement('img');
+          child_img.id = `child_img-${ index }`;
+          child_img.src = blob_path;
+          child_img.style = `height: ${ logoHeight }; width: ${ logoWidth }px; position: absolute;`;
+          parent_div.appendChild(child_img);
+
+        }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを取得できませんでした。', close_callback: () => console.log(err) }));
+      };
+
+    });
   }).catch(error => window.alertable({ icon: 'error', message: error }));
 };
