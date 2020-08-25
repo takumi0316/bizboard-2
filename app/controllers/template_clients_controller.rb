@@ -121,8 +121,8 @@ class TemplateClientsController < ApplicationController
           values = []
           values << ''
           values << card_template.id
-          values << client.head_layout_id || access_template_layouts(:head).card_layouts.first.id
-          values << client.tail_layout_id || access_template_layouts(:tail).card_layouts.first.id
+          values << client.head_layout_id ? client.head_layout_id : access_template_layouts(:head).card_layouts.first.id
+          values << client.tail_layout_id ? client.tail_layout_id : access_template_layouts(:tail).card_layouts.first.id
           values << card_template.company.id
           values << card_template.company.name
           values << division.id

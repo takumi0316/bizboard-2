@@ -96,7 +96,7 @@ const Upload = props => {
     e.preventDefault();
 
     const prev_paginate_index = state.paginate_index - 1;
-    setState({ ...state, paginate_index: prev_paginate_index });
+    setState({ ...state, paginate_index: prev_paginate_index, head: true });
   };
 
   const nextPagination = e => {
@@ -104,7 +104,7 @@ const Upload = props => {
     e.preventDefault();
 
     const next_paginate_index = state.paginate_index + 1;
-    setState({ ...state, paginate_index: next_paginate_index });
+    setState({ ...state, paginate_index: next_paginate_index, head: true });
   };
 
   /**
@@ -115,13 +115,49 @@ const Upload = props => {
   const changeLayoutType = e => {
 
     e.preventDefault();
-    console.log(e)
     setState({ ...state, head: !state.head });
   };
 
-  const changeLayout = e => {
+  const changeContents = contents => {
 
-    setState({ ...state, uploaded: true,  head_layouts: res.data.head_layouts, tail_layouts: res.data.tail_layouts, clients: res.data.clients });
+    const re_clients = state.clients.map((client, index) => {
+
+      if(index === state.paginate_index) {
+
+        if(state.head) return { ...client, head_layout_contents: contents };
+
+        if(!state.head) return { ...client, tail_layout_contents: contents };
+      };
+
+      if(index !== state.paginate_index) return client;
+    });
+
+    setState({ ...state, clients: re_clients });
+  };
+
+  const changeLayout = (layout, contents)=> {
+
+    const re_clients = state.clients.map((client, index) => {
+
+      if(index === state.paginate_index) {
+
+        if(state.head) return { ...client, default_head_layout: layout, head_layout_contents: contents };
+
+        if(!state.head) return { ...client, default_tail_layout: layout, tail_layout_contents: contents };
+      };
+
+      if(index !== state.paginate_index) return client;
+    });
+
+    setState({ ...state, clients: re_clients });
+  };
+
+  const redirect = e => {
+
+    e.preventDefault();
+
+    const url = () => location.href = `/template_clients?id=${ props.card_template.id }`;
+    window.alertable({ icon: 'success', message: '保存しました。', close_callback: () => url() })
   };
 
   return(
@@ -151,7 +187,16 @@ const Upload = props => {
           <div className='u-mt-15'>
             <button className='c-btnMain-standard' onClick={ changeLayoutType }>{ state.head ? '裏面設定' : '表面設定' }</button>
           </div>
-          <TemplateClient upload={ true } head={ state.head } card_template_id={ props.card_template.id } client_id={ state.clients[state.paginate_index].client_id } layouts={ state.head ? state.head_layouts : state.tail_layouts } contents={ state.head ? state.clients[state.paginate_index].head_layout_contents : state.clients[state.paginate_index].tail_layout_contents } default_layout={ state.head ? state.clients[state.paginate_index].default_head_layout : state.clients[state.paginate_index].default_tail_layout } />
+          <TemplateClient upload={ true } head={ state.head } card_template_id={ props.card_template.id } client_id={ state.clients[state.paginate_index].client_id } paginate_index={ state.paginate_index }
+                          layouts={ state.head ? state.head_layouts : state.tail_layouts } contents={ state.head ? state.clients[state.paginate_index].head_layout_contents : state.clients[state.paginate_index].tail_layout_contents }
+                          default_layout={ state.head ? state.clients[state.paginate_index].default_head_layout : state.clients[state.paginate_index].default_tail_layout }
+                          changeContents={ changeContents } changeLayout={ changeLayout }
+          />
+
+        <div className='c-flex__center'>
+          <button className='c-btnMain-standard' onClick={ redirect }>保存する</button>
+        </div>
+
         </Fragment>
         : <Import openCSV={ openCSV } />
       }

@@ -7,6 +7,7 @@ import Canvas from  './canvas';
 import Layout from  './layout';
 import Popup  from  './layout/popup';
 import Content from './content';
+import { IsReductionRated } from './properties';
 
 // 左サイドバーを閉じる
 const closeLeftSidebar = drawerElement => drawerElement.click();
@@ -31,15 +32,49 @@ const Index = props => {
   }, [props]);
 
   useEffect(() => {
-    console.log(props)
-    console.log(state)
 
-    if(props.upload) setState({ ...state, layouts: props.layouts, selected: false, select_layout: {}, apply_layout: props.default_layout, contents: props.contents, content_editing: false, head: true })
+    console.log('head')
+    if(props.upload) {
+
+      if(state.content_editing) {
+
+        window.alertable({ icon: 'info', message: '編集を終了してください。' });
+        return;
+      };
+
+      setState({ ...state, layouts: props.layouts, selected: false, select_layout: {}, apply_layout: props.default_layout, contents: props.contents, content_editing: false, head: props.head })
+    };
+
   }, [props.head])
 
   useEffect(() => {
-  }, [state])
 
+    console.log('id')
+    if(props.upload) {
+      if(state.content_editing) {
+
+        window.alertable({ icon: 'info', message: '編集を終了してください。' });
+        return;
+      };
+
+      if(state.apply_layout.id !== props.default_layout.id) setState({ ...state, layouts: props.layouts, selected: false, select_layout: {}, apply_layout: props.default_layout, contents: props.contents, content_editing: false, head: props.head })
+    };
+
+  }, [props.default_layout.id]);
+
+  useEffect(() => {
+
+    if(props.upload) {
+      if(state.content_editing) {
+
+        window.alertable({ icon: 'info', message: '編集を終了してください。' });
+        return;
+      };
+
+      setState({ ...state, layouts: props.layouts, selected: false, select_layout: {}, apply_layout: props.default_layout, contents: props.contents, content_editing: false, head: props.head })
+    };
+
+  }, [props.paginate_index]);
 
 	/**
 	 * レイアウトをクリック
@@ -82,8 +117,14 @@ const Index = props => {
     const request = window.xhrRequest.get(url);
     request.then(res => {
 
-			const layout = state.layouts.filter(layout => layout.id == state.select_layout.id);
-			window.alertable({ icon: res.data.status, message: 'レイアウトを変更しました。', close_callback: () => setState({ ...state, selected: false, apply_layout: layout[0], contents: res.data.contents }) });
+      const layout = state.layouts.filter(layout => layout.id == state.select_layout.id);
+
+      if(!props.upload) window.alertable({ icon: res.data.status, message: 'レイアウトを変更しました。', close_callback: () => {
+
+        if(props.upload) props.changeLayout(layout[0], res.data.contents);
+        if(!props.upload) setState({ ...state, selected: false, apply_layout: layout[0], contents: res.data.contents });
+      }});
+
     }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }));
   };
 
@@ -128,15 +169,17 @@ const Index = props => {
 		const request = window.xhrRequest.post(url, field);
 		request.then(res => {
 
-      window.alertable({ icon: res.data.status, message: '保存しました！', close_callback: () => setState({ ...state, content_editing: false, contents: res.data.contents }) });
+      window.alertable({ icon: res.data.status, message: '保存しました！', close_callback: () => {
+
+        if(props.upload) {
+
+          setState({ ...state, content_editing: false });
+          props.changeContents(res.data.contents, state, setState);
+        };
+        if(!props.upload) setState({ ...state, content_editing: false, contents: res.data.contents });
+      }});
 		}).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }));
 	};
-
-  const changeLayoutType = e => {
-
-    e.preventDefault();
-    setState({ ...state, head: !state.head });
-  };
 
 	const sukusho = e => {
 
@@ -148,7 +191,7 @@ const Index = props => {
       logging: true,
       taintTest: false
 		}).then(canvas => {
-        var imgData = canvas.toDataURL();
+        let imgData = canvas.toDataURL();
         document.getElementById("ss").href = imgData;
     });
 	};
