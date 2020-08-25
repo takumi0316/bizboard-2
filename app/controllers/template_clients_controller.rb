@@ -134,7 +134,7 @@ class TemplateClientsController < ApplicationController
             flag = ContentFlag.find(f)
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: f)
             values << layout_value.text_value if flag.content_type == 'text'
-            values << layout_value.textarea_value if flag_value.content_type == 'text_area'
+            values << layout_value.textarea_value if flag.content_type == 'text_area'
           end
 
           csv << values
