@@ -278,8 +278,8 @@ export const setPDFValue = (file, contents) => {
       // 入力値が空欄だったらやめる
       let value;
 
-      if(content.layout_type === 'text') value = content.text_value;
-      if(content.layout_type === 'text_area') value = content.textarea_value;
+      if(content.content_type === 'text') value = content.text_value;
+      if(content.content_type === 'text_area') value = content.textarea_value;
 
       const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
       // const y = Math.floor(mmTopx(content.y_coordinate)) * (canvas.width / page.getViewport(1.0).width);
@@ -295,7 +295,7 @@ export const setPDFValue = (file, contents) => {
       parent_div.id = `parent_div-${ index }`;
       parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
 
-      if(content.layout_type != 'image') {
+      if(content.content_type != 'image') {
 
         // 以下、子ども
         let child_p = document.createElement('p');

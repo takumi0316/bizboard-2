@@ -2,8 +2,8 @@
 #
 # Table name: project_cards
 #
-#  id         :bigint(8)        not null, primary key
-#  project_id :bigint(8)
+#  id         :bigint           not null, primary key
+#  project_id :bigint
 #  draft_data :integer          default("data_available")
 #  url        :text(65535)
 #  card_type  :integer          default("template")
@@ -14,9 +14,9 @@
 #  paper      :integer          default("coc_413")
 #  surface    :integer          default("both_side")
 #  emboss     :integer          default("emboss_necessary")
+#  price      :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  price      :integer
 #
 
 class ProjectCard < ApplicationRecord

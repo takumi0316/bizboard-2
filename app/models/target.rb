@@ -2,8 +2,8 @@
 #
 # Table name: targets
 #
-#  id           :bigint(8)        not null, primary key
-#  division_id  :bigint(8)
+#  id           :bigint           not null, primary key
+#  division_id  :bigint
 #  target_year  :integer          default(1)
 #  target_month :integer          default(1)
 #  sales        :integer          default(0)

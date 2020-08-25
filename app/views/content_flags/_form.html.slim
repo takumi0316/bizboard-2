@@ -2,7 +2,13 @@
 
   .c-form-label
     = f.label :name, 'フラグ名'
-    span.c-form-required.u-mt-10 必須
+    span.c-form__required.u-ml-10 必須
   = f.text_field :name, placeholder: 'フラゲ名を入力してください。', class: 'c-form-text', required: true
+  .c-form-group
+    .u-mt-30
+      .c-form-label
+        = f.label :content_type, 'コンテントタイプ'
+        span.c-form__required.u-ml-10 必須
+      = f.select :content_type, ContentFlag.content_types_i18n.invert, {}, { class: 'c-form-dateselect' }
 
   .u-mt-15 = f.submit content_flag.new_record? ? '作成する' : '更新する', class: 'c-btnMain-standard'

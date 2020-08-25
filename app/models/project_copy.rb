@@ -2,8 +2,8 @@
 #
 # Table name: project_copies
 #
-#  id                 :bigint(8)        not null, primary key
-#  project_id         :bigint(8)
+#  id                 :bigint           not null, primary key
+#  project_id         :bigint
 #  posting_state      :integer          default("stapler")
 #  draft_split        :integer          default("split_available")
 #  draft_restore      :integer          default("restore_necessary")
@@ -12,10 +12,10 @@
 #  print_size_note    :text(65535)
 #  surface            :integer          default("original_surface")
 #  open_type          :integer          default("side_open")
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
 #  posting_state_note :text(65535)
 #  price              :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 class ProjectCopy < ApplicationRecord

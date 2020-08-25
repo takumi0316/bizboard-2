@@ -177,7 +177,7 @@ export const setPDF = (file, contents) => {
       const name = content.name;
 
       // 入力値が空欄だったらやめる
-      if(!name && content.layout_type != '20') return;
+      if(!name && content.content_type != 'image') return;
 
       const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
       const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
@@ -190,7 +190,7 @@ export const setPDF = (file, contents) => {
       parent_div.id = `parent_div-${ index }`;
       parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
 
-      if(content.layout_type != '20') {
+      if(content.content_type != 'image') {
 
         // 以下、子ども
         let child_p = document.createElement('p');

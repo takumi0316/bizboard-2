@@ -2,9 +2,9 @@
 #
 # Table name: content_uploads
 #
-#  id                :bigint(8)        not null, primary key
-#  layout_content_id :bigint(8)
-#  upload_id         :bigint(8)
+#  id                :bigint           not null, primary key
+#  layout_content_id :bigint
+#  upload_id         :bigint
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

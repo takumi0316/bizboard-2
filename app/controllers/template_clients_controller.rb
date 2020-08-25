@@ -100,7 +100,7 @@ class TemplateClientsController < ApplicationController
       headers << 'テンプレートID'
       headers << 'デフォルトレイアウトID(表)'
       headers << 'デフォルトレイアウトID(裏)'
-      headers << '会社ID'
+      headers << 'ID'
       headers << '会社名'
       headers << '部署ID'
       headers << '部署名'
@@ -109,7 +109,7 @@ class TemplateClientsController < ApplicationController
 
       # flagをuniqにするため
       flags = []
-      card_template.card_layouts.map do |r| r.contents.map { |c| flags << c.content_flag_id } end
+      card_template.card_layouts.map do |r| r.contents.map { |c| flags << c.content_flag_id if c.layout_type != 'image' } end
 
       flags.uniq!
       flags.map { |f| headers << ContentFlag.find(f).name }
@@ -123,6 +123,7 @@ class TemplateClientsController < ApplicationController
           values << card_template.id
           values << client.head_layout_id || access_template_layouts(:head).card_layouts.first.id
           values << client.tail_layout_id || access_template_layouts(:tail).card_layouts.first.id
+          values << card_template.company.id
           values << card_template.company.name
           values << division.id
           values << division.name
@@ -130,9 +131,10 @@ class TemplateClientsController < ApplicationController
           values << client.name
           flags.map do |f|
 
+            flag = ContentFlag.find(f)
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: f)
-            values << layout_value.text_value if layout_value.layout_type == 'text'
-            values << layout_value.textarea_value if layout_value.layout_type == 'text_area'
+            values << layout_value.text_value if flag.content_type == 'text'
+            values << layout_value.textarea_value if flag_value.content_type == 'text_area'
           end
 
           csv << values
@@ -146,8 +148,92 @@ class TemplateClientsController < ApplicationController
 
   def upload
 
+    flag_ids = []
+    @flag_names = []
+    card_template.card_layouts.map do |r| r.contents.map { |c| flag_ids << c.content_flag_id if c.layout_type != 'image' } end
+
+    flag_ids.uniq!
+    flag_ids.map { |f| @flag_names << ContentFlag.find(f).name }
+
     add_breadcrumb '一覧', path: template_clients_path(id: params[:id])
     add_breadcrumb 'CSVアップロード'
+  end
+
+  def import_csv
+
+    clients = []
+    params[:template_clients].map do |template_client|
+
+      client = CompanyDivisionClient.find(template_client['担当者ID'])
+      head_layout_id = template_client['デフォルトレイアウトID(表)']
+      tail_layout_id = template_client['デフォルトレイアウトID(裏)']
+
+      if head_layout_id.blank?
+
+        raise 'テンプレートに表のレイアウトが登録されていません。' if access_template_layouts(:head).blank?
+
+        head_layout_id = access_template_layouts(:head)[0].card_layout_id
+      else
+
+        raise 'テンプレートに表のレイアウトが登録されていません。' if access_template_layouts(:head).blank?
+
+        head_layout_id = template_client['デフォルトレイアウトID(表)']
+        result = access_template_layouts(:head).map { |template_layout| template_layout.card_layout_id == head_layout_id.to_i }
+
+        raise "テンプレートに登録されていないレイアウト(表ID: #{ head_layout_id })が指定されています。" if !result.include?(true)
+      end
+
+      if tail_layout_id.blank?
+
+        raise 'テンプレートに裏のレイアウトが登録されていません。' if access_template_layouts(:tail).blank?
+
+        tail_layout_id = access_template_layouts(:tail)[0].card_layout_id
+      else
+
+        raise 'テンプレートに裏のレイアウトが登録されていません。' if access_template_layouts(:tail).blank?
+
+        tail_layout_id = template_client['デフォルトレイアウトID(裏)']
+        result = access_template_layouts(:tail).map { |template_layout| template_layout.card_layout_id == tail_layout_id.to_i }
+
+        raise "テンプレートに登録されていないレイアウト(裏ID: #{ tail_layout_id })が指定されています。" if !result.include?(true)
+      end
+
+      client.update! head_layout_id: head_layout_id, tail_layout_id: tail_layout_id
+
+      clients.push(client)
+      params[:flag_names].each do |flag_name|
+
+        flag = ContentFlag.find_by(name: flag_name)
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id)
+        layout_value.update! text_value: template_client[flag_name] if flag.content_type == 'text'
+        layout_value.update! textarea_value: template_client[flag_name] if flag.content_type == 'text_area'
+      end
+    end
+
+    format_clients = clients.map do |client|
+
+      head_layout = client.head_layout
+      tail_layout = client.tail_layout
+      head_layout_contents = access_contents(head_layout, client.id)
+      tail_layout_contents = access_contents(tail_layout, client.id)
+
+      {
+        client_id: client.id,
+        client_name: client.name,
+        default_head_layout: access_card_layouts(client.head_layout),
+        default_tail_layout: access_card_layouts(client.tail_layout),
+        head_layout_contents: head_layout_contents,
+        tail_layout_contents: tail_layout_contents
+      }
+    end
+
+    head_layouts =  access_template_layouts(:head).map { |r| access_card_layouts(r.card_layout) }
+    tail_layouts =  access_template_layouts(:tail).map { |r| access_card_layouts(r.card_layout) }
+
+    render json: { status: :success, head_layouts: head_layouts, tail_layouts: tail_layouts, clients: format_clients }
+  rescue => e
+
+    render json: { status: :error, message: e }
   end
 
   def set_layout
@@ -223,93 +309,60 @@ class TemplateClientsController < ApplicationController
       @layouts = result ? [] : access_template_layouts(cast_action).map do |r| access_card_layouts(r.card_layout) end
     end
 
-    def access_contents
+    def access_contents layout, client_id=nil
 
-      if cast_action == :head
-
-        default_layout = company_division_client.head_layout_id.nil? ? CardLayout.find(@layouts[0][:id]) : company_division_client.head_layout if params[:action] != 'set_layout'
-        default_layout = CardLayout.find(params[:layout_id]) if params[:action] == 'set_layout'
-        default_layout.contents.map do |r|
-
-          layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: company_division_client.id, content_flag_id: r.content_flag_id) if r.layout_type != 'image'
-          layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: company_division_client.id, content_flag_id: r.content_flag_id, layout_content_id: r.id) if r.layout_type == 'image'
-          {
-            id: r.id,
-            name: r.name,
-            x_coordinate: r.x_coordinate,
-            y_coordinate: r.y_coordinate,
-            font_size: r.font_size,
-            layout_length: r.layout_length,
-            letter_spacing: r.letter_spacing,
-            reduction_rate: r.reduction_rate,
-            is_reduction_rated: r.is_reduction_rated,
-            layout_type: r.layout_type,
-            font_family: r.font_family,
-            font_color: r.font_color,
-            logo_height: r.logo_height,
-            logo_width: r.logo_width,
-            flag_id: r.content_flag_id,
-            flag_name: r.content_flag.name,
-            layout_value_id: layout_value.id,
-            text_value: layout_value.text_value,
-            textarea_value: layout_value.textarea_value,
-            upload_id: layout_value.upload_id,
-            uploads: r.content_uploads.map do |c|
-              {
-                id: c.id,
-                upload_id: c.upload_id,
-                name: c.upload.name,
-                url: c.upload.image.service_url
-              }
-            end
-          }
-        end
-      elsif cast_action == :tail
-
-        default_layout = company_division_client.tail_layout_id.nil? ? CardLayout.find(@layouts[0][:id]) : company_division_client.tail_layout
-        default_layout = CardLayout.find(params[:layout_id]) if params[:action] == 'set_layout'
-        default_layout.contents.map do |r|
-
-          layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: company_division_client.id, content_flag_id: r.content_flag_id) if r.layout_type != 'image'
-          layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: company_division_client.id, content_flag_id: r.content_flag_id, layout_content_id: r.id) if r.layout_type == 'image'
-          {
-            id: r.id,
-            name: r.name,
-            x_coordinate: r.x_coordinate,
-            y_coordinate: r.y_coordinate,
-            font_size: r.font_size,
-            layout_length: r.layout_length,
-            letter_spacing: r.letter_spacing,
-            reduction_rate: r.reduction_rate,
-            is_reduction_rated: r.is_reduction_rated,
-            layout_type: r.layout_type,
-            font_family: r.font_family,
-            font_color: r.font_color,
-            logo_height: r.logo_height,
-            logo_width: r.logo_width,
-            flag_id: r.content_flag_id,
-            flag_name: r.content_flag.name,
-            layout_value_id: layout_value.id,
-            text_value: layout_value.text_value,
-            textarea_value: layout_value.textarea_value,
-            upload_id: layout_value.upload_id,
-            uploads: r.content_uploads.map do |c|
-              {
-                id: c.id,
-                upload_id: c.upload_id,
-                name: c.upload.name,
-                url: c.upload.image.service_url
-              }
-            end
-          }
-        end
-      end
-
+      layout.contents.map { |r|
+        flag = ContentFlag.find(r.content_flag_id)
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id) if flag.content_type != 'image'
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id, layout_content_id: r.id) if flag.content_type == 'image'
+        {
+          id: r.id,
+          name: r.name,
+          x_coordinate: r.x_coordinate,
+          y_coordinate: r.y_coordinate,
+          font_size: r.font_size,
+          layout_length: r.layout_length,
+          letter_spacing: r.letter_spacing,
+          reduction_rate: r.reduction_rate,
+          is_reduction_rated: r.is_reduction_rated,
+          font_family: r.font_family,
+          font_color: r.font_color,
+          logo_height: r.logo_height,
+          logo_width: r.logo_width,
+          flag_id: r.content_flag_id,
+          flag_name: r.content_flag.name,
+          content_type: r.content_flag.content_type,
+          layout_value_id: layout_value.id,
+          text_value: layout_value.text_value,
+          textarea_value: layout_value.textarea_value,
+          upload_id: layout_value.upload_id,
+          uploads: r.content_uploads.map do |c|
+            {
+              id: c.id,
+              upload_id: c.upload_id,
+              name: c.upload.name,
+              url: c.upload.image.service_url
+            }
+          end
+        }
+      }
     end
 
     def format_contents
 
       result = access_template_layouts(cast_action).blank?
-      @contents = result ? [] : access_contents
+      default_layout = ''
+
+      if cast_action == :head
+
+        default_layout = company_division_client.head_layout_id.nil? ? CardLayout.find(@layouts[0][:id]) : company_division_client.head_layout if params[:action] != 'set_layout'
+        default_layout = CardLayout.find(params[:layout_id]) if params[:action] == 'set_layout'
+      elsif cast_action == :tail
+
+        default_layout = company_division_client.tail_layout_id.nil? ? CardLayout.find(@layouts[0][:id]) : company_division_client.tail_layout
+        default_layout = CardLayout.find(params[:layout_id]) if params[:action] == 'set_layout'
+      end
+
+      @contents = result ? [] : access_contents(default_layout)
     end
 end

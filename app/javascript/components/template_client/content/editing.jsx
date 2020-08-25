@@ -35,7 +35,7 @@ const Editing = props => {
       { state.contents.map((content, index) => {
 
         const key = `content-${ index }`;
-        const content_type = content.layout_type === 'image'
+        const content_type = content.content_type === 'image'
         const upload = () => {
 
           if(content_type) {
@@ -60,7 +60,7 @@ const Editing = props => {
                   <SearchImg index={ index } uploads={ content.uploads } applyUpload={ applyUpload }/>
                 </Fragment>
                 : <Fragment>
-                  { content.layout_type === 'text' ?
+                  { content.content_type === 'text' ?
                     <input id={ content.flag_name } type='text' className='c-form-text' defaultValue={ content.text_value }/>
                     : <textarea id={ content.flag_name } className='c-form-textarea' defaultValue={ content.textarea_value }/>
                   }

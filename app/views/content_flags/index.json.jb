@@ -4,6 +4,7 @@ json[:flags] = ContentFlag.search(params[:name]).all.map do |r|
   {
     id: r.id,
     name: r.name,
+    content_type: r.content_type
   }
 end
 

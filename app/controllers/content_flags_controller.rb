@@ -79,7 +79,7 @@ class ContentFlagsController < ApplicationController
 
     def content_flag_params
 
-      params.require(:content_flag).permit :name
+      params.require(:content_flag).permit :name, :content_type
     end
 
     def redirect_to_index e

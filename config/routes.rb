@@ -193,6 +193,7 @@ Rails.application.routes.draw do
     collection do
       post :upload
       post :download
+      post :import_csv
       post :transfer
       post :image_transfer
     end

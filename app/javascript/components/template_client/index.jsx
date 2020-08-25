@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
+import React, { Fragment, useEffect, useState, useRef, useMemo } from 'react';
 import html2canvas from 'html2canvas';
 
 // components
@@ -20,11 +20,22 @@ const Index = props => {
     apply_layout: props.default_layout,
     contents: props.contents,
     content_editing: false,
+    head: true,
   };
 
   const [state, setState] = useState(init);
 
-  useEffect(() => closeLeftSidebar(document.getElementById('js-drawerOpen')), [props]);
+  useEffect(() => {
+
+    if(!props.upload) closeLeftSidebar(document.getElementById('js-drawerOpen'));
+  }, [props]);
+
+  useEffect(() => {
+    console.log(props)
+    console.log(state)
+
+    if(props.upload) setState({ ...state, layouts: props.layouts, selected: false, select_layout: {}, apply_layout: props.default_layout, contents: props.contents, content_editing: false, head: true })
+  }, [props.head])
 
   useEffect(() => {
   }, [state])
@@ -105,22 +116,27 @@ const Index = props => {
       field.append('company_division_client[layout_values_attributes][][id]', content.layout_value_id || '');
       field.append('company_division_client[layout_values_attributes][][company_division_client_id]', props.client_id);
       field.append('company_division_client[layout_values_attributes][][content_flag_id]', content.flag_id);
-      field.append('company_division_client[layout_values_attributes][][layout_type]', content.layout_type);
-        if(content.layout_type === 'image') {
+      field.append('company_division_client[layout_values_attributes][][layout_type]', content.content_type);
+        if(content.content_type === 'image') {
           field.append('company_division_client[layout_values_attributes][][upload_id]', doc.dataset.set);
           field.append('company_division_client[layout_values_attributes][][layout_content_id]', content.id);
         };
-      if(content.layout_type === 'text') field.append('company_division_client[layout_values_attributes][][text_value]', doc.value || '');
-      if(content.layout_type === 'text_area') field.append('company_division_client[layout_values_attributes][][textarea_value]', doc.value || '');
+      if(content.content_type === 'text') field.append('company_division_client[layout_values_attributes][][text_value]', doc.value || '');
+      if(content.content_type === 'text_area') field.append('company_division_client[layout_values_attributes][][textarea_value]', doc.value || '');
 		});
 
 		const request = window.xhrRequest.post(url, field);
 		request.then(res => {
 
-			console.log(res.data)
       window.alertable({ icon: res.data.status, message: '保存しました！', close_callback: () => setState({ ...state, content_editing: false, contents: res.data.contents }) });
 		}).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }));
 	};
+
+  const changeLayoutType = e => {
+
+    e.preventDefault();
+    setState({ ...state, head: !state.head });
+  };
 
 	const sukusho = e => {
 
@@ -139,9 +155,14 @@ const Index = props => {
 
 	return(
     <Fragment>
-      <div className='c-flex'>
-        <div>
+      <div>
+        { !props.upload ?
           <Button head={ props.head } card_template_id={ props.card_template_id } client_id={ props.client_id }/>
+          : null
+        }
+      </div>
+      <div className='u-mt-15 c-flex'>
+        <div>
           <Canvas apply_layout={ state.apply_layout } contents={ state.contents }/>
           <Layout layouts={ state.layouts } selected={ state.selected } apply_layout={ state.apply_layout } selectLayout={ selectLayout }/>
           <Popup select_layout={ state.select_layout } selected={ state.selected } applyLayout={ applyLayout } clearSelectLayout={ clearSelectLayout }/>

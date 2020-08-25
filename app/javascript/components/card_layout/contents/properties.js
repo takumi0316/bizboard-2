@@ -1,5 +1,5 @@
 // コンテントタイプ
-export const LayoutTypes = {
+export const ContentTypes = {
   'text': '0',
   'text_area': '10',
   'image': '20'

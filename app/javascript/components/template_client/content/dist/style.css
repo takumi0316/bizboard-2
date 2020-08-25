@@ -1,0 +1,156 @@
+@charset "UTF-8";
+.Content {
+  width: 45vw;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.Upload__image {
+  display: inline-block;
+  position: relative;
+  height: 150px;
+  cursor: pointer;
+}
+.Upload__image img {
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #efefef;
+}
+.Upload__button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #efefef;
+}
+.Upload__title {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #efefef;
+  width: 100%;
+}
+
+.SearchLogo {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  justify-content: center;
+  padding-top: 60px;
+}
+.SearchLogo__body {
+  width: 1200px;
+  height: 80%;
+  background-color: #fff;
+  border-radius: 5px;
+  position: relative;
+  animation: FadeInY 0.3s ease 0ms;
+  box-shadow: 0px 2px 23px -2px;
+  overflow-y: scroll;
+}
+.SearchLogo__form {
+  top: 0;
+  position: sticky;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 2px;
+}
+.SearchLogo__input {
+  border: solid 1px #efefef;
+  outline: none;
+  height: 45px;
+  font-size: 16px;
+  border-radius: 4px;
+  width: 300px;
+  padding-left: 5px;
+}
+.SearchLogo__images {
+  width: 100%;
+  padding: 15px;
+}
+.SearchLogo__image {
+  display: inline-block;
+  width: 16%;
+  height: 150px;
+  padding: 5px;
+  cursor: pointer;
+}
+.SearchLogo__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #efefef;
+}
+.SearchLogo__image img:hover {
+  opacity: 0.8;
+}
+.SearchLogo__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.SearchLogo__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.4rem;
+  color: #fff;
+  z-index: 10000;
+}
+.SearchLogo__pages {
+  display: inline-block;
+  margin-left: 10px;
+}
+.SearchLogo__prev {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 20px 30px 20px 0;
+  border-color: transparent #2f4f4f transparent transparent;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.SearchLogo__prev::after {
+  content: "前";
+  color: #fff;
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  font-size: 1.2rem;
+}
+.SearchLogo__next {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 20px 0 20px 30px;
+  border-color: transparent transparent transparent #2f4f4f;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.SearchLogo__next::after {
+  content: "次";
+  color: #fff;
+  position: absolute;
+  top: -10px;
+  left: -25px;
+  font-size: 1.2rem;
+}

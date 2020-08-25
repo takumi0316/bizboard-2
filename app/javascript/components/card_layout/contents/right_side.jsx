@@ -8,7 +8,6 @@ import { generateKey } from '../util';
 
 // import プロパティ
 import {
-  LayoutTypes,
   FontColors,
   FontFamilies
 } from './properties';
@@ -16,7 +15,7 @@ import {
 const RightSide = props => {
 
   const init = {
-    layout_type: props.layout_content.layout_type,
+    content_type: props.layout_content.content_type,
     is_reduction_rated: props.layout_content.is_reduction_rated,
     content_flag_name: props.layout_content.content_flag_name,
     content_flag_id: props.layout_content.content_flag_id,
@@ -56,7 +55,7 @@ const RightSide = props => {
   };
 
   // フラグ検索反映
-  const applyFlag = flag => setState({ ...state, content_flag_name: flag.name, content_flag_id: flag.id });
+  const applyFlag = flag => setState({ ...state, content_flag_name: flag.name, content_flag_id: flag.id, content_type: flag.content_type });
 
   // 画像検索反映
   const applyUpload = upload => {
@@ -72,14 +71,14 @@ const RightSide = props => {
     e.preventDefault();
 
     // コンテンツタイトル入力有無
-    if(state.layout_type != '20' && !name_ref.current.value) {
+    if(state.content_type != 'image' && !name_ref.current.value) {
 
       window.alertable({ icon: 'info', message: 'コンテンツタイトルを入力してください。' });
       return
     };
 
     // 画像選択有無
-    if(state.layout_type == '20' && state.uploads.length === 0) {
+    if(state.content_type == 'image' && state.uploads.length === 0) {
 
       window.alertable({ icon: 'info', message: '画像を登録してください。' });
       return;
@@ -105,21 +104,11 @@ const RightSide = props => {
       'y_coordinate': y_coordinate_ref.current.value,
       'content_flag_name': state.content_flag_name,
       'content_flag_id': state.content_flag_id,
-      'layout_type': state.layout_type,
+      'content_type': state.content_type,
       'uploads': state.uploads,
-      // 'name': state.layout_type != '20' ? name_ref.current.value : props.layout_content.name,
-      // 'font_family': state.layout_type != '20' ? font_family_ref.current.value : props.layout_content.font_family,
-      // 'font_size': state.layout_type != '20' ? font_size_ref.current.value : props.layout_content.font_size,
-      // 'font_color': state.layout_type != '20' ? font_color_ref.current.value : props.layout_content.font_color,
-      // 'letter_spacing': state.layout_type != '20' ? letter_spacing_ref.current.value : props.layout_content.letter_spacing,
-      // 'reduction_rate': reduction_rate_ref.current ? reduction_rate_ref.current.value : props.layout_content.reduction_rate,
-      // 'is_reduction_rated': is_reduction_rated_ref.current ? is_reduction_rated_ref.current.value : '',
-      // 'layout_length': length_ref.current.value,
-      // 'logo_logo_ref': logo_height_ref.current.value,
-      // 'logo_width_ref': logo_width_ref.current.value,
     };
 
-    if(state.layout_type != 20) {
+    if(state.content_type != 'image') {
 
       content = { ...content,
         'name': name_ref.current.value,
@@ -127,13 +116,13 @@ const RightSide = props => {
         'font_size': font_size_ref.current.value,
         'font_color':font_color_ref.current.value,
         'letter_spacing': letter_spacing_ref.current.value,
-        'reduction_rate': reduction_rate_ref.current ? reduction_rate_ref.current.value : props.layout_content.reduction_rate,
+        'reduction_rate': reduction_rate_ref.current.value,
         'is_reduction_rated': is_reduction_rated_ref.current.value,
         'layout_length': length_ref.current.value,
       };
     };
 
-    if(state.layout_type == 20) {
+    if(state.content_type == 'image') {
 
       content = { ...content,
         'logo_height': logo_height_ref.current.value,
@@ -157,21 +146,11 @@ const RightSide = props => {
           <tbody>
 
             <tr>
-              <td className='u-ta-center'><label className='c-form-label'>レイアウトタイプ</label></td>
-              <td className='c-form-selectWrap'>
-                <select name='layout_type' className='c-form-select'  defaultValue={ props.layout_content.layout_type } onChange={ e => setState({ ...state, layout_type: e.target.value }) }>
-                  { Object.keys(LayoutTypes).map((layout_type, index) => {
-
-                    const key = `layout_type-${ index }-${ layout_type }`;
-                    return (
-                      <option { ...{ key } } value={ LayoutTypes[layout_type] }>{ layout_type }</option>
-                    );
-                  })}
-                </select>
-              </td>
+              <td className='u-ta-center'><label className='c-form-label'>コンテンツタイプ</label></td>
+              <td className='u-ta-center'>{ state.content_type }</td>
             </tr>
 
-            { state.layout_type != '20' ?
+            { state.content_type != 'image' ?
               <Fragment>
                 <tr>
                   <td className='u-ta-center'><label className='c-form-label'>コンテンツタイトル</label></td>
@@ -227,7 +206,7 @@ const RightSide = props => {
               <td><input className='c-form-text' ref={ y_coordinate_ref } defaultValue={ props.layout_content.y_coordinate }/></td>
             </tr>
 
-            { state.layout_type != '20' ?
+            { state.content_type != 'image' ?
               <tr>
                 <td className='u-ta-center'><label className='c-form-label'>長さ</label></td>
                 <td><input className='c-form-text' ref={ length_ref } defaultValue={ props.layout_content.layout_length } /></td>
@@ -245,7 +224,7 @@ const RightSide = props => {
               </Fragment>
             }
 
-            { state.layout_type != '20' ?
+            { state.content_type != 'image' ?
               <Fragment>
                 <tr>
                   <td className='u-ta-center'><label className='c-form-label'>文字間</label></td>
@@ -285,7 +264,7 @@ const RightSide = props => {
               <td><SearchFlag applyFlag={ applyFlag } flag_name={ state.content_flag_name }/></td>
             </tr>
 
-            { state.layout_type == '20' ?
+            { state.content_type == 'image' ?
               <tr>
                 <td className='u-ta-center'>画像</td>
                 <td><SearchImg applyUpload={ applyUpload }/></td>
@@ -297,7 +276,7 @@ const RightSide = props => {
         </table>
       </div>
 
-      { state.layout_type == '20' ?
+      { state.content_type == 'image' ?
         <div className='u-mt-20 c-table'>
           <table>
             <thead>

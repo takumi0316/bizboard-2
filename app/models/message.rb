@@ -2,14 +2,14 @@
 #
 # Table name: messages
 #
-#  id                         :bigint(8)        not null, primary key
-#  task_id                    :bigint(8)
+#  id                         :bigint           not null, primary key
+#  task_id                    :bigint
 #  content                    :text(65535)
 #  name                       :string(191)
+#  user_id                    :bigint
+#  company_division_client_id :bigint
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
-#  user_id                    :bigint(8)
-#  company_division_client_id :bigint(8)
 #
 
 class Message < ApplicationRecord

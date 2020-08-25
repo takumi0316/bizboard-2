@@ -23,7 +23,7 @@ const Index = props => {
   useEffect(() => deploy, [props])
 
   return(
-    <div id='canvas' className='u-mt-10'>
+    <div id='canvas'>
       <div className='c-flex__right'>
         <div className={ `${ Style.Canvas__layer } ${ Style.Canvas__top }` }>
             <div className='c-position'>

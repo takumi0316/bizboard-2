@@ -135,6 +135,8 @@ import CardTemplate from 'components/card_template'
 
 import TemplateClient from 'components/template_client';
 
+import CSVUpload from 'components/template_client/upload';
+
 WebpackerReact.setup({
   Kawaii,
   Alert,
@@ -175,4 +177,5 @@ WebpackerReact.setup({
   CardLayout,
   CardTemplate,
   TemplateClient,
+  CSVUpload,
 });

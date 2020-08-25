@@ -7,7 +7,7 @@ const ReadOnly = props => {
       { props.contents.map((content, index) => {
 
         const key = `content-${ index }`;
-        const content_type = content.layout_type === 'image'
+        const content_type = content.content_type === 'image'
         const upload = () => {
 
           if(content_type) {
@@ -28,7 +28,7 @@ const ReadOnly = props => {
             <td className='u-ta-center'>
               { content_type ?
                 <img src={ upload().url } style={{ height: '150px', width: '150px' }}/>
-                : <Fragment>{ content.layout_type == 'text' ? content.text_value : content.textarea_value }</Fragment>
+                : <Fragment>{ content.content_type == 'text' ? content.text_value : content.textarea_value }</Fragment>
               }
             </td>
           </tr>

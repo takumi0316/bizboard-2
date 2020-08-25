@@ -130,9 +130,9 @@ class CardLayoutsController < ApplicationController
             letter_spacing: r.letter_spacing,
             reduction_rate: r.reduction_rate,
             is_reduction_rated: r.is_reduction_rated_before_type_cast,
-            layout_type: r.layout_type_before_type_cast,
             content_flag_name: r.content_flag.name,
             content_flag_id: r.content_flag.id,
+            content_type: r.content_flag.content_type,
             logo_height: r.logo_height,
             logo_width: r.logo_width,
             uploads: r.content_uploads.map do |c|

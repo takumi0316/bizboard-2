@@ -2,7 +2,7 @@
 #
 # Table name: quotes
 #
-#  id                         :bigint(8)        not null, primary key
+#  id                         :bigint           not null, primary key
 #  date                       :date
 #  expiration                 :date
 #  subject                    :string(191)
@@ -21,7 +21,7 @@
 #  deliver_at                 :datetime
 #  deliver_type               :integer
 #  deliver_type_note          :text(65535)
-#  division_id                :bigint(8)
+#  division_id                :bigint
 #  discount                   :integer
 #  tax_type                   :integer
 #  payment_terms              :integer

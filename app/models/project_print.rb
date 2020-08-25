@@ -2,8 +2,8 @@
 #
 # Table name: project_prints
 #
-#  id              :bigint(8)        not null, primary key
-#  project_id      :bigint(8)
+#  id              :bigint           not null, primary key
+#  project_id      :bigint
 #  draft_data      :integer          default("data_available")
 #  url             :text(65535)
 #  work_process    :integer          default("work_process_unnecessary")
@@ -17,9 +17,9 @@
 #  print_size_note :text(65535)
 #  surface         :integer          default("original_surface")
 #  open_type       :integer          default("side_open")
+#  price           :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  price           :integer
 #
 
 class ProjectPrint < ApplicationRecord

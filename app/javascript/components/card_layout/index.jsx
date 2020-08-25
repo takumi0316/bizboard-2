@@ -9,7 +9,7 @@ import Contents       from './contents';
 import RightSide      from './contents/right_side';
 import Canvas         from './canvas';
 
-import { FontColors, LayoutTypes, IsReductionRated } from './contents/properties';
+import { FontColors, ContentTypes } from './contents/properties';
 
 import { setPDF } from './util';
 
@@ -107,9 +107,11 @@ const Index = props => {
       letter_spacing: '1',
       reduction_rate: '0',
       is_reduction_rated: 'true',
-      layout_type: '0',
+      content_type: 'text',
       content_flag_name: '',
       content_flag_id: '',
+      logo_height: '10',
+      logo_width: '10',
       uploads: []
     };
 
@@ -203,22 +205,19 @@ const Index = props => {
 
     state.layout_contents.map(content => {
 
-      const fil_type = Object.entries(LayoutTypes).find(([key, val]) => val == content.layout_type);
-
       // :content_logo_id, :content_flag_id
       field.append('card_layout[contents_attributes][][id]', content.id);
       field.append('card_layout[contents_attributes][][x_coordinate]', content.x_coordinate);
       field.append('card_layout[contents_attributes][][y_coordinate]', content.y_coordinate);
       field.append('card_layout[contents_attributes][][content_flag_id]', content.content_flag_id);
-      field.append('card_layout[contents_attributes][][layout_type]', fil_type[0]);
       content.uploads.map(upload => {
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][id]', upload.id);
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][layout_content_id]', content.id);
         field.append('card_layout[contents_attributes][][content_uploads_attributes][][upload_id]', upload.upload_id);
-        if(upload._destroy || content.layout_type != '20') field.append('card_layout[contents_attributes][][content_uploads_attributes][][_destroy]', upload._destroy);
+        if(upload._destroy || content.content_type != 'image') field.append('card_layout[contents_attributes][][content_uploads_attributes][][_destroy]', upload._destroy);
       });
 
-      if(content.layout_type != 20) {
+      if(content.content_type != 'image') {
 
         const fil_color = Object.entries(FontColors).find(([key, val]) => val == content.font_color);
         if(content.is_reduction_rated == '0' || '10') content.is_reduction_rated == '0' ? content.is_reduction_rated = 'true' : content.is_reduction_rated = 'false';
@@ -233,7 +232,7 @@ const Index = props => {
         field.append('card_layout[contents_attributes][][is_reduction_rated]', content.is_reduction_rated);
       };
 
-      if(content.layout_type == 20) {
+      if(content.content_type == 'image') {
 
         field.append('card_layout[contents_attributes][][logo_height]', content.logo_height || '10');
         field.append('card_layout[contents_attributes][][logo_width]', content.logo_width || '10');

@@ -426,6 +426,13 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+
+  content_flag:
+    content_type:
+      text: 'テキスト'
+      text_area: 'テキストエリア'
+      image: '画像'
+
   errors:
     format: "%{attribute}%{message}"
     messages:
