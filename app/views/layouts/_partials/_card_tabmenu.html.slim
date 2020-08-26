@@ -1,7 +1,13 @@
 ul.l-dashboard__tabmenu
   li
-    = link_to_unless_current '名刺マスタ', cards_path, class: 'l-dashboard__tabmenuText' do
-      .l-dashboard__tabmenuText--active 名刺マスタ
+    = link_to_unless_current 'テンプレート一覧', card_templates_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active テンプレート一覧
   li
-    = link_to_unless_current '名刺情報', card_clients_path, class: 'l-dashboard__tabmenuText' do
-      .l-dashboard__tabmenuText--active 名刺情報
+    = link_to_unless_current 'レイアウト一覧', card_layouts_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active レイアウト一覧
+  li
+    = link_to_unless_current 'フラグ一覧', content_flags_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active フラグ一覧
+  li
+    = link_to_unless_current 'ロゴ・画像一覧', uploads_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active ロゴ・画像一覧

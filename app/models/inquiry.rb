@@ -2,13 +2,13 @@
 #
 # Table name: inquiries
 #
-#  id           :bigint(8)        not null, primary key
-#  quote_id     :bigint(8)
+#  id           :bigint           not null, primary key
+#  quote_id     :bigint
+#  division_id  :bigint
 #  result       :integer          default("unknown_quote_number")
 #  quote_number :string(191)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  division_id  :bigint(8)
 #
 
 require 'csv'

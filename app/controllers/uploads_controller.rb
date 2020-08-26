@@ -11,8 +11,9 @@ class UploadsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # キャラクター一覧
-  expose_with_pagination(:uploads) { Upload.with_attached_file.reverse_order }
+  expose_with_pagination(:uploads) { Upload.with_attached_image.search(params[:name]).all.where(status: :card).reverse_order }
+
+  expose(:upload) { Upload.with_attached_image.find_or_initialize_by(id: params[:id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -26,51 +27,51 @@ class UploadsController < ApplicationController
   #  ** Actions **
   #----------------------------------------
 
-  ##
-  # リソース一覧
-  # @version 2018/06/10
-  #
   def index
+
+    add_breadcrumb '一覧'
   end
 
-  ##
-  # 新規作成処理
-  # @version 2018/06/10
-  #
+  def new
+
+    add_breadcrumb '一覧', path: uploads_path
+    add_breadcrumb '新規作成'
+  end
+
   def create
 
-    upload = Upload.create upload_params
-    render json: { status: :success, url: url_for(upload.file), upload: upload }
-  rescue
-    render_json_404
+    upload.update! upload_params
+
+    render json: { status: :success }
+  rescue => e
+
+    redirect_to_index e
   end
 
-  ##
-  # 画像引用参照
-  # @version 2018/06/10
-  #
-  def transfer
+  def edit
 
-    raise if params[:url].blank?
-    content = open params[:url]
-    send_data content.read, type: content.content_type, disposition: 'inline'
-  rescue
-    render_json_404
+    add_breadcrumb '一覧', path: uploads_path
+    add_breadcrumb '編集'
   end
 
-  ##
-  # 画像引用登録
-  # @version 2018/06/10
-  #
-  def reprint
+  def update
 
-    upload = Upload.new
-    upload.file.attach(io: open(params[:url]), filename: :blob)
-    upload.save!
+    upload.update! upload_params
 
-    render json: { status: :success, url: rails_blob_path(upload.file, only_path: true), image: upload }
-  rescue
-    render_json_404
+    redirect_to uploads_path, flash: { notice: { message: '画像を更新しました。' } }
+  rescue => e
+
+    redirect_to_index e
+  end
+
+  def destroy
+
+    upload.destroy!
+
+    redirect_to uploads_path, flash: { notice: { message: '画像を削除しました。' } }
+  rescue => e
+
+    redirect_to_index e
   end
 
   #----------------------------------------
@@ -79,13 +80,14 @@ class UploadsController < ApplicationController
 
   private
 
-    ##
-    # パラメータの取得
-    # @version 2018/06/10
-    #
     def upload_params
-      
-      params.permit :file, :name, :author, :author_name, :credit
+
+      params.require(:upload).permit :name, :image, :status
     end
 
+
+    def redirect_to_index e
+
+      redirect_to uploads_path, flash: { notice: { message: e.message } }
+    end
 end

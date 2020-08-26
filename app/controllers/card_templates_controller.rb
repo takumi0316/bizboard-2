@@ -10,7 +10,6 @@ class CardTemplatesController < ApplicationController
 
   expose_with_pagination(:card_templates) { CardTemplate.search(params[:name]).all.reverse_order }
 
-  expose(:card) { Card.find_or_initialize_by(company_id: params[:company_id]) }
 
   expose(:card_template) { CardTemplate.find_or_initialize_by(id: params[:id]) }
 
@@ -26,6 +25,8 @@ class CardTemplatesController < ApplicationController
   #  ** Actions **
   #----------------------------------------
 
+  before_action :set_the_required_data, only: [:new, :edit]
+
   def index
 
     add_breadcrumb '一覧'
@@ -39,9 +40,9 @@ class CardTemplatesController < ApplicationController
 
   def create
 
-    card.update! card_params
+    card_template.update! card_template_params
 
-    redirect_to action: edit, flash: { notice: { message: '名刺テンプレートを作成しました' } }
+    render json: { status: :success, card_template: card_template }
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -57,8 +58,35 @@ class CardTemplatesController < ApplicationController
 
     card_template.update! card_template_params
 
-    redirect
+    render json: { status: :success, card_template: card_template }
+  rescue => e
 
+    render json: { status: :error, message: e.message }
+  end
+
+  def destroy
+
+    card_template.destroy!
+
+    redirect_to card_templates_path, flash: { notice: { message: 'テンプレートを削除しました。' } }
+  rescue => e
+
+    redirect_to card_templates_path, flash: { notice: { message: e.message } }
+  end
+
+  ##
+  #　複製
+  #  @version 2020/08/14
+  def copy
+
+    dup_card_template = card_template.deep_clone(:template_layouts)
+
+    dup_card_template.update! name: "#{ card_template.name}＿複製＿#{ Time.zone.now.strftime("%Y年 %m月 %d日") }"
+
+    redirect_to edit_card_template_path(dup_card_template), flash: { notice: { message: '案件を複製しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -83,6 +111,38 @@ class CardTemplatesController < ApplicationController
 
     def card_template_params
 
-      params.require(:card_template).permit :name, :template_type, :status
+      params.require(:card_template).permit :name, :company_id, template_layouts_attributes: [
+        :id, :card_template_id, :card_layout_id, :status, :_destroy
+      ]
+    end
+
+    def set_the_required_data
+
+      @heads = []
+      @tails = []
+
+      if card_template.persisted?
+
+        @heads = TemplateLayout.where(card_template_id: card_template.id).where(status: :head).map do |r|
+          {
+            id: r.id,
+            card_template_id: r.card_template_id,
+            card_layout_id: r.card_layout_id,
+            layout_name: r.card_layout.name,
+            status: r.status
+          }
+        end
+
+        @tails = TemplateLayout.where(card_template_id: card_template.id).where(status: :tail).map do |r|
+          {
+            id: r.id,
+            card_template_id: r.card_template_id,
+            card_layout_id: r.card_layout_id,
+            layout_name: r.card_layout.name,
+            status: r.status
+          }
+        end
+
+      end
     end
 end

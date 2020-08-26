@@ -1,0 +1,70 @@
+@import '../../../assets/stylesheets/foundation/variables'
+
+.Uploader
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  align-items: center
+  input[type=file]
+    display: none
+  label
+    cursor: pointer
+  &__body
+    width: 500px
+    background-color: map-get($layoutColors, 'white')
+    border-radius: 4px
+    position: relative
+    display: flex
+    padding-top: 50px
+    box-shadow: 0px 2px 23px -2px map-get($layoutColors, 'darkGray')
+  &__title
+    font-size: map-get($fontSizes, 'l')
+    font-weight: bold
+  &__main
+    width: 100%
+    padding: 15px
+    overflow-y: scroll
+  &__close
+    position: absolute
+    top: 10px
+    right: 10px
+    cursor: pointer
+  &__overlay
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background-color: rgba(map-get($layoutColors, 'black'), .3)
+    display: flex
+    justify-content: center
+    align-items: center
+    font-size: 2.4rem
+    color: map-get($fontColors, 'white')
+  &__dropzone
+    display: flex
+    position: relative
+    height: 200px
+    width: 100%
+    padding: 0 10px
+    border: dashed 2px rgba(0,0,0,0.5)
+    border-radius: 4px
+    text-align: center
+    align-items: center
+    margin: 0 auto
+    cursor: pointer
+    &:hover
+      background-color: map-get($layoutColors, 'gray')
+    img
+      position: absolute
+      top: 0
+      left: 0
+      max-width: 100%
+      max-height: 100%
+      object-fit: cover

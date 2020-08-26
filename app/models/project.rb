@@ -2,9 +2,9 @@
 #
 # Table name: projects
 #
-#  id                         :bigint(8)        not null, primary key
-#  user_id                    :bigint(8)
-#  company_division_client_id :bigint(8)
+#  id                         :bigint           not null, primary key
+#  user_id                    :bigint
+#  company_division_client_id :bigint
 #  name                       :string(191)
 #  description                :text(65535)
 #  project_category           :integer          default("project_print")
@@ -13,12 +13,12 @@
 #  after_process              :integer          default("after_process_unnecessary")
 #  note                       :text(65535)
 #  status                     :integer          default(0)
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
 #  free_word                  :text(65535)
-#  project_number             :bigint(8)
+#  project_number             :bigint
 #  price                      :integer          default(0)
 #  code                       :string(191)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
 #
 
 class Project < ApplicationRecord

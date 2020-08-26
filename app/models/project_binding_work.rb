@@ -2,8 +2,8 @@
 #
 # Table name: project_binding_works
 #
-#  id                  :bigint(8)        not null, primary key
-#  project_id          :bigint(8)
+#  id                  :bigint           not null, primary key
+#  project_id          :bigint
 #  bind_type           :integer          default("original_bind_type")
 #  cross_front         :text(65535)
 #  cross_back          :text(65535)
@@ -18,10 +18,10 @@
 #  radio_cut_note      :text(65535)
 #  double_doors        :text(65535)
 #  gold_letter         :text(65535)
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
 #  note                :text(65535)
 #  price               :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 
 class ProjectBindingWork < ApplicationRecord

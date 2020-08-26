@@ -24,7 +24,7 @@ capybara-*.html
 **.orig
 return.txt
 pickle-email-*.html
-
+.generators
 # original
 /data
 /test
