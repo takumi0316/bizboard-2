@@ -2,8 +2,8 @@
 #
 # Table name: work_subcontractor_details
 #
-#  id                    :bigint           not null, primary key
-#  work_subcontractor_id :bigint
+#  id                    :bigint(8)        not null, primary key
+#  work_subcontractor_id :bigint(8)
 #  order_contents        :string(191)
 #  deliver_method        :text(65535)
 #  specification         :text(65535)
@@ -15,7 +15,7 @@
 #  actual_count          :string(191)
 #  actual_cost           :string(191)
 #  status                :integer          default(0)
-#  work_id               :bigint
+#  work_id               :bigint(8)
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #

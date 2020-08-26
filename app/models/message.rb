@@ -2,12 +2,12 @@
 #
 # Table name: messages
 #
-#  id                         :bigint           not null, primary key
-#  task_id                    :bigint
+#  id                         :bigint(8)        not null, primary key
+#  task_id                    :bigint(8)
 #  content                    :text(65535)
 #  name                       :string(191)
-#  user_id                    :bigint
-#  company_division_client_id :bigint
+#  user_id                    :bigint(8)
+#  company_division_client_id :bigint(8)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #

@@ -2,9 +2,9 @@
 #
 # Table name: profits
 #
-#  id         :bigint           not null, primary key
-#  company_id :bigint
-#  quote_id   :bigint
+#  id         :bigint(8)        not null, primary key
+#  company_id :bigint(8)
+#  quote_id   :bigint(8)
 #  price      :integer          default(0)
 #  date       :date
 #  created_at :datetime         not null

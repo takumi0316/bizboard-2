@@ -2,8 +2,8 @@
 #
 # Table name: project_after_processes
 #
-#  id              :bigint           not null, primary key
-#  project_id      :bigint
+#  id              :bigint(8)        not null, primary key
+#  project_id      :bigint(8)
 #  folding         :integer          default("original_folding")
 #  folding_price   :integer          default(0)
 #  stapler         :integer          default("original_stapler")

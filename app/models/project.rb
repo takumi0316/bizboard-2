@@ -2,9 +2,9 @@
 #
 # Table name: projects
 #
-#  id                         :bigint           not null, primary key
-#  user_id                    :bigint
-#  company_division_client_id :bigint
+#  id                         :bigint(8)        not null, primary key
+#  user_id                    :bigint(8)
+#  company_division_client_id :bigint(8)
 #  name                       :string(191)
 #  description                :text(65535)
 #  project_category           :integer          default("project_print")
@@ -14,7 +14,7 @@
 #  note                       :text(65535)
 #  status                     :integer          default(0)
 #  free_word                  :text(65535)
-#  project_number             :bigint
+#  project_number             :bigint(8)
 #  price                      :integer          default(0)
 #  code                       :string(191)
 #  created_at                 :datetime         not null

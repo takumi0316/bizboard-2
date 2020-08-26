@@ -146,8 +146,8 @@ const RightSide = props => {
           <tbody>
 
             <tr>
-              <td className='u-ta-center'><label className='c-form-label'>コンテンツタイプ</label></td>
-              <td className='u-ta-center'>{ state.content_type }</td>
+              <td className='u-ta-center'><label className='c-form-label'>フラグ</label></td>
+              <td><SearchFlag applyFlag={ applyFlag } flag_name={ state.content_flag_name }/></td>
             </tr>
 
             { state.content_type != 'image' ?
@@ -258,11 +258,6 @@ const RightSide = props => {
               </Fragment>
               : null
             }
-
-            <tr>
-              <td className='u-ta-center'><label className='c-form-label'>フラグ</label></td>
-              <td><SearchFlag applyFlag={ applyFlag } flag_name={ state.content_flag_name }/></td>
-            </tr>
 
             { state.content_type == 'image' ?
               <tr>

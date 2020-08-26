@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_26_005317) do
+ActiveRecord::Schema.define(version: 2020_08_26_115611) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -59,6 +59,17 @@ ActiveRecord::Schema.define(version: 2020_08_26_005317) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "card_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "company_division_client_id"
+    t.bigint "head_layout_id"
+    t.bigint "tail_layout_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_division_client_id"], name: "index_card_clients_on_company_division_client_id"
+    t.index ["head_layout_id"], name: "index_card_clients_on_head_layout_id"
+    t.index ["tail_layout_id"], name: "index_card_clients_on_tail_layout_id"
   end
 
   create_table "card_layouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -217,6 +228,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_005317) do
     t.integer "price", default: 0, null: false
     t.date "date", comment: "申請日"
     t.text "memo"
+    t.bigint "work_subcontractor_detail_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
@@ -225,6 +237,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_005317) do
     t.index ["division_id"], name: "index_expendables_on_division_id"
     t.index ["subcontractor_id"], name: "index_expendables_on_subcontractor_id"
     t.index ["user_id"], name: "index_expendables_on_user_id"
+    t.index ["work_subcontractor_detail_id"], name: "index_expendables_on_work_subcontractor_detail_id"
     t.index ["work_subcontractor_id"], name: "index_expendables_on_work_subcontractor_id"
   end
 
@@ -678,6 +691,19 @@ ActiveRecord::Schema.define(version: 2020_08_26_005317) do
     t.index ["division_id"], name: "index_targets_on_division_id"
   end
 
+  create_table "task_card_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "task_id"
+    t.bigint "quote_id"
+    t.bigint "card_client_id"
+    t.string "shipping_address"
+    t.integer "count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_client_id"], name: "index_task_card_clients_on_card_client_id"
+    t.index ["quote_id"], name: "index_task_card_clients_on_quote_id"
+    t.index ["task_id"], name: "index_task_card_clients_on_task_id"
+  end
+
   create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.date "date", comment: "希望納期"
     t.binary "data", comment: "添付データ"
@@ -811,10 +837,13 @@ ActiveRecord::Schema.define(version: 2020_08_26_005317) do
     t.index ["quote_id"], name: "index_works_on_quote_id"
   end
 
+  add_foreign_key "card_clients", "card_layouts", column: "head_layout_id"
+  add_foreign_key "card_clients", "card_layouts", column: "tail_layout_id"
   add_foreign_key "catalogs", "categories"
   add_foreign_key "company_division_clients", "card_layouts", column: "head_layout_id"
   add_foreign_key "company_division_clients", "card_layouts", column: "tail_layout_id"
   add_foreign_key "expendables", "users"
+  add_foreign_key "expendables", "work_subcontractor_details"
   add_foreign_key "expendables", "work_subcontractors"
   add_foreign_key "inquiries", "divisions"
   add_foreign_key "layout_values", "content_flags"

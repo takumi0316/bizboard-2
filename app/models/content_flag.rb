@@ -2,7 +2,7 @@
 #
 # Table name: content_flags
 #
-#  id           :bigint           not null, primary key
+#  id           :bigint(8)        not null, primary key
 #  name         :string(191)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null

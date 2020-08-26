@@ -2,14 +2,14 @@
 #
 # Table name: works
 #
-#  id          :bigint           not null, primary key
-#  quote_id    :bigint
+#  id          :bigint(8)        not null, primary key
+#  quote_id    :bigint(8)
 #  price       :integer          default(0)
 #  cost        :integer          default(0)
 #  status      :integer          default("draft")
 #  free_word   :text(65535)
 #  notices     :text(65535)
-#  division_id :bigint
+#  division_id :bigint(8)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

@@ -2,9 +2,9 @@
 #
 # Table name: quote_projects
 #
-#  id           :bigint           not null, primary key
-#  quote_id     :bigint
-#  project_id   :bigint
+#  id           :bigint(8)        not null, primary key
+#  quote_id     :bigint(8)
+#  project_id   :bigint(8)
 #  unit         :string(191)
 #  price        :string(191)
 #  name         :string(191)

@@ -2,7 +2,7 @@
 #
 # Table name: uploads
 #
-#  id          :bigint           not null, primary key
+#  id          :bigint(8)        not null, primary key
 #  name        :string(191)
 #  author      :string(191)
 #  author_name :string(191)

@@ -2,9 +2,9 @@
 #
 # Table name: work_subcontractors
 #
-#  id                               :bigint           not null, primary key
-#  work_id                          :bigint
-#  subcontractor_division_client_id :bigint
+#  id                               :bigint(8)        not null, primary key
+#  work_id                          :bigint(8)
+#  subcontractor_division_client_id :bigint(8)
 #  status                           :integer          default(0)
 #  notices                          :text(65535)
 #  order_date                       :datetime

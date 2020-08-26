@@ -2,16 +2,16 @@
 #
 # Table name: layout_values
 #
-#  id                         :bigint           not null, primary key
-#  company_division_client_id :bigint
+#  id                         :bigint(8)        not null, primary key
+#  company_division_client_id :bigint(8)
 #  text_value                 :string(191)
 #  textarea_value             :text(65535)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  layout_type                :integer
-#  content_flag_id            :bigint
-#  upload_id                  :bigint
-#  layout_content_id          :bigint
+#  content_flag_id            :bigint(8)
+#  upload_id                  :bigint(8)
+#  layout_content_id          :bigint(8)
 #
 
 class LayoutValue < ApplicationRecord

@@ -31,6 +31,7 @@ class TemplateClientsController < ApplicationController
   #----------------------------------------
 
   before_action :format_layouts, only: [:head, :tail, :set_layout]
+
   before_action :format_contents, only: [:head, :tail, :set_layout]
 
   def index

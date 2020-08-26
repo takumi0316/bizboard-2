@@ -2,9 +2,9 @@
 #
 # Table name: company_division_clients
 #
-#  id                       :bigint           not null, primary key
-#  company_division_id      :bigint
-#  user_id                  :bigint
+#  id                       :bigint(8)        not null, primary key
+#  company_division_id      :bigint(8)
+#  user_id                  :bigint(8)
 #  name                     :string(191)
 #  kana                     :string(191)
 #  title                    :integer          default("honorific")
@@ -33,8 +33,8 @@
 #  updated_at               :datetime         not null
 #  default_front_template   :string(191)
 #  default_reverse_template :string(191)
-#  head_layout_id           :bigint
-#  tail_layout_id           :bigint
+#  head_layout_id           :bigint(8)
+#  tail_layout_id           :bigint(8)
 #
 
 class CompanyDivisionClient < ApplicationRecord

@@ -2,8 +2,8 @@
 #
 # Table name: card_templates
 #
-#  id         :bigint           not null, primary key
-#  company_id :bigint
+#  id         :bigint(8)        not null, primary key
+#  company_id :bigint(8)
 #  name       :string(191)
 #  status     :integer          default("true")
 #  created_at :datetime         not null

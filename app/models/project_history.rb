@@ -2,13 +2,12 @@
 #
 # Table name: project_histories
 #
-#  id         :bigint           not null, primary key
-#  project_id :bigint
+#  id         :bigint(8)        not null, primary key
+#  project_id :bigint(8)
 #  note       :text(65535)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-
 
 class ProjectHistory < ApplicationRecord
 

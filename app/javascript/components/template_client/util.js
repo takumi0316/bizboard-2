@@ -278,8 +278,17 @@ export const setPDFValue = (file, contents) => {
       // 入力値が空欄だったらやめる
       let values = [];
 
-      if(content.content_type === 'text') values = content.text_value.split('\n').map(value => value.trim());
-      if(content.content_type === 'text_area') values = content.textarea_value.split('\n').map(value => value.trim());
+      if(content.content_type === 'text') {
+
+        if(!content.text_value) return;
+        values.push(content.text_value.trim());
+      };
+
+      if(content.content_type === 'text_area') {
+
+        if(!content.textarea_value) return;
+        values = content.textarea_value.split('\n').map(value => value.trim());
+      };
 
       const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
       // const y = Math.floor(mmTopx(content.y_coordinate)) * (canvas.width / page.getViewport(1.0).width);

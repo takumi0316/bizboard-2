@@ -2,8 +2,8 @@
 #
 # Table name: invoices
 #
-#  id         :bigint           not null, primary key
-#  quote_id   :bigint
+#  id         :bigint(8)        not null, primary key
+#  quote_id   :bigint(8)
 #  date       :date
 #  expiration :date
 #  subject    :string(191)

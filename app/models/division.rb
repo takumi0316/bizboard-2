@@ -2,7 +2,7 @@
 #
 # Table name: divisions
 #
-#  id            :bigint           not null, primary key
+#  id            :bigint(8)        not null, primary key
 #  name          :string(191)
 #  kana          :string(191)
 #  zip           :string(191)

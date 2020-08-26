@@ -2,8 +2,8 @@
 #
 # Table name: users
 #
-#  id                   :bigint           not null, primary key
-#  division_id          :bigint
+#  id                   :bigint(8)        not null, primary key
+#  division_id          :bigint(8)
 #  name                 :string(191)
 #  email                :string(191)
 #  comment              :text(65535)

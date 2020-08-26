@@ -2,8 +2,8 @@
 #
 # Table name: project_binding_works
 #
-#  id                  :bigint           not null, primary key
-#  project_id          :bigint
+#  id                  :bigint(8)        not null, primary key
+#  project_id          :bigint(8)
 #  bind_type           :integer          default("original_bind_type")
 #  cross_front         :text(65535)
 #  cross_back          :text(65535)

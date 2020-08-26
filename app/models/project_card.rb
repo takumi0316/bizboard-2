@@ -2,8 +2,8 @@
 #
 # Table name: project_cards
 #
-#  id         :bigint           not null, primary key
-#  project_id :bigint
+#  id         :bigint(8)        not null, primary key
+#  project_id :bigint(8)
 #  draft_data :integer          default("data_available")
 #  url        :text(65535)
 #  card_type  :integer          default("template")

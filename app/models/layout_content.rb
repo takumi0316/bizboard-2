@@ -2,9 +2,9 @@
 #
 # Table name: layout_contents
 #
-#  id                 :bigint           not null, primary key
-#  card_layout_id     :bigint
-#  content_flag_id    :bigint
+#  id                 :bigint(8)        not null, primary key
+#  card_layout_id     :bigint(8)
+#  content_flag_id    :bigint(8)
 #  name               :string(191)
 #  x_coordinate       :string(191)
 #  y_coordinate       :string(191)

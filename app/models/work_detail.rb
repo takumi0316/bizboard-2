@@ -2,8 +2,8 @@
 #
 # Table name: work_details
 #
-#  id                  :bigint           not null, primary key
-#  work_id             :bigint
+#  id                  :bigint(8)        not null, primary key
+#  work_id             :bigint(8)
 #  count               :string(191)
 #  deliver_at          :datetime
 #  client_name         :string(191)

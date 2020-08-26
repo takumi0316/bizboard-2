@@ -2,19 +2,19 @@
 #
 # Table name: expendables
 #
-#  id                           :bigint           not null, primary key
-#  division_id                  :bigint
-#  subcontractor_id             :bigint
+#  id                           :bigint(8)        not null, primary key
+#  division_id                  :bigint(8)
+#  subcontractor_id             :bigint(8)
 #  status                       :integer          default("copy")
 #  name                         :string(191)
 #  price                        :integer          default(0), not null
 #  date                         :date
 #  memo                         :text(65535)
-#  work_subcontractor_detail_id :bigint
+#  work_subcontractor_detail_id :bigint(8)
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
-#  user_id                      :bigint
-#  work_subcontractor_id        :bigint
+#  user_id                      :bigint(8)
+#  work_subcontractor_id        :bigint(8)
 #  accouting_status             :integer          default("active")
 #
 

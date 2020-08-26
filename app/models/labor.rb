@@ -2,8 +2,8 @@
 #
 # Table name: labors
 #
-#  id          :bigint           not null, primary key
-#  division_id :bigint
+#  id          :bigint(8)        not null, primary key
+#  division_id :bigint(8)
 #  memo        :text(65535)
 #  price       :integer          default(0)
 #  date        :date

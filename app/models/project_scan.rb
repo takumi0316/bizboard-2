@@ -2,8 +2,8 @@
 #
 # Table name: project_scans
 #
-#  id                 :bigint           not null, primary key
-#  project_id         :bigint
+#  id                 :bigint(8)        not null, primary key
+#  project_id         :bigint(8)
 #  posting_state      :integer          default("stapler")
 #  print_size         :integer          default("card_size")
 #  draft_split        :integer          default("split_available")
