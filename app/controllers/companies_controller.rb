@@ -130,6 +130,6 @@ class CompaniesController < ApplicationController
     #
     def company_params
 
-      params.require(:company).permit :name, :kana, :note
+      params.require(:company).permit :name, :kana, :note, :approval_status
     end
 end

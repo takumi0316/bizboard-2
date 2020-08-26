@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_225813) do
+ActiveRecord::Schema.define(version: 2020_08_26_005317) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 2020_08_24_225813) do
     t.text "free_word"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "approval_status", default: 0
   end
 
   create_table "company_division_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -216,7 +217,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_225813) do
     t.integer "price", default: 0, null: false
     t.date "date", comment: "申請日"
     t.text "memo"
-    t.bigint "work_subcontractor_detail_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
@@ -225,7 +225,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_225813) do
     t.index ["division_id"], name: "index_expendables_on_division_id"
     t.index ["subcontractor_id"], name: "index_expendables_on_subcontractor_id"
     t.index ["user_id"], name: "index_expendables_on_user_id"
-    t.index ["work_subcontractor_detail_id"], name: "index_expendables_on_work_subcontractor_detail_id"
     t.index ["work_subcontractor_id"], name: "index_expendables_on_work_subcontractor_id"
   end
 
@@ -816,7 +815,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_225813) do
   add_foreign_key "company_division_clients", "card_layouts", column: "head_layout_id"
   add_foreign_key "company_division_clients", "card_layouts", column: "tail_layout_id"
   add_foreign_key "expendables", "users"
-  add_foreign_key "expendables", "work_subcontractor_details"
   add_foreign_key "expendables", "work_subcontractors"
   add_foreign_key "inquiries", "divisions"
   add_foreign_key "layout_values", "content_flags"

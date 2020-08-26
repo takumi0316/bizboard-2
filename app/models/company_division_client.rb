@@ -57,8 +57,7 @@ class CompanyDivisionClient < ApplicationRecord
   enum title: { nothing: 0, honorific: 10, normal: 20 }
 
   # ユーザー区分(admin: 20消しました)
-  enum user_type: { general: 0, division: 10, admin: 20}
-
+  enum user_type: { general: 0, division: 10, admin: 20, jii: 30, card_manager: 40}
 
   #----------------------------------------
   #  ** Validations **
