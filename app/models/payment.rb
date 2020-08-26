@@ -2,15 +2,15 @@
 #
 # Table name: payments
 #
-#  id                           :bigint(8)        not null, primary key
-#  subcontractor_id             :bigint(8)
-#  work_subcontractor_detail_id :bigint(8)
+#  id                           :bigint           not null, primary key
+#  subcontractor_id             :bigint
+#  work_subcontractor_detail_id :bigint
 #  price                        :integer          default(0), not null
 #  date                         :date
-#  expendable_id                :bigint(8)
+#  expendable_id                :bigint
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
-#  work_subcontractor_id        :bigint(8)
+#  work_subcontractor_id        :bigint
 #  accouting_status             :integer          default("active")
 #
 

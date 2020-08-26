@@ -2,8 +2,8 @@
 #
 # Table name: product_histories
 #
-#  id         :bigint(8)        not null, primary key
-#  product_id :bigint(8)
+#  id         :bigint           not null, primary key
+#  product_id :bigint
 #  date       :date
 #  status     :integer          default("first_stock")
 #  quantity   :integer          default(0)

@@ -2,8 +2,8 @@
 #
 # Table name: project_after_processes
 #
-#  id              :bigint(8)        not null, primary key
-#  project_id      :bigint(8)
+#  id              :bigint           not null, primary key
+#  project_id      :bigint
 #  folding         :integer          default("original_folding")
 #  folding_price   :integer          default(0)
 #  stapler         :integer          default("original_stapler")
@@ -19,9 +19,9 @@
 #  back_text       :integer          default("back_text_unnecessary")
 #  back_text_price :integer          default(0)
 #  back_text_note  :text(65535)
+#  note            :text(65535)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  note            :text(65535)
 #
 
 class ProjectAfterProcess < ApplicationRecord

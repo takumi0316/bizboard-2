@@ -2,19 +2,19 @@
 #
 # Table name: activities
 #
-#  id               :bigint(8)        not null, primary key
+#  id               :bigint           not null, primary key
 #  date             :date
 #  status           :integer
 #  memo             :text(65535)
 #  attachment       :text(65535)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
 #  free_word        :text(65535)
-#  quote_id         :bigint(8)
 #  accurary         :integer
 #  next_action      :integer
 #  next_action_date :date
 #  scheduled_date   :date
+#  quote_id         :bigint
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 class Activity < ApplicationRecord

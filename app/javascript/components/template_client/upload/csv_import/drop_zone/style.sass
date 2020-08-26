@@ -1,0 +1,45 @@
+@import 'app/assets/stylesheets/foundation/variables'
+
+.Template
+  background-color: map-get($layoutColors, 'white')
+  &Info
+    //display: flex
+    &__eyecatch
+      // width: 200px
+      // margin-right: 20px
+      img
+        width: 100%
+        height: 100%
+        object-fit: cover
+      input[type='file']
+        display: none
+      label
+        cursor: pointer
+
+  &__dropzone
+    display: flex
+    position: relative
+    height: 400px
+    width: 500px
+    border: dashed 2px map-get($layoutColors, 'gray')
+    border-radius: 4px
+    text-align: center
+    align-items: center
+    margin: 0 auto
+    cursor: pointer
+    &:hover
+      &:before
+        opacity: 1
+    &:before
+      // content: 'この部分にCSVをドラッグ&ドロップしてください'
+      background-color: rgba(map-get($layoutColors, 'gray'), .7)
+      position: absolute
+      top: 0
+      left: 0
+      height: 100%
+      width: 100%
+      opacity: 0
+      transition: all ease .3s
+      display: flex
+      font-weight: bold
+      align-items: center

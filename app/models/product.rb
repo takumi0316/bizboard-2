@@ -2,8 +2,8 @@
 #
 # Table name: products
 #
-#  id           :bigint(8)        not null, primary key
-#  inventory_id :bigint(8)
+#  id           :bigint           not null, primary key
+#  inventory_id :bigint
 #  name         :string(191)
 #  quantity     :integer          default(0)
 #  remarks      :text(65535)

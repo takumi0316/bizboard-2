@@ -1,5 +1,0 @@
-json = { status: :success }
-
-json[:cards] = Company.find(params[:company_id]).cards.map { |r | { id: r.id, company_id: r.company_id, name: r.name } }
-
-json

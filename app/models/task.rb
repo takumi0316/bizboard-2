@@ -2,12 +2,12 @@
 #
 # Table name: tasks
 #
-#  id               :bigint(8)        not null, primary key
+#  id               :bigint           not null, primary key
 #  date             :date
 #  data             :binary(65535)
 #  remarks          :text(65535)
-#  quote_id         :bigint(8)
-#  catalog_id       :bigint(8)
+#  quote_id         :bigint
+#  catalog_id       :bigint
 #  client_name      :string(191)
 #  client_mail      :string(191)
 #  clientlastaccess :datetime         default(Tue, 16 Jun 2020 21:30:03 JST +09:00)

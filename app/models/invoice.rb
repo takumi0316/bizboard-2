@@ -2,18 +2,18 @@
 #
 # Table name: invoices
 #
-#  id         :bigint(8)        not null, primary key
-#  quote_id   :bigint(8)
+#  id         :bigint           not null, primary key
+#  quote_id   :bigint
 #  date       :date
 #  expiration :date
 #  subject    :string(191)
 #  remarks    :text(65535)
 #  memo       :text(65535)
 #  free_word  :text(65535)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
 #  attention  :text(65535)
 #  pdf_url    :string(191)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 class Invoice < ApplicationRecord

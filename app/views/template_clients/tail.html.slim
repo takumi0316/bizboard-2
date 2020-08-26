@@ -1,0 +1,7 @@
+= react_component :TemplateClient,
+{ 'head': false,
+  'layouts': @layouts,
+  'contents': @contents,
+  'card_template_id': params[:id],
+  'client_id': company_division_client.id,
+  'default_layout': company_division_client.tail_layout || @layouts[0] }

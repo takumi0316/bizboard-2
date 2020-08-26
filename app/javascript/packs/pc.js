@@ -23,6 +23,8 @@ import 'scripts/rails_ujs_jack';
 // react
 import WebpackerReact from 'webpacker-react';
 
+import Kawaii from 'components/kawaii';
+
 // 汎用モーダル
 import DataModal from 'components/data_modal';
 
@@ -125,7 +127,18 @@ import InventoryDivisionsSelect from 'components/inventory_divisions_select';
 // 受注管理グラフ
 import ProfitGraph from 'components/profit_graph';
 
+import ImageUploader from 'components/image_uploader';
+
+import CardLayout from 'components/card_layout';
+
+import CardTemplate from 'components/card_template'
+
+import TemplateClient from 'components/template_client';
+
+import CSVUpload from 'components/template_client/upload';
+
 WebpackerReact.setup({
+  Kawaii,
   Alert,
   DataModal,
   LogoEditor,
@@ -160,4 +173,9 @@ WebpackerReact.setup({
   UploadCardClient,
   InventoryDivisionsSelect,
   ProfitGraph,
+  ImageUploader,
+  CardLayout,
+  CardTemplate,
+  TemplateClient,
+  CSVUpload,
 });

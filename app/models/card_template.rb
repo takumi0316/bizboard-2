@@ -2,8 +2,9 @@
 #
 # Table name: card_templates
 #
-#  id         :bigint(8)        not null, primary key
-#  card_id    :bigint(8)
+#  id         :bigint           not null, primary key
+#  company_id :bigint
+#  name       :string(191)
 #  status     :integer          default("true")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -14,6 +15,8 @@ class CardTemplate < ApplicationRecord
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
+
+  include DeepCloneable
 
   #----------------------------------------
   #  ** Constants **
@@ -29,23 +32,21 @@ class CardTemplate < ApplicationRecord
   #  ** Validations **
   #----------------------------------------
 
+  validates :name, presence: true
+
+  validates :name, length: { maximum: 191 }
+
   #----------------------------------------
   #  ** Associations **
   #----------------------------------------
 
-  # 名刺
-  belongs_to :card, optional: true
+  belongs_to :company
 
-  # テンプレート
-  has_one_attached :file, dependent: :detach
+  has_many :template_layouts
 
-  # 名刺テンプレート詳細
-  has_many :details, class_name: 'TemplateDetail', dependent: :delete_all
+  has_many :card_layouts, through: :template_layouts
 
-  # 担当者情報
-  has_many :client_templates
-
-  accepts_nested_attributes_for :details, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :template_layouts, allow_destroy: true
 
   #----------------------------------------
   #  ** Delegates **
@@ -66,24 +67,6 @@ class CardTemplate < ApplicationRecord
     query = (['name like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
-  end
-
-  def formatting status
-
-    obj = { id: '', card_id: '', status: status, file: '', details: [] }
-    return if self.status != status.to_s
-    unless self.new_record?
-
-      details = []
-      self.details.each { |detail| details.push(detail) }
-      obj['id'] = self.id
-      obj['card_id'] = self.card.id
-      obj['status'] = self.status
-      obj['file'] = self.decorate.file_original
-      obj['details'] = details
-    end
-
-    obj
   end
 
 end
