@@ -16,7 +16,7 @@ const RightSide = props => {
 
   const init = {
     content_type: props.layout_content.content_type,
-    is_reduction_rated: props.layout_content.is_reduction_rated,
+    is_reduction_rated: props.layout_content.is_reduction_rated === 'true',
     content_flag_name: props.layout_content.content_flag_name,
     content_flag_id: props.layout_content.content_flag_id,
     uploads: props.layout_content.uploads,
@@ -99,34 +99,34 @@ const RightSide = props => {
     };
 
     let content = {
-      'id': props.layout_content.id,
-      'x_coordinate': x_coordinate_ref.current.value,
-      'y_coordinate': y_coordinate_ref.current.value,
-      'content_flag_name': state.content_flag_name,
-      'content_flag_id': state.content_flag_id,
-      'content_type': state.content_type,
-      'uploads': state.uploads,
+      id: props.layout_content.id,
+      x_coordinate: x_coordinate_ref.current.value,
+      y_coordinate: y_coordinate_ref.current.value,
+      content_flag_name: state.content_flag_name,
+      content_flag_id: state.content_flag_id,
+      content_type: state.content_type,
+      uploads: state.uploads,
     };
 
     if(state.content_type != 'image') {
 
       content = { ...content,
-        'name': name_ref.current.value,
-        'font_family': font_family_ref.current.value,
-        'font_size': font_size_ref.current.value,
-        'font_color':font_color_ref.current.value,
-        'letter_spacing': letter_spacing_ref.current.value,
-        'reduction_rate': reduction_rate_ref.current.value,
-        'is_reduction_rated': is_reduction_rated_ref.current.value,
-        'layout_length': length_ref.current.value,
+        name: name_ref.current.value,
+        font_family: font_family_ref.current.value,
+        font_size: font_size_ref.current.value,
+        font_color:font_color_ref.current.value,
+        letter_spacing: letter_spacing_ref.current.value,
+        is_reduction_rated: is_reduction_rated_ref.current.value,
+        layout_length: length_ref.current.value,
       };
+      if(state.is_reduction_rated) content = { ...content, reduction_rate: reduction_rate_ref.current.value };
     };
 
     if(state.content_type == 'image') {
 
       content = { ...content,
-        'logo_height': logo_height_ref.current.value,
-        'logo_width': logo_width_ref.current.value,
+        logo_height: logo_height_ref.current.value,
+        logo_width: logo_width_ref.current.value,
       };
     };
 
@@ -238,7 +238,7 @@ const RightSide = props => {
                     <label className='c-form-toggle'>
                       <input name='content_is_reduction_rate' type='hidden' defaultValue='false'/>
                       <input name='content_is_reduction_rate' type='checkbox' ref={ is_reduction_rated_ref }
-                            defaultChecked={ props.layout_content.is_reduction_rated }
+                            defaultChecked={ state.is_reduction_rated }
                             defaultValue={ state.is_reduction_rated } onClick={ () => setState({
                             ...state, is_reduction_rated: !state.is_reduction_rated }) }
                       />

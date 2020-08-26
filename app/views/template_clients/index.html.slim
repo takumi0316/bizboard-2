@@ -35,7 +35,7 @@
             td.u-ta-center = client.id
             td.u-ta-center = client.name
             td.u-ta-center = division.name
-            td.u-ta-center = card_template.template_layouts.where(status: :head).first.card_layout.name if card_template.template_layouts.where(status: :head).first.present?
-            td.u-ta-center = card_template.template_layouts.where(status: :tail).first.card_layout.name if card_template.template_layouts.where(status: :tail).first.present?
+            td.u-ta-center = client.head_layout.name if client.head_layout_id.present?
+            td.u-ta-center = client.tail_layout.name if client.tail_layout_id.present?
             td.u-ta-center = link_to '編集', head_template_client_path(id: card_template.id, client_id: client.id), class: 'c-btnMain-standard'
             td.u-ta-center = link_to '削除', template_client_path(card_template.id), class: 'c-btnMain-primaryA', method: :delete, data: { confirmable: '本当に削除しますか？' }

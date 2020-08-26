@@ -220,7 +220,6 @@ const Index = props => {
       if(content.content_type != 'image') {
 
         const fil_color = Object.entries(FontColors).find(([key, val]) => val == content.font_color);
-        if(content.is_reduction_rated == '0' || '10') content.is_reduction_rated == '0' ? content.is_reduction_rated = 'true' : content.is_reduction_rated = 'false';
 
         field.append('card_layout[contents_attributes][][name]', content.name);
         field.append('card_layout[contents_attributes][][font_family]', content.font_family);

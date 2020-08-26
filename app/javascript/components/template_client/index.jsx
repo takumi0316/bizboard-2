@@ -33,7 +33,6 @@ const Index = props => {
 
   useEffect(() => {
 
-    console.log('head')
     if(props.upload) {
 
       if(state.content_editing) {
@@ -49,7 +48,6 @@ const Index = props => {
 
   useEffect(() => {
 
-    console.log('id')
     if(props.upload) {
       if(state.content_editing) {
 

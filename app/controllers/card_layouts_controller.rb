@@ -129,7 +129,7 @@ class CardLayoutsController < ApplicationController
             layout_length: r.layout_length,
             letter_spacing: r.letter_spacing,
             reduction_rate: r.reduction_rate,
-            is_reduction_rated: r.is_reduction_rated_before_type_cast,
+            is_reduction_rated: r.is_reduction_rated,
             content_flag_name: r.content_flag.name,
             content_flag_id: r.content_flag.id,
             content_type: r.content_flag.content_type,

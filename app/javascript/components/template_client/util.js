@@ -276,10 +276,10 @@ export const setPDFValue = (file, contents) => {
     contents.map((content, index) => {
 
       // 入力値が空欄だったらやめる
-      let value;
+      let values = [];
 
-      if(content.content_type === 'text') value = content.text_value;
-      if(content.content_type === 'text_area') value = content.textarea_value;
+      if(content.content_type === 'text') values = content.text_value.split('\n').map(value => value.trim());
+      if(content.content_type === 'text_area') values = content.textarea_value.split('\n').map(value => value.trim());
 
       const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
       // const y = Math.floor(mmTopx(content.y_coordinate)) * (canvas.width / page.getViewport(1.0).width);
@@ -297,19 +297,47 @@ export const setPDFValue = (file, contents) => {
 
       if(content.content_type != 'image') {
 
-        // 以下、子ども
-        let child_p = document.createElement('p');
-        child_p.id = `child_p-${ index }`;
+        const font_family = Object.keys(FontFamilies).map(font_family => font_family).find(fam => FontFamilies[fam] == content.font_family);
+
         let child_div = document.createElement('div');
+        let before_child_p;
+        let text_height = 0;
+
         child_div.id = `child_div-${ index }`;
+
         draw.appendChild(parent_div);
-        child_p.textContent = value || '';
-        // transform: translate(x, y)
-        // ヘッダー表示のためword-wrapはなし
-        child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font_family] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
-        parent_div.appendChild(child_p);
-        // 先に描画をしないと高さを取得出来ないため
-        child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
+
+        values.map((value, val_index) => {
+
+          if(val_index > 0) before_child_p = document.getElementById(`child_p-${ index }-${ val_index - 1 }`);
+
+          // 以下、子ども
+          let child_p = document.createElement('p');
+          child_p.id = `child_p-${ index }-${ val_index }`;
+
+          child_p.textContent = value || '';
+
+          // transform: translate(x, y)
+          child_p.style = `font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientHeight }px` : '0px' };`;
+          parent_div.appendChild(child_p);
+
+          text_height = text_height + child_p.clientHeight;
+
+          // 先に描画をしないと高さを取得出来ないため
+          child_div.style = `width: ${ contentLength }px; height: ${ text_height }px; border: 1px solid; position: absolute;`;
+
+          if((contentLength - child_p.clientWidth) < 0) {
+
+            const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100);
+            const red_cal =  Math.floor(content.reduction_rate * 100);
+
+            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / child_p.clientWidth) * 0.96 }); transform-origin: left center; font-family: ${ font_family }; position: absolute;`;
+
+            // 縮小率が指定よりも小さい場合は、最小値を代入
+            if(content.is_reduction_rated == 'true' && (red_cal - p_cal) < 0) child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; font-family: ${ font_family }; position: absolute;`;
+          };
+        });
+
         parent_div.appendChild(child_div);
       } else {
 
