@@ -2,22 +2,22 @@ class RemakeTable < ActiveRecord::Migration[5.2]
 
   def up
 
-    drop_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+    #drop_table :cards, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
-      t.references :company, index: true
-      t.string     :name,    comment: '名刺名称'
-      t.text       :free_word
+    #  t.references :company, index: true
+    #  t.string     :name,    comment: '名刺名称'
+    #  t.text       :free_word
 
-      t.timestamps
-    end
+    #  t.timestamps
+    #end
 
-    create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
+    #create_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
-      t.references :card,   index: true
-      t.integer    :status, limit: 1,   default: 0, comment: 'テンプレートの状態'
+    #  t.references :card,   index: true
+    #  t.integer    :status, limit: 1,   default: 0, comment: 'テンプレートの状態'
 
-      t.timestamps
-    end
+    #  t.timestamps
+    #end
 
     drop_table :card_templates, options: 'DEFAULT CHARSET=utf8mb4' do |t|
 
