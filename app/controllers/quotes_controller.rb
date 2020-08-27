@@ -269,32 +269,56 @@ class QuotesController < ApplicationController
     fullpath = "#{Rails.root}/tmp/#{filename}"
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
-      quote.card_clients.pluck(:card_id).uniq.map do |r|
-        card = Card.find(r)
-        zipfile.get_output_stream("#{quote.subject}-#{card.name}/#{card.name}.csv") do |f|
+      quote.card_clients.each_with_index do |r, index|
+        client = r.company_division_client
+
+        head_layout = r.head_layout
+        tail_layout = r.tail_layout
+        content_flag_ids = []
+
+        content_flag_ids = head_layout.contents.map { |c| c.content_flag_id }
+        content_flag_ids = tail_layout.contents.map { |c| c.content_flag_id }
+
+        content_flag_ids.uniq!
+
+        zipfile.get_output_stream("#{ quote.subject }_#{ quote.client.name }.csv") do |f|
+
           bom = "\uFEFF"
+
           f.puts(
             CSV.generate(bom) do |csv|
+
               headers = []
               headers << 'No.'
               headers << 'テンプレート名'
-              # headers << '箱数'
+              headers << '箱数'
               headers << '申込日'
-              card.templates.map { |t| t.details.map { |d| headers << d.name } }
-              csv << headers
-              quote.card_clients.where(card_id: r).map.with_index do |c, index|
-                (1..quote.task_card_clients.where(card_client_id: c.id).first.count).each do |cc|
+              headers << 'head_layout_id'
+              headers << 'tail_layout_id'
+              headers << '申込日'
+              content_flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
 
-                  values = []
-                  client = CardClient.find(c.id)
-                  values << index + 1
-                  values << c.card.name
-                  # values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: c.id).count
-                  values << quote.created_at.strftime('%Y年 %m月 %d日')
-                  client.templates.map { |ct| ct.values.map { |v| values << v.value } }
-                  csv << values
-                end
-              end
+              csv << headers
+
+              values = []
+
+              values << index + 1
+              values << "表: #{ head_layout.name }/裏: #{ tail_layout.name }"
+              values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: r.id).count
+              values << head_layout.id
+              values << tail_layout.id
+              values << quote.created_at.strftime('%Y年 %m月 %d日')
+
+              content_flag_ids.each { |flag_id|
+                flag = ContentFlag.find(flag_id)
+                layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag_id)
+                values << layout_value.text_value if flag.content_type == 'text'
+                values << layout_value.textarea_value if flag.content_type == 'text_area'
+                values << layout_value.upload_id if flag.content_type == 'image'
+              }
+
+              csv << values
+
               csv
             end
           )
