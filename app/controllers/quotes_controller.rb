@@ -308,7 +308,7 @@ class QuotesController < ApplicationController
                   layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: cc.company_division_client, content_flag_id: flag_id)
                   values << layout_value.text_value if flag.content_type == 'text'
                   values << layout_value.textarea_value if flag.content_type == 'text_area'
-                  values << layout_value.upload_id if flag.content_type == 'image'
+                  values << layout_value.upload.name if flag.content_type == 'image'
                 }
 
                 csv << values

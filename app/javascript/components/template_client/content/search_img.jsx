@@ -53,7 +53,7 @@ export default class Uploads extends React.Component {
 
     const upload = {
       index: this.props.index,
-      upload_id: JSON.parse(e.target.dataset.upload).id,
+      upload_id: JSON.parse(e.target.dataset.upload).upload_id,
       name: JSON.parse(e.target.dataset.upload).name,
       url: e.target.src
     };
