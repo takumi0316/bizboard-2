@@ -42,7 +42,7 @@ const Editing = props => {
 
             if(content.upload_id) {
 
-              const upload = content.uploads.filter(upload => upload.id === content.upload_id);
+              const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id);
               return upload[0];
             };
 
@@ -56,7 +56,7 @@ const Editing = props => {
             <td className='u-ta-center'>
               { content_type ?
                 <Fragment>
-                  <img id={ content.flag_name } data-set={ upload().id } src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                  <img id={ content.flag_name } data-set={ upload().upload_id } src={ upload().url } style={{ height: '150px', width: '150px' }}/>
                   <SearchImg index={ index } uploads={ content.uploads } applyUpload={ applyUpload }/>
                 </Fragment>
                 : <Fragment>

@@ -26,7 +26,7 @@ const ReadOnly = props => {
 
             if(content.upload_id) {
 
-              const upload = content.uploads.filter(upload => upload.id === content.upload_id);
+              const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id);
               return upload[0];
             };
 

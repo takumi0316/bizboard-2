@@ -329,7 +329,7 @@ export const setPDFValue = (file, contents) => {
           child_p.textContent = value || '';
 
           // transform: translate(x, y)
-          child_p.style = `width: 1000px; font-size: ${ fontSize }px; font-family: ${ font_family }; white-space: nowrap; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientHeight }px` : '0px' };`;
+          child_p.style = `white-spae: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientHeight }px` : '0px' };`;
           parent_div.appendChild(child_p);
 
           text_height = text_height + child_p.clientHeight;
@@ -342,12 +342,12 @@ export const setPDFValue = (file, contents) => {
             const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100);
             const red_cal =  Math.floor(content.reduction_rate);
 
-            child_p.style = `width: 1000px; font-size: ${ fontSize }px; display: inline-block; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; font-family: ${ font_family }; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientheight }px` : '0px' };`;
+            child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientheight }px` : '0px' };`;
 
             // 縮小率が指定よりも小さい場合は、最小値を代入
-            if(content.is_reduction_rated == 'true' && (red_cal - p_cal) < 0) {
+            if(content.is_reduction_rated == 'true' && (p_cal - red_cal) < 0) {
 
-              child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; font-family: ${ font_family }; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientheight }px` : '0px' };`;
+              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientheight }px` : '0px' };`;
             };
 
           };
@@ -361,7 +361,7 @@ export const setPDFValue = (file, contents) => {
         const upload = () => {
           if(content.upload_id) {
 
-            const upload = content.uploads.filter(upload => upload.id === content.upload_id);
+            const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id);
             return upload[0];
           };
 
