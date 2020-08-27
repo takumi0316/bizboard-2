@@ -269,59 +269,54 @@ class QuotesController < ApplicationController
     fullpath = "#{Rails.root}/tmp/#{filename}"
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
-      quote.card_clients.each_with_index do |r, index|
-        client = r.company_division_client
+      quote.card_clients.pluck(:company_division_client_id).uniq.each do |r|
+        quote.card_clients.where(company_division_client_id: r).each_with_index do |cc, index|
+          zipfile.get_output_stream("No.#{ index }_#{ cc.company_division_client.name }様.csv") do |f|
+            bom = "\uFEFF"
+            f.puts(
+              CSV.generate(bom) do |csv|
 
-        head_layout = r.head_layout
-        tail_layout = r.tail_layout
-        content_flag_ids = []
+                head_layout = cc.head_layout
+                tail_layout = cc.tail_layout
+                content_flag_ids = []
 
-        content_flag_ids = head_layout.contents.map { |c| c.content_flag_id }
-        content_flag_ids = tail_layout.contents.map { |c| c.content_flag_id }
+                content_flag_ids = head_layout.contents.map { |c| c.content_flag_id }
+                content_flag_ids = tail_layout.contents.map { |c| c.content_flag_id }
 
-        content_flag_ids.uniq!
+                content_flag_ids.uniq!
 
-        zipfile.get_output_stream("#{ quote.subject }_#{ quote.client.name }.csv") do |f|
+                headers = []
+                headers << 'テンプレート名'
+                headers << '箱数'
+                headers << '申込日'
+                headers << '表面レイアウトID'
+                headers << '裏面レイアウトID'
+                content_flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
 
-          bom = "\uFEFF"
+                csv << headers
 
-          f.puts(
-            CSV.generate(bom) do |csv|
+                values = []
 
-              headers = []
-              headers << 'No.'
-              headers << 'テンプレート名'
-              headers << '箱数'
-              headers << '申込日'
-              headers << 'head_layout_id'
-              headers << 'tail_layout_id'
-              headers << '申込日'
-              content_flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
+                values << CardTemplate.find_by(company_id: cc.company_division_client.company_division.company_id).name
+                values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: cc.id).count
+                values << quote.created_at.strftime('%Y年 %m月 %d日')
+                values << head_layout.id
+                values << tail_layout.id
 
-              csv << headers
+                content_flag_ids.each { |flag_id|
+                  flag = ContentFlag.find(flag_id)
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: cc.company_division_client, content_flag_id: flag_id)
+                  values << layout_value.text_value if flag.content_type == 'text'
+                  values << layout_value.textarea_value if flag.content_type == 'text_area'
+                  values << layout_value.upload_id if flag.content_type == 'image'
+                }
 
-              values = []
+                csv << values
 
-              values << index + 1
-              values << "表: #{ head_layout.name }/裏: #{ tail_layout.name }"
-              values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: r.id).count
-              values << head_layout.id
-              values << tail_layout.id
-              values << quote.created_at.strftime('%Y年 %m月 %d日')
-
-              content_flag_ids.each { |flag_id|
-                flag = ContentFlag.find(flag_id)
-                layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag_id)
-                values << layout_value.text_value if flag.content_type == 'text'
-                values << layout_value.textarea_value if flag.content_type == 'text_area'
-                values << layout_value.upload_id if flag.content_type == 'image'
-              }
-
-              csv << values
-
-              csv
-            end
-          )
+                csv
+              end
+            )
+          end
         end
       end
     end

@@ -208,7 +208,6 @@ export const setPDF = (file, contents) => {
         parent_div.appendChild(child_div);
       } else {
 
-
         const logoHeight = Math.floor(mmTopx(content.logo_height));
         const logoWidth = Math.floor(mmTopx(content.logo_width));
 
@@ -216,7 +215,7 @@ export const setPDF = (file, contents) => {
         let child_img = document.createElement('img');
         child_img.id = `child_img-${ index }`;
         child_img.src = content.uploads[0].url;
-        child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }; position: absolute;`;
+        child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`;
         parent_div.appendChild(child_img);
       };
 

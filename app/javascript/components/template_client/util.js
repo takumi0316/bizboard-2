@@ -316,6 +316,7 @@ export const setPDFValue = (file, contents) => {
 
         draw.appendChild(parent_div);
 
+        console.log(values)
         values.map((value, val_index) => {
 
           if(val_index > 0) before_child_p = document.getElementById(`child_p-${ index }-${ val_index - 1 }`);
@@ -324,10 +325,12 @@ export const setPDFValue = (file, contents) => {
           let child_p = document.createElement('p');
           child_p.id = `child_p-${ index }-${ val_index }`;
 
+
+          console.log(value)
           child_p.textContent = value || '';
 
           // transform: translate(x, y)
-          child_p.style = `font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientHeight }px` : '0px' };`;
+          child_p.style = `width: 1000px; font-size: ${ fontSize }px; font-family: ${ font_family }; white-space: nowrap; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientHeight }px` : '0px' };`;
           parent_div.appendChild(child_p);
 
           text_height = text_height + child_p.clientHeight;
@@ -338,12 +341,16 @@ export const setPDFValue = (file, contents) => {
           if((contentLength - child_p.clientWidth) < 0) {
 
             const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100);
-            const red_cal =  Math.floor(content.reduction_rate * 100);
+            const red_cal =  Math.floor(content.reduction_rate);
 
-            child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / child_p.clientWidth) * 0.96 }); transform-origin: left center; font-family: ${ font_family }; position: absolute;`;
+            child_p.style = `width: 1000px; font-size: ${ fontSize }px; display: inline-block; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; font-family: ${ font_family }; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientheight }px` : '0px' };`;
 
             // 縮小率が指定よりも小さい場合は、最小値を代入
-            if(content.is_reduction_rated == 'true' && (red_cal - p_cal) < 0) child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; font-family: ${ font_family }; position: absolute;`;
+            if(content.is_reduction_rated == 'true' && (red_cal - p_cal) < 0) {
+
+              child_p.style = `font-size: ${ fontSize }px; display: inline-block;  transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; font-family: ${ font_family }; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientheight }px` : '0px' };`;
+            };
+
           };
         });
 
@@ -373,10 +380,13 @@ export const setPDFValue = (file, contents) => {
 
           const logoHeight = Math.floor(mmTopx(content.logo_height));
           const logoWidth = Math.floor(mmTopx(content.logo_width));
+
           let child_img = document.createElement('img');
+
           child_img.id = `child_img-${ index }`;
           child_img.src = blob_path;
-          child_img.style = `height: ${ logoHeight }; width: ${ logoWidth }px; position: absolute;`;
+          child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`;
+
           parent_div.appendChild(child_img);
 
         }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを取得できませんでした。', close_callback: () => console.log(err) }));
