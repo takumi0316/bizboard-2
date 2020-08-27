@@ -325,7 +325,6 @@ export const setPDFValue = (file, contents) => {
           let child_p = document.createElement('p');
           child_p.id = `child_p-${ index }-${ val_index }`;
 
-
           console.log(value)
           child_p.textContent = value || '';
 
