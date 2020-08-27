@@ -269,55 +269,65 @@ class QuotesController < ApplicationController
     fullpath = "#{Rails.root}/tmp/#{filename}"
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
-      quote.card_clients.pluck(:company_division_client_id).uniq.each do |r|
-        quote.card_clients.where(company_division_client_id: r).each_with_index do |cc, index|
-          zipfile.get_output_stream("No.#{ index }_#{ cc.company_division_client.name }様.csv") do |f|
-            bom = "\uFEFF"
-            f.puts(
-              CSV.generate(bom) do |csv|
+      card_template = CardTemplate.find_by(company_id: quote.client.company_division.company_id)
+      zipfile.get_output_stream("会社名:#{ card_template.company.name }_#{ card_template.name }.csv") do |f|
 
-                head_layout = cc.head_layout
-                tail_layout = cc.tail_layout
-                content_flag_ids = []
+        bom = "\uFEFF"
+        f.puts(
+          CSV.generate(bom) do |csv|
 
-                content_flag_ids = head_layout.contents.map { |c| c.content_flag_id }
-                content_flag_ids = tail_layout.contents.map { |c| c.content_flag_id }
+            headers = []
+            headers << 'テンプレート名'
+            headers << '箱数'
+            headers << '申込日'
+            headers << '表面レイアウトID'
+            headers << '裏面レイアウトID'
 
-                content_flag_ids.uniq!
+            flag_ids = []
+            card_template.card_layouts.each { |cl| cl.contents.each { |ct| flag_ids << ct.content_flag_id } }
+            flag_ids.uniq!
 
-                headers = []
-                headers << 'テンプレート名'
-                headers << '箱数'
-                headers << '申込日'
-                headers << '表面レイアウトID'
-                headers << '裏面レイアウトID'
-                content_flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
+            flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
 
-                csv << headers
+            csv << headers
 
-                values = []
+            quote.card_clients.each do |r|
 
-                values << CardTemplate.find_by(company_id: cc.company_division_client.company_division.company_id).name
-                values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: cc.id).count
-                values << quote.created_at.strftime('%Y年 %m月 %d日')
-                values << head_layout.id
-                values << tail_layout.id
+              values = []
 
-                content_flag_ids.each { |flag_id|
-                  flag = ContentFlag.find(flag_id)
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: cc.company_division_client, content_flag_id: flag_id)
-                  values << layout_value.text_value if flag.content_type == 'text'
-                  values << layout_value.textarea_value if flag.content_type == 'text_area'
-                  values << layout_value.upload.name if flag.content_type == 'image'
+              values << card_template.name
+              values << TaskCardClient.find_by(quote_id: quote.id, card_client_id: r.id).count
+              values << quote.created_at.strftime('%Y年 %m月 %d日')
+              values << r.head_layout_id
+              values << r.tail_layout_id
+
+              head_default_flag_ids = []
+              r.head_layout.contents.each { |c| head_default_flag_ids << c.content_flag_id }
+              r.tail_layout.contents.each { |c| head_default_flag_ids << c.content_flag_id }
+              head_default_flag_ids.uniq!
+
+              flag_ids.each do |flag_id|
+
+                layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id)
+                flag = ContentFlag.find(flag_id)
+                head_default_flag_ids.each { |f|
+                  if f == flag_id
+
+                    values << layout_value.text_value if flag.content_type == 'text'
+                    values << layout_value.textarea_value if flag.content_type == 'text_area'
+                    values << layout_value.upload.name if flag.content_type == 'image'
+                  end
                 }
-
-                csv << values
-
-                csv
               end
-            )
+
+              csv << values
+
+            end
+
+            csv
+
           end
-        end
+        )
       end
     end
 
