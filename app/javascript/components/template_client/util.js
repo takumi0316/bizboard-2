@@ -241,41 +241,29 @@ export const setPDFValue = (file, contents) => {
     const canvas = document.getElementById('pdf');
     const draw = document.getElementById('drawer');
 
-    // Fetch canvas' 2d context
     let ctx = canvas.getContext('2d');
 
-    // Set dimensions to Canvas
-    // 画像をスケールさせて、解像度をあげる
     canvas.height = (mmTopx(55 * 4));
     canvas.width = (mmTopx(91 * 4));
     canvas.style.height = (mmTopx(55 * 2)) + 'px';
-    // canvas.style.height = (mmTopx(55 * (canvas.width / page.getViewport(1.0).width))) + 'px';
     canvas.style.width = (mmTopx(91 * 2)) + 'px';
-    // canvas.style.width = (mmTopx(91 * (canvas.width / page.getViewport(1.0).width))) + 'px';
 
     draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
-    // draw.style = `height: ${ Math.floor(mmTopx(55 * (canvas.width / page.getViewport(1.0).width))) }px; width: ${ Math.floor(mmTopx(91 * (canvas.width / page.getViewport(1.0).width))) }px;`;
 
-    // Get viewport (dimensions)
-    // 描画範囲にPDFをまとめる
     const viewport = page.getViewport({ scale: canvas.width / page.getViewport(1.0).width });
 
-    // Prepare object needed by render method
     const renderContext = {
       canvasContext: ctx,
       transform: [1, 0, 0, 1, 0, 0],
       viewport: viewport
     };
 
-    // Render PDF page
     page.render(renderContext);
 
-    // 前回のデータを引き継がないようにする
     if(draw.childElementCount > 0) draw.textContent = null;
 
     contents.map((content, index) => {
 
-      // 入力値が空欄だったらやめる
       let values = [];
 
       if(content.content_type === 'text') {
@@ -291,15 +279,11 @@ export const setPDFValue = (file, contents) => {
       };
 
       const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
-      // const y = Math.floor(mmTopx(content.y_coordinate)) * (canvas.width / page.getViewport(1.0).width);
       const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
-      // const x = Math.floor(mmTopx(content.x_coordinate)) * (canvas.width / page.getViewport(1.0).width);
       const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
-      // const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * (canvas.width / page.getViewport(1.0).width);
       const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
       const contentLength = Math.floor(mmTopx(content.layout_length));
 
-      // absoluteするための親div
       let parent_div = document.createElement('div');
       parent_div.id = `parent_div-${ index }`;
       parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
@@ -309,47 +293,42 @@ export const setPDFValue = (file, contents) => {
         const font_family = Object.keys(FontFamilies).map(font_family => font_family).find(fam => FontFamilies[fam] == content.font_family);
 
         let child_div = document.createElement('div');
-        let before_child_p;
-        let text_height = 0;
-
         child_div.id = `child_div-${ index }`;
-
         draw.appendChild(parent_div);
 
-        console.log(values)
+        let text_height = 0;
+
         values.map((value, val_index) => {
 
-          if(val_index > 0) before_child_p = document.getElementById(`child_p-${ index }-${ val_index - 1 }`);
+          if(val_index > 0) {
 
-          // 以下、子ども
+            const before_child_p = document.getElementById(`child_p-${ index }-${ val_index - 1 }`);
+            text_height = text_height + before_child_p.clientHeight;
+          };
+
           let child_p = document.createElement('p');
           child_p.id = `child_p-${ index }-${ val_index }`;
 
           child_p.textContent = value || '';
 
-          // transform: translate(x, y)
-          child_p.style = `white-spae: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientHeight }px` : '0px' };`;
+          child_p.style = `white-spae: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ text_height }px;`;
           parent_div.appendChild(child_p);
-
-          text_height = text_height + child_p.clientHeight;
-
-          // 先に描画をしないと高さを取得出来ないため
-          child_div.style = `width: ${ contentLength }px; height: ${ text_height }px; border: 1px solid; position: absolute;`;
 
           if((contentLength - child_p.clientWidth) < 0) {
 
             const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100);
             const red_cal =  Math.floor(content.reduction_rate);
 
-            child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientheight }px` : '0px' };`;
+            child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
 
             // 縮小率が指定よりも小さい場合は、最小値を代入
             if(content.is_reduction_rated == 'true' && (p_cal - red_cal) < 0) {
 
-              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ val_index > 0 ? `${ before_child_p.clientheight }px` : '0px' };`;
+              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
             };
-
           };
+
+          child_div.style = `width: ${ contentLength }px; height: ${ val_index > 0 ? text_height + child_p.clientHeight : child_p.clientHeight }px; border: 1px solid; position: absolute;`;
         });
 
         parent_div.appendChild(child_div);
@@ -358,13 +337,20 @@ export const setPDFValue = (file, contents) => {
         // 画像をbase変換しないと、スクショ時にCORSエラーが出る
         const field = new FormData();
         const upload = () => {
+
+          let re_upload;
           if(content.upload_id) {
 
             const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id);
-            return upload[0];
+            re_upload = upload[0];
           };
 
-          if(!content.upload_id) return content.uploads[0];
+          if(!content.upload_id || !re_upload) {
+
+            re_upload = content.uploads[0];
+          };
+
+          return re_upload;
         };
 
         field.append('url', upload().url);

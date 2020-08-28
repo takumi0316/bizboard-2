@@ -301,23 +301,33 @@ class QuotesController < ApplicationController
               values << r.head_layout_id
               values << r.tail_layout_id
 
-              head_default_flag_ids = []
-              r.head_layout.contents.each { |c| head_default_flag_ids << c.content_flag_id }
-              r.tail_layout.contents.each { |c| head_default_flag_ids << c.content_flag_id }
-              head_default_flag_ids.uniq!
-
               flag_ids.each do |flag_id|
 
-                layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id)
                 flag = ContentFlag.find(flag_id)
-                head_default_flag_ids.each { |f|
-                  if f == flag_id
+                if r.head_layout.contents.pluck(:content_flag_id).include?(flag_id)
 
-                    values << layout_value.text_value if flag.content_type == 'text'
-                    values << layout_value.textarea_value if flag.content_type == 'text_area'
-                    values << layout_value.upload.name if flag.content_type == 'image'
-                  end
-                }
+                  layout_content = r.head_layout.contents.where(content_flag_id: flag_id).first
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) if flag.content_type != 'image'
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.content_type == 'image'
+
+                  values << layout_value.text_value if flag.content_type == 'text'
+                  values << layout_value.textarea_value if flag.content_type == 'text_area'
+                  values << layout_value.upload.name if flag.content_type == 'image'
+                elsif r.tail_layout.contents.pluck(:content_flag_id).include?(flag_id)
+
+                  r.head_layout.contents.pluck(:content_flag_id).include?(flag_id)
+                  layout_content = r.head_layout.contents.where(content_flag_id: flag_id).first
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) if flag.content_type != 'image'
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.content_type == 'image'
+
+                  values << layout_value.text_value if flag.content_type == 'text'
+                  values << layout_value.textarea_value if flag.content_type == 'text_area'
+                  values << layout_value.upload.name if flag.content_type == 'image'
+                else
+
+                  values << ''
+                end
+
               end
 
               csv << values

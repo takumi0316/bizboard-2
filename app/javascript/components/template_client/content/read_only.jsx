@@ -24,13 +24,19 @@ const ReadOnly = props => {
 
           if(content_type) {
 
+            let re_upload ;
             if(content.upload_id) {
 
               const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id);
-              return upload[0];
+              re_upload = upload[0];
             };
 
-            if(!content.upload_id) return content.uploads[0];
+            if(!content.upload_id || !re_upload) {
+
+              re_upload = content.uploads[0];
+            };
+
+            return re_upload;
           };
         };
 

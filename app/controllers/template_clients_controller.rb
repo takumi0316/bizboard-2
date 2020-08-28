@@ -110,7 +110,7 @@ class TemplateClientsController < ApplicationController
 
       # flagをuniqにするため
       flags = []
-      card_template.card_layouts.map do |r| r.contents.map { |c| flags << c.content_flag_id if c.layout_type != 'image' } end
+      card_template.card_layouts.map { |r| r.contents.map { |c| flags << c.content_flag_id } }
 
       flags.uniq!
       flags.map { |f| headers << ContentFlag.find(f).name }
@@ -136,6 +136,7 @@ class TemplateClientsController < ApplicationController
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: f)
             values << layout_value.text_value if flag.content_type == 'text'
             values << layout_value.textarea_value if flag.content_type == 'text_area'
+            values << layout_value.upload_id if flag.content_type == 'image'
           end
 
           csv << values
@@ -202,12 +203,43 @@ class TemplateClientsController < ApplicationController
       client.update! head_layout_id: head_layout_id, tail_layout_id: tail_layout_id
 
       clients.push(client)
-      params[:flag_names].each do |flag_name|
 
-        flag = ContentFlag.find_by(name: flag_name)
-        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id)
-        layout_value.update! text_value: template_client[flag_name] if flag.content_type == 'text'
-        layout_value.update! textarea_value: template_client[flag_name] if flag.content_type == 'text_area'
+      client.head_layout.contents.map do |content|
+
+        flag = content.content_flag
+        if flag.content_type != 'image'
+
+          layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id)
+          layout_value.update! text_value: template_client[flag.name] if flag.content_type == 'text'
+          layout_value.update! textarea_value: template_client[flag.name] if flag.content_type == 'text_area'
+        end
+
+        if flag.content_type == 'image'
+
+          raise "コンテンツに登録されていない画像IDです。(画像ID: #{ template_client[flag.name] })"  if content.uploads.pluck(:id).include?(template_client[flag.name])
+
+          layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id, layout_content_id: content.id)
+          layout_value.update! upload_id: template_client[flag.name]
+        end
+      end
+
+      client.tail_layout.contents.map do |content|
+
+        flag = content.content_flag
+        if flag.content_type != 'image'
+
+          layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id)
+          layout_value.update! text_value: template_client[flag.name] if flag.content_type == 'text'
+          layout_value.update! textarea_value: template_client[flag.name] if flag.content_type == 'text_area'
+        end
+
+        if flag.content_type == 'image'
+
+          raise "コンテンツに登録されていない画像IDです。(画像ID: #{ template_client[flag.name] })"  if content.uploads.pluck(:id).include?(template_client[flag.name])
+
+          layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id, layout_content_id: content.id)
+          layout_value.update! upload_id: template_client[flag.name]
+        end
       end
     end
 

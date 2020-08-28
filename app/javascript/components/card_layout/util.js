@@ -140,11 +140,8 @@ export const setPDF = (file, contents) => {
     const canvas = document.getElementById('pdf');
     const draw = document.getElementById('drawer');
 
-    // Fetch canvas' 2d context
     let ctx = canvas.getContext('2d');
 
-    // Set dimensions to Canvas
-    // 画像をスケールさせて、解像度をあげる
     canvas.height = (mmTopx(55 * 3));
     canvas.width = (mmTopx(91 * 3));
     canvas.style.height = (mmTopx(55 * 2)) + 'px';
@@ -152,11 +149,8 @@ export const setPDF = (file, contents) => {
 
     draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
 
-    // Get viewport (dimensions)
-    // 描画範囲にPDFをまとめる
     const viewport = page.getViewport({ scale: canvas.width / page.getViewport(1.0).width });
 
-    // Prepare object needed by render method
     const renderContext = {
       canvasContext: ctx,
       transform: [1, 0, 0, 1, 0, 0],
@@ -192,18 +186,15 @@ export const setPDF = (file, contents) => {
 
       if(content.content_type != 'image') {
 
-        // 以下、子ども
         let child_p = document.createElement('p');
         child_p.id = `child_p-${ index }`;
         let child_div = document.createElement('div');
         child_div.id = `child_div-${ index }`;
         draw.appendChild(parent_div);
         child_p.textContent = name || '';
-        // transform: translate(x, y)
-        // ヘッダー表示のためword-wrapはなし
+
         child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
         parent_div.appendChild(child_p);
-        // 先に描画をしないと高さを取得出来ないため
         child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
         parent_div.appendChild(child_div);
       } else {
