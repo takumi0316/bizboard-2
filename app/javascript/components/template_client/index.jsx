@@ -2,12 +2,10 @@ import React, { Fragment, useEffect, useState, useRef, useMemo } from 'react';
 import html2canvas from 'html2canvas';
 
 // components
-import Button from  './button';
-import Canvas from  './canvas';
-import Layout from  './layout';
-import Popup  from  './layout/popup';
+import Button  from './button';
+import Canvas  from './canvas';
+import Select  from './layout/select';
 import Content from './content';
-import { IsReductionRated } from './properties';
 
 // 左サイドバーを閉じる
 const closeLeftSidebar = drawerElement => drawerElement.click();
@@ -79,9 +77,9 @@ const Index = props => {
 	 * @version
 	 *
 	 */
-  const selectLayout = e => {
+  const selectLayout = layout_id => {
 
-    if(state.select_layout_id == e) {
+    if(state.apply_layout.id == layout_id) {
 
       window.alertable({ icon: 'info', message: '既に選択されています。' });
       return;
@@ -93,8 +91,22 @@ const Index = props => {
 			return;
 		};
 
-    const layout = state.layouts.filter(layout => layout.id == e);
-    setState({ ...state, selected: true, select_layout: layout[0] });
+    const url = `/template_clients/${ props.card_template_id }/set_layout?client_id=${ props.client_id }&layout_id=${ layout_id }&layout_type=${ props.head ? 'head' : 'tail' }`;
+    const request = window.xhrRequest.get(url);
+    request.then(res => {
+
+      const layout = state.layouts.filter(layout => layout.id == layout_id);
+
+      if(props.upload) props.changeLayout(layout[0], res.data.contents);
+      if(!props.upload) window.alertable({ icon: res.data.status, message: 'レイアウトを変更しました。', close_callback: () => {
+
+        if(!props.upload) setState({ ...state, selected: false, apply_layout: layout[0], contents: res.data.contents });
+      }});
+
+    }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }));
+
+    // const layout = state.layouts.filter(layout => layout.id == e);
+    // setState({ ...state, selected: true, select_layout: layout[0] });
   };
 
   /**
@@ -205,8 +217,9 @@ const Index = props => {
       <div className='u-mt-15 c-flex'>
         <div>
           <Canvas apply_layout={ state.apply_layout } contents={ state.contents }/>
-          <Layout layouts={ state.layouts } selected={ state.selected } apply_layout={ state.apply_layout } selectLayout={ selectLayout }/>
-          <Popup select_layout={ state.select_layout } selected={ state.selected } applyLayout={ applyLayout } clearSelectLayout={ clearSelectLayout }/>
+          <Select layouts={ state.layouts } apply_layout={ state.apply_layout } selectLayout={ selectLayout } />
+          { /* <Layout layouts={ state.layouts } contents={ state.contents } selected={ state.selected } apply_layout={ state.apply_layout } selectLayout={ selectLayout }/> */ }
+          { /* <Popup select_layout={ state.select_layout } selected={ state.selected } applyLayout={ applyLayout } clearSelectLayout={ clearSelectLayout }/> */ }
         </div>
         <div>
           <Content editing={ state.content_editing } contents={ state.contents } editContent={ editContent } saveContent={ saveContent }/>

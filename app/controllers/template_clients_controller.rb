@@ -97,7 +97,7 @@ class TemplateClientsController < ApplicationController
 
       # ヘッダー情報
       headers = []
-      headers << ''
+      headers << 'No.'
       headers << 'テンプレートID'
       headers << 'デフォルトレイアウトID(表)'
       headers << 'デフォルトレイアウトID(裏)'
@@ -120,7 +120,7 @@ class TemplateClientsController < ApplicationController
         division.clients.each_with_index do |client, index|
 
           values = []
-          values << ''
+          values << index + 1
           values << card_template.id
           values << client.head_layout_id ? client.head_layout_id : ''
           values << client.tail_layout_id ? client.tail_layout_id : ''

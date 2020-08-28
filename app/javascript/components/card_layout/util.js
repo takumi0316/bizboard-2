@@ -2,10 +2,7 @@
 const UAParser = require('ua-parser-js');
 
 // プロパティ
-import {
-  FontColors,
-  FontFamilies
-} from './contents/properties'
+import { FontFamilies } from './contents/properties'
 
 /**
  * String => Bool
@@ -66,62 +63,6 @@ export const mmTopx = mm => {
   if(os == 'Mac OS') return 72 / 25.4 * mm;
 };
 
-const readFileAsync = file => {
-
-  return new Promise((resolve, reject) => {
-
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsArrayBuffer(file);
-  });
-};
-
-// PDFをcanvasに展開して、画像に変換する
-async function uploadPDF(e) {
-
-  // PDFファイルデータをArrayBuffer型で取得
-  const fileData = await readFileAsync(e)
-
-  // PDFファイルのパース
-  const pdf = await pdfjsLib.getDocument({
-    data: fileData,
-    cMapUrl: '/cmaps/',
-    cMapPacked: true,
-  })
-
-  // 1ページ目をcanvasにレンダリング
-  const page = await pdf.getPage(1)
-  const canvas = document.createElement('canvas');
-  const viewport = page.getViewport({ scale: 2 })
-  canvas.height = viewport.height
-  canvas.width = viewport.width
-  const context = canvas.getContext('2d')
-  let task = page.render({
-    canvasContext: context,
-    viewport: viewport,
-  });
-
-  await task.promise
-
-  // canvasにレンダリングされた画像をファイル化
-  const base64 = canvas.toDataURL('image/png')
-  const tmp = base64.split(',')
-  const data = atob(tmp[1])
-  const mime = tmp[0].split(':')[1].split(';')[0]
-  const buf = new Uint8Array(data.length)
-  for(let i = 0; i < data.length; i++) buf[i] = data.charCodeAt(i);
-
-  const blob = new Blob([buf], { type: mime })
-  const imageFile = new File([blob], 'layout.png', {
-    lastModified: new Date().getTime(),
-  })
-
-  return imageFile;
-};
-
-export const convertPDFtoPNG = pdf => uploadPDF(pdf);
-
 /**
  * PDFを展開する
  * @version 2020/03/30
@@ -147,7 +88,7 @@ export const setPDF = (file, contents) => {
     canvas.style.height = (mmTopx(55 * 2)) + 'px';
     canvas.style.width = (mmTopx(91 * 2)) + 'px';
 
-    draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
+    draw.style = `height: ${ mmTopx(55 * 2) }px; width: ${ mmTopx(91 * 2) }px;`;
 
     const viewport = page.getViewport({ scale: canvas.width / page.getViewport(1.0).width });
 
@@ -173,11 +114,11 @@ export const setPDF = (file, contents) => {
       // 入力値が空欄だったらやめる
       if(!name && content.content_type != 'image') return;
 
-      const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
-      const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
-      const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
-      const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
-      const contentLength = Math.floor(mmTopx(content.layout_length));
+      const y = mmTopx(content.y_coordinate) * 2;
+      const x = mmTopx(content.x_coordinate) * 2;
+      const fontSize =mmTopx(ptTomm(content.font_size)) * 2;
+      const letterSpacing = mmTopx(content.letter_spacing);
+      const contentLength = mmTopx(content.layout_length);
 
       // absoluteするための親div
       let parent_div = document.createElement('div');
@@ -199,8 +140,8 @@ export const setPDF = (file, contents) => {
         parent_div.appendChild(child_div);
       } else {
 
-        const logoHeight = Math.floor(mmTopx(content.logo_height));
-        const logoWidth = Math.floor(mmTopx(content.logo_width));
+        const logoHeight = mmTopx(content.logo_height);
+        const logoWidth = mmTopx(content.logo_width);
 
         draw.appendChild(parent_div);
         let child_img = document.createElement('img');

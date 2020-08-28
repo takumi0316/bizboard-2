@@ -248,7 +248,7 @@ export const setPDFValue = (file, contents) => {
     canvas.style.height = (mmTopx(55 * 2)) + 'px';
     canvas.style.width = (mmTopx(91 * 2)) + 'px';
 
-    draw.style = `height: ${ Math.floor(mmTopx(55 * 2)) }px; width: ${ Math.floor(mmTopx(91 * 2)) }px;`;
+    draw.style = `height: ${ mmTopx(55 * 2) }px; width: ${ mmTopx(91 * 2) }px;`;
 
     const viewport = page.getViewport({ scale: canvas.width / page.getViewport(1.0).width });
 
@@ -278,11 +278,11 @@ export const setPDFValue = (file, contents) => {
         values = content.textarea_value.split('\n').map(value => value.trim());
       };
 
-      const y = Math.floor(mmTopx(content.y_coordinate)) * 2;
-      const x = Math.floor(mmTopx(content.x_coordinate)) * 2;
-      const fontSize = Math.floor(mmTopx(ptTomm(content.font_size))) * 2;
-      const letterSpacing = Math.floor(mmTopx(content.letter_spacing));
-      const contentLength = Math.floor(mmTopx(content.layout_length));
+      const y = mmTopx(content.y_coordinate) * 2;
+      const x = mmTopx(content.x_coordinate) * 2;
+      const fontSize = mmTopx(ptTomm(content.font_size)) * 2;
+      const letterSpacing = mmTopx(content.letter_spacing);
+      const contentLength = mmTopx(content.layout_length);
 
       let parent_div = document.createElement('div');
       parent_div.id = `parent_div-${ index }`;
@@ -362,8 +362,8 @@ export const setPDFValue = (file, contents) => {
 
           draw.appendChild(parent_div);
 
-          const logoHeight = Math.floor(mmTopx(content.logo_height));
-          const logoWidth = Math.floor(mmTopx(content.logo_width));
+          const logoHeight = mmTopx(content.logo_height);
+          const logoWidth = mmTopx(content.logo_width);
 
           let child_img = document.createElement('img');
 

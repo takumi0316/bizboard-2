@@ -312,17 +312,38 @@ class QuotesController < ApplicationController
 
                   values << layout_value.text_value if flag.content_type == 'text'
                   values << layout_value.textarea_value if flag.content_type == 'text_area'
-                  values << layout_value.upload.name if flag.content_type == 'image'
+
+                  if flag.content_type == 'image'
+
+                    if layout_value.new_record?
+
+                      values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
+                    else
+
+                      values << layout_value.upload.name
+                    end
+                  end
+
                 elsif r.tail_layout.contents.pluck(:content_flag_id).include?(flag_id)
 
-                  r.head_layout.contents.pluck(:content_flag_id).include?(flag_id)
                   layout_content = r.head_layout.contents.where(content_flag_id: flag_id).first
                   layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) if flag.content_type != 'image'
                   layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.content_type == 'image'
 
                   values << layout_value.text_value if flag.content_type == 'text'
                   values << layout_value.textarea_value if flag.content_type == 'text_area'
-                  values << layout_value.upload.name if flag.content_type == 'image'
+
+                  if flag.content_type == 'image'
+
+                    if layout_value.new_record?
+
+                      values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
+                    else
+
+                      values << layout_value.upload.name
+                    end
+                  end
+
                 else
 
                   values << ''
