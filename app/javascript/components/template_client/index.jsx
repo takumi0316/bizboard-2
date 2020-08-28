@@ -5,6 +5,8 @@ import html2canvas from 'html2canvas';
 import Button  from './button';
 import Canvas  from './canvas';
 import Select  from './layout/select';
+// import Layout      from './layout';
+// import Popup       from './layout/popup';
 import Content from './content';
 
 // 左サイドバーを閉じる
