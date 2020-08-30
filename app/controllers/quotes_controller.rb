@@ -326,7 +326,7 @@ class QuotesController < ApplicationController
 
                 elsif r.tail_layout.contents.pluck(:content_flag_id).include?(flag_id)
 
-                  layout_content = r.head_layout.contents.where(content_flag_id: flag_id).first
+                  layout_content = r.tail_layout.contents.where(content_flag_id: flag_id).first
                   layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) if flag.content_type != 'image'
                   layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.content_type == 'image'
 
