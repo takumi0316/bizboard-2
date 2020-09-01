@@ -14,7 +14,7 @@
 
     / 見込み
     / range内の納期に紐づく案件IDを取得
-    - quote_ids = Quote.deliverd_in(range).pluck(:id)
+    - quote_ids = Quote.where.not(status: :invoicing).deliverd_in(range).pluck(:id)
     / 活動履歴と案件を組み合わせて受注予定日と合う物を取得
     - activity = Activity.where(quote_id: quote_ids).joins(:quote)
     / 活動履歴から同じquote_idを持つのから最新の作成日を取得
@@ -35,11 +35,11 @@
     / 案件が作業完了以降のステータスのもの 40,50,60
     / 受注確定額 請求書が発行されている案件の金額全て(請求済み金額と受注済み案件の金額を足したもの)
     - invoicing_price = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(range)).pluck(:price).sum
-    - accurary_price = activities.where.not("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where("(activities.status != ?)", 'order').pluck(:price).sum
+    - accurary_price = activities.where("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where.not("(activities.status != ?)", 'order').pluck(:price).sum
     - status_order = invoicing_price + accurary_price
 
     - profit_invoicing_price = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(range)).pluck(:profit_price).sum
-    - profit_accurary_price = activities.where.not("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where("(activities.status != ?)", 'order').pluck(:profit_price).sum
+    - profit_accurary_price = activities.where("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where.not("(activities.status != ?)", 'order').pluck(:profit_price).sum
     - profit_status_order = profit_invoicing_price + profit_accurary_price
 
 
@@ -61,7 +61,7 @@
       / 形状範囲
       / 見込み
       / range内の納期に紐づく案件IDを取得
-      - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(range).pluck(:id)
+      - quote_ids = Quote.where.not(status: :invoicing).where(division_id: r.division_id).deliverd_in(range).pluck(:id)
       / 活動履歴と案件を組み合わせて案件IDと合う物を取得
       - activity = Activity.where(quote_id: quote_ids).joins(:quote)
       / 活動履歴から同じquote_idを持つのから最新の作成日を取得
@@ -76,11 +76,11 @@
         - activities = activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
 
       / 受注予定額
-      - accurary = activities.where.not("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 'a', 'b', 'c', 'order').pluck(:price).sum
+      - accurary = activities.where("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where("(accurary = ?) OR (accurary = ?) OR (accurary = ?) OR (activities.status != ?)", 'a', 'b', 'c', 'order').pluck(:price).sum
 
       / 受注確定額 請求書が発行されている案件の金額全て(請求済み金額と受注済み案件の金額を足したもの)
       - invoicing_price = Quote.where(division_id: r.division_id).invoicing.joins(:invoice).merge(Invoice.date_in(range)).pluck(:price).sum
-      - accurary_price = activities.where.not("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where("(activities.status != ?)", 'order').pluck(:price).sum
+      - accurary_price = activities.where("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where.not("(activities.status != ?)", 'order').pluck(:price).sum
       - status_order = invoicing_price + accurary_price
 
       / 目標売上
@@ -98,7 +98,7 @@
 
       / 見込み
       / range内の納期に紐づく案件IDを取得
-      - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(range).pluck(:id)
+      - quote_ids = Quote.where.not(status: :invoicing).where(division_id: r.division_id).deliverd_in(range).pluck(:id)
       / 活動履歴と案件を組み合わせて受注予定日と合う物を取得
       - activity = Activity.where(quote_id: quote_ids).joins(:quote)
       / 活動履歴から同じquote_idを持つのから最新の作成日を取得
@@ -117,7 +117,7 @@
 
       / 受注確定額 請求書が発行されている案件の金額全て(請求済み金額と受注済み案件の金額を足したもの)
       - invoicing_price = Quote.where(division_id: r.division_id).invoicing.joins(:invoice).merge(Invoice.date_in(range)).pluck(:profit_price).sum
-      - accurary_price = activities.where.not("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where("(activities.status != ?)", 'order').pluck(:profit_price).sum
+      - accurary_price = activities.where("(quotes.status != ?) OR (quotes.status != ?) OR (quotes.status != ?)", 'end_work', 'invoicing', 'complete').where.not("(activities.status != ?)", 'order').pluck(:profit_price).sum
       - status_order = invoicing_price + accurary_price
 
       / 目標売上
