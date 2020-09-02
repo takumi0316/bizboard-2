@@ -194,6 +194,8 @@ class CompanyDivisionClientsController < ApplicationController
 
     client.layout_values.delete_all
 
+    client.update! head_layout_id: nil, tail_layout_id: nil
+
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '登録情報を削除しました' } }
   rescue => e
 
