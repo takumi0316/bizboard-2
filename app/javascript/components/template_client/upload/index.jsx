@@ -77,10 +77,7 @@ const Upload = props => {
     field.append('id', props.card_template.id);
     props.flag_names.map((flag_name) => field.append('flag_names[]', flag_name));
 
-    parse_datas.map((data, index) => {
-
-      Object.entries(data).map(([key, val]) => field.append(`template_clients[][${ key }]`, val || ''));
-    });
+    parse_datas.map(data => Object.entries(data).map(([key, val]) => field.append(`template_clients[][${ key }]`, val || '')));
 
     const url = '/template_clients/import_csv';
     const request = window.xhrRequest.post(url, field);
