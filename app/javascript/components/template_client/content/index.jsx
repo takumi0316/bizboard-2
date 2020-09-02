@@ -27,8 +27,19 @@ const Index = props => {
       </div>
       <div className='u-mt-30 u-ta-center'>
         { props.editing ?
-          <button className='c-btnMain-primaryB' onClick={ props.saveContent }>保存</button>
-          : <button className='c-btnMain-standard' onClick={ props.editContent }>編集</button>
+          <Fragment>
+            { props.contents.length > 0 ?
+              <button className='c-btnMain-primaryB' onClick={ props.saveContent }>保存</button>
+              : null
+            }
+          </Fragment>
+          :
+          <Fragment>
+            { props.contents.length > 0 ?
+              <button className='c-btnMain-standard' onClick={ props.editContent }>編集</button>
+              : null
+            }
+          </Fragment>
         }
       </div>
     </div>

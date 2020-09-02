@@ -70,6 +70,13 @@ const RightSide = props => {
 
     e.preventDefault();
 
+    // フラグ選択有無
+    if(!state.content_flag_id) {
+
+      window.alertable({ icon: 'info', message: 'フラグを登録してください。' });
+      return;
+    };
+
     // コンテンツタイトル入力有無
     if(state.content_type != 'image' && !name_ref.current.value) {
 
@@ -81,13 +88,6 @@ const RightSide = props => {
     if(state.content_type == 'image' && state.uploads.length === 0) {
 
       window.alertable({ icon: 'info', message: '画像を登録してください。' });
-      return;
-    };
-
-    // フラグ選択有無
-    if(!state.content_flag_id) {
-
-      window.alertable({ icon: 'info', message: 'フラグを登録してください。' });
       return;
     };
 
@@ -119,7 +119,7 @@ const RightSide = props => {
         is_reduction_rated: is_reduction_rated_ref.current.value,
         layout_length: length_ref.current.value,
       };
-      if(state.is_reduction_rated) content = { ...content, reduction_rate: reduction_rate_ref.current.value };
+      if(state.is_reduction_rated) content = { ...content, reduction_rate: reduction_rate_ref.current.value === undefined ? 0 : reduction_rate_ref.current.value };
     };
 
     if(state.content_type == 'image') {
@@ -249,7 +249,7 @@ const RightSide = props => {
 
                 { state.is_reduction_rated ?
                   <tr>
-                    <td className='u-ta-center'><label className='c-form-label'>最大</label></td>
+                    <td className='u-ta-center'><label className='c-form-label'>最大縮小率(%)</label></td>
                     <td><input className='c-form-text' ref={ reduction_rate_ref }
                       defaultValue={ props.layout_content.reduction_rate }/></td>
                   </tr>

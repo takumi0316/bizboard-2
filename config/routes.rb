@@ -111,6 +111,7 @@ Rails.application.routes.draw do
     end
     member do
       post :update_layout_values
+      delete :destroy_layout_values
     end
   end
 
@@ -146,35 +147,6 @@ Rails.application.routes.draw do
 
   # カタログ
   resources :catalogs
-
-  # 名刺
-  ## resources :cards, except: :show do
-  ##   get :front_preview
-  ##   get :reverse_preview
-  ##   get :copy
-  ##   collection do
-  ##     post :transfer
-  ##   end
-  ## end
-
-  ## # 名刺テンプレート
-  ## resources :card_templates do
-  ##   collection do
-  ##     get :transfer
-  ##   end
-  ## end
-
-  ## # 名刺情報
-  ## resources :card_clients do
-  ##   get :front_preview
-  ##   get :reverse_preview
-  ##   collection do
-  ##     get :download
-  ##     get :upload
-  ##     post :bulk
-  ##     post :csv_download
-  ##   end
-  ## end
 
   ## 名刺テンプレート
   resources :card_templates do

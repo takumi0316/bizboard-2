@@ -87,6 +87,7 @@ const Upload = props => {
     request.then(res => {
 
       loading_ref.current.finish();
+      console.log(res.data)
       setState({ ...state, uploaded: true,  head_layouts: res.data.head_layouts, tail_layouts: res.data.tail_layouts, clients: res.data.clients });
     }).catch(err => window.alertable({ icon: 'info', message: err, close_callback: () => loading_ref.current.finish() }));
   };

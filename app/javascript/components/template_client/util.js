@@ -316,15 +316,18 @@ export const setPDFValue = (file, contents) => {
 
           if((contentLength - child_p.clientWidth) < 0) {
 
-            const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100);
-            const red_cal =  Math.floor(content.reduction_rate);
-
-            child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
-
             // 縮小率が指定よりも小さい場合は、最小値を代入
-            if(content.is_reduction_rated == 'true' && (p_cal - red_cal) < 0) {
+            if(content.is_reduction_rated == 'true') {
 
-              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
+              const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100);
+              const red_cal =  Math.floor(content.reduction_rate);
+
+              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
+
+              if((p_cal - red_cal) < 0) {
+
+                child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
+              };
             };
           };
 

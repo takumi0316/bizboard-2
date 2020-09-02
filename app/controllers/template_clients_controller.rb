@@ -45,15 +45,6 @@ class TemplateClientsController < ApplicationController
     add_breadcrumb '新規作成'
   end
 
-  def create
-
-
-    render json: { status: :success }
-  rescue => e
-
-    render json: { status: :error, message: e.message }
-  end
-
   ##
   # 編集(表面)
   # @version 2020/08/14
@@ -72,14 +63,6 @@ class TemplateClientsController < ApplicationController
 
     add_breadcrumb '一覧', path: template_clients_path(id: params[:id])
     add_breadcrumb '編集(裏面)'
-  end
-
-  def update
-
-    render json: { status: :success }
-  rescue => e
-
-    render json: { status: :error, message: e.message }
   end
 
   def destroy
@@ -119,11 +102,33 @@ class TemplateClientsController < ApplicationController
       card_template.company.divisions.each do |division|
         division.clients.each_with_index do |client, index|
 
+          head_layout_id = ''
+          head_result = card_template.template_layouts.where(status: :head).map { |head| client.head_layout_id == head.card_layout_id ? true : false }
+
+          if head_result.include?(true)
+
+            head_layout_id = client.head_layout_id
+          else
+
+            head_layout_id = card_template.template_layouts.where(status: :head).first.card_layout_id
+          end
+
+          tail_layout_id = ''
+          tail_result = card_template.template_layouts.where(status: :tail).map { |tail| client.tail_layout_id == tail.card_layout_id ? true : false }
+
+          if tail_result.include?(true)
+
+            tail_layout_id = client.tail_layout_id
+          else
+
+            tail_layout_id = card_template.template_layouts.where(status: :tail).first.card_layout_id
+          end
+
           values = []
           values << index + 1
           values << card_template.id
-          values << client.head_layout_id ? client.head_layout_id : ''
-          values << client.tail_layout_id ? client.tail_layout_id : ''
+          values << head_layout_id
+          values << tail_layout_id
           values << card_template.company.id
           values << card_template.company.name
           values << division.id

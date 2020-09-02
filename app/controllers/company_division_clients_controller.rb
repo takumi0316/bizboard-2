@@ -190,6 +190,16 @@ class CompanyDivisionClientsController < ApplicationController
     render json: { status: :error, message: e.message }
   end
 
+  def destroy_layout_values
+
+    client.layout_values.delete_all
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '登録情報を削除しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

@@ -106,7 +106,7 @@ const Index = props => {
       layout_length: '10',
       letter_spacing: '1',
       reduction_rate: '0',
-      is_reduction_rated: 'true',
+      is_reduction_rated: 'false',
       content_type: 'text',
       content_flag_name: '',
       content_flag_id: '',
@@ -137,6 +137,12 @@ const Index = props => {
   const removeContent = e => {
 
     e.preventDefault();
+
+    if(state.right_panel_exist) {
+
+      window.alertable({ icon: 'info', message: '作業パネルを終了してください。' });
+      return;
+    };
 
     const filter_contents = [];
     JSON.parse(JSON.stringify(state.layout_contents)).map((content, index) =>{
@@ -180,6 +186,7 @@ const Index = props => {
     if(!pdf_ref.current) {
 
       window.alertable({ icon: 'info', message: 'レイアウトを挿入してください。' });
+      return;
     };
 
     // レイアウトタイトル入力有無
@@ -189,11 +196,18 @@ const Index = props => {
       return;
     };
 
-    // コンテントタイトル入力有無
-    if(!state.content_id_being_edited && props.new_record_type) {
+    if(state.layout_contents.length > 0) {
 
-      window.alertable({ icon: 'info', message: 'コンテントタイトルを入力してください。' });
-      return;
+      const content = state.layout_contents[state.layout_contents.length - 1];
+
+      if(content.content_type === 'text') {
+
+        if(!content.name) {
+
+          window.alertable({ icon: 'info', message: 'コンテント名称 & フラグを登録してください。' });
+          return;
+        };
+      };
     };
 
     loading_ref.current.start();
