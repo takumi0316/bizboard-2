@@ -14,6 +14,8 @@ class CardLayout < ApplicationRecord
   #  ** Includes **
   #----------------------------------------
 
+  include DeepCloneable
+
   #----------------------------------------
   #  ** Constants **
   #----------------------------------------

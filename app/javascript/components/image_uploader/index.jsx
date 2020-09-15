@@ -83,11 +83,8 @@ export default class Uploader extends React.Component {
     // 画像をリサイズ
     window.ImageConverter.imageUriToResizedBlob({
       uri: this.state.image,
-      max_width: IMAGE_MAX_WIDTH,
-      max_height: IMAGE_MAX_HEIGHT,
     }, blob => {
   
-      console.log('upload')
       const field = new FormData();
       field.append('upload[name]', this.titleRef.value);
       field.append('upload[status]', 'card');

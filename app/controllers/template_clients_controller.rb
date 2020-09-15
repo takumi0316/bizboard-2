@@ -82,8 +82,8 @@ class TemplateClientsController < ApplicationController
       headers = []
       headers << 'No.'
       headers << 'テンプレートID'
-      headers << 'デフォルトレイアウトID(表)'
-      headers << 'デフォルトレイアウトID(裏)'
+      headers << 'デフォルトレイアウト名(表)'
+      headers << 'デフォルトレイアウト名(裏)'
       headers << 'ID'
       headers << '会社名'
       headers << '部署ID'
@@ -173,8 +173,8 @@ class TemplateClientsController < ApplicationController
 
       client = CompanyDivisionClient.find(template_client['担当者ID'])
       card_template = CardTemplate.find_by(company_id: client.company_division.company_id)
-      head_layout_id = template_client['デフォルトレイアウトID(表)']
-      tail_layout_id = template_client['デフォルトレイアウトID(裏)']
+      head_layout_id = template_client['デフォルトレイアウト名(表)']
+      tail_layout_id = template_client['デフォルトレイアウト名(裏)']
 
       if head_layout_id.blank?
 
@@ -185,7 +185,7 @@ class TemplateClientsController < ApplicationController
 
         raise 'テンプレートに表のレイアウトが登録されていません。' if access_template_layouts(:head).blank?
 
-        head_layout_id = template_client['デフォルトレイアウトID(表)']
+        head_layout_id = template_client['デフォルトレイアウト名(表)']
         result = access_template_layouts(:head).map { |template_layout| template_layout.card_layout_id == head_layout_id.to_i }
 
         raise "テンプレートに登録されていないレイアウト(表ID: #{ head_layout_id })が指定されています。" if !result.include?(true)
@@ -200,7 +200,7 @@ class TemplateClientsController < ApplicationController
 
         raise 'テンプレートに裏のレイアウトが登録されていません。' if access_template_layouts(:tail).blank?
 
-        tail_layout_id = template_client['デフォルトレイアウトID(裏)']
+        tail_layout_id = template_client['デフォルトレイアウト名(裏)']
         result = access_template_layouts(:tail).map { |template_layout| template_layout.card_layout_id == tail_layout_id.to_i }
 
         raise "テンプレートに登録されていないレイアウト(裏ID: #{ tail_layout_id })が指定されています。" if !result.include?(true)

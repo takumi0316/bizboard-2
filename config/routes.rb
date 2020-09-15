@@ -176,6 +176,9 @@ Rails.application.routes.draw do
     collection do
       post :transfer
     end
+    member do
+      post :copy
+    end
   end
 
   ## レイアウトフラグ

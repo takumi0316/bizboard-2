@@ -19,7 +19,8 @@ export const FontFamilies = {
   '新ゴ R': '1',
   'Lucida Grande': '2',
   'UD新ゴ 簡体字 M': '3',
-  'ヒラギノ角ゴ 繁体中文 W3': '4'
+  'ヒラギノ角ゴ 繁体中文 W3': '4',
+  'Frutiger 45 Ligth': '5'
 };
 
 // 縮小対応可否

@@ -92,6 +92,49 @@ class CardLayoutsController < ApplicationController
     render_json_404
   end
 
+  ##
+  # 複製
+  # @version 2020/08/14
+  def copy
+
+    dup_card_layout = card_layout.dup
+    dup_card_layout.name = "複製_#{card_layout.name}"
+
+    file_io = card_layout.file.download
+    ct = card_layout.file.content_type
+    fn = "#{card_layout.file.filename}"
+    ts = Time.zone.now.to_i.to_s
+
+    new_blob = ActiveStorage::Blob.create_after_upload!(
+      io: StringIO.new(file_io),
+      filename: ts + '_' + fn,
+      content_type: ct,
+    )
+
+    dup_card_layout.file.attach(new_blob)
+    dup_card_layout.save!
+
+    card_layout.contents.map do |content|
+
+      dup_content = content.dup
+      dup_content.card_layout_id = dup_card_layout.id
+      dup_content.save!
+      next unless content.content_flag.content_type == 'image'
+
+      content.content_uploads.map do |cp|
+
+        dup_cp = cp.dup
+        dup_cp.layout_content_id = dup_content.id
+        dup_cp.save!
+      end
+    end
+
+    redirect_to edit_card_layout_path(dup_card_layout), flash: { notice: { message: 'レイアウトを複製しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
