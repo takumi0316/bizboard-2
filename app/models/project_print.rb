@@ -17,9 +17,9 @@
 #  print_size_note :text(65535)
 #  surface         :integer          default("original_surface")
 #  open_type       :integer          default("side_open")
+#  price           :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  price           :integer
 #
 
 class ProjectPrint < ApplicationRecord

@@ -2,7 +2,7 @@ h1.l-dashboard__heading 製造経費情報一覧
 
 = link_to '製造経費を入力する', new_expendable_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
-= react_component('ExpendablesSearch',{subcontractor: Subcontractor.all, division: Division.all,})
+= react_component :ExpendablesSearch, subcontractor: Subcontractor.all, division: Division.all
 
 = link_to "CSV書き出し", expendables_path(date1: params[:date1], date2: params[:date2], format: :csv), class: 'c-btnMain-standard u-mt-30'
 
@@ -16,7 +16,7 @@ h1.l-dashboard__heading 製造経費情報一覧
         th 勘定科目
         th 金額(税抜き)
         th 備考
-        th colspan= 2
+        th colspan=2
     tbody
       - expendables.each do |r|
 
@@ -28,12 +28,8 @@ h1.l-dashboard__heading 製造経費情報一覧
           td.u-ta-center = r.price.to_s(:delimited)
           td.u-ta-center = r.memo
           td.u-ta-center
-            - if r.work_subcontractor.present?
-              = link_to '編集', work_path(r.work_subcontractor.work.id), class: 'c-btnMain-standard'
-            - else
-              = link_to '編集', edit_expendable_path(r), class: 'c-btnMain-standard'
+            = link_to '編集', work_path(r.work_subcontractor.work.id), class: 'c-btnMain-standard' if r.work_subcontractor_id.present?
+            = link_to '編集', edit_expendable_path(r), class: 'c-btnMain-standard' if r.work_subcontractor_id.nil?
           td.u-ta-center
-            - if r.work_subcontractor.blank?
-              = link_to '削除', expendable_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
-
+            = link_to '削除', expendable_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' } if r.work_subcontractor_id.nil?
 = render 'layouts/_partials/pagination'

@@ -60,7 +60,7 @@ const CaseDetails = (props) => {
             <td>
               <div className='u-mt-15'>
                 <label className='c-form-radioLabel'>
-                  <input type='radio' value='seat' checked={ props.deliver_type === 'seat' || props.deliver_type === null } onChange={ e => props.setDeliverType(e.target.value) } className='c-form-radio' />
+                  <input type='radio' value='seat' checked={ props.deliver_type === 'seat' } onChange={ e => props.setDeliverType(e.target.value) } className='c-form-radio' />
                   <i className='c-form-radioIcon' />
                   <span>席まで配達</span>
                 </label>

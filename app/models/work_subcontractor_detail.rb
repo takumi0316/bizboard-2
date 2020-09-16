@@ -15,9 +15,9 @@
 #  actual_count          :string(191)
 #  actual_cost           :string(191)
 #  status                :integer          default(0)
+#  work_id               :bigint(8)
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  work_id               :bigint(8)
 #
 
 class WorkSubcontractorDetail < ApplicationRecord

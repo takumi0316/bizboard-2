@@ -1,21 +1,12 @@
 ##
 # payments Controller
 #
+#
 class PaymentsController < ApplicationController
+
   #----------------------------------------
   #  ** Includes **
   #----------------------------------------
-
-  # 支払い情報
-  expose_with_pagination(:payments) {
-    Payment
-    .all
-  }
-
-
-  # 支払い情報
-  expose(:payment) { Payment.find_or_initialize_by id: params[:id] || params[:payment_id]}
-
 
   #----------------------------------------
   #  ** Instance variables **
@@ -39,19 +30,13 @@ class PaymentsController < ApplicationController
   #
   def index
 
-    @start_date = Time.current.beginning_of_month
-    @end_date = Time.current.end_of_month
-
-    if params[:begginning].present?
-      @start_date = params[:begginning].to_time.beginning_of_month
-      @end_date = params[:end].to_time.end_of_month
-    end
+    @start_date = params[:begginning].present? ? arrange_formatting_date(params[:begginning]).beginning_of_month : Time.zone.now.beginning_of_month
+    @end_date = params[:begginning].present? ? arrange_formatting_date(params[:end]).end_of_month : Time.zone.now.end_of_month
 
     @subcontractor = Subcontractor.eager_load(:payments).where.not(payments: { price: 0 })
 
     add_breadcrumb '支払い管理'
   end
-
 
   #----------------------------------------
   #  ** Methods **
@@ -59,9 +44,13 @@ class PaymentsController < ApplicationController
 
   private
 
-  def payment_params
+    ##
+    # 日付を整形
+    # @version 2020/07/14
+    #
+    def arrange_formatting_date date
 
-    params.require(:payment).permit :id, :subcontractor_id, :work_subcontractor_detail_id, :price, :date
-  end
+      Time.zone.strptime(date, '%Y-%m-%d')
+    end
 
 end

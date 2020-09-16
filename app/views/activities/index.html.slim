@@ -1,12 +1,12 @@
 = render 'layouts/_partials/tabmenu'
 
-= link_to '活動履歴を作成する', new_activity_path(quote_id: @id), class: 'c-btnMain-standard c-btn-blue u-mt-15'
+= link_to '活動履歴を作成する', new_activity_path(quote_id: params[:quote_id]), class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
 = form_with url: activities_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 
   .c-search__item
     = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '対応者/案件名/メモ'
+    = f.text_field :name, class: 'c-form-text', placeholder: '対応者/案件名/メモ'
 
   = f.submit '検索', class: 'c-btnMain-standard'
 
@@ -14,6 +14,7 @@
   table
     thead
       tr
+        th ID
         th 対応日時
         th 対応内容
         th 確度
@@ -27,30 +28,31 @@
         th 添付
         th colspan= 3
     tbody
-      - activities.each do |r|
+      - @activities.each do |r|
         tr
+          td.u-ta-center = r.id
           td = r.date
-          td = r.status_i18n
-          td = r.accurary_i18n
-          td = r.next_action_i18n
-          td = r.next_action_date
-          td = r.quote&.quote_number
+          td.u-ta-center = r.status_i18n
+          td.u-ta-center = r.accurary_i18n
+          td.u-ta-center = r.next_action_i18n
+          td.u-ta-center = r.next_action_date
+          td.u-ta-center = r.quote&.quote_number
           td = r.quote&.subject&.truncate(25)
-          td
-            - if r.quote&.company_division_client_id?
-              = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
-            - else
-              p お客様情報が存在しません
-          td
-            - if r.quote&.user_id.present?
-              = r.quote.user.name
-            - else
-              |担当者不明
-          td = r.memo.truncate(30)
-          td
-            - if r.attachment.present?
-              = link_to '資料へ飛ぶ', r.attachment, target: :_blank, class: 'c-btnMain-primaryB'
-          td = link_to '編集', edit_activity_path(r), class: 'c-btnMain-standard'
-          td = link_to '削除', activity_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+          td.u-ta-center
+            - if r.quote&.client&.nil?
 
-= render 'layouts/_partials/pagination'
+              | お客様情報が存在しません
+            - else
+
+              = "#{ r.quote&.client&.company_division&.company&.name } #{ r.quote&.client&.name }様"
+          td.u-ta-center
+            - if r.quote&.user&.nil?
+
+              | 担当者不明
+            - else
+
+              = r.quote&.user&.name
+          td = r.memo.truncate(30)
+          td = link_to '資料へ飛ぶ', r.attachment, target: '_blank', class: 'c-btnMain-primaryB' if r.attachment.present?
+          td = link_to '編集', edit_activity_path(r), class: 'c-btnMain-standard'
+          td = link_to '削除', activity_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }

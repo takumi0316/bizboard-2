@@ -20,6 +20,8 @@ export default class EditTemplateGenerate extends React.Component {
 
     super(props);
 
+    Ts.loadFont();
+
     this.state = {
       card_id: props.card.id,
       company: props.company,
@@ -37,22 +39,21 @@ export default class EditTemplateGenerate extends React.Component {
    */
   componentDidMount = () => {
 
+    if(!this.state.template.file) return;
+
     this.loadingRef.start();
-    if(!this.state.template.file) {
-      this.loadingRef.finish();
-      return;
-    };
+
     const field = new FormData();
     field.append('url', this.state.template.file);
     const request = window.xhrRequest.post('/cards/transfer', field, { responseType: 'blob' });
     request.then(res => {
-  
+
       if(res.data.status == 'error') {
-    
+
         window.alertable({ icon: 'error', message: 'テンプレートの取得に失敗しました。もう一度ページを更新してください。', close_callback: () => this.loadingRef.finish() });
         return;
       };
-  
+
       const file = res.data;
       new Promise(resolve => {
         setPDF(file, this.state.template.details, document.getElementById('pdf'), document.getElementById('draw'));
@@ -60,7 +61,7 @@ export default class EditTemplateGenerate extends React.Component {
       }).then(() => {
         this.setState({ didmount_status: !this.state.didmount_status }, () => this.loadingRef.finish());
       }).catch(() => window.alertable({ icon: 'error', message: 'テンプレートの展開に失敗しました。もう一度ページを更新してください。', close_callback: () => this.loadingRef.finish() }));
-      
+
     }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }));
   };
 
@@ -107,7 +108,7 @@ export default class EditTemplateGenerate extends React.Component {
       id: '',
       card_template_id: '',
       name: '',
-      font: '新ゴR',
+      font: '新ゴ R',
       font_size: '9',
       font_color: 'black',
       coord_y: '10',
@@ -150,44 +151,44 @@ export default class EditTemplateGenerate extends React.Component {
 
     this.setState({ template: template, backup_file: '' });
   };
-  
+
   /**
    * 裏面ページへ遷移
    * @version 2020/05/28
    *
    */
   front_transition = e => {
-  
+
     e.stopPropagation();
-  
+
     const file = this.state.template.file;
     if(!file) {
-    
+
       window.alertable({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
       return
     };
-  
+
     location.href = `/cards/${this.state.template.card_id}/front_preview`;
   };
-  
+
   /* 裏面ページへ遷移
   * @version 2020/05/28
   *
   */
   reverse_transition = e => {
-    
+
     e.stopPropagation();
-    
+
     const file = this.state.template.file;
     if(!file) {
-      
+
       window.alertable({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
       return
     };
-    
+
     location.href = `/cards/${this.state.template.card_id}/reverse_preview`;
   };
-  
+
   /**
    * 保存
    * @version 2020/03/26
@@ -225,7 +226,7 @@ export default class EditTemplateGenerate extends React.Component {
     this.loadingRef.start();
     const url = '/cards/' + this.state.card_id
     const request = window.xhrRequest.put(url, field);
-    
+
     // 保存処理
     request.then(res => {
 
@@ -234,7 +235,7 @@ export default class EditTemplateGenerate extends React.Component {
 
       window.alertable({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish()});
     });
-	};
+  };
 
   render() {
     return (
@@ -253,8 +254,9 @@ export default class EditTemplateGenerate extends React.Component {
           : null
         }
         <CardTemplate template={ this.state.template } didmount_type={ this.state.didmount_status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
-        <div className='u-mt-10'>
+        <div className='c-overlay-submit'>
           <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>
+          <button className='u-ml-30 c-btnMain-standard' onClick={ () => this.unSetPDF() }>テンプレートを変更する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>

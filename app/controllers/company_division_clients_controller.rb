@@ -143,6 +143,71 @@ class CompanyDivisionClientsController < ApplicationController
     render json: { status: :success, clients: @clients, cards: @cards }
   end
 
+  def update_layout_values
+
+    client.update! client_params
+
+    params[:layout_content].each do |content|
+      layout_content = LayoutContent.find(content[:id])
+      layout_content.update! no_image: content[:no_image]
+    end
+
+    layout = params[:layout_type] == 'head' ? client.head_layout : client.tail_layout
+    contents = layout.contents.map do |r|
+
+      layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: r.content_flag_id) if r.layout_type != 'image'
+      layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: r.content_flag_id, layout_content_id: r.id) if r.layout_type == 'image'
+      {
+        id: r.id,
+        name: r.name,
+        x_coordinate: r.x_coordinate,
+        y_coordinate: r.y_coordinate,
+        font_size: r.font_size,
+        layout_length: r.layout_length,
+        letter_spacing: r.letter_spacing,
+        reduction_rate: r.reduction_rate,
+        is_reduction_rated: r.is_reduction_rated,
+        font_family: r.font_family,
+        font_color: r.font_color,
+        logo_height: r.logo_height,
+        logo_width: r.logo_width,
+        flag_id: r.content_flag_id,
+        flag_name: r.content_flag.name,
+        content_type: r.content_flag.content_type,
+        layout_value_id: layout_value.id,
+        text_value: layout_value.text_value,
+        textarea_value: layout_value.textarea_value,
+        no_image: r.no_image,
+        upload_id: layout_value.upload_id,
+        uploads: r.content_uploads.map do |c|
+          {
+            id: c.id,
+            upload_id: c.upload_id,
+            name: c.upload.name,
+            url: c.upload.image.service_url
+          }
+        end
+      }
+    end
+
+    render json: { status: :success, contents: contents }
+  rescue => e
+
+    render json: { status: :error, message: e.message }
+  end
+
+  def destroy_layout_values
+
+    client.layout_values.delete_all
+
+    client.update! head_layout_id: nil, tail_layout_id: nil
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '登録情報を削除しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+  end
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
@@ -155,6 +220,13 @@ class CompanyDivisionClientsController < ApplicationController
     #
     def client_params
 
-      params.require(:company_division_client).permit :company_division_id, :user_id, :name, :kana, :title, :tel, :email, :password, :password_confirmation, :user_type, :note
+      params.require(:company_division_client).permit :company_division_id, :user_id, :name, :kana, :title, :tel, :email, :password, :password_confirmation, :user_type, :note, :head_layout_id, :tail_layout_id, layout_values_attributes: [
+        :id, :company_division_client_id, :text_value, :textarea_value, :layout_type, :content_flag_id, :upload_id, :layout_content_id
+      ]
+    end
+
+    def layout_content_params
+
+      params.require(:layout_content).permit :id, :no_image
     end
 end

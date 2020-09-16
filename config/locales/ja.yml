@@ -42,6 +42,12 @@ ja:
         general: 一般
         division: 部署
         admin: 管理者
+        jii: 日本工業社管理
+        card_manager: 名刺担当者
+    company:
+      approval_status:
+         nothing: なし
+         approval: あり
     subcontractor_division_client:
       title:
         nothing: なし
@@ -130,7 +136,6 @@ ja:
       binding_work:
         binding_works_unnecessary: なし
         binding_works_necessary: あり
-
     project_binding_work:
       bind_type:
         original_bind_type: 原稿通り
@@ -388,7 +393,6 @@ ja:
         edit_filename_necessary: あり
         edit_filename_unnecessary: なし
 
-
     item:
       consumption_tax:
         tax_in: 税込
@@ -407,13 +411,16 @@ ja:
         delivery_stock: 出庫
         add_stock: 在庫追加
 
-
   attributes:
     created_at: 登録日時
     updated_at: 更新日時
 
   activerecord:
     attributes:
+      content_logo:
+        name: 画像タイトル
+      content_flag:
+        name: フラグタイトル
       contact:
         name: 氏名
         email: メールアドレス
@@ -425,6 +432,13 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+
+  content_flag:
+    content_type:
+      text: 'テキスト'
+      text_area: 'テキストエリア'
+      image: '画像'
+
   errors:
     format: "%{attribute}%{message}"
     messages:

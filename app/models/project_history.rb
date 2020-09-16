@@ -9,7 +9,6 @@
 #  updated_at :datetime         not null
 #
 
-
 class ProjectHistory < ApplicationRecord
 
   #----------------------------------------

@@ -14,9 +14,9 @@
 #  paper      :integer          default("coc_413")
 #  surface    :integer          default("both_side")
 #  emboss     :integer          default("emboss_necessary")
+#  price      :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  price      :integer
 #
 
 class ProjectCard < ApplicationRecord

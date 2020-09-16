@@ -431,11 +431,11 @@ export default class WorkEditor extends React.Component {
     const request = window.xhrRequest.put(url, field);
     request.then(res => {
       if(res.data.status != 'success') {
-  
+
         window.alertable({ icon: 'error', message: res.data.message });
         return;
       };
-      
+
       this.setState({ division: division }, () => {
         window.alertable({ icon: 'success', message: '作業部署を登録出来ました' });
       });
@@ -688,7 +688,6 @@ export default class WorkEditor extends React.Component {
     work_subcontractors_iterate[index].notices = value;
     this.setState({ work_subcontractors_iterate: work_subcontractors_iterate });
   };
-
 
   /**
    * htmlを埋め込む

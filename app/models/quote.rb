@@ -9,7 +9,7 @@
 #  remarks                    :text(65535)
 #  memo                       :text(65535)
 #  free_word                  :text(65535)
-#  price                      :integer
+#  price                      :integer          default(0), not null
 #  attention                  :integer
 #  pdf_url                    :text(65535)
 #  user_id                    :integer
@@ -28,7 +28,7 @@
 #  tax                        :float(24)        default(1.1)
 #  reception                  :integer
 #  temporary_price            :integer
-#  profit_price               :integer          default(0)
+#  profit_price               :integer          default(0), not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  last_company               :string(191)
@@ -37,6 +37,7 @@
 #  issues_date                :date
 #  delivery_note_date         :date
 #  lock                       :boolean          default(FALSE), not null
+#  drive_folder_id            :string(191)
 #
 
 class Quote < ApplicationRecord
@@ -138,13 +139,16 @@ class Quote < ApplicationRecord
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
 
+  # 静的に会社情報を保存する
+  before_validation :set_company_information
+
   ##
   # フリーワード検索用文字列をセットする
   # @version 2018/06/10
   #
   def set_free_word
 
-    self.free_word = "#{self.quote_number} #{self.subject} #{self.user&.name} #{self.division&.name} #{self.created_at} #{self.client&.company_division&.company&.name} #{self.client&.company_division&.name} #{self.client&.name}"
+    self.free_word = "#{self.quote_number} #{self.subject} #{self.user&.name} #{self.division&.name} #{self.created_at} #{self.client&.company_division&.company&.name} #{self.client&.company_division&.name} #{self.client&.name} #{self.last_client} #{self.last_division} #{self.last_client}"
   end
 
   ##
@@ -156,29 +160,69 @@ class Quote < ApplicationRecord
     update_columns(quote_number: "#{created_at.strftime('%Y%m%d')}#{id}")
   end
 
+  def set_company_information
+
+    return if self.client.nil? && self.persisted?
+    self.last_company = self.client.company_division.company.name
+    self.last_division = self.client.company_division.name
+    self.last_client = self.client.name
+  end
+
+  ##
+  # 一括ロック
+  # @version 2019/04/02
+  #
+  def self.all_lock(name, status, date1, date2)
+
+    _self = Quote.all.deliverd_in(date1..date2)
+    # フリーワードが入っている
+    if name.present?
+      # 名称検索
+      terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
+      # ステータス選択されていればステータスで絞る
+      _self = _self.where(status: status) if status != ''
+      _self.update(lock: true)
+
+    # フリーワードが空で、ステータスが未選択
+    elsif name.blank? && status == ''
+
+      # 日付検索
+      _self.update(lock: true)
+    # フリーワードが空で、ステータスが入力されている
+    elsif name.blank? && status != nil && status != ''
+
+      # ステータス検索
+      _self = _self.where(status: status)
+      _self.update(lock: true)
+      return _self
+    end
+  end
+
   ##
   # 名称検索
   #
   #
   def self.search(**parameters)
 
-		_self = self
+    _self = self
 
     # フリーワードが入っていて、ステータスが未選択
     if parameters[:name].present? && parameters[:status] == ''
 
       # 名称検索
-      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
-			# 日付検索
+      # 日付検索
 
       return _self
     # フリーワードが入っていて、ステータスが選択されている
     elsif parameters[:name].present? && parameters[:status] != ''
 
-      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
 
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
@@ -192,19 +236,21 @@ class Quote < ApplicationRecord
     elsif parameters[:name].blank? && parameters[:status] == ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+
       return _self
     # フリーワードが空で、ステータスが入力されている
     elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+
       # ステータス検索
       _self = _self.where(status: parameters[:status])
+
       return _self
-		end
+    end
 
     return _self
   end
-
 end

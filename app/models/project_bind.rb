@@ -7,9 +7,9 @@
 #  posting_state   :integer          default("stapler")
 #  print_size      :integer          default("card_size")
 #  print_size_note :text(65535)
+#  price           :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  price           :integer
 #
 
 class ProjectBind < ApplicationRecord

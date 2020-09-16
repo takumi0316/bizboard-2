@@ -1,0 +1,41 @@
+.u-mt-15
+  label.c-form-label ｜テンプレート名
+  .u-mt-10.c-attention = card_template.name
+
+  .u-mt-20
+    label.c-form-label ｜会社名
+    .u-mt-10.c-attention = card_template.company.name
+
+.u-mt-15
+  = link_to 'アップロード', upload_template_clients_path(id: params[:id]), method: :post, class: 'c-btnMain-primaryA'
+  = link_to 'ダウンロード', download_template_clients_path(id: params[:id]), method: :post, class: 'u-ml-30 c-btnMain-primaryB'
+
+= form_with url: template_clients_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+  .c-search__item
+    = f.label :name, '部署名 | 担当者名', class: 'c-form-label'
+    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'ビジスタント部 大島'
+  = f.submit '検索', class: 'c-btnMain-standard'
+
+.u-mt-15.c-table
+  table
+    thead
+      tr
+        th No.
+        th 担当者ID
+        th 担当者名
+        th 部署名
+        th レイアウト名(表)
+        th レイアウト名(裏)
+        th colspan=2
+    tbody
+      - card_template.company.divisions.each do |division|
+        - division.clients.each_with_index do |client, index|
+          tr
+            td.u-ta-center = index + 1
+            td.u-ta-center = client.id
+            td.u-ta-center = client.name
+            td.u-ta-center = division.name
+            td.u-ta-center = client.head_layout.name if client.head_layout_id.present?
+            td.u-ta-center = client.tail_layout.name if client.tail_layout_id.present?
+            td.u-ta-center = link_to '編集', head_template_client_path(id: card_template.id, client_id: client.id), class: 'c-btnMain-standard'
+            td.u-ta-center = link_to '削除', destroy_layout_values_company_division_client_path(client.id), class: 'c-btnMain-primaryA', method: :delete, data: { confirmable: '本当に削除しますか？' }

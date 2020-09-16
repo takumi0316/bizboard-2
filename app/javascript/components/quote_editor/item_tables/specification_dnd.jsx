@@ -3,37 +3,115 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const SpecificationDnD = props => {
 
-	const reorder = (startIndex, endIndex) => {
+  const reorder = (startIndex, endIndex) => {
 
-		let propsOrder = Array.from(props.quote_projects.slice());
-		const startId = propsOrder[startIndex].id;
-		const endId   = propsOrder[endIndex].id;
+		const quoteProjects = JSON.parse(JSON.stringify(props.quote_projects));
+    const arrangeQuoteProjects = [];
+		const sum = startIndex - endIndex;
 
-		propsOrder[startIndex].id = endId;
-		propsOrder[endIndex].id   = startId;
+    // on -> desc
+    if(sum > 0) {
 
-		const [removedPropsOrder] = propsOrder.splice(startIndex, 1);
-		propsOrder.splice(endIndex, 0, removedPropsOrder);
+      // DnDされた順に変更
+      const sortQuoteProjects = [];
+      // 品目の数を検索
+      const quote_projects_length = quoteProjects.length;
+      // 元々の品目ID
+      const arrangeIds = quoteProjects.map(quote_project => quote_project.id);
+  
+      // DnDで離されたIndexを元に最初にsortする品目を検索
+      if(endIndex > 0) {
+        
+        for(let i = 0; i < endIndex; i++) sortQuoteProjects.push(quoteProjects[i]);
+        sortQuoteProjects.push(quoteProjects[startIndex]);
+      } else {
+  
+        sortQuoteProjects.push(quoteProjects[startIndex]);
+      };
+      
+      // On -> Dropまでの品目を検索
+      for(let ei = endIndex; ei < startIndex; ei++) sortQuoteProjects.push(quoteProjects[ei]);
+      
+      // DnDされていない残った品目を検索
+      for(let si = startIndex + 1; si < quote_projects_length; si++) sortQuoteProjects.push(quoteProjects[si]);
+      
+      sortQuoteProjects.map((sort_quote_project, index) => {
+        sort_quote_project.id = arrangeIds[index];
+        arrangeQuoteProjects.push(JSON.parse(JSON.stringify(sort_quote_project)));
+      });
+    };
 
-		return propsOrder;
-	};
+    // on -> asc
+    if(sum < 0) {
+  
+      // DnDされた順に変更
+      const sortQuoteProjects = [];
+      // 品目の数を検索
+      const quote_projects_length = quoteProjects.length;
+      // 元々の品目ID
+      const arrangeIds = quoteProjects.map(quote_project => quote_project.id);
+      
+      // DnDで離されたIndexを元に最初にsortする品目を検索
+      if(startIndex !== 0) {
+    
+        for(let i = 0; i < startIndex; i++) sortQuoteProjects.push(quoteProjects[i]);
+        if(sum === -1) {
+  
+          sortQuoteProjects.push(quoteProjects[endIndex]);
+          sortQuoteProjects.push(quoteProjects[startIndex]);
+        }
+        
+        if(sum < -1) {
+  
+          for(let si = startIndex; si < endIndex; si++) sortQuoteProjects.push(quoteProjects[si + 1]);
+          sortQuoteProjects.push(quoteProjects[startIndex]);
+        }
+        
+        if(endIndex !== quote_projects_length - 1) {
+  
+          for(let ei = endIndex + 1; ei < quote_projects_length; ei++) sortQuoteProjects.push(quoteProjects[ei]);
+        };
+      } else {
+    
+        for(let i = 0; i < endIndex; i++) sortQuoteProjects.push(quoteProjects[i + 1]);
+        sortQuoteProjects.push(quoteProjects[0]);
+        for(let ei = endIndex + 1; ei < quote_projects_length; ei++) sortQuoteProjects.push(quoteProjects[ei]);
+      };
+  
+      sortQuoteProjects.map((sort_quote_project, index) => {
+        sort_quote_project.id = arrangeIds[index];
+        arrangeQuoteProjects.push(JSON.parse(JSON.stringify(sort_quote_project)));
+      });
+    };
+  
+    return arrangeQuoteProjects;
+  };
 
-  const getItemStyle = (isDragging, draggableStyle) => ({
+  const grid = props.quote_projects.length;
 
-  	userSelect: "none",
-  	padding: grid * 2,
-  	margin: `0 0 ${grid}px 0`,
-  	background: isDragging ? "lightgreen" : "grey",
-  	...draggableStyle
-	});
+  const getItemStyle = (isDragging, draggableStyle, index) => {
 
-	const grid = props.quote_projects.length;
-	const getListStyle = isDraggingOver => ({
-		background: isDraggingOver ? "lightblue" : "lightgrey",
-		padding: grid,
-		height: '100%',
-		width: '100%'
-	});
+    return ({
+      userSelect: 'none',
+      height: '60px',
+      padding: grid * 4,
+      fontWeight: 'bold',
+      border: '1px solid #aab4b9',
+      borderRadius: '2px',
+      margin: `0 0 ${ (grid - 1) === index ? '0' : grid * 2 }px 0`,
+      background: isDragging ? '#F8F8FF' : '#FFEBCD',
+      ...draggableStyle
+    })
+  };
+
+  const getListStyle = isDraggingOver => ({
+    background: isDraggingOver ? 'lightblue' : '#F8F8FF',
+    padding: grid * 2,
+    border: '1px solid black',
+    borderRadius: '2px',
+    height: '100%',
+    width: '100%'
+  });
 
 	const onDragEnd = result => {
 
@@ -52,7 +130,7 @@ const SpecificationDnD = props => {
   };
 	return(
 		<Fragment>
-	    <DragDropContext onDragEnd={ result => onDragEnd(result) }>
+      <DragDropContext onDragEnd={ result => onDragEnd(result) }>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <div
@@ -66,21 +144,22 @@ const SpecificationDnD = props => {
 
 								return(
 									<Fragment key={ key }>
-                		<Draggable key={ key } draggableId={ id } index={ index }>
-                  		{(provided, snapshot) => (
-                    		<div
-                      		ref={ provided.innerRef }
-                      		{ ...provided.draggableProps }
-                      		{ ...provided.dragHandleProps }
-                      		style={ getItemStyle(
-                        		snapshot.isDragging,
-                        		provided.draggableProps.style
-                      		) }
-                    		>
-                      		{ `品目名: ${specification.name}` }
-                    		</div>
-                  		)}
-                		</Draggable>
+                    <Draggable key={ key } draggableId={ id } index={ index }>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={ provided.innerRef }
+                          { ...provided.draggableProps }
+                          { ...provided.dragHandleProps }
+                          style={ getItemStyle(
+                            snapshot.isDragging,
+														provided.draggableProps.style,
+														index
+                          ) }
+                        >
+                          { `品目名: ${ specification.name }, 数量: ${ specification.unit }` }
+                        </div>
+                      )}
+                    </Draggable>
 									</Fragment>
 								)
               })}

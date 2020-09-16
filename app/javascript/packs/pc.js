@@ -12,7 +12,6 @@ import 'scripts/rails_ujs_jack';
   RailsUjsJack.jack(Rails);
   Rails.start();
   Initializer.lazy();
-  Ts.loadFont();
 
   // 初期表示時や、ajaxでのリクエスト時に発動
   document.addEventListener('turbolinks:load', function() {
@@ -23,6 +22,8 @@ import 'scripts/rails_ujs_jack';
 
 // react
 import WebpackerReact from 'webpacker-react';
+
+import Kawaii from 'components/kawaii';
 
 // 汎用モーダル
 import DataModal from 'components/data_modal';
@@ -97,7 +98,7 @@ import QuotationSearch from 'components/quotations/quotation_search';
 import QuotationPdfGenerator from 'components/quotations/pdf_generator';
 
 // 請求書PDF作成
-import InvoicePdfGenerator from 'components/invoice_editor/pdf_generator';
+import InvoiceEditor from 'components/invoice_editor/';
 
 // 丸の内CSV書き出し日付検索
 import MarunouchiSearchable from 'components/api/marunouchi/searchable';
@@ -126,7 +127,18 @@ import InventoryDivisionsSelect from 'components/inventory_divisions_select';
 // 受注管理グラフ
 import ProfitGraph from 'components/profit_graph';
 
+import ImageUploader from 'components/image_uploader';
+
+import CardLayout from 'components/card_layout';
+
+import CardTemplate from 'components/card_template'
+
+import TemplateClient from 'components/template_client';
+
+import CSVUpload from 'components/template_client/upload';
+
 WebpackerReact.setup({
+  Kawaii,
   Alert,
   DataModal,
   LogoEditor,
@@ -151,7 +163,7 @@ WebpackerReact.setup({
 	DeliveryPdfGenerator,
 	QuotationSearch,
 	QuotationPdfGenerator,
-	InvoicePdfGenerator,
+	InvoiceEditor,
   MarunouchiSearchable,
   NewCardTemplateGenerate,
   EditCardTemplateGenerate,
@@ -161,4 +173,9 @@ WebpackerReact.setup({
   UploadCardClient,
   InventoryDivisionsSelect,
   ProfitGraph,
+  ImageUploader,
+  CardLayout,
+  CardTemplate,
+  TemplateClient,
+  CSVUpload,
 });

@@ -6,12 +6,12 @@
 #  work_id                          :bigint(8)
 #  subcontractor_division_client_id :bigint(8)
 #  status                           :integer          default(0)
-#  created_at                       :datetime         not null
-#  updated_at                       :datetime         not null
 #  notices                          :text(65535)
 #  order_date                       :datetime
 #  delivery_date                    :datetime
 #  delivery_destination             :string(191)
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
 #
 
 class WorkSubcontractor < ApplicationRecord

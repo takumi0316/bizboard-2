@@ -7,14 +7,14 @@
 #  status           :integer
 #  memo             :text(65535)
 #  attachment       :text(65535)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
 #  free_word        :text(65535)
-#  quote_id         :bigint(8)
 #  accurary         :integer
 #  next_action      :integer
 #  next_action_date :date
 #  scheduled_date   :date
+#  quote_id         :bigint(8)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 class Activity < ApplicationRecord
@@ -23,7 +23,6 @@ class Activity < ApplicationRecord
   #  ** Includes **
   #----------------------------------------
 
-  #extend
   ActiveHash::Associations::ActiveRecordExtensions
 
   #----------------------------------------
@@ -35,16 +34,16 @@ class Activity < ApplicationRecord
   #----------------------------------------
 
   #種類のenum
-  # enum status: { meeting: 0, mail: 10, tell: 20,
-  #  estimate: 30, workshop: 40, lost: 50, other: 60 }
 
-  enum status: {contact: 0, hearing: 10, proposal: 20, estimate: 30,
+  enum status: { contact: 0, hearing: 10, proposal: 20, estimate: 30,
     closing: 40, order: 50, lost: 60, rejection: 70
   }, _prefix: true
-  #確度のenum
+
+  # 確度のenum
   enum accurary: { a: 0, b: 10, c: 20 }
-  #次回アクションのenum
-  enum next_action: {contact: 0, hearing: 10, proposal: 20, estimate: 30,
+
+  # 次回アクションのenum
+  enum next_action: { contact: 0, hearing: 10, proposal: 20, estimate: 30,
     closing: 40, order: 50, lost: 60, rejection: 70, other: 90
   }, _prefix: true
 
@@ -71,6 +70,7 @@ class Activity < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
+
   # フリーワード検索用文字列をセットする
   before_validation :set_free_word
 
@@ -80,7 +80,7 @@ class Activity < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{self.memo} #{self.quote_id} #{self.quote&.user&.name} #{self.quote&.subject}"
+    self.free_word = "#{ self.memo } #{ self.quote_id } #{ self.quote.user.name } #{ self.quote.subject }"
   end
 
   ##
@@ -94,6 +94,32 @@ class Activity < ApplicationRecord
     query = (['free_word like ?'] * terms.size).join(' and ')
 
     where(query, *terms.map { |term| "%#{term}%" })
+  end
+
+  ##
+  # プロダクションスクリプト
+  # @version 2020/06/23
+  #
+  def self.production_script
+
+    Activity.where(status: :lost).or(Activity.where(status: :rejection)).each do |r|
+
+      if r.quote.work.present?
+
+        if r.quote.work.work_subcontractors.present?
+
+          r.quote.work.work_subcontractors.each do |w|
+
+            w.expendable.inactive! if w.expendable.present?
+            w.payment.inactive! if w.payment.present?
+          end
+        end
+      end
+    end
+
+  rescue => e
+
+    p e
   end
 
 end

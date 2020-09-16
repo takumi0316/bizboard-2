@@ -72,7 +72,6 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
   const getPDF = pdfjsLib.getDocument(blob_path);
 
   getPDF.promise.then(pdf => {
-
     return pdf.getPage(1);
   }).then(page => {
 
@@ -95,19 +94,29 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
 
     details.forEach(detail => {
   
-      draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
+      const name = detail.name;
+      
+      if(!name) return;
+      
       const y = mmTopx(detail.coord_y) * 2;
       const x =	mmTopx(detail.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
       const lineSpace = mmTopx(detail.line_space);
-      const name = detail.name;
-
+  
+      draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+      
       for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
+        
         let line = lines[i];
         let addY = fontSize;
         if(i) addY += fontSize * lineSpace * i;
         draw_ctx.fillText(line, x, y + addY);
-      }
+      };
+  
+      // 自動組版
+      // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+      // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+      // draw_ctx.fillText(name, x, y);
     });
 
     // Prepare object needed by render method
@@ -149,21 +158,30 @@ export const setPDFValue = (file, canvas, draw_canvas, values) => {
     draw_canvas.width = (mmTopx(91 * 2));
 
     values.map(value => {
-
-      draw_ctx.font = `${mmTopx(ptTomm(value.font_size)) * 2}px ${value.font}`;
+  
+      const card_value = value.value;
+      
+      if(!card_value) return;
+      
       const y = mmTopx(value.coord_y) * 2;
       const x =	mmTopx(value.coord_x) * 2;
       const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
       const lineSpace = mmTopx(value.line_space);
-      const card_value = value.value;
-
-      if(!card_value) return;
-      for(let lines = card_value.split("\n"), i = 0, l = lines.length; l > i; i++) {
+  
+      draw_ctx.font = `${ fontSize }px ${ value.font }`;
+      
+      for(let lines = card_value.split('\n'), i = 0, l = lines.length; l > i; i++) {
+        
         let line = lines[i] ;
         let addY = fontSize ;
         if (i) addY += fontSize * lineSpace * i ;
         draw_ctx.fillText(line, x, y + addY);
       };
+  
+      // 自動組版
+      // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+      // draw_ctx.font = `${ fontSize }px ${ value.font }`;
+      // draw_ctx.fillText(card_value, x, y);
     });
 
     const renderContext = {
@@ -190,20 +208,30 @@ export const drawText = (details, draw_canvas) => {
   draw_ctx.restore();
 
   details.map(detail => {
-
-    draw_ctx.font = `${mmTopx(ptTomm(detail.font_size)) * 2}px ${detail.font}`;
+  
+    const name = detail.name;
+    
+    if(!name) return;
+    
     const y = mmTopx(detail.coord_y) * 2;
     const x =	mmTopx(detail.coord_x) * 2;
     const fontSize = mmTopx(ptTomm(detail.font_size)) * 2;
     const lineSpace = mmTopx(detail.line_space);
-    const name = detail.name;
-
+  
+    draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+   
     for(let lines = name.split('\n'), i = 0, l = lines.length; l > i; i++) {
+      
       let line = lines[i];
       let addY = fontSize;
       if(i) addY += fontSize * lineSpace * i;
       draw_ctx.fillText(line, x, y + addY);
     };
+    
+    // 自動組版
+    // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+    // draw_ctx.font = `${ fontSize }px ${ detail.font }`;
+    // draw_ctx.fillText(name, x, y);
   });
 };
 
@@ -223,21 +251,30 @@ export const drawTextValue = (values, draw_canvas) => {
   draw_ctx.restore();
 
   values.map(value => {
-
-    draw_ctx.font = `${mmTopx(ptTomm(value.font_size)) * 2}px ${value.font}`;
+  
+    const card_value = value.value;
+    
+    if(!card_value) return;
+    
     const y = mmTopx(value.coord_y) * 2;
     const x =	mmTopx(value.coord_x) * 2;
     const fontSize = mmTopx(ptTomm(value.font_size)) * 2;
     const lineSpace = mmTopx(value.line_space);
-    const card_value = value.value;
-
-    if(!card_value) return;
+  
+    draw_ctx.font = `${ fontSize }px ${ value.font }`;
+    
     for(let lines = card_value.split('\n'), i = 0, l = lines.length; l > i; i++) {
+      
       let line = lines[i] ;
       let addY = fontSize ;
       if (i) addY += fontSize * lineSpace * i ;
       draw_ctx.fillText(line, x, y + addY);
     };
+  
+    // 自動組版
+    // draw_ctx.canvas.style.letterSpacing = lineSpace + 'px';
+    // draw_ctx.font = `${ fontSize }px ${ value.font }`;
+    // draw_ctx.fillText(card_value, x, y);
   });
 };
 

@@ -6,10 +6,10 @@
 #  task_id                    :bigint(8)
 #  content                    :text(65535)
 #  name                       :string(191)
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
 #  user_id                    :bigint(8)
 #  company_division_client_id :bigint(8)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
 #
 
 class Message < ApplicationRecord

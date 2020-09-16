@@ -1,0 +1,60 @@
+@import 'app/assets/stylesheets/foundation/variables'
+@import 'app/assets/stylesheets/foundation/keyframes'
+
+.Search
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(map-get($layoutColors, 'black'), .3)
+  z-index: $layerLevel-overlay
+  justify-content: center
+  &__inner
+    background-color: map-get($layoutColors, 'white')
+    width: 900px
+    position: relative
+    padding: 30px
+    height: 720px
+    margin-top: 30px
+    overflow-y: scroll
+  &__list
+    margin-top: 10px
+  &__item
+    margin-top: 10px
+    display: block
+    cursor: pointer
+    border-bottom: solid 1px map-get($layoutColors, 'lightGray')
+    padding: 10px
+    &:hover
+      opacity: .8
+    &Name
+      font-size: map-get($fontSize, 'large')
+      font-weight: bold
+  &__input
+    border: solid 1px map-get($layoutColors, 'lightGray')
+    outline: none
+    height: 45px
+    font-size: 16px
+    border-radius: 4px
+    width: 420px
+  &__button
+    display: block
+    margin-top: 10px
+  &__close
+    &Icon
+      position: absolute
+      right: 5px
+      top: 5px
+      border: 0
+      padding: 0
+      margin: 0
+      line-height: 1
+      font-size: 2.4rem
+      font-weight: bold
+      color: map-get($fontColors, 'subText')
+      background-color: transparent
+      cursor: pointer
+      &:hover
+        color: map-get($fontColors, 'text')

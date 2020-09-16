@@ -12,10 +12,10 @@
 #  print_size_note    :text(65535)
 #  surface            :integer          default("original_surface")
 #  open_type          :integer          default("side_open")
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
 #  posting_state_note :text(65535)
 #  price              :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 class ProjectCopy < ApplicationRecord

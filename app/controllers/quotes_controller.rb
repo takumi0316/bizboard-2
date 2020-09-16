@@ -100,40 +100,21 @@ class QuotesController < ApplicationController
   end
 
   ##
-  # 編集
-  # @version 2018/06/10
-  def edit
-
-    add_breadcrumb '案件', path: quotes_path
-    add_breadcrumb '編集'
-  end
-
-  ##
-  # 更新
-  # @version 2018/06/10
-  def update
-
-    # 情報更新
-    quote.update! quote_params
-
-    # taskが存在していたらtaskの納期も更新する
-    quote.task.update! date: quote.deliver_at if quote.task.present?
-
-    # 請求先情報を静的に保存(更新)
-    quote.update! last_company: quote&.client&.company_division.company.name, last_division: quote&.client&.company_division.name, last_client: quote&.client&.name if quote.invoice.present?
-
-    render json: { status: :success }
-  rescue => e
-
-    render json: { status: :error, message: e.message }
-  end
-
-  ##
   # 新規作成
   # @version 2018/06/10
   def create
 
     quote.update! quote_params
+
+    # driveにフォルダーを作成
+    require 'google_drive'
+    session = GoogleDrive::Session.from_config('config.json')
+    root_folder_id = '0AMp2Ot6o6NNAUk9PVA'
+    sub_folder_name = "#{quote.quote_number} #{quote.subject} #{quote&.client.company_division.name}"
+    root_folder = session.collection_by_id(root_folder_id)
+    sub_folder = root_folder.create_subfolder(sub_folder_name)
+    quote.update!(drive_folder_id: sub_folder.id)
+
 
     # slack通知
     if quote.payment_terms == :advance
@@ -142,6 +123,36 @@ class QuotesController < ApplicationController
     end
 
     render json: { status: :success, quote: quote }
+  rescue => e
+
+    render json: { status: :error, message: e.message }
+  end
+
+  ##
+  # 編集
+  # @version 2018/06/10
+  #
+  def edit
+
+    add_breadcrumb '案件', path: quotes_path
+    add_breadcrumb '編集'
+
+  end
+
+
+  ##
+  # 更新
+  # @version 2018/06/10
+  #
+  def update
+
+    # 情報更新
+    quote.update! quote_params
+
+    # taskが存在していたらtaskの納期も更新する
+    quote.task.update! date: quote.deliver_at if quote.task.present?
+
+    render json: { status: :success }
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -210,17 +221,20 @@ class QuotesController < ApplicationController
 
     cl_quote = quote.deep_clone(:quote_projects)
 
-    cl_quote.update! subject: "#{quote.subject}（複製： 案件番号）#{quote.id}", date: '', expiration: '', attention: '', pdf_url: '', status: :unworked, quote_type: :contract, user_id: current_user.id, deliver_at: '', deliver_type: '', issues_date: '', delivery_note_date: '', lock: false
+    cl_quote.update! subject: "#{quote.subject}（複製： 案件番号）#{quote.id}", date: Time.zone.now, expiration: '', attention: '', pdf_url: '', status: :unworked, quote_type: quote.quote_type, user_id: current_user.id, deliver_at: '', deliver_type: quote.deliver_type, issues_date: '', delivery_note_date: '', lock: false, tax: 1.1
 
-    cl_work = quote.work.deep_clone(:work_details)
+    if quote.work.present?
 
-    cl_work.update! quote_id: cl_quote.id, status: :draft
+      cl_work = quote.work.deep_clone(:work_details)
 
-    quote.work.work_subcontractors.each do  |r|
+      cl_work.update! quote_id: cl_quote.id, status: :draft
 
-      cl_work_subcontractor = WorkSubcontractor.find(r.id).deep_clone(:details)
-      cl_work_subcontractor.update! work_id: cl_work.id
-      cl_work_subcontractor.details.each { |d| d.update! work_id: cl_work.id }
+      quote.work.work_subcontractors.each do  |r|
+
+        cl_work_subcontractor = WorkSubcontractor.find(r.id).deep_clone(:details)
+        cl_work_subcontractor.update! work_id: cl_work.id
+        cl_work_subcontractor.details.each { |d| d.update! work_id: cl_work.id }
+      end
     end
 
     redirect_to edit_quote_path(cl_quote), flash: { notice: { message: '案件を複製しました' } }
@@ -255,36 +269,96 @@ class QuotesController < ApplicationController
     fullpath = "#{Rails.root}/tmp/#{filename}"
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
-      quote.card_clients.pluck(:card_id).uniq.map do |r|
-        card = Card.find(r)
-        zipfile.get_output_stream("#{quote.subject}-#{card.name}/#{card.name}.csv") do |f|
-          bom = "\uFEFF"
-          f.puts(
-            CSV.generate(bom) do |csv|
-              headers = []
-              headers << 'No.'
-              headers << 'テンプレート名'
-              # headers << '箱数'
-              headers << '申込日'
-              card.templates.map { |t| t.details.map { |d| headers << d.name } }
-              csv << headers
-              quote.card_clients.where(card_id: r).map.with_index do |c, index|
-                (1..quote.task_card_clients.where(card_client_id: c.id).first.count).each do |cc|
+      card_template = CardTemplate.find_by(company_id: quote.client.company_division.company_id)
+      zipfile.get_output_stream("会社名:#{ card_template.company.name }_#{ card_template.name }.csv") do |f|
 
-                  values = []
-                  client = CardClient.find(c.id)
-                  values << index + 1
-                  values << c.card.name
-                  # values << TaskCardClient.find_by(quote_id: quote.id,card_client_id: c.id).count
-                  values << quote.created_at.strftime('%Y年 %m月 %d日')
-                  client.templates.map { |ct| ct.values.map { |v| values << v.value } }
-                  csv << values
+        bom = "\uFEFF"
+        f.puts(
+          CSV.generate(bom) do |csv|
+
+            headers = []
+            headers << 'テンプレート名'
+            headers << '箱数'
+            headers << '申込日'
+            headers << '表面レイアウトID'
+            headers << '裏面レイアウトID'
+
+            flag_ids = []
+            card_template.card_layouts.each { |cl| cl.contents.each { |ct| flag_ids << ct.content_flag_id } }
+            flag_ids.uniq!
+
+            flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
+
+            csv << headers
+
+            quote.card_clients.each do |r|
+
+              values = []
+
+              values << card_template.name
+              values << TaskCardClient.find_by(quote_id: quote.id, card_client_id: r.id).count
+              values << quote.created_at.strftime('%Y年 %m月 %d日')
+              values << r.head_layout_id
+              values << r.tail_layout_id
+
+              flag_ids.each do |flag_id|
+
+                flag = ContentFlag.find(flag_id)
+                if r.head_layout.contents.pluck(:content_flag_id).include?(flag_id)
+
+                  layout_content = r.head_layout.contents.where(content_flag_id: flag_id).first
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) if flag.content_type != 'image'
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.content_type == 'image'
+
+                  values << layout_value.text_value if flag.content_type == 'text'
+                  values << layout_value.textarea_value if flag.content_type == 'text_area'
+
+                  if flag.content_type == 'image'
+
+                    if layout_value.new_record?
+
+                      values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
+                    else
+
+                      values << layout_value.upload.name
+                    end
+                  end
+
+                elsif r.tail_layout.contents.pluck(:content_flag_id).include?(flag_id)
+
+                  layout_content = r.tail_layout.contents.where(content_flag_id: flag_id).first
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) if flag.content_type != 'image'
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.content_type == 'image'
+
+                  values << layout_value.text_value if flag.content_type == 'text'
+                  values << layout_value.textarea_value if flag.content_type == 'text_area'
+
+                  if flag.content_type == 'image'
+
+                    if layout_value.new_record?
+
+                      values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
+                    else
+
+                      values << layout_value.upload.name
+                    end
+                  end
+
+                else
+
+                  values << ''
                 end
+
               end
-              csv
+
+              csv << values
+
             end
-          )
-        end
+
+            csv
+
+          end
+        )
       end
     end
 
@@ -316,42 +390,9 @@ class QuotesController < ApplicationController
   def all_lock
 
     raise '管理者以外は案件の一括ロックは出来ません' if !current_user.admin?
-
-    _self = Quote.all.deliverd_in(params[:date1]..params[:date2])
-    # フリーワードが入っていて、ステータスが未選択
-    if params[:name].present? && params[:status] == ''
-      # 名称検索
-      terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-      query = (['free_word like ?'] * terms.size).join(' and ')
-      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
-      _self.update(lock: true)
-    # フリーワードが入っていて、ステータスが選択されている
-    elsif params[:name].present? && params[:status] != ''
-      # 名称検索
-      terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-      query = (['free_word like ?'] * terms.size).join(' and ')
-      _self = _self.where(query, *terms.map { |term| "%#{term}%" }).where(status: params[:status])
-      _self.update(lock: true)
-      return _self
-
-    # フリーワードが空で、ステータスが未選択
-    elsif params[:name].blank? && params[:status] == ''
-
-      # 日付検索
-      _self.update(lock: true)
-      return _self
-    # フリーワードが空で、ステータスが入力されている
-    elsif params[:name].blank? && params[:status] != nil && params[:status] != ''
-
-      # ステータス検索
-      _self = _self.where(status: params[:status])
-      _self.update(lock: true)
-      return _self
-    end
-    # 成功したら編集ページに飛ぶ
-    redirect_to quotes_path
+    Quote.all_lock(params[:name], params[:status], params[:date1], params[:date2])
+    redirect_to quotes_path, flash: { notice: { message: '案件を一括ロックしました' } }
   rescue => e
-
     # エラー時は直前のページへ
     redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
   end
@@ -365,7 +406,7 @@ class QuotesController < ApplicationController
 
     def quote_params
 
-      params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :pdf_url, :price, :user_id, :status, :quote_number,
+      params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :drive_folder_id, :pdf_url, :price, :user_id, :status, :quote_number,
         :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price,
         :issues_date, :delivery_note_date, :profit_price,
         quote_projects_attributes: [:id, :quote_id, :project_id, :unit, :price, :name, :unit_price, :project_name, :remarks]

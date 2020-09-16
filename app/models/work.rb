@@ -7,11 +7,11 @@
 #  price       :integer          default(0)
 #  cost        :integer          default(0)
 #  status      :integer          default("draft")
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
 #  free_word   :text(65535)
 #  notices     :text(65535)
 #  division_id :bigint(8)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 class Work < ApplicationRecord
@@ -125,9 +125,12 @@ class Work < ApplicationRecord
     if parameters[:name].present? && parameters[:status] == ''
 
       # 名称検索
-      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      _self = _self.joins(:quote).merge(Quote.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day))
+
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+
       query = (['works.free_word like ?'] * terms.size).join(' and ')
+
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
 
       # 日付検索
@@ -136,28 +139,31 @@ class Work < ApplicationRecord
     # フリーワードが入っていて、ステータスが選択されている
     elsif parameters[:name].present? && parameters[:status] != ''
 
-      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      _self = _self.joins(:quote).merge(Quote.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day))
 
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+
       query = (['works.free_word like ?'] * terms.size).join(' and ')
+
       _self = _self.where(query, *terms.map { |term| "%#{term}%" }).where(status: parameters[:status])
 
       # 日付検索
       _self
-
     # フリーワードが空で、ステータスが未選択
     elsif parameters[:name].blank? && parameters[:status] == ''
 
-      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
-      _self
+      _self = _self.joins(:quote).merge(Quote.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day))
 
+      _self
     # フリーワードが空で、ステータスが入力されている
     elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != ''
 
       _self = where(status: parameters[:status])
+
       # 日付検索
-      _self = _self.joins(:quote).merge(Quote.deliverd_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day))
+      _self = _self.joins(:quote).merge(Quote.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day))
+
       _self
     end
 

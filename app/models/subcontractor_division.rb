@@ -12,9 +12,9 @@
 #  address1         :string(191)
 #  address2         :string(191)
 #  note             :text(65535)
+#  free_word        :text(65535)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  free_word        :text(65535)
 #
 
 class SubcontractorDivision < ApplicationRecord

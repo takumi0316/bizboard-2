@@ -1,4 +1,4 @@
-= form_for activity, html: { class: 'u-mt-30'} do |f|
+= form_for activity, html: { class: 'u-mt-30' } do |f|
   .c-form-group
     .u-mr-30
       .c-form-label
@@ -20,7 +20,7 @@
     .u-mr-30
       .c-form-label
         = f.label :accurary, '確度'
-      = f.select :accurary, Activity.accuraries_i18n.invert, {}, { class: 'c-form-dateselect' }
+      = f.select :accurary, Activity.accuraries_i18n.invert, {prompt: '確度'}, { class: 'c-form-dateselect' }
 
     .u-mr-30
       .c-form-label
@@ -50,20 +50,3 @@
   = f.text_field :attachment, placeholder: '資料リンクを貼り付けてください', type: 'url', class: 'c-form-text'
 
   .u-ta-center.u-mt-30 = f.submit activity.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
-
-javascript:
-  window.onload = function(){
-
-  var url = document.getElementById('activity_attachment')
-  var date_y = document.getElementById('activity_date_1i')
-
-  //urlのバリデーション
-  url.addEventListener('invalid', function(e) {
-        e.target.setCustomValidity('');
-        if(url.validity.typeMismatch){
-          e.target.setCustomValidity('URLが正しくありません');
-        }
-      }, false);
-  };
-
-  //日付のバリデーション

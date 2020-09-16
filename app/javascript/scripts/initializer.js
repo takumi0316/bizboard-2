@@ -25,7 +25,7 @@ window.Initializer = window.Initializer||{};
 
     // turbolinksのパッチ
     // this.setTurbolinksMonkeyPatch();
-    
+  
     // 画像の遅延読み込み
     this.lazy_load = Lozad('.lazy', {
       threshold: 0.1,

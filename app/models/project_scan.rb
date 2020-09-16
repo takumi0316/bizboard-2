@@ -18,10 +18,10 @@
 #  odr                :integer          default("odr_available")
 #  bookmark           :integer          default("bookmark_necessary")
 #  edit_file_name     :integer          default("edit_filename_necessary")
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
 #  posting_state_note :text(65535)
 #  price              :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 class ProjectScan < ApplicationRecord
