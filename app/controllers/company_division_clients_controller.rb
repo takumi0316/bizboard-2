@@ -147,9 +147,12 @@ class CompanyDivisionClientsController < ApplicationController
 
     client.update! client_params
 
-    params[:layout_content].each do |content|
-      layout_content = LayoutContent.find(content[:id])
-      layout_content.update! no_image: content[:no_image]
+    if params[:layout_content].present?
+
+      params[:layout_content].each do |content|
+        layout_content = LayoutContent.find(content[:id])
+        layout_content.update! no_image: content[:no_image]
+      end
     end
 
     layout = params[:layout_type] == 'head' ? client.head_layout : client.tail_layout

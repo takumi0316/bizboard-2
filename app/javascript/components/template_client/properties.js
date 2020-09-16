@@ -23,7 +23,9 @@ export const FontFamilies = {
   'Frutiger 45 Ligth': '5',
   'blk-bold': '6',
   'blk-book': '7',
-  'blk-extrabold': '8'
+  'blk-extrabold': '8',
+  'Frutiger 55 Roman': '9',
+  'Noto Sans': '10'
 };
 
 // 縮小対応可否
