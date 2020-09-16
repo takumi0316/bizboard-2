@@ -1,5 +1,8 @@
 import React, { Fragment } from 'react'
 
+// components
+import NoImage from './no_image'
+
 const ReadOnly = props => {
 
   /**
@@ -45,7 +48,12 @@ const ReadOnly = props => {
             <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
             <td className='u-ta-center'>
               { content_type ?
-                <img src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                <Fragment>
+                  { content.no_image ?
+                    <NoImage style={{ height: '150px', width: '150px' }}/>
+                    : <img src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                  }
+                </Fragment>
                 : <Fragment>
                   { content.content_type === 'text' ?
                     content.text_value

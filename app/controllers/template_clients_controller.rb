@@ -378,6 +378,7 @@ class TemplateClientsController < ApplicationController
           layout_value_id: layout_value.id,
           text_value: layout_value.text_value,
           textarea_value: layout_value.textarea_value,
+          no_image: r.no_image,
           upload_id: layout_value.upload_id,
           uploads: r.content_uploads.map do |c|
             {

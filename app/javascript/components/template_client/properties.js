@@ -20,7 +20,10 @@ export const FontFamilies = {
   'Lucida Grande': '2',
   'UD新ゴ 簡体字 M': '3',
   'ヒラギノ角ゴ 繁体中文 W3': '4',
-  'Frutiger 45 Ligth': '5'
+  'Frutiger 45 Ligth': '5',
+  'blk-bold': '6',
+  'blk-book': '7',
+  'blk-extrabold': '8'
 };
 
 // 縮小対応可否

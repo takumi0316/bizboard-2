@@ -337,6 +337,8 @@ export const setPDFValue = (file, contents) => {
         parent_div.appendChild(child_div);
       } else {
 
+        if(content.no_image) return
+        
         // 画像をbase変換しないと、スクショ時にCORSエラーが出る
         const field = new FormData();
         const upload = () => {
@@ -376,7 +378,7 @@ export const setPDFValue = (file, contents) => {
 
           parent_div.appendChild(child_img);
 
-        }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを取得できませんでした。', close_callback: () => console.log(err) }));
+        }).catch(err => window.alertable({ icon: 'error', message: '画像を取得できませんでした。', close_callback: () => console.log(err) }));
       };
 
     });

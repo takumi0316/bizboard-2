@@ -16,6 +16,10 @@
       height: 100%
       object-fit: cover
       border: 1px solid #efefef
+    svg
+      height: 100%
+      object-fit: cover
+      border: 1px solid #efefef
   &__button
     position: absolute
     top: 0
@@ -69,12 +73,19 @@
     padding: 15px
   &__image
     display: inline-block
-    width: 16%
+    width: 150px
     height: 150px
     padding: 5px
     cursor: pointer
     img
-      width: 100%
+      width: 150px
+      height: 100%
+      object-fit: cover
+      border: 1px solid map-get($layoutColors, 'gray')
+      &:hover
+        opacity: .8
+    svg
+      width: 150px
       height: 100%
       object-fit: cover
       border: 1px solid map-get($layoutColors, 'gray')

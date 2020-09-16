@@ -147,6 +147,11 @@ class CompanyDivisionClientsController < ApplicationController
 
     client.update! client_params
 
+    params[:layout_content].each do |content|
+      layout_content = LayoutContent.find(content[:id])
+      layout_content.update! no_image: content[:no_image]
+    end
+
     layout = params[:layout_type] == 'head' ? client.head_layout : client.tail_layout
     contents = layout.contents.map do |r|
 
@@ -172,6 +177,7 @@ class CompanyDivisionClientsController < ApplicationController
         layout_value_id: layout_value.id,
         text_value: layout_value.text_value,
         textarea_value: layout_value.textarea_value,
+        no_image: r.no_image,
         upload_id: layout_value.upload_id,
         uploads: r.content_uploads.map do |c|
           {
@@ -217,5 +223,10 @@ class CompanyDivisionClientsController < ApplicationController
       params.require(:company_division_client).permit :company_division_id, :user_id, :name, :kana, :title, :tel, :email, :password, :password_confirmation, :user_type, :note, :head_layout_id, :tail_layout_id, layout_values_attributes: [
         :id, :company_division_client_id, :text_value, :textarea_value, :layout_type, :content_flag_id, :upload_id, :layout_content_id
       ]
+    end
+
+    def layout_content_params
+
+      params.require(:layout_content).permit :id, :no_image
     end
 end

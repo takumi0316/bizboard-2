@@ -83,29 +83,29 @@ const Index = props => {
 
     if(state.apply_layout.id == layout_id) {
 
-      window.alertable({ icon: 'info', message: '既に選択されています。' });
-      return;
-		};
+      window.alertable({ icon: 'info', message: '既に選択されています。' })
+      return
+		}
 
 		if(state.content_editing) {
 
-			window.alertable({ icon: 'info', message: '編集を終了してください。' });
-			return;
-		};
+			window.alertable({ icon: 'info', message: '編集を終了してください。' })
+			return
+		}
 
-    const url = `/template_clients/${ props.card_template_id }/set_layout?client_id=${ props.client_id }&layout_id=${ layout_id }&layout_type=${ props.head ? 'head' : 'tail' }`;
-    const request = window.xhrRequest.get(url);
+    const url = `/template_clients/${ props.card_template_id }/set_layout?client_id=${ props.client_id }&layout_id=${ layout_id }&layout_type=${ props.head ? 'head' : 'tail' }`
+    const request = window.xhrRequest.get(url)
     request.then(res => {
 
-      const layout = state.layouts.filter(layout => layout.id == layout_id);
+      const layout = state.layouts.filter(layout => layout.id == layout_id)
 
-      if(props.upload) props.changeLayout(layout[0], res.data.contents);
+      if(props.upload) props.changeLayout(layout[0], res.data.contents)
       if(!props.upload) window.alertable({ icon: res.data.status, message: 'レイアウトを変更しました。', close_callback: () => {
 
-        if(!props.upload) setState({ ...state, selected: false, apply_layout: layout[0], contents: res.data.contents });
-      }});
+        if(!props.upload) setState({ ...state, selected: false, apply_layout: layout[0], contents: res.data.contents })
+      }})
 
-    }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }));
+    }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }))
 
     // const layout = state.layouts.filter(layout => layout.id == e);
     // setState({ ...state, selected: true, select_layout: layout[0] });
@@ -158,27 +158,31 @@ const Index = props => {
 	 */
 	const saveContent = e => {
 
-		e.preventDefault();
-		const url = `/company_division_clients/${ props.client_id }/update_layout_values?layout_type=${ props.head ? 'head' : 'tail' }`;
-		const field = new FormData();
-    field.append(`company_division_client[${ props.head ? 'head_layout_id' : 'tail_layout_id' }]`, state.apply_layout.id);
+		e.preventDefault()
+		const url = `/company_division_clients/${ props.client_id }/update_layout_values?layout_type=${ props.head ? 'head' : 'tail' }`
+		const field = new FormData()
+    field.append(`company_division_client[${ props.head ? 'head_layout_id' : 'tail_layout_id' }]`, state.apply_layout.id)
 		state.contents.map((content, index) => {
 
-			const doc = document.getElementById(content.flag_name);
+			const doc = document.getElementById(content.flag_name)
 
-      field.append('company_division_client[layout_values_attributes][][id]', content.layout_value_id || '');
-      field.append('company_division_client[layout_values_attributes][][company_division_client_id]', props.client_id);
-      field.append('company_division_client[layout_values_attributes][][content_flag_id]', content.flag_id);
-      field.append('company_division_client[layout_values_attributes][][layout_type]', content.content_type);
+      field.append('company_division_client[layout_values_attributes][][id]', content.layout_value_id || '')
+      field.append('company_division_client[layout_values_attributes][][company_division_client_id]', props.client_id)
+      field.append('company_division_client[layout_values_attributes][][content_flag_id]', content.flag_id)
+      field.append('company_division_client[layout_values_attributes][][layout_type]', content.content_type)
         if(content.content_type === 'image') {
-          field.append('company_division_client[layout_values_attributes][][upload_id]', doc.dataset.set);
-          field.append('company_division_client[layout_values_attributes][][layout_content_id]', content.id);
-        };
-      if(content.content_type === 'text') field.append('company_division_client[layout_values_attributes][][text_value]', doc.value || '');
-      if(content.content_type === 'text_area') field.append('company_division_client[layout_values_attributes][][textarea_value]', doc.value || '');
-		});
+          
+          const result = doc.dataset.set === 'no_image'
+          field.append('layout_content[][id]', content.id)
+          field.append('layout_content[][no_image]', result)
+          field.append('company_division_client[layout_values_attributes][][layout_content_id]', content.id)
+          if(!result) field.append('company_division_client[layout_values_attributes][][upload_id]', doc.dataset.set)
+        }
+      if(content.content_type === 'text') field.append('company_division_client[layout_values_attributes][][text_value]', doc.value || '')
+      if(content.content_type === 'text_area') field.append('company_division_client[layout_values_attributes][][textarea_value]', doc.value || '')
+		})
 
-		const request = window.xhrRequest.post(url, field);
+		const request = window.xhrRequest.post(url, field)
 		request.then(res => {
 
       window.alertable({ icon: res.data.status, message: '保存しました！', close_callback: () => {
@@ -191,21 +195,6 @@ const Index = props => {
         if(!props.upload) setState({ ...state, content_editing: false, contents: res.data.contents });
       }});
 		}).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }));
-	};
-
-	const sukusho = e => {
-
-		e.preventDefault();
-		html2canvas(document.getElementById('canvas'), {
-      height: 1500,
-      allowTaint: true,
-      useCORS: true,
-      logging: true,
-      taintTest: false
-		}).then(canvas => {
-        let imgData = canvas.toDataURL();
-        document.getElementById("ss").href = imgData;
-    });
 	};
 
 	return(
@@ -226,10 +215,6 @@ const Index = props => {
         <div>
           <Content editing={ state.content_editing } contents={ state.contents } editContent={ editContent } saveContent={ saveContent }/>
         </div>
-      </div>
-      <div className='u-mt-30'>
-        <button className='c-btnMain-primaryB' onClick={ sukusho }>スクショ</button>
-        <a href="" id="ss" download="html_ss.png">スクリーンショット(document.body全体)をダウンロード</a>
       </div>
     </Fragment>
   );

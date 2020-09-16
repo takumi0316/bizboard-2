@@ -16,7 +16,7 @@ export default class Icon extends React.Component {
 
     return (
       <svg className={`${color} ${size} ${this.props.className || ''}`}>
-        <use xlinkHref={`#works-${this.props.name}`} />
+        <use xlinkHref={`#application-${this.props.name}`} />
       </svg>
     );
   }
