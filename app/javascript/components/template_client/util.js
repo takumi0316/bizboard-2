@@ -337,6 +337,7 @@ export const setPDFValue = (file, contents) => {
         parent_div.appendChild(child_div);
       } else {
 
+        // 画像なしの場合
         if(content.no_image) return
         
         // 画像をbase変換しないと、スクショ時にCORSエラーが出る
