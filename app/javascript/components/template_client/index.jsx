@@ -191,10 +191,10 @@ const Index = props => {
 
           setState({ ...state, content_editing: false });
           props.changeContents(res.data.contents, state, setState);
-        };
-        if(!props.upload) setState({ ...state, content_editing: false, contents: res.data.contents });
-      }});
-		}).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }));
+        }
+        if(!props.upload) setState({ ...state, content_editing: false, contents: res.data.contents })
+      }})
+		}).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }))
 	};
 
 	return(

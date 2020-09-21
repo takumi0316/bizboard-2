@@ -94,7 +94,6 @@ class Company < ApplicationRecord
     header_converter = lambda { |h| HEADER_TO_SYM_MAP[h] }
 
     csv = CSV.read(file.path, headers: :first_row, header_converters: header_converter, converters: :integer, skip_blanks: true, encoding: 'UTF-8')
-
     group = csv.group_by{|u| u[:division_name] }
 
     error_division = []
@@ -118,7 +117,7 @@ class Company < ApplicationRecord
       # 同じ案件番号の内容でeach処理
       begin
         r.each do |ri|
-            new_client << CompanyDivisionClient.new(company_division_id: division_id, name: ri[:name], email: ri[:mail], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password], password_confirmation: ri[:password] )
+          new_client << CompanyDivisionClient.new(company_division_id: division_id, name: ri[:name], email: ri[:mail], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s )
         end
         CompanyDivisionClient.import new_client
       end

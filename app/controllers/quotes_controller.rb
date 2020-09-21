@@ -280,8 +280,8 @@ class QuotesController < ApplicationController
             headers << 'テンプレート名'
             headers << '箱数'
             headers << '申込日'
-            headers << '表面レイアウトID'
-            headers << '裏面レイアウトID'
+            headers << '表面レイアウト名'
+            headers << '裏面レイアウト名'
 
             flag_ids = []
             card_template.card_layouts.each { |cl| cl.contents.each { |ct| flag_ids << ct.content_flag_id } }
@@ -320,6 +320,7 @@ class QuotesController < ApplicationController
                       values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
                     else
 
+                      binding.pry
                       values << layout_value.upload.name
                     end
                   end
