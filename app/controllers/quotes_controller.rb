@@ -298,8 +298,8 @@ class QuotesController < ApplicationController
               values << card_template.name
               values << TaskCardClient.find_by(quote_id: quote.id, card_client_id: r.id).count
               values << quote.created_at.strftime('%Y年 %m月 %d日')
-              values << r.head_layout_id
-              values << r.tail_layout_id
+              values << r.head_layout.name
+              values << r.tail_layout.name
 
               flag_ids.each do |flag_id|
 
