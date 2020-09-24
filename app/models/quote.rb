@@ -182,20 +182,19 @@ class Quote < ApplicationRecord
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
       # ステータス選択されていればステータスで絞る
-      _self = _self.where(status: status) if status != ''
+      _self = _self.send(status) if status.present?
       _self.update(lock: true)
 
     # フリーワードが空で、ステータスが未選択
-    elsif name.blank? && status == ''
+    elsif name.blank? && status.blank?
 
       # 日付検索
       _self.update(lock: true)
     # フリーワードが空で、ステータスが入力されている
-    elsif name.blank? && status != nil && status != ''
+    elsif name.blank? && status.blank?
 
       # ステータス検索
-      _self = _self.where(status: status)
-      _self.update(lock: true)
+      _self.send(status).update(lock: true)
       return _self
     end
   end

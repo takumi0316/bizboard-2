@@ -27,12 +27,12 @@ const QuoteSearch = props => {
   };
 
   const [state, setState] = useState(init);
-  
+
   useEffect(() => {
-  
+
   const values = onSearchParams();
     if(!values) return;
-  
+
     setState({
       ...state,
       name: values['name'],
@@ -41,7 +41,7 @@ const QuoteSearch = props => {
       status: values['status']
     });
   }, []);
-  
+
   /**
    *
    * @version 2020/01/08
@@ -66,12 +66,12 @@ const QuoteSearch = props => {
     const parameters = query.split('&');
     let value = new Object();
     parameters.map((parameter, index) => {
-    
+
       // パラメータ名とパラメータ値に分割する
       let element = parameter.split('=');
       let paramName = decodeURIComponent(element[0]);
       let paramValue = decodeURIComponent(element[1]);
-      
+
       // パラメータ名をキーとして連想配列に追加する
       value[paramName] = decodeURIComponent(paramValue);
     });
@@ -85,7 +85,7 @@ const QuoteSearch = props => {
    *
    */
   const sortingAction = prop => {
-  
+
     switch(prop.action) {
       case 'start_date':
         setStartDate(prop);
@@ -129,7 +129,7 @@ const QuoteSearch = props => {
           <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
           <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/quotes' } >元に戻す</a>
           { props.search_status == '検索' ?
-            <a className='u-va-middle u-ml-10 c-btnMain-primaryB' rel="nofollow" data-method="post" href={ `/quotes/all_lock?name=${state.name}&status=${state.status}&date1=${state.startDate}&date2=${state.endDate}` } >一括ロック</a>
+            <a className='u-va-middle u-ml-10 c-btnMain-primaryB' data-method="post" href={ `/quotes/all_lock?name=${state.name}&status=${state.status}&date1=${state.startDate}&date2=${state.endDate}` } >一括ロック</a>
             :
             null
           }

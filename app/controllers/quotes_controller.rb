@@ -389,7 +389,7 @@ class QuotesController < ApplicationController
 
   def all_lock
 
-    raise '管理者以外は案件の一括ロックは出来ません' if !current_user.admin?
+    raise '管理者以外は案件の一括ロックは出来ません' unless current_user.admin?
     Quote.all_lock(params[:name], params[:status], params[:date1], params[:date2])
     redirect_to quotes_path, flash: { notice: { message: '案件を一括ロックしました' } }
   rescue => e
