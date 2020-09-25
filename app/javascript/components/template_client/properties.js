@@ -1,10 +1,3 @@
-// コンテントタイプ
-export const LayoutTypes = {
-  'text': '0',
-  'text_area': '10',
-  'image': '20'
-};
-
 // フォントカラー
 export const FontColors = {
   'black': '0',
@@ -25,11 +18,8 @@ export const FontFamilies = {
   'blk-book': '7',
   'blk-extrabold': '8',
   'Frutiger 55 Roman': '9',
-  'Noto Sans': '10'
+  'noto-sans-cjk-jp-bold': '10',
+  'noto-sans-cjk-jp-light': '11',
+  'noto-sans-cjk-jp-medium': '12'
 };
 
-// 縮小対応可否
-export const IsReductionRated = {
-  'true': '0',
-  'false': '10'
-};
