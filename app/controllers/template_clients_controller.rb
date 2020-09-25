@@ -36,13 +36,8 @@ class TemplateClientsController < ApplicationController
 
   def index
 
-    add_breadcrumb '一覧'
-  end
-
-  def new
-
-    add_breadcrumb '一覧', path: template_clients_path
-    add_breadcrumb '新規作成'
+    add_breadcrumb '一覧', path: card_templates_path
+    add_breadcrumb 'ユーザー一覧'
   end
 
   ##
@@ -51,7 +46,8 @@ class TemplateClientsController < ApplicationController
   #
   def head
 
-    add_breadcrumb '一覧', path: template_clients_path(id: params[:id])
+    add_breadcrumb '一覧', path: card_templates_path
+    add_breadcrumb 'ユーザー一覧', path: template_clients_path(id: params[:id])
     add_breadcrumb '編集(表面)'
   end
 
@@ -61,7 +57,8 @@ class TemplateClientsController < ApplicationController
   #
   def tail
 
-    add_breadcrumb '一覧', path: template_clients_path(id: params[:id])
+    add_breadcrumb '一覧', path: card_templates_path
+    add_breadcrumb 'ユーザー一覧', path: template_clients_path(id: params[:id])
     add_breadcrumb '編集(裏面)'
   end
 

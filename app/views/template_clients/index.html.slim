@@ -9,7 +9,6 @@
 .u-mt-15
   = link_to 'アップロード', upload_template_clients_path(id: params[:id]), method: :post, class: 'c-btnMain-primaryA'
   = link_to 'ダウンロード', download_template_clients_path(id: params[:id]), method: :post, class: 'u-ml-30 c-btnMain-primaryB'
-  = link_to '配送先一覧', delivery_targets_path(card_template_id: params[:id]), class: 'u-ml-30 c-btnMain-primaryC'
 
 = form_with url: template_clients_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
   .c-search__item

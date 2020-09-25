@@ -12,13 +12,14 @@
     thead
       tr
         th ID
-        th 配送先名称
+        th 名称
+        th 住所
         th colspan=2
-
     tbody
       - delivery_targets.each do |r|
         tr
         td.u-ta-center = r.id
         td.u-ta-center = r.name
+        td.u-ta-center = "#{ r.address1 }#{ r.address2 }"
         td.u-ta-center = link_to '編集', edit_delivery_target_path(r), class: 'c-btnMain-standard'
         td.u-ta-center = link_to '削除', delivery_target_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか？' }
