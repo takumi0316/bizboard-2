@@ -5,41 +5,11 @@ const UAParser = require('ua-parser-js');
 import { FontFamilies } from './contents/properties'
 
 /**
- * String => Bool
- * @version 2020/04/30
- *
- */
-export const toBoolean = data => data.toLowerCase() === 'true';
-
-/**
  * generate unique key
  * @version 2020/04/04
  *
  **/
 export const generateKey = pre => `${ pre }_${ new Date().getTime() }`;
-
-/**
- * valid property
- * @version 2020/04/04
- *
- */
-export const validProperty = (value, property) => {
-
-  if(value) return true;
-  window.alertable({ icon: 'error', message: `${property}を入力してください。`});
-};
-
-/**
- * エラーアラート
- * @version 2020/05/28
- * @param err
- *
- */
-export const missTransition = err => {
-
-  console.log(err);
-  window.alertable({ icon: 'error', message: 'ページ遷移に失敗しました。' });
-};
 
 /**
  * ptをmmに変換
@@ -126,7 +96,9 @@ export const setPDF = (file, contents) => {
       parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
 
       if(content.content_type != 'image') {
-
+  
+        const font_family = Object.keys(FontFamilies).find((font_family, index) => index === content.font_family)
+        
         let child_p = document.createElement('p');
         child_p.id = `child_p-${ index }`;
         let child_div = document.createElement('div');
@@ -134,7 +106,7 @@ export const setPDF = (file, contents) => {
         draw.appendChild(parent_div);
         child_p.textContent = name || '';
 
-        child_p.style = `font-size: ${ fontSize }px; font-family: ${ FontFamilies[content.font] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
+        child_p.style = `font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
         parent_div.appendChild(child_p);
         child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
         parent_div.appendChild(child_div);

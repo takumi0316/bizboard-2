@@ -25,6 +25,8 @@ export const FontFamilies = {
   'blk-book': '7',
   'blk-extrabold': '8',
   'Frutiger 55 Roman': '9',
-  'Noto Sans': '10'
+  'noto-sans-cjk-jp-bold': '10',
+  'noto-sans-cjk-jp-light': '11',
+  'noto-sans-cjk-jp-medium': '12'
 };
 
