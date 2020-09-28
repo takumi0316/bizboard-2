@@ -32,6 +32,7 @@ class DeliveryTargetsController < ApplicationController
   #
   def index
 
+    add_breadcrumb '一覧', path: card_templates_path
     add_breadcrumb '配送先一覧'
   end
 
@@ -41,8 +42,9 @@ class DeliveryTargetsController < ApplicationController
   #
   def new
 
+    add_breadcrumb '一覧', path: card_templates_path
     add_breadcrumb '配送先一覧', path: delivery_targets_path(card_template_id: params[:card_template_id])
-    add_breadcrumb '配送先'
+    add_breadcrumb '新規作成'
   end
 
   ##
@@ -50,23 +52,24 @@ class DeliveryTargetsController < ApplicationController
   # @version 2018/06/10
   #
   def create
-  
+
     delivery_target.update! delivery_target_params
-  
+
     redirect_to edit_delivery_target_path(delivery_target), flash: { notice: { message: '配送先を作成しました' } }
   rescue => e
-  
+
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
-  
+
   ##
   # 編集
   # @version 2018/06/10
   #
   def edit
-
-    add_breadcrumb '配送先一覧', path: delivery_targets_path(card_template_id: delivery_target.card_template_id)
-    add_breadcrumb '配送先編集'
+  
+    add_breadcrumb '一覧', path: card_templates_path
+    add_breadcrumb '配送先一覧', path: delivery_targets_path(card_template_id: params[:card_template_id])
+    add_breadcrumb '編集'
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
@@ -93,7 +96,7 @@ class DeliveryTargetsController < ApplicationController
   def destroy
 
     delivery_target.destroy!
-    
+ 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '配送先を削除しました' } }
   rescue => e
 

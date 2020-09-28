@@ -15,7 +15,7 @@
       tr
         th ID
         th 会社名
-        th ユーザー一覧
+        th colspan=2 一覧
         th colspan=3 編集
     tbody
       - card_templates.each do |r|
@@ -23,7 +23,8 @@
           td.u-ta-center = r.id
           td.u-ta-center = r.company.name
           td.u-ta-center
-            = link_to '詳細', template_clients_path(id: r), class: 'c-btnMain-primaryB'
+            = link_to 'ユーザー', template_clients_path(id: r), class: 'c-btnMain-primaryC'
+          td.u-ta-center
+						= link_to '配送先', delivery_targets_path(card_template_id: r), class: 'u-ml-30 c-btnMain-primaryC'
           td.u-ta-center = link_to '編集', edit_card_template_path(r), class: 'c-btnMain-standard'
-          td.u-ta-center = link_to '複製', copy_card_template_path(r), method: :post, class: 'c-btnMain-primaryC'
           td.u-ta-center = link_to '削除', card_template_path(r), class: 'c-btnMain-primaryA', method: :delete, data: { confirmable: '本当に削除しますか？' }
