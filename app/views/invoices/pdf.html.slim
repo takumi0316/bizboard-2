@@ -67,11 +67,17 @@
                 - if r.remarks.present?
                   .u-ta-left.u-mt-5.u-fw-light(colspan='4' style="font-size: 12px;") #{simple_format(r.remarks)}
               td.u-ta-right
-                .u-fw-light #{((r.unit_price).to_i).to_s(:delimited)}
+                - if r.unit_price.is_a?(Integer)
+                  .u-fw-light #{((r.unit_price).to_i).to_s(:delimited)}
+                - else
+                  .u-fw-light #{((r.unit_price).to_f).to_s(:delimited)}
               td.u-ta-right
                 .u-fw-light #{((r.unit).to_i).to_s(:delimited)}
               td.u-ta-right
-                .u-fw-light #{((r.price).to_i).to_s(:delimited)}
+                - if r.price.is_a?(Integer)
+                  .u-fw-light #{((r.price).to_i).to_s(:delimited)}
+                - else
+                  .u-fw-light #{((r.price).to_f).to_s(:delimited)}
           - if invoice.quote.discount > 0
             tr
               td.u-ta-left
