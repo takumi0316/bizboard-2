@@ -47,6 +47,8 @@ window.Initializer = window.Initializer||{};
   p.loadWebfont = function() {
     
     document.getElementById('js-webfont').rel = 'stylesheet';
+    document.getElementById('customfont-blackrock').rel = 'stylesheet';
+    document.getElementById('noto-sans-cjk-jp').rel = 'stylesheet';
   };
 
   /**
