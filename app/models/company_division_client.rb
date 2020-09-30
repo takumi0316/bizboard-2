@@ -35,6 +35,7 @@
 #  default_reverse_template :string(191)
 #  head_layout_id           :bigint(8)
 #  tail_layout_id           :bigint(8)
+#  uuid                     :string(191)
 #
 
 class CompanyDivisionClient < ApplicationRecord

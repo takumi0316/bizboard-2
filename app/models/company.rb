@@ -2,14 +2,15 @@
 #
 # Table name: companies
 #
-#  id              :bigint(8)        not null, primary key
-#  name            :string(191)
-#  kana            :string(191)
-#  note            :text(65535)
-#  free_word       :text(65535)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  approval_status :integer          default("nothing")
+#  id                       :bigint(8)        not null, primary key
+#  name                     :string(191)
+#  kana                     :string(191)
+#  note                     :text(65535)
+#  free_word                :text(65535)
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  approval_status          :integer          default("nothing")
+#  online_web_business_card :integer          default("disabled")
 #
 
 class Company < ApplicationRecord
@@ -36,6 +37,8 @@ class Company < ApplicationRecord
   #----------------------------------------
 
   enum approval_status: { nothing: 0, approval: 10 }
+
+  enum online_web_business_card: { disabled: 0, enabled: 10 }
 
   #----------------------------------------
   #  ** Validations **
