@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_21_053459) do
+ActiveRecord::Schema.define(version: 2020_09_29_024716) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 2020_09_21_053459) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "approval_status", default: 0
+    t.integer "online_web_business_card", default: 0
   end
 
   create_table "company_division_clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -173,6 +174,7 @@ ActiveRecord::Schema.define(version: 2020_09_21_053459) do
     t.string "default_reverse_template", comment: "デフォルトのテンプレ(裏)"
     t.bigint "head_layout_id"
     t.bigint "tail_layout_id"
+    t.string "uuid"
     t.index ["company_division_id"], name: "index_company_division_clients_on_company_division_id"
     t.index ["head_layout_id"], name: "index_company_division_clients_on_head_layout_id"
     t.index ["password_digest"], name: "index_company_division_clients_on_password_digest"
