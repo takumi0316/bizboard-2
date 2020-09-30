@@ -170,7 +170,7 @@ class ApplicationController < ActionController::Base
     #
     def authenticate_admin
 
-      redirect_back fallback_location: url_for(root_path), flash: {notice: {message: '管理者のみ許可された操作です'}} unless current_user.admin?
+      redirect_back fallback_location: url_for(root_path), flash: { notice: { message: '管理者のみ許可された操作です' } } unless current_user.admin?
     end
 
     ##

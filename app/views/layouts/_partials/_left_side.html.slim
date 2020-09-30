@@ -55,10 +55,20 @@
           = evil_icon 'ei-chart', size: :s
           span.u-ml-10 受注管理グラフ
 
-    - if ['manager', 'sales', 'admin'].include?(current_user.user_type)
+      li.l-dashboard__menuItem
+        = link_to inventories_path, class: current_controller('inventories') do
+          = evil_icon 'ei-archive', size: :s
+          span.u-ml-10 在庫管理
+
+      li.l-dashboard__menuItem
+        = link_to card_templates_path, class: cp(card_templates_path) do
+          = render_application_icon :card, size: :s
+          span.u-ml-10 名刺
+
+    - if current_user.manager? | current_user.sales? | current_user.admin?
 
       .u-mt-15
-        ul.l-dashboard__menuList
+        ul.l-dashboard__menulist
 
           li.l-dashboard__menuItem
             = link_to targets_path, class: current_controller('targets') do
@@ -86,11 +96,6 @@
               span.u-ml-10 こんプロメニュー
 
           li.l-dashboard__menuItem
-            = link_to inventories_path, class: current_controller('inventories') || current_controller('inventories') do
-              = evil_icon 'ei-archive', size: :s
-              span.u-ml-10  在庫管理
-
-          li.l-dashboard__menuItem
             = link_to users_path, class: cp(users_path) do
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 ユーザー一覧
@@ -100,26 +105,21 @@
               = evil_icon 'ei-user', size: :s
               span.u-ml-10 自社部署一覧
 
-          li.l-dashboard__menuItem
-            = link_to configs_path, class: cp(configs_path) do
-              = evil_icon 'ei-user', size: :s
-              span.u-ml-10 サイト設定
-
-          li.l-dashboard__menuItem
-            = link_to card_templates_path, class: cp(card_templates_path) do
-              = render_application_icon :card, size: :s
-              span.u-ml-10 名刺
-
     .u-mt-15
-      ul.l-dashboard__menuList
+      .l-dashboard__menuList
 
         li.l-dashboard__menuItem
-          = link_to "https://docs.google.com/presentation/d/1nRhmFxYAJv6JluvdpRNuxGVB3lCeS7UY_MUIlU-f91w/edit?usp=sharing", target: :_blank do
+          = link_to configs_path, class: cp(configs_path) do
+            = evil_icon 'ei-user', size: :s
+            span.u-ml-10 サイト設定
+
+        li.l-dashboard__menuItem
+          = link_to 'https://docs.google.com/presentation/d/1nRhmFxYAJv6JluvdpRNuxGVB3lCeS7UY_MUIlU-f91w/edit?usp=sharing', target: :_blank do
             = evil_icon 'ei-archive', size: :s
             span.u-ml-10 マニュアル
 
         li.l-dashboard__menuItem
-          = link_to "https://docs.google.com/document/d/1LDfYKbHh14dCdCHueKJQY6W0LTifMlpOD3reZuKPmqU/edit?usp=sharing", target: :_blank do
+          = link_to 'https://docs.google.com/document/d/1LDfYKbHh14dCdCHueKJQY6W0LTifMlpOD3reZuKPmqU/edit?usp=sharing', target: :_blank do
             = evil_icon 'ei-like', size: :s
             span.u-ml-10 更新履歴
 
