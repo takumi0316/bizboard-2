@@ -20,6 +20,7 @@
 #  updated_at         :datetime         not null
 #  logo_height        :string(191)
 #  logo_width         :string(191)
+#  no_image           :boolean          default(TRUE)
 #
 
 class LayoutContent < ApplicationRecord

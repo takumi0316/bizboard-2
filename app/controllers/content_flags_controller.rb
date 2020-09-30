@@ -24,6 +24,8 @@ class ContentFlagsController < ApplicationController
   #  ** Actions **
   #----------------------------------------
 
+  before_action :administrator
+
   def index
 
     add_breadcrumb '一覧'
@@ -85,5 +87,18 @@ class ContentFlagsController < ApplicationController
     def redirect_to_index e
 
       redirect_to content_flags_path, flash: { notice: { message: e.message } }
+    end
+
+    ##
+    # 管理者か否か
+    # @version 2020/09/
+    #
+    def administrator
+
+      raise unless current_user.admin?
+
+    rescue
+
+      redirect_to root_path, flash: { notice: { message: '許可されない操作です。' } }
     end
 end

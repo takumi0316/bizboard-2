@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_104328) do
+ActiveRecord::Schema.define(version: 2020_09_21_053459) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -210,6 +210,14 @@ ActiveRecord::Schema.define(version: 2020_09_14_104328) do
     t.datetime "updated_at", null: false
     t.index ["layout_content_id"], name: "index_content_uploads_on_layout_content_id"
     t.index ["upload_id"], name: "index_content_uploads_on_upload_id"
+  end
+
+  create_table "delivery_targets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "card_template_id"
+    t.string "name", comment: "配送先住所の名称"
+    t.string "address1", comment: "配送先の住所1"
+    t.string "address2", comment: "配送先の住所2"
+    t.index ["card_template_id"], name: "index_delivery_targets_on_card_template_id"
   end
 
   create_table "divisions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -723,7 +731,12 @@ ActiveRecord::Schema.define(version: 2020_09_14_104328) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ts_code"
+<<<<<<< HEAD
+=======
+    t.bigint "delivery_target_id"
+>>>>>>> origin
     t.index ["catalog_id"], name: "index_tasks_on_catalog_id"
+    t.index ["delivery_target_id"], name: "index_tasks_on_delivery_target_id"
     t.index ["quote_id"], name: "index_tasks_on_quote_id"
   end
 
@@ -860,6 +873,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_104328) do
   add_foreign_key "payments", "work_subcontractors"
   add_foreign_key "quotes", "divisions"
   add_foreign_key "tasks", "catalogs"
+  add_foreign_key "tasks", "delivery_targets"
   add_foreign_key "tasks", "quotes"
   add_foreign_key "work_details", "works"
   add_foreign_key "works", "divisions"

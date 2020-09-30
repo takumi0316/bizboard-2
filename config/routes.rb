@@ -211,6 +211,8 @@ Rails.application.routes.draw do
   # タスク管理
   resources :tasks, only: [:show, :update]
 
+  resources :delivery_targets
+
   # 認証
   devise_scope :user do
     match  :sign_in,        to: 'sessions#index',          as: :sign_in, via: [:get, :post]

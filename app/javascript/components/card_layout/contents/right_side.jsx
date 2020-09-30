@@ -110,6 +110,7 @@ const RightSide = props => {
 
     if(state.content_type != 'image') {
 
+      console.log(font_family_ref.current.value)
       content = { ...content,
         name: name_ref.current.value,
         font_family: font_family_ref.current.value,

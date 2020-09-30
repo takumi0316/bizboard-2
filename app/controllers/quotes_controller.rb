@@ -280,8 +280,8 @@ class QuotesController < ApplicationController
             headers << 'テンプレート名'
             headers << '箱数'
             headers << '申込日'
-            headers << '表面レイアウトID'
-            headers << '裏面レイアウトID'
+            headers << '表面レイアウト名'
+            headers << '裏面レイアウト名'
 
             flag_ids = []
             card_template.card_layouts.each { |cl| cl.contents.each { |ct| flag_ids << ct.content_flag_id } }
@@ -298,8 +298,8 @@ class QuotesController < ApplicationController
               values << card_template.name
               values << TaskCardClient.find_by(quote_id: quote.id, card_client_id: r.id).count
               values << quote.created_at.strftime('%Y年 %m月 %d日')
-              values << r.head_layout_id
-              values << r.tail_layout_id
+              values << r.head_layout.name
+              values << r.tail_layout.name
 
               flag_ids.each do |flag_id|
 

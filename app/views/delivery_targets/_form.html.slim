@@ -1,0 +1,23 @@
+.u-mt-30.c-attention
+	p.u-fw-bold 登録された配送先がWeb名刺で配送先として選択できるようになります。
+
+= form_with model: delivery_target, local: true do |f|
+
+  .u-mt-15.c-form-label
+    = f.label :name, '配送先名称'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :name, placeholder: '本社', class: 'c-form-text', required: true
+
+  .c-form-label
+    = f.label :address1, '配送先住所1'
+    span.c-form__required.u-ml-10 必須
+  = f.text_field :address1, placeholder: '東京都中央区新川2-11', class: 'c-form-text', required: true
+
+  .c-form-label
+    = f.label :address2, '配送先住所2'
+    span.c-form__recommend.u-ml-10 任意
+  = f.text_field :address2, placeholder: '住友不動産茅場町ビル2号館5F', class: 'c-form-text'
+
+  = f.hidden_field :card_template_id, value: params[:card_template_id] || delivery_target.card_template_id
+
+  .u-mt-15 = f.submit delivery_target.new_record? ? '作成する' : '更新する', class: 'c-btnMain-standard'
