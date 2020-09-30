@@ -68,7 +68,7 @@
     - if current_user.manager? | current_user.sales? | current_user.admin?
 
       .u-mt-15
-        ul.l-dashboard__menulist
+        .l-dashboard__menulist
 
           li.l-dashboard__menuItem
             = link_to targets_path, class: current_controller('targets') do
