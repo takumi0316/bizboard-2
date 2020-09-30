@@ -42,6 +42,9 @@ Rails.application.routes.draw do
       get :pdf
       get :bulk_download
     end
+    collection do
+      post :all_lock
+    end
   end
 
   # 案件詳細

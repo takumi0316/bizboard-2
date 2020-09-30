@@ -387,6 +387,17 @@ class QuotesController < ApplicationController
     redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
   end
 
+  def all_lock
+
+    raise '管理者以外は案件の一括ロックは出来ません' unless current_user.admin?
+    Quote.all_lock(params[:name], params[:status], params[:date1], params[:date2])
+    redirect_to quotes_path, flash: { notice: { message: '案件を一括ロックしました' } }
+  rescue => e
+    # エラー時は直前のページへ
+    redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
+  end
+
+
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------

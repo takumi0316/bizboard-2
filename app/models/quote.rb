@@ -169,6 +169,37 @@ class Quote < ApplicationRecord
   end
 
   ##
+  # 一括ロック
+  # @version 2019/04/02
+  #
+  def self.all_lock(name, status, date1, date2)
+
+    _self = Quote.all.deliverd_in(date1..date2)
+    # フリーワードが入っている
+    if name.present?
+      # 名称検索
+      terms = name.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['free_word like ?'] * terms.size).join(' and ')
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
+      # ステータス選択されていればステータスで絞る
+      _self = _self.send(status) if status.present?
+      _self.update(lock: true)
+
+    # フリーワードが空で、ステータスが未選択
+    elsif name.blank? && status.blank?
+
+      # 日付検索
+      _self.update(lock: true)
+    # フリーワードが空で、ステータスが入力されている
+    elsif name.blank? && status.blank?
+
+      # ステータス検索
+      _self.send(status).update(lock: true)
+      return _self
+    end
+  end
+
+  ##
   # 名称検索
   #
   #
