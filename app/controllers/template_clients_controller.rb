@@ -136,9 +136,9 @@ class TemplateClientsController < ApplicationController
 
             flag = ContentFlag.find(f)
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: f)
-            values << layout_value.text_value if flag.content_type == 'text'
-            values << layout_value.textarea_value if flag.content_type == 'text_area'
-            values << layout_value.upload_id if flag.content_type == 'image'
+            values << layout_value.text_value if flag.text?
+            values << layout_value.textarea_value if flag.text_area?
+            values << layout_value.upload_id if flag.image?
           end
 
           csv << values
@@ -154,7 +154,7 @@ class TemplateClientsController < ApplicationController
 
     flag_ids = []
     @flag_names = []
-    card_template.card_layouts.map do |r| r.contents.map { |c| flag_ids << c.content_flag_id if c.layout_type != 'image' } end
+    card_template.card_layouts.map do |r| r.contents.map { |c| flag_ids.push c.content_flag_id unless c.image? } end
 
     flag_ids.uniq!
     flag_ids.map { |f| @flag_names << ContentFlag.find(f).name }
@@ -211,19 +211,20 @@ class TemplateClientsController < ApplicationController
         head_layout.card_layout.contents.map do |content|
 
           flag = content.content_flag
-          if flag.content_type != 'image'
+          if flag.text? || flag.text_area?
 
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id)
-            layout_value.update! text_value: template_client[flag.name] if flag.content_type == 'text'
-            layout_value.update! textarea_value: template_client[flag.name] if flag.content_type == 'text_area'
+            layout_value.update! text_value: template_client[flag.name] if flag.text?
+            layout_value.update! textarea_value: template_client[flag.name] if flag.text_area?
           end
 
-          if flag.content_type == 'image'
+          if flag.image?
 
-            raise "コンテンツに登録されていない画像IDです。(画像ID: #{ template_client[flag.name] })"  if content.uploads.pluck(:id).include?(template_client[flag.name])
+            raise "コンテンツに登録されていない画像IDです。(画像ID: #{template_client[flag.name]})"  if content.uploads.pluck(:id).include?(template_client[flag.name])
 
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id, layout_content_id: content.id)
-            layout_value.update! upload_id: template_client[flag.name]
+            layout_value.update! upload_id: template_client[flag.name] if template_client[flag.name].present?
+            content.update! no_image: true if template_client[flag.name].blank?
           end
         end
       end
@@ -232,19 +233,20 @@ class TemplateClientsController < ApplicationController
         tail_layout.card_layout.contents.map do |content|
 
           flag = content.content_flag
-          if flag.content_type != 'image'
+          if flag.text? || flag.text_area?
 
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id)
-            layout_value.update! text_value: template_client[flag.name] if flag.content_type == 'text'
-            layout_value.update! textarea_value: template_client[flag.name] if flag.content_type == 'text_area'
+            layout_value.update! text_value: template_client[flag.name] if flag.text?
+            layout_value.update! textarea_value: template_client[flag.name] if flag.text_area?
           end
 
-          if flag.content_type == 'image'
+          if flag.image?
 
-            raise "コンテンツに登録されていない画像IDです。(画像ID: #{ template_client[flag.name] })"  if content.uploads.pluck(:id).include?(template_client[flag.name])
+            raise "コンテンツに登録されていない画像IDです。(画像ID: #{template_client[flag.name]})"  if content.uploads.pluck(:id).include?(template_client[flag.name])
 
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: flag.id, layout_content_id: content.id)
-            layout_value.update! upload_id: template_client[flag.name]
+            layout_value.update! upload_id: template_client[flag.name] if template_client[flag.name].present?
+            content.update! no_image: true if template_client[flag.name].blank?
           end
         end
       end

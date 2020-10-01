@@ -270,7 +270,7 @@ class QuotesController < ApplicationController
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
       card_template = CardTemplate.find_by(company_id: quote.client.company_division.company_id)
-      zipfile.get_output_stream("会社名:#{ card_template.company.name }_#{ card_template.name }.csv") do |f|
+      zipfile.get_output_stream("会社名:#{card_template.company.name}_#{card_template.name}.csv") do |f|
 
         bom = "\uFEFF"
         f.puts(
@@ -307,40 +307,40 @@ class QuotesController < ApplicationController
                 if r.head_layout.contents.pluck(:content_flag_id).include?(flag_id)
 
                   layout_content = r.head_layout.contents.where(content_flag_id: flag_id).first
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) if flag.content_type != 'image'
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.content_type == 'image'
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) unless flag.image?
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.image?
 
-                  values << layout_value.text_value if flag.content_type == 'text'
-                  values << layout_value.textarea_value if flag.content_type == 'text_area'
+                  values << layout_value.text_value if flag.text?
+                  values << layout_value.textarea_value if flag.text_area?
 
-                  if flag.content_type == 'image'
+                  if flag.image?
 
                     if layout_value.new_record?
 
                       values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
                     else
 
-                      values << layout_value.upload.name
+                      values.push layout_content.no_image ? '' : layout_value.upload.name
                     end
                   end
 
                 elsif r.tail_layout.contents.pluck(:content_flag_id).include?(flag_id)
 
                   layout_content = r.tail_layout.contents.where(content_flag_id: flag_id).first
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) if flag.content_type != 'image'
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.content_type == 'image'
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) unless flag.image?
+                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.image?
 
-                  values << layout_value.text_value if flag.content_type == 'text'
-                  values << layout_value.textarea_value if flag.content_type == 'text_area'
+                  values << layout_value.text_value if flag.text?
+                  values << layout_value.textarea_value if flag.text_area?
 
-                  if flag.content_type == 'image'
+                  if flag.image?
 
                     if layout_value.new_record?
 
                       values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
                     else
 
-                      values << layout_value.upload.name
+                      values.push layout_content.no_image ? '' : layout_value.upload.name
                     end
                   end
 

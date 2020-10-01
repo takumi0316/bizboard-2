@@ -7,7 +7,7 @@
     .u-mt-10.c-attention = card_template.company.name
 
 .u-mt-15
-  = link_to 'アップロード', upload_template_clients_path(id: params[:id]), method: :post, class: 'c-btnMain-primaryA'
+  = link_to 'アップロード', upload_template_clients_path(id: params[:id]), class: 'c-btnMain-primaryA'
   = link_to 'ダウンロード', download_template_clients_path(id: params[:id]), method: :post, class: 'u-ml-30 c-btnMain-primaryB'
 
 = form_with url: template_clients_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|

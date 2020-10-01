@@ -166,7 +166,7 @@ Rails.application.routes.draw do
       get :set_layout
     end
     collection do
-      post :upload
+      get :upload
       post :download
       post :import_csv
       post :transfer
