@@ -2,14 +2,15 @@
 #
 # Table name: companies
 #
-#  id              :bigint(8)        not null, primary key
-#  name            :string(191)
-#  kana            :string(191)
-#  note            :text(65535)
-#  free_word       :text(65535)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  approval_status :integer          default("nothing")
+#  id                       :bigint(8)        not null, primary key
+#  name                     :string(191)
+#  kana                     :string(191)
+#  note                     :text(65535)
+#  free_word                :text(65535)
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  approval_status          :integer          default("nothing")
+#  online_web_business_card :integer          default("disabled")
 #
 
 class Company < ApplicationRecord
@@ -28,6 +29,7 @@ class Company < ApplicationRecord
     '氏名' => :name,
     'メールアドレス' => :mail,
     'パスワード' => :password,
+    'ユーザータイプ' => :user_type,
   }
 
 
@@ -36,6 +38,8 @@ class Company < ApplicationRecord
   #----------------------------------------
 
   enum approval_status: { nothing: 0, approval: 10 }
+
+  enum online_web_business_card: { disabled: 0, enabled: 10 }
 
   #----------------------------------------
   #  ** Validations **
@@ -110,6 +114,7 @@ class Company < ApplicationRecord
       else
         #部署ある場合
         division_id = division.id
+        division_clients = CompanyDivisionClient.all.where(company_division_id: division.id)
       end
 
       new_client = []
@@ -117,7 +122,10 @@ class Company < ApplicationRecord
       # 同じ案件番号の内容でeach処理
       begin
         r.each do |ri|
-          new_client << CompanyDivisionClient.new(company_division_id: division_id, name: ri[:name], email: ri[:mail], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s )
+
+          old_client = division_clients.where(email: ri[:mail])
+          old_client.update(name: ri[:name], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s, user_type: ri[:user_type].to_i) if old_client.present?
+          new_client << CompanyDivisionClient.new(company_division_id: division_id, name: ri[:name], email: ri[:mail], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s, user_type: ri[:user_type].to_i) if old_client.blank?
         end
         CompanyDivisionClient.import new_client
       end

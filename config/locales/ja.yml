@@ -48,6 +48,9 @@ ja:
       approval_status:
          nothing: なし
          approval: あり
+      online_web_business_card:
+        disabled: なし
+        enabled: あり
     subcontractor_division_client:
       title:
         nothing: なし
