@@ -233,7 +233,7 @@ class QuotesController < ApplicationController
 
         cl_work_subcontractor = WorkSubcontractor.find(r.id).deep_clone(:details)
         cl_work_subcontractor.update! work_id: cl_work.id
-        cl_work_subcontractor.details.each { |d| d.update! work_id: cl_work.id }
+        cl_work_subcontractor.details.each { |d| d.update! work_id: cl_work.id, actual_cost: 0 }
       end
     end
 
