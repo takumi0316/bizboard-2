@@ -237,6 +237,15 @@ class QuotesController < ApplicationController
       end
     end
 
+    # driveにフォルダーを作成
+    require 'google_drive'
+    session = GoogleDrive::Session.from_config('config.json')
+    root_folder_id = '0AMp2Ot6o6NNAUk9PVA'
+    sub_folder_name = "#{cl_quote.quote_number} #{cl_quote.subject} #{cl_quote.client.company_division.name}"
+    root_folder = session.collection_by_id(root_folder_id)
+    sub_folder = root_folder.create_subfolder(sub_folder_name)
+    cl_quote.update!(drive_folder_id: sub_folder.id)
+
     redirect_to edit_quote_path(cl_quote), flash: { notice: { message: '案件を複製しました' } }
   rescue => e
 
