@@ -6,7 +6,10 @@ const ButtonsBelow = props => {
     <div className='c-overlay-submit'>
       { props.quote.id ?
         <div>
-          <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={ e => props.onSubmit(e) }>更新する</div>
+          { props.quote.lock == false?
+            <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={ e => props.onSubmit(e) }>更新する</div>
+            : null
+          }
           <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotations/${ props.quote.id }` }>見積書</a>
           { props.quote.status == 'end_work' && !props.invoice?
             <a className='c-btnMain-standard c-btn-orange u-ml-30' href={ `/invoices/new?quote_id=${ props.quote.id }` }>請求書作成</a>
