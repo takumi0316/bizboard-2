@@ -15,9 +15,9 @@ Rails.application.config.assets.version = '1.0'
 # folder are already added.
 
 
-# Rails.application.config.assets.precompile += %w[admin.js admin.css]
-# Rails.application.config.assets.precompile += %w[fonts/blackrock.css]
-# Rails.application.config.assets.precompile += %w[fonts/noto_sans_cjk_jp.css]
+Rails.application.config.assets.precompile += %w[admin.js admin.css]
+Rails.application.config.assets.precompile += %w[fonts/blackrock.css]
+Rails.application.config.assets.precompile += %w[fonts/noto_sans_cjk_jp.css]
 
 
 # config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
