@@ -213,6 +213,12 @@ Rails.application.routes.draw do
 
   resources :delivery_targets
 
+  resources :downloads do
+    collection do
+      get :delivery_note
+    end
+  end
+
   # 認証
   devise_scope :user do
     match  :sign_in,        to: 'sessions#index',          as: :sign_in, via: [:get, :post]
