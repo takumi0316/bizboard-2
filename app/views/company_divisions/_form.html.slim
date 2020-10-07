@@ -1,5 +1,9 @@
 h1.l-dashboard__heading.u-mt-30 部署情報
 
+- unless division.new_record?
+  .u-ta-left.u-mt-30
+    = link_to '担当者を作成する', new_company_division_client_path(company_id: division.company.id, division_id: division.id), class: 'u-td-underline u-fc-blue'
+
 = form_for division, html: { class: 'u-mt-30' } do |f|
 
   .c-form-label
