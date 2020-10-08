@@ -2,6 +2,7 @@
   "name": "media-product",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "@nishanths/zoom.js": "^2.0.1",
     "@rails/ujs": "^6.0.2-2",
     "@rails/webpacker": "3.5",

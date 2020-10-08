@@ -17,6 +17,9 @@ class CompaniesController < ApplicationController
   # 取引先
   expose(:company) { Company.find_or_initialize_by id: params[:id] || params[:company_id] }
 
+  # 部署一覧
+  expose(:divisions) { CompanyDivision.where(company_id: company.id).search(params[:name]).all.reverse_order }
+
   #----------------------------------------
   #  ** Layouts **
   #----------------------------------------
@@ -37,7 +40,7 @@ class CompaniesController < ApplicationController
 
     unless request.xhr?
 
-      add_breadcrumb '取引先一覧'
+      add_breadcrumb '取引先'
     end
   end
 
@@ -49,6 +52,20 @@ class CompaniesController < ApplicationController
 
     add_breadcrumb '取引先一覧', path: companies_path
     add_breadcrumb '新規作成'
+  end
+
+  ##
+  # 新規作成
+  # @version 2018/06/10
+  #
+  def create
+
+    company.update! company_params
+
+    redirect_to edit_company_path(company), flash: { notice: { message: '取引先情報を更新しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
   ##
@@ -79,19 +96,10 @@ class CompaniesController < ApplicationController
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
-  ##
-  # 新規作成
-  # @version 2018/06/10
-  #
-  def create
+  def show
 
-    # 取引先情報更新
-    company.update! company_params
-
-    redirect_to edit_company_path(company), flash: { notice: { message: '取引先情報を更新しました' } }
-  rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    add_breadcrumb '取引先', path: companies_path
+    add_breadcrumb '取引先・部署情報'
   end
 
   ##
