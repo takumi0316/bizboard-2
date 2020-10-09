@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_29_024716) do
+ActiveRecord::Schema.define(version: 2020_10_08_192014) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -214,6 +214,7 @@ ActiveRecord::Schema.define(version: 2020_09_29_024716) do
     t.string "name", comment: "配送先住所の名称"
     t.string "address1", comment: "配送先の住所1"
     t.string "address2", comment: "配送先の住所2"
+    t.string "tel"
     t.index ["card_template_id"], name: "index_delivery_targets_on_card_template_id"
   end
 
@@ -314,6 +315,7 @@ ActiveRecord::Schema.define(version: 2020_09_29_024716) do
     t.string "logo_height"
     t.string "logo_width"
     t.boolean "no_image", default: true
+    t.integer "font_weight", limit: 1, default: 0
     t.index ["card_layout_id"], name: "index_layout_contents_on_card_layout_id"
     t.index ["content_flag_id"], name: "index_layout_contents_on_content_flag_id"
   end

@@ -103,6 +103,7 @@ const Index = props => {
       font_family: '0',
       font_size: '4',
       font_color: '0',
+      font_weight: '0',
       layout_length: '10',
       letter_spacing: '1',
       reduction_rate: '0',
@@ -239,6 +240,7 @@ const Index = props => {
         field.append('card_layout[contents_attributes][][font_family]', content.font_family);
         field.append('card_layout[contents_attributes][][font_color]', fil_color[0]);
         field.append('card_layout[contents_attributes][][font_size]', content.font_size);
+        field.append('card_layout[contents_attributes][][font_weight]', content.font_weight);
         field.append('card_layout[contents_attributes][][letter_spacing]', content.letter_spacing);
         field.append('card_layout[contents_attributes][][layout_length]', content.layout_length);
         field.append('card_layout[contents_attributes][][reduction_rate]', content.reduction_rate);

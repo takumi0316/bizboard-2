@@ -2,7 +2,7 @@
 const UAParser = require('ua-parser-js');
 
 // プロパティ
-import { FontFamilies } from './properties';
+import { FontFamilies, FontWeights } from './properties';
 
 /**
  * ptをmmに変換
@@ -94,6 +94,7 @@ export const setPDFValue = (file, contents) => {
       if(content.content_type != 'image') {
   
         const font_family = Object.keys(FontFamilies).find((font_family, index) => index === content.font_family)
+        const font_weight = FontWeights[content.font_weight]
 
         let child_div = document.createElement('div');
         child_div.id = `child_div-${ index }`;
@@ -114,22 +115,22 @@ export const setPDFValue = (file, contents) => {
 
           child_p.textContent = value || '';
 
-          child_p.style = `white-spae: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ text_height }px;`;
+          child_p.style = `white-spae: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ text_height }px;`;
           parent_div.appendChild(child_p);
 
           if((contentLength - child_p.clientWidth) < 0) {
 
             // 縮小率が指定よりも小さい場合は、最小値を代入
-            if(content.is_reduction_rated == 'true') {
+            if(content.is_reduction_rated === 'true') {
 
               const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100);
               const red_cal =  Math.floor(content.reduction_rate);
 
-              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
+              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
 
               if((p_cal - red_cal) < 0) {
 
-                child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
+                child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
               };
             };
           };

@@ -1,11 +1,11 @@
-// コンテントタイプ
+// content types
 export const ContentTypes = {
   'text': '0',
   'text_area': '10',
   'image': '20'
 };
 
-// フォントカラー
+// font colors
 export const FontColors = {
   'black': '0',
   'red': '1',
@@ -13,7 +13,7 @@ export const FontColors = {
   'green': '3'
 };
 
-// フォントファミリー
+// font families
 export const FontFamilies = {
   '新ゴ L': '0',
   '新ゴ R': '1',
@@ -29,4 +29,17 @@ export const FontFamilies = {
   'noto-sans-cjk-jp-light': '11',
   'noto-sans-cjk-jp-medium': '12'
 };
+
+// font weights
+export const FontWeights = {
+ 'ultra light': 100,
+ 'extra light': 200,
+ 'light': 300,
+ 'normal': 400,
+ 'medium': 500,
+ 'semi bold': 600,
+ 'bold': 700,
+ 'extra bold': 800,
+ 'ultra bold': 900
+}
 
