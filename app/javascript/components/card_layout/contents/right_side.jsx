@@ -9,7 +9,7 @@ import { generateKey } from '../util';
 // import プロパティ
 import {
   FontColors,
-  FontFamilies
+  FontFamilies, FontWeights,
 } from './properties';
 
 const RightSide = props => {
@@ -28,6 +28,7 @@ const RightSide = props => {
   const font_family_ref = useRef(null);
   const font_size_ref = useRef(null);
   const font_color_ref = useRef(null);
+  const font_weight_ref = useRef(null);
   const x_coordinate_ref = useRef(null);
   const y_coordinate_ref = useRef(null);
   const reduction_rate_ref = useRef(null);
@@ -110,12 +111,12 @@ const RightSide = props => {
 
     if(state.content_type != 'image') {
 
-      console.log(font_family_ref.current.value)
       content = { ...content,
         name: name_ref.current.value,
         font_family: font_family_ref.current.value,
         font_size: font_size_ref.current.value,
         font_color:font_color_ref.current.value,
+        font_weight:font_weight_ref.current.value,
         letter_spacing: letter_spacing_ref.current.value,
         is_reduction_rated: is_reduction_rated_ref.current.value,
         layout_length: length_ref.current.value,
@@ -193,6 +194,22 @@ const RightSide = props => {
                     </select>
                   </td>
                 </tr>
+
+                <tr>
+                  <td className='u-ta-center'><label className='c-form-label'>フォントウェイト</label></td>
+                  <td className='c-form-selectWrap'>
+                    <select name='font_color' className='c-form-select' ref={ font_weight_ref } defaultValue={ props.layout_content.font_weight }>
+                      { Object.keys(FontWeights).map((font_weight, index) => {
+
+                        const key = `font-weight-${ index }-${ font_weight }`;
+                        return (
+                          <option { ...{ key } } value={ font_weight }>{ font_weight }</option>
+                        );
+                      }) }
+                    </select>
+                  </td>
+                </tr>
+
               </Fragment>
               : null
             }

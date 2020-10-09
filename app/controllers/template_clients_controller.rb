@@ -369,6 +369,7 @@ class TemplateClientsController < ApplicationController
           is_reduction_rated: r.is_reduction_rated,
           font_family: r.font_family,
           font_color: r.font_color,
+          font_weight: r.font_weight,
           logo_height: r.logo_height,
           logo_width: r.logo_width,
           flag_id: r.content_flag_id,
