@@ -38,6 +38,7 @@
     "webpacker-react": "^0.3.2"
   },
   "devDependencies": {
+    "@material-ui/icons": "^4.9.1",
     "webpack-dev-server": "2.11.2"
   },
   "version": "11.10.1"

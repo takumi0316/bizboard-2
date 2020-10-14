@@ -141,9 +141,7 @@ import Search from 'components/form/search'
 
 import LinkTo from 'components/rails/link_to'
 
-import Company from 'components/company'
-
-import CompanyDivision from 'components/company/division'
+import ShowCompany from 'components/company/show'
 
 WebpackerReact.setup({
   Kawaii,
@@ -188,6 +186,5 @@ WebpackerReact.setup({
   CSVUpload,
   Search,
   LinkTo,
-  Company,
-  CompanyDivision,
+  ShowCompany,
 })

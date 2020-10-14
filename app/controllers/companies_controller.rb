@@ -97,7 +97,7 @@ class CompaniesController < ApplicationController
   end
 
   def show
-
+  
     add_breadcrumb '取引先', path: companies_path
     add_breadcrumb '取引先・部署情報'
   end

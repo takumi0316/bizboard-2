@@ -1,4 +1,4 @@
-h1.l-dashboard__heading 取引先
+= react_component :ShowCompany, { company: company, divisions: company.divisions, csrf_params: request_forgery_protection_token, csrf_token: form_authenticity_token }
 
 = form_for company, html: { class: 'u-mt-30'} do |f|
 	.c-form-label
@@ -25,9 +25,7 @@ h1.l-dashboard__heading 取引先
 	= f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea u-mb-30', rows: 4
 	
 	.u-ta-center.u-mt-30 = f.submit company.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
-
 	
-= react_component :CompanyDivision
 javascript:
 
   document.getElementById('js-drawerOpen').click()
