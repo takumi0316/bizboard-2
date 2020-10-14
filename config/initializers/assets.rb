@@ -13,7 +13,11 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
+
+
 Rails.application.config.assets.precompile += %w[admin.js admin.css]
 Rails.application.config.assets.precompile += %w[fonts/blackrock.css]
 Rails.application.config.assets.precompile += %w[fonts/noto_sans_cjk_jp.css]
+
+
 # config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
