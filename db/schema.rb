@@ -315,6 +315,7 @@ ActiveRecord::Schema.define(version: 2020_10_02_045109) do
     t.string "logo_height"
     t.string "logo_width"
     t.boolean "no_image", default: true
+    t.integer "font_weight", limit: 1, default: 0
     t.index ["card_layout_id"], name: "index_layout_contents_on_card_layout_id"
     t.index ["content_flag_id"], name: "index_layout_contents_on_content_flag_id"
   end

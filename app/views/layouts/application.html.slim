@@ -2,37 +2,39 @@ doctype html
 html lang='ja'
   head
     meta charset='utf-8'
-
+    
     / meta
     = display_meta_tags application_meta_tags
-
+    
     / favicon
     = favicon_link_tag SiteConfig.favicon ? SiteConfig.favicon : 'favicon.ico'
     = favicon_link_tag 'webclip.png', rel: 'apple-touch-icon', type: 'image/png'
-
+    
     / viewport
     meta[name='viewport' content='width=1280, user-scalable=no']
-
+    
     / csrf
     = csrf_meta_tags
-
+    
     / fonts
     link href=asset_path('fonts/application', type: :stylesheet) id='js-webfont'
     link href=asset_path('fonts/blackrock', type: :stylesheet) id='customfont-blackrock'
     link href=asset_path('fonts/noto_sans_cjk_jp', type: :stylesheet) id='noto-sans-cjk-jp'
 
     script type="text/javascript" src="//typesquare.com/3/tsst/script/ja/typesquare.js?5eab7726b6744a8a95d640cfe90393a3&auto_load_font=true" charset="utf-8"
-
+ 
     / stylesheets
     = stylesheet_link_tag 'object/project/pc/application', 'data-turbolinks-track': :reload
     = stylesheet_link_tag 'fonts/application', 'data-turbolinks-track': :reload
     = stylesheet_link_tag 'fonts/blackrock', 'data-turbolinks-track': :reload
+    = stylesheet_link_tag 'fonts/noto_sans_cjk_jp', 'data-turbolinks-track': :reload
 
     / javascripts
+
     = Gon::Base.render_data
-
+    
     = javascript_include_tag '/javascripts/make/pdf.js'
-
+    
     / packs
     = javascript_pack_tag 'pc', async: true
     = stylesheet_pack_tag 'pc', async: true

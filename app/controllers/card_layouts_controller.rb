@@ -144,7 +144,7 @@ class CardLayoutsController < ApplicationController
     def card_layout_params
 
       params.require(:card_layout).permit :name, :file, contents_attributes: [
-        :id, :content_upload_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rated, :layout_type, :logo_height, :logo_width, :_destroy,
+        :id, :content_upload_id, :content_flag_id, :name, :x_coordinate, :y_coordinate, :font_family, :font_color, :font_size, :font_weight, :layout_length, :letter_spacing, :reduction_rate, :is_reduction_rated, :layout_type, :logo_height, :logo_width, :_destroy,
         content_uploads_attributes: [
           :id, :layout_content_id, :upload_id, :_destroy
         ]
@@ -169,6 +169,7 @@ class CardLayoutsController < ApplicationController
             font_family: r.font_family,
             font_size: r.font_size,
             font_color: r.font_color_before_type_cast,
+            font_weight: r.font_weight,
             layout_length: r.layout_length,
             letter_spacing: r.letter_spacing,
             reduction_rate: r.reduction_rate,
