@@ -66,7 +66,7 @@ class DeliveryTargetsController < ApplicationController
   # @version 2018/06/10
   #
   def edit
-  
+
     add_breadcrumb '一覧', path: card_templates_path
     add_breadcrumb '配送先一覧', path: delivery_targets_path(card_template_id: params[:card_template_id])
     add_breadcrumb '編集'
@@ -115,6 +115,6 @@ class DeliveryTargetsController < ApplicationController
     #
     def delivery_target_params
 
-      params.require(:delivery_target).permit :card_template_id, :name, :address1, :address2
+      params.require(:delivery_target).permit :card_template_id, :name, :address1, :address2, :tel
     end
 end
