@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react'
-import TextField from '@material-ui/core/TextField';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize'
+import TextField from '@material-ui/core/TextField'
 
 const styles = {
-  style: { width: '500px' },
+  style: { width: '700px' },
   input: { style: { backgroundColor: 'white', fontSize: 15 } },
   inputLabel: { style: { fontSize: 15 } }
 }

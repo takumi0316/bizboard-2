@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import brown from '@material-ui/core/colors/brown'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
 
 // components
 import Text from '../form/text'
@@ -13,17 +12,18 @@ import OnlineWebBusinessCard from '../form/select/online_web_business_card_selec
 import TextArea from '../form/text_area'
 import Submit from '../../form/submit'
 
-const configStyles = makeStyles(theme => ({
+const baseStyles = makeStyles(() => ({
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
-    width: '100%',
-    height: '100%',
-    backgroundColor: brown['200'],
-    '& > *': {
-    },
+      flexWrap: 'wrap',
+      width: '100%',
+      height: '100%',
+      backgroundColor: brown['200'],
   },
-  inner: {
+}))
+
+const paperStyles = makeStyles(theme => ({
+ inner: {
     margin: theme.spacing(2),
     width: '100%',
     display: 'flex',
@@ -39,16 +39,19 @@ const boxProps = {
 }
 
 const Edit = props => {
-  const configClasses = configStyles()
+
+  const baseClasses = baseStyles()
+
+  const paperClasses = paperStyles()
   
   return(
-    <form id={ `edit_company_${ props.company.id }` } className={ configClasses.root } action={ `/companies/${ props.company.id }` } acceptCharset='utf8' method='post'>
+    <form id={ `edit_company_${ props.company.id }` } className={ baseClasses.root } action={ `/companies/${ props.company.id }` } acceptCharset='utf8' method='post'>
   
       <input name='utf8' type='hidden' value='✓'/>
       <input type='hidden' name='_method' value='patch'/>
       <input type='hidden' name={ props.csrf_params } value={ props.csrf_token }/>
  
-      <Paper className={ configClasses.inner }>
+      <Paper className={ paperClasses.inner }>
         <Box borderColor='text.primary' { ...boxProps }>
           <Label name='名称' required={ true }/>
           <div className='u-ml-15'>
@@ -58,6 +61,7 @@ const Edit = props => {
               label='名称'
               placeholder='日本工業社'
               value={ props.company.name }
+              required
             />
           </div>
         </Box>
@@ -76,7 +80,7 @@ const Edit = props => {
         </Box>
       </Paper>
 
-      <Paper className={ configClasses.inner }>
+      <Paper className={ paperClasses.inner }>
         <Box borderColor='text.primary' { ...boxProps }>
           <Label name='名刺承認機能'/>
           <div className='u-ml-15'>
@@ -92,7 +96,7 @@ const Edit = props => {
         </Box>
       </Paper>
   
-      <Paper className={ configClasses.inner }>
+      <Paper className={ paperClasses.inner }>
         <Box borderColor='text.primary' { ...boxProps }>
           <Label name='メモ'/>
           <div className='u-ml-15'>
@@ -101,7 +105,7 @@ const Edit = props => {
         </Box>
       </Paper>
 
-      <Paper className={ configClasses.inner }>
+      <Paper className={ paperClasses.inner }>
         <Box borderColor='text.primary' { ...boxProps }>
           <Submit word={ '更新する' }/>
         </Box>

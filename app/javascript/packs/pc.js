@@ -141,7 +141,21 @@ import Search from 'components/form/search'
 
 import LinkTo from 'components/rails/link_to'
 
+import RegistorCompany from 'components/company/registor'
+
 import ShowCompany from 'components/company/show'
+
+import CompanyDivisionList from 'components/company/division/list'
+
+import RegistorCompanyDivision from 'components/company/division/registor'
+
+import ShowCompanyDivision from 'components/company/division/show'
+
+import CompanyDivisionClientList from 'components/company/division/client/list'
+
+import RegistorCompanyDivisionClient from 'components/company/division/client/registor'
+
+import ShowCompanyDivisionClient from 'components/company/division/client/show'
 
 WebpackerReact.setup({
   Kawaii,
@@ -186,5 +200,12 @@ WebpackerReact.setup({
   CSVUpload,
   Search,
   LinkTo,
+  RegistorCompany,
   ShowCompany,
+  CompanyDivisionList,
+  RegistorCompanyDivision,
+  ShowCompanyDivision,
+  CompanyDivisionClientList,
+  RegistorCompanyDivisionClient,
+  ShowCompanyDivisionClient,
 })

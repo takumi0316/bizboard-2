@@ -18,7 +18,7 @@ class CompaniesController < ApplicationController
   expose(:company) { Company.find_or_initialize_by id: params[:id] || params[:company_id] }
 
   # 部署一覧
-  expose(:divisions) { CompanyDivision.where(company_id: company.id).search(params[:name]).all.reverse_order }
+  expose_with_pagination(:divisions) { CompanyDivision.where(company_id: company.id).search(params[:name]).all.reverse_order }
 
   #----------------------------------------
   #  ** Layouts **
@@ -62,23 +62,16 @@ class CompaniesController < ApplicationController
 
     company.update! company_params
 
-    redirect_to edit_company_path(company), flash: { notice: { message: '取引先情報を更新しました' } }
+    redirect_to company_path(company), flash: { notice: { message: '取引先情報を更新しました' } }
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
   end
 
-  ##
-  # 編集
-  # @version 2018/06/10
-  #
-  def edit
+  def show
 
-    add_breadcrumb '取引先一覧', path: companies_path
-    add_breadcrumb '編集'
-  rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    add_breadcrumb '取引先', path: companies_path
+    add_breadcrumb '取引先・部署情報'
   end
 
   ##
@@ -94,12 +87,6 @@ class CompaniesController < ApplicationController
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
-  end
-
-  def show
-  
-    add_breadcrumb '取引先', path: companies_path
-    add_breadcrumb '取引先・部署情報'
   end
 
   ##

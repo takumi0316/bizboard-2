@@ -11,18 +11,13 @@ class CompanyDivisionClientsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 取引先
-  expose(:companies) { Company.all.order(:id) }
-
-  # 担当者一覧
   expose_with_pagination(:clients) { CompanyDivisionClient.search(params[:name]).all.order(:company_division_id) }
 
-  # 後々実装
-  # CompanyDivisionClient.joins(company_division: :company).order('companies.id asc')
-  # expose_with_pagination(:clients) { CompanyDivisionClient.search(params[:name]).joins(company_division: :company).all.order('companies.id asc') }
+  expose(:companies) { Company.all.order(:id) }
 
-  # 担当者
   expose(:client) { CompanyDivisionClient.find_or_initialize_by id: params[:id] }
+
+  expose(:division) { CompanyDivision.find(params[:company_division_id]) }
 
   #----------------------------------------
   #  ** Layouts **
@@ -42,10 +37,6 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def index
 
-    unless request.xhr?
-
-      add_breadcrumb '担当者一覧'
-    end
   end
 
   ##
@@ -54,8 +45,28 @@ class CompanyDivisionClientsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '担当者一覧', path: company_division_clients_path
-    add_breadcrumb '新規作成'
+    add_breadcrumb '部署・担当者', path: company_division_path(params[:company_division_id])
+    add_breadcrumb '担当者作成'
+  rescue => e
+
+    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+  end
+
+  ##
+  # 新規作成
+  # @version 2018/06/10
+  #
+  def create
+
+    # 担当者情報更新
+    client.update! client_params
+
+    client.confirmation_token = 'FactoryToken'
+    client.confirmed_at = Time.now
+    client.confirmation_sent_at = Time.now
+    client.save!
+
+    redirect_to company_division_client_path(client), flash: { notice: { message: '担当者情報を作成しました' } }
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
@@ -65,10 +76,10 @@ class CompanyDivisionClientsController < ApplicationController
   # 編集
   # @version 2018/06/10
   #
-  def edit
+  def show
 
-    add_breadcrumb '担当者一覧', path: company_division_clients_path
-    add_breadcrumb '編集'
+    add_breadcrumb '部署・担当者', path: company_division_path(client.company_division_id)
+    add_breadcrumb '担当者情報'
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
@@ -90,27 +101,7 @@ class CompanyDivisionClientsController < ApplicationController
       client.save!
     end
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '担当者情報を更新しました' } }
-  rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
-  end
-
-  ##
-  # 新規作成
-  # @version 2018/06/10
-  #
-  def create
-
-    # 担当者情報更新
-    client.update! client_params
-
-    client.confirmation_token = 'FactoryToken'
-    client.confirmed_at = Time.now
-    client.confirmation_sent_at = Time.now
-    client.save!
-
-    redirect_to edit_company_division_client_path(client), flash: { notice: { message: '担当者情報を作成しました' } }
+    redirect_to company_division_client_path(client), flash: { notice: { message: '担当者情報を更新しました' } }
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }

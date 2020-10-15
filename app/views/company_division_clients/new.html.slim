@@ -1,1 +1,5 @@
-= render 'form', action: company_division_clients_path
+= react_component :RegistorCompanyDivisionClient, { company_name: division.company.name, divisions: division.company.divisions, division: division, users: User.where(status: :active),  csrf_params: request_forgery_protection_token, csrf_token: form_authenticity_token }
+
+javascript:
+  
+  document.getElementById('js-drawerOpen').click()

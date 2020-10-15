@@ -1,16 +1,3 @@
-// -------------------------------
-// 共通
-// -------------------------------
-
-export const APPROVAL_STATUS = {
-  'nothing': 'なし',
-  'approval': 'あり',
-}
-
-export const ONLINE_WEB_BUSINESS_CARD = {
-  'disabled': 'なし',
-  'enabled': 'あり'
-}
 export const PREFECTURES = {
   1: '北海道',
   2: '青森県',
@@ -59,18 +46,4 @@ export const PREFECTURES = {
   45: '宮崎県',
   46: '鹿児島県',
   47: '沖縄県',
-}
-
-export const TITLES = {
-  'nothing': 'なし',
-  'honorific': '様',
-  'normal': 'さん'
-}
-
-export const USER_TYPE = {
-  'general': '一般',
-  'division': '部署',
-  'admin': '管理者',
-  'jii': '日本工業社管理',
-  'card_manager': '名刺担当者'
 }

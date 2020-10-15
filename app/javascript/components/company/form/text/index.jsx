@@ -11,11 +11,11 @@ const Index = props => {
         style={{ width: '300px' }}
         label={ props.label }
         placeholder={ props.placeholder }
-        inputProps={{ style: { backgroundColor: 'white', fontSize: 15 } }}
+        inputProps={{ style: { backgroundColor: 'white', fontSize: 15 }, readOnly: props.readOnly }}
         InputLabelProps={{ style: { fontSize: 15 } }}
         defaultValue={ props.value }
         required={ props.required }
-        type='text'
+        type={ props.password ? 'password' : 'text' }
         variant='outlined'
       />
     </Fragment>

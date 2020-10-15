@@ -9,7 +9,7 @@ const Index = props => {
   
   return(
     <Fragment>
-      <Typography variant='h6' { ...labelProps }>{ props.name }</Typography>
+      <Typography variant={ props.variant? props.variant : 'h6' } { ...labelProps }>{ props.name }</Typography>
       { props.required ?
         <Typography variant='h6' color='secondary'>&nbsp;※必須</Typography>
         : null
