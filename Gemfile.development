@@ -29,7 +29,7 @@ group :development do
   gem 'bullet'
 
   # Use Capistrano for deployment
-  gem 'capistrano', '~> 3.11',    require: false
+  gem 'capistrano', '3.11',    require: false
   gem 'capistrano-rbenv',         require: false
   gem 'capistrano-rails',         require: false
   gem 'capistrano-bundler',       require: false
