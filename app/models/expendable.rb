@@ -64,7 +64,7 @@ class Expendable < ApplicationRecord
 
   belongs_to :work_subcontractor, optional: true
 
-  has_one :payment
+  has_one :payment, dependent: :destroy
 
   #----------------------------------------
   #  ** Scopes **
