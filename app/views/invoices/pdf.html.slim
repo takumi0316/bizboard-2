@@ -42,7 +42,7 @@
   .u-mt-30
 
   .c-border
-    - if invoice.quote.tax_type == 'exemption'
+    - if invoice.quote.exemption?
 
       p.u-fs-small.u-fw-bold ご請求金額　#{(invoice.quote.price).to_s(:delimited)} 円
     - else
@@ -89,8 +89,6 @@
               td.u-ta-right
                 .u-fw-light -#{((invoice.quote.discount).to_i).to_s(:delimited)}
 
-
-
   .u-mt-50
 
   .c-float__right
@@ -101,7 +99,8 @@
           td.u-ta-right #{((invoice.quote.price).to_i).to_s(:delimited)} 円
 
   .c-box__height-150
-  - if invoice.quote.tax_type == 'exemption'
+
+  - if invoice.quote.exemption?
 
     .c-float__right
       .c-table-pdf__price
@@ -132,14 +131,12 @@
 
   p 振込先
   .c-box__height-200.c-border-left.c-border-right.c-border-top.c-border
-
     .u-ml-10.u-mt-40
       p 三菱UFJ銀行 神田支店 当座 0001776 カ）ニホンコウギョウシャ
 
   .c-box__height-100
 
   p 備考
-  .c-box__height-200.c-border-left.c-border-right.c-border-top.c-border
-
-    .u-mt-10.u-ml-10
+  .c-border-left.c-border-right.c-border-top.c-border
+    .u-mt-10.u-ml-10.u-mr-10.u-mb-10
       p #{simple_format(invoice.remarks)}
