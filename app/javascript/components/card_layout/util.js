@@ -2,7 +2,7 @@
 const UAParser = require('ua-parser-js');
 
 // プロパティ
-import { FontFamilies } from './contents/properties'
+import { FontFamilies, FontWeights } from './contents/properties'
 
 /**
  * generate unique key
@@ -106,7 +106,7 @@ export const setPDF = (file, contents) => {
         draw.appendChild(parent_div);
         child_p.textContent = name || '';
 
-        child_p.style = `font-size: ${ fontSize }px; font-family: ${ font_family }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
+        child_p.style = `font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ FontWeights[content.font_weight] }; letter-spacing: ${ letterSpacing }px; position: absolute;`;
         parent_div.appendChild(child_p);
         child_div.style = `width: ${ contentLength }px; height: ${ child_p.clientHeight }px; border: 1px solid; position: absolute;`;
         parent_div.appendChild(child_div);

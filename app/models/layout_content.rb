@@ -21,6 +21,7 @@
 #  logo_height        :string(191)
 #  logo_width         :string(191)
 #  no_image           :boolean          default(TRUE)
+#  font_weight        :integer
 #
 
 class LayoutContent < ApplicationRecord
@@ -42,6 +43,18 @@ class LayoutContent < ApplicationRecord
   enum layout_type: { text: 0, text_area: 10, image: 20 }
 
   enum font_color: { black: 0, red: 1, yellow: 2, green: 3 }
+
+  enum font_weight: {
+    'ultra light': 0,
+    'extra light': 1,
+    'light': 2,
+    'normal': 3,
+    'medium': 4,
+    'semi bold': 5,
+    'bold': 6,
+    'extra bold': 7,
+    'ultra bold': 8
+  }
 
   #----------------------------------------
   #  ** Validations **

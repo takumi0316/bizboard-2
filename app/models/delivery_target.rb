@@ -7,6 +7,7 @@
 #  name             :string(191)
 #  address1         :string(191)
 #  address2         :string(191)
+#  tel              :string(191)
 #
 
 class DeliveryTarget < ApplicationRecord
