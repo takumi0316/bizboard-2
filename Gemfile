@@ -58,7 +58,7 @@ gem 'meta-tags'
 gem 'evil_icons'
 
 # job controller
-gem 'sidekiq'
+gem 'sidekiq', '5.1.3'
 gem 'sinatra', require: false
 gem 'mini_scheduler'
 
