@@ -36,7 +36,7 @@
   .u-mt-30
 
   .c-border
-    - if quote.tax_type == 'exemption'
+    - if quoteexemption?
 
       p.u-fs-small.u-fw-bold 合計金額　#{(quote.price).to_s(:delimited)} 円
     -else
@@ -68,14 +68,14 @@
                 .u-fw-light #{((r.price).to_i).to_s(:delimited)}
 
           - if quote.discount > 0
-              td.u-ta-left
-                .u-fw-light 値引き金額
-              td.u-ta-right
-                .u-fw-light
-              td.u-ta-right
-                .u-fw-light
-              td.u-ta-right
-                .u-fw-light -#{((quote.discount).to_i).to_s(:delimited)}
+            td.u-ta-left
+              .u-fw-light 値引き金額
+            td.u-ta-right
+              .u-fw-light
+            td.u-ta-right
+              .u-fw-light
+            td.u-ta-right
+              .u-fw-light -#{((quote.discount).to_i).to_s(:delimited)}
 
   .u-mt-50
 
@@ -87,7 +87,7 @@
           td.u-ta-right #{(quote.price).to_s(:delimited)} 円
 
   .c-box__height-100
-  - if quote.tax_type == 'exemption'
+  - if quote.exemption?
 
     .c-float__right
       .c-table-pdf__price
@@ -117,7 +117,6 @@
   .c-box__height-100
 
   p 備考
-  .c-box__height-200.c-border-left.c-border-right.c-border-top.c-border
-
-    .u-mt-10.u-ml-10
+  .c-border-left.c-border-right.c-border-top.c-border
+    .u-mt-10.u-ml-10.u-mr-10.u-mb-10
       p #{simple_format(quote.remarks)}

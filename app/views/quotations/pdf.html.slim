@@ -4,12 +4,12 @@
 
   .c-box.c-box__height-100.u-mt-30
     .c-float__left
-      .u-fs-small = "#{quote.client&.company_division&.company&.name}　御中"
-    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "377x40"}
+      .u-fs-small = "#{ quote.client&.company_division&.company&.name }　御中"
+    .c-float__right = wicked_pdf_image_tag 'jii-log', { size: '377x40' }
 
   .c-box__height-250
     .c-float__right.u-ml-10
-      = wicked_pdf_image_tag 'electronic-seal', {size: "100x90"}
+      = wicked_pdf_image_tag 'electronic-seal', { size: '100x90' }
     .c-float__right
       .c-box__width-375.c-float__left
         p.u-fs-small.u-mt-5 株式会社日本工業社
@@ -18,10 +18,10 @@
         p.u-fs-small.u-mt-5 TEL: 03-6280-5510
     .c-float__left
       - if quote.client&.company_division&.zip&.present?
-        p.u-fs-small 〒#{quote.client&.company_division&.zip}
-      p.u-fs-small #{quote.client&.company_division&.address1}
-      p.u-fs-small #{quote.client&.company_division&.address2}
-      p.u-fs-small #{quote.client&.company_division&.name}
+        p.u-fs-small 〒#{ quote.client&.company_division&.zip }
+      p.u-fs-small #{ quote.client&.company_division&.address1 }
+      p.u-fs-small #{ quote.client&.company_division&.address2 }
+      p.u-fs-small #{ quote.client&.company_division&.name }
 
   .c-box__height-150
     .c-float__right
@@ -37,12 +37,12 @@
   .u-mt-30
 
   .c-border
-    - if quote.tax_type == 'exemption'
+    - if quote.exemption?
 
-      p.u-fs-small.u-fw-bold お見積金額　#{(quote.price).to_s(:delimited)} 円
-    -else
+      p.u-fs-small.u-fw-bold お見積金額　#{ (quote.price).to_s(:delimited) } 円
+    - else
 
-      p.u-fs-small.u-fw-bold お見積金額　#{((quote.price * quote.tax.to_f).floor).to_s(:delimited)} 円
+      p.u-fs-small.u-fw-bold お見積金額　#{ ((quote.price * quote.tax.to_f).floor).to_s(:delimited) } 円
   .u-mt-30
 
   .c-table-pdf
@@ -62,27 +62,27 @@
                 - if r.remarks.present?
                   .u-ta-left.u-mt-5.u-fw-light(colspan='4' style="font-size: 13px;") #{simple_format(r.remarks)}
               td.u-ta-right
-                - if (/^[+-]?[0-9]+$/ =~ r.unit_price.to_s)
+                - if /^[+-]?[0-9]+$/ =~ r.unit_price.to_s
                   .u-fw-light #{((r.unit_price).to_i).to_s(:delimited)}
                 - else
                   .u-fw-light #{((r.unit_price).to_f).to_s(:delimited)}
               td.u-ta-right
                 .u-fw-light #{((r.unit).to_i).to_s(:delimited)}
               td.u-ta-right
-                - if (/^[+-]?[0-9]+$/ =~ r.price.to_s)
+                - if /^[+-]?[0-9]+$/ =~ r.price.to_s
                   .u-fw-light #{((r.price).to_i).to_s(:delimited)}
                 - else
                   .u-fw-light #{((r.price).to_f).to_s(:delimited)}
 
           - if quote.discount > 0
-              td.u-ta-left
-                .u-fw-light 値引き金額
-              td.u-ta-right
-                .u-fw-light
-              td.u-ta-right
-                .u-fw-light
-              td.u-ta-right
-                .u-fw-light -#{((quote.discount).to_i).to_s(:delimited)}
+            td.u-ta-left
+              .u-fw-light 値引き金額
+            td.u-ta-right
+              .u-fw-light
+            td.u-ta-right
+              .u-fw-light
+            td.u-ta-right
+              .u-fw-light -#{ ((quote.discount).to_i).to_s(:delimited) }
 
   .u-mt-50
 
@@ -91,17 +91,17 @@
       table
         tr
           th.u-ta-left 小計
-          td.u-ta-right #{(quote.price).to_s(:delimited)} 円
+          td.u-ta-right #{ (quote.price).to_s(:delimited) } 円
 
   .c-box__height-100
-  - if quote.tax_type == 'exemption'
+  - if quote.exemption?
 
     .c-float__right
       .c-table-pdf__price
         table
           tr
             th.u-ta-left 合計
-            td.u-ta-right #{(quote.price).to_s(:delimited)} 円
+            td.u-ta-right #{ (quote.price).to_s(:delimited) } 円
   - else
 
     .c-float__right
@@ -109,7 +109,7 @@
         table
           tr
             th.u-ta-left 消費税
-            td.u-ta-right #{((quote.price * quote.tax.to_f).floor - quote.price).to_s(:delimited)} 円
+            td.u-ta-right #{ ((quote.price * quote.tax.to_f).floor - quote.price).to_s(:delimited) } 円
 
     .u-mt-50
 
@@ -118,13 +118,13 @@
         table
           tr
             th.u-ta-left 合計
-            td.u-ta-right #{((quote.price * quote.tax.to_f).floor).to_s(:delimited)} 円
+            td.u-ta-right #{ ((quote.price * quote.tax.to_f).floor).to_s(:delimited) } 円
 
 
   .c-box__height-100
 
   p 備考
-  .c-box__height-200.c-border-left.c-border-right.c-border-top.c-border
+  .c-border-left.c-border-right.c-border-top.c-border
 
-    .u-mt-10.u-ml-10
-      p #{simple_format(quote.remarks)}
+    .u-mt-10.u-ml-10.u-mr-10.u-mb-10
+      p #{ simple_format(quote.remarks) }
