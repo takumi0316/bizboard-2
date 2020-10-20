@@ -36,7 +36,7 @@
   .u-mt-30
 
   .c-border
-    - if quoteexemption?
+    - if quote.exemption?
 
       p.u-fs-small.u-fw-bold 合計金額　#{(quote.price).to_s(:delimited)} 円
     -else
