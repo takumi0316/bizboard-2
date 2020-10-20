@@ -11,12 +11,10 @@ class ExpendablesController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 見積もり
   expose_with_pagination(:expendables) {
     Expendable.search(status: params[:status], subcontractor: params[:subcontractor], division: params[:division], date1: params[:date1], date2: params[:date2]).where(accouting_status: :active).all.order(date: :desc)
   }
 
-  # 見積もり
   expose(:expendable) { Expendable.find_or_initialize_by id: params[:id] || params[:expendable_id]}
 
   #----------------------------------------
@@ -40,7 +38,6 @@ class ExpendablesController < ApplicationController
     add_breadcrumb '製造経費入力'
     respond_to do |format|
       format.html do
-        # 置いておかないとエラーになる
       end
       format.csv do
         @csv_data = Expendable.where(date: params[:date1]..params[:date2]).order(:subcontractor_id).order(:division_id)
@@ -65,7 +62,6 @@ class ExpendablesController < ApplicationController
   #
   def create
 
-    # 取引先情報更新
     expendable.update! expendable_params
 
     payment = expendable.build_payment
@@ -96,7 +92,6 @@ class ExpendablesController < ApplicationController
   #
   def update
 
-    # 取引先情報更新
     expendable.update! expendable_params
 
     expendable.payment.update! subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date
