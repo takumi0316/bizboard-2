@@ -2,6 +2,7 @@
   "name": "media-product",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "@nishanths/zoom.js": "^2.0.1",
     "@rails/ujs": "^6.0.2-2",
     "@rails/webpacker": "3.5",
@@ -37,6 +38,7 @@
     "webpacker-react": "^0.3.2"
   },
   "devDependencies": {
+    "@material-ui/icons": "^4.9.1",
     "webpack-dev-server": "2.11.2"
   },
   "version": "11.10.1"
