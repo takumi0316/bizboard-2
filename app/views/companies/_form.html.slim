@@ -1,0 +1,31 @@
+h1.l-dashboard__heading 取引先
+
+- unless company.new_record?
+	.u-ta-left.u-mt-30
+		= link_to '部署を作成する', new_company_division_path(company_id: company.id), class: 'u-td-underline u-fc-blue'
+
+= form_for company, html: { class: 'u-mt-30'} do |f|
+	.c-form-label
+		= f.label :name, '名称'
+		span.c-form__required.u-ml-10 必須
+	= f.text_field :name, placeholder: '会社名', class: 'c-form-text u-mb-30', required: :true
+	
+	.c-form-label
+		= f.label :kana, '名称(カナ)'
+	= f.text_field :kana, placeholder: '会社名(カナ)', class: 'c-form-text u-mb-30'
+	
+	.c-form-label
+		= f.label :approval_status, '名刺承認機能'
+	.c-form-selectWrap.u-mb-30
+		= f.select :approval_status, Company.approval_statuses_i18n.invert, {}, { class: 'c-form-select' }
+	
+	.c-form-label
+		= f.label :online_web_business_card, 'オンラインWeb名刺機能'
+	.c-form-selectWrap.u-mb-30
+		= f.select :online_web_business_card, Company.online_web_business_cards_i18n.invert, {}, { class: 'c-form-select' }
+	
+	.c-form-label
+		= f.label :note, 'メモ'
+	= f.text_area :note, placeholder: 'メモを入力してください', class: 'c-form-textarea u-mb-30', rows: 4
+	
+	.u-ta-center.u-mt-30 = f.submit company.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
