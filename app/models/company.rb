@@ -49,6 +49,8 @@ class Company < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  has_one :card_template
+
   # 部署
   has_many :divisions, class_name: 'CompanyDivision'
 

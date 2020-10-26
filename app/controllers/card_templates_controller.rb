@@ -27,6 +27,10 @@ class CardTemplatesController < ApplicationController
 
   before_action :set_the_required_data, only: [:new, :edit]
 
+  after_action :set_default_layout, only: [:create, :update]
+
+  after_action :release_default_layout, only: [:update]
+
   def index
 
     add_breadcrumb '一覧'
@@ -51,7 +55,7 @@ class CardTemplatesController < ApplicationController
   def edit
 
     add_breadcrumb '一覧', path: card_templates_path
-    add_breadcrumb '新規作成'
+    add_breadcrumb '編集'
   end
 
   def update
@@ -116,6 +120,41 @@ class CardTemplatesController < ApplicationController
       ]
     end
 
+    def set_default_layout
+  
+      return if card_template.template_layouts.where(status: :head).blank? && card_template.template_layouts.where(status: :head).blank?
+      card_template.company.divisions.each do |r|
+
+        r.clients.each do |c|
+ 
+          head_layout_id = c.head_layout_id
+          tail_layout_id = c.tail_layout_id
+          head_layout_id = head_layout_id == card_template.template_layouts.where(status: :head).first&.card_layout_id ? head_layout_id : card_template.template_layouts.where(status: :head).first&.card_layout_id
+          tail_layout_id = tail_layout_id == card_template.template_layouts.where(status: :tail).first&.card_layout_id ? tail_layout_id : card_template.template_layouts.where(status: :tail).first&.card_layout_id
+
+          c.update! head_layout_id: head_layout_id, tail_layout_id: tail_layout_id
+
+        end
+      end
+    end
+
+    def release_default_layout
+  
+      return if card_template.template_layouts.where(status: :head).present? && card_template.template_layouts.where(status: :tail).present?
+      card_template.company.divisions.each do |r|
+        r.clients.each do |c|
+ 
+          head_layout_id = nil
+          tail_layout_id = nil
+          head_layout_id = card_template.template_layouts.where(status: :head).present? ? c.head_layout_id : head_layout_id
+          tail_layout_id = card_template.template_layouts.where(status: :tail).present? ? c.tail_layout_id : tail_layout_id
+  
+          c.update! head_layout_id: head_layout_id  , tail_layout_id: tail_layout_id
+
+        end
+      end
+    end
+ 
     def set_the_required_data
 
       @heads = []
