@@ -9,9 +9,15 @@ const Subject = (props) => {
         <label>案件タイトル</label>
         <span className='c-form__required u-ml-10'>必須</span>
       </div>
-      <input placeholder='案件タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text'
-             onBlur={ e => props.setSubject(e.target.value) } defaultValue={ props.subject }
-      />
+      { props.quote.lock == false?
+        <input placeholder='案件タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text'
+               onBlur={ e => props.setSubject(e.target.value) } defaultValue={ props.subject }
+        />
+        :
+        <input placeholder='案件タイトル' className='c-form-text' required='required' autoComplete='off' spellCheck='false' type='text'
+               onBlur={ e => props.setSubject(e.target.value) } defaultValue={ props.subject } disabled='disabled'
+        />
+      }
     </Fragment>
   );
 };

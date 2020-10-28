@@ -20,28 +20,40 @@ const CaseDetails = (props) => {
             <td className='u-fw-bold'>案件作成日</td>
             <td>
               <span className='u-mr-30'>{ props.date ? Dayjs(props.date).format('YYYY年MM月DD日') : '未定' }</span>
-              <DatetimePicker apply={ props.setDate } defaultDatetime={ props.date } />
+              { props.quote.lock == false?
+                <DatetimePicker apply={ props.setDate } defaultDatetime={ props.date } />
+                :null
+              }
             </td>
           </tr>
           <tr>
             <td className='u-fw-bold'>見積もり発行日</td>
             <td>
               <span className='u-mr-30'>{ props.issues_date ? Dayjs(props.issues_date).format('YYYY年MM月DD日') : '未定' }</span>
-              <DatetimePicker apply={ props.setIssuesDate } defaultDatetime={ props.issues_date } />
+              { props.quote.lock == false?
+                <DatetimePicker apply={ props.setIssuesDate } defaultDatetime={ props.issues_date } />
+                :null
+              }
             </td>
           </tr>
           <tr>
             <td className='u-fw-bold'>見積もり有効期間</td>
             <td>
               <span className='u-mr-30'>{ props.expiration ? Dayjs(props.expiration).format('YYYY年MM月DD日') : '未定' }</span>
-              <DatetimePicker apply={ props.setExpiration } defaultDatetime={ props.expiration } />
+              { props.quote.lock == false?
+                <DatetimePicker apply={ props.setExpiration } defaultDatetime={ props.expiration } />
+                :null
+              }
             </td>
           </tr>
           <tr>
             <td className='u-fw-bold'>納品日</td>
             <td>
               <span className='u-mr-30'>{ props.delivery_note_date ? Dayjs(props.delivery_note_date).format('YYYY年MM月DD日') : '未定' }</span>
-              <DatetimePicker apply={ props.setDeliveryNoteDate } defaultDatetime={ props.delivery_note_date } />
+              { props.quote.lock == false?
+                <DatetimePicker apply={ props.setDeliveryNoteDate } defaultDatetime={ props.delivery_note_date } />
+                :null
+              }
             </td>
           </tr>
           <tr>
@@ -52,7 +64,10 @@ const CaseDetails = (props) => {
             </td>
             <td>
               <span className='u-mr-30'>{ props.deliver_at ? Dayjs(props.deliver_at).format('YYYY年MM月DD日 HH時mm分') : '未定' }</span>
-              <DatetimePicker apply={ props.setDeliverAt } defaultDatetime={ props.deliver_at } />
+              { props.quote.lock == false?
+                <DatetimePicker apply={ props.setDeliverAt } defaultDatetime={ props.deliver_at } />
+                :null
+              }
             </td>
           </tr>
           <tr>
@@ -96,17 +111,31 @@ const CaseDetails = (props) => {
           <tr>
             <td className='u-fw-bold'>受注経路</td>
             <td>
-              <div className='c-form-selectWrap'>
-                <select className='c-form-select' defaultValue={ props.channel } onChange={ e => props.setChannel(e.target.value) }>
-                  { Object.keys(CHANNELS).map((item, index) => {
+              { props.quote.lock == false?
+                <div className='c-form-selectWrap'>
+                  <select className='c-form-select' defaultValue={ props.channel } onChange={ e => props.setChannel(e.target.value) } >
+                    { Object.keys(CHANNELS).map((item, index) => {
 
-                    const key = 'channel-'+index;
-                    return (
-                      <option {...{key}} value={CHANNELS[item]}>{item}</option>
-                    );
-                  })}
-                </select>
-              </div>
+                      const key = 'channel-'+index;
+                      return (
+                        <option {...{key}} value={CHANNELS[item]}>{item}</option>
+                      );
+                    })}
+                  </select>
+                </div>
+                :
+                <div className='c-form-selectWrap'>
+                  <select className='c-form-select' defaultValue={ props.channel } onChange={ e => props.setChannel(e.target.value) } disabled='disabled'>
+                    { Object.keys(CHANNELS).map((item, index) => {
+
+                      const key = 'channel-'+index;
+                      return (
+                        <option {...{key}} value={CHANNELS[item]}>{item}</option>
+                      );
+                    })}
+                  </select>
+                </div>
+              }
             </td>
           </tr>
           { props.show_quote_number ?
@@ -167,17 +196,31 @@ const CaseDetails = (props) => {
           <tr>
             <td className='u-fw-bold'>受注区分</td>
             <td>
-              <div className='c-form-selectWrap'>
-                <select className='c-form-select' defaultValue={ props.quote_type } onChange={ e => props.setQuoteType(e.target.value) }>
-                  { Object.keys(QUOTE_TYPES).map((item, index) => {
+              { props.quote.lock == false?
+                <div className='c-form-selectWrap'>
+                  <select className='c-form-select' defaultValue={ props.quote_type } onChange={ e => props.setQuoteType(e.target.value) }>
+                    { Object.keys(QUOTE_TYPES).map((item, index) => {
 
-                    const key = 'quote_type-'+index;
-                    return (
-                      <option {...{key}} value={QUOTE_TYPES[item]}>{item}</option>
-                    );
-                  })}
-                </select>
-              </div>
+                      const key = 'quote_type-'+index;
+                      return (
+                        <option {...{key}} value={QUOTE_TYPES[item]}>{item}</option>
+                      );
+                    })}
+                  </select>
+                </div>
+                :
+                <div className='c-form-selectWrap'>
+                  <select className='c-form-select' defaultValue={ props.quote_type } onChange={ e => props.setQuoteType(e.target.value) } disabled='disabled'>
+                    { Object.keys(QUOTE_TYPES).map((item, index) => {
+
+                      const key = 'quote_type-'+index;
+                      return (
+                        <option {...{key}} value={QUOTE_TYPES[item]}>{item}</option>
+                      );
+                    })}
+                  </select>
+                </div>
+              }
             </td>
           </tr>
         </tbody>

@@ -38,14 +38,25 @@ const PaymentDetails = props => {
             <td className='u-fw-bold'>課税対象</td>
             <td>
               <div className='c-form-selectWrap'>
-                <select className='c-form-select' defaultValue={ props.tax_type } onChange={ e => props.setTaxType(e.target.value) }>
-                  { Object.keys(TAX_TYPES).map((item, index) => {
-                    const key = 'tax-'+index;
-                    return (
-                      <option {...{key}} value={TAX_TYPES[item]}>{item}</option>
-                    );
-                  }) }
-                </select>
+                { props.quote.lock == false?
+                  <select className='c-form-select' defaultValue={ props.tax_type } onChange={ e => props.setTaxType(e.target.value) }>
+                    { Object.keys(TAX_TYPES).map((item, index) => {
+                      const key = 'tax-'+index;
+                      return (
+                        <option {...{key}} value={TAX_TYPES[item]}>{item}</option>
+                      );
+                    }) }
+                  </select>
+                  :
+                  <select className='c-form-select' defaultValue={ props.tax_type } onChange={ e => props.setTaxType(e.target.value) } disabled='disabled'>
+                    { Object.keys(TAX_TYPES).map((item, index) => {
+                      const key = 'tax-'+index;
+                      return (
+                        <option {...{key}} value={TAX_TYPES[item]}>{item}</option>
+                      );
+                    }) }
+                  </select>
+                }
               </div>
             </td>
           </tr>
@@ -53,14 +64,25 @@ const PaymentDetails = props => {
             <td className='u-fw-bold'>支払い方法</td>
             <td>
               <div className='c-form-selectWrap'>
-                <select className='c-form-select' defaultValue={ props.payment_terms } onChange={ e => props.setPaymentTerms(e.target.value) }>
-                  { Object.keys(PAYMENT_TERMS).map((item, index) => {
-										const key = 'payment-'+index;
-                    return (
-                      <option {...{key}} value={PAYMENT_TERMS[item]}>{item}</option>
-                    );
-                  })}
-                </select>
+                { props.quote.lock == false?
+                  <select className='c-form-select' defaultValue={ props.payment_terms } onChange={ e => props.setPaymentTerms(e.target.value) }>
+                    { Object.keys(PAYMENT_TERMS).map((item, index) => {
+  										const key = 'payment-'+index;
+                      return (
+                        <option {...{key}} value={PAYMENT_TERMS[item]}>{item}</option>
+                      );
+                    })}
+                  </select>
+                  :
+                  <select className='c-form-select' defaultValue={ props.payment_terms } onChange={ e => props.setPaymentTerms(e.target.value) } disabled='disabled'>
+                    { Object.keys(PAYMENT_TERMS).map((item, index) => {
+                      const key = 'payment-'+index;
+                      return (
+                        <option {...{key}} value={PAYMENT_TERMS[item]}>{item}</option>
+                      );
+                    })}
+                  </select>
+                }
               </div>
             </td>
           </tr>
@@ -75,23 +97,39 @@ const PaymentDetails = props => {
           <tr>
             <td className='u-fw-bold'>利益額(暫定)</td>
             <td>
-              <textarea placeholder='利益額' className='c-form-textarea' onChange={ e => props.setProfitPrice(e.target.value) } type='text' defaultValue={ props.profit_price } />
+              { props.quote.lock == false?
+                <textarea placeholder='利益額' className='c-form-textarea' onChange={ e => props.setProfitPrice(e.target.value) } type='text' defaultValue={ props.profit_price } />
+                :
+                <textarea placeholder='利益額' className='c-form-textarea' onChange={ e => props.setProfitPrice(e.target.value) } type='text' defaultValue={ props.profit_price } disabled='disabled' />
+              }
             </td>
           </tr>
           <tr>
           	<td className='u-fw-bold'>備考 ※見積もりに記載されます</td>
             <td>
-							<textarea placeholder='案件に関する備考を入力してください ※見積もりに記載されます' className='c-form-textarea' row={5}
-												autoComplete='off' spellCheck='false' type='text' defaultValue={ props.remarks } onBlur={ e => props.setRemarks(e.target.value) }
-							/>
+              { props.quote.lock == false?
+  							<textarea placeholder='案件に関する備考を入力してください ※見積もりに記載されます' className='c-form-textarea' row={5}
+  												autoComplete='off' spellCheck='false' type='text' defaultValue={ props.remarks } onBlur={ e => props.setRemarks(e.target.value) }
+  							/>
+                :
+                <textarea placeholder='案件に関する備考を入力してください ※見積もりに記載されます' className='c-form-textarea' row={5} disabled='disabled'
+                          autoComplete='off' spellCheck='false' type='text' defaultValue={ props.remarks } onBlur={ e => props.setRemarks(e.target.value) }
+                />
+              }
             </td>
           </tr>
           <tr>
           	<td className='u-fw-bold'>メモ ※見積もりに記載されません</td>
             <td>
-							<textarea placeholder='案件に関するメモを入力してください ※見積もりに記載されません' className='c-form-textarea' row={5}
-												autoComplete='off' spellCheck='false' type='text' defaultValue={ props.memo } onBlur={ e => props.setMemo(e.target.value) }
-							/>
+              { props.quote.lock == false?
+  							<textarea placeholder='案件に関するメモを入力してください ※見積もりに記載されません' className='c-form-textarea' row={5}
+  												autoComplete='off' spellCheck='false' type='text' defaultValue={ props.memo } onBlur={ e => props.setMemo(e.target.value) }
+  							/>
+                :
+                <textarea placeholder='案件に関するメモを入力してください ※見積もりに記載されません' className='c-form-textarea' row={5} disabled='disabled'
+                          autoComplete='off' spellCheck='false' type='text' defaultValue={ props.memo } onBlur={ e => props.setMemo(e.target.value) }
+                />
+              }
             </td>
           </tr>
         </tbody>
