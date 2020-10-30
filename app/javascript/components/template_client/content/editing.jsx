@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 
 // components
 import NoImage from './no_image'
@@ -9,12 +9,6 @@ const Editing = props => {
   const init = { contents: props.contents };
 
   const [state, setState] = useState(init);
-
-  useEffect(() => {
-  }, [props])
-
-  useEffect(() => {
-  }, [state])
 
   const applyUpload = props => {
 
@@ -53,7 +47,7 @@ const Editing = props => {
 
         return(
           <tr { ...{ key } }>
-            <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
+            <td className='u-ta-center u-va-middle'>{ content_type ? upload().name : content.flag_name }</td>
             <td className='u-ta-center'>
               { content_type ?
                 <Fragment>

@@ -149,8 +149,7 @@ class CompanyDivisionClientsController < ApplicationController
     layout = params[:layout_type] == 'head' ? client.head_layout : client.tail_layout
     contents = layout.contents.map do |r|
       
-      layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: r.content_flag_id) if r.layout_type != 'image'
-      layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: r.content_flag_id, layout_content_id: r.id) if r.layout_type == 'image'
+      layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: r.content_flag_id)
       {
         id: r.id,
         name: r.name,
