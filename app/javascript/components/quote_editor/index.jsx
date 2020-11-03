@@ -594,7 +594,7 @@ export default class QuoteEditor extends React.Component {
                         show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
                         setRemarks={ this.setRemarks } setMemo={ this.setMemo } setDriveFolderId={ this.setDriveFolderId } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
         />
-        <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } task={ this.state.task } onSubmit={ this.onSubmit }/>
+        <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } quotation={ this.props.quotation } delivery_note={ this.props.delivery_note } task={ this.state.task } onSubmit={ this.onSubmit }/>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );
