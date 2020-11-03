@@ -24,6 +24,11 @@ defaults: &defaults
 
   consumption_tax: 1.08
 
+  # 会社住所・電話番号
+  jii_address: '東京都文京区白山2-37-7'
+  jii_tel: '03-6881-0916'
+  jii_fax: '050-3606-6900'
+
 development:
   <<: *defaults
 

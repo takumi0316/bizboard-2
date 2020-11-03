@@ -40,6 +40,9 @@ class Invoice < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # file
+  has_one_attached :file, dependent: :detach
+
   # 案件
   belongs_to :quote
 

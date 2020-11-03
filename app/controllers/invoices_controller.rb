@@ -118,6 +118,11 @@ class InvoicesController < ApplicationController
     render json: { status: false, message: e.message }
   end
 
+  def show
+
+    send_data invoice.file.download, filename: "請求書_#{invoice.quote.id}.pdf", disposition: 'inline', type: 'application/pdf'
+  end
+
   ##
   # 削除
   # @version 2018/06/10
@@ -135,17 +140,17 @@ class InvoicesController < ApplicationController
     redirect_to action: :index
   end
 
-  def pdf
+  def generate_pdf
+  
+    filename = "請求書＿#{invoice.quote.id}.pdf"
+    pdf_html = render_to_string template: 'invoices/generate_pdf.html.slim', layout: 'layouts/pdf.html.slim'
+    pdf_string = WickedPdf.new.pdf_from_string(pdf_html)
+    pdf_string.force_encoding('UTF-8')
 
-    respond_to do |format|
-      format.html do
-        render  pdf: "請求書_#{invoice.quote.id}", #pdfファイルの名前。これがないとエラーが出ます
-                encoding: 'UTF-8',
-                layout: 'layouts/pdf.html.slim',
-                template: 'invoices/pdf.html.slim', #テンプレートファイルの指定。viewsフォルダが読み込まれます。
-                show_as_html: params.key?('debug')
-      end
-    end
+    invoice.file.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
+    invoice.save!
+  
+    redirect_to invoice_path(invoice)
   end
 
   def roundup

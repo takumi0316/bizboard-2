@@ -81,6 +81,9 @@ class Quote < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # file
+  has_many_attached :files, dependent: :detach
+
   # Jiiユーザー
   belongs_to :user, optional: true
 

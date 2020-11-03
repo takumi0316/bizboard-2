@@ -13,9 +13,8 @@
     .c-float__right
       .c-box__width-375.c-float__left
         p.u-fs-small.u-mt-5 株式会社日本工業社
-        p.u-fs-small.u-mt-5 東京都中央区新川2-26-3
-        p.u-fs-small.u-mt-5 住友不動産茅場町ビル2号館 5F
-        p.u-fs-small.u-mt-5 TEL: 03-6280-5510
+        p.u-fs-small.u-mt-5 #{SiteConfig.get_all[:jii_address]}
+        p.u-fs-small.u-mt-5 TEL: #{SiteConfig.get_all[:jii_tel]}
     .c-float__left
       - if quote.client&.company_division&.zip&.present?
         p.u-fs-small 〒#{ quote.client&.company_division&.zip }

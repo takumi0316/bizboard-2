@@ -32,6 +32,16 @@ h2.l-dashboard__heading サイト設定
         tr
           td 説明文
           td = f.text_area :site_description, value: site_configs[:site_description], placeholder: 'サイトのディスクリプション', class: 'c-form-textarea'
+        tr
+          td 本社住所
+          td = f.text_field :jii_address, value: site_configs[:jii_address], placeholder: '東京都文京区白山', class: 'c-form-text'
+        tr
+          td 本社電話番号
+          td = f.text_field :jii_tel, value: site_configs[:jii_tel], placeholder: '0120-0394-8482', class: 'c-form-text'
+        tr
+          td 本社FAX番号
+          td = f.text_field :jii_fax, value: site_configs[:jii_fax], placeholder: '0120-0394-8482', class: 'c-form-text'
+
 
   .u-ta-right.u-mt-20
     = f.submit '更新する', class: 'c-btnMain-standard'
@@ -57,6 +67,7 @@ h2.l-dashboard__heading.u-mt-30 サイト管理設定
           td お知らせや通知等の新着表示期限(h)
           td
             .c-form-selectWrap = f.select(:information_new_hours, (1..72), {selected: site_configs[:information_new_hours]}, { class: 'c-form-select' })
+
 
   .u-ta-right.u-mt-20
     = f.submit '更新する', class: 'c-btnMain-standard'
