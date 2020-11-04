@@ -11,8 +11,8 @@
     client: quote.client,
     work: quote.work,
     task: quote.task,
-    invoice: { id: quote&.invoice&.id, pdf_exist: quote&.invoice&.persisted? ? ActiveStorage::Attachment.find_by(record_type: :Invoice, record_id: quote.invoice.id).present? : false },
-		delivery_note: { pdf_exist: ActiveStorage::Blob.find_by(filename: "納品書_#{quote&.id}.pdf").present? },
-		quotation: { pdf_exist: ActiveStorage::Blob.find_by(filename: "見積書_#{quote&.id}.pdf").present? },
+    invoice: { id: quote&.invoice&.id, pdf_exist: quote&.invoice&.persisted? ? quote.invoice.file.attached? : false },
+		delivery_note: { pdf_exist: quote&.delivery_note_pdf&.attached? },
+		quotation: { pdf_exist: quote&.quotation_pdf&.attached? },
     activity: quote.activity,
   })

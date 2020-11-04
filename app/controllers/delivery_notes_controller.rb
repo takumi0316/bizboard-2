@@ -57,9 +57,7 @@ class DeliveryNotesController < ApplicationController
   def show
 
     filename = "納品書＿#{quote.id}.pdf"
-    blob = ActiveStorage::Blob.find_by(filename: filename)
-    delivery_note_pdf = ActiveStorage::Attachment.find_by(blob_id: blob.id)
-    send_data delivery_note_pdf.download, filename: filename, disposition: 'inline', type: 'application/pdf'
+    send_data quote.delivery_note_pdf.download, filename: filename, disposition: 'inline', type: 'application/pdf'
   end
 
   def generate_pdf
@@ -69,7 +67,7 @@ class DeliveryNotesController < ApplicationController
     pdf_string = WickedPdf.new.pdf_from_string(pdf_html)
     pdf_string.force_encoding('UTF-8')
 
-    quote.files.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
+    quote.delivery_note.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
     quote.save!
 
     redirect_to delivery_note_path(quote)

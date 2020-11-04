@@ -56,9 +56,7 @@ class QuotationsController < ApplicationController
   def show
 
     filename = "見積書＿#{quote.id}.pdf"
-    blob = ActiveStorage::Blob.find_by(filename: filename)
-    quotation_pdf = ActiveStorage::Attachment.find_by(blob_id: blob.id)
-    send_data quotation_pdf.download, filename: filename, disposition: 'inline', type: 'application/pdf'
+    send_data quote.quotation_pdf.download, filename: filename, disposition: 'inline', type: 'application/pdf'
   end
 
   def generate_pdf
@@ -68,7 +66,8 @@ class QuotationsController < ApplicationController
     pdf_string = WickedPdf.new.pdf_from_string(pdf_html)
     pdf_string.force_encoding('UTF-8')
 
-    quote.files.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
+    quote.quotation_pdf.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
+
     quote.save!
 
     redirect_to quotation_path(quote)
