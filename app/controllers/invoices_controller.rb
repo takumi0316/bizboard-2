@@ -148,7 +148,6 @@ class InvoicesController < ApplicationController
     pdf_string.force_encoding('UTF-8')
 
     invoice.file.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
-
     invoice.save!
 
     redirect_to invoice_path(invoice)
