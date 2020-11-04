@@ -67,6 +67,7 @@ class QuotationsController < ApplicationController
     pdf_string.force_encoding('UTF-8')
 
     quote.quotation_pdf.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
+
     quote.save!
 
     redirect_to quotation_path(quote)
