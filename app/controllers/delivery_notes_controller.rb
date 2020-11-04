@@ -67,7 +67,7 @@ class DeliveryNotesController < ApplicationController
     pdf_string = WickedPdf.new.pdf_from_string(pdf_html)
     pdf_string.force_encoding('UTF-8')
 
-    quote.delivery_note.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
+    quote.delivery_note_pdf.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
     quote.save!
 
     redirect_to delivery_note_path(quote)
