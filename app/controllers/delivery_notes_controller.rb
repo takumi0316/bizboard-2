@@ -45,7 +45,7 @@ class DeliveryNotesController < ApplicationController
   end
 
   def edit
-  
+
     add_breadcrumb '納品書一覧', path: delivery_notes_path
     add_breadcrumb '詳細'
   end
@@ -63,15 +63,15 @@ class DeliveryNotesController < ApplicationController
   end
 
   def generate_pdf
-  
+
     filename = "納品書＿#{quote.id}.pdf"
     pdf_html = render_to_string template: 'delivery_notes/generate_pdf.html.slim', layout: 'layouts/pdf.html.slim'
     pdf_string = WickedPdf.new.pdf_from_string(pdf_html)
     pdf_string.force_encoding('UTF-8')
-  
+
     quote.files.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
     quote.save!
- 
+
     redirect_to delivery_note_path(quote)
   end
 
