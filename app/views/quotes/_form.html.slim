@@ -12,7 +12,7 @@
     work: quote.work,
     task: quote.task,
     invoice: { id: quote&.invoice&.id, pdf_exist: quote&.invoice&.persisted? ? quote.invoice.file.attached? : false },
-		delivery_note: { pdf_exist: quote&.delivery_note_pdf.attached? },
-		quotation: { pdf_exist: quote&.quotation_pdf.attached? },
+		delivery_note: { pdf_exist: quote&.delivery_note_pdf&.attached? },
+		quotation: { pdf_exist: quote&.quotation_pdf&.attached? },
     activity: quote.activity,
   })
