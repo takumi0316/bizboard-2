@@ -141,7 +141,7 @@ class InvoicesController < ApplicationController
   end
 
   def generate_pdf
-  
+
     filename = "請求書＿#{invoice.quote.id}.pdf"
     pdf_html = render_to_string template: 'invoices/generate_pdf.html.slim', layout: 'layouts/pdf.html.slim'
     pdf_string = WickedPdf.new.pdf_from_string(pdf_html)
@@ -149,7 +149,7 @@ class InvoicesController < ApplicationController
 
     invoice.file.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
     invoice.save!
-  
+
     redirect_to invoice_path(invoice)
   end
 

@@ -55,9 +55,10 @@ class QuotationsController < ApplicationController
 	# @version 2020/02/18
   def show
   
-    blob = ActiveStorage::Blob.find_by(filename: "見積書＿#{quote.id}.pdf")
+    filename = "見積書＿#{quote.id}.pdf"
+    blob = ActiveStorage::Blob.find_by(filename: filename)
     quotation_pdf = ActiveStorage::Attachment.find_by(blob_id: blob.id)
-    send_data quotation_pdf.download, filename: quotation_pdf.name, disposition: 'inline', type: 'application/pdf'
+    send_data quotation_pdf.download, filename: filename, disposition: 'inline', type: 'application/pdf'
   end
 
   def generate_pdf

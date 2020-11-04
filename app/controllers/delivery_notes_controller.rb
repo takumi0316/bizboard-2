@@ -56,9 +56,10 @@ class DeliveryNotesController < ApplicationController
   #
   def show
 
-    blob = ActiveStorage::Blob.find_by(filename: "納品書＿#{quote.id}.pdf")
+    filename = "納品書＿#{quote.id}.pdf"
+    blob = ActiveStorage::Blob.find_by(filename: filename)
     delivery_note_pdf = ActiveStorage::Attachment.find_by(blob_id: blob.id)
-    send_data delivery_note_pdf.download, filename: delivery_note_pdf.name, disposition: 'inline', type: 'application/pdf'
+    send_data delivery_note_pdf.download, filename: filename, disposition: 'inline', type: 'application/pdf'
   end
 
   def generate_pdf
