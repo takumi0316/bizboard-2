@@ -82,7 +82,6 @@ class Quote < ApplicationRecord
   #----------------------------------------
 
   # file
-  has_many_attached :files, dependent: :detach
   has_one_attached :quotation_pdf, dependent: :detach
   has_one_attached :delivery_note_pdf, dependent: :detach
 
