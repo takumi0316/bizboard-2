@@ -45,7 +45,7 @@ class QuotationsController < ApplicationController
   end
 
   def edit
-  
+
     add_breadcrumb '見積書一覧', path: quotations_path
     add_breadcrumb '詳細'
   end
@@ -54,7 +54,7 @@ class QuotationsController < ApplicationController
 	# 詳細
 	# @version 2020/02/18
   def show
-  
+
     filename = "見積書＿#{quote.id}.pdf"
     blob = ActiveStorage::Blob.find_by(filename: filename)
     quotation_pdf = ActiveStorage::Attachment.find_by(blob_id: blob.id)
@@ -62,15 +62,15 @@ class QuotationsController < ApplicationController
   end
 
   def generate_pdf
-  
+
     filename = "見積書＿#{quote.id}.pdf"
     pdf_html = render_to_string template: 'quotations/generate_pdf.html.slim', layout: 'layouts/pdf.html.slim'
     pdf_string = WickedPdf.new.pdf_from_string(pdf_html)
     pdf_string.force_encoding('UTF-8')
-  
+
     quote.files.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
     quote.save!
- 
+
     redirect_to quotation_path(quote)
   end
 
