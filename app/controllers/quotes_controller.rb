@@ -14,27 +14,25 @@ class QuotesController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  # 見積もり
-  expose_with_pagination(:quotes) {
+  expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id] }
 
+  expose(:client) { CompanyDivisionClient.find(params[:quote][:company_division_client_id]) }
+
+  expose_with_pagination(:quotes) {
     Quote
     .all
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .order(date: :desc)
   }
 
-  # 見積もり
   expose_with_pagination(:quote_manager) {
-
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
     .order(date: :desc)
   }
 
-  # 見積もり
   expose_with_pagination(:quote_general) {
-
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .where(division_id: current_user.division.id)
@@ -43,9 +41,7 @@ class QuotesController < ApplicationController
     .order(date: :desc)
   }
 
-  # 見積もり
   expose_with_pagination(:quote_operator) {
-
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .joins(:task)
@@ -53,9 +49,6 @@ class QuotesController < ApplicationController
     .where.not(status: :lost)
     .order(created_at: :desc)
   }
-
-  # 見積もり
-  expose(:quote) { Quote.find_or_initialize_by id: params[:id] || params[:quote_id] }
 
   #----------------------------------------
   #  ** Layouts **
@@ -104,20 +97,12 @@ class QuotesController < ApplicationController
   # @version 2018/06/10
   def create
 
+    register_google_drive
+
     quote.update! quote_params
 
-    # driveにフォルダーを作成
-    require 'google_drive'
-    session = GoogleDrive::Session.from_config('config.json')
-    root_folder_id = '0AMp2Ot6o6NNAUk9PVA'
-    sub_folder_name = "#{quote.quote_number} #{quote.subject} #{quote&.client.company_division.name}"
-    root_folder = session.collection_by_id(root_folder_id)
-    sub_folder = root_folder.create_subfolder(sub_folder_name)
-    quote.update!(drive_folder_id: sub_folder.id)
-
-
     # slack通知
-    if quote.payment_terms == :advance
+    if quote.advance?
 
       Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{quote.quote_number}] お客様情報[#{quote&.client&.company_division&.company&.name} #{quote&.client&.name}] 担当者[#{quote&.user&.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
     end
@@ -136,9 +121,7 @@ class QuotesController < ApplicationController
 
     add_breadcrumb '案件', path: quotes_path
     add_breadcrumb '編集'
-
   end
-
 
   ##
   # 更新
@@ -146,13 +129,15 @@ class QuotesController < ApplicationController
   #
   def update
 
+    register_google_drive
+
     # 情報更新
     quote.update! quote_params
 
     # taskが存在していたらtaskの納期も更新する
     quote.task.update! date: quote.deliver_at if quote.task.present?
 
-    render json: { status: :success }
+    render json: { status: :success, drive_folder_id: quote.drive_folder_id }
   rescue => e
 
     render json: { status: :error, message: e.message }
@@ -164,7 +149,6 @@ class QuotesController < ApplicationController
   def destroy
 
     quote.destroy!
-
   rescue => e
 
     flash[:warning] = { message: e.message }
@@ -236,15 +220,6 @@ class QuotesController < ApplicationController
         cl_work_subcontractor.details.each { |d| d.update! work_id: cl_work.id, actual_cost: 0 }
       end
     end
-
-    # driveにフォルダーを作成
-    require 'google_drive'
-    session = GoogleDrive::Session.from_config('config.json')
-    root_folder_id = '0AMp2Ot6o6NNAUk9PVA'
-    sub_folder_name = "#{cl_quote.quote_number} #{cl_quote.subject} #{cl_quote.client.company_division.name}"
-    root_folder = session.collection_by_id(root_folder_id)
-    sub_folder = root_folder.create_subfolder(sub_folder_name)
-    cl_quote.update!(drive_folder_id: sub_folder.id)
 
     redirect_to edit_quote_path(cl_quote), flash: { notice: { message: '案件を複製しました' } }
   rescue => e
@@ -417,7 +392,17 @@ class QuotesController < ApplicationController
 
       params.require(:quote).permit :id, :company_division_client_id, :date, :expiration, :subject, :remarks, :memo, :drive_folder_id, :pdf_url, :price, :user_id, :status, :quote_number,
         :quote_type, :channel, :deliver_at, :reception, :deliver_type, :deliver_type_note, :division_id, :discount, :tax_type, :payment_terms, :tax, :quote_number, :temporary_price,
-        :issues_date, :delivery_note_date, :profit_price,
+        :issues_date, :delivery_note_date, :profit_price, :drive_folder_id,
         quote_projects_attributes: [:id, :quote_id, :project_id, :unit, :price, :name, :unit_price, :project_name, :remarks]
+    end
+
+    def register_google_drive
+
+      return if params[:quote][:google_drive_exist].nil? || params[:quote][:google_drive_exist] == 'false'
+
+      require 'google_drive'
+      session = GoogleDrive::Session.from_config('config.json')
+      root_folder = session.collection_by_id('0AMp2Ot6o6NNAUk9PVA')
+      params[:quote][:drive_folder_id] = root_folder.create_subfolder("#{ Rails.env == :development ? '開発環境(デバッグ): ' : '' }#{params[:quote][:quote_number]} #{params[:quote][:subject]} #{client.name}").id
     end
 end

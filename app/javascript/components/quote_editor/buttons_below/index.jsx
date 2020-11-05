@@ -46,7 +46,7 @@ const ButtonsBelow = props => {
             <Fragment>
               { props.activity ?
                 <Fragment>
-                  { props.activity.status == 'lost' || props.activity.status == 'rejection' ?
+                  { props.activity.status === 'lost' || props.activity.status === 'rejection' ?
                     null
                     : <a className='c-btnMain-standard c-btn-orange u-ml-30' rel="nofollow" data-method="post" href={ `/quotes/${ props.quote.id }/status?status=working` }>作業書作成</a>
                   }
@@ -55,7 +55,7 @@ const ButtonsBelow = props => {
               }
             </Fragment>
           }
-          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/activities?quote_id=${ props.quote.id }` } >活動履歴</a>
+          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/activities?quote_id=${ props.quote.id }` }>活動履歴</a>
           { props.task ?
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/tasks/${ props.task.id }` }>チャット</a>
             : null
@@ -71,4 +71,4 @@ const ButtonsBelow = props => {
   );
 };
 
-export default ButtonsBelow;
+export default ButtonsBelow

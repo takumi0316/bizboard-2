@@ -7,22 +7,27 @@ export const CHANNELS = {
   'BPR/ERP': 'bpr_erp',
   '受付':   'reception',
   'その他': 'channel_other',
-};
+}
 
 export const QUOTE_TYPES = {
   '請負': 'contract',
   '分散機': 'copy',
-};
+}
 
 export const TAX_TYPES = {
   '課税対象': 'taxation',
   '非課税対象': 'exemption',
-};
+}
 
 export const PAYMENT_TERMS = {
   '後払い': 'postpaid',
   '先払い': 'advance',
-};
+}
+
+export const GOOGLE_DRIVE = {
+  '作成しない': false,
+  '作成する': true
+}
 
 /**
  * @version 2018/06/10
