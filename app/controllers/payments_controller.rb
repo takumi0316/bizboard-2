@@ -12,6 +12,8 @@ class PaymentsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
+  expose_with_pagination(:payments) { Subcontractor.eager_load(:payments).where.not(payments: { price: 0 }) }
+
   #----------------------------------------
   #  ** Layouts **
   #----------------------------------------
@@ -32,8 +34,6 @@ class PaymentsController < ApplicationController
 
     @start_date = params[:begginning].present? ? arrange_formatting_date(params[:begginning]).beginning_of_month : Time.zone.now.beginning_of_month
     @end_date = params[:begginning].present? ? arrange_formatting_date(params[:end]).end_of_month : Time.zone.now.end_of_month
-
-    @subcontractor = Subcontractor.eager_load(:payments).where.not(payments: { price: 0 })
 
     add_breadcrumb '支払い管理'
   end
