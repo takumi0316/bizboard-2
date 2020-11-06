@@ -12,7 +12,7 @@ class PaymentsController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
 
-  expose_with_pagination(:payments) { Subcontractor.eager_load(:payments).where.not(payments: { price: 0 }) }
+  expose_with_pagination(:subcontractors) { Subcontractor.eager_load(:payments).where.not(payments: { price: 0 }) }
 
   #----------------------------------------
   #  ** Layouts **
