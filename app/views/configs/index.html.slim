@@ -33,6 +33,9 @@ h2.l-dashboard__heading サイト設定
           td 説明文
           td = f.text_area :site_description, value: site_configs[:site_description], placeholder: 'サイトのディスクリプション', class: 'c-form-textarea'
         tr
+          td 本社郵便番号
+          td = f.text_field :jii_postal_code, value: site_configs[:jii_postal_code], placeholder: '112-0001', class: 'c-form-text'
+        tr
           td 本社住所
           td = f.text_field :jii_address, value: site_configs[:jii_address], placeholder: '東京都文京区白山', class: 'c-form-text'
         tr
