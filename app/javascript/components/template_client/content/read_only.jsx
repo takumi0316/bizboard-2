@@ -45,7 +45,7 @@ const ReadOnly = props => {
 
         return(
           <tr { ...{key} }>
-            <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
+            <td className='u-ta-center u-va-middle'>{ content_type ? upload().name : content.name }</td>
             <td className='u-ta-center'>
               { content_type ?
                 <Fragment>

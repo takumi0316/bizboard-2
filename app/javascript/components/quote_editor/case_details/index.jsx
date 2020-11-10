@@ -1,16 +1,16 @@
-import React from 'react';
+import React from 'react'
+import Dayjs from 'dayjs'
 
 // React Component
-import DatetimePicker from '../datetime_picker';
-// datetime
-import Dayjs from 'dayjs';
+import DatetimePicker from '../datetime_picker'
 
 import {
   QUOTE_TYPES,
-  CHANNELS
-} from '../properties.es6';
+  CHANNELS,
+  GOOGLE_DRIVE
+} from '../properties.es6'
 
-const CaseDetails = (props) => {
+const CaseDetails = props => {
 
   return(
     <div className='u-mt-30 c-table'>
@@ -220,6 +220,22 @@ const CaseDetails = (props) => {
                     })}
                   </select>
                 </div>
+              }
+            </td>
+          </tr>
+          <tr>
+            <td className='u-fw-bold'>Google Drive</td>
+            <td>
+              { props.google_drive_folder_id ?
+                <input className='c-form-text' defaultValue={ `作成済み(フォルダID: ${ props.google_drive_folder_id })` } readOnly/>
+                : <select className='c-form-select' defaultValue={ GOOGLE_DRIVE[props.google_drive_folder_id ? true : false] } ref={ props.googleDriveFolderRef }>
+                { Object.keys(GOOGLE_DRIVE).map((val, index) => {
+                  const key = `google_drive_${ index }`
+                  return(
+                    <option {...{key}} value={ GOOGLE_DRIVE[val] }>{ val }</option>
+                  )
+                }) }
+                </select>
               }
             </td>
           </tr>

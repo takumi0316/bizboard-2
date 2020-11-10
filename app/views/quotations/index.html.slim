@@ -11,7 +11,7 @@
         th 作業ステータス
         th 件名
         th 納期
-        th colspan=1
+        th colspan=2
     tbody
       - quotes.each do |r|
         tr
@@ -34,6 +34,7 @@
           td = r.work&.status_i18n
           td = r&.subject
           td = r.deliver_at&.to_date
-          td = link_to '詳細', quotation_path(r), class: 'c-btnMain-standard'
+          td.u-ta-center = link_to '編集', edit_quotation_path(r), class: 'c-btnMain-standard'
+          td.u-ta-center = link_to '詳細', quotation_path(r), class: 'c-btnMain-primaryB', target: '_blank' if ActiveStorage::Blob.where(filename: "見積書＿#{r.id}.pdf").present?
 
 = render 'layouts/_partials/pagination'

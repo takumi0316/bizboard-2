@@ -5,17 +5,16 @@
   .c-box.c-box__height-100.u-mt-30
     .c-float__left
       .u-fs-small = "#{quote.client&.company_division&.company&.name}　御中"
-    .c-float__right = wicked_pdf_image_tag 'jii-log', {size: "377x40"}
+    .c-float__right = wicked_pdf_image_tag 'jii-log.png', {size: "377x40"}
 
   .c-box__height-250
     .c-float__right.u-ml-10
-      = wicked_pdf_image_tag 'electronic-seal', {size: "100x90"}
+      = wicked_pdf_image_tag 'electronic-seal.png', {size: "100x90"}
     .c-float__right
-      .c-box__width-375.c-float__left
+      .c-float__left(style='width: 267px')
         p.u-fs-small.u-mt-5 株式会社日本工業社
-        p.u-fs-small.u-mt-5 東京都中央区新川2-26-3
-        p.u-fs-small.u-mt-5 住友不動産茅場町ビル2号館 5F
-        p.u-fs-small.u-mt-5 TEL: 03-6280-5510
+        p.u-fs-small.u-mt-5 #{SiteConfig.get_all[:jii_address]}
+        p.u-fs-small.u-mt-5 TEL: #{SiteConfig.get_all[:jii_tel]}
     .c-float__left
       - if quote.client&.company_division&.zip&.present?
         p.u-fs-small 〒#{quote.client&.company_division&.zip}
@@ -67,7 +66,7 @@
               td.u-ta-right
                 .u-fw-light #{((r.price).to_i).to_s(:delimited)}
 
-          - if quote.discount > 0
+          - if quote.discount.to_i > 0
             td.u-ta-left
               .u-fw-light 値引き金額
             td.u-ta-right
@@ -112,7 +111,6 @@
           tr
             th.u-ta-left 合計
             td.u-ta-right #{((quote.price * quote.tax.to_f).floor).to_s(:delimited)} 円
-
 
   .c-box__height-100
 

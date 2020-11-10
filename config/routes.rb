@@ -58,7 +58,7 @@ Rails.application.routes.draw do
 
   resources :invoices do
     member do
-      get :pdf
+      get :generate_pdf
     end
   end
 
@@ -68,14 +68,14 @@ Rails.application.routes.draw do
   # 見積書
   resources :quotations do
     member do
-      get :pdf
+      get :generate_pdf
     end
   end
 
   # 納品書
   resources :delivery_notes do
     member do
-      get :pdf
+      get :generate_pdf
     end
   end
 

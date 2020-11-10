@@ -6,30 +6,47 @@ const ButtonsBelow = props => {
     <div className='c-overlay-submit'>
       { props.quote.id ?
         <div>
-          { props.quote.lock == false?
+          { !props.quote.lock ?
             <div className='c-btnMain-standard c-btn-blue u-ml-30' onClick={ e => props.onSubmit(e) }>更新する</div>
             : null
           }
-          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotations/${ props.quote.id }` }>見積書</a>
-          { props.quote.status == 'end_work' && !props.invoice?
-            <a className='c-btnMain-standard c-btn-orange u-ml-30' href={ `/invoices/new?quote_id=${ props.quote.id }` }>請求書作成</a>
+          <Fragment>
+            { props.quotation.pdf_exist ?
+              <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotations/${ props.quote.id }` } target='_blank'>見積書</a>
+              : <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotations/${ props.quote.id }/edit` } target='_blank'>見積書</a>
+            }
+          </Fragment>
+          { props.quote.status === 'end_work' && !props.invoice.id ?
+            <a className='c-btnMain-standard c-btn-orange u-ml-30' href={ `/invoices/new?quote_id=${ props.quote.id }` } target='_blank'>請求書作成</a>
             : null
           }
-          { props.quote.status == 'invoicing' && props.invoice?
-            <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/invoices/${props.invoice.id}/edit` }>請求書</a>
+          { props.quote.status === 'invoicing' && props.invoice.id ?
+            <Fragment>
+              { props.invoice.pdf_exist ?
+                <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/invoices/${props.invoice.id}` } target='_blank'>請求書</a>
+                : <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/invoices/${props.invoice.id}/edit` } target='_blank'>請求書</a>
+              }
+            </Fragment>
             : null
           }
-          { props.invoice ?
-            <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/delivery_notes/${ props.quote.id }` }>納品書</a>
-            : null
-          }
+          <Fragment>
+            { props.invoice.id ?
+              <Fragment>
+                { props.delivery_note.pdf_exist ?
+                  <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/delivery_notes/${ props.quote.id }` } target='_blank'>納品書</a>
+                  : <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/delivery_notes/${ props.quote.id }/edit` } target='_blank'>納品書</a>
+                }
+              </Fragment>
+              : null
+            }
+          </Fragment>
           { props.work ?
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/works/${ props.work.id }` }>作業書</a>
             :
             <Fragment>
               { props.activity ?
                 <Fragment>
-                  { props.activity.status == 'lost' || props.activity.status == 'rejection' ?
+                  { props.activity.status === 'lost' || props.activity.status === 'rejection' ?
                     null
                     : <a className='c-btnMain-standard c-btn-orange u-ml-30' rel="nofollow" data-method="post" href={ `/quotes/${ props.quote.id }/status?status=working` }>作業書作成</a>
                   }
@@ -38,7 +55,7 @@ const ButtonsBelow = props => {
               }
             </Fragment>
           }
-          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/activities?quote_id=${ props.quote.id }` } >活動履歴</a>
+          <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/activities?quote_id=${ props.quote.id }` }>活動履歴</a>
           { props.task ?
             <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/tasks/${ props.task.id }` }>チャット</a>
             : null
@@ -54,4 +71,4 @@ const ButtonsBelow = props => {
   );
 };
 
-export default ButtonsBelow;
+export default ButtonsBelow

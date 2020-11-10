@@ -1,0 +1,1 @@
+= react_component('QuotationPdfGenerator', { quote: quote, projects: quote.quote_projects, company: quote.client.present? ? quote.client.company_division.company.name : '', division: quote.client.present? ? quote.client.company_division.name : '', client: quote.client.present? ? quote.client.name : '' })

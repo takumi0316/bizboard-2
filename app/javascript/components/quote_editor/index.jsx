@@ -1,17 +1,17 @@
-import React, { Fragment }  from 'react'
+import React, { createRef, Fragment }  from 'react'
 
 // import Component
-import ClientSearch         from '../utilities/client_search';
-import ProjectSearch        from './project_search';
-import HomeDivision         from './home_division';
-import Subject              from './subject/index.jsx';
-import CustomerInformation  from './customer_information';
-import SalesDepartment      from './sales_department';
-import CaseDetails          from './case_details';
-import PaymentDetails       from './payment_details';
-import ButtonsBelow         from './buttons_below';
-import ItemTables           from './item_tables';
-import Loading              from '../loading';
+import ClientSearch         from '../utilities/client_search'
+import ProjectSearch        from './project_search'
+import HomeDivision         from './home_division'
+import Subject              from './subject/index.jsx'
+import CustomerInformation  from './customer_information'
+import SalesDepartment      from './sales_department'
+import CaseDetails          from './case_details'
+import PaymentDetails       from './payment_details'
+import ButtonsBelow         from './buttons_below'
+import ItemTables           from './item_tables'
+import Loading              from '../loading'
 
 /**
  *  記事エディター
@@ -25,13 +25,14 @@ export default class QuoteEditor extends React.Component {
    */
   constructor (props) {
 
-    super(props);
+    super(props)
 
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const day = date.getDate()
 
+    this.googleDriveFolderRef = createRef()
     this.state = {
       quote_id: props.quote.id || '',
       quote: props.quote,
@@ -71,8 +72,8 @@ export default class QuoteEditor extends React.Component {
       memo: props.quote.memo || '',
       drive_folder_id: props.quote.drive_folder_id || '',
       itemStatus: true,
-    };
-  };
+    }
+  }
 
   /**
    *  公開日時を適用するcallback
@@ -510,7 +511,8 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[user_id]', this.props.user_id);
     field.append('quote[discount]', this.state.discount);
     field.append('quote[price]', this.state.discount === 0 ? price : price - this.state.discount);
-    field.append('quote[deliver_type]', this.state.deliver_type);
+    field.append('quote[deliver_type]', this.state.deliver_type)
+    if(!this.props.quote.drive_folder_id && this.googleDriveFolderRef.current !== null) field.append('quote[google_drive_exist]', this.googleDriveFolderRef.current.value)
     this.state.quote_projects.map(project => {
 
       field.append('quote[quote_projects_attributes][][id]', project.id);
@@ -525,30 +527,35 @@ export default class QuoteEditor extends React.Component {
     });
 
     // 納品方法
-    field.append('quote[deliver_type_note]', this.state.deliver_type === 'location' || this.state.deliver_type === 'other' ? this.state.deliver_type_note : '');
+    field.append('quote[deliver_type_note]', this.state.deliver_type === 'location' || this.state.deliver_type === 'other' ? this.state.deliver_type_note : '')
 
-    const request = this.state.quote_id ? window.xhrRequest.put(this.props.action, field) : window.xhrRequest.post(this.props.action, field);
+    const request = this.state.quote_id ? window.xhrRequest.put(this.props.action, field) : window.xhrRequest.post(this.props.action, field)
     request.then(res => {
 
       if(res.data.status === 'success') {
 
-        if(this.state.quote_id) this.setState({ price: price }, () => window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () => this.loadingRef.finish() }));
+        if(this.state.quote_id) {
+
+          this.setState({ price: price, quote: { ...this.state.quote, drive_folder_id: res.data.drive_folder_id } }, () => {
+            window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () => this.loadingRef.finish() })
+          })
+        }
 
         // 編集ページへリダイレクト
         if(!this.state.quote_id) {
 
-          const redirect = () => location.href = `${res.data.quote.id}/edit`;
-          window.alertable({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() });
-        };
-      };
+          const redirect = () => location.href = `${res.data.quote.id}/edit`
+          window.alertable({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() })
+        }
+      }
 
-      if(res.data.status != 'success') {
+      if(res.data.status !== 'success') {
 
         // エラー文
-        console.log(res.data.message);
-        window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` });
-      };
-    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }));
+        console.log(res.data.message)
+        window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` })
+      }
+    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }))
   };
 
   /**
@@ -577,12 +584,12 @@ export default class QuoteEditor extends React.Component {
             :null
           }
         </div>
-        <CaseDetails quote={ this.state.quote } date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setIssuesDate={ this.setIssuesDate }
-                     issues_date={ this.state.issues_date } setExpiration={ this.setExpiration }
+        <CaseDetails date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setIssuesDate={ this.setIssuesDate }
+                     google_drive_folder_id={ this.state.quote.drive_folder_id || '' } googleDriveFolderRef={ this.googleDriveFolderRef } issues_date={ this.state.issues_date } setExpiration={ this.setExpiration }
                      expiration={ this.state.expiration } setDeliveryNoteDate={ this.setDeliveryNoteDate }
                      delivery_note_date={ this.state.delivery_note_date } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
-                     deliver_type_note={ this.state.deliver_type_note }channel={ this.state.channel } quote_number={ this.state.quote_number }
-                     quote_type={ this.state.quote_type }reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
+                     deliver_type_note={ this.state.deliver_type_note } channel={ this.state.channel } quote_number={ this.state.quote_number }
+                     quote_type={ this.state.quote_type } reception={ this.state.reception } show_quote_number={ this.state.show_quote_number }
                      setDeliverTypeNote={ this.setDeliverTypeNote } setChannel={ this.setChannel } setQuoteNumber={ this.setQuoteNumber }
                      setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
                      setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
@@ -605,7 +612,7 @@ export default class QuoteEditor extends React.Component {
                         show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
                         setRemarks={ this.setRemarks } setMemo={ this.setMemo } setDriveFolderId={ this.setDriveFolderId } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
         />
-        <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } task={ this.state.task } onSubmit={ this.onSubmit }/>
+        <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } quotation={ this.props.quotation } delivery_note={ this.props.delivery_note } task={ this.state.task } onSubmit={ this.onSubmit }/>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>
     );

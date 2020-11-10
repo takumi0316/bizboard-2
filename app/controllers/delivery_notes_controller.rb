@@ -44,28 +44,33 @@ class DeliveryNotesController < ApplicationController
     add_breadcrumb '納品書一覧'
   end
 
-  ##
-
-  # 詳細
-  # @version 2020/01/29
-  #
-  def show
+  def edit
 
     add_breadcrumb '納品書一覧', path: delivery_notes_path
     add_breadcrumb '詳細'
   end
 
-  def pdf
+  #
+  # 詳細
+  # @version 2020/01/29
+  #
+  def show
 
-    respond_to do |format|
-      format.html do
-        render  pdf: "納品書_#{quote.id}", # pdfファイルの名前。これがないとエラーが出ます
-                encoding: 'UTF-8',
-                layout: 'layouts/pdf.html.slim',
-                template: 'delivery_notes/pdf.html.slim', # テンプレートファイルの指定。viewsフォルダが読み込まれます。
-                show_as_html: params.key?('debug')
-      end
-    end
+    filename = "納品書＿#{quote.id}.pdf"
+    send_data quote.delivery_note_pdf.download, filename: filename, disposition: 'inline', type: 'application/pdf'
+  end
+
+  def generate_pdf
+
+    filename = "納品書＿#{quote.id}.pdf"
+    pdf_html = render_to_string template: 'delivery_notes/generate_pdf.html.slim', layout: 'layouts/pdf.html.slim'
+    pdf_string = WickedPdf.new.pdf_from_string(pdf_html)
+    pdf_string.force_encoding('UTF-8')
+
+    quote.delivery_note_pdf.attach io: StringIO.new(pdf_string), filename: filename, content_type: 'application/pdf'
+    quote.save!
+
+    redirect_to delivery_note_path(quote)
   end
 
   #----------------------------------------
