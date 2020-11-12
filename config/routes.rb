@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+  Rails.application.routes.draw do
 
   # TOP
   root 'home#index'
@@ -212,6 +212,8 @@ Rails.application.routes.draw do
   resources :tasks, only: [:show, :update]
 
   resources :delivery_targets
+
+  resources :react_trials, only: [:index]
 
   # 認証
   devise_scope :user do
