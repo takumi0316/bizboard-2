@@ -7,7 +7,6 @@ import Style from './style.sass'
  */
 const ProjectEditor = props => {
 
-  console.log(props)
   const nameRef = useRef(null)
   const priceRef = useRef(null)
   const codeRef = useRef(null)
@@ -67,14 +66,15 @@ const ProjectEditor = props => {
       
       if(res.data.status === 'success' && res.data.project.id) {
 
-        window.alertable({ info: 'success', messages: success_message })
-        location.href = `/projects`
+        const redirect = () => location.href = `/projects`
+        window.alertable({ icon: 'success', message: success_message, close_callback: redirect })
+        
       } else {
   
-        window.alertable({ icon: 'info', messages: err_message })
+        window.alertable({ icon: 'info', message: err_message })
       }
     }).catch(err => {
-      window.alertable({ icon: 'info', messages: err_message })
+      window.alertable({ icon: 'info', message: err_message })
       console.log('Error Log : ', err)
     })
   }
