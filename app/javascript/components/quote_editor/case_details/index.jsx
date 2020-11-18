@@ -152,7 +152,7 @@ const CaseDetails = props => {
                   <span>予約</span>
                 </label>
                 <label className='c-form-radioLabel u-ml-15'>
-                  <input type='radio' value='konpro' checked={ props.reception === 'konpro' } onChange={ e => props.setReception(e.target.value) } className='c-form-radio'/>
+                  <input type='radio' value='bizstant' checked={ props.reception === 'bizstant' } onChange={ e => props.setReception(e.target.value) } className='c-form-radio'/>
                   <i className='c-form-radioIcon'/>
                   <span>コンプロ！</span>
                 </label>
