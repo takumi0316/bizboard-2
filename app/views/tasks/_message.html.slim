@@ -1,53 +1,66 @@
 #messages_area
   - @group.each do |key,messages|
+
     .p-tasks__message-date = key
     - messages.each do |r|
+
       // 自分と相手のメッセージのcss変更
       // 自分側
-      -if r.name === current_user.name
+      - if r.name === current_user.name
+
         - unless r.content.nil?
+
           .p-tasks__item
             dl.p-tasks__message-current
               dt = simple_format(r.content)
             .p-tasks__message-current-time = r.created_at.strftime('%H:%M')
             .p-tasks__message-current-time.u-mb-20 = r.name
         - if r.attached_files.attached?
+
           - r.attached_files.each do |file|
+
             = link_to rails_blob_path(file) ,target: :_blank do
+
               .p-tasks__messageItem
                 dl.p-tasks__message-currentFile
                   - if file.blob.content_type[0, 5] == 'image'
-                    dt = image_tag file, :size =>'150x150'
+                    dt = image_tag file, size: '150x150'
                   dt = file.blob.filename
-                  /hover時表示
+                  / hover時表示
                   .p-tasks__message-currentMask
                     p.u-fw-bold ダウンロードする
                   .p-tasks__message-fileTime = r.created_at.strftime('%H:%M')
                   .p-tasks__message-fileTime.u-mb-20 = r.name
 
-      -else
+      - else
+
         // 相手側
         - unless r.content.nil?
+
           .p-tasks__item
             dl.p-tasks__message-others
               dt = simple_format(r.content)
             .p-tasks__message-others-time = r.created_at.strftime('%H:%M')
             .p-tasks__message-others-time.u-mb-20 = r.name
         - if r.attached_files.attached?
+
           - r.attached_files.each do |file|
+
             = link_to rails_blob_path(file) ,target: :_blank do
+
               .p-tasks__item
                 dl.p-tasks__message-othersFile
                   - if file.blob.content_type[0, 5] == 'image'
-                    dt = image_tag file, :size =>'150x150'
+                    dt = image_tag file, size: '150x150'
                   dt = file.blob.filename
-                  /hover時表示
+                  / hover時表示
                   .p-tasks__message-othersMask
                     p.u-fw-bold ダウンロードする
                 .p-tasks__message-others-time = r.created_at.strftime('%H:%M')
                 .p-tasks__message-others-time.u-mb-20 = r.name
 
 javascript:
+
   function ajaxUpdate(url, element){
     var ajax = new XMLHttpRequest;
     ajax.open('GET', url, true);
@@ -57,8 +70,9 @@ javascript:
      };
     ajax.send(null);
   }
-  //20秒に一回メッセージエリアを読み込む
-  //window.addEventListener('load', function(){
+
+  // 20秒に一回メッセージエリアを読み込む
+  window.addEventListener('load', function(){
     var url = '#{@task_id}';
     var div = document.getElementById('messages_area');
     div.scrollTop = div.scrollHeight;

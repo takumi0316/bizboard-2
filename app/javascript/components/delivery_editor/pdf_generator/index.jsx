@@ -13,7 +13,7 @@ const DeliveryPdfGenrator = props => {
         <p>部署名: { props.division }</p>
         <p>担当者名: { props.client }</p>
       </div>
-      <form method='get' target='_blank' action={ `/delivery_notes/${props.quote.id}/pdf` }>
+      <form method='get' target='_blank' action={ `/delivery_notes/${props.quote.id}/generate_pdf` }>
         <div className='u-mt-30 c-flex'>
           <div className='c-flex__column'>
             <label className='c-form-label'>案件番号</label>

@@ -137,9 +137,9 @@ javascript:
       br
       | 本社
       br
-      | 〒104-0033 中央区新川2-26-3 住友不動産茅場町ビル
+      | 〒#{SiteConfig.get_all[:jii_postal_code]} #{SiteConfig.get_all[:jii_address]}
       br
-      | TEL 03-6280-5510　　　　　　FAX 03-3537-3511
+      | TEL #{SiteConfig.get_all[:jii_tel]}　　　　　　FAX #{SiteConfig.get_all[:jii_fax]}
     .c-table-work_subcontractors5
       table
         tr

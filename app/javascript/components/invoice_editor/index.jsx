@@ -188,7 +188,7 @@ const InvoicePdfGenrator = props => {
     <Fragment>
       <h1 className='l-dashboard__heading'>請求書: { props.quote.subject }</h1>
       { props.invoice ?
-        <form method='get' target='_blank' action={ `/invoices/${props.invoice.id}/pdf` }>
+        <form method='get' target='_blank' action={ `/invoices/${props.invoice.id}/generate_pdf` }>
           <CustomerAddress company={ props.company} division={ props.division } client={ props.client }/>
           <div className='u-mt-30 c-flex'>
             <div className='c-flex__column'>
