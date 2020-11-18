@@ -157,6 +157,8 @@ import RegistorCompanyDivisionClient from 'components/company/division/client/re
 
 import ShowCompanyDivisionClient from 'components/company/division/client/show'
 
+import InputSuggestion from '../components/Trials/input_suggestion'
+
 WebpackerReact.setup({
   Kawaii,
   Alert,
@@ -208,4 +210,5 @@ WebpackerReact.setup({
   CompanyDivisionClientList,
   RegistorCompanyDivisionClient,
   ShowCompanyDivisionClient,
+  InputSuggestion,
 })

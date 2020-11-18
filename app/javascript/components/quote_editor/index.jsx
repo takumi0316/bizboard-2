@@ -2,7 +2,6 @@ import React, { createRef, Fragment }  from 'react'
 
 // import Component
 import ClientSearch         from '../utilities/client_search'
-import ProjectSearch        from './project_search'
 import HomeDivision         from './home_division'
 import Subject              from './subject/index.jsx'
 import CustomerInformation  from './customer_information'
@@ -12,6 +11,7 @@ import PaymentDetails       from './payment_details'
 import ButtonsBelow         from './buttons_below'
 import ItemTables           from './item_tables'
 import Loading              from '../loading'
+import AddProject           from './project_search'
 
 /**
  *  記事エディター
@@ -394,41 +394,48 @@ export default class QuoteEditor extends React.Component {
    */
   applyHomeDivision = division => this.setState({ home_division: division });
 
+  addQuoteProject = () => {
+
+    const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects));
+ 
+    const uid = new Date().getTime().toString(16) + Math.floor(1000 * Math.random()).toString(16)
+ 
+    const field = {
+      'id': '',
+      'uid': uid,
+      'project_id': '',
+      'quote_id': this.state.quote_id,
+      'name': '',
+      'unit_price': '',
+      'unit': '',
+      'price': '',
+      'project_name': '',
+      'remarks': ''
+    }
+
+    quote_projects.push(field)
+ 
+    this.setState({ quote_projects: quote_projects })
+  }
+
   /**
    *  品目選択時
    *  @version 2018/06/10
    *
    */
-  applyProject = project => {
+  applyProject = (project, index) => {
 
-    const price = Number(this.state.price) + Number(project.price);
-    const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects));
+    let quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects))
+    const price = (Number(this.state.price) - Number(quote_projects[index].price)) + Number(project.price)
+ 
+    quote_projects[index].project_id = project.id
+    quote_projects[index].name = project.name
+    quote_projects[index].remarks = project.note || ''
+    quote_projects[index].unit_price = project.price
+    quote_projects[index].price = project.price
 
-    project.specifications.map(specification => {
-
-      const strong = 1000;
-
-      // uniqueなidを生成
-      const uid = new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16);
-
-      const field = {
-        'id': '',
-        'uid': uid,
-        'project_id': project.id,
-        'quote_id': this.state.quote_id,
-        'name': specification.name,
-        'unit_price': specification.unit_price,
-        'unit': specification.unit,
-        'price': specification.price,
-        'project_name': specification.project_name ? specification.project_name : '',
-        'remarks': specification.remarks ? specification.remarks : ''
-      };
-
-      quote_projects.push(field);
-    });
-
-    this.setState({ quote_projects: quote_projects, price: price });
-  };
+    this.setState({ quote_projects: quote_projects, price: price })
+  }
 
   /**
    * 指定されたprojectを消す
@@ -590,10 +597,11 @@ export default class QuoteEditor extends React.Component {
         />
         <ItemTables quote_projects={ this.state.quote_projects } quote_id={ this.state.quote_id } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
                     setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } projectDestroy={ this.projectDestroy } itemStatus={ this.state.itemStatus }
-                    reorderQuoteProjects={ this.reorderQuoteProjects }
+                    reorderQuoteProjects={ this.reorderQuoteProjects } applyProject={ this.applyProject }
         />
         <div className='u-mt-15'>
-          <ProjectSearch applyProject={ this.applyProject } prefectures={ this.props.prefectures } />
+          <button className='c-btnMain-standard' onClick={ this.addQuoteProject }>行を追加</button>
+          { /* <AddProject applyProject={ this.applyProject } prefectures={ this.props.prefectures } /> */ }
           <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
         </div>
         <PaymentDetails quote={ this.state.quote } discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
