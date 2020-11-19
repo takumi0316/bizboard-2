@@ -56,13 +56,15 @@
           td.u-ta-center = r.work.status_i18n if r.work.present?
           td.u-ta-center = r.activity.accurary_i18n if r.activity.present?
           td = r.subject.truncate(25)
-          td
+          td.u-va-middle
             - if r.client.nil?
 
               | お客様情報なし
             - if r.client.present?
 
-              = "#{ r.client.company_division.company.name }\s#{ r.client.name }"
+              = "#{ r.client.company_division.company.name }"
+              br
+              = "#{ r.client.name }"
           td = r.deliver_at
           td.u-ta-center
             - if r.user.nil?
