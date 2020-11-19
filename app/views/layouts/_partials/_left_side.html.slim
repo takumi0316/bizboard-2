@@ -13,7 +13,7 @@
 
       - else
 
-        svg viewBox='10 20 600 155' width='180' height='50'
+        svg viewBox='10 20 600 155' width='130' height='50'
           title #{SiteConfig.site_title}|#{SiteConfig.site_name}
           desc = SiteConfig.site_description
           use xlink:href='#logo_main'
@@ -36,7 +36,7 @@
           span.u-ml-10 作業管理
 
       li.l-dashboard__menuItem
-        = link_to companies_path, class: current_controller('companies') || current_controller('company_divisions') || current_controller('company_division_clients')do
+        = link_to companies_path, class: current_controller('companies') || current_controller('company_divisions') || current_controller('company_division_clients') do
           = evil_icon 'ei-link', size: :s
           span.u-ml-10 取引先
 
@@ -93,7 +93,7 @@
           li.l-dashboard__menuItem
             = link_to categories_path, class: current_controller('categories') || current_controller('catalogs') do
               = evil_icon 'ei-tag', size: :s
-              span.u-ml-10 こんプロメニュー
+              span.u-ml-10 ビジスタント
 
           li.l-dashboard__menuItem
             = link_to users_path, class: cp(users_path) do
@@ -126,7 +126,7 @@
         li.l-dashboard__menuItem
           = link_to edit_user_path(current_user), class: cp(edit_user_path(current_user)) do
             = evil_icon 'ei-pencil', size: :s
-            span.u-ml-10 プロフィール編集
+            span.u-ml-10 プロフィール
 
         li.l-dashboard__menuItem
           = link_to sign_out_path, method: :delete do
