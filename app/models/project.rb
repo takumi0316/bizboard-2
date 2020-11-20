@@ -35,10 +35,6 @@ class Project < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum project_category: { project_print: 0, project_card: 10, project_copy: 20, project_bind: 30, project_scan: 40, project_otherprint: 50, project_other: 60}
-  enum after_process: { after_process_unnecessary: 0, after_process_necessary: 10 }
-  enum binding_work: { binding_works_unnecessary: 0, binding_works_necessary: 10 }
-
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
@@ -48,27 +44,8 @@ class Project < ApplicationRecord
   #----------------------------------------
 
   belongs_to :user, optional: true
-  belongs_to :client, optional: true, class_name: 'CompanyDivisionClient', foreign_key: :company_division_client_id
-
-  has_one  :bind,    class_name: 'ProjectBind',    dependent: :destroy
-  has_one  :card,    class_name: 'ProjectCard',    dependent: :destroy
-  has_one  :copy,    class_name: 'ProjectCopy',    dependent: :destroy
-  has_one  :print,   class_name: 'ProjectPrint',   dependent: :destroy
-  has_one  :scan,    class_name: 'ProjectScan',    dependent: :destroy
-
-  has_one  :project_after_process, dependent: :destroy
-  has_one  :project_binding_work,  dependent: :destroy
 
   has_many :histories, class_name: 'ProjectHistory',    dependent: :destroy
-
-  accepts_nested_attributes_for :bind
-  accepts_nested_attributes_for :card
-  accepts_nested_attributes_for :copy
-  accepts_nested_attributes_for :print
-  accepts_nested_attributes_for :scan
-
-  accepts_nested_attributes_for :project_after_process
-  accepts_nested_attributes_for :project_binding_work
 
   #----------------------------------------
   #  ** Scopes **
