@@ -22,7 +22,7 @@ const ItemTables = props => {
               </tr>
             </thead>
             <tbody>
-              <Specifications quote_projects={ props.quote_projects } quote_id={ props.quote_id }setName={ props.setName } setQuoteRemarks={ props.setQuoteRemarks }
+              <Specifications quote_projects={ props.quote_projects } quote_id={ props.quote_id } lock={props.lock} setName={ props.setName } setQuoteRemarks={ props.setQuoteRemarks }
                               setUnitPrice={ props.setUnitPrice } setUnit={ props.setUnit } projectDestroy={ props.projectDestroy }
               />
             </tbody>

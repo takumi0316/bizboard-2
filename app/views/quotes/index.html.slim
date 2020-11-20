@@ -30,9 +30,14 @@
           - if current_user.admin?
 
             td
-              = form_for quote, url: quote_lock_path(r), method: :post do |f|
-
-                = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
+              - if r.lock?
+                = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
+                  = image_tag asset_url('カギの閉じた錠.png'), class: 'nonactive'
+                  = image_tag asset_url('カギの開いた錠.png'), class: 'active'
+              - else
+                = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
+                  = image_tag asset_url('カギの閉じた錠.png'), class: 'active'
+                  = image_tag asset_url('カギの開いた錠.png'), class: 'nonactive'
           td class="u-ta-center #{ 'p-tasks__unread' if r.task.messages.last.created_at.strftime("%Y %m %d") > current_user.lastaccesstask.strftime("%Y %m %d") if r.task.present? && r.task.messages.present? }"
             = r.quote_number if r.deliver_at.nil?
             - if r.deliver_at.present?
