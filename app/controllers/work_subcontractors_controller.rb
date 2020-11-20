@@ -59,7 +59,7 @@ class WorkSubcontractorsController < ApplicationController
     work_subcontractor.update! work_subcontractor_params
 
     actual_cost = work_subcontractor.details.sum(:actual_cost)
-    quote_type = work_subcontractor.work.quote.quote_type == :contract ? :cost : :material
+    quote_type = work_subcontractor.work.quote.contract? ? :cost : :material
 
     expendable.update! division_id: work_subcontractor.work.quote.division_id, subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor_id, price: actual_cost, date: work_subcontractor.delivery_date, status: quote_type
     payment.update! subcontractor_id: work_subcontractor.client.subcontractor_division.subcontractor_id, work_subcontractor_id: work_subcontractor.id, expendable_id: expendable.id, price: actual_cost, date: work_subcontractor.delivery_date

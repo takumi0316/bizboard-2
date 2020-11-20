@@ -573,19 +573,27 @@ export default class QuoteEditor extends React.Component {
   render() {
     return (
       <Fragment>
-        <Subject subject={ this.state.quote_subject } setSubject={ this.setSubject } />
+        <Subject subject={ this.state.quote_subject } lock={ this.state.quote.lock } setSubject={ this.setSubject } />
         <CustomerInformation client={ this.state.client } company_name={ this.state.company ? this.state.company.name : '' }
                              division_name={ this.state.division ? this.state.division.name : '' } applyClient={ this.applyClient }
                              users={ this.state.users } prefectures={ this.state.prefectures }
         />
         <div className='u-mt-15'>
-          <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?name=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
+          { this.state.quote.lock ?
+            null
+            :
+            <ClientSearch applyClient={ this.applyClient } path={ '/company_division_clients.json?name=' } notFound={ 'お客様情報が見つかりませんでした' } typeName={ 'お客様情報を検索' }/>
+          }
         </div>
         <SalesDepartment home_division={ this.state.home_division } />
         <div className='u-mt-10'>
-          <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
+          { this.state.quote.lock ?
+            null
+            :
+            <HomeDivision applyHomeDivision={ this.applyHomeDivision } />
+          }
         </div>
-        <CaseDetails date={ this.state.date } temporary_price={ this.state.temporary_price } setDate={ this.setDate } setIssuesDate={ this.setIssuesDate }
+        <CaseDetails date={ this.state.date } temporary_price={ this.state.temporary_price } lock={ this.state.quote.lock } setDate={ this.setDate } setIssuesDate={ this.setIssuesDate }
                      google_drive_folder_id={ this.state.quote.drive_folder_id || '' } googleDriveFolderRef={ this.googleDriveFolderRef } issues_date={ this.state.issues_date } setExpiration={ this.setExpiration }
                      expiration={ this.state.expiration } setDeliveryNoteDate={ this.setDeliveryNoteDate }
                      delivery_note_date={ this.state.delivery_note_date } deliver_at={ this.state.deliver_at } deliver_type={ this.state.deliver_type }
@@ -595,18 +603,21 @@ export default class QuoteEditor extends React.Component {
                      setDeliverType={ this.setDeliverType } setDeliverAt={ this.setDeliverAt } setReception={ this.setReception }
                      setQuoteType={ this.setQuoteType } setTemporaryPrice={ this.setTemporaryPrice }
         />
-        <ItemTables quote_projects={ this.state.quote_projects } quote_id={ this.state.quote_id } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
+        <ItemTables quote_projects={ this.state.quote_projects } quote_id={ this.state.quote_id } lock={ this.state.quote.lock } setName={ this.setName } setQuoteRemarks={ this.setQuoteRemarks }
                     setUnitPrice={ this.setUnitPrice } setUnit={ this.setUnit } projectDestroy={ this.projectDestroy } itemStatus={ this.state.itemStatus }
                     reorderQuoteProjects={ this.reorderQuoteProjects } applyProject={ this.applyProject }
         />
-        <div className='u-mt-15'>
-          <button className='c-btnMain-standard' onClick={ this.addQuoteProject }>行を追加</button>
-          { /* <AddProject applyProject={ this.applyProject } prefectures={ this.props.prefectures } /> */ }
-          <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
-        </div>
+        { this.state.quote.lock ?
+          null
+          :
+          <div className='u-mt-15'>
+            <button className='c-btnMain-standard' onClick={ this.addQuoteProject }>行を追加</button>
+            <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
+          </div>
+        }
         <PaymentDetails quote={ this.state.quote } discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }
                         memo={ this.state.memo } payment_terms={ this.state.payment_terms } price={ this.state.price } drive_folder_id={ this.state.drive_folder_id }
-                        show={ this.state.show } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
+                        show={ this.state.show } lock={ this.state.quote.lock } setPaymentTerms={ this.setPaymentTerms } setTaxType={ this.setTaxType }
                         setRemarks={ this.setRemarks } setMemo={ this.setMemo } setDriveFolderId={ this.setDriveFolderId } setShow={ this.setShow } setDiscount={ this.setDiscount } setProfitPrice={ this.setProfitPrice }
         />
         <ButtonsBelow quote={ this.state.quote } work={ this.state.work } invoice={ this.state.invoice } quotation={ this.props.quotation } delivery_note={ this.props.delivery_note } task={ this.state.task } onSubmit={ this.onSubmit }/>

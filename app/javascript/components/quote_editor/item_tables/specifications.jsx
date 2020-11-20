@@ -16,7 +16,7 @@ const Specifications = (props) => {
                 <td><input className='c-form-text' type='number' step='0.1' value={ specification.unit_price } onChange={ e => props.setUnitPrice(index, e.target.value) } /></td>
                 <td><input className='c-form-text' type='number' step='1' value={ specification.unit } onChange={ e => props.setUnit(index, e.target.value) } /></td>
                 <td><input readOnly className='c-form-text' type='text' value={ specification.price }/></td>
-                <td><button className='c-btnMain2-primaryA' value={ index } onClick={ e => props.projectDestroy(e) }>ー</button></td>
+                <td><button className='c-btnMain2-primaryA' value={ index } disabled={props.lock ? 'disabled' : null} onClick={ e => props.projectDestroy(e) }>ー</button></td>
               </tr>
             );
           }) }
