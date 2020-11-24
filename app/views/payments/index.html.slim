@@ -14,4 +14,4 @@ h1.l-dashboard__heading 外注企業 支払い情報一覧
         - if total_prices > 0
           tr
             td = r.name
-            td = "¥#{ total_prices.to_s(:delimited) }"
+            td = "¥ #{ total_prices.to_s(:delimited) }"
