@@ -26,44 +26,44 @@
     ul.l-dashboard__menuList
 
       li.l-dashboard__menuItem
-        = link_to quotes_path, class: current_controller('quotes') || current_controller('invoices') || current_controller('activities') || current_controller('projects') || current_controller('tasks') do
-          = evil_icon 'ei-plus', size: :s
-          span.u-ml-10 案件管理
+        = link_to quotes_path, class: current_controller(:quotes) do
+          = render_application_icon :manage_quote, size: :xs
+          span.u-ml-5 案件管理
 
       li.l-dashboard__menuItem
-        = link_to works_path, class: current_controller('works') do
-          = evil_icon 'ei-calendar', size: :s
-          span.u-ml-10 作業管理
+        = link_to works_path, class: current_controller(:works) do
+          = render_application_icon :manage_work, size: :xs
+          span.u-ml-5 作業管理
 
       li.l-dashboard__menuItem
-        = link_to companies_path, class: current_controller('companies') || current_controller('company_divisions') || current_controller('company_division_clients') do
-          = evil_icon 'ei-link', size: :s
-          span.u-ml-10 取引先
+        = link_to companies_path, class: current_controller(:companies) do
+          = render_application_icon :client_partner, size: :xs
+          span.u-ml-5 取引先
 
       li.l-dashboard__menuItem
-        = link_to subcontractors_path, class: current_controller('subcontractors') || current_controller('subcontractor_divisions') || current_controller('subcontractor_division_clients') do
-          = evil_icon 'ei-user', size: :s
-          span.u-ml-10 外注先
+        = link_to subcontractors_path, class: current_controller(:subcontractors) do
+          = render_application_icon :external_partner, size: :xs
+          span.u-ml-5 外注先
 
       li.l-dashboard__menuItem
-        = link_to expendables_path, class: current_controller('expendables') do
-          = evil_icon 'ei-eye', size: :s
-          span.u-ml-10 製造経費入力
+        = link_to expendables_path, class: current_controller(:expendables) do
+          = render_application_icon :manufacturing_costs, size: :xs
+          span.u-ml-5 製造経費入力
 
       li.l-dashboard__menuItem
-        = link_to profit_graphs_path, class: current_controller('profit_graphs') do
-          = evil_icon 'ei-chart', size: :s
-          span.u-ml-10 受注管理
+        = link_to profit_graphs_path, class: current_controller(:profit_graphs) do
+          = render_application_icon :manage_order, size: :xs
+          span.u-ml-5 受注管理
 
       li.l-dashboard__menuItem
-        = link_to inventories_path, class: current_controller('inventories') do
-          = evil_icon 'ei-archive', size: :s
-          span.u-ml-10 在庫管理
+        = link_to inventories_path, class: current_controller(:inventories) do
+          = render_application_icon :manage_stock, size: :xs
+          span.u-ml-5 在庫管理
 
       li.l-dashboard__menuItem
         = link_to card_templates_path, class: cp(card_templates_path) do
-          = render_application_icon :card, size: :s
-          span.u-ml-10 名刺
+          = render_application_icon :card, size: :xs
+          span.u-ml-5 名刺
 
     - if current_user.manager? | current_user.sales? | current_user.admin?
 
@@ -71,67 +71,66 @@
         .l-dashboard__menuList
 
           li.l-dashboard__menuItem
-            = link_to targets_path, class: current_controller('targets') do
-              = evil_icon 'ei-chart', size: :s
-              span.u-ml-10 目標管理
+            = link_to targets_path, class: current_controller(:targets) do
+              = render_application_icon :manage_graph, size: :xs
+              span.u-ml-5 目標管理
 
           li.l-dashboard__menuItem
             = link_to payments_path, class: cp(payments_path) do
-              = evil_icon 'ei-credit-card', size: :s
-              span.u-ml-10 支払い管理
+              = render_application_icon :manage_payment, size: :xs
+              span.u-ml-5 支払い管理
 
           li.l-dashboard__menuItem
             = link_to profits_path, class: cp(profits_path) do
-              = evil_icon 'ei-cart', size: :s
-              span.u-ml-10 請求情報
+              = render_application_icon :manage_billing, size: :xs
+              span.u-ml-5 請求情報
 
           li.l-dashboard__menuItem
-            = link_to labors_path, class: current_controller('labors') do
-              = evil_icon 'ei-clock', size: :s
-              span.u-ml-10 労務費入力
+            = link_to labors_path, class: current_controller(:labors) do
+              span.u-ml-5 労務費入力
 
           li.l-dashboard__menuItem
-            = link_to categories_path, class: current_controller('categories') || current_controller('catalogs') do
-              = evil_icon 'ei-tag', size: :s
-              span.u-ml-10 ビジスタント
+            = link_to categories_path, class: current_controller(:categories) do
+              = evil_icon 'ei-tag', size: :xs
+              span ビジスタント
 
           li.l-dashboard__menuItem
             = link_to users_path, class: cp(users_path) do
-              = evil_icon 'ei-user', size: :s
-              span.u-ml-10 ユーザー一覧
+              = render_application_icon :user, size: :xs
+              span.u-ml-5 ユーザー一覧
 
           li.l-dashboard__menuItem
-            = link_to divisions_path, class: current_controller('divisions') do
-              = evil_icon 'ei-user', size: :s
-              span.u-ml-10 自社部署一覧
+            = link_to divisions_path, class: current_controller(:divisions) do
+              = render_application_icon :divisions, size: :xs
+              span.u-ml-5 自社部署一覧
 
     .u-mt-15
       .l-dashboard__menuList
 
         li.l-dashboard__menuItem
           = link_to configs_path, class: cp(configs_path) do
-            = evil_icon 'ei-user', size: :s
-            span.u-ml-10 サイト設定
+            = render_application_icon :config_website, size: :xs
+            span.u-ml-5 サイト設定
 
         li.l-dashboard__menuItem
           = link_to 'https://docs.google.com/presentation/d/1nRhmFxYAJv6JluvdpRNuxGVB3lCeS7UY_MUIlU-f91w/edit?usp=sharing', target: :_blank do
-            = evil_icon 'ei-archive', size: :s
-            span.u-ml-10 マニュアル
+            = render_application_icon :manual, size: :xs
+            span.u-ml-5 マニュアル
 
         li.l-dashboard__menuItem
           = link_to 'https://docs.google.com/document/d/1LDfYKbHh14dCdCHueKJQY6W0LTifMlpOD3reZuKPmqU/edit?usp=sharing', target: :_blank do
-            = evil_icon 'ei-like', size: :s
-            span.u-ml-10 更新履歴
+            = render_application_icon :update_history, size: :xs
+            span.u-ml-5 更新履歴
 
         li.l-dashboard__menuItem
           = link_to edit_user_path(current_user), class: cp(edit_user_path(current_user)) do
-            = evil_icon 'ei-pencil', size: :s
-            span.u-ml-10 プロフィール
+            = render_application_icon :user_profile, size: :xs
+            span.u-ml-5 プロフィール
 
         li.l-dashboard__menuItem
           = link_to sign_out_path, method: :delete do
-            = evil_icon 'ei-close-o', size: :s
-            span.u-ml-10 ログアウト
+            = render_application_icon :logout, size: :xs
+            span.u-ml-5 ログアウト
 
 javascript:
 
