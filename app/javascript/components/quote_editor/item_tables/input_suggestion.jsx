@@ -1,10 +1,10 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import Style from './style.sass'
 
 const InputSuggestion = props => {
 
   const init = {
-    searchTxt: '',
+    searchTxt: props.inputTxt || '',
     projects: '',
     focus: false
   }
@@ -25,22 +25,25 @@ const InputSuggestion = props => {
   const handleChange = e => {
 
     const inputTxt = e.target.value
+
     if(!inputTxt) {
       setState({ ...state, searchTxt: inputTxt, projects: '' })
       return
     }
-    const request = window.xhrRequest.get(`/projects.json?free_word=${inputTxt}`)
+
+    const request = window.xhrRequest.get(`/projects.json?free_word=${ inputTxt }`)
     request.then(res => {
-      setState({ ...state, projects: res.data.projects, searchTxt: inputTxt })
+      const resProjects = res.data.projects.length === 0 ? '' : res.data.projects
+      setState({ ...state, projects: resProjects , searchTxt: inputTxt })
     }).catch(err => window.alertable({ icon: 'info', message: '品目を取得出来ませんでした。' }))
   }
 
   return(
-    <div key={ props.inputTxt } className={ Style.Style }>
+    <div className={ Style.Style }>
       <textarea
         placeholder='品目名を入力'
         autoComplete='off'
-        defaultValue={ props.inputTxt || '' }
+        defaultValue={ state.searchTxt }
         onFocus={ handleFocusIn }
         onBlur={ handleFocusOut }
         onChange={ handleChange }

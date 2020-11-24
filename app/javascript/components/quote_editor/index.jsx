@@ -309,9 +309,9 @@ export default class QuoteEditor extends React.Component {
    */
   setName = (passIndex, name) => {
 
-    let quote_projects = this.state.quote_projects.slice();
-    quote_projects[passIndex].name = name;
-    this.setState({ quote_projects: quote_projects });
+    let quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects))
+    quote_projects[passIndex].name = name
+    this.setState({ quote_projects: quote_projects })
   };
 
   /**
@@ -321,9 +321,9 @@ export default class QuoteEditor extends React.Component {
    */
   setQuoteRemarks = (passIndex, remarks) => {
 
-    let quote_projects = this.state.quote_projects.slice();
-    quote_projects[passIndex].remarks = remarks;
-    this.setState({ quote_projects: quote_projects });
+    let quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects))
+    quote_projects[passIndex].remarks = remarks
+    this.setState({ quote_projects: quote_projects })
   };
 
   /**
@@ -432,6 +432,7 @@ export default class QuoteEditor extends React.Component {
     quote_projects[index].name = project.name
     quote_projects[index].remarks = project.note || ''
     quote_projects[index].unit_price = project.price
+    quote_projects[index].unit = 1
     quote_projects[index].price = project.price
 
     this.setState({ quote_projects: quote_projects, price: price })
