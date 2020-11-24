@@ -14,4 +14,4 @@ h1.l-dashboard__heading 取引先 請求情報一覧
 			- @company.each do |key,r|
 				tr
 					td = link_to key, invoices_path(name: key, date1: @date1.to_s(:profit), date2: @date2.to_s(:profit))
-					td = "#{r.pluck(:price).sum.to_s(:delimited)}円"
+					td = "¥#{r.pluck(:price).sum.to_s(:delimited)}"
