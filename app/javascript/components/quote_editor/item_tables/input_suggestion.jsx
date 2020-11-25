@@ -6,21 +6,20 @@ const InputSuggestion = props => {
   const init = {
     searchTxt: props.inputTxt || '',
     projects: '',
-    focus: false
   }
 
   const [state, setState] = useState(init)
-
-  const handleFocusIn = e => setState({ ...state, focus: true })
 
   const handleSelect = e => {
  
     const targetProject = state.projects[e.target.dataset.number]
     props.applyProject(targetProject, props.index)
-    setState({ ...state, focus: false, projects: '' })
+    setState({ ...state, projects: '' })
   }
  
-  const handleFocusOut = e => setState({ ...state, focus: false })
+  const handleFocusOut = e => {
+    if(!state.searchTxt) window.alertable({ icon: 'error', message: 'サジェストから品目を選択して下さい。' })
+  }
 
   const handleChange = e => {
 
@@ -44,7 +43,6 @@ const InputSuggestion = props => {
         placeholder='品目名を入力'
         autoComplete='off'
         defaultValue={ state.searchTxt }
-        onFocus={ handleFocusIn }
         onBlur={ handleFocusOut }
         onChange={ handleChange }
       />
