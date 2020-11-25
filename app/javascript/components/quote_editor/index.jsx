@@ -493,6 +493,7 @@ export default class QuoteEditor extends React.Component {
     let price = 0;
     this.state.quote_projects.map(quote_project => price += Number(quote_project.price));
 
+    const noSelectedProject = []
     const field = new FormData();
 
     field.append('quote[id]', this.state.quote_id);
@@ -521,8 +522,9 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[price]', this.state.discount === 0 ? price : price - this.state.discount);
     field.append('quote[deliver_type]', this.state.deliver_type)
     if(!this.props.quote.drive_folder_id && this.googleDriveFolderRef.current !== null) field.append('quote[google_drive_exist]', this.googleDriveFolderRef.current.value)
-    this.state.quote_projects.map(project => {
+    this.state.quote_projects.map((project, index) => {
 
+      if(noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
       field.append('quote[quote_projects_attributes][][id]', project.id);
       field.append('quote[quote_projects_attributes][][project_id]', project.project_id);
       field.append('quote[quote_projects_attributes][][quote_id]', project.quote_id);
@@ -534,6 +536,11 @@ export default class QuoteEditor extends React.Component {
       field.append('quote[quote_projects_attributes][][project_name]', project.project_name);
     });
 
+    if(noSelectedProject.length > 0) {
+      window.alertable({ icon: 'info', message: `上から${noSelectedProject[0].index + 1}番目の品目をサジェストから選択して下さい。` })
+      this.loadingRef.finish()
+      return
+    }
     // 納品方法
     field.append('quote[deliver_type_note]', this.state.deliver_type === 'location' || this.state.deliver_type === 'other' ? this.state.deliver_type_note : '')
 

@@ -18,7 +18,7 @@ const InputSuggestion = props => {
   }
  
   const handleFocusOut = e => {
-    if(!state.searchTxt) window.alertable({ icon: 'error', message: 'サジェストから品目を選択して下さい。' })
+    if(!state.searchTxt) window.alertable({ icon: 'info', message: 'サジェストから品目を選択して下さい。' })
   }
 
   const handleChange = e => {
