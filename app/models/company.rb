@@ -132,6 +132,8 @@ class Company < ApplicationRecord
         CompanyDivisionClient.import new_client
       end
     end
+    # returnでerror_divisionに貯めた部署情報を返す
+    return error_division if error_division.present?
   end
 
 end
