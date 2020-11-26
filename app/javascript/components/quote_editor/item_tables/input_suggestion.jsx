@@ -10,6 +10,8 @@ const InputSuggestion = props => {
 
   const [state, setState] = useState(init)
 
+  useEffect(() => { props.setName(props.index, state.searchTxt) }, [state.searchTxt])
+  
   const handleSelect = e => {
  
     const targetProject = state.projects[e.target.dataset.number]
