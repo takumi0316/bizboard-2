@@ -4,15 +4,11 @@
     .l-dashboard-trigger__icon
     .l-dashboard-trigger__text
 
-  h1.l-dashboard__logo
+  /h1.l-dashboard__logo
     = link_to root_path do
-
       - if SiteConfig.logo
-
         = image_tag SiteConfig.logo, width: 170, alt: "#{SiteConfig.site_title}|#{SiteConfig.site_name}"
-
       - else
-
         svg viewBox='10 20 600 155' width='130' height='50'
           title #{SiteConfig.site_title}|#{SiteConfig.site_name}
           desc = SiteConfig.site_description
@@ -21,112 +17,105 @@
           use xlink:href='#logo_title'
           use xlink:href='#logo_vivid'
 
+
   - if user_signed_in?
-
     ul.l-dashboard__menuList
-
       li.l-dashboard__menuItem
         = link_to quotes_path, class: current_controller(:quotes) do
           = render_application_icon :manage_quote, size: :xs
           span.u-ml-5 案件管理
-
       li.l-dashboard__menuItem
         = link_to works_path, class: current_controller(:works) do
           = render_application_icon :manage_work, size: :xs
           span.u-ml-5 作業管理
-
+      li.l-dashboard__menuItem
+        = link_to card_templates_path, class: cp(card_templates_path) do
+          = render_application_icon :card, size: :xs
+          span.u-ml-5 名刺管理
+      li.l-dashboard__menuItem
+        = link_to inventories_path, class: current_controller(:inventories) do
+          = render_application_icon :manage_stock, size: :xs
+          span.u-ml-5 在庫管理
+      li.l-dashboard__menuItem
+        = link_to expendables_path, class: current_controller(:expendables) do
+          = render_application_icon :manufacturing_costs, size: :xs
+          span.u-ml-5 経費入力
+      - if current_user.manager? | current_user.sales? | current_user.admin?
+        li.l-dashboard__menuItem
+          = link_to categories_path, class: current_controller(:categories) do
+            = render_application_icon :bizistant, size: :xs
+            span.u-ml-5 ビジスタント
+      // 受注管理をレポートに変更
+      // グラフ系をここにまとめる
+      li.l-dashboard__menuItem
+        = link_to profit_graphs_path, class: current_controller(:profit_graphs) do
+          = render_application_icon :manage_order, size: :xs
+          span.u-ml-5 レポート
       li.l-dashboard__menuItem
         = link_to companies_path, class: current_controller(:companies) do
           = render_application_icon :client_partner, size: :xs
           span.u-ml-5 取引先
-
       li.l-dashboard__menuItem
         = link_to subcontractors_path, class: current_controller(:subcontractors) do
           = render_application_icon :external_partner, size: :xs
           span.u-ml-5 外注先
 
-      li.l-dashboard__menuItem
-        = link_to expendables_path, class: current_controller(:expendables) do
-          = render_application_icon :manufacturing_costs, size: :xs
-          span.u-ml-5 製造経費入力
-
-      li.l-dashboard__menuItem
-        = link_to profit_graphs_path, class: current_controller(:profit_graphs) do
-          = render_application_icon :manage_order, size: :xs
-          span.u-ml-5 受注管理
-
-      li.l-dashboard__menuItem
-        = link_to inventories_path, class: current_controller(:inventories) do
-          = render_application_icon :manage_stock, size: :xs
-          span.u-ml-5 在庫管理
-
-      li.l-dashboard__menuItem
-        = link_to card_templates_path, class: cp(card_templates_path) do
-          = render_application_icon :card, size: :xs
-          span.u-ml-5 名刺
-
+    // 目標管理
+    // 労務費入力
+    // 請求情報
+    // 支払情報
     - if current_user.manager? | current_user.sales? | current_user.admin?
-
       .u-mt-15
         .l-dashboard__menuList
-
           li.l-dashboard__menuItem
             = link_to targets_path, class: current_controller(:targets) do
               = render_application_icon :manage_graph, size: :xs
               span.u-ml-5 目標管理
-
+          li.l-dashboard__menuItem
+            = link_to labors_path, class: current_controller(:labors) do
+              = render_application_icon :labor_costs, size: :xs
+              span.u-ml-5 労務費入力
           li.l-dashboard__menuItem
             = link_to payments_path, class: cp(payments_path) do
               = render_application_icon :manage_payment, size: :xs
-              span.u-ml-5 支払い管理
-
+              span.u-ml-5 支払情報
           li.l-dashboard__menuItem
             = link_to profits_path, class: cp(profits_path) do
               = render_application_icon :manage_billing, size: :xs
               span.u-ml-5 請求情報
 
-          li.l-dashboard__menuItem
-            = link_to labors_path, class: current_controller(:labors) do
-              span.u-ml-5 労務費入力
-
-          li.l-dashboard__menuItem
-            = link_to categories_path, class: current_controller(:categories) do
-              = evil_icon 'ei-tag', size: :xs
-              span ビジスタント
-
+    // ユーザー管理
+    // 部署管理
+    // サイト設定
+    // プロフィール
+    // ログアウト
+    .u-mt-15
+      .l-dashboard__menuList
+        - if current_user.manager? | current_user.sales? | current_user.admin?
           li.l-dashboard__menuItem
             = link_to users_path, class: cp(users_path) do
               = render_application_icon :user, size: :xs
-              span.u-ml-5 ユーザー一覧
-
+              span.u-ml-5 ユーザー管理
           li.l-dashboard__menuItem
             = link_to divisions_path, class: current_controller(:divisions) do
               = render_application_icon :divisions, size: :xs
-              span.u-ml-5 自社部署一覧
-
-    .u-mt-15
-      .l-dashboard__menuList
-
+              span.u-ml-5 部署管理
         li.l-dashboard__menuItem
           = link_to configs_path, class: cp(configs_path) do
             = render_application_icon :config_website, size: :xs
             span.u-ml-5 サイト設定
-
-        li.l-dashboard__menuItem
+        /li.l-dashboard__menuItem
           = link_to 'https://docs.google.com/presentation/d/1nRhmFxYAJv6JluvdpRNuxGVB3lCeS7UY_MUIlU-f91w/edit?usp=sharing', target: :_blank do
             = render_application_icon :manual, size: :xs
             span.u-ml-5 マニュアル
-
-        li.l-dashboard__menuItem
+        /li.l-dashboard__menuItem
           = link_to 'https://docs.google.com/document/d/1LDfYKbHh14dCdCHueKJQY6W0LTifMlpOD3reZuKPmqU/edit?usp=sharing', target: :_blank do
             = render_application_icon :update_history, size: :xs
             span.u-ml-5 更新履歴
-
         li.l-dashboard__menuItem
           = link_to edit_user_path(current_user), class: cp(edit_user_path(current_user)) do
             = render_application_icon :user_profile, size: :xs
             span.u-ml-5 プロフィール
-
         li.l-dashboard__menuItem
           = link_to sign_out_path, method: :delete do
             = render_application_icon :logout, size: :xs
@@ -135,7 +124,4 @@
 javascript:
 
   // 左サイドメニューの開閉
-  document.querySelectorAll('.js-drawerOpen').forEach(trigger => trigger.onclick = () => {
-
-    document.body.dataset.menuOpen = document.body.dataset.menuOpen == 'true'? 'false' : 'true';
-  });
+  document.querySelectorAll('.js-drawerOpen').forEach(trigger => trigger.onclick = () => document.body.dataset.menuOpen = document.body.dataset.menuOpen === 'true'? 'false' : 'true')
