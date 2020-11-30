@@ -142,12 +142,13 @@ $rankingColors: (
 // @example
 //  svg-size: map-get($svgSizes, 'm')
 $svgSizes: (
-  'xs':           18px,
-  's':            21px,
-  'm':            24px,
-  'l':           34px,
-  'xl':          75px,
-  'xxl':         100px,
+  'xxs': 12px,
+  'xs':  18px,
+  's':   21px,
+  'm':   24px,
+  'l':   34px,
+  'xl':  75px,
+  'xxl': 100px,
 );
 
 // ==============================================

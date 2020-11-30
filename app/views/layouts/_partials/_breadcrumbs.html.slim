@@ -6,8 +6,6 @@
 
       li.l-breadcrumb__item itemscope=true itemtype='http://data-vocabulary.org/Breadcrumb'
         = link_to root_path, itemprop: :url, class: 'l-breadcrumb__link' do
-          svg.u-svg-thinBlack width='20' height='20'
-            use xlink:href='#application-home'
           span.u-ml-5 itemprop='title' TOP
 
       - breadcrumbs.each do |item|

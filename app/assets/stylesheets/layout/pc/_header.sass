@@ -3,14 +3,17 @@
 // ==============================================
   
 .l-header
-  position: relative
-  background-color: map-get($layoutColors, 'white')
+  position: fixed
+  background-color: map-get($layoutColors, 'lightGray')
+  border-bottom: 1px solid map-get($layoutColors, 'lightGray')
+  z-index: $layerLevel-overlay
   &__inner
     display: flex
-    justify-content: flex-start
-    width: $container-lg
+    justify-content: space-between
+    width: 100vw
+    height: 40px
     margin: 0 auto
-    padding: 5px 0
+    padding: 5px 10px
   &__logo
     &-vivid
       fill: map-get($layoutColors, 'vivid')
@@ -52,3 +55,51 @@
       appearance: none
       border: none
       cursor: pointer
+  &__settings
+    position: relative
+  &__balloon
+    position: absolute
+    display: inline-block
+    margin: 1.5em 0
+    padding: 7px 10px
+    min-width: 120px
+    max-width: 100%
+    background-color: white
+    border-radius: 15px
+    border: 1px solid #808080
+    top: 20px
+    right: 0
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175)
+    background-clip: padding-box
+    &:before
+      position: absolute
+      right: 17px
+      bottom: 100%
+      width: 0
+      height: 0
+      content: ''
+      border: 10px solid transparent
+      border-bottom: 10px solid #808080
+      z-index: 1
+    &:after
+      position: absolute
+      top: -20.5px
+      right: 15px
+      bottom: 100%
+      width: 0
+      height: 0
+      content: ''
+      border: 12px solid transparent
+      border-bottom: 12px solid white
+      z-index: 1
+    li
+      padding: 8px 12px
+      &:hover
+        background: rgba(#c0c0c0, 0.2)
+    &--hide
+      display: none
+      height: 0
+      opacity: 0
+      overflow-y: hidden
+      width: 90%
+      transition: height .3s ease-in-out, opacity .3s ease-in-out
