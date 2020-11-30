@@ -3,7 +3,7 @@
 // ==============================================
 
 .l-dashboard
-  $menu-width: 200px
+  $menu-width: 120px
   width: 100%
   min-height: 100%
   min-width: $container-md
@@ -17,7 +17,6 @@
     padding: 0 30px 120px 30px
   &__menu
     user-select: none
-    width: $menu-width
     border-right: 1px solid map-get($layoutColors, 'lightGray')
     position: fixed
     background-color: #fcfcfc
@@ -32,17 +31,25 @@
         display: none
     [data-menu-open=true] &
       &List
-        margin-top: 15px
-        border-top: 1px solid map-get($layoutColors, 'lightGray')
+        &__border
+          margin-top: 15px
+          border-top: 1px solid map-get($layoutColors, 'lightGray')
       &Item
+        &:hover
+          background: rgba(#c0c0c0, 0.2)
         a
-          padding: 7px 0 5px 15px
           display: flex
+          font-size: 14px
+          padding: 1px 5px
           align-items: center
           &:hover
-            text-decoration: underline
+            //color: #fff
+            text-decoration: none
           svg
             fill: currentColor
+        &__hover
+          &:hover
+            background: #e0ffff
       &Current
         background-color: map-get($layoutColors, 'corporate')
         color: map-get($layoutColors, 'white')
@@ -54,6 +61,7 @@
     [data-menu-open=false] &
       padding-left: 60px
     [data-menu-open=true] &
+      padding-top: 40px
       padding-left: $menu-width
   &__heading
     display: flex
@@ -140,14 +148,14 @@
     display: flex
     align-items: center
     position: relative
-    padding: 15px 0
+    padding: 5px 0
     li+ li
       border-left: 1px solid map-get($layoutColors, 'lightGray')
   &__tabmenuText
     $self: &
     display: inline-block
     font-size: map-get($fontSize, 'large')
-    margin: 0 20px
+    margin: 0 10px
     border-bottom: solid 3px map-get($layoutColors, 'white')
     vertical-align: middle
     &--active

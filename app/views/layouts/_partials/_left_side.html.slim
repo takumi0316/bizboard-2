@@ -4,139 +4,72 @@
     .l-dashboard-trigger__icon
     .l-dashboard-trigger__text
 
-  h1.l-dashboard__logo
-    = link_to root_path do
-
-      - if SiteConfig.logo
-
-        = image_tag SiteConfig.logo, width: 170, alt: "#{SiteConfig.site_title}|#{SiteConfig.site_name}"
-
-      - else
-
-        svg viewBox='10 20 600 155' width='180' height='50'
-          title #{SiteConfig.site_title}|#{SiteConfig.site_name}
-          desc = SiteConfig.site_description
-          use xlink:href='#logo_main'
-          use xlink:href='#logo_text'
-          use xlink:href='#logo_title'
-          use xlink:href='#logo_vivid'
-
   - if user_signed_in?
-
-    ul.l-dashboard__menuList
-
+    ul.l-dashboard__menuList.u-mt-50
       li.l-dashboard__menuItem
-        = link_to quotes_path, class: current_controller('quotes') || current_controller('invoices') || current_controller('activities') || current_controller('projects') || current_controller('tasks') do
-          = evil_icon 'ei-plus', size: :s
-          span.u-ml-10 案件管理
-
-      li.l-dashboard__menuItem
-        = link_to works_path, class: current_controller('works') do
-          = evil_icon 'ei-calendar', size: :s
-          span.u-ml-10 作業管理
-
-      li.l-dashboard__menuItem
-        = link_to companies_path, class: current_controller('companies') || current_controller('company_divisions') || current_controller('company_division_clients')do
-          = evil_icon 'ei-link', size: :s
-          span.u-ml-10 取引先
-
-      li.l-dashboard__menuItem
-        = link_to subcontractors_path, class: current_controller('subcontractors') || current_controller('subcontractor_divisions') || current_controller('subcontractor_division_clients') do
-          = evil_icon 'ei-user', size: :s
-          span.u-ml-10 外注先
-
-      li.l-dashboard__menuItem
-        = link_to expendables_path, class: current_controller('expendables') do
-          = evil_icon 'ei-eye', size: :s
-          span.u-ml-10 製造経費入力
-
-      li.l-dashboard__menuItem
-        = link_to profit_graphs_path, class: current_controller('profit_graphs') do
-          = evil_icon 'ei-chart', size: :s
-          span.u-ml-10 受注管理グラフ
-
-      li.l-dashboard__menuItem
-        = link_to inventories_path, class: current_controller('inventories') do
-          = evil_icon 'ei-archive', size: :s
-          span.u-ml-10 在庫管理
-
-      li.l-dashboard__menuItem
+        .c-flex__around
+          = link_to quotes_path, class: current_controller(:quotes) do
+            = render_application_icon :manage_quote, size: :xs
+            span.u-ml-5 案件管理
+          .l-dashboard__menuItem__hover.c-flex
+            = link_to new_quote_path do
+              = render_application_icon :plus, size: :xxs
+      li.l-dashboard__menuItem.u-mt-10
+        = link_to works_path, class: current_controller(:works) do
+          = render_application_icon :manage_work, size: :xs
+          span.u-ml-5 作業管理
+      li.l-dashboard__menuItem.u-mt-10
         = link_to card_templates_path, class: cp(card_templates_path) do
-          = render_application_icon :card, size: :s
-          span.u-ml-10 名刺
+          = render_application_icon :card, size: :xs
+          span.u-ml-5 名刺管理
+      li.l-dashboard__menuItem.u-mt-10
+        = link_to inventories_path, class: current_controller(:inventories) do
+          = render_application_icon :manage_stock, size: :xs
+          span.u-ml-5 在庫管理
+      li.l-dashboard__menuItem.u-mt-10
+        = link_to expendables_path, class: current_controller(:expendables) do
+          = render_application_icon :manufacturing_costs, size: :xs
+          span.u-ml-5 経費入力
+      - if current_user.manager? | current_user.sales? | current_user.admin?
+        li.l-dashboard__menuItem.u-mt-10
+          = link_to categories_path, class: current_controller(:categories) do
+            = render_application_icon :bizistant, size: :xs
+            span.u-ml-5 メニュー
+      // 受注管理をレポートに変更
+      // グラフ系をここにまとめる
+      li.l-dashboard__menuItem.u-mt-10
+        = link_to profit_graphs_path, class: current_controller(:profit_graphs) do
+          = render_application_icon :manage_order, size: :xs
+          span.u-ml-5 レポート
+      li.l-dashboard__menuItem.u-mt-10
+        = link_to companies_path, class: current_controller(:companies) do
+          = render_application_icon :client_partner, size: :xs
+          span.u-ml-5 取引先
+      li.l-dashboard__menuItem.u-mt-10
+        = link_to subcontractors_path, class: current_controller(:subcontractors) do
+          = render_application_icon :external_partner, size: :xs
+          span.u-ml-5 外注先
 
     - if current_user.manager? | current_user.sales? | current_user.admin?
-
-      .u-mt-15
-        .l-dashboard__menuList
-
-          li.l-dashboard__menuItem
-            = link_to targets_path, class: current_controller('targets') do
-              = evil_icon 'ei-chart', size: :s
-              span.u-ml-10 目標管理
-
-          li.l-dashboard__menuItem
-            = link_to payments_path, class: cp(payments_path) do
-              = evil_icon 'ei-credit-card', size: :s
-              span.u-ml-10 支払い管理
-
-          li.l-dashboard__menuItem
-            = link_to profits_path, class: cp(profits_path) do
-              = evil_icon 'ei-cart', size: :s
-              span.u-ml-10 請求情報
-
-          li.l-dashboard__menuItem
-            = link_to labors_path, class: current_controller('labors') do
-              = evil_icon 'ei-clock', size: :s
-              span.u-ml-10 労務費入力
-
-          li.l-dashboard__menuItem
-            = link_to categories_path, class: current_controller('categories') || current_controller('catalogs') do
-              = evil_icon 'ei-tag', size: :s
-              span.u-ml-10 こんプロメニュー
-
-          li.l-dashboard__menuItem
-            = link_to users_path, class: cp(users_path) do
-              = evil_icon 'ei-user', size: :s
-              span.u-ml-10 ユーザー一覧
-
-          li.l-dashboard__menuItem
-            = link_to divisions_path, class: current_controller('divisions') do
-              = evil_icon 'ei-user', size: :s
-              span.u-ml-10 自社部署一覧
-
-    .u-mt-15
-      .l-dashboard__menuList
-
+      .l-dashboard__menuList.l-dashboard__menuList__border
         li.l-dashboard__menuItem
-          = link_to configs_path, class: cp(configs_path) do
-            = evil_icon 'ei-user', size: :s
-            span.u-ml-10 サイト設定
-
-        li.l-dashboard__menuItem
-          = link_to 'https://docs.google.com/presentation/d/1nRhmFxYAJv6JluvdpRNuxGVB3lCeS7UY_MUIlU-f91w/edit?usp=sharing', target: :_blank do
-            = evil_icon 'ei-archive', size: :s
-            span.u-ml-10 マニュアル
-
-        li.l-dashboard__menuItem
-          = link_to 'https://docs.google.com/document/d/1LDfYKbHh14dCdCHueKJQY6W0LTifMlpOD3reZuKPmqU/edit?usp=sharing', target: :_blank do
-            = evil_icon 'ei-like', size: :s
-            span.u-ml-10 更新履歴
-
-        li.l-dashboard__menuItem
-          = link_to edit_user_path(current_user), class: cp(edit_user_path(current_user)) do
-            = evil_icon 'ei-pencil', size: :s
-            span.u-ml-10 プロフィール編集
-
-        li.l-dashboard__menuItem
-          = link_to sign_out_path, method: :delete do
-            = evil_icon 'ei-close-o', size: :s
-            span.u-ml-10 ログアウト
+          = link_to targets_path, class: current_controller(:targets) do
+            = render_application_icon :manage_graph, size: :xs
+            span.u-ml-5 目標管理
+        li.l-dashboard__menuItem.u-mt-10
+          = link_to labors_path, class: current_controller(:labors) do
+            = render_application_icon :labor_costs, size: :xs
+            span.u-ml-5 労務費入力
+        li.l-dashboard__menuItem.u-mt-10
+          = link_to payments_path, class: cp(payments_path) do
+            = render_application_icon :manage_payment, size: :xs
+            span.u-ml-5 支払情報
+        li.l-dashboard__menuItem.u-mt-10
+          = link_to profits_path, class: cp(profits_path) do
+            = render_application_icon :manage_billing, size: :xs
+            span.u-ml-5 請求情報
 
 javascript:
 
   // 左サイドメニューの開閉
-  document.querySelectorAll('.js-drawerOpen').forEach(trigger => trigger.onclick = () => {
-
-    document.body.dataset.menuOpen = document.body.dataset.menuOpen == 'true'? 'false' : 'true';
-  });
+  document.querySelectorAll('.js-drawerOpen').forEach(trigger => trigger.onclick = () => document.body.dataset.menuOpen = document.body.dataset.menuOpen === 'true'? 'false' : 'true')

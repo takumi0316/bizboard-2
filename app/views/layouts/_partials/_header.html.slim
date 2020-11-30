@@ -1,12 +1,54 @@
-header.l-header id='turbolinks-header' data-turbolinks-permanent=true
-
+header.l-header
   .l-header__inner
-
+    = link_to user_signed_in? ? root_path : root_path do
+      h1
+        - if SiteConfig.logo
+          = image_tag SiteConfig.logo, height: 30, alt: "#{SiteConfig.site_title}|#{SiteConfig.site_name}"
+        - else
+          svg.l-header__logo viewBox='10 20 600 155' width='180' height='30'
+            title #{SiteConfig.site_title}|#{SiteConfig.site_name}
+            desc = SiteConfig.site_description
+            use.l-header__logo-logo xlink:href='#logo_main'
+            use.l-header__logo-logo xlink:href='#logo_text'
+            use.l-header__logo-title xlink:href='#logo_title'
+            use.l-header__logo-vivid xlink:href='#logo_vivid'
     - if user_signed_in?
       .l-header__menu
+        .l-header__settings(style="cursor: hand; cursor:pointer;") = render_application_icon :settings, size: :s
+        .l-header__balloon--hide
+          - if current_user.manager? | current_user.sales? | current_user.admin?
+            li
+              = link_to users_path, class: cp(users_path) do
+                span ユーザー管理
+            li
+              = link_to divisions_path, class: current_controller(:divisions) do
+                span 部署管理
+            li
+              = link_to configs_path, class: cp(configs_path) do
+                span サイト設定
+          li
+            = link_to edit_user_path(current_user), class: cp(edit_user_path(current_user)) do
+              span プロフィール
+          li
+            = link_to sign_out_path, method: :delete do
+              span ログアウト
 
-        = link_to edit_user_path(current_user), title: 'プロフィール編集' do
-          = evil_icon 'ei-user', size: :m
+/ ----------------------------------------------
+/ javascript
+/ ----------------------------------------------
+javascript:
 
-        = link_to sign_out_path, title: 'ログアウト', method: :delete do
-          = evil_icon 'ei-close-o', size: :m
+  const settingsEl = document.getElementsByClassName('l-header__settings')[0]
+
+  settingsEl.addEventListener('click', () => {
+    let balloonEl = document.getElementsByClassName('l-header__balloon--hide')[0] ? document.getElementsByClassName('l-header__balloon--hide')[0] : document.getElementsByClassName('l-header__balloon')[0]
+    balloonEl.classList.toggle('l-header__balloon--hide')
+    balloonEl.classList.toggle('l-header__balloon')
+  })
+
+  settingsEl.addEventListener('focusout', e => {
+    e.preventDefault()
+		
+    let balloonEl = document.getElementsByClassName('l-header__balloon')[0]
+    balloonEl.classList.toggle('l-header__balloon--hide')
+  })
