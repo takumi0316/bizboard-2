@@ -5,6 +5,7 @@ const InputSuggestion = props => {
 
   const init = {
     searchTxt: props.inputTxt || '',
+    selectProject: '',
     projects: '',
   }
 
@@ -16,7 +17,7 @@ const InputSuggestion = props => {
  
     const targetProject = state.projects[e.target.dataset.number]
     props.applyProject(targetProject, props.index)
-    setState({ ...state, projects: '' })
+    setState({ ...state, selectProject: targetProject, projects: '', searchTxt: targetProject.name })
   }
  
   const handleFocusOut = e => {
@@ -42,6 +43,7 @@ const InputSuggestion = props => {
   return(
     <div className={ Style.Style }>
       <textarea
+        key={ state.selectProject.id }
         placeholder='品目名を入力'
         autoComplete='off'
         defaultValue={ state.searchTxt }
