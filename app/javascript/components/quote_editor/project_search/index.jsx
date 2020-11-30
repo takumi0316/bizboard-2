@@ -4,7 +4,7 @@ import Style from '../style.sass';
 /**
  *  @version 2018/06/10
  */
-export default class ProjectSearch extends React.Component {
+export default class AddProject extends React.Component {
 
   /**
    *  コンストラクタ
@@ -119,7 +119,7 @@ export default class ProjectSearch extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain-standard' onClick={ e => this._open(e) }>品目を検索</div>
+      <div className='c-btnMain-standard' onClick={ e => this._open(e) }>行を追加</div>
     );
   }
 }

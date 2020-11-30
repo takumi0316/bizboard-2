@@ -18,12 +18,12 @@ const ItemTables = props => {
                 <th>単価</th>
                 <th>数量</th>
                 <th>価格</th>
-                <th></th>
+                <th/>
               </tr>
             </thead>
             <tbody>
-              <Specifications quote_projects={ props.quote_projects } quote_id={ props.quote_id }setName={ props.setName } setQuoteRemarks={ props.setQuoteRemarks }
-                              setUnitPrice={ props.setUnitPrice } setUnit={ props.setUnit } projectDestroy={ props.projectDestroy }
+              <Specifications quote_projects={ props.quote_projects } quote_id={ props.quote_id } setName={ props.setName } setQuoteRemarks={ props.setQuoteRemarks }
+                              setUnitPrice={ props.setUnitPrice } setUnit={ props.setUnit } projectDestroy={ props.projectDestroy } applyProject={ props.applyProject }
               />
             </tbody>
           </table>

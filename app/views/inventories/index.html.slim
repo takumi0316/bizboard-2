@@ -1,4 +1,3 @@
-
 = link_to '在庫管理を作成する', new_inventory_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
 
 .c-table.u-mt-30
@@ -15,8 +14,5 @@
           td = r.company_division.name
           td = link_to '商品一覧', products_path(inventory_id: r.id), class: 'c-btnMain-standard'
           td = link_to '削除', inventory_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
-
-
-
 
 = render 'layouts/_partials/pagination'

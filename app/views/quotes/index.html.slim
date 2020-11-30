@@ -28,8 +28,14 @@
         tr
           - if current_user.admin?
             td
-              = form_for quote, url: quote_lock_path(r), method: :post do |f|
-                = f.submit r.lock.present?? '解除' : 'ロック', class: 'c-btnMain-standard c-btn-red'
+              - if r.lock?
+                = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
+                  = image_tag asset_url('カギの閉じた錠.png'), class: 'nonactive'
+                  = image_tag asset_url('カギの開いた錠.png'), class: 'active'
+              - else
+                = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
+                  = image_tag asset_url('カギの閉じた錠.png'), class: 'active'
+                  = image_tag asset_url('カギの開いた錠.png'), class: 'nonactive'
           td class="u-ta-center #{ 'p-tasks__unread' if r.task.messages.last.created_at.strftime("%Y %m %d") > current_user.lastaccesstask.strftime("%Y %m %d") if r.task.present? && r.task.messages.present? }"
             = r.quote_number if r.deliver_at.nil?
             - if r.deliver_at.present?
@@ -48,11 +54,13 @@
           td.u-ta-center = r.work.status_i18n if r.work.present?
           td.u-ta-center = r.activity.accurary_i18n if r.activity.present?
           td = r.subject.truncate(25)
-          td
+          td.u-va-middle
             - if r.client.nil?
               | お客様情報なし
             - if r.client.present?
-              = "#{ r.client.company_division.company.name }\s#{ r.client.name }"
+              = "#{ r.client.company_division.company.name }"
+              br
+              = "#{ r.client.name }"
           td = r.deliver_at
           td.u-ta-center
             - if r.user.nil?

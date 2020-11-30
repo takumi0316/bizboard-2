@@ -16,7 +16,6 @@
     thead
       tr
         th ID
-        th 仕様
         th 品目名
         th 単価
         th 更新日
@@ -25,7 +24,6 @@
       - projects.each do |r|
         tr
           td = r.id
-          td = r.project_category_i18n
           td = r.name
           td = "¥ #{r.price.to_s(:delimited)}"
           td = r.updated_at.to_s
