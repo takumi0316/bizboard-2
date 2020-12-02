@@ -119,21 +119,16 @@ class Company < ApplicationRecord
         division_clients = CompanyDivisionClient.all.where(company_division_id: division.id)
       end
 
-      new_client = []
-
       # 同じ案件番号の内容でeach処理
       begin
         r.each do |ri|
 
-          old_client = division_clients.where(email: ri[:mail])
-          old_client.update(name: ri[:name], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s, user_type: ri[:user_type].to_i) if old_client.present?
-          new_client << CompanyDivisionClient.new(company_division_id: division_id, name: ri[:name], email: ri[:mail], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s, user_type: ri[:user_type].to_i) if old_client.blank?
+          client = division_clients.find_or_initialize_by(email: ri[:mail])
+          client.update!(name: ri[:name], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s, user_type: ri[:user_type].to_i)
         end
-        CompanyDivisionClient.import new_client
       end
     end
-    # returnでerror_divisionに貯めた部署情報を返す
-    return error_division if error_division.present?
+    error_division
   end
 
 end

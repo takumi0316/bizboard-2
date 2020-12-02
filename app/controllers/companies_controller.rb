@@ -109,10 +109,12 @@ class CompaniesController < ApplicationController
 
   def import_client
 
-    # fileはtmpに自動で一時保存される
-    Company.import_client(params[:file], params[:company_id])
-    #ここで帰ってきたerror_divisionをmessageに入れたいのだがimport_clientがもう一度処理されて担当者が２倍になってしまう。
-    redirect_to companies_path, flash: { notice: { message: '' } }
+    result = Company.import_client(params[:file], params[:company_id])
+    if result.present?
+      redirect_to companies_path, flash: { notice: { message: "#{result.join(',')}が登録できませんでした。" } }
+    else
+      redirect_to companies_path, flash: { notice: { message: "登録完了しました。" } }
+    end
   end
 
   #----------------------------------------
