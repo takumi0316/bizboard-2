@@ -123,4 +123,17 @@ class CompanyDivisionClient < ApplicationRecord
     where(query, *terms.map { |term| "%#{term}%" })
   end
 
+  ##
+  # フリーワードから自社ユーザー名を削除
+  # @version 2020/11/30
+  #
+  def self.replace_free_word
+
+    self.all.each do |c|
+      User.pluck(:name).map { |name|
+        c.update! free_word: c.free_word.sub(name, '')
+      }
+    end
+  end
+
 end

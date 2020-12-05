@@ -1,75 +1,75 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react"
 
 // import libraries
-import Icon           from 'react-evil-icons';
-import DatetimePicker from '../utilities/datetime_picker';
+import Icon           from 'react-evil-icons'
+import DatetimePicker from '../utilities/datetime_picker'
 
 // Ajax
-import Request from "superagent";
-require("superagent-rails-csrf")(Request);
+import Request from "superagent"
+require("superagent-rails-csrf")(Request)
 
 const PaymentSearch = props => {
 
   const init = {
     begginning: props.begginning,
     end: props.end
-  };
+  }
 
-  const [state, setState] = useState(init);
+  const [state, setState] = useState(init)
 
   useEffect(() => {
 
-    const values = onSearchParams();
-    if(!values) return;
+    const values = onSearchParams()
+    if(!values) return
 
     setState({
       begginning: values['begginning'],
       end: values['end'],
-    });
-  }, []);
+    })
+  }, [])
 
   const onSearchParams = () => {
 
-    const isPresent = location.search.length > 0;
-    if(!isPresent) return;
+    const isPresent = location.search.length > 0
+    if(!isPresent) return
 
     // 最初の1文字 (?記号) を除いた文字列を取得する
-    const query = document.location.search.substring(1);
-    const parameters = query.split('&');
-    let value = new Object();
+    const query = document.location.search.substring(1)
+    const parameters = query.split('&')
+    let value = new Object()
     parameters.map((parameter, index) => {
 
       // パラメータ名とパラメータ値に分割する
-      let element = parameter.split('=');
-      let paramName = decodeURIComponent(element[0]);
-      let paramValue = decodeURIComponent(element[1]);
+      let element = parameter.split('=')
+      let paramName = decodeURIComponent(element[0])
+      let paramValue = decodeURIComponent(element[1])
 
       // パラメータ名をキーとして連想配列に追加する
-      value[paramName] = decodeURIComponent(paramValue);
-    });
+      value[paramName] = decodeURIComponent(paramValue)
+    })
 
-    return value;
-	};
+    return value
+	}
 
   return (
-    <div className={ 'c-search__work-index u-mt-20' }>
+    <div className='c-search__work-index u-mt-20'>
       <Fragment>
         <label>日付検索 ※外注書に登録された時の日付が検索されます</label>
       </Fragment>
       <form method='get' action='/payments'>
-        <div className={ 'u-mt-10 c-flex' }>
-        <DatetimePicker key={ `${state.begginning}-begginning` } type={ 'text' } name={ 'begginning' } default_datetime={ state.begginning } class={ 'c-form-text__work-index__datepicker u-ml-10' }/>
-        <Icon name='ei-calendar' size='m'/>
-        <p className={ 'c-search__tilde' }>〜</p>
-        <DatetimePicker key={ `${state.date}-end` } type={ 'text' } name={ 'end' } default_datetime={ state.end } class={ 'c-form-text__work-index__datepicker u-ml-10' }/>
-        <Icon name='ei-calendar' size='m'/>
-        <input type='hidden' name='count' value='1'/>
-        <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
-        <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/payments' } >元に戻す</a>
+        <div className='u-mt-10 c-flex c-flex-alignItems__center'>
+          <DatetimePicker key={ `${state.begginning}-begginning` } type='text' name='begginning' default_datetime={ state.begginning } class='c-form-text__work-index__datepicker u-ml-10'/>
+          <Icon name='ei-calendar' size='m'/>
+          <p className={ 'c-search__tilde' }>〜</p>
+          <DatetimePicker key={ `${state.date}-end` } type='text' name='end' default_datetime={ state.end } class='c-form-text__work-index__datepicker u-ml-10'/>
+          <Icon name='ei-calendar' size='m'/>
+          <input type='hidden' name='count' value='1'/>
+          <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
+          <div className='u-ml-10'><a className='u-va-middle c-btnMain' href='/payments'>元に戻す</a></div>
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default PaymentSearch;
+export default PaymentSearch

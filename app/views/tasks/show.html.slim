@@ -10,13 +10,13 @@
       dd.u-mt-5 = task.date
       dt.l-dashboard__menuList.u-fw-bold.u-pt-15 概要
       dd.u-mt-5 = task.remarks
-    .u-pt-15 = link_to '案件に戻る', edit_quote_path(task.quote), class: 'c-btnMain-standard'
+    .u-pt-15 = link_to '案件に戻る', edit_quote_path(task.quote), class: 'c-btnMain'
     dl = form_for task, html: { class: 'u-pt-30'} do |f|
       = f.fields_for 'quote_attributes', task.quote do |t|
         dt.l-dashboard__menuList.u-fw-bold.u-pt-15 メモ(仕様とか入力してね)
         dd.u-mt-5 = t.text_area :memo, placeholder: 'メッセージを入力', class: 'p-tasks__textarea', rows: 10
 
-      = f.submit task.new_record?? '作成する' : '更新する', class: 'c-btnMain-standard c-btn-blue'
+      = f.submit task.new_record?? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'
 
 
   .p-tasks__message
@@ -28,7 +28,7 @@
         = t.text_area :content, placeholder: 'メッセージを入力', class: 'p-tasks__textarea', rows: 4
       .u-ta-right
         = f.file_field :attached_files, accept: 'text/plain, image/*, application/pdf', multiple: true, onchange: 'check()'
-        = f.submit '送信', class: 'c-btnMain-standard c-btn-blue'
+        = f.submit '送信', class: 'c-btnMain c-btn-blue'
 
 javascript:
 

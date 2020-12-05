@@ -11,7 +11,6 @@ import PaymentDetails       from './payment_details'
 import ButtonsBelow         from './buttons_below'
 import ItemTables           from './item_tables'
 import Loading              from '../loading'
-import AddProject           from './project_search'
 
 /**
  *  記事エディター
@@ -444,26 +443,24 @@ export default class QuoteEditor extends React.Component {
 
     e.preventDefault()
     const index = e.target.value
-    window.confirmable({ icon: 'warning', message: '本当に削除しますか？', callback: () => {
 
-      const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects))
-      quote_projects.splice(index, 1)
-      const delProjectPrice = Number(this.state.quote_projects[index].price)
-      const minusPrice = Number(this.state.price) - delProjectPrice
+    const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects))
+    quote_projects.splice(index, 1)
+    const delProjectPrice = Number(this.state.quote_projects[index].price)
+    const minusPrice = Number(this.state.price) - delProjectPrice
 
-      if(!this.state.quote_projects[index].id) this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }))
+    if(!this.state.quote_projects[index].id) this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }))
 
-      if(this.state.quote.id && this.state.quote_projects[index].id) {
+    if(this.state.quote.id && this.state.quote_projects[index].id) {
 
-        const url = `/quote_projects/${this.state.quote_projects[index].id}`
-        const request = window.xhrRequest.delete(url)
-        request.then(res => {
+      const url = `/quote_projects/${this.state.quote_projects[index].id}`
+      const request = window.xhrRequest.delete(url)
+      request.then(res => {
 
-          if(res.data.status === 'success') this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }) )
-          if(res.data.status !== 'success') window.alertable({ icon: 'error', message: '品目の削除に失敗しました。' })
-        }).catch(err => window.alertable({ icon: 'error', message: err }))
-      }
-    }})
+        if(res.data.status === 'success') this.setState({ quote_projects: quote_projects, price: minusPrice } )
+        if(res.data.status !== 'success') window.alertable({ icon: 'error', message: '品目の削除に失敗しました。' })
+      }).catch(err => window.alertable({ icon: 'error', message: err }))
+    }
   }
 
   /**
@@ -550,7 +547,10 @@ export default class QuoteEditor extends React.Component {
         if(this.state.quote_id) {
 
           this.setState({ price: price, quote: { ...this.state.quote, drive_folder_id: res.data.drive_folder_id } }, () => {
-            window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () => this.loadingRef.finish() })
+            //window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () =>
+            // this.loadingRef.finish() })
+            window.alert('案件を更新しました。')
+            this.loadingRef.finish()
           })
         }
 
@@ -558,7 +558,9 @@ export default class QuoteEditor extends React.Component {
         if(!this.state.quote_id) {
 
           const redirect = () => location.href = `${res.data.quote.id}/edit`
-          window.alertable({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() })
+          //window.alertable({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() })
+          window.alert('案件を作成しました。')
+          redirect()
         }
       }
 
@@ -566,7 +568,8 @@ export default class QuoteEditor extends React.Component {
 
         // エラー文
         console.log(res.data.message)
-        window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` })
+        window.alert(`案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。`)
+        this.loadingRef.finish()
       }
     }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }))
   }
@@ -616,9 +619,9 @@ export default class QuoteEditor extends React.Component {
         { this.state.quote.lock ?
           null
           :
-          <div className='u-mt-15'>
-            <button className='c-btnMain-standard' onClick={ this.addQuoteProject }>行を追加</button>
-            <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
+          <div className='u-mt-10 c-flex'>
+            <button className='c-btnMain c-btn-blue' onClick={ this.addQuoteProject }>行を追加</button>
+            <div className='u-ml-10 c-btnMain' onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
           </div>
         }
         <PaymentDetails quote={ this.state.quote } discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }

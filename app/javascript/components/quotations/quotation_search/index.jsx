@@ -105,12 +105,12 @@ const QuotationSearch = props => {
   };
 
   return (
-    <div className={ 'c-search__work-index u-mt-20' }>
+    <div className='c-search__work-index u-mt-15'>
       <Fragment>
         <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
       </Fragment>
       <form method='get' action='/quotations?count='>
-        <div className='u-mt-10 c-flex'>
+        <div className='u-mt-10 c-flex c-flex-alignItems__center'>
           <input className='c-form-text__work-index' type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期' />
           <select name='status' className='u-ml-10 c-form-select__work-index' value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
             <option value=''>ステータス</option>
@@ -128,8 +128,12 @@ const QuotationSearch = props => {
 					<DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class={ 'c-form-text__work-index__datepicker' } action='end_date' sortingAction={ sortingAction }/>
 					<Icon name='ei-calendar' size='m'/>
           <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain-standard'/>
-          <a className='u-va-middle u-ml-10 c-btnMain-primaryA' href='/quotations' >元に戻す</a>
+          <div className='u-ml-10'>
+            <input type='submit' name='commit' value='検索' className='c-btnMain'/>
+          </div>
+          <div className='u-ml-10'>
+            <a className='c-btnMain' href='/quotations' >元に戻す</a>
+          </div>
         </div>
       </form>
     </div>

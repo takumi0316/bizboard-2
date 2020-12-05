@@ -5,7 +5,7 @@
     span.c-form-required.u-mt-10 必須
   = f.text_field :name, placeholder: '画像タイトルを入力してください。', class: 'c-form-text', required: true
 
-  .u-mt-15 = f.submit upload.new_record? ? '作成する' : '更新する', class: 'c-btnMain-standard'
+  .u-mt-15 = f.submit upload.new_record? ? '作成する' : '更新する', class: 'c-btnMain'
 
 .c-attention.u-mt-30
   .u-mt-5

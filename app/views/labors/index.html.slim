@@ -1,6 +1,7 @@
 h1.l-dashboard__heading 労務費情報一覧
 
-= link_to '労務費を入力する', new_labor_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
+.u-mt-15
+  = link_to '労務費を入力する', new_labor_path, class: 'c-btnMain c-btn-blue'
 
 .c-table.u-mt-30
   table
@@ -16,8 +17,8 @@ h1.l-dashboard__heading 労務費情報一覧
           td = r.date
           td = r.division.name
           td = r.price.to_s(:delimited)
-          td = link_to '編集', edit_labor_path(r), class: 'c-btnMain-standard'
-          td = link_to '削除', labor_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+          td = link_to '編集', edit_labor_path(r), class: 'c-btnMain c-btn-blue'
+          td = link_to '削除', labor_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 
 = render 'layouts/_partials/pagination'

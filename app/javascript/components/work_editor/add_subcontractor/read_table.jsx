@@ -10,7 +10,9 @@ const ReadTable = props => {
   return(
     <div>
       <div className={ Style.AddSubcontractor__EditButton }>
-        <button className={ 'c-btnMain-standard' } onClick={ e => props.onEditable(e) }>外注先[編集]</button>
+        <div className='u-mt-15'>
+          <button className='c-btnMain' onClick={ props.onEditable }>外注先[編集]</button>
+        </div>
       </div>
       { props.work_subcontractors_iterate ?
         <Fragment>
@@ -19,11 +21,13 @@ const ReadTable = props => {
             return(
               <Fragment key={ key }>
                 { work_subcontractor.client ?
-                  <a className={ 'c-btnMain-primaryB u-mt-20' } href={ '/work_subcontractors/' + work_subcontractor.id } target='_blank'>外注指示書発行</a>
+                  <div className='u-mt-15'>
+                    <a className='c-btnMain' href={ '/work_subcontractors/' + work_subcontractor.id } target='_blank'>外注指示書発行</a>
+                  </div>
                   : null
                 }
                 <div className={ Style.AddSubcontractor__ReadOnly }>
-                  <div key={ 'work_subcontractor_division_client_label' + index } className={ 'c-form-label u-mt-20' }>
+                  <div key={ 'work_subcontractor_division_client_label' + index } className='c-form-label u-mt-15'>
                     <label>外注先情報</label>
                   </div>
                 </div>

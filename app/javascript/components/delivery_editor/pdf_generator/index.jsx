@@ -1,14 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from 'react'
 
-// import libraries
-import DatetimePicker from '../../utilities/datetime_picker';
-
-const DeliveryPdfGenrator = props => {
+const DeliveryPdfGenerator = props => {
 
 	return(
     <Fragment>
-      <h1 className="l-dashboard__heading">納品書: { props.quote.subject }</h1>
-      <div className="u-mt-15 c-attention">
+      <h1 className='l-dashboard__heading'>納品書: { props.quote.subject }</h1>
+      <div className='u-mt-15 c-attention'>
         <p>会社名: { props.company }</p>
         <p>部署名: { props.division }</p>
         <p>担当者名: { props.client }</p>
@@ -47,14 +44,14 @@ const DeliveryPdfGenrator = props => {
                       return(
                         <Fragment { ...{key} }>
                           <tr>
-                            <td>{ project.name }</td>
-                            <td>{ Number(project.unit_price).toLocaleString() }</td>
-                            <td>{ project.unit }</td>
-                            <td>{ (Number(project.unit_price) * Number(project.unit)).toLocaleString() }</td>
+                            <td className='u-va-middle'>{ project.name }</td>
+                            <td className='u-va-middle'>{ Number(project.unit_price).toLocaleString() }</td>
+                            <td className='u-va-middle'>{ project.unit }</td>
+                            <td className='u-va-middle'>{ (Number(project.unit_price) * Number(project.unit)).toLocaleString() }</td>
                           </tr>
-                          { project.remarks != '' ?
+                          { project.remarks ?
                             <tr>
-                              <td colSpan='4'>{ project.remarks }</td>
+                              <td colSpan='4' className='u-va-middle'>{ project.remarks }</td>
                             </tr>
                             : null
                           }
@@ -66,10 +63,10 @@ const DeliveryPdfGenrator = props => {
                 }
               </Fragment>
               <tr>
-                <td>値引金額</td>
-                <td></td>
-                <td></td>
-                <td>{ Number(props.quote.discount).toLocaleString() }</td>
+                <td className='u-va-middle'>値引金額</td>
+                <td/>
+                <td/>
+                <td className='u-va-middle'>{ Number(props.quote.discount).toLocaleString() }</td>
               </tr>
             </tbody>
           </table>
@@ -78,15 +75,15 @@ const DeliveryPdfGenrator = props => {
           <table>
             <tbody>
               <tr>
-                { props.quote.tax_type == 'exemption' ?
+                { props.quote.tax_type === 'exemption' ?
                   <Fragment>
-                    <td>合計金額</td>
-                    <td>¥ { Math.floor(props.quote.price || 0).toLocaleString() }</td>
+                    <td className='u-va-middle'>合計金額</td>
+                    <td className='u-va-middle'>¥ { Math.floor(props.quote.price || 0).toLocaleString() }</td>
                   </Fragment>
                   :
                   <Fragment>
-                    <td>合計金額(税込)</td>
-                    <td>{ Math.floor((props.quote.price || 0) * parseFloat(props.quote.tax)).toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }) }</td>
+                    <td className='u-va-middle'>合計金額(税込)</td>
+                    <td className='u-va-middle'>{ Math.floor((props.quote.price || 0) * parseFloat(props.quote.tax)).toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }) }</td>
                   </Fragment>
                 }
               </tr>
@@ -94,11 +91,11 @@ const DeliveryPdfGenrator = props => {
           </table>
         </div>
         <div className='c-flex__center'>
-          <input type='submit' name='commit' value='納品書ダウンロード' className='u-mt-30 c-btnMain-primaryB'/>
+          <input type='submit' name='commit' value='納品書ダウンロード' className='u-mt-30 c-btnMain'/>
         </div>
       </form>
     </Fragment>
-  );
-};
+  )
+}
 
-export default DeliveryPdfGenrator;
+export default DeliveryPdfGenerator

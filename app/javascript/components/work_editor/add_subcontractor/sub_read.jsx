@@ -16,14 +16,14 @@ const SubRead = props => {
           </thead>
           <tbody>
             <tr>
-              <td className={ 'u-ta-center' }>{ Dayjs(props.work_subcontractor.order_date).format('YYYY年MM月DD日') }</td>
-              <td className={ 'u-ta-center' }>{ props.work_subcontractor.delivery_date === null ? null : Dayjs(props.work_subcontractor.delivery_date).format('YYYY年MM月DD日') }</td>
-              <td className={ 'u-ta-left' }>{ props.work_subcontractor.delivery_destination }</td>
+              <td className='u-va-middle u-ta-center'>{ Dayjs(props.work_subcontractor.order_date).format('YYYY年MM月DD日') }</td>
+              <td className='u-va-middle u-ta-center'>{ props.work_subcontractor.delivery_date === null ? null : Dayjs(props.work_subcontractor.delivery_date).format('YYYY年MM月DD日') }</td>
+              <td className='u-va-middle u-ta-left'>{ props.work_subcontractor.delivery_destination }</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div className={ 'c-table' }>
+      <div className='c-table'>
         <table>
           <thead>
             <tr>

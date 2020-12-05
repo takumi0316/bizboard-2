@@ -67,8 +67,8 @@ const search = props => {
         <DatetimePicker key={ `${state.edate}-end` } type='text' name='edate' default_datetime={ state.edate } class='c-form-text__work-index__datepicker u-ml-10'/>
         <Icon name='ei-calendar' size='m'/>
         <input type='hidden' name='count' value='1'/>
-        <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain-standard'/>
-        <a className='u-va-middle u-ml-10 c-btnMain-primaryA' href={ action }>元に戻す</a>
+        <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
+        <a className='u-ml-10 c-btnMain' href={ action }>元に戻す</a>
         </div>
       </form>
     </div>

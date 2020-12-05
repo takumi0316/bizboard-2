@@ -1,5 +1,5 @@
 .u-mt-15
-  = react_component('WorkStatus', { status: works.find(params[:id]).status, id: params[:id] })
+  = react_component :WorkStatus, { status: works.find(params[:id]).status, id: params[:id] }
 .c-attention.u-mt-10.u-fw-bold
   | 案件タイトル:
   span.u-ml-10 = works.find(params[:id]).quote&.subject
@@ -13,7 +13,7 @@
     | 担当者:
     span.u-ml-10 = works.find(params[:id]).quote&.user&.name
   span.u-ml-30
-    = link_to '案件を編集する', edit_quote_path(works.find(params[:id]).quote), class: 'c-btnMain-standard'
+    = link_to '案件を編集する', edit_quote_path(works.find(params[:id]).quote), class: 'c-btnMain'
   .u-mt-10
   | お客様情報
   br
@@ -36,7 +36,7 @@
       = work.quote&.deliver_type_i18n
       = " (#{work.quote.deliver_type_note})" if work.quote&.deliver_type_note&.present?
 
-= react_component('WorkEditor',
+= react_component :WorkEditor,
   {	division: work.division,
     division_id: current_user.division_id,
     work: work,
@@ -50,4 +50,4 @@
     project_price: work.quote&.price,
     work_subcontractors_iterate: work.iterate,
     users: User.all,
-  })
+  }

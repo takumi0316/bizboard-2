@@ -265,9 +265,9 @@ export default class ClientGenerate extends React.Component {
       <div>
         <div className='u-mt-20'>
           { this.state.default ?
-            <button className='c-btnMain-primaryA' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
+            <button className='c-btnMain' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
             :
-            <button className='c-btnMain-primaryB' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
+            <button className='c-btnMain' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
           }
         </div>
         <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } new={ this.props.new } typeName={ DIVISION_TYPE_NAME } notFound={ DIVISION_NOT_FOUND } applyDivision={ this.applyDivision }/>
@@ -288,7 +288,7 @@ export default class ClientGenerate extends React.Component {
           : <div>テンプレートを選択してください。</div>
         }
         <div className='c-overlay-submit'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>作成する</button>
+          <button className='c-btnMain c-btn-blue' onClick={ e => this.save(e) }>作成する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node } message='展開しています' />
       </div>

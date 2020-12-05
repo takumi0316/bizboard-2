@@ -93,7 +93,7 @@ const CompanySearch = props => {
             <div>
               <div className={ Style.DivisionSearch__form }>
                 <input type='text' ref={ inputEl } className={ Style.DivisionSearch__input } placeholder='会社名で検索' onChange={ () => _onChange() }/>
-                <div onClick={ () => _onChange() } className='c-btnMain-standard u-ml-10'>検索</div>
+                <div onClick={ () => _onChange() } className='c-btnMain u-ml-10'>検索</div>
               </div>
               { state.companies ?
                 <ul className={ Style.DivisionSearch__list }>
@@ -113,7 +113,7 @@ const CompanySearch = props => {
             <div onClick={ () => close() } className={ Style.DivisionSearch__closeIcon }>×</div>
           </div>
         </div>
-        : <div className='c-btnMain-standard' onClick={ () => open() }>{ props.type_name }</div>
+        : <div className='c-btnMain' onClick={ () => open() }>{ props.type_name }</div>
       }
     </div>
   );

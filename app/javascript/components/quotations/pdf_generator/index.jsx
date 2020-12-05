@@ -1,9 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from 'react'
 
-// import libraries
-import DatetimePicker from '../../utilities/datetime_picker';
-
-const QuotationPdfGenrator = props => {
+const QuotationPdfGenerator = props => {
 
 	return(
     <Fragment>
@@ -47,18 +44,18 @@ const QuotationPdfGenrator = props => {
                 { props.projects ?
                   <Fragment>
                    { props.projects.map((project, index) => {
-                   	const key = 'project' + new Date().getTime().toString(16) + index;
+                   	const key = 'project' + new Date().getTime().toString(16) + index
                    	return(
                       <Fragment { ...{key} }>
                         <tr>
-                          <td>{ project.name }</td>
-                          <td>{ Number(project.unit_price).toLocaleString() }</td>
-                          <td>{ project.unit }</td>
-                          <td>{ (Number(project.unit_price) * Number(project.unit)).toLocaleString() }</td>
+                          <td className='u-va-middle'>{ project.name }</td>
+                          <td className='u-va-middle'>{ Number(project.unit_price).toLocaleString() }</td>
+                          <td className='u-va-middle'>{ project.unit }</td>
+                          <td className='u-va-middle'>{ (Number(project.unit_price) * Number(project.unit)).toLocaleString() }</td>
                         </tr>
-                        { project.remarks != '' ?
+                        { project.remarks ?
                           <tr>
-                            <td colSpan='4'>{ project.remarks }</td>
+                            <td colSpan='4' className='u-va-middle'>{ project.remarks }</td>
                           </tr>
                          : null
                         }
@@ -70,10 +67,10 @@ const QuotationPdfGenrator = props => {
                 }
               </Fragment>
               <tr>
-                <td>値引金額</td>
-                <td></td>
-                <td></td>
-                <td>{ Number(props.quote.discount).toLocaleString() }</td>
+                <td className='u-va-middle'>値引金額</td>
+                <td/>
+                <td/>
+                <td className='u-va-middle'>{ Number(props.quote.discount).toLocaleString() }</td>
               </tr>
             </tbody>
           </table>
@@ -82,15 +79,15 @@ const QuotationPdfGenrator = props => {
           <table>
             <tbody>
               <tr>
-                { props.quote.tax_type == 'exemption' ?
+                { props.quote.tax_type === 'exemption' ?
                   <Fragment>
-                    <td>合計金額</td>
-                    <td>¥ { Math.floor(props.quote.price || 0).toLocaleString() }</td>
+                    <td className='u-va-middle'>合計金額</td>
+                    <td className='u-va-middle'>¥ { Math.floor(props.quote.price || 0).toLocaleString() }</td>
                   </Fragment>
                   :
                   <Fragment>
-                    <td>合計金額(税込)</td>
-                    <td>{ Math.floor((props.quote.price || 0) * parseFloat(props.quote.tax)).toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }) }</td>
+                    <td className='u-va-middle'>合計金額(税込)</td>
+                    <td className='u-va-middle'>{ Math.floor((props.quote.price || 0) * parseFloat(props.quote.tax)).toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }) }</td>
                   </Fragment>
                 }
               </tr>
@@ -98,11 +95,11 @@ const QuotationPdfGenrator = props => {
           </table>
         </div>
         <div className='c-flex__center'>
-          <input type='submit' name='commit' value='見積書ダウンロード' className='u-mt-30 c-btnMain-primaryB'/>
+          <input type='submit' name='commit' value='見積書ダウンロード' className='u-mt-30 c-btnMain'/>
         </div>
       </form>
     </Fragment>
 	);
 };
 
-export default QuotationPdfGenrator;
+export default QuotationPdfGenerator

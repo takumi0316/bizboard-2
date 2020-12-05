@@ -161,7 +161,7 @@ const ProjectEditor = props => {
       </div>
 
       <div className='c-overlay-submit'>
-        <div className='c-btnMain-standard c-btn-blue' onClick={ onSubmit }>{ props.project.id ? '更新する' : '作成する' }</div>
+        <div className='c-btnMain c-btn-blue' onClick={ onSubmit }>{ props.project.id ? '更新する' : '作成する' }</div>
       </div>
     </div>
   )

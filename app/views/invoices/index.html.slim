@@ -2,8 +2,8 @@
 
 = react_component :InvoiceSearch
 
-.u-mt-30 = link_to '請求書鑑作成', invoices_roundup_path(name: params[:name], date1: params[:date1], date2: params[:date2]), target: :_blank, class: 'c-btnMain-standard'
-p 検索して絞り込んだ請求書をまとめて請求書鑑を作成します。
+.u-mt-30 = link_to '請求書鑑作成', invoices_roundup_path(name: params[:name], date1: params[:date1], date2: params[:date2]), target: :_blank, class: 'c-btnMain'
+p.u-mt-10 検索して絞り込んだ請求書をまとめて請求書鑑を作成します。
 
 .c-table.u-mt-30
   table
@@ -19,16 +19,18 @@ p 検索して絞り込んだ請求書をまとめて請求書鑑を作成しま
     tbody
       - invoices.each do |r|
         tr
-          td = r.id
-          td = r.quote&.quote_number
-          td = r.subject.truncate(25)
-          td
+          td.u-va-middle = r.id
+          td.u-va-middle = r.quote&.quote_number
+          td.u-va-middle = r.subject.truncate(25)
+          td.u-va-middle
             - if r.quote&.company_division_client_id?
-              = "#{r.quote.client.company_division.company.name} #{r.quote.client.name} 様"
-          td = "¥ #{r.quote&.price&.to_s(:delimited)}"
-          td = r.date
-          td.u-ta-center = link_to '編集', edit_invoice_path(r), class: 'c-btnMain-standard'
-          td.u-ta-center = link_to '詳細', invoice_path(r), class: 'c-btnMain-primaryB', target: '_blank' if r.file.attached?
-          td.u-ta-center = link_to '削除', invoice_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+              = "#{r.quote.client.company_division.company.name}"
+              br
+							= "#{r.quote.client.name} 様"
+          td.u-va-middle = "¥ #{r.quote&.price&.to_s(:delimited)}"
+          td.u-va-middle = r.date
+          td.u-ta-center.u-va-middle = link_to '編集', edit_invoice_path(r), class: 'c-btnMain'
+          td.u-ta-center.u-va-middle = link_to '詳細', invoice_path(r), class: 'c-btnMain', target: '_blank' if r.file.attached?
+          td.u-ta-center.u-va-middle = link_to '削除', invoice_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

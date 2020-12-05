@@ -78,7 +78,7 @@ const Company = props => {
             <div>
               <div className={ Style.Search__form }>
                 <input type='text' ref={ inputEl } className={ Style.Search__input } placeholder='フラグ名で検索' onChange={ onChange }/>
-                <div onClick={ onChange } className='c-btnMain-standard u-ml-10'>検索</div>
+                <div onClick={ onChange } className='c-btnMain u-ml-10'>検索</div>
               </div>
               { state.companies.length > 0 ?
                 <ul className={ Style.Search__list }>
@@ -98,7 +98,7 @@ const Company = props => {
             <div onClick={ close } className={ Style.Search__closeIcon }>×</div>
           </div>
         </div>
-        : <div className='u-mt-10 c-btnMain-standard' onClick={ open }>会社情報を検索</div>
+        : <div className='u-mt-10 c-btnMain' onClick={ open }>会社情報を検索</div>
       }
     </div>
   );

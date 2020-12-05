@@ -248,15 +248,15 @@ export default class EditTemplateGenerate extends React.Component {
         <CompanySearch applyCompany={ this.applyCompany } type_name={ '会社情報を登録' } not_found={ '会社情報が見つかりませんでした。'}/>
         { this.props.both == 2 ?
           <div className='u-mt-10'>
-            <button className='c-btnMain-primaryC'
+            <button className='c-btnMain'
               onClick={ e => this.state.template_type ? this.reverse_transition(e) : this.front_transition(e) }>{ this.state.template_type ? '裏面を設定する' : '表面を設定する' }</button>
           </div>
           : null
         }
         <CardTemplate template={ this.state.template } didmount_type={ this.state.didmount_status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
         <div className='c-overlay-submit'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>{ '更新する' }</button>
-          <button className='u-ml-30 c-btnMain-standard' onClick={ () => this.unSetPDF() }>テンプレートを変更する</button>
+          <button className='c-btnMain c-btn-blue' onClick={ e => this.save(e) }>更新する</button>
+          <button className='u-ml-30 c-btnMain' onClick={ () => this.unSetPDF() }>テンプレートを変更する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>

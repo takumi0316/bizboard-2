@@ -326,7 +326,7 @@ const RightSide = props => {
         : null
       }
       <div className='u-mt-30 c-flex__center'>
-        <button className='c-btnMain-standard' onClick={ closeRightSide }>保存する</button>
+        <button className='c-btnMain c-btn-blue' onClick={ closeRightSide }>保存する</button>
       </div>
     </div>
   );

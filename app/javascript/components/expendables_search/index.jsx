@@ -110,10 +110,10 @@ const ExpendableSearch = props => {
   };
 
   return (
-    <div className={ 'c-search__work-index u-mt-20' }>
+    <div className='c-search__work-index u-mt-20'>
       <form method='get' action='/expendables?'>
-        <div className={ 'c-flex' }>
-          <select name='division' className={ 'c-form-select__work-index' } value={ state.division } onChange={ e => setState({ ...state, division: e.target.value }) }>
+        <div className='c-flex c-flex-alignItems__center'>
+          <select name='division' className='c-form-select__work-index' value={ state.division } onChange={ e => setState({ ...state, division: e.target.value }) }>
             <option value=''>負担部署</option>
             { props.division.map((division, index) => {
 
@@ -123,7 +123,7 @@ const ExpendableSearch = props => {
               );
             }) }
           </select>
-          <select name='subcontractor' className={ 'u-ml-10 c-form-select__expendable-index' } value={ state.subcontractor } onChange={ e => setState({ ...state, subcontractor: e.target.value }) }>
+          <select name='subcontractor' className='u-ml-10 c-form-select__expendable-index' value={ state.subcontractor } onChange={ e => setState({ ...state, subcontractor: e.target.value }) }>
             <option value=''>仕入れ先</option>
             { state.subcontractors.map((subcontractor, index) => {
 
@@ -143,15 +143,15 @@ const ExpendableSearch = props => {
               );
             }) }
           </select>
-          <DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date1' } default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' } action={ 'start_date' } sortingAction={ sortingAction } index={ true }/>
+          <DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker u-ml-10' action='start_date' sortingAction={ sortingAction } index={ true }/>
           <Icon name='ei-calendar' size='m'/>
-          <p className={ 'c-search__tilde' }>〜</p>
-          <DatetimePicker key={ state.endDate } type={ 'text' } name={ 'date2' } default_datetime={ state.endDate } class={ 'c-form-text__work-index__datepicker' }
-                          action={ 'end_date' } sortingAction={ sortingAction } index={ false }/>
+          <p className='c-search__tilde'>〜</p>
+          <DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class='c-form-text__work-index__datepicker'
+                          action='end_date' sortingAction={ sortingAction } index={ false }/>
           <Icon name='ei-calendar' size='m'/>
           <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
-          <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/expendables' } >元に戻す</a>
+          <input type='submit' name='commit' value='検索' className='c-btnMain'/>
+          <div className='u-ml-10'><a className='c-btnMain' href='/expendables' >元に戻す</a></div>
         </div>
       </form>
     </div>

@@ -27,10 +27,10 @@ const Table = props => {
               <Fragment { ...{key} }>
                 { !template_layout._destroy ?
                   <tr>
-                    <td className='u-ta-center'>{ template_layout.card_layout_id }</td>
-                    <td className='u-ta-center'>{ template_layout.layout_name }</td>
-                    <td className='u-ta-center'><a className='c-btnMain-standard' href={ `/card_layouts/${ template_layout.card_layout_id }/edit` }>編集</a></td>
-                    <td className='u-ta-center'><button className='c-btnMain-primaryA' data-number={ index } onClick={ unlinkLayout }>削除</button></td>
+                    <td className='u-ta-center u-va-middle'>{ template_layout.card_layout_id }</td>
+                    <td className='u-ta-center u-va-middle'>{ template_layout.layout_name }</td>
+                    <td className='u-ta-center u-va-middle'><a className='c-btnMain c-btn-blue' href={ `/card_layouts/${ template_layout.card_layout_id }/edit` }>編集</a></td>
+                    <td className='u-ta-center u-va-middle'><button className='c-btnMain c-btn-red' data-number={ index } onClick={ unlinkLayout }>削除</button></td>
                   </tr>
                   : null
                 }

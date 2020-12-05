@@ -291,8 +291,10 @@ export default class DatetimePicker extends React.Component {
                     : null
                   }
 
-                  { this.props.show_time ? <div onClick={this._apply} className='u-mt-30 c-btnMain-standard u-display-block'>適用する</div> : null }
-                  <div onClick={this._clear} className='u-mt-10 c-btnMain-standard u-display-block'>クリアする</div>
+                  { this.props.show_time ? <div onClick={this._apply} className='u-mt-30 c-btnMain u-display-block'>適用する</div> : null }
+                  <div className='c-flex__center'>
+                    <button onClick={this._clear} className='c-btnMain u-display-block'>クリアする</button>
+                  </div>
                 </div>
               </div>
             </div>

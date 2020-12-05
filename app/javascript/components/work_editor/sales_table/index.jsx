@@ -1,13 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from 'react'
 
 const SalesTables = props => {
 
 	return(
 		<Fragment>
-			<div className={ 'c-form-label u-mt-20' }>
+			<div className='c-form-label u-mt-20'>
         <label>受注/粗利</label>
       </div>
-      <div className={ 'c-table3 u-mt-20' }>
+      <div className='c-table3 u-mt-20'>
         <table>
           <thead>
             <tr>
@@ -31,7 +31,7 @@ const SalesTables = props => {
         </table>
       </div>
 		</Fragment>
-	);
-};
+	)
+}
 
-export default SalesTables;
+export default SalesTables

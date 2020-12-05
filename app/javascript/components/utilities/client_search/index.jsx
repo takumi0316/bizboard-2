@@ -87,13 +87,13 @@ const ClientSearch = props => {
   return (
     <Fragment>
       { state.show ?
-        <div className={ Style.ClientSearch } onMouseDown={ e => close(e) }>
-          <div className={ Style.ClientSearch__inner } onMouseDown={ e => stopPropagation(e) }>
+        <div className={ Style.ClientSearch } onMouseDown={ close }>
+          <div className={ Style.ClientSearch__inner } onMouseDown={ stopPropagation }>
             { state.body == null ?
               <div>
-                <div className={ Style.ClientSearch__form} >
-                  <input type='text' className={ Style.ClientSearch__input } placeholder='お客様情報で検索' onChange={ e => onChange(e) }/>
-                  <div onClick={ e => onChange(e)} className='c-btnMain-standard u-ml-10'>検索</div>
+                <div className='c-flex c-flex-alignItems__center'>
+                  <input type='text' className={ Style.ClientSearch__input } placeholder='お客様情報で検索' onChange={ onChange }/>
+                  <div className='u-ml-10'><button onClick={ onChange } className='c-btnMain'>検索</button></div>
                 </div>
                 { state.clients ?
                   <ul className={ Style.ClientSearch__list }>
@@ -101,7 +101,7 @@ const ClientSearch = props => {
                       const key = `clients-${i}`;
                       return (
                         <li { ...{key} } className={ Style.ClientSearch__item }>
-                          <h2 className={ Style.ClientSearch__itemName } data-number={ i } onClick={ e => onSelect(e) }>{ client.company ? client.company.name : '会社名なし' } { client.division ? client.division.name : '部署名なし' } { client.client ? client.client.name : '担当者なし' } 様</h2>
+                          <h2 className={ Style.ClientSearch__itemName } data-number={ i } onClick={ onSelect }>{ client.company ? client.company.name : '会社名なし' } { client.division ? client.division.name : '部署名なし' } { client.client ? client.client.name : '担当者なし' } 様</h2>
                         </li>
                       );
                     })}
@@ -111,10 +111,10 @@ const ClientSearch = props => {
               </div>
               : <div dangerouslySetInnerHTML={ { __html : state.body } }/>
             }
-            <div onClick={ e => close(e) } className={ Style.ClientSearch__closeIcon }>×</div>
+            <div onClick={ close } className={ Style.ClientSearch__closeIcon }>×</div>
           </div>
         </div>
-        : <div className='c-btnMain-standard' onClick={ e => open(e) }>{ props.typeName }</div>
+        : <button className='c-btnMain' onClick={ open }>{ props.typeName }</button>
       }
     </Fragment>
   );

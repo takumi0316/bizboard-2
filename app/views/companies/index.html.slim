@@ -1,6 +1,6 @@
 = render 'layouts/_partials/company_tabmenu'
 
-.u-mt-15 = link_to '取引先を作成する', new_company_path, class: 'c-btnMain-standard c-btn-blue'
+.u-mt-15 = link_to '取引先を作成する', new_company_path, class: 'c-btnMain c-btn-blue'
 
 = form_with url: companies_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
 	
@@ -8,7 +8,7 @@
 		= f.label :name, '会社名'
 		= f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '日本工業社'
 	
-	= f.submit '検索', class: 'c-btnMain-standard'
+	= f.submit '検索', class: 'c-btnMain'
 
 .c-table.u-mt-30
 	table
@@ -21,10 +21,10 @@
 		tbody
 			- companies.each do |r|
 				tr
-					td = r.id
-					td = r.name
-					td = link_to '登録ページ', edit_company_path(r, anchor: 'file'), class: 'c-btnMain-standard c-btn-blue'
-					td = link_to '編集', edit_company_path(r), class: 'c-btnMain-standard'
-					td = link_to '削除', company_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+					td.u-va-middle = r.id
+					td.u-va-middle = r.name
+					td.u-ta-center.u-va-middle = link_to '登録ページ', edit_company_path(r, anchor: 'file'), class: 'c-btnMain'
+					td.u-ta-center.u-va-middle = link_to '編集', edit_company_path(r), class: 'c-btnMain c-btn-blue'
+					td.u-ta-center.u-va-middle = link_to '削除', company_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

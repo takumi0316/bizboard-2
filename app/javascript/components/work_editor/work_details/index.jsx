@@ -42,13 +42,17 @@ const AddDetails = props => {
   return (
     <Fragment>
       { show ?
-        <div className={ 'u-mt-10' }>
-          <button className={ 'c-btnMain-standard c-btn-red' } onClick={ onClosable }>作業詳細[編集終了]</button>
+        <div className='u-mt-10'>
+          <button className='c-btnMain' onClick={ onClosable }>作業詳細[編集終了]</button>
         </div>
         :
-        <div className={ 'u-mt-10' }>
-          <button className={ 'c-btnMain-standard u-mr-10' } onClick={ onEditable }>作業詳細[編集]</button>
-          <a className={ 'c-btnMain-primaryB' } href={ '/works/' + props.work_id + '/directions' } target='_blank'>指示書発行[社内用]</a>
+        <div className='u-mt-10 c-flex c-flex-alignItems__center'>
+          <div>
+            <button className='c-btnMain' onClick={ onEditable }>作業詳細[編集]</button>
+          </div>
+          <div className='u-ml-10'>
+            <a className='c-btnMain' href={ '/works/' + props.work_id + '/directions' } target='_blank'>指示書発行[社内用]</a>
+          </div>
         </div>
       }
       { show ?

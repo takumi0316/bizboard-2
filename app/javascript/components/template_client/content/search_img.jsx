@@ -118,7 +118,7 @@ export default class Uploads extends React.Component {
         </div>
       </div>
       :
-        <div className='u-ml-20 c-btnMain-standard' onClick={ this.open }>画像検索</div>
+        <div className='u-ml-20 c-btnMain' onClick={ this.open }>画像検索</div>
     );
   }
 }

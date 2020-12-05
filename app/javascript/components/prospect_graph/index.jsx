@@ -50,9 +50,9 @@ export default class ProspectGraph extends Component {
     return (
 
       <div>
-      <button className={ 'c-btnMain-primaryA u-mr-10' } onClick={this.onClickButton_status}>ステータス</button>
-      <button className={ 'c-btnMain-primaryB u-ml-10' } onClick={this.onClickButton_accurary}>確度</button>
-        { this.state.graph_type == 'accurary' ?
+      <button className='c-btnMain u-mr-10' onClick={this.onClickButton_status}>ステータス</button>
+      <button className='c-btnMain u-ml-10' onClick={this.onClickButton_accurary}>確度</button>
+        { this.state.graph_type === 'accurary' ?
           <BarChart
             width={200}
             height={500}
@@ -76,7 +76,7 @@ export default class ProspectGraph extends Component {
           </BarChart>
           : null
         }
-        { this.state.graph_type == 'status' ?
+        { this.state.graph_type === 'status' ?
           <BarChart
             width={200}
             height={500}

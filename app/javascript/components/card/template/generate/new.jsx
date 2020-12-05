@@ -241,7 +241,7 @@ export default class NewTemplateGenerate extends React.Component {
           <CardTemplate template={ this.state.templates[1] } status={ this.state.status } onDrop={ this.onDrop } addDetail={ this.addDetail } onChangeDetail={ this.onChangeDetail } unSetPDF={ this.unSetPDF }/>
         }
         <div className='c-overlay-submit'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>保存する</button>
+          <button className='c-btnMain c-btn-blue' onClick={ e => this.save(e) }>保存する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </Fragment>

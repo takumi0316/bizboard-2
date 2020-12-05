@@ -157,7 +157,7 @@ const Index = props => {
   
   
       <div className={ Style.CardTemplate__overlay }>
-        <button className='c-btnMain-standard' onClick={ saveCardTemplate }>保存する</button>
+        <button className='c-btnMain c-btn-blue' onClick={ saveCardTemplate }>保存する</button>
       </div>
       
       <Loading ref={ loading_ref }/>

@@ -1,17 +1,14 @@
 import React from 'react';
-import Style from '../style.sass';
 
 // Ajax
 import Request from 'superagent'
 require('superagent-rails-csrf')(Request);
-
 
 /**
  *  記事エディター
  *  @version
  */
 export default class StatusVisualization extends React.Component {
-
 
   constructor(props) {
 
@@ -58,30 +55,37 @@ export default class StatusVisualization extends React.Component {
 
   render() {
     return(
-      <div className={ Style.WorkStatus }>
-        { this.state.work_status === 'draft' ?
-          <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>未作業</button></div>
+      <div className='c-flex__end'>
+        <div>
+          { this.state.work_status === 'draft' ?
+            <button className='c-btnMain' onClick={ e => this.onUpdate(e, this.state.status_draft) }>未作業</button>
             :
-          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_draft) }>未作業</button>
-
-        }
-        { this.state.work_status === 'working' ?
-          <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button></div>
+            <button className='c-btnMain' onClick={ e => this.onUpdate(e, this.state.status_draft) }>未作業</button>
+          }
+        </div>
+        <div className='u-ml-10'>
+          { this.state.work_status === 'working' ?
+            <button className='c-btnMain' onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button>
             :
-          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button>
-        }
-        { this.state.work_status === 'delivered' ?
-          <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button></div>
+            <button className='c-btnMain' onClick={ e => this.onUpdate(e, this.state.status_working) }>作業中</button>
+          }
+        </div>
+        <div className='u-ml-10'>
+          { this.state.work_status === 'delivered' ?
+            <button className='c-btnMain' onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button>
             :
-          <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button>
-        }
-        { this.state.work_status === 'completed' ?
-        <div><button className={ 'c-btnMain-primaryC' } onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button></div>
-          :
-        <button className={ 'c-btnMain-negative' } onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button>
-        }
+            <button className='c-btnMain' onClick={ e => this.onUpdate(e, this.state.status_deliverd) }>発送済み</button>
+          }
+        </div>
+        <div className='u-ml-10'>
+          { this.state.work_status === 'completed' ?
+            <button className='c-btnMain' onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button>
+            :
+            <button className='c-btnMain' onClick={ e => this.onUpdate(e, this.state.status_complete) }>納品済み</button>
+          }
+        </div>
       </div>
-    );
+    )
   }
 
 }

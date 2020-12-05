@@ -1,10 +1,11 @@
 = render 'layouts/_partials/tabmenu'
 
-= link_to '案件を作成する', new_quote_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
+.u-mt-15
+  = link_to '案件を作成する', new_quote_path, class: 'c-btnMain c-btn-blue'
 
 = react_component :QuoteSearch, count_number: @count_number, search_status: params[:commit]
 
-.c-table.u-mt-30
+.c-table.u-mt-15
   table
     thead
       tr
@@ -36,7 +37,7 @@
                 = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
                   = image_tag asset_url('カギの閉じた錠.png'), class: 'active'
                   = image_tag asset_url('カギの開いた錠.png'), class: 'nonactive'
-          td class="u-ta-center #{ 'p-tasks__unread' if r.task.messages.last.created_at.strftime("%Y %m %d") > current_user.lastaccesstask.strftime("%Y %m %d") if r.task.present? && r.task.messages.present? }"
+          td class="u-ta-center u-va-middle #{ 'p-tasks__unread' if r.task.messages.last.created_at.strftime("%Y %m %d") > current_user.lastaccesstask.strftime("%Y %m %d") if r.task.present? && r.task.messages.present? }"
             = r.quote_number if r.deliver_at.nil?
             - if r.deliver_at.present?
               - if r.deliver_at.strftime("%Y %m %d") == Time.zone.now.strftime("%Y %m %d")
@@ -46,57 +47,57 @@
               - else r.deliver_at.strftime("%Y %m %d") != Time.zone.now.strftime("%Y %m %d")
                 = r.quote_number
           //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
-          td.u-ta-center
+          td.u-ta-center.u-va-middle
             = r.status_i18n if r.activity.nil?
             - if r.activity.present?
               = r.status_i18n if r.activity.status_order?
               = r.activity.status_i18n if !r.activity.status_order?
-          td.u-ta-center = r.work.status_i18n if r.work.present?
-          td.u-ta-center = r.activity.accurary_i18n if r.activity.present?
-          td = r.subject.truncate(25)
+          td.u-ta-center.u-va-middle = r.work.status_i18n if r.work.present?
+          td.u-ta-center.u-va-middle = r.activity.accurary_i18n if r.activity.present?
+          td.u-va-middle = r.subject.truncate(25)
           td.u-va-middle
             - if r.client.nil?
               | お客様情報なし
             - if r.client.present?
-              = "#{ r.client.company_division.company.name }"
+              = "#{ r.client.company_division.company.name }".truncate(15)
               br
               = "#{ r.client.name }"
-          td = r.deliver_at
-          td.u-ta-center
+          td.u-va-middle = r.deliver_at
+          td.u-ta-center.u-va-middle
             - if r.user.nil?
               | 更新者不明
             - if r.user.present?
               = r.user.name
-          td.u-ta-center
+          td.u-ta-center.u-va-middle
             - if r.activity.nil?
-              = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post if r.work.nil?
-              = link_to '作業書', work_path(r.work), class: 'c-btnMain-standard c-btn-blue' if r.work.present?
+              = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain c-btn-blue', method: :post if r.work.nil?
+              = link_to '作業書', work_path(r.work), class: 'c-btnMain' if r.work.present?
             - if r.activity.present?
               - if r.activity.status_lost? || r.activity.status_rejection?
                 = r.activity.status_i18n if r.work.nil?
-                = link_to '作業書', work_path(r.work), class: 'c-btnMain-standard c-btn-blue' if r.work.present?
+                = link_to '作業書', work_path(r.work), class: 'c-btnMain' if r.work.present?
               - else
-                = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain-standard c-btn-orange', method: :post if r.work.nil?
-                = link_to '作業書', work_path(r.work), class: 'c-btnMain-standard c-btn-blue' if r.work.present?
-          td = link_to "見積書#{ r.quote_projects.nil? ? '作成' : '' }", r.quotation_pdf.attached? ? quotation_path(r) : edit_quotation_path(r), class: "c-btnMain-standard c-btn-#{ r.quote_projects.nil? ? 'orange' : 'blue' }", target: '_blank'
-          td.u-ta-center
+                = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain c-btn-blue', method: :post if r.work.nil?
+                = link_to '作業書', work_path(r.work), class: 'c-btnMain' if r.work.present?
+          td.u-va-middle = link_to "見積書#{ r.quote_projects.nil? ? '作成' : '' }", r.quotation_pdf.attached? ? quotation_path(r) : edit_quotation_path(r), class: 'c-btnMain', target: '_blank'
+          td.u-ta-center.u-va-middle
             - if r.invoicing? && r.invoice.present?
-              = link_to '請求書', ActiveStorage::Attachment.find_by(record_type: :Invoice, record_id: r.invoice.id).present? ? invoice_path(r.invoice) : edit_invoice_path(r.invoice), class: 'c-btnMain-standard c-btn-blue', target: '_blank'
+              = link_to '請求書', ActiveStorage::Attachment.find_by(record_type: :Invoice, record_id: r.invoice.id).present? ? invoice_path(r.invoice) : edit_invoice_path(r.invoice), class: 'c-btnMain', target: '_blank'
             - elsif r.end_work? || r.advance?
-              = link_to "#{ r.end_work? ? '' : '先払い' }請求書作成", new_invoice_path(quote_id: r.id), class: "c-btnMain-standard c-btn-#{ r.end_work? ? 'orange' : 'red' }", target: '_blank'
+              = link_to "#{ r.end_work? ? '' : '先払い' }請求書作成", new_invoice_path(quote_id: r.id), class: 'c-btnMain c-btn-blue', target: '_blank'
             - else
               | 未発行
-          td = link_to '活動履歴', activities_path(quote_id: r.id), class: 'c-btnMain-standard c-btn-blue'
+          td.u-va-middle = link_to '活動履歴', activities_path(quote_id: r.id), class: 'c-btnMain'
           - if r.lock?
-            td = link_to '詳細', edit_quote_path(r), class: 'c-btnMain-standard c-btn-red'
+            td.u-va-middle = link_to '詳細', edit_quote_path(r), class: 'c-btnMain'
           - else
-            td = link_to '編集', edit_quote_path(r), class: 'c-btnMain-standard'
-          td = link_to '複製', quote_copy_path(r), class: 'c-btnMain-standard c-btn-orange', method: :post
+            td.u-va-middle = link_to '編集', edit_quote_path(r), class: 'c-btnMain c-btn-blue'
+          td.u-va-middle = link_to '複製', quote_copy_path(r), class: 'c-btnMain', method: :post
           - if r.task.present?
             - if r.task.card_clients.present?
-              td = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain-standard'
+              td.u-va-middle = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain'
           - if r.lock?
-            td ロック中
+            td.u-va-middle ロック中
           - else
-            td = link_to '削除', quote_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
+            td.u-va-middle = link_to '削除', quote_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか?' }
 = render 'layouts/_partials/pagination'

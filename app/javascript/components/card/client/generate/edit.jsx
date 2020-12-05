@@ -179,9 +179,9 @@ export default class ClientGenerate extends React.Component {
       <div>
         <div className='u-mt-20'>
           { this.state.default ?
-            <button className='c-btnMain-primaryA' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
+            <button className='c-btnMain' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
             :
-            <button className='c-btnMain-primaryB' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
+            <button className='c-btnMain' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
           }
         </div>
         <Division company={ this.state.company } division={ this.state.division } typeName={ DIVISION_TYPE_NAME } notFound={ DIVISION_NOT_FOUND } applyDivision={ this.applyDivision }/>
@@ -190,7 +190,7 @@ export default class ClientGenerate extends React.Component {
         <Fragment>
         { this.props.both == 2 ?
           <div className='u-mt-10'>
-            <button className='c-btnMain-primaryC'
+            <button className='c-btnMain'
               onClick={ e => this.props.template_type ? this.reverse_transition(e) : this.front_transition(e) }>{ this.props.template_type ? '裏面を設定する' : '表面を設定する' }</button>
           </div>
           : null
@@ -198,7 +198,7 @@ export default class ClientGenerate extends React.Component {
          <Template client_template={ this.state.template } onChangeValue={ this.onChangeValue }/>
         </Fragment>
         <div className='c-overlay-submit'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>更新する</button>
+          <button className='c-btnMain c-btn-blue' onClick={ e => this.save(e) }>更新する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </div>

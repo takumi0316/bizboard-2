@@ -1,17 +1,18 @@
 
 = render 'layouts/_partials/tabmenu'
 
-= link_to '品目を作成する', new_project_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
+.u-mt-15
+  = link_to '品目を作成する', new_project_path, class: 'c-btnMain c-btn-blue'
 
-= form_with url: projects_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+= form_with url: projects_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
 
   .c-search__item
     = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
     = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '仕様/品目名/備考'
 
-  = f.submit '検索', class: 'c-btnMain-standard'
+  = f.submit '検索', class: 'c-btnMain'
 
-.c-table.u-mt-30
+.c-table.u-mt-15
   table
     thead
       tr
@@ -23,11 +24,10 @@
     tbody
       - projects.each do |r|
         tr
-          td = r.id
-          td = r.name
-          td = "¥ #{r.price.to_s(:delimited)}"
-          td = r.updated_at.to_s
-          td = link_to '編集', edit_project_path(r), class: 'c-btnMain-standard'
-          //td = link_to '削除', project_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirm: '本当に削除しますか?' }
+          td.u-ta-center.u-va-middle = r.id
+          td.u-va-middle = r.name
+          td.u-va-middle = "¥ #{r.price.to_s(:delimited)}"
+          td.u-ta-center.u-va-middle = "#{r.updated_at}"
+          td.u-ta-center.u-va-middle = link_to '編集', edit_project_path(r), class: 'c-btnMain'
 
 = render 'layouts/_partials/pagination'

@@ -25,4 +25,4 @@
 
   = f.hidden_field :card_template_id, value: params[:card_template_id] || delivery_target.card_template_id
 
-  .u-mt-15 = f.submit delivery_target.new_record? ? '作成する' : '更新する', class: 'c-btnMain-standard'
+  .u-mt-15 = f.submit delivery_target.new_record? ? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'

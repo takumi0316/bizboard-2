@@ -1,16 +1,16 @@
 = render 'layouts/_partials/tabmenu'
 
-= link_to '活動履歴を作成する', new_activity_path(quote_id: params[:quote_id]), class: 'c-btnMain-standard c-btn-blue u-mt-15'
+.u-mt-15
+  = link_to '活動履歴を作成する', new_activity_path(quote_id: params[:quote_id]), class: 'c-btnMain c-btn-blue'
 
-= form_with url: activities_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
-
+= form_with url: activities_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
   .c-search__item
     = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
     = f.text_field :name, class: 'c-form-text', placeholder: '対応者/案件名/メモ'
 
-  = f.submit '検索', class: 'c-btnMain-standard'
+  = f.submit '検索', class: 'c-btnMain'
 
-.c-table.u-mt-30
+.c-table.u-mt-15
   table
     thead
       tr
@@ -30,29 +30,27 @@
     tbody
       - @activities.each do |r|
         tr
-          td.u-ta-center = r.id
-          td = r.date
-          td.u-ta-center = r.status_i18n
-          td.u-ta-center = r.accurary_i18n
-          td.u-ta-center = r.next_action_i18n
-          td.u-ta-center = r.next_action_date
-          td.u-ta-center = r.quote&.quote_number
-          td = r.quote&.subject&.truncate(25)
-          td.u-ta-center
+          td.u-ta-center.u-va-middle = r.id
+          td.u-ta-center.u-va-middle = r.date
+          td.u-ta-center.u-va-middle = r.status_i18n
+          td.u-ta-center.u-va-middle = r.accurary_i18n
+          td.u-ta-center.u-va-middle = r.next_action_i18n
+          td.u-ta-center.u-va-middle = r.next_action_date
+          td.u-ta-center.u-va-middle = r.quote&.quote_number
+          td.u-va-middle = r.quote&.subject&.truncate(25)
+          td
             - if r.quote&.client&.nil?
-
               | お客様情報が存在しません
             - else
-
-              = "#{ r.quote&.client&.company_division&.company&.name } #{ r.quote&.client&.name }様"
-          td.u-ta-center
+              = "#{ r.quote&.client&.company_division&.company&.name }"
+              br
+							= "#{ r.quote&.client&.name }様"
+          td.u-ta-center.u-va-middle
             - if r.quote&.user&.nil?
-
               | 担当者不明
             - else
-
               = r.quote&.user&.name
-          td = r.memo.truncate(30)
-          td = link_to '資料へ飛ぶ', r.attachment, target: '_blank', class: 'c-btnMain-primaryB' if r.attachment.present?
-          td = link_to '編集', edit_activity_path(r), class: 'c-btnMain-standard'
-          td = link_to '削除', activity_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか?' }
+          td.u-va-middle = r.memo.truncate(30)
+          td.u-va-middle = link_to '資料へ飛ぶ', r.attachment, target: '_blank', class: 'c-btnMain' if r.attachment.present?
+          td.u-va-middle = link_to '編集', edit_activity_path(r), class: 'c-btnMain'
+          td.u-va-middle = link_to '削除', activity_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか?' }

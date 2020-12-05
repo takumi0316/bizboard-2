@@ -1,6 +1,7 @@
 h1.l-dashboard__heading 自社部署一覧
 
-.u-mt-15 = link_to '自社部署を作成する', new_division_path, class: 'c-btnMain-standard c-btn-blue'
+.u-mt-15
+  = link_to '自社部署を作成する', new_division_path, class: 'c-btnMain c-btn-blue'
 
 .c-table.u-mt-30
   table
@@ -14,4 +15,4 @@ h1.l-dashboard__heading 自社部署一覧
         tr
           td = r.id
           td = r.name
-          td = link_to '編集', edit_division_path(r), class: 'c-btnMain-standard'
+          td = link_to '編集', edit_division_path(r), class: 'c-btnMain'

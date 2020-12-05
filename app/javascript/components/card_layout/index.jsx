@@ -283,7 +283,7 @@ const Index = props => {
             <Fragment>
               <Canvas />
               <div>
-                <button className='u-mt-10 c-btnMain-standard' onClick={ removeLayout }>レイアウト変更</button>
+                <button className='u-mt-10 c-btnMain' onClick={ removeLayout }>レイアウト変更</button>
               </div>
             </Fragment>
             : <LayoutDropZone addLayout={ addLayout }/>
@@ -296,7 +296,7 @@ const Index = props => {
         }
       </div>
       <div className={ Style.CardLayout__overlay }>
-        <button className='c-btnMain-standard' onClick={ saveCardLayout }>保存する</button>
+        <button className='c-btnMain c-btn-blue' onClick={ saveCardLayout }>保存する</button>
       </div>
       <Loading ref={ loading_ref }/>
     </Fragment>

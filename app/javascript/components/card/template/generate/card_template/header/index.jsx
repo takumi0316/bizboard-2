@@ -57,7 +57,7 @@ const Header = props => {
       </div>
 
       <div className='u-mt-10'>
-        <button className='c-btnMain-primaryB' onClick={ e => props.addDetail(e) }>＋</button>
+        <button className='c-btnMain c-btn-blue' onClick={ e => props.addDetail(e) }>＋</button>
       </div>
     </div>
   );

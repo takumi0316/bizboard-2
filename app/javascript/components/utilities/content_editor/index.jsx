@@ -169,7 +169,7 @@ export default class ContentEditor extends React.Component {
         <label className='u-fc-thinBlack u-fs-small'>リンク先のURL</label>
         <input type='text' ref='url' placeholder='httpsから始まるURLを入力してください' />
 
-        <div className='c-btnMain-standard u-mt-15' onClick={::this.applyLink}>適用する</div>
+        <div className='c-btnMain u-mt-15' onClick={::this.applyLink}>適用する</div>
       </div>
     );
   }
