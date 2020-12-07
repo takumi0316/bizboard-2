@@ -4,11 +4,11 @@
   = link_to 'テンプレートを作成', new_card_template_path, class: 'c-btnMain c-btn-blue'
 
 = form_with url: card_templates_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
-
-  .c-search__item
-    = f.label :name, 'テンプレートタイトル'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'テンプレートタイトル'
-  = f.submit '検索', class: 'c-btnMain'
+  = f.label :name, 'テンプレートタイトル'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'テンプレートタイトル'
+    = f.submit '検索', class: 'c-btnMain'
 
 .u-mt-15.c-table
   table
@@ -27,5 +27,5 @@
             = link_to 'ユーザー', template_clients_path(id: r), class: 'c-btnMain'
           td.u-ta-center.u-va-middle
 						= link_to '配送先', delivery_targets_path(card_template_id: r), class: 'u-ml-30 c-btnMain'
-          td.u-ta-center.u-va-middle = link_to '編集', edit_card_template_path(r), class: 'c-btnMain'
+          td.u-ta-center.u-va-middle = link_to '編集', edit_card_template_path(r), class: 'c-btnMain c-btn-blue'
           td.u-ta-center.u-va-middle = link_to '削除', card_template_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }

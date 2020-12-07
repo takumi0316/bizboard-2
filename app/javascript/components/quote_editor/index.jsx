@@ -442,25 +442,18 @@ export default class QuoteEditor extends React.Component {
   projectDestroy = e => {
 
     e.preventDefault()
-    const index = e.target.value
 
-    const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects))
-    quote_projects.splice(index, 1)
-    const delProjectPrice = Number(this.state.quote_projects[index].price)
+    const target_index = Number(e.target.value)
+    const quote_projects = []
+    JSON.parse(JSON.stringify(this.state.quote_projects)).map((project, index) => {
+      if(index === target_index) quote_projects.push({ ...project, _destroy: true })
+      if(index !== target_index) quote_projects.push(project)
+    })
+
+    const delProjectPrice = Number(quote_projects[target_index].price)
     const minusPrice = Number(this.state.price) - delProjectPrice
 
-    if(!this.state.quote_projects[index].id) this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }))
-
-    if(this.state.quote.id && this.state.quote_projects[index].id) {
-
-      const url = `/quote_projects/${this.state.quote_projects[index].id}`
-      const request = window.xhrRequest.delete(url)
-      request.then(res => {
-
-        if(res.data.status === 'success') this.setState({ quote_projects: quote_projects, price: minusPrice } )
-        if(res.data.status !== 'success') window.alertable({ icon: 'error', message: '品目の削除に失敗しました。' })
-      }).catch(err => window.alertable({ icon: 'error', message: err }))
-    }
+    this.setState({ quote_projects: quote_projects, price: minusPrice })
   }
 
   /**
@@ -484,8 +477,6 @@ export default class QuoteEditor extends React.Component {
     }
 
     this.setState({ is_update: !this.state.is_update })
-    let price = 0
-    this.state.quote_projects.map(quote_project => price += Number(quote_project.price))
 
     const noSelectedProject = []
     const field = new FormData()
@@ -513,12 +504,13 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[drive_folder_id]', this.state.drive_folder_id)
     field.append('quote[user_id]', this.props.user_id)
     field.append('quote[discount]', this.state.discount)
-    field.append('quote[price]', this.state.discount === 0 ? price : price - this.state.discount)
+    field.append('quote[price]', this.state.discount === 0 ? this.state.price : this.state.price - this.state.discount)
     field.append('quote[deliver_type]', this.state.deliver_type)
     if(!this.props.quote.drive_folder_id && this.googleDriveFolderRef.current !== null) field.append('quote[google_drive_exist]', this.googleDriveFolderRef.current.value)
     this.state.quote_projects.map((project, index) => {
 
       if(noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
+      if(!project.id && project._destroy) return
       field.append('quote[quote_projects_attributes][][id]', project.id)
       field.append('quote[quote_projects_attributes][][project_id]', project.project_id)
       field.append('quote[quote_projects_attributes][][quote_id]', project.quote_id)
@@ -546,7 +538,7 @@ export default class QuoteEditor extends React.Component {
 
         if(this.state.quote_id) {
 
-          this.setState({ price: price, quote: { ...this.state.quote, drive_folder_id: res.data.drive_folder_id } }, () => {
+          this.setState({ price: this.state.price, quote: { ...this.state.quote, drive_folder_id: res.data.drive_folder_id } }, () => {
             //window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () =>
             // this.loadingRef.finish() })
             window.alert('案件を更新しました。')

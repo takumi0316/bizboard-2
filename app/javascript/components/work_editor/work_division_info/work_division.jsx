@@ -101,7 +101,9 @@ export default class HomeDivision extends React.Component {
           	<div onClick={ this._close } className={ Style.ClientSearch__closeIcon }>×</div>
         	</div>
       	</div>
-      	: <div className='c-btnMain' onClick={ this._open }>作業部署を選択</div>
+      	: <div style={{ width: '110px' }}>
+            <button className='c-btnMain' onClick={ this._open }>作業部署を選択</button>
+      	</div>
 				}
 			</Fragment>
     );

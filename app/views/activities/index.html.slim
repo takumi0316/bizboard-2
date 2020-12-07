@@ -4,11 +4,11 @@
   = link_to '活動履歴を作成する', new_activity_path(quote_id: params[:quote_id]), class: 'c-btnMain c-btn-blue'
 
 = form_with url: activities_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
-  .c-search__item
-    = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :name, class: 'c-form-text', placeholder: '対応者/案件名/メモ'
-
-  = f.submit '検索', class: 'c-btnMain'
+  = f.label :name, 'フリーワード検索 ※スペース区切り単語2つまで'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.text_field :name, class: 'c-form-text', placeholder: '対応者/案件名/メモ'
+    = f.submit '検索', class: 'c-btnMain'
 
 .c-table.u-mt-15
   table

@@ -11,7 +11,7 @@ const ReadTable = props => {
     <div>
       <div className={ Style.AddSubcontractor__EditButton }>
         <div className='u-mt-15'>
-          <button className='c-btnMain' onClick={ props.onEditable }>外注先[編集]</button>
+          <button className='c-btnMain c-btn-blue' onClick={ props.onEditable }>外注先[編集]</button>
         </div>
       </div>
       { props.work_subcontractors_iterate ?

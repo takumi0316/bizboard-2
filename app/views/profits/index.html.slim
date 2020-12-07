@@ -5,7 +5,7 @@ h1.l-dashboard__heading 取引先 請求情報一覧
 .u-mt-15
   = link_to 'CSV書き出し', profits_path(date1: @date1.to_s(:profit), date2: @date2.to_s(:profit), format: :csv), class: 'c-btnMain'
 
-.c-table.u-mt-30
+.c-table.u-mt-15
 	table
 		thead
 			tr
@@ -14,5 +14,5 @@ h1.l-dashboard__heading 取引先 請求情報一覧
 		tbody
 			- @company.each do |key,r|
 				tr
-					td = link_to key, invoices_path(name: key, date1: @date1.to_s(:profit), date2: @date2.to_s(:profit))
-					td = "¥ #{r.pluck(:price).sum.to_s(:delimited)}"
+					td.u-va-middle = link_to key, invoices_path(name: key, date1: @date1.to_s(:profit), date2: @date2.to_s(:profit))
+					td.u-ta-right.u-va-middle = "¥ #{r.pluck(:price).sum.to_s(:delimited)}"

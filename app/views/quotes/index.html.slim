@@ -62,7 +62,7 @@
               = "#{ r.client.company_division.company.name }".truncate(15)
               br
               = "#{ r.client.name }"
-          td.u-va-middle = r.deliver_at
+          td.u-ta-center.u-va-middle = r.deliver_at ? r.deliver_at.strftime("%y年%m月%d日") : nil
           td.u-ta-center.u-va-middle
             - if r.user.nil?
               | 更新者不明
@@ -87,17 +87,18 @@
               = link_to "#{ r.end_work? ? '' : '先払い' }請求書作成", new_invoice_path(quote_id: r.id), class: 'c-btnMain c-btn-blue', target: '_blank'
             - else
               | 未発行
-          td.u-va-middle = link_to '活動履歴', activities_path(quote_id: r.id), class: 'c-btnMain'
+          td.u-ta-center.u-va-middle = link_to '活動履歴', activities_path(quote_id: r.id), class: 'c-btnMain'
           - if r.lock?
-            td.u-va-middle = link_to '詳細', edit_quote_path(r), class: 'c-btnMain'
+            td.u-ta-center.u-va-middle = link_to '詳細', edit_quote_path(r), class: 'c-btnMain'
           - else
-            td.u-va-middle = link_to '編集', edit_quote_path(r), class: 'c-btnMain c-btn-blue'
-          td.u-va-middle = link_to '複製', quote_copy_path(r), class: 'c-btnMain', method: :post
+            td.u-ta-center.u-va-middle = link_to '編集', edit_quote_path(r), class: 'c-btnMain c-btn-blue'
+          td.u-ta-center.u-va-middle = link_to '複製', quote_copy_path(r), class: 'c-btnMain', method: :post
           - if r.task.present?
             - if r.task.card_clients.present?
-              td.u-va-middle = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain'
+              td.u-ta-center.u-va-middle = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain'
           - if r.lock?
-            td.u-va-middle ロック中
+            td.u-ta-center.u-va-middle ロック中
           - else
-            td.u-va-middle = link_to '削除', quote_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか?' }
+            td.u-ta-center.u-va-middle = link_to '削除', quote_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか?' }
+
 = render 'layouts/_partials/pagination'

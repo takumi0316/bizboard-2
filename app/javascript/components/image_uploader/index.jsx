@@ -166,7 +166,9 @@ export default class Uploader extends React.Component {
           </div>
         </div>
         :
-        <div className='c-btnMain c-btn-blue' onClick={this._open}>画像をアップロード</div>
+        <div>
+          <button className='c-btnMain c-btn-blue' onClick={this._open}>画像をアップロード</button>
+        </div>
     );
   }
 }

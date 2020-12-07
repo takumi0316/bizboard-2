@@ -115,25 +115,19 @@ const QuotationSearch = props => {
           <select name='status' className='u-ml-10 c-form-select__work-index' value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
             <option value=''>ステータス</option>
             { Object.keys(ENUM_STATUS).map((item, index) => {
-
 							const key = 'status-' + index;
               return (
                 <option key={ key } value={ item }>{ ENUM_STATUS[item] }</option>
               );
             }) }
           </select>
-					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' } action='start_date' sortingAction={ sortingAction }/>
           <Icon name='ei-calendar' size='m'/>
-          <p className={ 'c-search__tilde' }>〜</p>
-					<DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class={ 'c-form-text__work-index__datepicker' } action='end_date' sortingAction={ sortingAction }/>
-					<Icon name='ei-calendar' size='m'/>
+					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker' action='start_date' sortingAction={ sortingAction }/>
+          <p className='c-search__tilde'>〜</p>
+					<DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class='c-form-text__work-index__datepicker' action='end_date' sortingAction={ sortingAction }/>
           <input type='hidden' name='count' value='1'/>
-          <div className='u-ml-10'>
-            <input type='submit' name='commit' value='検索' className='c-btnMain'/>
-          </div>
-          <div className='u-ml-10'>
-            <a className='c-btnMain' href='/quotations' >元に戻す</a>
-          </div>
+          <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
+          <a className='u-ml-10 c-btnMain' href='/quotations' >元に戻す</a>
         </div>
       </form>
     </div>

@@ -2,7 +2,7 @@ h1.l-dashboard__heading 目標管理
 
 .u-mt-15 = link_to '目標を作成する', new_target_path, class: 'c-btnMain c-btn-blue'
 
-.c-table.u-mt-30
+.c-table.u-mt-15
   table
     thead
       tr
@@ -17,14 +17,14 @@ h1.l-dashboard__heading 目標管理
     tbody
       - targets.each do |r|
         tr
-          td = r.id
-          td = r.division.name
-          td = r.target_year
-          td = r.target_month
-          td.u-ta-right = "¥ #{r.sales.to_s(:delimited)}"
-          td.u-ta-right = "¥ #{r.profit.to_s(:delimited)}"
-          td.u-ta-right = "¥ #{r.cost.to_s(:delimited)}"
-          td = link_to '編集', edit_target_path(r), class: 'c-btnMain c-btn-blue'
-          td = link_to '削除', target_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirm: '本当に削除しますか?' }
+          td.u-ta-center.u-va-middle = r.id
+          td.u-ta-center.u-va-middle = r.division.name
+          td.u-ta-center.u-va-middle = r.target_year
+          td.u-ta-center.u-va-middle = r.target_month
+          td.u-ta-right.u-va-middle = "¥ #{r.sales.to_s(:delimited)}"
+          td.u-ta-right.u-va-middle = "¥ #{r.profit.to_s(:delimited)}"
+          td.u-ta-right.u-va-middle = "¥ #{r.cost.to_s(:delimited)}"
+          td.u-ta-center.u-va-middle = link_to '編集', edit_target_path(r), class: 'c-btnMain c-btn-blue'
+          td.u-ta-center.u-va-middle = link_to '削除', target_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

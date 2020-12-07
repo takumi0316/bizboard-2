@@ -10,16 +10,16 @@
         .c-form-field
           = f.label :password, 'パスワード', class: 'c-form-label'
           = f.password_field :password, class: 'c-form-text'
-        .c-form-field.u-mt-20
-          = f.submit 'ログインする', class: 'p-sessions__button c-btnMain'
+        .u-ta-center.c-form-field.u-mt-20
+          = f.submit 'ログインする', class: 'c-btnMain'
 
   .p-sessions__sns
     h2.p-sessions__snsTitle 持っているアカウントでログイン
 
     / google認証
     .u-mt-20.u-ta-center
-      = link_to user_google_omniauth_authorize_path, class: 'p-sessions__button--google c-btnMain' do
-        svg.u-svg-white.u-va-top width='30' height='42'
+      = link_to user_google_omniauth_authorize_path, class: 'p-sessions__button--google c-btnGoogle' do
+        svg.u-svg-white.u-va-middle width='30' height='42'
           use xlink:href='#application-google'
         span.u-ml-10 Google
     

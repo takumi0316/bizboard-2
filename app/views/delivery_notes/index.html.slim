@@ -15,7 +15,7 @@
     tbody
       - quotes.each do |r|
         tr
-          td.u-va-middle.p-tasks__unread
+          td.u-ta-center.u-va-middle.p-tasks__unread
             - if r.deliver_at.blank?
               = r.quote_number
             - else
@@ -26,14 +26,14 @@
               - else
                 = r.quote_number
           // 活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
-          td.u-va-middle
+          td.u-ta-center.u-va-middle
             - if r.activity&.status.blank? ||  r.activity&.status == 'order'
               = r.status_i18n
             - else
               = r.activity&.status_i18n
-          td.u-va-middle = r.work&.status_i18n
-          td.u-va-middle = r&.subject
-          td.u-va-middle = r.deliver_at&.to_date
+          td.u-ta-center.u-va-middle = r.work&.status_i18n
+          td.u-va-middle = r.subject
+          td.u-ta-center.u-va-middle = r.deliver_at ? r.deliver_at.strftime("%y年%m月%d日") : nil
           td.u-ta-center.u-va-middle = link_to '編集', edit_delivery_note_path(r), class: 'c-btnMain c-btn-blue'
           td.u-ta-center.u-va-middle = link_to '詳細', delivery_note_path(r), class: 'c-btnMain', target: '_blank' if ActiveStorage::Blob.where(filename: "納品書＿#{r.id}.pdf").present?
 

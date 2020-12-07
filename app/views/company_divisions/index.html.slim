@@ -1,16 +1,15 @@
 = render 'layouts/_partials/company_tabmenu'
 
 = form_with url: company_divisions_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
-	
-	.c-search__item
-		= f.label :name, '検索ワードはスペース区切り(検索ワードは2つまで対応)'
-		= f.text_field :search, value: params[:search], class: 'c-form-text', placeholder: '日本工業社 経営管理部'
-	
-	= f.submit '検索', class: 'c-btnMain'
+  = f.label :name, '検索ワードはスペース区切り(検索ワードは2つまで対応)'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.text_field :search, value: params[:search], class: 'c-form-text', placeholder: '日本工業社 経営管理部'
+    = f.submit '検索', class: 'c-btnMain'
 
 .u-mt-15 = link_to '部署を作成する', new_company_division_path, class: 'c-btnMain c-btn-blue'
 
-.c-table.u-mt-30
+.c-table.u-mt-15
 	table
 		thead
 			tr
@@ -21,10 +20,10 @@
 		tbody
 			- divisions.each do |r|
 				tr
-					td.u-va-middle = r&.id
+					td.u-ta-center.u-va-middle = r&.id
 					td.u-va-middle = r&.company&.name
 					td.u-va-middle = r&.name || '部署名なし'
-					td.u-ta-center.u-va-middle = link_to '編集', edit_company_division_path(r), class: 'c-btnMain'
+					td.u-ta-center.u-va-middle = link_to '編集', edit_company_division_path(r), class: 'c-btnMain c-btn-blue'
 					td.u-ta-center.u-va-middle = link_to '削除', company_division_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

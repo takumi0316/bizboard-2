@@ -30,8 +30,8 @@ h1.l-dashboard__heading 製造経費情報一覧
           td.u-ta-center.u-va-middle = r.price.to_s(:delimited)
           td.u-ta-center.u-va-middle = r.memo
           td.u-ta-center.u-va-middle
-            = link_to '編集', work_path(r.work_subcontractor.work.id), class: 'c-btnMain' if r.work_subcontractor_id.present?
-            = link_to '編集', edit_expendable_path(r), class: 'c-btnMain' if r.work_subcontractor_id.nil?
+            = link_to '編集', work_path(r.work_subcontractor.work.id), class: 'c-btnMain c-btn-blue' if r.work_subcontractor_id.present?
+            = link_to '編集', edit_expendable_path(r), class: 'c-btnMain c-btn-blue' if r.work_subcontractor_id.nil?
           td.u-ta-center.u-va-middle
             = link_to '削除', expendable_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか?' } if r.work_subcontractor_id.nil?
 = render 'layouts/_partials/pagination'

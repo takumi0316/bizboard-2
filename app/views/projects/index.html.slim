@@ -1,16 +1,15 @@
-
 = render 'layouts/_partials/tabmenu'
 
 .u-mt-15
   = link_to '品目を作成する', new_project_path, class: 'c-btnMain c-btn-blue'
 
 = form_with url: projects_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+  = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '仕様/品目名/備考'
 
-  .c-search__item
-    = f.label :free_word, 'フリーワード検索 ※スペース区切り単語2つまで'
-    = f.text_field :free_word, value: params[:free_word], class: 'c-form-text', placeholder: '仕様/品目名/備考'
-
-  = f.submit '検索', class: 'c-btnMain'
+    = f.submit '検索', class: 'c-btnMain'
 
 .c-table.u-mt-15
   table

@@ -69,7 +69,7 @@ const EditTable = props => {
                   :
                   <Fragment>
                     <div className='u-mt-15'>
-                      <button className='c-btnMain' value={ work_subcontractor.id } onClick={ e => _edit(e) }>外注先[編集]</button>
+                      <button className='c-btnMain c-btn-blue' value={ work_subcontractor.id } onClick={ e => _edit(e) }>外注先[編集]</button>
                     </div>
                     <DetailRead work_subcontractor={ work_subcontractor } setDangerHtml={ props.setDangerHtml }/>
                     <SubRead work_subcontractor={ work_subcontractor } setDangerHtml={ props.setDangerHtml }/>

@@ -104,20 +104,17 @@ const ProfitSearch = props => {
       </Fragment>
       <form method='get' action='/profits?'>
         <div className='u-mt-10 c-flex c-flex-alignItems__center'>
-					<DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date1' } default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' }
-					                action={ 'start_date' } sortingAction={ sortingAction } index={ true }
+					<Icon name='ei-calendar' size='m'/>
+					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker'
+					                action='start_date' sortingAction={ sortingAction } index={ true }
 					/>
-          <Icon name='ei-calendar' size='m'/>
-          <p className={ 'c-search__tilde' }>〜</p>
-					<DatetimePicker key={ state.endDate } type={ 'text' } name={ 'date2' } default_datetime={ state.endDate } class={ 'c-form-text__work-index__datepicker' }
+          <p className='c-search__tilde'>〜</p>
+					<DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class='c-form-text__work-index__datepicker'
 						              action={ 'end_date' } sortingAction={ sortingAction } index={ false }
 					/>
-					<Icon name='ei-calendar' size='m'/>
           <input type='hidden' name='count' value='1'/>
           <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
-          <div className='u-ml-10'>
-						<a className='c-btnMain' href='/profits'>元に戻す</a>
-          </div>
+					<a className='u-ml-10 c-btnMain' href='/profits'>元に戻す</a>
         </div>
       </form>
     </div>

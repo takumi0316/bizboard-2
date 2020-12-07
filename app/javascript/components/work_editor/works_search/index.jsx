@@ -111,7 +111,7 @@ const WorkSearch = props => {
   	    <span className='c-form__required u-ml-10'>現在{ props.count_number }件表示されています</span>
       </Fragment>
       <form method='get' action='/works?count='>
-        <div className='u-mt-10 c-flex c-flex-alignItems__center'>
+        <div className='c-flex c-flex-alignItems__center'>
           <input className='c-form-text__work-index' type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期' />
           <select name='status' className='u-ml-10 c-form-select__work-index' value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
             <option value=''>ステータス</option>
@@ -123,18 +123,17 @@ const WorkSearch = props => {
               )
             }) }
           </select>
-					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker u-ml-10'
+					<Icon name='ei-calendar' size='m'/>
+					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker'
 					                action='start_date' sortingAction={ sortingAction } index={ true }
 					/>
-          <Icon name='ei-calendar' size='m'/>
-          <p className={ 'c-search__tilde' }>〜</p>
+          <p className='c-search__tilde'>〜</p>
 					<DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class='c-form-text__work-index__datepicker'
 						              action='end_date' sortingAction={ sortingAction } index={ false }
 					/>
-					<Icon name='ei-calendar' size='m'/>
           <input type='hidden' name='count' value='1'/>
           <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
-          <div className='u-ml-10'><a className='u-va-middle c-btnMain' href='/works'>元に戻す</a></div>
+          <a className='u-ml-10 c-btnMain' href='/works'>元に戻す</a>
         </div>
       </form>
     </div>

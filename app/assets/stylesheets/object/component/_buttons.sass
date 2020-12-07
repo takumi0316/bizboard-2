@@ -7,30 +7,22 @@
   border-radius: 5px
   text-decoration: none
   text-align: center
-  color: #585757
   cursor: pointer
   padding: 6px 11px
   min-width: 60px
-  max-width: 160px
-  min-height: 36px
+  min-height: 32px
   font-weight: bold
-  font-size: 14px
-  background-image: linear-gradient(to bottom, #fff, #f3f0ea, #e6e2db)
+  font-size: 12px
 .c-btn
   &Main
     @extend %btn
+    background-image: linear-gradient(to bottom, #fff, #f3f0ea, #e6e2db)
+    color: #585757
     &:hover
     &:disabled, &[disabled]
-
-  &Main2
+  &Google
     @extend %btn
-    &:hover
-    &:disabled, &[disabled]
-
-  &Sub
-    @extend %btn
-    &:hover
-    &:disabled, &[disabled]
+    color: #ffffff
 
   &-icon
     &::after
@@ -50,6 +42,8 @@
     color: #cc0000
   &-blue
     color: #3b8dcd
+  &-google
+    color: #dd4b39
   &-orange
     background-color: #ff8c00
     &:hover

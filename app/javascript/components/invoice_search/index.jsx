@@ -100,30 +100,25 @@ const InvoiceSearch = props => {
 	};
 
   return (
-    <div className='c-search__work-index u-mt-20'>
+    <div className='c-search__work-index u-mt-15'>
       <Fragment>
         <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
   	    <span className='c-form__required u-ml-10'>現在{ props.count_number }件表示されています</span>
       </Fragment>
       <form method='get' action='/invoices?count='>
-        <div className='u-mt-10 c-flex c-flex-alignItems__center'>
+        <div className='c-flex c-flex-alignItems__center'>
           <input className='c-form-text__work-index' type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期'/>
-					<DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date1' } default_datetime={ state.startDate } class='c-form-text__work-index__datepicker u-ml-10'
+					<Icon name='ei-calendar' size='m'/>
+					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker'
 					                action={ 'start_date' } sortingAction={ sortingAction } index={ true }
 					/>
-          <Icon name='ei-calendar' size='m'/>
           <p className={ 'c-search__tilde' }>〜</p>
 					<DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class='c-form-text__work-index__datepicker'
 						              action='end_date' sortingAction={ sortingAction } index={ false }
 					/>
-					<Icon name='ei-calendar' size='m'/>
           <input type='hidden' name='count' value='1'/>
-          <div className='u-ml-10'>
-						<input type='submit' name='commit' value='検索' className='c-btnMain'/>
-					</div>
-          <div className='u-ml-10'>
-					  <a className='c-btnMain' href='/invoices' >元に戻す</a>
-					</div>
+          <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
+          <a className='u-ml-10 c-btnMain' href='/invoices'>元に戻す</a>
         </div>
       </form>
     </div>

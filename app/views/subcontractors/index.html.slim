@@ -3,13 +3,12 @@ h1.l-dashboard__heading.u-mt-30 外注先一覧
 .u-mt-15
   = link_to '外注先を作成する', new_subcontractor_path, class: 'c-btnMain c-btn-blue'
 
-= form_with url: subcontractors_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
-
-  .c-search__item
-    = f.label :name, '名称'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'タイトル'
-
-  = f.submit '検索', class: 'c-btnMain'
+= form_with url: subcontractors_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+  = f.label :name, '名称'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'タイトル'
+    = f.submit '検索', class: 'c-btnMain'
 
 .c-table.u-mt-30
   table
@@ -31,7 +30,7 @@ h1.l-dashboard__heading.u-mt-30 外注先一覧
                 hr
             .u-mt-10.u-va-middle
               = link_to '＋ 部署を作成する', new_subcontractor_division_path(subcontractor_id: r.id), class: 'u-td-underline u-fc-blue'
-          td.u-ta-center.u-va-middle = link_to '編集', edit_subcontractor_path(r), class: 'c-btnMain'
+          td.u-ta-center.u-va-middle = link_to '編集', edit_subcontractor_path(r), class: 'c-btnMain c-btn-blue'
           td.u-ta-center.u-va-middle = link_to '削除', subcontractor_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

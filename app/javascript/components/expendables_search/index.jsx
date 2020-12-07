@@ -110,7 +110,7 @@ const ExpendableSearch = props => {
   };
 
   return (
-    <div className='c-search__work-index u-mt-20'>
+    <div className='c-search__work-index u-mt-15'>
       <form method='get' action='/expendables?'>
         <div className='c-flex c-flex-alignItems__center'>
           <select name='division' className='c-form-select__work-index' value={ state.division } onChange={ e => setState({ ...state, division: e.target.value }) }>
@@ -133,7 +133,7 @@ const ExpendableSearch = props => {
               );
             }) }
           </select>
-          <select name='status' className={ 'u-ml-10 c-form-select__work-index' } value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
+          <select name='status' className='u-ml-10 c-form-select__work-index' value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
             <option value=''>勘定科目</option>
             { Object.keys(ENUM_STATUS).map((item, index) =>{
 
@@ -143,15 +143,14 @@ const ExpendableSearch = props => {
               );
             }) }
           </select>
-          <DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker u-ml-10' action='start_date' sortingAction={ sortingAction } index={ true }/>
           <Icon name='ei-calendar' size='m'/>
+          <DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker' action='start_date' sortingAction={ sortingAction } index={ true }/>
           <p className='c-search__tilde'>〜</p>
           <DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class='c-form-text__work-index__datepicker'
                           action='end_date' sortingAction={ sortingAction } index={ false }/>
-          <Icon name='ei-calendar' size='m'/>
           <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className='c-btnMain'/>
-          <div className='u-ml-10'><a className='c-btnMain' href='/expendables' >元に戻す</a></div>
+          <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
+          <a className='u-ml-10 c-btnMain' href='/expendables' >元に戻す</a>
         </div>
       </form>
     </div>
