@@ -145,7 +145,7 @@ export default class HomeDivision extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain' onClick={::this._open}>売り上げ部署を選択</div>
+      <button className='c-btnMain' onClick={::this._open}>売り上げ部署を選択</button>
     );
   }
 }

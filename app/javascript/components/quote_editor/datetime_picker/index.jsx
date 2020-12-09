@@ -188,7 +188,7 @@ export default class DatetimePicker extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain' onClick={::this._open}>日時を指定する</div>
+      <button className='c-btnMain' onClick={::this._open}>日時を指定する</button>
     );
   }
 }

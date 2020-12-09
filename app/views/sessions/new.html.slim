@@ -12,21 +12,19 @@
 
     .u-my-30
       = form_for user, url: sign_up_path, method: :post do |f|
-
         .c-form-field
           = f.label :email, 'メールアドレス', class: 'c-form-label'
           = f.text_field :email, value: user.email, placeholder: 'email@example.co.jp', class: 'c-form-text'
-        
-        .c-form-field.u-mt-20
-          = f.submit '登録する', class: 'p-sessions__button c-btnMain c-btn-blue'
+        .u-ta-center.c-form-field.u-mt-20
+          = f.submit '登録する', class: 'c-btnMain c-btn-blue'
 
   .p-sessions__sns
     h2.p-sessions__snsTitle 持っているアカウントで登録
 
     / google認証
     .u-mt-20.u-ta-center
-      = link_to user_google_omniauth_authorize_path, class: 'p-sessions__button--google c-btnMain' do
-        svg.u-svg-white.u-va-top width='30' height='42'
+      = link_to user_google_omniauth_authorize_path, class: 'p-sessions__button--google c-btnGoogle' do
+        svg.u-svg-white.u-va-middle width='30' height='42'
           use xlink:href='#application-google'
         span.u-ml-10 Google
 
