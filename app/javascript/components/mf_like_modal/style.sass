@@ -1,0 +1,58 @@
+@import '../../../assets/stylesheets/foundation/variables'
+@import '../../../assets/stylesheets/foundation/keyframes'
+
+// ==============================================
+// 汎用モーダルウィンドウ
+// ==============================================
+.MFLikeModal
+  &__success
+    border: 2px solid map-get($layoutColors, 'core')
+    color: map-get($layoutColors, 'core')
+  &__info
+    border: 2px solid map-get($layoutColors, 'blue')
+    color: map-get($layoutColors, 'blue')
+  &__warning
+    border: 2px solid map-get($layoutColors, 'orange')
+    color: map-get($layoutColors, 'orange')
+  &__error
+    // border: 2px solid map-get($layoutColors, 'red')
+    border: 2px solid #dd3925
+    //color: map-get($layoutColors, 'red')
+    color: #dd3925
+
+  &__message
+    font-size: 15px
+    font-weight: bold
+    line-height: 1.6
+    text-align: center
+
+  %overlay
+    position: fixed
+    left: 0
+    top: 0
+    right: 0
+    bottom: 0
+    display: flex
+    align-items: start
+    justify-content: center
+    z-index: $layerLevel-overlay
+
+  &__overlay
+    display: none
+    z-index: $layerLevel-overlay
+    &:not(:empty)
+      @extend %overlay
+      background: transparent
+    &-error
+      @extend %overlay
+      background: rgba(#fff, 0.5)
+  &__inner
+    position: relative
+    width: 500px
+    margin-top: 50px
+    padding: 10px
+    background-color: map-get($layoutColors, 'white')
+    border-radius: 50px
+    z-index: $layerLevel-overlay + 20
+    animation: FadeInY .3s ease 0ms
+    box-shadow: 0 0 8px rgba(221,57,37,0.3)

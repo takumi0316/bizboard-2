@@ -51,7 +51,7 @@ class CompanyDivisionClientsController < ApplicationController
     add_breadcrumb '新規作成'
   rescue => e
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -67,10 +67,10 @@ class CompanyDivisionClientsController < ApplicationController
     client.confirmation_sent_at = Time.now
     client.save!
   
-    redirect_to edit_company_division_client_path(client), flash: { notice: { message: '担当者情報を作成しました' } }
+    redirect_to edit_company_division_client_path(client), flash: { show: true, icon: 'success', message: '担当者情報を作成しました' }
   rescue => e
   
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -83,7 +83,7 @@ class CompanyDivisionClientsController < ApplicationController
     add_breadcrumb '編集'
   rescue => e
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
   
   ##
@@ -101,10 +101,10 @@ class CompanyDivisionClientsController < ApplicationController
       client.save!
     end
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '担当者情報を更新しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '担当者情報を更新しました' }
   rescue => e
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
  
   ##
@@ -117,10 +117,10 @@ class CompanyDivisionClientsController < ApplicationController
     
     client.destroy!
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '担当者情報を削除しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '担当者情報を削除しました' }
   rescue => e
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
   
   ##
@@ -196,10 +196,10 @@ class CompanyDivisionClientsController < ApplicationController
     
     client.update! head_layout_id: nil, tail_layout_id: nil
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '登録情報を削除しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '登録情報を削除しました' }
   rescue => e
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
   
   #----------------------------------------

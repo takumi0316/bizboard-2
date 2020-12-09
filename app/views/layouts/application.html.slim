@@ -74,9 +74,10 @@ html lang='ja'
     / ----------------------------------------------
     / flash messages
     / ----------------------------------------------
-    = render 'layouts/_partials/flash'
 
     / ----------------------------------------------
     / flash messages
     / ----------------------------------------------
     = react_component :DataModal, flash&.to_h
+
+		= react_component :MFLikeModal, flash&.to_h

@@ -42,7 +42,6 @@ class ApplicationController < ActionController::Base
   # bulletの停止
   around_action :skip_bullet, if: -> { Rails.env.development? }
 
-
   ##
   # エラーハンドリング
   # @version 2018/06/10
@@ -154,7 +153,7 @@ class ApplicationController < ActionController::Base
       # メールアドレスが未認証の場合
       if current_user.provider && !current_user.confirmed?
 
-        redirect_to view_context.confirmation_url(user.confirmation_token), flash: { notice: { message: '登録がまだお済みではありません' } } and return
+        redirect_to view_context.confirmation_url(user.confirmation_token), flash: { show: true, icon: 'info', message: '登録がまだお済みではありません' } and return
       end
 
       # 管理者による承認が済んでいない場合
@@ -170,7 +169,7 @@ class ApplicationController < ActionController::Base
     #
     def authenticate_admin
 
-      redirect_back fallback_location: url_for(root_path), flash: { notice: { message: '管理者のみ許可された操作です' } } unless current_user.admin?
+      redirect_back fallback_location: url_for(root_path), flash: { show: true, icon: 'info', message: '管理者のみ許可された操作です' } unless current_user.admin?
     end
 
     ##

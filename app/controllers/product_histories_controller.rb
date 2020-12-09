@@ -53,7 +53,7 @@ class ProductHistoriesController < ApplicationController
     add_breadcrumb '新規作成'
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -68,7 +68,7 @@ class ProductHistoriesController < ApplicationController
     add_breadcrumb '編集'
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -80,10 +80,10 @@ class ProductHistoriesController < ApplicationController
     # 取引先情報更新
     product_history.update! product_history_params
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '履歴を更新しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '履歴を更新しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -102,10 +102,10 @@ class ProductHistoriesController < ApplicationController
 
     product_history.product.update!(quantity: total_stock)
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '履歴を作成しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '履歴を作成しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -116,10 +116,10 @@ class ProductHistoriesController < ApplicationController
 
     product_history.destroy!
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '履歴を削除しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '履歴を削除しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   #----------------------------------------

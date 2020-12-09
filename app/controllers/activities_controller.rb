@@ -70,10 +70,10 @@ class ActivitiesController < ApplicationController
 
     @sort = activity.quote_id
 
-    redirect_to activities_path(quote_id: @sort), flash: { notice: { message: '活動履歴を作成しました' } }
+    redirect_to activities_path(quote_id: @sort), flash: { show: true, icon: 'success', message: '活動履歴を作成しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -89,7 +89,7 @@ class ActivitiesController < ApplicationController
     add_breadcrumb '編集'
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -107,10 +107,10 @@ class ActivitiesController < ApplicationController
 
     @sort = activity.quote_id
 
-    redirect_to activities_path(name: @sort), flash: { notice: { message: '活動履歴を更新しました' } }
+    redirect_to activities_path(name: @sort), flash: { show: true, icon: 'success', message: '活動履歴を更新しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##

@@ -57,10 +57,10 @@ class CompaniesController < ApplicationController
   
     company.update! company_params
   
-    redirect_to edit_company_path(company), flash: { notice: { message: '取引先情報を更新しました' } }
+    redirect_to edit_company_path(company), flash: { show: true, icon: 'success', message: '取引先情報を更新しました' }
   rescue => e
   
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -73,7 +73,7 @@ class CompaniesController < ApplicationController
     add_breadcrumb '編集'
   rescue => e
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
   
   ##
@@ -84,10 +84,10 @@ class CompaniesController < ApplicationController
     
     company.update! company_params
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '取引先情報を更新しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '取引先情報を更新しました' }
   rescue => e
     
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
  
   ##
@@ -95,23 +95,23 @@ class CompaniesController < ApplicationController
   # @version 2018/06/10
   #
   def destroy
-    
+
     raise '対象の会社には部署情報が登録されているため削除できません' if company.divisions.exists?
-    
+ 
     company.destroy!
   rescue => e
-    
+
     flash[:warning] = { message: e.message }
   ensure
-    
+
     redirect_to action: :index
   end
   
   def import_client
-    
+
     # fileはtmpに自動で一時保存される
     Company.import_client(params[:file], params[:company_id])
-    redirect_to companies_path, flash: { notice: { message: '' } }
+    redirect_to companies_path, flash: { show: true, icon: 'success', message: '' }
   end
   
   #----------------------------------------
