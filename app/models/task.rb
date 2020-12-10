@@ -50,6 +50,8 @@ class Task < ApplicationRecord
   # catalog
   belongs_to :catalog
 
+  belongs_to :delivery_target
+
   # message
   has_many :messages
 
