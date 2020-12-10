@@ -20,11 +20,12 @@
         th お客様
         th 納期
         th 更新者
+        th colspan=2
         th 作業書
         th 見積書
         th 請求書
         th 活動履歴
-        th colspan=4
+        th colspan=2
     tbody
       - @quotes.each do |r|
         tr
@@ -69,6 +70,11 @@
               | 更新者不明
             - if r.user.present?
               = r.user.name
+          - if r.lock?
+            td.u-ta-center.u-va-middle = link_to '詳細', edit_quote_path(r), class: 'c-btnMain'
+          - else
+            td.u-ta-center.u-va-middle = link_to '編集', edit_quote_path(r), class: 'c-btnMain c-btn-blue'
+          td.u-ta-center.u-va-middle = link_to '複製', quote_copy_path(r), class: 'c-btnMain', method: :post
           td.u-ta-center.u-va-middle
             - if r.activity.nil?
               = link_to '作業書作成', quote_status_path(r, status: :working), class: 'c-btnMain c-btn-blue', method: :post if r.work.nil?
@@ -89,14 +95,13 @@
             - else
               | 未発行
           td.u-ta-center.u-va-middle = link_to '活動履歴', activities_path(quote_id: r.id), class: 'c-btnMain'
-          - if r.lock?
-            td.u-ta-center.u-va-middle = link_to '詳細', edit_quote_path(r), class: 'c-btnMain'
-          - else
-            td.u-ta-center.u-va-middle = link_to '編集', edit_quote_path(r), class: 'c-btnMain c-btn-blue'
-          td.u-ta-center.u-va-middle = link_to '複製', quote_copy_path(r), class: 'c-btnMain', method: :post
           - if r.task.present?
             - if r.task.card_clients.present?
               td.u-ta-center.u-va-middle = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain'
+            - else
+              td
+          - else
+            td
           - if r.lock?
             td.u-ta-center.u-va-middle ロック中
           - else
