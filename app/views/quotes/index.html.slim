@@ -20,12 +20,13 @@
         th お客様
         th 納期
         th 更新者
-        th colspan=2
+        th colspan=2 編集
         th 作業書
         th 見積書
         th 請求書
         th 活動履歴
-        th colspan=2
+        th Web名刺
+        th
     tbody
       - @quotes.each do |r|
         tr
@@ -97,7 +98,7 @@
           td.u-ta-center.u-va-middle = link_to '活動履歴', activities_path(quote_id: r.id), class: 'c-btnMain'
           - if r.task.present?
             - if r.task.card_clients.present?
-              td.u-ta-center.u-va-middle = link_to 'Web名刺CSV', bulk_download_quote_path(r), class: 'c-btnMain'
+              td.u-ta-center.u-va-middle = link_to 'CSV', bulk_download_quote_path(r), class: 'c-btnMain'
             - else
               td
           - else
