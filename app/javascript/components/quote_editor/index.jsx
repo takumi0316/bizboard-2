@@ -62,7 +62,7 @@ export default class QuoteEditor extends React.Component {
       delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
-      show: props.quote.discount === 0,
+      show: props.quote.discount !== 0,
       show_quote_number: props.quote.channel === 'bpr_erp',
       task: props.task || '',
       users: props.users,
@@ -256,7 +256,7 @@ export default class QuoteEditor extends React.Component {
   setUnitPrice = (passIndex, unitPrice) => {
 
     if (unitPrice.match(/^([1-9]¥d*|0)(¥.¥d+)?$/)) {
-      window.alertable({ icon: 'info', message: '半角数字以外を入力しないで下さい。' })
+      window.mf_like_modal({ icon: 'info', message: '半角数字以外を入力しないで下さい。' })
       return
     }
 
@@ -279,7 +279,7 @@ export default class QuoteEditor extends React.Component {
 
       if(!unit.match(/^[0-9]+$/)) {
 
-        window.alertable({ icon: 'info', message: '半角数字以外を入力しないで下さい。' })
+        window.mf_like_modal({ icon: 'info', message: '半角数字以外を入力しないで下さい。' })
         return false
       }
 
@@ -336,7 +336,7 @@ export default class QuoteEditor extends React.Component {
     const isQuoteProjects = this.state.quote_projects.length > 0
     if(!isQuoteProjects) {
 
-      window.alertable({ icon: 'info', message:'品目を追加してください！' })
+      window.mf_like_modal({ icon: 'info', message:'品目を追加してください！' })
       return
     }
 
@@ -472,7 +472,7 @@ export default class QuoteEditor extends React.Component {
     // エラーが存在する場合
     if(messages.length > 0) {
 
-      window.alertable({ icon: 'error', message: messages.join('\n') })
+      window.mf_like_modal({ icon: 'error', message: messages.join('\n'), close_callback: this.loadingRef.finish() })
       return false
     }
 
@@ -523,7 +523,7 @@ export default class QuoteEditor extends React.Component {
     })
 
     if(noSelectedProject.length > 0) {
-      window.alertable({ icon: 'info', message: `上から${noSelectedProject[0].index + 1}番目の品目をサジェストから選択、もしくは品目名を入力して下さい。` })
+      window.mf_like_modal({ icon: 'info', message: `上から${noSelectedProject[0].index + 1}番目の品目をサジェストから選択、もしくは品目名を入力して下さい。` })
       this.loadingRef.finish()
       return
     }
@@ -537,22 +537,15 @@ export default class QuoteEditor extends React.Component {
       if(res.data.status === 'success') {
 
         if(this.state.quote_id) {
-
           this.setState({ price: this.state.price, quote: { ...this.state.quote, drive_folder_id: res.data.drive_folder_id } }, () => {
-            //window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () =>
-            // this.loadingRef.finish() })
-            window.alert('案件を更新しました。')
-            this.loadingRef.finish()
+            window.mf_like_modal({ icon: 'success', message: '案件を更新しました。', close_callback: () => this.loadingRef.finish() })
           })
         }
 
         // 編集ページへリダイレクト
         if(!this.state.quote_id) {
-
           const redirect = () => location.href = `${res.data.quote.id}/edit`
-          //window.alertable({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() })
-          window.alert('案件を作成しました。')
-          redirect()
+          window.mf_like_modal({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() })
         }
       }
 
@@ -560,10 +553,9 @@ export default class QuoteEditor extends React.Component {
 
         // エラー文
         console.log(res.data.message)
-        window.alert(`案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。`)
-        this.loadingRef.finish()
+        window.mf_like_modal({ icon: 'info', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。`, close_callback: () => this.loadingRef.finish() })
       }
-    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }))
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }))
   }
 
   /**
@@ -587,7 +579,7 @@ export default class QuoteEditor extends React.Component {
           }
         </div>
         <SalesDepartment home_division={ this.state.home_division } />
-        <div className='u-mt-10'>
+        <div className='u-mt-15'>
           { this.state.quote.lock ?
             null
             :

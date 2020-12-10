@@ -52,7 +52,7 @@ const Company = props => {
     const request = window.xhrRequest.get(url);
     request.then(res => {
       setState({ ...state, show: true, companies: res.data.companies });
-    }).catch(error => window.alertable({ icon: 'error', message: error }));
+    }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
   };
   
   /**
@@ -98,7 +98,7 @@ const Company = props => {
             <div onClick={ close } className={ Style.Search__closeIcon }>×</div>
           </div>
         </div>
-        : <div className='u-mt-10 c-btnMain' onClick={ open }>会社情報を検索</div>
+        : <button className='u-mt-10 c-btnMain' onClick={ open }>会社情報を検索</button>
       }
     </div>
   );

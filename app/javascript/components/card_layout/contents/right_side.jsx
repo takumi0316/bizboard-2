@@ -74,28 +74,28 @@ const RightSide = props => {
     // フラグ選択有無
     if(!state.content_flag_id) {
 
-      window.alertable({ icon: 'info', message: 'フラグを登録してください。' });
+      window.mf_like_modal({ icon: 'info', message: 'フラグを登録してください。' });
       return;
     };
 
     // コンテンツタイトル入力有無
     if(state.content_type != 'image' && !name_ref.current.value) {
 
-      window.alertable({ icon: 'info', message: 'コンテンツタイトルを入力してください。' });
+      window.mf_like_modal({ icon: 'info', message: 'コンテンツタイトルを入力してください。' });
       return
     };
 
     // 画像選択有無
     if(state.content_type == 'image' && state.uploads.length === 0) {
 
-      window.alertable({ icon: 'info', message: '画像を登録してください。' });
+      window.mf_like_modal({ icon: 'info', message: '画像を登録してください。' });
       return;
     };
 
     // ラスイチの時に削除された時の処理
     if(state.uploads.every(upload => upload._destroy) && state.uploads.length === 1) {
 
-      window.alertable({ icon: 'info', message: '画像を登録してください。' });
+      window.mf_like_modal({ icon: 'info', message: '画像を登録してください。' });
       return;
     };
 

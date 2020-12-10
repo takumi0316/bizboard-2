@@ -50,7 +50,7 @@ export default class EditTemplateGenerate extends React.Component {
 
       if(res.data.status == 'error') {
 
-        window.alertable({ icon: 'error', message: 'テンプレートの取得に失敗しました。もう一度ページを更新してください。', close_callback: () => this.loadingRef.finish() });
+        window.mf_like_modal({ icon: 'error', message: 'テンプレートの取得に失敗しました。もう一度ページを更新してください。', close_callback: () => this.loadingRef.finish() });
         return;
       };
 
@@ -60,9 +60,9 @@ export default class EditTemplateGenerate extends React.Component {
         resolve(true);
       }).then(() => {
         this.setState({ didmount_status: !this.state.didmount_status }, () => this.loadingRef.finish());
-      }).catch(() => window.alertable({ icon: 'error', message: 'テンプレートの展開に失敗しました。もう一度ページを更新してください。', close_callback: () => this.loadingRef.finish() }));
+      }).catch(() => window.mf_like_modal({ icon: 'error', message: 'テンプレートの展開に失敗しました。もう一度ページを更新してください。', close_callback: () => this.loadingRef.finish() }));
 
-    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }));
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }));
   };
 
   /**
@@ -100,7 +100,7 @@ export default class EditTemplateGenerate extends React.Component {
 
     if(!file) {
 
-      window.alertable({ icon: 'info', message: `${ status ? '表面' : '裏面' }のテンプレートを設定して下さい。`});
+      window.mf_like_modal({ icon: 'info', message: `${ status ? '表面' : '裏面' }のテンプレートを設定して下さい。`});
       return;
     };
 
@@ -164,7 +164,7 @@ export default class EditTemplateGenerate extends React.Component {
     const file = this.state.template.file;
     if(!file) {
 
-      window.alertable({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
+      window.mf_like_modal({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
       return
     };
 
@@ -182,7 +182,7 @@ export default class EditTemplateGenerate extends React.Component {
     const file = this.state.template.file;
     if(!file) {
 
-      window.alertable({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
+      window.mf_like_modal({ icon: 'error', message: 'テンプレートを登録して、保存してください。' });
       return
     };
 
@@ -230,10 +230,10 @@ export default class EditTemplateGenerate extends React.Component {
     // 保存処理
     request.then(res => {
 
-      window.alertable({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : '更新に失敗しました。', close_callback: () => this.loadingRef.finish() });
+      window.mf_like_modal({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : '更新に失敗しました。', close_callback: () => this.loadingRef.finish() });
     }).catch(error => {
 
-      window.alertable({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish()});
+      window.mf_like_modal({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish()});
     });
   };
 

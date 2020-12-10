@@ -52,5 +52,5 @@
               = r.quote&.user&.name
           td.u-va-middle = r.memo.truncate(30)
           td.u-va-middle = link_to '資料へ飛ぶ', r.attachment, target: '_blank', class: 'c-btnMain' if r.attachment.present?
-          td.u-va-middle = link_to '編集', edit_activity_path(r), class: 'c-btnMain'
+          td.u-va-middle = link_to '編集', edit_activity_path(r), class: 'c-btnMain c-btn-blue'
           td.u-va-middle = link_to '削除', activity_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか?' }

@@ -4,10 +4,11 @@
 
 %formStyle
   display: inline-block
-  padding: 10px
+  padding: 5px
   border: 1px solid #aab4b9
   border-radius: 2px
   appearance: none
+  height: 36px
   &:focus
     outline: none
     border: solid 1px map-get($layoutColors, 'core')
@@ -49,12 +50,9 @@
     flex-direction: column
   // テキスト・テキストエリア
   // ------------------------------------
-  &-text, &-textarea
+  &-text
     @extend %formStyle
     width: 100%
-    line-height: 2rem
-    min-height: 40px
-    height: 40px
     vertical-align: bottom
     &:disabled, &[disabled]
       background-color: map-get($layoutColors, 'gray')
@@ -62,136 +60,12 @@
       background-color: map-get($layoutColors, 'gray')
     &::placeholder
       color: map-get($fontColors, 'midBlack')
-    &__work-index
-      @extend %formStyle
-      width: 350px
-      line-height: 2rem
-      height: 40px
-
-      &__datepicker
-        @extend %formStyle
-        width: 120px
-        line-height: 2rem
-        min-height: 40px
-        height: 40px
-
-    &__quote-projects
-
-      @extend %formStyle
-      width: 100%
-      line-height: 2rem
-      min-height: 40px
-      vertical-align: bottom
-      -webkit-outer-spin-button
-      -webkit-inner-spin-button
-        -webkit-appearance: none
-        -moz-appearance: none
-        appearance: none
-        margin: 0
-
-    &__work-show-input
-      &1
-        @extend %formStyle
-        width: 150px
-        line-height: 2rem
-        min-height: 40px
-        text-align: right
-
-      &2
-        @extend %formStyle
-        width: 100px
-        line-height: 2rem
-        min-height: 40px
-        text-align: right
-        font-size: 1.6rem
-
-      &3
-        &-left
-            @extend %formStyle
-            width: 75px
-            line-height: 2rem
-            min-height: 40px
-            text-align: left
-
-        &-right
-            @extend %formStyle
-            width: 75px
-            line-height: 2rem
-            min-height: 40px
-            text-align: right
-
-      &4
-        @extend %formStyle
-        width: 300px
-        line-height: 2rem
-        min-height: 40px
-        text-align: left
-
-      &5
-        @extend %formStyle
-        width: 300px
-        line-height: 2rem
-        min-height: 40px
-        text-align: left
-
-      &6
-        @extend %formStyle
-        width: 65px
-        line-height: 2rem
-        min-height: 40px
-        text-align: right
-        font-size: 1.6rem
-
-      &7
-        @extend %formStyle
-        width: 300px
-        line-height: 2rem
-        min-height: 40px
-        text-align: left
-        font-size: 1.6rem
-
-      &__textarea
-        @extend %formStyle
-        line-height: 2rem
-        min-height: 40px
-
-      &__textarea2
-        @extend %formStyle
-        line-height: 2rem
-        min-height: 40px
-        width: 100%
-
-  // トグル
-  // &-toggle
-    user-select: none
-    input[type='checkbox']
-      display: none
-    & > input + span
-      min-width: 60px
-      height: 40px
-      background: map-get($layoutColors, 'gray')
-      position: relative
-      display: inline-block
-      border-radius: 46px
-      transition: ease all .2s
-      cursor: pointer
-      padding: 0 15px 0 40px
-      line-height: 38px
-      font-weight: bold
-      &:before
-        content: attr(data-off)''
-      &:after
-        content: ''
-        position: absolute
-        width: 30px
-        height: 30px
-        border-radius: 50%
-        left: 4px
-        top: 5px
-        z-index: 1
-        background: map-get($layoutColors, 'white')
-        box-shadow: 0 0 5px rgba(map-get($layoutColors, 'black'), 0.4)
-        transition: .2s
+  &-textarea
+    @extend %formStyle
+    width: 100%
+    vertical-align: bottom
+    padding: 10px
+    height: 100%
 
   &-toggle
     user-select: none
@@ -385,35 +259,8 @@
     background: none
     background-color: map-get($layoutColors, 'white')
     width: 100%
-    line-height: 2rem
-
     &::-ms-expand
       display: none
-
-    &__work-index
-      @extend %formStyle
-      cursor: pointer
-      padding-right: 33px
-      background: none
-      background-color: map-get($layoutColors, 'white')
-      width: 125px
-      height: 40px
-      line-height: 2rem
-      &:after
-        content: ''
-        display: block
-        position: absolute
-        top: 231px
-        left: 692px
-        width: 0
-        height: 0
-        padding: 0
-        border-left: 8px solid transparent
-        border-right: 8px solid transparent
-        border-top: 8px solid map-get($layoutColors, 'lightGray')
-        z-index: 1
-        //三角押せるようになるやつ
-        pointer-events: none
 
     &__work-show
       @extend %formStyle

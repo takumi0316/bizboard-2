@@ -138,8 +138,8 @@ const InvoicePdfGenrator = props => {
     const request = window.xhrRequest.post(url, field)
     request.then(res => {
       const redirect = () => window.location.href = `${ res.data.invoice.id }/edit`
-      window.alertable({ icon: 'success', message: '案件の作成に成功しました。', close_callback: () => redirect() })
-    }).catch(err => window.alertable({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
+      window.mf_like_modal({ icon: 'success', message: '案件の作成に成功しました。', close_callback: () => redirect() })
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
   }
 
   /**
@@ -162,8 +162,8 @@ const InvoicePdfGenrator = props => {
   
     const request = window.xhrRequest.put(url, field)
     request.then(res => {
-      window.alertable({ icon: 'success', message: '案件の更新に成功しました。' })
-    }).catch(err => window.alertable({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
+      window.mf_like_modal({ icon: 'success', message: '案件の更新に成功しました。' })
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
   }
 
   /**

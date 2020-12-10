@@ -1,6 +1,7 @@
-= react_component('WorksSearch', { count_draft: @count_draft, count_working: @count_working })
+.u-mt-15
+= react_component :WorksSearch, { count_draft: @count_draft, count_working: @count_working }
 
-.c-table.u-mt-20
+.c-table.u-mt-15
   table
     thead
       tr
@@ -33,7 +34,7 @@
           td.u-ta-center.u-va-middle = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
           td.u-ta-center.u-va-middle = r.quote.subject.truncate(25) if r.quote&.subject.present?
           td.u-ta-center.u-va-middle = r.quote.user&.name if r.quote&.user&.name.present?
-          td.u-ta-left.u-va-middle = r.work_details.limit(1).pluck(:client_name)[0] if r.work_details&.limit(1).pluck(:client_name).present?
+          td.u-ta-center.u-va-middle = r.work_details.limit(1).pluck(:client_name)[0] if r.work_details&.limit(1).pluck(:client_name).present?
           td.u-ta-center.u-va-middle = r.quote&.deliver_at.to_s
           td.u-ta-center.u-va-middle = r.status_i18n
           td.u-ta-right.u-va-middle  = r.quote&.price.present? ? "#{r.quote&.price}円" : '0円'

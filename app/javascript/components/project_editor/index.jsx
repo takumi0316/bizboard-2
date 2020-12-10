@@ -67,14 +67,14 @@ const ProjectEditor = props => {
       if(res.data.status === 'success' && res.data.project.id) {
 
         const redirect = () => location.href = `/projects`
-        window.alertable({ icon: 'success', message: success_message, close_callback: redirect })
+        window.mf_like_modal({ icon: 'success', message: success_message, close_callback: redirect })
         
       } else {
   
-        window.alertable({ icon: 'info', message: err_message })
+        window.mf_like_modal({ icon: 'info', message: err_message })
       }
     }).catch(err => {
-      window.alertable({ icon: 'info', message: err_message })
+      window.mf_like_modal({ icon: 'info', message: err_message })
       console.log('Error Log : ', err)
     })
   }

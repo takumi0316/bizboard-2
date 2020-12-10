@@ -79,13 +79,13 @@ const Index = props => {
     
     if(!title_ref.current.value) {
       
-      window.alertable({ icon: 'info', message: 'テンプレート名を入力してください。' });
+      window.mf_like_modal({ icon: 'info', message: 'テンプレート名を入力してください。' });
       return;
     };
     
     if(!state.company) {
       
-      window.alertable({ icon: 'info', message: '取引先を選択してください。' })
+      window.mf_like_modal({ icon: 'info', message: '取引先を選択してください。' })
       return;
     };
   
@@ -116,8 +116,8 @@ const Index = props => {
     request.then(res => {
       
       const redirect = () => location.href = '/card_templates/' + res.data.card_template.id + '/edit';
-      window.alertable({ icon: res.data.status, message: 'テンプレートを作成しました。', close_callback: () => props.new_record_type ? redirect() : null });
-    }).catch(err => window.alertable({ icon: 'error', message: 'テンプレート作成に失敗しました。', close_callback: () => console.log(err) }));
+      window.mf_like_modal({ icon: res.data.status, message: 'テンプレートを作成しました。', close_callback: () => props.new_record_type ? redirect() : null });
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: 'テンプレート作成に失敗しました。', close_callback: () => console.log(err) }));
   };
   
   return(

@@ -48,7 +48,7 @@ export default class HomeDivision extends React.Component {
     const request = window.xhrRequest.get('/divisions.json');
     request.then(res => {
       this.setState({ divisions: res.data.divisions });
-    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: () => false }));
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err, close_callback: () => false }));
   };
 
   /**

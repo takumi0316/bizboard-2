@@ -98,12 +98,12 @@ const ProfitSearch = props => {
 	}
 
   return (
-    <div className='c-search__work-index u-mt-20'>
+    <div className='c-search'>
       <Fragment>
 				<label>日付検索 ※外注書に登録された時の日付が検索されます</label>
       </Fragment>
       <form method='get' action='/profits?'>
-        <div className='u-mt-10 c-flex c-flex-alignItems__center'>
+        <div className='c-flex c-flex-alignItems__center'>
 					<Icon name='ei-calendar' size='m'/>
 					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker'
 					                action='start_date' sortingAction={ sortingAction } index={ true }
@@ -113,8 +113,8 @@ const ProfitSearch = props => {
 						              action={ 'end_date' } sortingAction={ sortingAction } index={ false }
 					/>
           <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
-					<a className='u-ml-10 c-btnMain' href='/profits'>元に戻す</a>
+          <div className='u-ml-10'><input type='submit' name='commit' value='検索' className='c-btnMain'/></div>
+					<div className='u-ml-10'><a className='c-btnMain' href='/profits'>元に戻す</a></div>
         </div>
       </form>
     </div>

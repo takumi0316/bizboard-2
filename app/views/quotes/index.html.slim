@@ -1,9 +1,10 @@
 = render 'layouts/_partials/tabmenu'
 
-.u-mt-15
-  = link_to '案件を作成する', new_quote_path, class: 'c-btnMain c-btn-blue'
+.u-mt-10
+= link_to '案件を作成する', new_quote_path, class: 'c-btnMain c-btn-blue'
 
-= react_component :QuoteSearch, count_number: @count_number, search_status: params[:commit]
+.u-mt-15
+  = react_component :QuoteSearch, count_number: @count_number, search_status: params[:commit]
 
 .c-table.u-mt-15
   table

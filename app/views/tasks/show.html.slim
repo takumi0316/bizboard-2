@@ -33,14 +33,8 @@
 javascript:
 
   function check(){
-    var fileList = document.getElementById('task_attached_files').files;
-    var sum = 0;
-    for(var i=0; i<fileList.length; i++){
-      sum += fileList[i].size;
-    }
-
-    if (sum >= 1073741824) {
-    	alert('1GBを超えるデータの送付はお控えください。');
-    	return false;
-    }
+    let fileList = document.getElementById('task_attached_files').files
+    let sum = 0
+    for(let i=0; i<fileList.length; i++) sum += fileList[i].size
+    if(sum >= 1073741824) window.mf_like_modal({ icon: 'info', message: '1GBを超えるデータの送付はお控えください。' })
   }

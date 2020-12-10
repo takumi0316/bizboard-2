@@ -1,6 +1,7 @@
 = render 'layouts/_partials/company_tabmenu'
 
-= form_with url: company_divisions_path, local: true, method: :get, class: 'c-search u-mt-30' do |f|
+.u-mt-15
+= form_with url: company_divisions_path, local: true, method: :get, class: 'c-search' do |f|
   = f.label :name, '検索ワードはスペース区切り(検索ワードは2つまで対応)'
   .c-flex.c-flex-alignItems__center
     .c-search__item

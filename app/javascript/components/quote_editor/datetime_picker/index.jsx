@@ -179,7 +179,7 @@ export default class DatetimePicker extends React.Component {
           <div className={Style.DatetimePicker__label}>分</div>
 
           <div className='u-mt-30 u-ta-right'>
-            <div onClick={::this._apply} className='c-btnMain'>適用する</div>
+            <button onClick={::this._apply} className='c-btnMain'>適用する</button>
           </div>
 
           <div className={Style.DatetimePicker__close} onClick={::this._close}>

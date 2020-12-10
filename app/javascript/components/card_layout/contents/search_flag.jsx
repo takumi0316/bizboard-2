@@ -52,7 +52,7 @@ const SearchFlag = props => {
     const request = window.xhrRequest.get(url);
     request.then(res => {
       setState({ ...state, show: true, flags: res.data.flags });
-    }).catch(error => window.alertable({ icon: 'error', message: error }));
+    }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
   };
   
   /**

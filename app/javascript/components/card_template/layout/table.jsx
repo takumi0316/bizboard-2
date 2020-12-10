@@ -10,7 +10,7 @@ const Table = props => {
   };
   
   return(
-    <div className='u-mt-30 c-table'>
+    <div className='u-mt-15 c-table'>
       <table>
         <thead>
           <tr>

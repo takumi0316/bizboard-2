@@ -67,11 +67,11 @@ export default class UploadCardClient extends React.Component {
 
       this.loadingRef.finish();
       if(res.data.status == 'success') this.setState({ company: props.company, division: props.division, cards: res.data.cards });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error.message });
+      window.mf_like_modal({ icon: 'error', message: error.message });
     });
   };
 
@@ -98,8 +98,8 @@ export default class UploadCardClient extends React.Component {
           if(!bool) this.reverse_file = file;
         };
 
-        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
-      }).catch(err => window.alertable({ icon: 'error', message: err }));
+        if(res.data.status == 'error') window.mf_like_modal({ icon: 'error', message: res.data.message });
+      }).catch(err => window.mf_like_modal({ icon: 'error', message: err }));
     })
   };
 
@@ -109,7 +109,7 @@ export default class UploadCardClient extends React.Component {
    *
    */
   setCardClients = card_clients => this.setState({ card_clients: card_clients }, () => {
-      window.alertable({ icon:'success', message: 'ファイルのアップロードが正常に成功しました。'});
+      window.mf_like_modal({ icon:'success', message: 'ファイルのアップロードが正常に成功しました。'});
     });
 
   /**
@@ -123,7 +123,7 @@ export default class UploadCardClient extends React.Component {
     const isDivision = parse_clients.every(client => client['会社ID'] == this.state.company.id);
 
     if(!isDivision) {
-      window.alertable({ icon: 'error', message: '部署の選択が間違っています。' });
+      window.mf_like_modal({ icon: 'error', message: '部署の選択が間違っています。' });
       return;
     };
 
@@ -176,7 +176,7 @@ export default class UploadCardClient extends React.Component {
     const value_id = e.target.getAttribute('index');
     const value = e.target.value;
 
-    if(!value) window.alertable({ icon: 'info', message: '値を入力して下さい。'});
+    if(!value) window.mf_like_modal({ icon: 'info', message: '値を入力して下さい。'});
 
     card_clients[count].templates[status ? 0 : 1].values[value_id].value = value;
     const values = card_clients[count].templates[status ? 0 : 1].values;
@@ -244,12 +244,12 @@ export default class UploadCardClient extends React.Component {
 
       this.loadingRef.finish();
       const redirect = () => window.location.href = '/card_clients';
-      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '一括登録に成功しました。', close_callback: redirect });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status == 'success') window.mf_like_modal({ icon: 'success', message: '一括登録に成功しました。', close_callback: redirect });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error });
+      window.mf_like_modal({ icon: 'error', message: error });
     });
     this.loadingRef.start();
   };

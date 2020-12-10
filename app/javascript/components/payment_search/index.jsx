@@ -52,20 +52,19 @@ const PaymentSearch = props => {
 	}
 
   return (
-    <div className='c-search__work-index u-mt-20'>
+    <div className='c-search'>
       <Fragment>
         <label>日付検索 ※外注書に登録された時の日付が検索されます</label>
       </Fragment>
       <form method='get' action='/payments'>
-        <div className='u-mt-10 c-flex c-flex-alignItems__center'>
-          <DatetimePicker key={ `${state.begginning}-begginning` } type='text' name='begginning' default_datetime={ state.begginning } class='c-form-text__work-index__datepicker u-ml-10'/>
+        <div className='c-flex c-flex-alignItems__center'>
           <Icon name='ei-calendar' size='m'/>
-          <p className={ 'c-search__tilde' }>〜</p>
-          <DatetimePicker key={ `${state.date}-end` } type='text' name='end' default_datetime={ state.end } class='c-form-text__work-index__datepicker u-ml-10'/>
-          <Icon name='ei-calendar' size='m'/>
+          <DatetimePicker key={ `${state.begginning}-begginning` } type='text' name='begginning' default_datetime={ state.begginning } class='c-form-text'/>
+          <p className='c-search__tilde'>〜</p>
+          <DatetimePicker key={ `${state.date}-end` } type='text' name='end' default_datetime={ state.end } class='c-form-text'/>
           <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
-          <div className='u-ml-10'><a className='u-va-middle c-btnMain' href='/payments'>元に戻す</a></div>
+          <div className='u-ml-10'><input type='submit' name='commit' value='検索' className='c-btnMain'/></div>
+          <div className='u-ml-10'><a className='c-btnMain' href='/payments'>元に戻す</a></div>
         </div>
       </form>
     </div>

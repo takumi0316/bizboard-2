@@ -107,7 +107,7 @@ export default class NewTemplateGenerate extends React.Component {
 
     if(!file) {
 
-      window.alertable({ icon: 'info', message: `${ status ? '表面' : '裏面' }のテンプレートを設定して下さい。`});
+      window.mf_like_modal({ icon: 'info', message: `${ status ? '表面' : '裏面' }のテンプレートを設定して下さい。`});
       return;
     };
 
@@ -211,16 +211,16 @@ export default class NewTemplateGenerate extends React.Component {
       if(res.data.status == 'success') {
 
         const redirect = window.location.href = `/cards/${res.data.card.id}/front_preview`;
-        if(res.data.status == 'success') window.alertable({ icon: 'success', message: 'テンプレートを保存しました。', close_callback: () => redirect() });
-        if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+        if(res.data.status == 'success') window.mf_like_modal({ icon: 'success', message: 'テンプレートを保存しました。', close_callback: () => redirect() });
+        if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
       } else {
 
-        window.alertable({ icon: 'error', message: res.data.message });
+        window.mf_like_modal({ icon: 'error', message: res.data.message });
       };
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error.message });
+      window.mf_like_modal({ icon: 'error', message: error.message });
     });
     this.loadingRef.start();
   };

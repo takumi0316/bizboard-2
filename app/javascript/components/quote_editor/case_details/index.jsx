@@ -13,7 +13,7 @@ import {
 const CaseDetails = props => {
 
   return(
-    <div className='u-mt-30 c-table'>
+    <div className='u-mt-15 c-table'>
       <table>
         <tbody>
           <tr>
@@ -114,8 +114,8 @@ const CaseDetails = props => {
             </td>
           </tr>
           <tr>
-            <td className='u-fw-bold'>受注経路</td>
-            <td>
+            <td className='u-fw-bold u-va-middle'>受注経路</td>
+            <td className='u-va-middle'>
               <div className='c-form-selectWrap'>
                 <select className='c-form-select' defaultValue={ props.channel } disabled={props.lock ? 'disabled' : null} onChange={ e => props.setChannel(e.target.value) }>
                   { Object.keys(CHANNELS).map((item, index) => {
@@ -131,18 +131,18 @@ const CaseDetails = props => {
           </tr>
           { props.show_quote_number ?
             <tr>
-              <td className='u-fw-bold'>案件番号</td>
-              <td>
-                <textarea placeholder='BPR・ERP番号入れてね' className='c-form-text' type='text' disabled={props.lock ? 'disabled' : null} onChange={ e  => props.setQuoteNumber(e.target.value) } defaultValue={ props.quote_number }></textarea>
+              <td className='u-fw-bold u-va-middle'>案件番号</td>
+              <td className='u-va-middle'>
+                <input placeholder='BPR・ERP番号入れてね' className='c-form-text' type='text' disabled={ props.lock ? 'disabled' : null } onChange={ e => props.setQuoteNumber(e.target.value) } defaultValue={ props.quote_number }/>
               </td>
             </tr>
             : null
           }
           { props.show_quote_number ?
             <tr>
-              <td className='u-fw-bold'>合計金額 ※金額を入力する場合は品目は選択しないでください</td>
-              <td>
-                <textarea placeholder='BPRとERPで確定した金額を入力してください' className='c-form-text' disabled={props.lock ? 'disabled' : null} onChange={ e => props.setTemporaryPrice(e.target.value) } type='text' defaultValue={ props.temporary_price } />
+              <td className='u-fw-bold u-va-middle'>合計金額 ※金額を入力する場合は品目は選択しないでください</td>
+              <td className='u-va-middle'>
+                <input placeholder='BPRとERPで確定した金額を入力してください' className='c-form-text' disabled={props.lock ? 'disabled' : null} onChange={ e => props.setTemporaryPrice(e.target.value) } type='text' defaultValue={ props.temporary_price } />
               </td>
             </tr>
             : null
@@ -185,12 +185,11 @@ const CaseDetails = props => {
             </td>
           </tr>
           <tr>
-            <td className='u-fw-bold'>受注区分</td>
+            <td className='u-va-middle u-fw-bold'>受注区分</td>
             <td>
               <div className='c-form-selectWrap'>
                 <select className='c-form-select' defaultValue={ props.quote_type } disabled={props.lock ? 'disabled' : null} onChange={ e => props.setQuoteType(e.target.value) }>
                   { Object.keys(QUOTE_TYPES).map((item, index) => {
-
                     const key = 'quote_type-'+index;
                     return (
                       <option {...{key}} value={QUOTE_TYPES[item]}>{item}</option>
@@ -201,7 +200,7 @@ const CaseDetails = props => {
             </td>
           </tr>
           <tr>
-            <td className='u-fw-bold'>Google Drive</td>
+            <td className='u-va-middle u-fw-bold'>Google Drive</td>
             <td>
               { props.google_drive_folder_id ?
                 <input className='c-form-text' defaultValue={ `作成済み(フォルダID: ${ props.google_drive_folder_id })` } readOnly/>

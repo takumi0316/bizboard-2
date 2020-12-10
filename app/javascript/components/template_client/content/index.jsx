@@ -36,7 +36,7 @@ const Index = props => {
           :
           <Fragment>
             { props.contents.length > 0 ?
-              <button className='c-btnMain' onClick={ props.editContent }>編集</button>
+              <button className='c-btnMain c-btn-blue' onClick={ props.editContent }>編集</button>
               : null
             }
           </Fragment>

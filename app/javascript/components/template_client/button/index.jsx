@@ -7,7 +7,7 @@ const Index = props => {
 		e.preventDefault()
 
 		const redirect = () => location.href = `/template_clients/${ props.card_template_id }/${ props.head ? 'tail'  : 'head' }?client_id=${ props.client_id }`
-		window.alertable({ icon: 'success', message: '遷移します。', close_callback: () => redirect() })
+		window.mf_like_modal({ icon: 'success', message: '遷移します。', close_callback: () => redirect() })
 	}
 
 	return(

@@ -105,24 +105,26 @@ const WorkSearch = props => {
 	}
 
   return (
-    <div className='c-search__work-index u-mt-20'>
+    <div className='c-search'>
       <Fragment>
         <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
   	    <span className='c-form__required u-ml-10'>現在{ props.count_number }件表示されています</span>
       </Fragment>
       <form method='get' action='/works?count='>
         <div className='c-flex c-flex-alignItems__center'>
-          <input className='c-form-text__work-index' type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期' />
-          <select name='status' className='u-ml-10 c-form-select__work-index' value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
-            <option value=''>ステータス</option>
-            { Object.keys(ENUM_STATUS).map((item, index) =>{
+          <div style={{ width: '250px' }}><input className='c-form-text' type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期' /></div>
+					<div className='u-ml-10 c-form-selectWrap'>
+            <select name='status' className='c-form-select' value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
+              <option value=''>ステータス</option>
+              { Object.keys(ENUM_STATUS).map((item, index) =>{
 
-              const key = 'status-' + index
-              return (
-                <option key={ key } value={ item }>{ ENUM_STATUS[item] }</option>
-              )
-            }) }
-          </select>
+                const key = 'status-' + index
+                return (
+                  <option key={ key } value={ item }>{ ENUM_STATUS[item] }</option>
+                )
+              }) }
+            </select>
+					</div>
 					<Icon name='ei-calendar' size='m'/>
 					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker'
 					                action='start_date' sortingAction={ sortingAction } index={ true }
@@ -132,8 +134,8 @@ const WorkSearch = props => {
 						              action='end_date' sortingAction={ sortingAction } index={ false }
 					/>
           <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className='u-ml-10 c-btnMain'/>
-          <a className='u-ml-10 c-btnMain' href='/works'>元に戻す</a>
+          <div className='u-ml-10'><input type='submit' name='commit' value='検索' className='c-btnMain'/></div>
+          <div className='u-ml-10'><a className='c-btnMain' href='/works'>元に戻す</a></div>
         </div>
       </form>
     </div>

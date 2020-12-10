@@ -64,8 +64,8 @@ export default class AddProject extends React.Component {
     request.then(res => {
 
       if(res.data.status == 'success') this.setState({ projects: res.data.projects });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: '品目を取得できませんでした。' });
-    }).catch(err => window.alertable({ icon: 'error', message: err }));
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: '品目を取得できませんでした。' });
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err }));
   };
 
   /**

@@ -3,6 +3,7 @@ h1.l-dashboard__heading 製造経費情報一覧
 .u-mt-15
   = link_to '製造経費を入力する', new_expendable_path, class: 'c-btnMain c-btn-blue'
 
+.u-mt-15
 = react_component :ExpendablesSearch, subcontractor: Subcontractor.all, division: Division.all
 
 .u-mt-15

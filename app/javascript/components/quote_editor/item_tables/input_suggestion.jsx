@@ -21,7 +21,7 @@ const InputSuggestion = props => {
   }
  
   const handleFocusOut = e => {
-    if(!state.searchTxt) window.alertable({ icon: 'info', message: 'サジェストから品目を選択して下さい。' })
+    if(!state.searchTxt) window.mf_like_modal({ icon: 'info', message: 'サジェストから品目を選択して下さい。' })
   }
 
   const handleChange = e => {
@@ -37,7 +37,7 @@ const InputSuggestion = props => {
     request.then(res => {
       const resProjects = res.data.projects.length === 0 ? '' : res.data.projects
       setState({ ...state, projects: resProjects , searchTxt: inputTxt })
-    }).catch(err => window.alertable({ icon: 'info', message: '品目を取得出来ませんでした。' }))
+    }).catch(err => window.mf_like_modal({ icon: 'info', message: '品目を取得出来ませんでした。' }))
   }
 
   return(

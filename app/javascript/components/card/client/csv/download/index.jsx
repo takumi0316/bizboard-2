@@ -58,11 +58,11 @@ export default class DownloadCardClient extends React.Component {
 
       this.loadingRef.finish();
       if(res.data.status == 'success') this.state.card_clients ? this.setState({ company: props.company, division: props.division, cards: res.data.cards, card: '', card_clients: '' }) : this.setState({ company: props.company, division: props.division, cards: res.data.cards });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error });
+      window.mf_like_modal({ icon: 'error', message: error });
     });
   };
 
@@ -80,11 +80,11 @@ export default class DownloadCardClient extends React.Component {
 
       this.loadingRef.finish();
       if(res.data.status == 'success') this.setState({ card: card, card_clients: res.data.card_clients });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: '担当者情報を取得出来ませんでした。もう一度テンプレートを選択してください。' });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: '担当者情報を取得出来ませんでした。もう一度テンプレートを選択してください。' });
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error });
+      window.mf_like_modal({ icon: 'error', message: error });
     });
   };
 
@@ -145,12 +145,12 @@ export default class DownloadCardClient extends React.Component {
           link.parentNode.removeChild(link);
         };
 
-        window.alertable({ icon: 'success', message: 'ダウンロードしました。' });
+        window.mf_like_modal({ icon: 'success', message: 'ダウンロードしました。' });
       };
     }).catch(err => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: err });
+      window.mf_like_modal({ icon: 'error', message: err });
     });
     this.loadingRef.start();
   };

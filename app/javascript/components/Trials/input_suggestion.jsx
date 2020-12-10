@@ -29,7 +29,7 @@ const InputSuggestion = props => {
     const request = window.xhrRequest.get(`/projects.json?free_word=${inputTxt}`)
     request.then(res => {
       setState({ ...state, projects: res.data.projects, searchTxt: inputTxt })
-    }).catch(err => window.alertable({ icon: 'info', message: '品目を取得出来ませんでした。' }))
+    }).catch(err => window.mf_like_modal({ icon: 'info', message: '品目を取得出来ませんでした。' }))
   }
 
   return(

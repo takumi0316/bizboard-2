@@ -65,8 +65,8 @@ export default class ClientGenerate extends React.Component {
             resolve(true);
           }).then(res => this.loadingRef.finish());
         };
-      if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message, close_callback: () => this.loadingRef.finish() });
-    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }));
+      if(res.data.status == 'error') window.mf_like_modal({ icon: 'error', message: res.data.message, close_callback: () => this.loadingRef.finish() });
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }));
   };
 
   /**
@@ -79,7 +79,7 @@ export default class ClientGenerate extends React.Component {
     let template = JSON.parse(JSON.stringify(this.state.template));
     const value = e.target.value;
 
-    if(!value) window.alertable({ icon: 'info', message: '値を入力して下さい。'});
+    if(!value) window.mf_like_modal({ icon: 'info', message: '値を入力して下さい。'});
 
     template.values[value_index].value = value;
     const values = template.values;
@@ -98,13 +98,13 @@ export default class ClientGenerate extends React.Component {
     const file = this.state.template.file;
     if(!file) {
       
-      window.alertable({ icon: 'error', message: 'テンプレートを登録してください。' });
+      window.mf_like_modal({ icon: 'error', message: 'テンプレートを登録してください。' });
       return
     };
     
     if(this.state.change_status) {
       
-      window.alertable({ icon: 'error', message: '変更内容を保存してください。' });
+      window.mf_like_modal({ icon: 'error', message: '変更内容を保存してください。' });
       return;
     };
     
@@ -122,13 +122,13 @@ export default class ClientGenerate extends React.Component {
     const file = this.state.template.file;
     if(!file) {
       
-      window.alertable({ icon: 'error', message: 'テンプレートを登録してください。' });
+      window.mf_like_modal({ icon: 'error', message: 'テンプレートを登録してください。' });
       return
     };
   
     if(this.state.change_status) {
     
-      window.alertable({ icon: 'error', message: '変更内容を保存してください。' });
+      window.mf_like_modal({ icon: 'error', message: '変更内容を保存してください。' });
       return;
     };
   
@@ -165,11 +165,11 @@ export default class ClientGenerate extends React.Component {
 
       this.setState({ change_status: res.data.status == 'success' ? false : true }, () => {
         
-        window.alertable({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : res.data.messsage, close_callback: () => this.loadingRef.finish() });
+        window.mf_like_modal({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : res.data.messsage, close_callback: () => this.loadingRef.finish() });
       });
     }).catch(error => {
 
-      window.alertable({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish() });
+      window.mf_like_modal({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish() });
     });
     this.loadingRef.start();
   };

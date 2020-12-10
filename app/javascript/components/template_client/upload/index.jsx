@@ -70,7 +70,7 @@ const Upload = props => {
 
     if(!isTemplateID) {
 
-      window.alertable({ icon: 'info', message: 'テンプレートIDが違います。', close_callback: () => loading_ref.current.finish() });
+      window.mf_like_modal({ icon: 'info', message: 'テンプレートIDが違います。', close_callback: () => loading_ref.current.finish() });
       return;
     };
 
@@ -85,7 +85,7 @@ const Upload = props => {
 
       loading_ref.current.finish();
       setState({ ...state, uploaded: true,  head_layouts: res.data.head_layouts, tail_layouts: res.data.tail_layouts, clients: res.data.clients });
-    }).catch(err => window.alertable({ icon: 'info', message: err, close_callback: () => loading_ref.current.finish() }));
+    }).catch(err => window.mf_like_modal({ icon: 'info', message: err, close_callback: () => loading_ref.current.finish() }));
   };
 
   const prevPagination = e => {
@@ -154,7 +154,7 @@ const Upload = props => {
     e.preventDefault();
 
     const url = () => location.href = `/template_clients?id=${ props.card_template.id }`;
-    window.alertable({ icon: 'success', message: '保存しました。', close_callback: () => url() })
+    window.mf_like_modal({ icon: 'success', message: '保存しました。', close_callback: () => url() })
   };
 
   return(

@@ -214,7 +214,7 @@ class QuotesController < ApplicationController
       status: :unworked,
       quote_type: quote.quote_type,
       user_id: current_user.id,
-      deliver_at: '',
+      deliver_at: Time.zone.now,
       deliver_type: quote.deliver_type,
       issues_date: '',
       delivery_note_date: '',

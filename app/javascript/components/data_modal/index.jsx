@@ -41,7 +41,7 @@ export default class DataModal extends React.Component {
   componentDidMount() {
 
     // グローバルからの呼び出し
-    window.alertable = (options) => {
+    window.mf_like_modal = (options) => {
 
       let args = {};
 

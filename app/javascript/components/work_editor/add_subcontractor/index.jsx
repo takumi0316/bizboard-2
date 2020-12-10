@@ -18,7 +18,7 @@ const AddSubcontractor = props => {
     e.preventDefault();
     if(state.subcontractor_id) {
 
-      window.alertable({ 'icon': 'info', 'message': '作業外注詳細を更新してから編集を終了してください。' });
+      window.mf_like_modal({ 'icon': 'info', 'message': '作業外注詳細を更新してから編集を終了してください。' });
       return false;
     };
 
@@ -31,7 +31,7 @@ const AddSubcontractor = props => {
 
     if(state.subcontractor_id) {
 
-      window.alertable({ 'icon': 'info', 'message': '編集をしている他の作業外注詳細を終了してください。' });
+      window.mf_like_modal({ 'icon': 'info', 'message': '編集をしている他の作業外注詳細を終了してください。' });
       return false;
     };
 

@@ -27,6 +27,6 @@
           td.u-va-middle = r.name
           td.u-va-middle = "¥ #{r.price.to_s(:delimited)}"
           td.u-ta-center.u-va-middle = "#{r.updated_at}"
-          td.u-ta-center.u-va-middle = link_to '編集', edit_project_path(r), class: 'c-btnMain'
+          td.u-ta-center.u-va-middle = link_to '編集', edit_project_path(r), class: 'c-btnMain c-btn-blue'
 
 = render 'layouts/_partials/pagination'

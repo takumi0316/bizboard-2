@@ -6,7 +6,7 @@ const DropZone = props => {
 
   const onDrop = useCallback(acceptedFiles => {
 
-    if(acceptedFiles.length == 0) window.alertable({ icon:'error', message: 'このファイルタイプはアップロードできません。'});
+    if(acceptedFiles.length == 0) window.mf_like_modal({ icon:'error', message: 'このファイルタイプはアップロードできません。'});
     if(acceptedFiles.length == 1) props.parseCSV(acceptedFiles);
   }, []);
 

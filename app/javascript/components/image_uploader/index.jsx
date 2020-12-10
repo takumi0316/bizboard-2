@@ -71,7 +71,7 @@ export default class Uploader extends React.Component {
   upload = () => {
     
     if (!this.state.image) {
-      window.alertable({
+      window.mf_like_modal({
         icon: 'warning',
         message: '画像を登録してください',
       });

@@ -59,8 +59,8 @@ const CompanySearch = props => {
     request.then(res => {
 
       if(res.data.status == 'success') setState({ ...state, show: true, companies: res.data.companies });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: '会社情報が取得出来ませんでした。'});
-    }).catch(error => window.alertable({ icon: 'error', message: error }));
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: '会社情報が取得出来ませんでした。'});
+    }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
   };
 
   /**
