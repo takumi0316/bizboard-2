@@ -11,7 +11,7 @@ h1.l-dashboard__heading 外注企業 支払い情報一覧
     tbody
       - subcontractors.each do |r|
         - total_prices = r.payments.where(date: @start_date..@end_date).where(accouting_status: :active).pluck(:price).sum
-        - if total_prices > 0
-          tr
-            td = r.name
-            td = "¥ #{ total_prices.to_s(:delimited) }"
+        /- if total_prices > 0
+        tr
+          td = r.name
+          td = "¥ #{ total_prices.to_s(:delimited) }"
