@@ -297,6 +297,7 @@ const InvoicePdfGenrator = props => {
           <div className='c-overlay-submit'>
             <Fragment>
               <a className='c-btnMain-standard c-btn-blue' onClick={ e => setUpdateInvoice(e) }>更新する</a>
+              { props.pdf_exist ? <a className='u-ml-30 c-btnMain-standard' href={ `/invoices/${ props.invoice.id }` } target='_blank'>作成済みPDF</a> : null }
               <input type='submit' name='commit' value='請求書ダウンロード' className='u-ml-30 c-btnMain-standard'/>
               <a className='u-ml-30 c-btnMain-standard c-btn-blue' href={ `/quotes/${props.quote.id}/edit` }>案件に戻る</a>
 	          </Fragment>

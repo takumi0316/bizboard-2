@@ -17,22 +17,22 @@
         tr
           td.p-tasks__unread
             - if r.deliver_at.blank?
-              = r&.quote_number
+              = r.quote_number
             - else
               - if r.deliver_at.to_date == Date.today
-                .u-fc-red= r&.quote_number
+                .u-fc-red= r.quote_number
               - elsif r.deliver_at.to_date == Date.today + 1
-                .u-fc-vivid = r&.quote_number
+                .u-fc-vivid = r.quote_number
               - else
-                = r&.quote_number
+                = r.quote_number
           //活動履歴のステータスが受注、または存在しない時案件のステータスを表示。
           td
-            - if r&.activity&.status.blank? ||  r&.activity&.status == 'order'
-              = r&.status_i18n
+            - if r.activity&.status.blank? ||  r.activity&.status == 'order'
+              = r.status_i18n
             - else
-              = r&.activity&.status_i18n
+              = r.activity&.status_i18n
           td = r.work&.status_i18n
-          td = r&.subject
+          td = r.subject
           td = r.deliver_at&.to_date
           td.u-ta-center = link_to '編集', edit_quotation_path(r), class: 'c-btnMain-standard'
           td.u-ta-center = link_to '詳細', quotation_path(r), class: 'c-btnMain-primaryB', target: '_blank' if ActiveStorage::Blob.where(filename: "見積書＿#{r.id}.pdf").present?
