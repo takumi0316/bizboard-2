@@ -27,7 +27,7 @@ const SubForm = props => {
                 />
               </td>
               <td className='u-ta-center'>
-                <input className='c-form-text__work-show-input7' type='text' defaultValue={ props.work_subcontractor.delivery_destination } onChange={ e => props.setDeliveryDestination(props.index, e.target.value) }/>
+                <input className='c-form-text' type='text' defaultValue={ props.work_subcontractor.delivery_destination } onChange={ e => props.setDeliveryDestination(props.index, e.target.value) }/>
               </td>
             </tr>
           </tbody>
@@ -42,7 +42,7 @@ const SubForm = props => {
           </thead>
           <tbody>
             <tr>
-              <td colSpan='8'><textarea rows='3' className='c-form-textarea__work-show-input__textarea2' defaultValue={ props.work_subcontractor.notices } onChange={ e => props.setNotices(props.index, e.target.value) }/></td>
+              <td colSpan='8'><textarea rows='3' className='c-form-textarea' defaultValue={ props.work_subcontractor.notices } onChange={ e => props.setNotices(props.index, e.target.value) }/></td>
             </tr>
           </tbody>
         </table>

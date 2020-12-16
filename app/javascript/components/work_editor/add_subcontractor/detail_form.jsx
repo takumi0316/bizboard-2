@@ -8,7 +8,7 @@ const DetailForm = props => {
         <table>
           <thead>
             <tr>
-              <th></th>
+              <th/>
               <th className='u-va-middle'>No.</th>
               <th className='u-va-middle'>発注内容</th>
               <th className='u-va-middle'>入稿物</th>
@@ -27,12 +27,12 @@ const DetailForm = props => {
                     <tr { ...{key} }>
                       <td className='u-ta-center u-va-middle'><button className='c-btnMain c-btn-red' value={ detail.id } onClick={ e => props.workSubcontractorDetailDestroy(e, props.index, index1) }>削除</button></td>
                       <td className='u-ta-center u-va-middle'>{ index1 + 1 }</td>
-                      <td className='u-va-middle'><textarea rows='3' cols='30' className='c-form-text__work-show-input__textarea' defaultValue={ detail.order_contents || '' } onChange={ e => props.setOrderContents(e, props.index, index1) } placeholder='図面製本'/></td>
-                      <td><textarea className='c-form-textarea__work-show-input__textarea' rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method || '' } onChange={ e => props.setDeliverMethod(e, props.index, index1) }/></td>
-                      <td><textarea className='c-form-textarea__work-show-input__textarea' rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification || '' } onChange={ e => props.setSpecification(e, props.index, index1) }/></td>
-                      <td className='u-va-top'><input className='c-form-text__work-show-input6' type='number' defaultValue={ detail.count } onChange={ e => props.setCount(e, props.index, index1) }/></td>
-                      <td className='u-va-top'><input className='c-form-text__work-show-input6' type='number' defaultValue={ detail.number_of_copies } onChange={ e => props.setNumberOfCopies(e, props.index, index1) }/></td>
-                      <td className='u-va-top'><input className='c-form-text__work-show-input2' type='number' defaultValue={ detail.actual_cost } onChange={ e => props.setActualCost(e, props.index, index1) }/></td>
+                      <td className='u-va-middle'><textarea rows='3' cols='30' className='c-form-textarea' defaultValue={ detail.order_contents || '' } onChange={ e => props.setOrderContents(e, props.index, index1) } placeholder='図面製本'/></td>
+                      <td><textarea className='c-form-textarea' rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method || '' } onChange={ e => props.setDeliverMethod(e, props.index, index1) }/></td>
+                      <td><textarea className='c-form-textarea' rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification || '' } onChange={ e => props.setSpecification(e, props.index, index1) }/></td>
+                      <td className='u-va-top'><input className='c-form-text' type='number' defaultValue={ detail.count } onChange={ e => props.setCount(e, props.index, index1) }/></td>
+                      <td className='u-va-top'><input className='c-form-text' type='number' defaultValue={ detail.number_of_copies } onChange={ e => props.setNumberOfCopies(e, props.index, index1) }/></td>
+                      <td className='u-va-top'><input className='c-form-text' type='number' defaultValue={ detail.actual_cost } onChange={ e => props.setActualCost(e, props.index, index1) }/></td>
                     </tr>
                   );
                 }) }

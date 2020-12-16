@@ -29,7 +29,7 @@ const QuotationPdfGenerator = props => {
           <label className='c-form-label'>件名</label>
 					<div>{ props.quote.subject }</div>
         </div>
-        <div className='u-mt-30 c-table'>
+        <div className='u-mt-10 c-table'>
           <table>
             <thead>
               <tr>
@@ -95,10 +95,10 @@ const QuotationPdfGenerator = props => {
           </table>
         </div>
         <div className='c-overlay-submit'>
-          <Fragment>
-            { props.pdf_exist ? <a className='c-btnMain-standard' href={ `/quotations/${ props.quote.id }` } target='_blank'>作成済みPDF</a> : null }
-            <input type='submit' name='commit' value='見積書ダウンロード' className='u-ml-30 c-btnMain-primaryB'/>
-          </Fragment>
+          <div className='c-flex__center c-flex-alignItems__center'>
+            { props.pdf_exist ? <div><a className='c-btnMain' href={ `/quotations/${ props.quote.id }` } target='_blank'>作成済みPDF</a></div> : null }
+            <div className='u-ml-10'><input type='submit' name='commit' value='見積書ダウンロード' className='c-btnMain'/></div>
+          </div>
         </div>
       </form>
     </Fragment>

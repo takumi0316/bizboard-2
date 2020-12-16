@@ -23,7 +23,7 @@ const DetailRead = props => {
                 const key = 'subcontractor' + index;
                 return(
                   <tr key={ key }>
-                    <td className='u-ta-center'>{ index + 1 }</td>
+                    <td className='u-ta-center u-va-middle'>{ index + 1 }</td>
                     <td className='u-va-middle'>{ props.setDangerHtml(detail.order_contents || '', 'u-ml-10') }</td>
                     <td className='u-va-middle'>{ props.setDangerHtml(detail.deliver_method || '', 'u-ml-10') }</td>
                     <td className='u-va-middle'>{ props.setDangerHtml(detail.specification || '', 'u-ml-10') }</td>

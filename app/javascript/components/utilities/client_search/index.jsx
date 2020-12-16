@@ -114,7 +114,7 @@ const ClientSearch = props => {
             <div onClick={ close } className={ Style.ClientSearch__closeIcon }>×</div>
           </div>
         </div>
-        : <button className='c-btnMain' onClick={ open }>{ props.typeName }</button>
+        : <div><button className='c-btnMain' onClick={ open }>{ props.typeName }</button></div>
       }
     </Fragment>
   );

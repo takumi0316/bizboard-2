@@ -30,6 +30,7 @@ const EditTable = props => {
       window.confirm('外注先を仮でもいいので登録して下さい。')
       return false
     }
+
     const id = props.state.subcontractor_id
     props.setState({ ...props.state, subcontractor_id: e.target.value })
     props.workSubcontractorUpdate(index, id)
@@ -60,8 +61,8 @@ const EditTable = props => {
                   <Fragment>
                     <div className='u-mt-10 c-flex c-flex-alignItems__center'>
                       <ClientSearch applyClient={ props.applyClient } index={ index } path={ '/subcontractor_division_clients.json?search=' } notFound={ '外注先情報が見つかりませんでした' } typeName={ '外注先情報' }/>
-                      <button className='u-mt-10 u-ml-10 c-btnMain c-btn-blue' value='' onClick={ e => _update(e, index) }>外注先[更新]</button>
-                      <button className='u-mt-10 u-ml-10 c-btnMain c-btn-red' value={ work_subcontractor.id } onClick={ e => props.workSubcontractorDestroy(e, index, props.state, props.setState) }>外注先[削除]</button>
+                      <div className='u-ml-10'><button className='c-btnMain c-btn-blue' value='' onClick={ e => _update(e, index) }>外注先[更新]</button></div>
+                      <div className='u-ml-10'><button className='c-btnMain c-btn-red' value={ work_subcontractor.id } onClick={ e => props.workSubcontractorDestroy(e, index, props.state, props.setState) }>外注先[削除]</button></div>
                     </div>
                     <DetailForm index={ index } work_subcontractor={ work_subcontractor } workSubcontractorDetailDestroy={ props.workSubcontractorDetailDestroy } setOrderContents={ props.setOrderContents } setDeliverMethod={ props.setDeliverMethod } setSpecification={ props.setSpecification } setCount={ props.setCount } setNumberOfCopies={ props.setNumberOfCopies } setActualCost={ props.setActualCost } workSubcontractorDetailCreate={ props.workSubcontractorDetailCreate }/>
                     <SubForm index={ index } work_subcontractor={ work_subcontractor } sortingAction={ props.sortingAction } setDeliveryDestination={ props.setDeliveryDestination } setNotices={ props.setNotices }/>

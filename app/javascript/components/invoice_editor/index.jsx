@@ -204,11 +204,11 @@ const InvoicePdfGenrator = props => {
               <DatetimePicker type='text' default_datetime={ state.expiration } class='c-form-text__work-index__datepicker' action='expiration' name='expiration' sortingAction={ sortingAction }/>
             </div>
           </div>
-          <div className='u-mt-30'>
+          <div className='u-mt-15'>
             <label className='c-form-label'>件名</label>
             <input type='text' name='subject' className='c-form-text' defaultValue={ props.invoice.subject } onChange={ e => setSubject(e) }/>
           </div>
-          <div className='u-mt-30'>
+          <div className='u-mt-15'>
             <label className='c-form-label'>形式</label>
             <div className='c-form-selectWrap'>
               <select className='c-form-select' defaultValue={ state.attention } onChange={ e => setAttention(e) }>
@@ -221,7 +221,7 @@ const InvoicePdfGenrator = props => {
               </select>
             </div>
           </div>
-          <div className='u-mt-30 c-table'>
+          <div className='u-mt-10 c-table'>
             <table>
               <thead>
                 <tr>
@@ -240,12 +240,12 @@ const InvoicePdfGenrator = props => {
                         return(
                           <Fragment { ...{key} }>
                             <tr>
-                              <td>{ project.name }</td>
-                              <td>{ Number(project.unit_price).toLocaleString() }</td>
-                              <td>{ project.unit }</td>
-                              <td>{ (Number(project.unit_price) * Number(project.unit)).toLocaleString() }</td>
+                              <td className='u-va-middle'>{ project.name }</td>
+                              <td className='u-va-middle'>{ Number(project.unit_price).toLocaleString() }</td>
+                              <td className='u-va-middle'>{ project.unit }</td>
+                              <td className='u-va-middle'>{ (Number(project.unit_price) * Number(project.unit)).toLocaleString() }</td>
                             </tr>
-                            { project.remarks != '' ?
+                            { !project.remarks ?
                               <tr>
                                 <td colSpan='4'>{ project.remarks }</td>
                               </tr>
@@ -260,8 +260,8 @@ const InvoicePdfGenrator = props => {
                 </Fragment>
                 <tr>
                   <td>値引金額</td>
-                  <td></td>
-                  <td></td>
+                  <td/>
+                  <td/>
                   <td>{ Number(props.quote.discount).toLocaleString() }</td>
                 </tr>
               </tbody>
@@ -271,15 +271,15 @@ const InvoicePdfGenrator = props => {
             <table>
               <tbody>
                 <tr>
-                  { props.quote.tax_type == 'exemption' ?
+                  { props.quote.tax_type === 'exemption' ?
                     <Fragment>
-                      <td>合計金額</td>
-                      <td>¥ { Math.floor(props.quote.price || 0).toLocaleString() }</td>
+                      <td className='u-va-middle'>合計金額</td>
+                      <td className='u-va-middle'>¥ { Math.u.floor(props.quote.price || 0).toLocaleString() }</td>
                     </Fragment>
                     :
                     <Fragment>
-                      <td>合計金額(税込)</td>
-                      <td>{ Math.floor((props.quote.price || 0) * parseFloat(props.quote.tax)).toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }) }</td>
+                      <td className='u-va-middle'>合計金額(税込)</td>
+                      <td className='u-va-middle'>{ Math.floor((props.quote.price || 0) * parseFloat(props.quote.tax)).toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }) }</td>
                     </Fragment>
                   }
                 </tr>
@@ -299,7 +299,7 @@ const InvoicePdfGenrator = props => {
               <div>
                 <a className='c-btnMain c-btn-blue' onClick={ setUpdateInvoice }>更新する</a>
               </div>
-              { props.pdf_exist ? <div className='u-ml-10'><a className='u-ml-30 c-btnMain-standard' href={ `/invoices/${ props.invoice.id }` } target='_blank'>作成済みPDF</a></div> : null }
+              { props.pdf_exist ? <div className='u-ml-10'><a className='c-btnMain' href={ `/invoices/${ props.invoice.id }` } target='_blank'>作成済みPDF</a></div> : null }
               <div className='u-ml-10'>
                 <input type='submit' name='commit' value='請求書ダウンロード' className='c-btnMain'/>
               </div>

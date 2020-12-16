@@ -18,7 +18,7 @@ const CaseDetails = props => {
         <tbody>
           <tr>
             <td className='u-va-middle u-fw-bold'>案件作成日</td>
-            <td>
+            <td className='u-va-middle'>
               <span className='u-mr-30'>{ props.date ? Dayjs(props.date).format('YYYY年MM月DD日') : '未定' }</span>
               { props.lock ?
                 null
@@ -29,7 +29,7 @@ const CaseDetails = props => {
           </tr>
           <tr>
             <td className='u-va-middle u-fw-bold'>見積もり発行日</td>
-            <td>
+            <td className='u-va-middle'>
               <span className='u-mr-30'>{ props.issues_date ? Dayjs(props.issues_date).format('YYYY年MM月DD日') : '未定' }</span>
               { props.lock ?
                 null
@@ -40,7 +40,7 @@ const CaseDetails = props => {
           </tr>
           <tr>
             <td className='u-va-middle u-fw-bold'>見積もり有効期間</td>
-            <td>
+            <td className='u-va-middle'>
               <span className='u-mr-30'>{ props.expiration ? Dayjs(props.expiration).format('YYYY年MM月DD日') : '未定' }</span>
               { props.lock ?
                 null
@@ -51,7 +51,7 @@ const CaseDetails = props => {
           </tr>
           <tr>
             <td className='u-va-middle u-fw-bold'>納品日</td>
-            <td>
+            <td className='u-va-middle'>
               <span className='u-mr-30'>{ props.delivery_note_date ? Dayjs(props.delivery_note_date).format('YYYY年MM月DD日') : '未定' }</span>
               { props.lock ?
                 null
@@ -66,7 +66,7 @@ const CaseDetails = props => {
               <br/>
               <span>※製作発送の場合は出荷日を入力</span>
             </td>
-            <td>
+            <td className='u-va-middle'>
               <span className='u-mr-30'>{ props.deliver_at ? Dayjs(props.deliver_at).format('YYYY年MM月DD日 HH時mm分') : '未定' }</span>
               { props.lock ?
                 null
@@ -77,7 +77,7 @@ const CaseDetails = props => {
           </tr>
           <tr>
             <td className='u-va-middle u-fw-bold'>納品方法</td>
-            <td>
+            <td className='u-va-middle'>
               <div className='u-mt-15'>
                 <label className='c-form-radioLabel'>
                   <input type='radio' value='seat' checked={ props.deliver_type === 'seat' } onChange={ e => props.setDeliverType(e.target.value) } className='c-form-radio' disabled={props.lock && props.deliver_type != 'seat' ? 'disabled' : null} />

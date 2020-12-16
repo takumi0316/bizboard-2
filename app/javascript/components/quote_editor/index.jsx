@@ -511,6 +511,7 @@ export default class QuoteEditor extends React.Component {
 
       if(noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
       if(!project.id && project._destroy) return
+      if(project.id && project._destroy) field.append('quote[quote_projects_attributes][][_destroy]', 1)
       field.append('quote[quote_projects_attributes][][id]', project.id)
       field.append('quote[quote_projects_attributes][][project_id]', project.project_id)
       field.append('quote[quote_projects_attributes][][quote_id]', project.quote_id)

@@ -42,17 +42,17 @@ const EditTable = props => {
                         { index + 1 }<input type='hidden' defaultValue={ detail.id }/>
                       </td>
                       <td className='u-va-top'>
-                        <textarea	className='c-form-text__work-show-input__textarea' rows='3' cols='30' placeholder='図面製本'
+                        <textarea	className='c-form-textarea' rows='3' cols='30' placeholder='図面製本'
                                   defaultValue={ detail.order_contents } onChange={ e => props.setDeOrderContents(index, e.target.value) }
                         />
                       </td>
                       <td className='u-va-top'>
-                        <textarea className='c-form-textarea__work-show-input__textarea' rows='3' cols='30' placeholder='AIデータ, アウトライン済み1ファイル'
+                        <textarea className='c-form-textarea' rows='3' cols='30' placeholder='AIデータ, アウトライン済み1ファイル'
                                   defaultValue={ detail.deliver_method } onChange={ e => props.setDeDeliverMethod(index, e.target.value) }
                         />
                       </td>
                       <td className='u-va-top'>
-                        <textarea	className='c-form-textarea__work-show-input__textarea' rows='3' cols='30' placeholder='表紙:ダイヤボード'
+                        <textarea	className='c-form-textarea' rows='3' cols='30' placeholder='表紙:ダイヤボード'
                                   defaultValue={ detail.specification } onChange={ e => props.setDeSpecification(index, e.target.value) }
                         />
                       </td>
@@ -62,27 +62,29 @@ const EditTable = props => {
                         />
                       </td>
                       <td className='u-va-top'>
-                        <select className='c-form-select__work-show' defaultValue={ detail.client_name } onChange={ e => props.setDeClientName(index, e.target.value) }>
-                          { props.users.map((user) => {
-                            const key = 'user_name' + user.id;
-                            return(
-                              <option { ...{key} } value={ user.name }>{ user.name }</option>
-                            );
-                          }) }
-                        </select>
+                        <div className='c-form-selectWrap'>
+                          <select className='c-form-select' defaultValue={ detail.client_name } onChange={ e => props.setDeClientName(index, e.target.value) }>
+                            { props.users.map((user) => {
+                              const key = 'user_name' + user.id;
+                              return(
+                                <option { ...{key} } value={ user.name }>{ user.name }</option>
+                              );
+                            }) }
+                          </select>
+                        </div>
                       </td>
                       <td className='u-va-top'>
-                        <input	className='c-form-text__work-show-input6' type='number'
+                        <input	className='c-form-text' type='number'
                                 defaultValue={ detail.number_of_copies } onChange={ e => props.setDeNumberOfCopies(index, e.target.value) }
                         />
                       </td>
-                      <td className={ 'u-va-top' }>
-                        <input  className='c-form-text__work-show-input6' type='number' defaultValue={ detail.count }
+                      <td className='u-va-top'>
+                        <input  className='c-form-text' type='number' defaultValue={ detail.count }
                                 onChange={ e => props.setDeCount(index, e.target.value) }
                         />
                       </td>
                       <td className='u-va-top'>
-                        <input	className='c-form-text__work-show-input2' type='number' defaultValue={ detail.estimated_cost }
+                        <input	className='c-form-text' type='number' defaultValue={ detail.estimated_cost }
                                 onChange={ e => props.setDeCost(index, e.target.value) }
                         />
                       </td>
@@ -113,7 +115,7 @@ const EditTable = props => {
           <tbody>
             <tr>
               <td>
-                  <textarea rows='3' className='c-form-textarea__work-show-input__textarea2'
+                  <textarea rows='3' className='c-form-textarea'
                             defaultValue={ props.work_notices } onChange={ e => props.setDeNotices(e.target.value) }
                   />
                 </td>

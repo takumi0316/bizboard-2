@@ -119,7 +119,7 @@ class Quote < ApplicationRecord
   # 名刺担当者情報
   has_many :card_clients, through: :task_card_clients
 
-  accepts_nested_attributes_for :quote_projects
+  accepts_nested_attributes_for :quote_projects, allow_destroy: true
 
   #----------------------------------------
   #  ** Delegates **

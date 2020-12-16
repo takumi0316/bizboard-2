@@ -22,6 +22,7 @@ const InputSuggestion = props => {
  
   const handleFocusOut = e => {
     if(!state.searchTxt) window.mf_like_modal({ icon: 'info', message: 'サジェストから品目を選択して下さい。' })
+    if(state.searchTxt) setState({ ...state, projects: '' })
   }
 
   const handleChange = e => {

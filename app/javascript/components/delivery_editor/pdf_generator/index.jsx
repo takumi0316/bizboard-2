@@ -91,8 +91,10 @@ const DeliveryPdfGenerator = props => {
           </table>
         </div>
         <div className='c-overlay-submit'>
-          { props.pdf_exist ? <a className='c-btnMain-standard' href={ `/delivery_notes/${props.quote.id}` } target='_blank'>作成済みPDF</a> : null }
-          <input type='submit' name='commit' value='納品書ダウンロード' className='u-ml-30 c-btnMain-standard c-btn-blue'/>
+          <div className='c-flex__center c-flex-alignItems__center'>
+            { props.pdf_exist ? <div><a className='c-btnMain' href={ `/delivery_notes/${props.quote.id}` } target='_blank'>作成済みPDF</a></div> : null }
+            <div className='u-ml-10'><input type='submit' name='commit' value='納品書ダウンロード' className='c-btnMain c-btn-blue'/></div>
+          </div>
         </div>
       </form>
     </Fragment>
