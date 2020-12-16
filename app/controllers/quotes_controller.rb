@@ -168,17 +168,17 @@ class QuotesController < ApplicationController
 
       quote.unworked!
 
-      redirect_to work_path(quote.work), flash: { notice: { message: '作業書を作成しました' } } and return
+      redirect_to work_path(quote.work), flash: { show: true, icon: 'success', message: '作業書を作成しました' } and return
     end
 
     if quote.advance? && quote.invoicing? && quote.work.blank?
 
       quote.build_work(division_id: current_user.division_id).save!
 
-      redirect_to work_path(quote.work), flash: { notice: { message: '作業書を作成しました' } } and return
+      redirect_to work_path(quote.work), flash: { show: true, icon: 'success', message: '作業書を作成しました' } and return
     end
 
-    redirect_to :back, flash: { notice: { message: 'ステータスを更新しました' } }
+    redirect_to :back, flash: { show: true, icon: 'success', message: 'ステータスを更新しました' }
   end
 
   ##
@@ -214,7 +214,7 @@ class QuotesController < ApplicationController
       status: :unworked,
       quote_type: quote.quote_type,
       user_id: current_user.id,
-      deliver_at: '',
+      deliver_at: Time.zone.now,
       deliver_type: quote.deliver_type,
       issues_date: '',
       delivery_note_date: '',
@@ -236,10 +236,10 @@ class QuotesController < ApplicationController
       end
     end
 
-    redirect_to edit_quote_path(cl_quote), flash: { notice: { message: '案件を複製しました' } }
+    redirect_to edit_quote_path(cl_quote), flash: { show: true, icon: 'success', message: '案件を複製しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -383,17 +383,17 @@ class QuotesController < ApplicationController
   rescue => e
 
     # エラー時は直前のページへ
-    redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({action: :new}), flash: { show: true, icon: 'info', message: e.message }
   end
 
   def all_lock
 
     raise '管理者以外は案件の一括ロックは出来ません' unless current_user.admin?
     Quote.all_lock(params[:name], params[:status], params[:date1], params[:date2])
-    redirect_to quotes_path, flash: { notice: { message: '案件を一括ロックしました' } }
+    redirect_to quotes_path, flash: { show: true, icon: 'success', message: '案件を一括ロックしました' }
   rescue => e
     # エラー時は直前のページへ
-    redirect_back fallback_location: url_for({action: :new}), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({action: :new}), flash: { show: true, icon: 'info', message: e.message }
   end
 
 

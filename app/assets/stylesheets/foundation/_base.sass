@@ -19,7 +19,6 @@ body
   font-family: application, 'Yu Gothic', 'YuGothic', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'Osaka', 'メイリオ', 'Meiryo', 'ＭＳ Ｐゴシック', 'MS PGothic', 'sans-serif'
   font-feature-settings: 'palt' 1
   line-height: $line-height
-  letter-spacing: #{(100/10000)}em
   font-size: map-get($fontSize, 'base')
   color: map-get($fontColors, 'black')
   max-width: 100%
@@ -41,7 +40,7 @@ textarea, input[type='text']
   resize: none
 textarea, input[type='text'], input[type='number'], select
   // アクセシビリティの観点からinputタグのfont-sizeは16px以上推奨(iPhoneでフォーカス時にズームされない)
-  font-size: 1.6rem
+  font-size: 1.2rem
 h1, h2, h3, h4, h5, h6
   font-weight: normal
   text-rendering: optimizeSpeed
@@ -60,8 +59,6 @@ a
   img
     &:hover
       opacity: .7
-  &:hover
-    color: map-get($fontColors, 'core')
 aside
   color: map-get($fontColors, 'black')
 time

@@ -56,11 +56,11 @@ class CompaniesController < ApplicationController
   def create
 
     company.update! company_params
-
-    redirect_to edit_company_path(company), flash: { notice: { message: '取引先情報を更新しました' } }
+  
+    redirect_to edit_company_path(company), flash: { show: true, icon: 'success', message: '取引先情報を更新しました' }
   rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+  
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -72,8 +72,8 @@ class CompaniesController < ApplicationController
     add_breadcrumb '取引先一覧', path: companies_path
     add_breadcrumb '編集'
   rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -83,11 +83,11 @@ class CompaniesController < ApplicationController
   def update
 
     company.update! company_params
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '取引先情報を更新しました' } }
+    
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '取引先情報を更新しました' }
   rescue => e
-
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -111,9 +111,9 @@ class CompaniesController < ApplicationController
 
     result = Company.import_client(params[:file], params[:company_id])
     if result.present?
-      redirect_to companies_path, flash: { notice: { message: "#{result.join(',')}が登録できませんでした。" } }
+      redirect_to companies_path, flash: { show: true, icon: 'info', message: "#{result.join(',')}が登録できませんでした。" }
     else
-      redirect_to companies_path, flash: { notice: { message: "登録完了しました。" } }
+      redirect_to companies_path, flash: { show: true, icon: 'success', message: '登録完了しました。' }
     end
   end
 

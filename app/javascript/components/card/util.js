@@ -23,7 +23,7 @@ export const generateKey = pre => `${ pre }_${ new Date().getTime() }`;
 export const validProperty = (value, property) => {
 
   if(value) return true;
-  window.alertable({ icon: 'error', message: `${property}を入力してください。`});
+  window.mf_like_modal({ icon: 'error', message: `${property}を入力してください。`});
 };
 
 /**
@@ -35,7 +35,7 @@ export const validProperty = (value, property) => {
 export const missTransition = err => {
   
   console.log(err);
-  window.alertable({ icon: 'error', message: 'ページ遷移に失敗しました。' });
+  window.mf_like_modal({ icon: 'error', message: 'ページ遷移に失敗しました。' });
 };
 
 /**
@@ -127,7 +127,7 @@ export const setPDF = (file, details, canvas, draw_canvas) => {
 
     // Render PDF page
     page.render(renderContext);
-  }).catch(error => window.alertable({ icon: 'error', message: error }));
+  }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
 };
 
 /**
@@ -190,7 +190,7 @@ export const setPDFValue = (file, canvas, draw_canvas, values) => {
     };
 
     page.render(renderContext);
-  }).catch(error => window.alertable({ 'icon': 'error', message: error }));
+  }).catch(error => window.mf_like_modal({ 'icon': 'error', message: error }));
 };
 
 /**

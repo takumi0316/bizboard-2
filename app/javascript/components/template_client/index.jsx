@@ -37,7 +37,7 @@ const Index = props => {
 
       if(state.content_editing) {
 
-        window.alertable({ icon: 'info', message: '編集を終了してください。' });
+        window.mf_like_modal({ icon: 'info', message: '編集を終了してください。' });
         return;
       };
 
@@ -51,7 +51,7 @@ const Index = props => {
     if(props.upload) {
       if(state.content_editing) {
 
-        window.alertable({ icon: 'info', message: '編集を終了してください。' });
+        window.mf_like_modal({ icon: 'info', message: '編集を終了してください。' });
         return;
       };
 
@@ -65,7 +65,7 @@ const Index = props => {
     if(props.upload) {
       if(state.content_editing) {
 
-        window.alertable({ icon: 'info', message: '編集を終了してください。' });
+        window.mf_like_modal({ icon: 'info', message: '編集を終了してください。' });
         return;
       };
 
@@ -83,13 +83,13 @@ const Index = props => {
 
     if(state.apply_layout.id == layout_id) {
 
-      window.alertable({ icon: 'info', message: '既に選択されています。' })
+      window.mf_like_modal({ icon: 'info', message: '既に選択されています。' })
       return
 		}
 
 		if(state.content_editing) {
 
-			window.alertable({ icon: 'info', message: '編集を終了してください。' })
+			window.mf_like_modal({ icon: 'info', message: '編集を終了してください。' })
 			return
 		}
 
@@ -100,12 +100,12 @@ const Index = props => {
       const layout = state.layouts.filter(layout => layout.id == layout_id)
 
       if(props.upload) props.changeLayout(layout[0], res.data.contents)
-      if(!props.upload) window.alertable({ icon: res.data.status, message: 'レイアウトを変更しました。', close_callback: () => {
+      if(!props.upload) window.mf_like_modal({ icon: res.data.status, message: 'レイアウトを変更しました。', close_callback: () => {
 
         if(!props.upload) setState({ ...state, selected: false, apply_layout: layout[0], contents: res.data.contents })
       }})
 
-    }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }))
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }))
 
     // const layout = state.layouts.filter(layout => layout.id == e);
     // setState({ ...state, selected: true, select_layout: layout[0] });
@@ -131,13 +131,13 @@ const Index = props => {
 
       const layout = state.layouts.filter(layout => layout.id == state.select_layout.id);
 
-      if(!props.upload) window.alertable({ icon: res.data.status, message: 'レイアウトを変更しました。', close_callback: () => {
+      if(!props.upload) window.mf_like_modal({ icon: res.data.status, message: 'レイアウトを変更しました。', close_callback: () => {
 
         if(props.upload) props.changeLayout(layout[0], res.data.contents);
         if(!props.upload) setState({ ...state, selected: false, apply_layout: layout[0], contents: res.data.contents });
       }});
 
-    }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }));
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }));
   };
 
 	/**
@@ -185,7 +185,7 @@ const Index = props => {
 		const request = window.xhrRequest.post(url, field)
 		request.then(res => {
 
-      window.alertable({ icon: res.data.status, message: '保存しました！', close_callback: () => {
+      window.mf_like_modal({ icon: res.data.status, message: '保存しました！', close_callback: () => {
 
         if(props.upload) {
 
@@ -194,7 +194,7 @@ const Index = props => {
         }
         if(!props.upload) setState({ ...state, content_editing: false, contents: res.data.contents })
       }})
-		}).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }))
+		}).catch(err => window.mf_like_modal({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }))
 	};
 
 	return(

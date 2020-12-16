@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import Style from './style.sass';
+import React, { useEffect, useState } from 'react'
+import Style from './style.sass'
 
 /**
  *  @version
@@ -9,9 +9,9 @@ const Search = props => {
   const init = {
     show: false,
     cards: { ...props.cards }, 
-  };
+  }
   
-  const [state, setState] = useState(init);
+  const [state, setState] = useState(init)
   
   /**
    *  モーダルを表示する
@@ -19,22 +19,22 @@ const Search = props => {
    */
   const open = e => {
     
-    e.preventDefault();
+    e.preventDefault()
 
-    setState({ ...state, cards: props.cards, show: !state.show });
-  };
+    setState({ ...state, cards: props.cards, show: !state.show })
+  }
   
   /**
    *  モーダルを閉じる
    *  @version 2018/06/10
    */
-  const close = () => setState({ ...init });
+  const close = () => setState({ ...init })
 
   /**
    *  親要素のクリックイベントを引き継がない
    *  @version 2018/06/10
    */
-  const stopPropagation = e =>  e.stopPropagation();
+  const stopPropagation = e =>  e.stopPropagation()
 
   /**
    *  選択時
@@ -42,10 +42,10 @@ const Search = props => {
    */
   const onSelect = e => {
     
-    const card = state.cards[e.target.dataset.number];
-    props.applyCard(card);
-    close();
-  };
+    const card = state.cards[e.target.dataset.number]
+    props.applyCard(card)
+    close()
+  }
 
   /**
    *  表示処理
@@ -59,13 +59,13 @@ const Search = props => {
             { state.cards ?
               <ul className={ Style.CardSearch__list }>
                 { state.cards.map((card, i) => {
-                  const key = `card-${ i }`;
+                  const key = `card-${ i }`
                   return (
                     <li { ...{key} } className={ Style.CardSearch__item }>
                       <h2 className={ Style.CardSearch__itemName } data-number={ i }
                           onClick={ e => onSelect(e) }>{ card.name || '名刺名なし' }</h2>
                     </li>
-                  );
+                  )
                 }) }
               </ul>
               : <div className='c-attention u-mt-30'>{ props.notFound }</div>
@@ -73,10 +73,10 @@ const Search = props => {
             <div onClick={ e => close(e) } className={ Style.CardSearch__closeIcon }>×</div>
           </div>
         </div>
-        : <div className='c-btnMain-standard' onClick={ e => open(e) }>{ props.typeName }</div>
+        : <div className='c-btnMain' onClick={ e => open(e) }>{ props.typeName }</div>
       }
     </div>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

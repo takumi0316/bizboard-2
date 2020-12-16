@@ -1,39 +1,39 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react"
 
 // import libraries
-import Icon           from 'react-evil-icons';
-import DatetimePicker from '../utilities/datetime_picker';
+import Icon           from 'react-evil-icons'
+import DatetimePicker from '../utilities/datetime_picker'
 
 // Ajax
-import Request from "superagent";
-require("superagent-rails-csrf")(Request);
+import Request from "superagent"
+require("superagent-rails-csrf")(Request)
 
 const ProfitSearch = props => {
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const last_month = date.getMonth() - 1;
-  const next_month = date.getMonth() + 2;
-	const day = date.getDate();
+  const date = new Date()
+  const year = date.getFullYear()
+  const last_month = date.getMonth() - 1
+  const next_month = date.getMonth() + 2
+	const day = date.getDate()
 
   const init = {
     startDate: new Date(year, last_month, day),
     endDate: new Date(year, next_month, day),
-	};
+	}
 
-	const [state, setState] = useState(init);
+	const [state, setState] = useState(init)
 
 	useEffect(() => {
 
-		const values = onSearchParams();
-		if(!values) return;
+		const values = onSearchParams()
+		if(!values) return
 
 		setState({
 			...state,
 			startDate: values['date1'],
 			endDate: values['date2']
-		});
-	}, []);
+		})
+	}, [])
 
 	/**
 	 *
@@ -42,8 +42,8 @@ const ProfitSearch = props => {
 	 */
   const setStartDate = prop => {
 
-    setState({ ...state, startDate: prop.value });
-  };
+    setState({ ...state, startDate: prop.value })
+  }
 
 	/**
 	 *
@@ -52,31 +52,31 @@ const ProfitSearch = props => {
 	 */
   const setEndDate = prop => {
 
-    setState({ ...state, endDate: prop.value });
-  };
+    setState({ ...state, endDate: prop.value })
+  }
 
   const onSearchParams = () => {
 
-		const isPresent = location.search.length > 0;
-    if(!isPresent) return;
+		const isPresent = location.search.length > 0
+    if(!isPresent) return
 
     // 最初の1文字 (?記号) を除いた文字列を取得する
-    const query = document.location.search.substring(1);
-		const parameters = query.split('&');
-		let value = new Object();
+    const query = document.location.search.substring(1)
+		const parameters = query.split('&')
+		let value = new Object()
 		parameters.map((parameter) => {
 
 			// パラメータ名とパラメータ値に分割する
-			let element = parameter.split('=');
-			let paramName = decodeURIComponent(element[0]);
-			let paramValue = decodeURIComponent(element[1]);
+			let element = parameter.split('=')
+			let paramName = decodeURIComponent(element[0])
+			let paramValue = decodeURIComponent(element[1])
 
 			// パラメータ名をキーとして連想配列に追加する
-			value[paramName] = decodeURIComponent(paramValue);
-		});
+			value[paramName] = decodeURIComponent(paramValue)
+		})
 
-    return value;
-	};
+    return value
+	}
 
 	/**
 	 * DatetimePickerから渡ってきた値を振り分けてsetStateする
@@ -87,39 +87,38 @@ const ProfitSearch = props => {
 
 		switch(prop.action) {
 		  case 'start_date':
-				setStartDate(prop);
-				break;
+				setStartDate(prop)
+				break
 			case 'end_date':
-				setEndDate(prop);
-				break;
+				setEndDate(prop)
+				break
 			default:
-				break;
-		};
-	};
+				break
+		}
+	}
 
   return (
-    <div className={ 'c-search__work-index u-mt-20' }>
+    <div className='c-search'>
       <Fragment>
 				<label>日付検索 ※外注書に登録された時の日付が検索されます</label>
       </Fragment>
       <form method='get' action='/profits?'>
-        <div className={ 'u-mt-10 c-flex' }>
-					<DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date1' } default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' }
-					                action={ 'start_date' } sortingAction={ sortingAction } index={ true }
+        <div className='c-flex c-flex-alignItems__center'>
+					<Icon name='ei-calendar' size='m'/>
+					<DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker'
+					                action='start_date' sortingAction={ sortingAction } index={ true }
 					/>
-          <Icon name='ei-calendar' size='m'/>
-          <p className={ 'c-search__tilde' }>〜</p>
-					<DatetimePicker key={ state.endDate } type={ 'text' } name={ 'date2' } default_datetime={ state.endDate } class={ 'c-form-text__work-index__datepicker' }
+          <p className='c-search__tilde'>〜</p>
+					<DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class='c-form-text__work-index__datepicker'
 						              action={ 'end_date' } sortingAction={ sortingAction } index={ false }
 					/>
-					<Icon name='ei-calendar' size='m'/>
           <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
-          <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/profits' } >元に戻す</a>
+          <div className='u-ml-10'><input type='submit' name='commit' value='検索' className='c-btnMain'/></div>
+					<div className='u-ml-10'><a className='c-btnMain' href='/profits'>元に戻す</a></div>
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default ProfitSearch;
+export default ProfitSearch

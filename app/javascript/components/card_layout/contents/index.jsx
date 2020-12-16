@@ -25,11 +25,11 @@ const Index = props => {
               <Fragment { ...{key} }>
                 { !layout_content._destroy ?
                   <tr>
-                    <td className='u-ta-center'>{ index + 1 }</td>
-                    <td className='u-ta-center'>{ layout_content.content_type != 'image' ? layout_content.name : '画像' }</td>
-                    <td className='u-ta-center'>{ layout_content.content_flag_name }</td>
-                    <td className='u-ta-center'><button data-number={ index } className='c-btnMain-standard' onClick={ props.openRightPanel }>編集</button></td>
-                    <td className='u-ta-center'><button data-number={ index } className='c-btnMain-primaryA' onClick={ props.removeContent }>削除</button></td>
+                    <td className='u-ta-center u-va-middle'>{ index + 1 }</td>
+                    <td className='u-ta-center u-va-middle'>{ layout_content.content_type !== 'image' ? layout_content.name : '画像' }</td>
+                    <td className='u-ta-center u-va-middle'>{ layout_content.content_flag_name }</td>
+                    <td className='u-ta-center u-va-middle'><button data-number={ index } className='c-btnMain' onClick={ props.openRightPanel }>編集</button></td>
+                    <td className='u-ta-center u-va-middle'><button data-number={ index } className='c-btnMain c-btn-red' onClick={ props.removeContent }>削除</button></td>
                   </tr>
                   : null
                 }
@@ -39,7 +39,7 @@ const Index = props => {
           </tbody>
         </table>
       </div>
-      <button className='u-mt-20 c-btnMain-primaryB' onClick={ props.addContent }>コンテンツを追加する</button>
+      <button className='u-mt-20 c-btnMain c-btn-blue' onClick={ props.addContent }>コンテンツを追加する</button>
     </Fragment>
   );
 };

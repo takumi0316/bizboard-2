@@ -67,14 +67,14 @@ const ProjectEditor = props => {
       if(res.data.status === 'success' && res.data.project.id) {
 
         const redirect = () => location.href = `/projects`
-        window.alertable({ icon: 'success', message: success_message, close_callback: redirect })
+        window.mf_like_modal({ icon: 'success', message: success_message, close_callback: redirect })
         
       } else {
   
-        window.alertable({ icon: 'info', message: err_message })
+        window.mf_like_modal({ icon: 'info', message: err_message })
       }
     }).catch(err => {
-      window.alertable({ icon: 'info', message: err_message })
+      window.mf_like_modal({ icon: 'info', message: err_message })
       console.log('Error Log : ', err)
     })
   }
@@ -161,7 +161,7 @@ const ProjectEditor = props => {
       </div>
 
       <div className='c-overlay-submit'>
-        <div className='c-btnMain-standard c-btn-blue' onClick={ onSubmit }>{ props.project.id ? '更新する' : '作成する' }</div>
+        <button className='c-btnMain c-btn-blue' onClick={ onSubmit }>{ props.project.id ? '更新する' : '作成する' }</button>
       </div>
     </div>
   )

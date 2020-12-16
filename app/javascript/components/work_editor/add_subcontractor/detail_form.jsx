@@ -25,9 +25,9 @@ const DetailForm = props => {
                   const key = detail ? 'subcontractor_detail' + detail.id + index1 : 'subcontractor_detail' + index1;
                   return (
                     <tr { ...{key} }>
-                      <td className='u-va-top'><button className='c-btnMain2-primaryA' value={ detail.id } onClick={ e => props.workSubcontractorDetailDestroy(e, props.index, index1) }>ー</button></td>
-                      <td className='u-va-top u-ta-center'>{ index1 + 1 }</td>
-                      <td className='u-a-top'><textarea rows='3' cols='30' className='c-form-text__work-show-input__textarea' defaultValue={ detail.order_contents || '' } onChange={ e => props.setOrderContents(e, props.index, index1) } placeholder={ '図面製本' }/></td>
+                      <td className='u-ta-center u-va-middle'><button className='c-btnMain c-btn-red' value={ detail.id } onClick={ e => props.workSubcontractorDetailDestroy(e, props.index, index1) }>削除</button></td>
+                      <td className='u-ta-center u-va-middle'>{ index1 + 1 }</td>
+                      <td className='u-va-middle'><textarea rows='3' cols='30' className='c-form-text__work-show-input__textarea' defaultValue={ detail.order_contents || '' } onChange={ e => props.setOrderContents(e, props.index, index1) } placeholder='図面製本'/></td>
                       <td><textarea className='c-form-textarea__work-show-input__textarea' rows='3' cols='30' placeholder={ 'AIデータ, アウトライン済み1ファイル' } defaultValue={ detail.deliver_method || '' } onChange={ e => props.setDeliverMethod(e, props.index, index1) }/></td>
                       <td><textarea className='c-form-textarea__work-show-input__textarea' rows='3' cols='30' placeholder={ '表紙:ダイヤボード' } defaultValue={ detail.specification || '' } onChange={ e => props.setSpecification(e, props.index, index1) }/></td>
                       <td className='u-va-top'><input className='c-form-text__work-show-input6' type='number' defaultValue={ detail.count } onChange={ e => props.setCount(e, props.index, index1) }/></td>
@@ -40,7 +40,7 @@ const DetailForm = props => {
               : null
             }
             <tr>
-              <td colSpan='8'><button className='c-btnMain2-primaryB' value={ props.work_subcontractor.id } onClick={ e => props.workSubcontractorDetailCreate(e, props.index) }>＋</button></td>
+              <td colSpan='8'><button className='c-btnMain c-btn-blue' value={ props.work_subcontractor.id } onClick={ e => props.workSubcontractorDetailCreate(e, props.index) }>追加</button></td>
             </tr>
           </tbody>
         </table>

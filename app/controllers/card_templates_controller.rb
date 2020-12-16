@@ -72,10 +72,10 @@ class CardTemplatesController < ApplicationController
 
     card_template.destroy!
 
-    redirect_to card_templates_path, flash: { notice: { message: 'テンプレートを削除しました。' } }
+    redirect_to card_templates_path, flash: { show: true, icon: 'success', message: 'テンプレートを削除しました。' }
   rescue => e
 
-    redirect_to card_templates_path, flash: { notice: { message: e.message } }
+    redirect_to card_templates_path, flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -87,10 +87,10 @@ class CardTemplatesController < ApplicationController
 
     dup_card_template.update! name: "#{ card_template.name}＿複製＿#{ Time.zone.now.strftime("%Y年 %m月 %d日") }"
 
-    redirect_to edit_card_template_path(dup_card_template), flash: { notice: { message: '案件を複製しました' } }
+    redirect_to edit_card_template_path(dup_card_template), flash: { show: true, icon: 'success', message: '案件を複製しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##

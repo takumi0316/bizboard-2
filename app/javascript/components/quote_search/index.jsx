@@ -99,44 +99,47 @@ const QuoteSearch = props => {
   };
 
   return (
-    <div className={ 'c-search__work-index u-mt-20' }>
-      <Fragment>
+    <div className='c-search'>
+      <div>
         <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
-  	    <span className={ 'c-form__required u-ml-10' }>現在{ props.count_number }件表示されています</span>
-      </Fragment>
+  	    <span className='c-form__required u-ml-10'>現在{ props.count_number }件表示されています</span>
+      </div>
       <form method='get' action='/quotes?count='>
-        <div className={ 'u-mt-10 c-flex' }>
-          <input className={ 'c-form-text__work-index' } type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期' />
-          <select name='status' className={ 'u-ml-10 c-form-select__work-index' } value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
-            <option value=''>ステータス</option>
-            { Object.keys(ENUM_STATUS).map((item, index) => {
-              const key = 'status-' + index;
-              return (
-                <option key={ key } value={ item }>{ ENUM_STATUS[item] }</option>
-              );
-            }) }
-          </select>
-          <DatetimePicker key={ state.startDate } type={ 'text' } name={ 'date1' } default_datetime={ state.startDate } class={ 'c-form-text__work-index__datepicker u-ml-10' }
-                          action={ 'start_date' } sortingAction={ sortingAction } index={ true }
-          />
+        <div className='c-flex c-flex-alignItems__center'>
+          <div style={{ width: '250px' }}><input className='c-form-text' type='text' name='name' defaultValue={ state.name } placeholder='件名/お客様/自社部署名/納期' /></div>
+          <div className='u-ml-10 c-form-selectWrap'>
+            <select name='status' className='c-form-select' value={ state.status } onChange={ e => setState({ ...state, status: e.target.value }) }>
+              <option value=''>ステータス</option>
+              { Object.keys(ENUM_STATUS).map((item, index) => {
+                const key = 'status-' + index;
+                return (
+                  <option key={ key } value={ item }>{ ENUM_STATUS[item] }</option>
+                );
+              }) }
+            </select>
+          </div>
           <Icon name='ei-calendar' size='m'/>
-          <p className={ 'c-search__tilde' }>〜</p>
-          <DatetimePicker key={ state.endDate } type={ 'text' } name={ 'date2' } default_datetime={ state.endDate } class={ 'c-form-text__work-index__datepicker' }
-          	              action={ 'end_date' } sortingAction={ sortingAction } index={ false }
+          <DatetimePicker key={ state.startDate } type='text' name='date1' default_datetime={ state.startDate } class='c-form-text__work-index__datepicker'
+                          action='start_date' sortingAction={ sortingAction } index={ true }
           />
-          <Icon name='ei-calendar' size='m'/>
+          <p className='c-search__tilde'>〜</p>
+          <DatetimePicker key={ state.endDate } type='text' name='date2' default_datetime={ state.endDate } class='c-form-text__work-index__datepicker'
+          	              action='end_date' sortingAction={ sortingAction } index={ false }
+          />
           <input type='hidden' name='count' value='1'/>
-          <input type='submit' name='commit' value='検索' className={ 'u-ml-10 c-btnMain-standard' }/>
-          <a className={ 'u-va-middle u-ml-10 c-btnMain-primaryA' } href={ '/quotes' } >元に戻す</a>
-          { props.search_status == '検索' ?
-            <a className='u-va-middle u-ml-10 c-btnMain-primaryB' data-method="post" href={ `/quotes/all_lock?name=${state.name}&status=${state.status}&date1=${state.startDate}&date2=${state.endDate}` } >一括ロック</a>
+          <div className='u-ml-10'><input type='submit' name='commit' value='検索' className='c-btnMain'/></div>
+          <div className='u-ml-10'><a className='c-btnMain' href='/quotes' >元に戻す</a></div>
+          { props.search_status === '検索' ?
+            <div className='u-ml-10'>
+              <a className='c-btnMain' data-method='post' href={ `/quotes/all_lock?name=${state.name}&status=${state.status}&date1=${state.startDate}&date2=${state.endDate}` } >一括ロック</a>
+            </div>
             :
             null
           }
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default QuoteSearch;
+export default QuoteSearch

@@ -1,7 +1,7 @@
-import React from 'react';
-import Style from './style.sass';
+import React from 'react'
+import Style from './style.sass'
 
-import DropZone from './drop_zone';
+import DropZone from './drop_zone'
 import Header   from './header'
 
 const CardTemplate = props => {
@@ -20,7 +20,7 @@ const CardTemplate = props => {
         :
         <DropZone onDrop={ props.onDrop }/>
       }
-      { /* <button className='u-mt-10 c-btnMain-standard' onClick={ () => props.unSetPDF() }>テンプレートを変更する</button> */ }
+      { /* <button className='u-mt-10 c-btnMain' onClick={ () => props.unSetPDF() }>テンプレートを変更する</button> */ }
       <div className='u-mt-30'>
         <Header template={ props.template } status={ props.status } addDetail={ props.addDetail } onChangeDetail={ props.onChangeDetail }/>
       </div>
@@ -28,4 +28,4 @@ const CardTemplate = props => {
   );
 };
 
-export default CardTemplate;
+export default CardTemplate

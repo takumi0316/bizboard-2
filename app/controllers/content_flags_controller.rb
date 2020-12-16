@@ -41,7 +41,7 @@ class ContentFlagsController < ApplicationController
 
     content_flag.update! content_flag_params
 
-    redirect_to content_flags_path, flash: { notice: { message: 'フラグを作成しました。' } }
+    redirect_to content_flags_path, flash: { show: true, icon: 'success', message: 'フラグを作成しました。' }
   rescue => e
 
     redirect_to_index e
@@ -57,7 +57,7 @@ class ContentFlagsController < ApplicationController
 
     content_flag.update! content_flag_params
 
-    redirect_to content_flags_path, flash: { notice: { message: 'フラグを更新しました。' } }
+    redirect_to content_flags_path, flash: { show: true, icon: 'success', message: 'フラグを更新しました。' }
   rescue => e
 
     redirect_to_index e
@@ -67,7 +67,7 @@ class ContentFlagsController < ApplicationController
 
     content_flag.destroy!
 
-    redirect_to content_flags_path, flash: { notice: { message: 'フラグを削除しました。' } }
+    redirect_to content_flags_path, flash: { show: true, icon: 'success', message: 'フラグを削除しました。' }
   rescue => e
 
     redirect_to_index e
@@ -86,7 +86,7 @@ class ContentFlagsController < ApplicationController
 
     def redirect_to_index e
 
-      redirect_to content_flags_path, flash: { notice: { message: e.message } }
+      redirect_to content_flags_path, flash: { show: true, icon: 'info', message: e.message }
     end
 
     ##
@@ -99,6 +99,6 @@ class ContentFlagsController < ApplicationController
 
     rescue
 
-      redirect_to root_path, flash: { notice: { message: '許可されない操作です。' } }
+      redirect_to root_path, flash: { show: true, icon: 'info', message: '許可されない操作です。' }
     end
 end

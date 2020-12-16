@@ -107,7 +107,7 @@ export default class ClientGenerate extends React.Component {
     const status = this.state.status;
     const value = e.target.value;
 
-    if(!value) window.alertable({ icon: 'info', message: '値を入力して下さい。'});
+    if(!value) window.mf_like_modal({ icon: 'info', message: '値を入力して下さい。'});
 
     templates[status ? 0 : 1].values[value_index].value = value;
     const values = templates[status ? 0 : 1].values;
@@ -132,8 +132,8 @@ export default class ClientGenerate extends React.Component {
         if(!this.state.client) this.setState({ company: props.company, division: props.division, clients: res.data.clients, cards: res.data.cards });
       };
 
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
-    }).catch(error => window.alertable({ icon: 'error', message: error.message }));
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
+    }).catch(error => window.mf_like_modal({ icon: 'error', message: error.message }));
   };
 
   /**
@@ -183,7 +183,7 @@ export default class ClientGenerate extends React.Component {
       });
 
       this.setState({ card: card, templates: mapTemplatesInit }, () => this.getConvertPDF());
-    }).catch(error =>  window.alertable({ icon: 'error', message: error.message }));
+    }).catch(error =>  window.mf_like_modal({ icon: 'error', message: error.message }));
   };
 
   /**
@@ -214,8 +214,8 @@ export default class ClientGenerate extends React.Component {
           };
           if(!bool) this.reverse_file = file;
         };
-        if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message });
-      }).catch(err => window.alertable({ icon: 'error', message: err }));
+        if(res.data.status == 'error') window.mf_like_modal({ icon: 'error', message: res.data.message });
+      }).catch(err => window.mf_like_modal({ icon: 'error', message: err }));
     });
   };
 
@@ -250,12 +250,12 @@ export default class ClientGenerate extends React.Component {
 
       this.loadingRef.finish();
       const redirect = window.location.href = `/card_clients/${res.data.card_client.id}/front_preview/`;
-      if(res.data.status == 'success') window.alertable({ icon: 'success', message: '作成に成功しました。', close_callback: () => redirect() });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status == 'success') window.mf_like_modal({ icon: 'success', message: '作成に成功しました。', close_callback: () => redirect() });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(error => {
 
       this.loadingRef.finish();
-      window.alertable({ icon: 'error', message: error.message });
+      window.mf_like_modal({ icon: 'error', message: error.message });
     });
     this.loadingRef.start();
   };
@@ -265,9 +265,9 @@ export default class ClientGenerate extends React.Component {
       <div>
         <div className='u-mt-20'>
           { this.state.default ?
-            <button className='c-btnMain-primaryA' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
+            <button className='c-btnMain' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
             :
-            <button className='c-btnMain-primaryB' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
+            <button className='c-btnMain' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
           }
         </div>
         <Division company={ this.state.company } divisions={ this.state.divisions } division={ this.state.division } new={ this.props.new } typeName={ DIVISION_TYPE_NAME } notFound={ DIVISION_NOT_FOUND } applyDivision={ this.applyDivision }/>
@@ -288,7 +288,7 @@ export default class ClientGenerate extends React.Component {
           : <div>テンプレートを選択してください。</div>
         }
         <div className='c-overlay-submit'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>作成する</button>
+          <button className='c-btnMain c-btn-blue' onClick={ e => this.save(e) }>作成する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node } message='展開しています' />
       </div>

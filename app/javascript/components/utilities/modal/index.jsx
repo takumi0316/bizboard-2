@@ -81,7 +81,7 @@ export default class Modal extends React.Component {
    */
   unBindKeyEvents() {
     
-    document.onkeydown = this.previousKeyDownEvent;
+    document.onkeydown = this.previousKeyDownEvent
   }
 
   /**
@@ -109,13 +109,15 @@ export default class Modal extends React.Component {
   render() {
 
     return (
-      <div className={Style.Modal}>
+      <div className={ Style.Modal }>
         { this.state.show ?
-          <div className={Style.Modal__overlay} onClick={::this.close}>
-            <div className={Style.Modal__inner} onClick={this._stopPropagation}>
-              {this.props.yield}
-              <div onClick={::this.close} className={`c-btnMain-negative ${Style.Modal__button}`}>閉じる</div>
-              <div onClick={::this.close} className={Style.Modal__closeIcon}>×</div>
+          <div className={ Style.Modal__overlay } onClick={ ::this.close }>
+            <div className={ Style.Modal__inner } onClick={ this._stopPropagation }>
+              { this.props.yield }
+              <div className='c-flex c-flex__center'>
+                <div onClick={ ::this.close } className={ `c-btnMain ${Style.Modal__button}` }>閉じる</div>
+              </div>
+              <div onClick={ ::this.close } className={ Style.Modal__closeIcon }>×</div>
             </div>
           </div>
           : null

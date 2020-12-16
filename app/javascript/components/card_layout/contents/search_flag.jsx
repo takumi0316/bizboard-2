@@ -52,7 +52,7 @@ const SearchFlag = props => {
     const request = window.xhrRequest.get(url);
     request.then(res => {
       setState({ ...state, show: true, flags: res.data.flags });
-    }).catch(error => window.alertable({ icon: 'error', message: error }));
+    }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
   };
   
   /**
@@ -78,7 +78,7 @@ const SearchFlag = props => {
             <div>
               <div className={ Style.SearchFlag__form }>
                 <input type='text' ref={ inputEl } className={ Style.SearchFlag__input } placeholder='フラグ名で検索' onChange={ onChange }/>
-                <div onClick={ onChange } className='c-btnMain-standard u-ml-10'>検索</div>
+                <div onClick={ onChange } className='c-btnMain u-ml-10'>検索</div>
               </div>
               { state.flags.length > 0 ?
                 <ul className={ Style.SearchFlag__list }>

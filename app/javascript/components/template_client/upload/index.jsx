@@ -70,7 +70,7 @@ const Upload = props => {
 
     if(!isTemplateID) {
 
-      window.alertable({ icon: 'info', message: 'テンプレートIDが違います。', close_callback: () => loading_ref.current.finish() });
+      window.mf_like_modal({ icon: 'info', message: 'テンプレートIDが違います。', close_callback: () => loading_ref.current.finish() });
       return;
     };
 
@@ -85,7 +85,7 @@ const Upload = props => {
 
       loading_ref.current.finish();
       setState({ ...state, uploaded: true,  head_layouts: res.data.head_layouts, tail_layouts: res.data.tail_layouts, clients: res.data.clients });
-    }).catch(err => window.alertable({ icon: 'info', message: err, close_callback: () => loading_ref.current.finish() }));
+    }).catch(err => window.mf_like_modal({ icon: 'info', message: err, close_callback: () => loading_ref.current.finish() }));
   };
 
   const prevPagination = e => {
@@ -154,7 +154,7 @@ const Upload = props => {
     e.preventDefault();
 
     const url = () => location.href = `/template_clients?id=${ props.card_template.id }`;
-    window.alertable({ icon: 'success', message: '保存しました。', close_callback: () => url() })
+    window.mf_like_modal({ icon: 'success', message: '保存しました。', close_callback: () => url() })
   };
 
   return(
@@ -182,7 +182,7 @@ const Upload = props => {
             <Pagination length={ state.clients.length - 1 } paginate_index={ state.paginate_index } prevPagination={ prevPagination } nextPagination={ nextPagination }/>
           </div>
           <div className='u-mt-15'>
-            <button className='c-btnMain-standard' onClick={ changeLayoutType }>{ state.head ? '裏面設定' : '表面設定' }</button>
+            <button className='c-btnMain' onClick={ changeLayoutType }>{ state.head ? '裏面設定' : '表面設定' }</button>
           </div>
           <TemplateClient upload={ true } head={ state.head } card_template_id={ props.card_template.id } client_id={ state.clients[state.paginate_index].client_id } paginate_index={ state.paginate_index }
                           layouts={ state.head ? state.head_layouts : state.tail_layouts } contents={ state.head ? state.clients[state.paginate_index].head_layout_contents : state.clients[state.paginate_index].tail_layout_contents }
@@ -191,7 +191,7 @@ const Upload = props => {
           />
 
         <div className='c-flex__center'>
-          <button className='c-btnMain-standard' onClick={ redirect }>保存する</button>
+          <button className='c-btnMain c-btn-blue' onClick={ redirect }>保存する</button>
         </div>
 
         </Fragment>

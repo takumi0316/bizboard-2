@@ -1,8 +1,9 @@
 = render 'layouts/_partials/tabmenu'
 
-= react_component('QuotationSearch')
+.u-mt-15
+= react_component :QuotationSearch
 
-.c-table.u-mt-30
+.c-table.u-mt-15
   table
     thead
       tr
@@ -15,7 +16,7 @@
     tbody
       - quotes.each do |r|
         tr
-          td.p-tasks__unread
+          td.u-ta-center.u-va-middle.p-tasks__unread
             - if r.deliver_at.blank?
               = r.quote_number
             - else

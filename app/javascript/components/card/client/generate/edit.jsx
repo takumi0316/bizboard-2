@@ -65,8 +65,8 @@ export default class ClientGenerate extends React.Component {
             resolve(true);
           }).then(res => this.loadingRef.finish());
         };
-      if(res.data.status == 'error') window.alertable({ icon: 'error', message: res.data.message, close_callback: () => this.loadingRef.finish() });
-    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }));
+      if(res.data.status == 'error') window.mf_like_modal({ icon: 'error', message: res.data.message, close_callback: () => this.loadingRef.finish() });
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }));
   };
 
   /**
@@ -79,7 +79,7 @@ export default class ClientGenerate extends React.Component {
     let template = JSON.parse(JSON.stringify(this.state.template));
     const value = e.target.value;
 
-    if(!value) window.alertable({ icon: 'info', message: '値を入力して下さい。'});
+    if(!value) window.mf_like_modal({ icon: 'info', message: '値を入力して下さい。'});
 
     template.values[value_index].value = value;
     const values = template.values;
@@ -98,13 +98,13 @@ export default class ClientGenerate extends React.Component {
     const file = this.state.template.file;
     if(!file) {
       
-      window.alertable({ icon: 'error', message: 'テンプレートを登録してください。' });
+      window.mf_like_modal({ icon: 'error', message: 'テンプレートを登録してください。' });
       return
     };
     
     if(this.state.change_status) {
       
-      window.alertable({ icon: 'error', message: '変更内容を保存してください。' });
+      window.mf_like_modal({ icon: 'error', message: '変更内容を保存してください。' });
       return;
     };
     
@@ -122,13 +122,13 @@ export default class ClientGenerate extends React.Component {
     const file = this.state.template.file;
     if(!file) {
       
-      window.alertable({ icon: 'error', message: 'テンプレートを登録してください。' });
+      window.mf_like_modal({ icon: 'error', message: 'テンプレートを登録してください。' });
       return
     };
   
     if(this.state.change_status) {
     
-      window.alertable({ icon: 'error', message: '変更内容を保存してください。' });
+      window.mf_like_modal({ icon: 'error', message: '変更内容を保存してください。' });
       return;
     };
   
@@ -165,11 +165,11 @@ export default class ClientGenerate extends React.Component {
 
       this.setState({ change_status: res.data.status == 'success' ? false : true }, () => {
         
-        window.alertable({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : res.data.messsage, close_callback: () => this.loadingRef.finish() });
+        window.mf_like_modal({ icon: res.data.status, message: res.data.status == 'success' ? '更新に成功しました。' : res.data.messsage, close_callback: () => this.loadingRef.finish() });
       });
     }).catch(error => {
 
-      window.alertable({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish() });
+      window.mf_like_modal({ icon: 'error', message: error.message, close_callback: () => this.loadingRef.finish() });
     });
     this.loadingRef.start();
   };
@@ -179,9 +179,9 @@ export default class ClientGenerate extends React.Component {
       <div>
         <div className='u-mt-20'>
           { this.state.default ?
-            <button className='c-btnMain-primaryA' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
+            <button className='c-btnMain' onClick={ () => this.setState({ default: !this.state.default })}>デフォルト設定を解除する</button>
             :
-            <button className='c-btnMain-primaryB' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
+            <button className='c-btnMain' onClick={ () => this.setState({ default: !this.state.default })}>デフォルトに設定する</button>
           }
         </div>
         <Division company={ this.state.company } division={ this.state.division } typeName={ DIVISION_TYPE_NAME } notFound={ DIVISION_NOT_FOUND } applyDivision={ this.applyDivision }/>
@@ -190,7 +190,7 @@ export default class ClientGenerate extends React.Component {
         <Fragment>
         { this.props.both == 2 ?
           <div className='u-mt-10'>
-            <button className='c-btnMain-primaryC'
+            <button className='c-btnMain'
               onClick={ e => this.props.template_type ? this.reverse_transition(e) : this.front_transition(e) }>{ this.props.template_type ? '裏面を設定する' : '表面を設定する' }</button>
           </div>
           : null
@@ -198,7 +198,7 @@ export default class ClientGenerate extends React.Component {
          <Template client_template={ this.state.template } onChangeValue={ this.onChangeValue }/>
         </Fragment>
         <div className='c-overlay-submit'>
-          <button className='c-btnMain-primaryB' onClick={ e => this.save(e) }>更新する</button>
+          <button className='c-btnMain c-btn-blue' onClick={ e => this.save(e) }>更新する</button>
         </div>
         <Loading ref={ node => this.loadingRef = node }/>
       </div>

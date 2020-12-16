@@ -84,7 +84,7 @@ export default class ProjectViewer extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain-standard' onClick={::this._open}>詳細を確認</div>
+      <div className='c-btnMain' onClick={::this._open}>詳細を確認</div>
     );
   }
 }

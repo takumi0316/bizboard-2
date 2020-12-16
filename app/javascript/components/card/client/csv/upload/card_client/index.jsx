@@ -70,7 +70,7 @@ const CardClient = props => {
         <CardTemplate client_template={ props.card_clients[state.paginate_count].templates[1] } paginate_count={ state.paginate_count } status={ state.status } onChangeValue={ props.onChangeValue }/>
       }
       <div className='c-overlay-submit'>
-        <button className='c-btnMain-primaryB' onClick={ e => props.save(e) }>保存</button>
+        <button className='c-btnMain c-btn-blue' onClick={ e => props.save(e) }>保存</button>
       </div>
     </Fragment>
   );

@@ -3,72 +3,26 @@
 // ==============================================
 
 %btn
-  position: relative
-  display: inline-block
-  line-height: 42px
-  padding: 0 10px
-  border-radius: 2px
-  font-size: map-get($fontSize, 'base')
+  border: 1px solid #d2d4d8
+  border-radius: 5px
   text-decoration: none
   text-align: center
-  color: map-get($fontColors, 'white')
-  background-color: map-get(map-get($buttonColors, 'standard'), 'default')
-  background-clip: border-box
   cursor: pointer
-  border: 2px solid transparent
-  box-shadow: rgba(map-get($layoutColors, 'black'), .2) 0 2px 2px
-  > a, &:visited, &:hover
-    text-decoration: none
-  &:hover
-    color: white
-    text-decoration: none
+  padding: 6px 11px
+  min-height: 32px
+  font-weight: bold
+  font-size: 12px
 .c-btn
   &Main
-    @each $type in map-keys($buttonColors)
-      &-#{$type}
-        @extend %btn
-        background-color: map-get(map-get($buttonColors, $type), 'default')
-        &:hover
-          background-color: map-get(map-get($buttonColors, $type), 'hover')
-        &:disabled, &[disabled]
-          opacity: .3
-          background-color: map-get(map-get($buttonColors, $type), 'default')
-          cursor: default
+    @extend %btn
+    background-image: linear-gradient(to bottom, #fff, #f3f0ea, #e6e2db)
+    color: #585757
+    &:hover
+    &:disabled, &[disabled]
+  &Google
+    @extend %btn
+    color: #ffffff
 
-  &Main2
-    @each $type in map-keys($buttonColors)
-      &-#{$type}
-        @extend %btn
-        line-height: 31px
-        width: 42.5px
-        padding: 0
-        background-color: map-get(map-get($buttonColors, $type), 'default')
-        &:hover
-          background-color: map-get(map-get($buttonColors, $type), 'hover')
-        &:disabled, &[disabled]
-          opacity: .3
-          background-color: map-get(map-get($buttonColors, $type), 'default')
-          cursor: default
-
-  &Sub
-    @each $type in map-keys($buttonColors)
-      &-#{$type}
-        @extend %btn
-        background-color: transparent
-        border-color: map-get(map-get($buttonColors, $type), 'default')
-        color: map-get(map-get($buttonColors, $type), 'default')
-        font-weight: bold
-        &:hover
-          background-color: map-get(map-get($buttonColors, $type), 'default')
-          border-color: map-get(map-get($buttonColors, $type), 'default')
-          color: map-get($fontColors, 'white')
-          font-weight: bold
-        &:disabled, &[disabled]
-          opacity: .3
-          background-color: transparent
-          border-color: map-get(map-get($buttonColors, $type), 'default')
-          color: map-get(map-get($buttonColors, $type), 'default')
-          cursor: default
   &-icon
     &::after
       content: ''
@@ -84,13 +38,11 @@
     &:hover
       background-color: map-get(map-get($buttonColors, 'standard'), 'hover')
   &-red
-    background-color: #ea3033
-    &:hover
-      background-color: #ef5e61
+    color: #cc0000
   &-blue
-    background-color: #3664c9
-    &:hover
-      background-color: #5e83d4
+    color: #3b8dcd
+  &-google
+    color: #dd4b39
   &-orange
     background-color: #ff8c00
     &:hover

@@ -11,4 +11,4 @@
         span.c-form__required.u-ml-10 必須
       = f.select :content_type, ContentFlag.content_types_i18n.invert, {}, { class: 'c-form-dateselect' }
 
-  .u-mt-15 = f.submit content_flag.new_record? ? '作成する' : '更新する', class: 'c-btnMain-standard'
+  .u-mt-15 = f.submit content_flag.new_record? ? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'

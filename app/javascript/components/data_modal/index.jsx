@@ -41,7 +41,7 @@ export default class DataModal extends React.Component {
   componentDidMount() {
 
     // グローバルからの呼び出し
-    window.alertable = (options) => {
+    window.mf_like_modal = (options) => {
 
       let args = {};
 
@@ -170,14 +170,16 @@ export default class DataModal extends React.Component {
         { show ?
           <div className={Style.DataModal__overlay} onClick={this.close}>
             <div className={`${Style.DataModal__inner} ${icon ? Style['DataModal__'+icon] : null}`} onClick={this._stopPropagation}>
-              { icon && icon == 'info' ? <div className={Style.DataModal__icon}><InfoIcon /></div> : null }
-              { icon && icon == 'success' ? <div className={Style.DataModal__icon}><SuccessIcon /></div> : null }
-              { icon && icon == 'warning' ? <div className={Style.DataModal__icon}><WarningIcon /></div> : null }
-              { icon && icon == 'error' ? <div className={Style.DataModal__icon}><ErrorIcon /></div> : null }
+              { icon && icon === 'info' ? <div className={Style.DataModal__icon}><InfoIcon /></div> : null }
+              { icon && icon === 'success' ? <div className={Style.DataModal__icon}><SuccessIcon /></div> : null }
+              { icon && icon === 'warning' ? <div className={Style.DataModal__icon}><WarningIcon /></div> : null }
+              { icon && icon === 'error' ? <div className={Style.DataModal__icon}><ErrorIcon /></div> : null }
               { title ? <div className={Style.DataModal__title}>{title}</div> : null }
               <div className={Style.DataModal__message} dangerouslySetInnerHTML={{__html: message}}></div>
-              { confirm ? <div onClick={this.do} className={`c-btnMain-primaryA ${Style.DataModal__button}`}>続行する</div> : null }
-              <div onClick={this.close} className={`c-btnMain-negative ${Style.DataModal__button}`}>閉じる</div>
+              { confirm ? <div className='c-flex__center'><button onClick={this.do} className={`c-btnMain ${Style.DataModal__button}`}>続行する</button></div> : null }
+              <div className='u-mt-10 c-flex__center'>
+                <button onClick={this.close} className='c-btnMain'>閉じる</button>
+              </div>
               <div onClick={this.close} className={Style.DataModal__closeIcon}>
                 <Icon name='close' size='l' color='darkGray'/>
               </div>

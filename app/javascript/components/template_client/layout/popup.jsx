@@ -53,8 +53,8 @@ const Popup = props => {
           <div className={ Style.Select__inner }>
             <img src={ state.layout.url }/>
             <div className='u-mt-30'>
-              <button className='c-btnMain-standard' onClick={ apply }>適用する</button>
-              <button className='u-ml-20 c-btnMain-primaryC' onClick={ clear }>やっぱやめる</button>
+              <button className='c-btnMain' onClick={ apply }>適用する</button>
+              <button className='u-ml-20 c-btnMain' onClick={ clear }>やっぱやめる</button>
             </div>
           </div>
         </div>

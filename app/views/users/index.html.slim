@@ -26,6 +26,6 @@
           / ライター登録に承認が必要な場合に表示
           - unless SiteConfig.allow_inactive_user
             td = r.status_i18n
-          td = link_to '編集', edit_user_path(r), class: 'c-btnMain-standard'
+          td = link_to '編集', edit_user_path(r), class: 'c-btnMain c-btn-blue'
 
 = render 'layouts/_partials/pagination'

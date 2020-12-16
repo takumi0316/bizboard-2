@@ -51,7 +51,7 @@ const Layout = props => {
     const request = window.xhrRequest.get(url);
     request.then(res => {
       setState({ ...state, show: true, layouts: res.data.layouts });
-    }).catch(error => window.alertable({ icon: 'error', message: error }));
+    }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
   };
   
   /**
@@ -73,7 +73,7 @@ const Layout = props => {
             <div>
               <div className={ Style.Search__form }>
                 <input type='text' ref={ inputEl } className={ Style.Search__input } placeholder='レイアウト名で検索' onChange={ onChange }/>
-                <div onClick={ onChange } className='c-btnMain-standard u-ml-10'>検索</div>
+                <div onClick={ onChange } className='c-btnMain u-ml-10'>検索</div>
               </div>
               { state.layouts.length > 0 ?
                 <ul className={ Style.Search__list }>
@@ -93,7 +93,7 @@ const Layout = props => {
             <div onClick={ close } className={ Style.Search__closeIcon }>×</div>
           </div>
          </div>
-        : <div className='u-mt-10 c-btnMain-standard' onClick={ open }>レイアウト登録</div>
+        : <div className='u-mt-10'><button className='c-btnMain c-btn-blue' onClick={ open }>レイアウト登録</button></div>
       }
     </Fragment>
   );

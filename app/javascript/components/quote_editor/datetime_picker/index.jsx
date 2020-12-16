@@ -179,7 +179,7 @@ export default class DatetimePicker extends React.Component {
           <div className={Style.DatetimePicker__label}>分</div>
 
           <div className='u-mt-30 u-ta-right'>
-            <div onClick={::this._apply} className='c-btnMain-standard'>適用する</div>
+            <button onClick={::this._apply} className='c-btnMain'>適用する</button>
           </div>
 
           <div className={Style.DatetimePicker__close} onClick={::this._close}>
@@ -188,7 +188,7 @@ export default class DatetimePicker extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain-standard' onClick={::this._open}>日時を指定する</div>
+      <button className='c-btnMain' onClick={::this._open}>日時を指定する</button>
     );
   }
 }

@@ -1,16 +1,16 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react'
 
 // import libraries
-import CustomerAddress from './customer_address';
-import DatetimePicker  from '../utilities/datetime_picker';
+import CustomerAddress from './customer_address'
+import DatetimePicker  from '../utilities/datetime_picker'
 
 const InvoicePdfGenrator = props => {
 
-  const attentions = ['請求書', '納品・請求書'];
+  const attentions = ['請求書', '納品・請求書']
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 2;
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 2
 
   const init = {
     date: props.invoice ? props.invoice.date : date,
@@ -19,9 +19,9 @@ const InvoicePdfGenrator = props => {
     remarks: props.invoice ? props.invoice.remarks : props.quote.remarks,
     memo: props.invoice ? props.invoice.memo : props.quote.memo,
     attention: props.invoice ? props.invoice.attention || '請求書' : '請求書'
-  };
+  }
 
-  const [state, setState] = useState(init);
+  const [state, setState] = useState(init)
 
   /**
    * 取引先が登録されているか確認
@@ -32,18 +32,18 @@ const InvoicePdfGenrator = props => {
     let send = {
       check: false,
       message: ''
-    };
+    }
 
     if(!props.client) {
 
       send = {
         check: true,
         message: '取引先を案件で登録してください。'
-      };
-	  };
+      }
+	  }
 
-    return send;
-  };
+    return send
+  }
 
   /**
    * 件名が登録されているか確認
@@ -54,54 +54,54 @@ const InvoicePdfGenrator = props => {
     let send = {
       check: false,
       message: ''
-    };
+    }
 
     if(!state.subject) {
 
       send = {
         check: true,
         message: '件名を入力してください。'
-      };
-    };
+      }
+    }
 
-    return send;
-  };
-
-  /**
-   *
-   * @version 2020/02/18
-   */
-  const setDate = prop => setState({ ...state, date: prop.value });
+    return send
+  }
 
   /**
    *
    * @version 2020/02/18
    */
-  const setExpiration = prop => setState({ ...state, expiration: prop.value });
+  const setDate = prop => setState({ ...state, date: prop.value })
+
+  /**
+   *
+   * @version 2020/02/18
+   */
+  const setExpiration = prop => setState({ ...state, expiration: prop.value })
 
   /**
    * 件名を更新する
    * @version 2020/02/18
    */
-  const setSubject = e => setState({ ...state, subject: e.target.value });
+  const setSubject = e => setState({ ...state, subject: e.target.value })
 
   /**
    * 備考を更新する
    * @version 2020/02/18
    */
-  const setRemarks = e => setState({ ...state, remarks: e.target.value });
+  const setRemarks = e => setState({ ...state, remarks: e.target.value })
 
   /**
    * メモを更新する
    * @version 2020/02/18
    */
-  const setMemo = e => setState({ ...state, memo: e.target.value });
+  const setMemo = e => setState({ ...state, memo: e.target.value })
 
   /**
    * 形式を更新する
    * @version 2020/02/28
    */
-  const setAttention = e => setState({ ...state, attention: e.target.value });
+  const setAttention = e => setState({ ...state, attention: e.target.value })
 
   /**
    * 請求書を作成
@@ -109,38 +109,38 @@ const InvoicePdfGenrator = props => {
    */
   const setNewInvoice = e => {
 
-    e.preventDefault();
+    e.preventDefault()
 
-    let validation = checkClient();
+    let validation = checkClient()
     if(validation.check) {
 
-      alert(validation.message);
-      return;
-    };
+      alert(validation.message)
+      return
+    }
 
-    validation = checkSubject();
+    validation = checkSubject()
     if(validation.check) {
 
-      alert(validation.message);
-      return;
-    };
+      alert(validation.message)
+      return
+    }
 
-    const url = '/invoices';
-    const field = new FormData();
-    field.append('invoice[quote_id]', props.quote.id);
-    field.append('invoice[date]', state.date);
-    field.append('invoice[expiration]', state.expiration);
-    field.append('invoice[subject]', state.subject);
-    field.append('invoice[remarks]', state.remarks);
-    field.append('invoice[memo]', state.memo);
-    field.append('invoice[attention]', state.attention);
+    const url = '/invoices'
+    const field = new FormData()
+    field.append('invoice[quote_id]', props.quote.id)
+    field.append('invoice[date]', state.date)
+    field.append('invoice[expiration]', state.expiration)
+    field.append('invoice[subject]', state.subject)
+    field.append('invoice[remarks]', state.remarks)
+    field.append('invoice[memo]', state.memo)
+    field.append('invoice[attention]', state.attention)
 
-    const request = window.xhrRequest.post(url, field);
+    const request = window.xhrRequest.post(url, field)
     request.then(res => {
-      const redirect = () => window.location.href = `${ res.data.invoice.id }/edit`;
-      window.alertable({ icon: 'success', message: '案件の作成に成功しました。', close_callback: () => redirect() });
-    }).catch(err => window.alertable({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
-  };
+      const redirect = () => window.location.href = `${ res.data.invoice.id }/edit`
+      window.mf_like_modal({ icon: 'success', message: '案件の作成に成功しました。', close_callback: () => redirect() })
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
+  }
 
   /**
    * 請求書を更新
@@ -148,23 +148,23 @@ const InvoicePdfGenrator = props => {
    */
   const setUpdateInvoice = e => {
 
-    e.preventDefault();
+    e.preventDefault()
   
-    const url = `/invoices/${ props.invoice.id }`;
-    const field = new FormData();
-    field.append('invoice[quote_id]', props.quote.id);
-    field.append('invoice[date]', state.date);
-    field.append('invoice[expiration]', state.expiration);
-    field.append('invoice[subject]', state.subject);
-    field.append('invoice[remarks]', state.remarks);
-    field.append('invoice[memo]', state.memo);
-    field.append('invoice[attention]', state.attention);
+    const url = `/invoices/${ props.invoice.id }`
+    const field = new FormData()
+    field.append('invoice[quote_id]', props.quote.id)
+    field.append('invoice[date]', state.date)
+    field.append('invoice[expiration]', state.expiration)
+    field.append('invoice[subject]', state.subject)
+    field.append('invoice[remarks]', state.remarks)
+    field.append('invoice[memo]', state.memo)
+    field.append('invoice[attention]', state.attention)
   
-    const request = window.xhrRequest.put(url, field);
+    const request = window.xhrRequest.put(url, field)
     request.then(res => {
-      window.alertable({ icon: 'success', message: '案件の更新に成功しました。' });
-    }).catch(err => window.alertable({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
-  };
+      window.mf_like_modal({ icon: 'success', message: '案件の更新に成功しました。' })
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: '請求書の更新に失敗しました。', close_callback: () => console.log(err) }))
+  }
 
   /**
    * DatetimePickerから渡ってきた値を振り分けてsetStateする
@@ -174,22 +174,22 @@ const InvoicePdfGenrator = props => {
 
     switch(prop.action) {
       case 'date':
-        setDate(prop);
-        break;
+        setDate(prop)
+        break
       case 'expiration':
-        setExpiration(prop);
-        break;
+        setExpiration(prop)
+        break
       default:
-        break;
-    };
-  };
+        break
+    }
+  }
 
 	return(
     <Fragment>
       <h1 className='l-dashboard__heading'>請求書: { props.quote.subject }</h1>
       { props.invoice ?
-        <form method='get' target='_blank' action={ `/invoices/${props.invoice.id}/generate_pdf` }>
-          <CustomerAddress company={ props.company} division={ props.division } client={ props.client }/>
+        <form method='get' target='_blank' action={ `/invoices/${ props.invoice.id }/generate_pdf` }>
+          <CustomerAddress company={ props.company } division={ props.division } client={ props.client }/>
           <div className='u-mt-30 c-flex'>
             <div className='c-flex__column'>
               <label className='c-form-label'>請求書番号</label>
@@ -213,10 +213,10 @@ const InvoicePdfGenrator = props => {
             <div className='c-form-selectWrap'>
               <select className='c-form-select' defaultValue={ state.attention } onChange={ e => setAttention(e) }>
                 { attentions.map((att, index) => {
-                  const key = 'attention' + index;
+                  const key = 'attention' + index
                   return(
                     <option {...{key}} value={ att }>{ att }</option>
-                  );
+                  )
                 }) }
               </select>
             </div>
@@ -236,7 +236,7 @@ const InvoicePdfGenrator = props => {
                   { props.projects ?
                     <Fragment>
                       { props.projects.map((project, index) => {
-                        const key = 'project' + new Date().getTime().toString(16) + index;
+                        const key = 'project' + new Date().getTime().toString(16) + index
                         return(
                           <Fragment { ...{key} }>
                             <tr>
@@ -252,7 +252,7 @@ const InvoicePdfGenrator = props => {
                               : null
                             }
                           </Fragment>
-                        );
+                        )
                       }) }
                     </Fragment>
                     : null
@@ -295,12 +295,18 @@ const InvoicePdfGenrator = props => {
             <textarea name='memo' placeholder='メモを入力してください' className='c-form-text' rows='4' defaultValue={ state.memo } onChange={ e => setMemo(e) }/>
 	        </div>
           <div className='c-overlay-submit'>
-            <Fragment>
-              <a className='c-btnMain-standard c-btn-blue' onClick={ e => setUpdateInvoice(e) }>更新する</a>
-              { props.pdf_exist ? <a className='u-ml-30 c-btnMain-standard' href={ `/invoices/${ props.invoice.id }` } target='_blank'>作成済みPDF</a> : null }
-              <input type='submit' name='commit' value='請求書ダウンロード' className='u-ml-30 c-btnMain-standard'/>
-              <a className='u-ml-30 c-btnMain-standard c-btn-blue' href={ `/quotes/${props.quote.id}/edit` }>案件に戻る</a>
-	          </Fragment>
+            <div className='c-flex c-flex__center c-flex-alignItems__center'>
+              <div>
+                <a className='c-btnMain c-btn-blue' onClick={ setUpdateInvoice }>更新する</a>
+              </div>
+              { props.pdf_exist ? <div className='u-ml-10'><a className='u-ml-30 c-btnMain-standard' href={ `/invoices/${ props.invoice.id }` } target='_blank'>作成済みPDF</a></div> : null }
+              <div className='u-ml-10'>
+                <input type='submit' name='commit' value='請求書ダウンロード' className='c-btnMain'/>
+              </div>
+              <div className='u-ml-10'>
+                <a className='c-btnMain' href={ `/quotes/${ props.quote.id }/edit` }>案件に戻る</a>
+              </div>
+            </div>
           </div>
         </form>
 	      :
@@ -329,10 +335,10 @@ const InvoicePdfGenrator = props => {
             <div className='c-form-selectWrap'>
               <select className='c-form-select' defaultValue={ state.attention } onChange={ e => setAttention(e) }>
                 { attentions.map((att, index) => {
-                  const key = 'attention' + index;
+                  const key = 'attention' + index
                   return(
                     <option {...{key}} value={ att }>{ att }</option>
-                  );
+                  )
                 }) }
               </select>
             </div>
@@ -352,7 +358,7 @@ const InvoicePdfGenrator = props => {
                   { props.projects ?
                     <Fragment>
                       { props.projects.map((project, index) => {
-                        const key = 'project' + new Date().getTime().toString(16) + index;
+                        const key = 'project' + new Date().getTime().toString(16) + index
                         return(
                           <Fragment { ...{key} }>
                             <tr>
@@ -368,7 +374,7 @@ const InvoicePdfGenrator = props => {
                               : null
                             }
                           </Fragment>
-                        );
+                        )
                       }) }
                     </Fragment>
                     : null
@@ -376,8 +382,8 @@ const InvoicePdfGenrator = props => {
                 </Fragment>
                 <tr>
                   <td>値引金額</td>
-                  <td></td>
-                  <td></td>
+                  <td/>
+                  <td/>
                   <td>{ Number(props.quote.discount).toLocaleString() }</td>
                 </tr>
               </tbody>
@@ -387,7 +393,7 @@ const InvoicePdfGenrator = props => {
             <table>
               <tbody>
                 <tr>
-                  { props.quote.tax_type == 'exemption' ?
+                  { props.quote.tax_type === 'exemption' ?
                     <Fragment>
                       <td>合計金額</td>
                       <td>¥ { Math.floor(props.quote.price || 0).toLocaleString() }</td>
@@ -404,20 +410,26 @@ const InvoicePdfGenrator = props => {
           </div>
           <div className='u-mt-30'>
             <label name='remarks' className='c-form-label'>備考　※請求書に記載されます</label>
-            <textarea name='remarks' placeholder='備考を入力してください' className='c-form-text' rows='4' defaultValue={ state.remarks } onChange={ e => setRemarks(e) }/>
+            <textarea name='remarks' placeholder='備考を入力してください' className='c-form-text' rows='4' defaultValue={ state.remarks } onChange={ setRemarks }/>
           </div>
           <div className='u-mt-10'>
 	          <label className='c-form-label'>メモ　※請求書に記載されません</label>
-	          <textarea name='memo' placeholder='メモを入力してください' className='c-form-text' rows='4' defaultValue={ state.memo } onChange={ e => setMemo(e) }/>
+	          <textarea name='memo' placeholder='メモを入力してください' className='c-form-text' rows='4' defaultValue={ state.memo } onChange={ setMemo }/>
           </div>
           <div className='c-overlay-submit'>
-	          <a className='c-btnMain-standard c-btn-blue' onClick={ e => setNewInvoice(e) }>作成する</a>
-            <a className='u-ml-30 c-btnMain-standard c-btn-blue' href={ `/quotes/${props.quote.id}/edit` }>案件に戻る</a>
+            <div className='c-flex c-flex__center'>
+              <div>
+	              <a className='c-btnMain c-btn-blue' onClick={ setNewInvoice }>作成する</a>
+              </div>
+              <div className='u-ml-10'>
+                <a className='c-btnMain' href={ `/quotes/${props.quote.id}/edit` }>案件に戻る</a>
+              </div>
+            </div>
           </div>
         </div>
         }
     </Fragment>
-	);
-};
+	)
+}
 
-export default InvoicePdfGenrator;
+export default InvoicePdfGenrator

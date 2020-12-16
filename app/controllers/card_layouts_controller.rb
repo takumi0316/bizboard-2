@@ -67,10 +67,10 @@ class CardLayoutsController < ApplicationController
 
     card_layout.destroy!
 
-    redirect_to card_layouts_path, flash: { notice: { message: 'レイアウトを削除しました。' } }
+    redirect_to card_layouts_path, flash: { show: true, icon: 'success', message: 'レイアウトを削除しました。' }
   rescue => e
 
-    redirect_to card_layouts_path, flash: { notice: { message: e.message } }
+    redirect_to card_layouts_path, flash: { show: true, icon: 'info', message: e.message }
   end
 
   def upload
@@ -129,10 +129,10 @@ class CardLayoutsController < ApplicationController
       end
     end
 
-    redirect_to edit_card_layout_path(dup_card_layout), flash: { notice: { message: 'レイアウトを複製しました' } }
+    redirect_to edit_card_layout_path(dup_card_layout), flash: { show: true, icon: 'success', message: 'レイアウトを複製しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   #----------------------------------------

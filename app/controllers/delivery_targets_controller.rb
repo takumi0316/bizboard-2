@@ -55,10 +55,10 @@ class DeliveryTargetsController < ApplicationController
 
     delivery_target.update! delivery_target_params
 
-    redirect_to edit_delivery_target_path(delivery_target), flash: { notice: { message: '配送先を作成しました' } }
+    redirect_to edit_delivery_target_path(delivery_target), flash: { show: true, icon: 'success', message: '配送先を作成しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -72,7 +72,7 @@ class DeliveryTargetsController < ApplicationController
     add_breadcrumb '編集'
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -83,10 +83,10 @@ class DeliveryTargetsController < ApplicationController
 
     delivery_target.update! delivery_target_params
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '配送先を更新しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '配送先を更新しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -97,10 +97,10 @@ class DeliveryTargetsController < ApplicationController
 
     delivery_target.destroy!
  
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '配送先を削除しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '配送先を削除しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   #----------------------------------------

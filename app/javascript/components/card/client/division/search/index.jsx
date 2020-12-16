@@ -81,7 +81,7 @@ const Search = props => {
             <div onClick={ e => close(e) } className={ Style.DivisionSearch__closeIcon }>×</div>
           </div>
         </div>
-        : <div className='c-btnMain-standard' onClick={ e => open(e) }>{ props.typeName }</div>
+        : <div className='c-btnMain' onClick={ e => open(e) }>{ props.typeName }</div>
       }
     </div>
   );

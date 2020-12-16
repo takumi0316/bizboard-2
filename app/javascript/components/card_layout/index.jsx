@@ -17,7 +17,7 @@ import { setPDF } from './util';
 const closeLeftSidebar = drawerElement => drawerElement.click();
 
 //　右サイドバーの使用有無
-const rightSidebarExist = () => window.alertable({ icon: 'info', message: '編集パネルを終了してください。' });
+const rightSidebarExist = () => window.mf_like_modal({ icon: 'info', message: '編集パネルを終了してください。' });
 
 const Index = props => {
 
@@ -141,7 +141,7 @@ const Index = props => {
 
     if(state.right_panel_exist) {
 
-      window.alertable({ icon: 'info', message: '作業パネルを終了してください。' });
+      window.mf_like_modal({ icon: 'info', message: '作業パネルを終了してください。' });
       return;
     };
 
@@ -186,14 +186,14 @@ const Index = props => {
     // レイアウト挿入有無
     if(!pdf_ref.current) {
 
-      window.alertable({ icon: 'info', message: 'レイアウトを挿入してください。' });
+      window.mf_like_modal({ icon: 'info', message: 'レイアウトを挿入してください。' });
       return;
     };
 
     // レイアウトタイトル入力有無
     if(!title_ref.current.value) {
 
-      window.alertable({ icon: 'info', message: 'レイアウトタイトルを入力してください。' });
+      window.mf_like_modal({ icon: 'info', message: 'レイアウトタイトルを入力してください。' });
       return;
     };
 
@@ -205,7 +205,7 @@ const Index = props => {
 
         if(!content.name) {
 
-          window.alertable({ icon: 'info', message: 'コンテント名称 & フラグを登録してください。' });
+          window.mf_like_modal({ icon: 'info', message: 'コンテント名称 & フラグを登録してください。' });
           return;
         };
       };
@@ -265,8 +265,8 @@ const Index = props => {
       const message = props.new_record_type ? 'レイアウトを作成しました。' : 'レイアウトを更新しました。';
       const redirect = () => location.href = `/card_layouts/${ res.data.card_layout_id }/edit`;
 
-      window.alertable({ icon: res.data.status, message: message, close_callback: res.data.card_layout_id ? redirect : '' });
-    }).catch(err => window.alertable({ icon: 'error', message: '保存に失敗しました。', close_callback: () => {
+      window.mf_like_modal({ icon: res.data.status, message: message, close_callback: res.data.card_layout_id ? redirect : '' });
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: '保存に失敗しました。', close_callback: () => {
 
         loading_ref.current.finish();
         console.log(err);
@@ -283,7 +283,7 @@ const Index = props => {
             <Fragment>
               <Canvas />
               <div>
-                <button className='u-mt-10 c-btnMain-standard' onClick={ removeLayout }>レイアウト変更</button>
+                <button className='u-mt-10 c-btnMain' onClick={ removeLayout }>レイアウト変更</button>
               </div>
             </Fragment>
             : <LayoutDropZone addLayout={ addLayout }/>
@@ -296,7 +296,7 @@ const Index = props => {
         }
       </div>
       <div className={ Style.CardLayout__overlay }>
-        <button className='c-btnMain-standard' onClick={ saveCardLayout }>保存する</button>
+        <button className='c-btnMain c-btn-blue' onClick={ saveCardLayout }>保存する</button>
       </div>
       <Loading ref={ loading_ref }/>
     </Fragment>

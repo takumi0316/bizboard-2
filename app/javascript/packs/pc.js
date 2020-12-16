@@ -157,7 +157,9 @@ import RegistorCompanyDivisionClient from 'components/company/division/client/re
 
 import ShowCompanyDivisionClient from 'components/company/division/client/show'
 
-import InputSuggestion from '../components/Trials/input_suggestion'
+import InputSuggestion from 'components/Trials/input_suggestion'
+
+import MFLikeModal from 'components/mf_like_modal'
 
 WebpackerReact.setup({
   Kawaii,
@@ -211,4 +213,5 @@ WebpackerReact.setup({
   RegistorCompanyDivisionClient,
   ShowCompanyDivisionClient,
   InputSuggestion,
+  MFLikeModal,
 })

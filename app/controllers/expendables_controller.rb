@@ -67,10 +67,10 @@ class ExpendablesController < ApplicationController
     payment = expendable.build_payment
     payment.update! subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date
 
-    redirect_to expendables_path, flash: { notice: { message: '製造経費を登録しました' } }
+    redirect_to expendables_path, flash: { show: true, icon: 'success', message: '製造経費を登録しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -83,7 +83,7 @@ class ExpendablesController < ApplicationController
     add_breadcrumb '編集'
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -96,10 +96,10 @@ class ExpendablesController < ApplicationController
 
     expendable.payment.update! subcontractor_id: expendable.subcontractor_id, price: expendable.price, date: expendable.date
 
-    redirect_to expendables_path, flash: { notice: { message: '製造経費を更新しました' } }
+    redirect_to expendables_path, flash: { show: true, icon: 'success', message: '製造経費を更新しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -110,10 +110,10 @@ class ExpendablesController < ApplicationController
 
     expendable.destroy!
 
-    redirect_to expendables_path, flash: { notice: { message: '製造経費を削除しました' } }
+    redirect_to expendables_path, flash: { show: true, icon: 'success', message: '製造経費を削除しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: e.message }
   end
 
 

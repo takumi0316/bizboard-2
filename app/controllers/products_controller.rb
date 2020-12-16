@@ -51,7 +51,7 @@ class ProductsController < ApplicationController
     add_breadcrumb '新規作成'
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -65,7 +65,7 @@ class ProductsController < ApplicationController
     add_breadcrumb '編集'
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -77,10 +77,10 @@ class ProductsController < ApplicationController
     # 取引先情報更新
     product.update! product_params
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '商品を更新しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '商品を更新しました'  }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -94,10 +94,10 @@ class ProductsController < ApplicationController
     product_history = ProductHistory.new(product_id: product.id, date: Date.today, status: 0, quantity: product.quantity)
     product_history.save!
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '商品を作成しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '商品を作成しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   ##
@@ -108,10 +108,10 @@ class ProductsController < ApplicationController
 
     product.destroy!
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: '商品を削除しました' } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '商品を削除しました' }
   rescue => e
 
-    redirect_back fallback_location: url_for({ action: :index }), flash: { notice: { message: e.message } }
+    redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
   #----------------------------------------

@@ -58,7 +58,7 @@ class UploadsController < ApplicationController
 
     upload.update! upload_params
 
-    redirect_to uploads_path, flash: { notice: { message: '画像を更新しました。' } }
+    redirect_to uploads_path, flash: { show: true, icon: 'success', message: '画像を更新しました。' }
   rescue => e
 
     redirect_to_index e
@@ -68,7 +68,7 @@ class UploadsController < ApplicationController
 
     upload.destroy!
 
-    redirect_to uploads_path, flash: { notice: { message: '画像を削除しました。' } }
+    redirect_to uploads_path, flash: { show: true, icon: 'info', message: '画像を削除しました。' }
   rescue => e
 
     redirect_to_index e
@@ -88,6 +88,6 @@ class UploadsController < ApplicationController
 
     def redirect_to_index e
 
-      redirect_to uploads_path, flash: { notice: { message: e.message } }
+      redirect_to uploads_path, flash: { show: true, icon: 'info', message: e.message }
     end
 end

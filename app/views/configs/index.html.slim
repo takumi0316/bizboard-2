@@ -11,7 +11,7 @@ h2.l-dashboard__heading ファビコン設定
   = image_tag site_configs[:favicon], height: 30 if site_configs[:favicon].present?
 
   .u-ta-right.u-mt-20
-    = f.submit '更新する', class: 'c-btnMain-standard'
+    = f.submit '更新する', class: 'c-btnMain c-btn-blue'
 
 h2.l-dashboard__heading サイト設定
 
@@ -45,9 +45,8 @@ h2.l-dashboard__heading サイト設定
           td 本社FAX番号
           td = f.text_field :jii_fax, value: site_configs[:jii_fax], placeholder: '0120-0394-8482', class: 'c-form-text'
 
-
   .u-ta-right.u-mt-20
-    = f.submit '更新する', class: 'c-btnMain-standard'
+    = f.submit '更新する', class: 'c-btnMain c-btn-blue'
 
 h2.l-dashboard__heading.u-mt-30 サイト管理設定
 
@@ -73,7 +72,7 @@ h2.l-dashboard__heading.u-mt-30 サイト管理設定
 
 
   .u-ta-right.u-mt-20
-    = f.submit '更新する', class: 'c-btnMain-standard'
+    = f.submit '更新する', class: 'c-btnMain c-btn-blue'
 
 h2.l-dashboard__heading.u-mt-30 ユーザー認証
 
@@ -91,4 +90,4 @@ h2.l-dashboard__heading.u-mt-30 ユーザー認証
             .c-form-selectWrap = f.select(:auth_google, user_authes, {selected: site_configs[:auth_google]}, { class: 'c-form-select' })
 
   .u-ta-right.u-mt-20
-    = f.submit '更新する', class: 'c-btnMain-standard'
+    = f.submit '更新する', class: 'c-btnMain c-btn-blue'

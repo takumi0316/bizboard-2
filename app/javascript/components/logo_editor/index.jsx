@@ -140,7 +140,7 @@ export default class LogoEditor extends React.Component {
         <input type='hidden' ref='ogimage' />
         <input type='hidden' ref='webclip' />
         <div className='u-ta-right u-mt-20'>
-          <div className='c-btnMain-standard' onClick={::this._onSubmitLogo}>更新する</div>
+          <div className='c-btnMain c-btn-blue' onClick={::this._onSubmitLogo}>更新する</div>
         </div>
       </div>
     );

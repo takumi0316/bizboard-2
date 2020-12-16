@@ -64,8 +64,8 @@ export default class AddProject extends React.Component {
     request.then(res => {
 
       if(res.data.status == 'success') this.setState({ projects: res.data.projects });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: '品目を取得できませんでした。' });
-    }).catch(err => window.alertable({ icon: 'error', message: err }));
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: '品目を取得できませんでした。' });
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err }));
   };
 
   /**
@@ -98,7 +98,7 @@ export default class AddProject extends React.Component {
           <div>
             <div className={Style.ProjectSearch__form}>
               <input type='text' className={Style.ProjectSearch__input} placeholder='品目名で検索' ref='word' onChange={ e => this._onChange(e) }/>
-              <div onClick={ e => this._onChange(e) } className='c-btnMain-standard u-ml-10'>検索</div>
+              <div onClick={ e => this._onChange(e) } className='c-btnMain u-ml-10'>検索</div>
             </div>
             { this.state.projects ?
               <ul className={Style.ProjectSearch__list}>
@@ -119,7 +119,7 @@ export default class AddProject extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain-standard' onClick={ e => this._open(e) }>行を追加</div>
+      <div className='c-btnMain c-btn-blue' onClick={ e => this._open(e) }>行を追加</div>
     );
   }
 }

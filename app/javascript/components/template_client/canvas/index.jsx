@@ -17,7 +17,7 @@ const Index = props => {
     request.then(res => {
 
       setPDFValue(res.data, props.contents);
-    }).catch(err => window.alertable({ icon: 'error', message: 'レイアウトを取得できませんでした。', close_callback: () => console.log(err) }));
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: 'レイアウトを取得できませんでした。', close_callback: () => console.log(err) }));
   }, [props.contents]);
 
   useEffect(() => deploy, [props])

@@ -124,5 +124,5 @@ export const setPDF = (file, contents) => {
       };
 
     });
-  }).catch(error => window.alertable({ icon: 'error', message: error }));
+  }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
 };

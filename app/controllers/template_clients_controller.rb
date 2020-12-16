@@ -64,10 +64,10 @@ class TemplateClientsController < ApplicationController
 
   def destroy
 
-    redirect_to card_templates_path, flash: { notice: { message: '' } }
+    redirect_to card_templates_path, flash: { show: true, icon: 'success', message: '' }
   rescue => e
 
-    redirect_to card_templates_path, flash: { notice: { message: e.message } }
+    redirect_to card_templates_path, flash: { show: true, icon: 'info', message: e.message }
   end
 
   def download

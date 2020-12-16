@@ -1,13 +1,15 @@
 = render 'layouts/_partials/card_tabmenu'
 
-= link_to 'フラグを作成', new_content_flag_path, class: 'c-btnMain-standard c-btn-blue u-mt-15'
+.u-mt-15
+  = link_to 'フラグを作成', new_content_flag_path, class: 'c-btnMain c-btn-blue'
 
 = form_with url: content_flags_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+  = f.label :name, 'フラグタイトル'
 
-  .c-search__item
-    = f.label :name, 'フラグタイトル'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグタイトル'
-  = f.submit '検索', class: 'c-btnMain-standard'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグタイトル'
+    = f.submit '検索', class: 'c-btnMain'
 
 .c-table.u-mt-10
   table
@@ -19,7 +21,7 @@
     tbody
       - content_flags.each do |r|
         tr
-          td.u-ta-center = r.id
-          td.u-ta-center = r.name
-          td.u-ta-center = link_to '編集', edit_content_flag_path(r), class: 'c-btnMain-standard'
-          td.u-ta-center = link_to '削除', content_flag_path(r), class: 'c-btnMain-negative', method: :delete, data: { confirmable: '本当に削除しますか？' }
+          td.u-ta-center.u-va-middle = r.id
+          td.u-ta-center.u-va-middle = r.name
+          td.u-ta-center.u-va-middle = link_to '編集', edit_content_flag_path(r), class: 'c-btnMain c-btn-blue'
+          td.u-ta-center.u-va-middle = link_to '削除', content_flag_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }

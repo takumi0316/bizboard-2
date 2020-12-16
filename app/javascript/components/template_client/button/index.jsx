@@ -4,19 +4,17 @@ const Index = props => {
 
 	const goOtherLayout = e => {
 
-		e.preventDefault();
+		e.preventDefault()
 
-		const redirect = () => location.href = `/template_clients/${ props.card_template_id }/${ props.head ? 'tail'  : 'head' }?client_id=${ props.client_id }`;
-		window.alertable({ icon: 'success', message: '遷移します。', close_callback: () => redirect() });
-	};
+		const redirect = () => location.href = `/template_clients/${ props.card_template_id }/${ props.head ? 'tail'  : 'head' }?client_id=${ props.client_id }`
+		window.mf_like_modal({ icon: 'success', message: '遷移します。', close_callback: () => redirect() })
+	}
 
 	return(
-		<Fragment>
-			<div className='u-mt-15 '>
-        <button className='c-btnMain-standard' onClick={ goOtherLayout }>{ props.head ? '裏面設定' : '表面設定' }</button>
-			</div>
-		</Fragment>
-	);
-};
+    <div className='u-mt-30'>
+      <button className='c-btnMain' onClick={ goOtherLayout }>{ props.head ? '裏面設定' : '表面設定' }</button>
+    </div>
+  )
+}
 
-export default Index;
+export default Index

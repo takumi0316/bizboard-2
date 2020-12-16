@@ -11,7 +11,6 @@ import PaymentDetails       from './payment_details'
 import ButtonsBelow         from './buttons_below'
 import ItemTables           from './item_tables'
 import Loading              from '../loading'
-import AddProject           from './project_search'
 
 /**
  *  記事エディター
@@ -63,7 +62,7 @@ export default class QuoteEditor extends React.Component {
       delivery_note_date: props.quote.delivery_note_date,
       price: props.quote.price ? props.quote.price : 0,
       date: props.quote.date,
-      show: props.quote.discount === 0,
+      show: props.quote.discount !== 0,
       show_quote_number: props.quote.channel === 'bpr_erp',
       task: props.task || '',
       users: props.users,
@@ -257,7 +256,7 @@ export default class QuoteEditor extends React.Component {
   setUnitPrice = (passIndex, unitPrice) => {
 
     if (unitPrice.match(/^([1-9]¥d*|0)(¥.¥d+)?$/)) {
-      window.alertable({ icon: 'info', message: '半角数字以外を入力しないで下さい。' })
+      window.mf_like_modal({ icon: 'info', message: '半角数字以外を入力しないで下さい。' })
       return
     }
 
@@ -280,7 +279,7 @@ export default class QuoteEditor extends React.Component {
 
       if(!unit.match(/^[0-9]+$/)) {
 
-        window.alertable({ icon: 'info', message: '半角数字以外を入力しないで下さい。' })
+        window.mf_like_modal({ icon: 'info', message: '半角数字以外を入力しないで下さい。' })
         return false
       }
 
@@ -337,7 +336,7 @@ export default class QuoteEditor extends React.Component {
     const isQuoteProjects = this.state.quote_projects.length > 0
     if(!isQuoteProjects) {
 
-      window.alertable({ icon: 'info', message:'品目を追加してください！' })
+      window.mf_like_modal({ icon: 'info', message:'品目を追加してください！' })
       return
     }
 
@@ -443,27 +442,18 @@ export default class QuoteEditor extends React.Component {
   projectDestroy = e => {
 
     e.preventDefault()
-    const index = e.target.value
-    window.confirmable({ icon: 'warning', message: '本当に削除しますか？', callback: () => {
 
-      const quote_projects = JSON.parse(JSON.stringify(this.state.quote_projects))
-      quote_projects.splice(index, 1)
-      const delProjectPrice = Number(this.state.quote_projects[index].price)
-      const minusPrice = Number(this.state.price) - delProjectPrice
+    const target_index = Number(e.target.value)
+    const quote_projects = []
+    JSON.parse(JSON.stringify(this.state.quote_projects)).map((project, index) => {
+      if(index === target_index) quote_projects.push({ ...project, _destroy: true })
+      if(index !== target_index) quote_projects.push(project)
+    })
 
-      if(!this.state.quote_projects[index].id) this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }))
+    const delProjectPrice = Number(quote_projects[target_index].price)
+    const minusPrice = Number(this.state.price) - delProjectPrice
 
-      if(this.state.quote.id && this.state.quote_projects[index].id) {
-
-        const url = `/quote_projects/${this.state.quote_projects[index].id}`
-        const request = window.xhrRequest.delete(url)
-        request.then(res => {
-
-          if(res.data.status === 'success') this.setState({ quote_projects: quote_projects, price: minusPrice }, () => window.alertable({ icon: 'success', message: '削除しました。' }) )
-          if(res.data.status !== 'success') window.alertable({ icon: 'error', message: '品目の削除に失敗しました。' })
-        }).catch(err => window.alertable({ icon: 'error', message: err }))
-      }
-    }})
+    this.setState({ quote_projects: quote_projects, price: minusPrice })
   }
 
   /**
@@ -482,13 +472,11 @@ export default class QuoteEditor extends React.Component {
     // エラーが存在する場合
     if(messages.length > 0) {
 
-      window.alertable({ icon: 'error', message: messages.join('\n') })
+      window.mf_like_modal({ icon: 'error', message: messages.join('\n'), close_callback: this.loadingRef.finish() })
       return false
     }
 
     this.setState({ is_update: !this.state.is_update })
-    let price = 0
-    this.state.quote_projects.map(quote_project => price += Number(quote_project.price))
 
     const noSelectedProject = []
     const field = new FormData()
@@ -516,12 +504,13 @@ export default class QuoteEditor extends React.Component {
     field.append('quote[drive_folder_id]', this.state.drive_folder_id)
     field.append('quote[user_id]', this.props.user_id)
     field.append('quote[discount]', this.state.discount)
-    field.append('quote[price]', this.state.discount === 0 ? price : price - this.state.discount)
+    field.append('quote[price]', this.state.discount === 0 ? this.state.price : this.state.price - this.state.discount)
     field.append('quote[deliver_type]', this.state.deliver_type)
     if(!this.props.quote.drive_folder_id && this.googleDriveFolderRef.current !== null) field.append('quote[google_drive_exist]', this.googleDriveFolderRef.current.value)
     this.state.quote_projects.map((project, index) => {
 
       if(noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
+      if(!project.id && project._destroy) return
       field.append('quote[quote_projects_attributes][][id]', project.id)
       field.append('quote[quote_projects_attributes][][project_id]', project.project_id)
       field.append('quote[quote_projects_attributes][][quote_id]', project.quote_id)
@@ -534,7 +523,7 @@ export default class QuoteEditor extends React.Component {
     })
 
     if(noSelectedProject.length > 0) {
-      window.alertable({ icon: 'info', message: `上から${noSelectedProject[0].index + 1}番目の品目をサジェストから選択、もしくは品目名を入力して下さい。` })
+      window.mf_like_modal({ icon: 'info', message: `上から${noSelectedProject[0].index + 1}番目の品目をサジェストから選択、もしくは品目名を入力して下さい。` })
       this.loadingRef.finish()
       return
     }
@@ -548,17 +537,15 @@ export default class QuoteEditor extends React.Component {
       if(res.data.status === 'success') {
 
         if(this.state.quote_id) {
-
-          this.setState({ price: price, quote: { ...this.state.quote, drive_folder_id: res.data.drive_folder_id } }, () => {
-            window.alertable({ icon: 'success', message: '案件を更新しました。', close_callback: () => this.loadingRef.finish() })
+          this.setState({ price: this.state.price, quote: { ...this.state.quote, drive_folder_id: res.data.drive_folder_id } }, () => {
+            window.mf_like_modal({ icon: 'success', message: '案件を更新しました。', close_callback: () => this.loadingRef.finish() })
           })
         }
 
         // 編集ページへリダイレクト
         if(!this.state.quote_id) {
-
           const redirect = () => location.href = `${res.data.quote.id}/edit`
-          window.alertable({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() })
+          window.mf_like_modal({ icon: 'success', message: '案件を作成しました。', close_callback: () => redirect() })
         }
       }
 
@@ -566,9 +553,9 @@ export default class QuoteEditor extends React.Component {
 
         // エラー文
         console.log(res.data.message)
-        window.alertable({ icon: 'error', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。` })
+        window.mf_like_modal({ icon: 'info', message: `案件の${ this.state.quote_id ? '更新' : '作成' }に失敗しました。`, close_callback: () => this.loadingRef.finish() })
       }
-    }).catch(err => window.alertable({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }))
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err, close_callback: this.loadingRef.finish() }))
   }
 
   /**
@@ -592,7 +579,7 @@ export default class QuoteEditor extends React.Component {
           }
         </div>
         <SalesDepartment home_division={ this.state.home_division } />
-        <div className='u-mt-10'>
+        <div className='u-mt-15'>
           { this.state.quote.lock ?
             null
             :
@@ -616,9 +603,9 @@ export default class QuoteEditor extends React.Component {
         { this.state.quote.lock ?
           null
           :
-          <div className='u-mt-15'>
-            <button className='c-btnMain-standard' onClick={ this.addQuoteProject }>行を追加</button>
-            <div className={ `u-ml-10 ${ this.state.itemStatus ? 'c-btnMain-standard' : 'c-btnMain-primaryA'}` } onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
+          <div className='u-mt-10 c-flex'>
+            <button className='c-btnMain c-btn-blue' onClick={ this.addQuoteProject }>行を追加</button>
+            <div className='u-ml-10 c-btnMain' onClick={ e => this.setItemStatus(e, !this.state.itemStatus) }>{ this.state.itemStatus ? '品目を移動させる' : '移動を終了する' }</div>
           </div>
         }
         <PaymentDetails quote={ this.state.quote } discount={ this.state.discount } profit_price={ this.state.profit_price } tax_type={ this.state.tax_type } remarks={ this.state.remarks }

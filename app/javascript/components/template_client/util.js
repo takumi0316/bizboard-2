@@ -183,9 +183,9 @@ export const setPDFValue = (file, contents) => {
 
           parent_div.appendChild(child_img);
 
-        }).catch(err => window.alertable({ icon: 'error', message: '画像を取得できませんでした。', close_callback: () => console.log(err) }));
+        }).catch(err => window.mf_like_modal({ icon: 'error', message: '画像を取得できませんでした。', close_callback: () => console.log(err) }));
       };
 
     });
-  }).catch(error => window.alertable({ icon: 'error', message: error }));
+  }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
 };

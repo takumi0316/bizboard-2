@@ -3,7 +3,6 @@
 // ==============================================
 
 .c-table
-
   overflow: auto
   background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) 0 0/20px 100%, linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.2)) right/20px 100%
   background-repeat: no-repeat
@@ -20,26 +19,25 @@
     thead
       tr
         th
-          padding: 5px
+          padding: 3px
           background: rgba(map-get($layoutColors, 'thinBlack'), .1)
           border-top: 1px solid map-get($layoutColors, 'lightGray')
           border-left: 1px solid map-get($layoutColors, 'lightGray')
           white-space: nowrap
-          font-weight: bold
-          font-size: 1.2rem
+          font-size: 8px
     tbody
       tr
         &:nth-child(even)
           td
             background: rgba(map-get($layoutColors, 'lightGray'), .1)
         td
-          padding: 2px
+          padding: 4px
           border-top: 1px solid map-get($layoutColors, 'lightGray')
           border-left: 1px solid map-get($layoutColors, 'lightGray')
           white-space: nowrap
           background: rgba(map-get($layoutColors, 'white'), .6)
-          font-size: 1.2rem
-          font-weight: bold
+          font-size: 12px
+          height: 40px
         td#deliver_at#client_name
           padding: 10px
           border-top: 1px solid map-get($layoutColors, 'lightGray')
@@ -50,7 +48,6 @@
           background: rgba(map-get($layoutColors, 'white'), .6)
           text-align: right
           width: 100px
-
           img
             width: 90px
             height: 90px

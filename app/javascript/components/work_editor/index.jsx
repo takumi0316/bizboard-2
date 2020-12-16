@@ -59,13 +59,13 @@ export default class WorkEditor extends React.Component {
 
         work_details.push(res.data.work_detail);
         this.setState({ work_details: work_details }, () => {
-          window.alertable({ icon: 'success', message: '作成しました。' });
+          window.mf_like_modal({ icon: 'success', message: '作成しました。' });
         });
       };
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: err });
+      window.mf_like_modal({ icon: 'error', message: err });
     });
   };
 
@@ -109,10 +109,10 @@ export default class WorkEditor extends React.Component {
         this.passedPrice(actual_cost, type, message);
       };
 
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: err });
+      window.mf_like_modal({ icon: 'error', message: err });
     });
   };
 
@@ -130,13 +130,13 @@ export default class WorkEditor extends React.Component {
     request.then(res => {
 
       if(res.data.status === 'success') this.setState({ work_details: work_details }, () => {
-          window.alertable({ icon: 'success', message: '削除しました。' });
+          window.mf_like_modal({ icon: 'success', message: '削除しました。' });
         });
 
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: err });
+      window.mf_like_modal({ icon: 'error', message: err });
     });
   };
 
@@ -151,7 +151,7 @@ export default class WorkEditor extends React.Component {
 
     if(state.subcontractor_id) {
 
-      window.alertable({ icon: 'info', message: '編集中の作業外注を更新して下さい。' });
+      window.mf_like_modal({ icon: 'info', message: '編集中の作業外注を更新して下さい。' });
       return false;
     };
 
@@ -185,14 +185,14 @@ export default class WorkEditor extends React.Component {
         };
         work_subcontractors_iterate.push(JSON.parse(JSON.stringify(copy)));
         this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, () => {
-          window.alertable({ icon: 'success', message: '作成しました。' });
+          window.mf_like_modal({ icon: 'success', message: '作成しました。' });
         });
       };
 
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: error });
+      window.mf_like_modal({ icon: 'error', message: error });
     });
   };
 
@@ -242,13 +242,13 @@ export default class WorkEditor extends React.Component {
 
         const type = 'subcontractor_detail_cost';
         this.passedPrice(actual_cost, type);
-        window.alertable({ icon: 'success', message: '更新しました。' });
+        window.mf_like_modal({ icon: 'success', message: '更新しました。' });
       };
 
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: error });
+      window.mf_like_modal({ icon: 'error', message: error });
     });
   };
 
@@ -287,10 +287,10 @@ export default class WorkEditor extends React.Component {
         this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, this.passedPrice(actual_cost, type, message));
       };
 
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: err });
+      window.mf_like_modal({ icon: 'error', message: err });
     });
   };
 
@@ -320,14 +320,14 @@ export default class WorkEditor extends React.Component {
 
           work_subcontractors_iterate[index].details.push(res.data.work_subcontractor_detail);
           this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, () => {
-            window.alertable({ icon: 'success', message: '作成しました。' });
+            window.mf_like_modal({ icon: 'success', message: '作成しました。' });
           });
       };
 
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: err });
+      window.mf_like_modal({ icon: 'error', message: err });
     });
   };
 
@@ -350,12 +350,12 @@ export default class WorkEditor extends React.Component {
     const request = window.xhrRequest.delete(url);
     request.then(res => {
       if(res.data.status === 'success') this.setState({ work_subcontractors_iterate: work_subcontractors_iterate }, () => {
-          window.alertable({ icon: 'success', message: '削除しました。' });
+          window.mf_like_modal({ icon: 'success', message: '削除しました。' });
         });
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: err });
+      window.mf_like_modal({ icon: 'error', message: err });
     });
   };
 
@@ -408,14 +408,14 @@ export default class WorkEditor extends React.Component {
         let work = Object.assign({}, JSON.parse(JSON.stringify(this.state.work)));
         work = { ...work, price: res.data.work.price, notices: res.data.work.notices };
         this.setState({ work: work }, () => {
-          if(message) window.alertable({ icon: 'success', message: message });
+          if(message) window.mf_like_modal({ icon: 'success', message: message });
         });
       };
 
-      if(res.data.status != 'success') window.alertable({ icon: 'error', message: res.data.message });
+      if(res.data.status != 'success') window.mf_like_modal({ icon: 'error', message: res.data.message });
     }).catch(err => {
 
-      window.alertable({ icon: 'error', message: err });
+      window.mf_like_modal({ icon: 'error', message: err });
     });
   };
 
@@ -432,14 +432,14 @@ export default class WorkEditor extends React.Component {
     request.then(res => {
       if(res.data.status != 'success') {
 
-        window.alertable({ icon: 'error', message: res.data.message });
+        window.mf_like_modal({ icon: 'error', message: res.data.message });
         return;
       };
 
       this.setState({ division: division }, () => {
-        window.alertable({ icon: 'success', message: '作業部署を登録出来ました' });
+        window.mf_like_modal({ icon: 'success', message: '作業部署を登録出来ました' });
       });
-    }).catch(err => window.alertable({ icon: 'error', message: err }));
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: err }));
   };
 
   /**

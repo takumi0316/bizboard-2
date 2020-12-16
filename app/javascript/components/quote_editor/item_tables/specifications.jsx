@@ -10,15 +10,20 @@ const Specifications = (props) => {
           { props.quote_projects.map((specification, index) => {
             const key = `specification-${ specification.id ? specification.id : specification.uid }-${ index }`
             return (
-              <tr { ...{key} }>
-                <td><InputSuggestion inputTxt={ specification.name } applyProject={ props.applyProject } setName={ props.setName } index={ index }/></td>
-                <td><textarea key={ specification.project_id } className='c-form-textarea__work-show-input__textarea2' type='textarea' defaultValue={ specification.remarks } onChange={ e => props.setQuoteRemarks(index, e.target.value)}/></td>
-                <td><input key={ specification.project_id } className='c-form-text' type='number' step='0.1' defaultValue={ specification.unit_price } onChange={ e => props.setUnitPrice(index, e.target.value) } /></td>
-                <td><input key={ specification.project_id } className='c-form-text' type='number' step='1' defaultValue={ specification.unit } onChange={ e => props.setUnit(index, e.target.value) } /></td>
-                <td><input key={ specification.price } readOnly className='c-form-text' type='text' defaultValue={ specification.price }/></td>
-                <td><button className='c-btnMain2-primaryA' value={ index } disabled={props.lock ? 'disabled' : null} onClick={ e => props.projectDestroy(e) }>ー</button></td>
-              </tr>
-            );
+              <Fragment { ...{key} }>
+                { !specification._destroy ?
+                  <tr>
+                    <td><InputSuggestion inputTxt={ specification.name } applyProject={ props.applyProject } setName={ props.setName } index={ index }/></td>
+                    <td><textarea key={ specification.project_id } className='c-form-textarea__work-show-input__textarea2' type='textarea' defaultValue={ specification.remarks } onChange={ e => props.setQuoteRemarks(index, e.target.value)}/></td>
+                    <td><input key={ specification.project_id } className='c-form-text' type='number' step='0.1' defaultValue={ specification.unit_price } onChange={ e => props.setUnitPrice(index, e.target.value) } /></td>
+                    <td><input key={ specification.project_id } className='c-form-text' type='number' step='1' defaultValue={ specification.unit } onChange={ e => props.setUnit(index, e.target.value) } /></td>
+                    <td><input key={ specification.price } readOnly className='c-form-text' type='text' defaultValue={ specification.price }/></td>
+                    <td className='u-ta-center u-va-middle'><button className='c-btnMain c-btn-red' value={ index } disabled={ props.lock ? 'disabled' : null} onClick={ e => props.projectDestroy(e) }>削除</button></td>
+                  </tr>
+                  : null
+                }
+              </Fragment>
+            )
           }) }
         </Fragment>
         : null

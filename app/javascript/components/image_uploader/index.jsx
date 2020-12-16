@@ -71,7 +71,7 @@ export default class Uploader extends React.Component {
   upload = () => {
     
     if (!this.state.image) {
-      window.alertable({
+      window.mf_like_modal({
         icon: 'warning',
         message: '画像を登録してください',
       });
@@ -149,7 +149,7 @@ export default class Uploader extends React.Component {
                 <input id='input_file' type='file' accept='image/*' onChange={this._onChangeImage} />
                 
                 <div className='u-ta-right'>
-                  <div onClick={this.upload} className='c-btnMain-standard u-mt-30'>登録する</div>
+                  <button onClick={this.upload} className='c-btnMain c-btn-blue'>登録する</button>
                 </div>
               </div>
               
@@ -166,7 +166,9 @@ export default class Uploader extends React.Component {
           </div>
         </div>
         :
-        <div className='c-btnMain-standard u-mt-15 c-btn-blue' onClick={this._open}>画像をアップロード</div>
+        <div>
+          <button className='c-btnMain c-btn-blue' onClick={this._open}>画像をアップロード</button>
+        </div>
     );
   }
 }
