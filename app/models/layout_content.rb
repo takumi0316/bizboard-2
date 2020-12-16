@@ -21,7 +21,7 @@
 #  logo_height        :string(191)
 #  logo_width         :string(191)
 #  no_image           :boolean          default(TRUE)
-#  font_weight        :integer
+#  font_weight        :integer          default("ultra light")
 #
 
 class LayoutContent < ApplicationRecord

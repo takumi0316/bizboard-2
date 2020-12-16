@@ -1,1 +1,8 @@
-= react_component('DeliveryPdfGenerator', { quote: quote, projects: quote.quote_projects, company: quote.client.company_division.company.name || '', division: quote.client.present? ? quote.client.company_division.name : '', client: quote.client.present? ? quote.client.name : '' })
+= react_component :DeliveryPdfGenerator,
+  { quote: quote,
+    projects: quote.quote_projects,
+    company: quote.client.company_division.company.name || '',
+    division: quote.client.present? ? quote.client.company_division.name : '',
+    client: quote.client.present? ? quote.client.name : '',
+    pdf_exist: ActiveStorage::Blob.where(filename: "納品書＿#{quote.id}.pdf").present? ? true : false,
+  }

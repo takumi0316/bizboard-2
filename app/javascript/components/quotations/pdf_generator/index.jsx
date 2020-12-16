@@ -94,8 +94,11 @@ const QuotationPdfGenerator = props => {
             </tbody>
           </table>
         </div>
-        <div className='c-flex__center'>
-          <input type='submit' name='commit' value='見積書ダウンロード' className='u-mt-30 c-btnMain'/>
+        <div className='c-overlay-submit'>
+          <Fragment>
+            { props.pdf_exist ? <a className='c-btnMain-standard' href={ `/quotations/${ props.quote.id }` } target='_blank'>作成済みPDF</a> : null }
+            <input type='submit' name='commit' value='見積書ダウンロード' className='u-ml-30 c-btnMain-primaryB'/>
+          </Fragment>
         </div>
       </form>
     </Fragment>

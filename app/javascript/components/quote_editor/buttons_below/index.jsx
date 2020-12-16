@@ -8,14 +8,15 @@ const ButtonsBelow = props => {
         { props.quote.id ?
           <Fragment>
             { !props.quote.lock ?
-              <div className='u-ml-10'><a className='c-btnMain c-btn-blue' onClick={ props.onSubmit }>更新する</a></div>
-              : null
-            }
+            <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/quotations/${ props.quote.id }/edit` } target='_blank'>見積書</a>
+          </Fragment>
+          { props.quote.status === 'end_work' && !props.invoice.id ?
+            <a className='c-btnMain-standard c-btn-orange u-ml-30' href={ `/invoices/new?quote_id=${ props.quote.id }` } target='_blank'>請求書作成</a>
+            : null
+          }
+          { props.quote.status === 'invoicing' && props.invoice.id ?
             <Fragment>
-              { props.quotation.pdf_exist ?
-                <div className='u-ml-10'><a className='c-btnMain' href={ `/quotations/${ props.quote.id }` } target='_blank'>見積書</a></div>
-                : <div className='u-ml-10'><a className='c-btnMain' href={ `/quotations/${ props.quote.id }/edit` } target='_blank'>見積書</a></div>
-              }
+              <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/invoices/${props.invoice.id}/edit` } target='_blank'>請求書</a>
             </Fragment>
             { props.quote.status === 'end_work' && !props.invoice.id ?
               <div className='u-ml-10'><a className='c-btnMain c-btn-blue' href={ `/invoices/new?quote_id=${ props.quote.id }` } target='_blank'>請求書作成</a></div>
@@ -23,10 +24,7 @@ const ButtonsBelow = props => {
             }
             { props.quote.status === 'invoicing' && props.invoice.id ?
               <Fragment>
-                { props.invoice.pdf_exist ?
-                  <div className='u-ml-10'><a className='c-btnMain' href={ `/invoices/${props.invoice.id}` } target='_blank'>請求書</a></div>
-                  : <div className='u-ml-10'><a className='c-btnMain' href={ `/invoices/${props.invoice.id}/edit` } target='_blank'>請求書</a></div>
-                }
+                <a className='c-btnMain-standard c-btn-blue u-ml-30' href={ `/delivery_notes/${ props.quote.id }/edit` } target='_blank'>納品書</a>
               </Fragment>
               : null
             }

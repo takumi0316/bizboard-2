@@ -37,8 +37,6 @@ class ActivitiesController < ApplicationController
     add_breadcrumb '活動履歴'
     @activities = activities
     @activities = activities.where(quote_id: params[:quote_id]) if params[:quote_id]
-
-
   end
 
   ##

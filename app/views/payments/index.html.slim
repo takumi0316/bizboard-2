@@ -10,9 +10,9 @@ h1.l-dashboard__heading 外注企業 支払い情報一覧
         th 会社名
         th 金額
     tbody
-      - subcontractors.each do |r|
-        - total_prices = r.payments.where(date: @start_date..@end_date).where(accouting_status: :active).pluck(:price).sum
-        - if total_prices > 0
+      - Subcontractor.all.each do |s|
+        - tprice = Payment.where(date: @start_date..@end_date).where(accouting_status: :active).where(subcontractor_id: s.id).pluck(:price).sum
+        - if tprice > 0
           tr
-            td = r.name
-            td = "¥ #{ total_prices.to_s(:delimited) }"
+            td = s.name
+            td = "¥ #{ tprice.to_s(:delimited) }"

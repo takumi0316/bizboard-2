@@ -299,6 +299,7 @@ const InvoicePdfGenrator = props => {
               <div>
                 <a className='c-btnMain c-btn-blue' onClick={ setUpdateInvoice }>更新する</a>
               </div>
+              { props.pdf_exist ? <div className='u-ml-10'><a className='u-ml-30 c-btnMain-standard' href={ `/invoices/${ props.invoice.id }` } target='_blank'>作成済みPDF</a></div> : null }
               <div className='u-ml-10'>
                 <input type='submit' name='commit' value='請求書ダウンロード' className='c-btnMain'/>
               </div>
