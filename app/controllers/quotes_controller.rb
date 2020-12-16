@@ -68,14 +68,12 @@ class QuotesController < ApplicationController
   #
   def index
 
-    @user_type = current_user.user_type
-    @count = params[:count]
-
-    @quotes = quotes if @user_type == :general && @count.present? || @user_type == :manager && @count.present? || @user_type == :operator && @count.present?
-    @quotes = quote_manager if @user_type == :manager
-    @quotes = quote_general if @user_type == :general
-    @quotes = quote_operator if @user_type == :operator
-    @quotes = quotes if @user_type != :general && @user_type != :manager && @user_type != :operator
+    @quotes = quotes
+    #@quotes = quotes if current_user.general? && @count.present? || current_user.manager? && @count.present? || current_user.operator? && @count.present?
+    @quotes = quote_manager if current_user.manager?
+    @quotes = quote_general if current_user.general?
+    @quotes = quote_operator if current_user.operator?
+    @quotes = quotes if current_user.general? && current_user.manager? && current_user.operator?
 
     @count_number = @quotes.size
 

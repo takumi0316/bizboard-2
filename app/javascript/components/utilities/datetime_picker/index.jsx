@@ -305,7 +305,7 @@ export default class DatetimePicker extends React.Component {
           <div className='c-btn-main u-display-block' onClick={this.open}>公開日を指定する</div>
           :
           <div className={Style.DatetimePicker__input}>
-            <input type='text' className= 'u-ta-center c-form-text' name={ this.props.name } ref={ node => this.inputRef = node} defaultValue={ Dayjs(this.props.default_datetime).format("YYYY年MM月DD日")  || '' } onClick={this.open} readOnly={true} placeholder='日付を選択' />
+            <input type='text' className= 'u-ta-center c-form-text' name={ this.props.name } ref={ node => this.inputRef = node} defaultValue={ Dayjs(this.props.default_datetime).format("YYYY-MM-DD")  || '' } onClick={this.open} readOnly={true} placeholder='日付を選択' />
           </div>
         }
       </React.Fragment>
