@@ -213,6 +213,12 @@
 
   resources :delivery_targets
 
+  resources :downloads do
+    collection do
+      get :delivery_note
+    end
+  end
+
   resources :react_trials, only: [:index]
 
   # 認証

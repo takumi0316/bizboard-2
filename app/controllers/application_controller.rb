@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   before_action :set_request
 
   # ユーザー認証
-  before_action :authenticate
+  before_action :authenticate, except: [:delivery_note]
 
   # 既読判定
   before_action :read_message
