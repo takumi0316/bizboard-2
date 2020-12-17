@@ -76,9 +76,9 @@ const SearchFlag = props => {
         <div className={ Style.SearchFlag }>
           <div className={ Style.SearchFlag__inner }>
             <div>
-              <div className={ Style.SearchFlag__form }>
+              <div className='c-flex c-flex-alignItems__center'>
                 <input type='text' ref={ inputEl } className={ Style.SearchFlag__input } placeholder='フラグ名で検索' onChange={ onChange }/>
-                <div onClick={ onChange } className='c-btnMain u-ml-10'>検索</div>
+                <div className='u-ml-10'><button onClick={ onChange } className='c-btnMain'>検索</button></div>
               </div>
               { state.flags.length > 0 ?
                 <ul className={ Style.SearchFlag__list }>

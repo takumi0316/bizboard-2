@@ -37,9 +37,7 @@ export const setPDFValue = (file, contents) => {
   const blob_path = (window.URL || window.webkitURL).createObjectURL(blob);
   const getPDF = pdfjsLib.getDocument(blob_path);
 
-  getPDF.promise.then(pdf => {
-    return pdf.getPage(1);
-  }).then(page => {
+  getPDF.promise.then(pdf => pdf.getPage(1)).then(page => {
 
     const canvas = document.getElementById('pdf');
     const draw = document.getElementById('drawer');
@@ -92,7 +90,7 @@ export const setPDFValue = (file, contents) => {
       parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
 
       if(content.content_type != 'image') {
-  
+
         const font_family = Object.keys(FontFamilies).find((font_family, index) => index === content.font_family)
         const font_weight = FontWeights[content.font_weight]
 
@@ -143,7 +141,7 @@ export const setPDFValue = (file, contents) => {
 
         // 画像なしの場合
         if(content.no_image) return
-        
+
         // 画像をbase変換しないと、スクショ時にCORSエラーが出る
         const field = new FormData();
         const upload = () => {

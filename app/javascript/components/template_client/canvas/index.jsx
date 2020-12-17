@@ -1,24 +1,23 @@
-import React, { useEffect, useMemo } from 'react';
-import Style from './style.sass';
+import React, { useEffect, useMemo } from 'react'
+import Style from './style.sass'
 
 // ライブラリ
 import {
   setPDFValue
-} from '../util.js';
+} from '../util.js'
 
 const Index = props => {
 
   // レンダリング制御
   const deploy = useMemo(() => {
 
-    const field = new FormData();
-    field.append('card_layout_id', props.apply_layout.id);
-    const request = window.xhrRequest.post('/template_clients/transfer', field, { responseType: 'blob' });
+    const field = new FormData()
+    field.append('card_layout_id', props.apply_layout.id)
+    const request = window.xhrRequest.post('/template_clients/transfer', field, { responseType: 'blob' })
     request.then(res => {
-
-      setPDFValue(res.data, props.contents);
-    }).catch(err => window.mf_like_modal({ icon: 'error', message: 'レイアウトを取得できませんでした。', close_callback: () => console.log(err) }));
-  }, [props.contents]);
+      setPDFValue(res.data, props.contents)
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: 'レイアウトを取得できませんでした。', close_callback: () => console.log(err) }))
+  }, [props.contents])
 
   useEffect(() => deploy, [props])
 
@@ -33,7 +32,7 @@ const Index = props => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

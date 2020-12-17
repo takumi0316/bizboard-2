@@ -74,24 +74,24 @@ const Index = props => {
 
   }, [props.paginate_index]);
 
-	/**
-	 * レイアウトをクリック
-	 * @version
-	 *
-	 */
+  /**
+   * レイアウトをクリック
+   * @version
+   *
+   */
   const selectLayout = layout_id => {
 
     if(state.apply_layout.id == layout_id) {
 
       window.mf_like_modal({ icon: 'info', message: '既に選択されています。' })
       return
-		}
+    }
 
-		if(state.content_editing) {
+    if(state.content_editing) {
 
-			window.mf_like_modal({ icon: 'info', message: '編集を終了してください。' })
-			return
-		}
+      window.mf_like_modal({ icon: 'info', message: '編集を終了してください。' })
+      return
+    }
 
     const url = `/template_clients/${ props.card_template_id }/set_layout?client_id=${ props.client_id }&layout_id=${ layout_id }&layout_type=${ props.head ? 'head' : 'tail' }`
     const request = window.xhrRequest.get(url)
@@ -112,18 +112,18 @@ const Index = props => {
   };
 
   /**
-	 * クリックしたレイアウトをクリアする
-	 * @version
-	 *
-	 */
-	const clearSelectLayout = () => setState({ ...state, selected: false, select_layout: {} });
+   * クリックしたレイアウトをクリアする
+   * @version
+   *
+   */
+  const clearSelectLayout = () => setState({ ...state, selected: false, select_layout: {} });
 
-	/**
-	 * レイアウトを適用
-	 * @version
-	 *
-	 */
-	const applyLayout = () => {
+  /**
+   * レイアウトを適用
+   * @version
+   *
+   */
+  const applyLayout = () => {
 
     const url = `/template_clients/${ props.card_template_id }/set_layout?client_id=${ props.client_id }&layout_id=${ state.select_layout.id }&layout_type=${ props.head ? 'head' : 'tail' }`;
     const request = window.xhrRequest.get(url);
@@ -140,31 +140,31 @@ const Index = props => {
     }).catch(err => window.mf_like_modal({ icon: 'error', message: 'レイアウトを適用できませんでした。', close_callback: () => console.log(err) }));
   };
 
-	/**
-	 * コンテンツ編集
-	 * @version
-	 *
-	 */
-	const editContent = e => {
+  /**
+   * コンテンツ編集
+   * @version
+   *
+   */
+  const editContent = e => {
 
-		e.preventDefault();
-		setState({ ...state, content_editing: true });
-	};
+    e.preventDefault();
+    setState({ ...state, content_editing: true });
+  };
 
-	/**
-	 * コンテンツ保存
-	 * @version
-	 *
-	 */
-	const saveContent = e => {
+  /**
+   * コンテンツ保存
+   * @version
+   *
+   */
+  const saveContent = e => {
 
-		e.preventDefault()
-		const url = `/company_division_clients/${ props.client_id }/update_layout_values?layout_type=${ props.head ? 'head' : 'tail' }`
-		const field = new FormData()
+    e.preventDefault()
+    const url = `/company_division_clients/${ props.client_id }/update_layout_values?layout_type=${ props.head ? 'head' : 'tail' }`
+    const field = new FormData()
     field.append(`company_division_client[${ props.head ? 'head_layout_id' : 'tail_layout_id' }]`, state.apply_layout.id)
-		state.contents.map((content, index) => {
+    state.contents.map((content, index) => {
 
-			const doc = document.getElementById(content.flag_name)
+      const doc = document.getElementById(content.flag_name)
 
       field.append('company_division_client[layout_values_attributes][][id]', content.layout_value_id || '')
       field.append('company_division_client[layout_values_attributes][][company_division_client_id]', props.client_id)
@@ -180,10 +180,10 @@ const Index = props => {
         }
       if(content.content_type === 'text') field.append('company_division_client[layout_values_attributes][][text_value]', doc.value || '')
       if(content.content_type === 'text_area') field.append('company_division_client[layout_values_attributes][][textarea_value]', doc.value || '')
-		})
+    })
 
-		const request = window.xhrRequest.post(url, field)
-		request.then(res => {
+    const request = window.xhrRequest.post(url, field)
+    request.then(res => {
 
       window.mf_like_modal({ icon: res.data.status, message: '保存しました！', close_callback: () => {
 
@@ -194,10 +194,10 @@ const Index = props => {
         }
         if(!props.upload) setState({ ...state, content_editing: false, contents: res.data.contents })
       }})
-		}).catch(err => window.mf_like_modal({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }))
-	};
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: '保存に失敗しました。', close_callback: () => console.log(err) }))
+  };
 
-	return(
+  return(
     <Fragment>
       <div>
         { !props.upload ?

@@ -123,8 +123,10 @@ export default class Uploads extends React.Component {
         <div className={ Style.SearchLogo }>
           <div className={ Style.SearchLogo__body } onMouseDown={ e => this.stopPropagation(e) }>
             <div className={ Style.SearchLogo__form }>
-              <input type='text' className={ Style.SearchLogo__input } placeholder='画像名で検索' ref={ node => this.wordRef = node} onKeyDown={ e => this.onEnter(e) }/>
-              <div onClick={ this.search.bind(this, 1) } className='c-btnMain u-ml-10'>検索</div>
+              <div className='c-flex c-flex-alignItems__center'>
+                <input type='text' className={ Style.SearchLogo__input } placeholder='画像名で検索' ref={ node => this.wordRef = node} onKeyDown={ e => this.onEnter(e) }/>
+                <div className='u-ml-10'><button onClick={ this.search.bind(this, 1) } className='c-btnMain'>検索</button></div>
+              </div>
               { this.page > 1 ? <div className={ Style.SearchLogo__prev } onClick={ e => this.prev(e) }></div> : null }
               <div className={ Style.SearchLogo__pages }>{ this.page } / { this.total_pages }</div>
               { this.page < this.total_pages ? <div className={ Style.SearchLogo__next } onClick={ e => this.next(e) }></div> : null }
@@ -158,7 +160,7 @@ export default class Uploads extends React.Component {
         </div>
       </div>
       :
-      <div className='c-btnMain' onClick={ this.open }>画像・ロゴ検索</div>
+      <div><button className='c-btnMain' onClick={ this.open }>画像・ロゴ検索</button></div>
     );
   }
 }
