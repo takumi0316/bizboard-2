@@ -509,7 +509,7 @@ export default class QuoteEditor extends React.Component {
     if(!this.props.quote.drive_folder_id && this.googleDriveFolderRef.current !== null) field.append('quote[google_drive_exist]', this.googleDriveFolderRef.current.value)
     this.state.quote_projects.map((project, index) => {
 
-      if(noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
+      if(project.id && noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
       if(!project.id && project._destroy) return
       if(project.id && project._destroy) field.append('quote[quote_projects_attributes][][_destroy]', 1)
       field.append('quote[quote_projects_attributes][][id]', project.id)
