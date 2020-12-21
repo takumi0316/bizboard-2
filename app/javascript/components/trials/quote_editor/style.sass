@@ -1,0 +1,42 @@
+@import '../../../../assets/stylesheets/foundation/variables'
+
+.QuoteEditor
+  // background: rgba(204,204,204,0.1)
+  background: #f2f1ed
+  width: 100%
+  height: 100vh
+  position: relative
+
+.DocumentPreview
+  position: absolute
+  top: 130px
+  left: 40%
+  width: 765px
+  border: 1px solid black
+
+.EditingViewer
+  position: absolute
+  top: 130px
+  width: 29%
+  &__header
+    padding: 13px 10px
+    background: #6e6d6c
+    color: #fff
+    line-height: 1
+  &__inner
+    padding: 10px
+    background: #fff
+    &Column
+      overflow: visible
+      strong
+        display: inline-block
+      &__must
+        float: right
+        font-size: map-get($fontSize, 'x-small')
+        line-height: 1.4
+        background-color: #dd3925
+        color: #ffffff
+        margin: 0 5px
+        padding: 2px 5px
+        font-weight: normal
+        border-radius: 2px

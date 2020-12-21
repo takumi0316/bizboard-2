@@ -34,11 +34,11 @@
             td
               - if r.lock?
                 = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
-                  = image_tag asset_url('閉じた鍵アイコン.png'), class: 'nonactive__lock'
+                  = image_tag asset_url('閉じた鍵アイコン.png'), class: 'nonactive__lock'
                   = image_tag asset_url('開いた鍵アイコン.png'), class: 'active__lock'
               - else
                 = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
-                  = image_tag asset_url('閉じた鍵アイコン.png'), class: 'active'
+                  = image_tag asset_url('閉じた鍵アイコン.png'), class: 'active'
                   = image_tag asset_url('開いた鍵アイコン.png'), class: 'nonactive'
           td class="u-ta-center u-va-middle #{ 'p-tasks__unread' if r.task.messages.last.created_at.strftime("%Y %m %d") > current_user.lastaccesstask.strftime("%Y %m %d") if r.task.present? && r.task.messages.present? }"
             = r.quote_number if r.deliver_at.nil?

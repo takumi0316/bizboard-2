@@ -68,8 +68,9 @@ class QuotesController < ApplicationController
   #
   def index
 
+    # Jiiのユーザータイプを管理者以外を一般に変更する
     @quotes = quotes
-    #@quotes = quotes if current_user.general? && @count.present? || current_user.manager? && @count.present? || current_user.operator? && @count.present?
+    # @quotes = quotes if current_user.general? && @count.present? || current_user.manager? && @count.present? || current_user.operator? && @count.present?
     @quotes = quote_manager if current_user.manager?
     @quotes = quote_general if current_user.general?
     @quotes = quote_operator if current_user.operator?

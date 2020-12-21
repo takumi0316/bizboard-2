@@ -157,7 +157,7 @@ import RegistorCompanyDivisionClient from 'components/company/division/client/re
 
 import ShowCompanyDivisionClient from 'components/company/division/client/show'
 
-import InputSuggestion from 'components/Trials/input_suggestion'
+import Trials from 'components/trials'
 
 import MFLikeModal from 'components/mf_like_modal'
 
@@ -212,6 +212,6 @@ WebpackerReact.setup({
   CompanyDivisionClientList,
   RegistorCompanyDivisionClient,
   ShowCompanyDivisionClient,
-  InputSuggestion,
+  Trials,
   MFLikeModal,
 })
