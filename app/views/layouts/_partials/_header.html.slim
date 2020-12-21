@@ -16,7 +16,7 @@ header.l-header
       .l-header__menu
         .l-header__settings(style="cursor: hand; cursor:pointer;") = render_application_icon :settings, size: :s
         .l-header__balloon--hide
-          - if current_user.manager? | current_user.sales? | current_user.admin?
+          - if current_user.admin?
             li
               = link_to users_path, class: cp(users_path) do
                 span ユーザー管理

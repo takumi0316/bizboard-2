@@ -58,13 +58,13 @@ class Work < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
-  #Quoteのdeliverd_atを使えるように
-  scope :asc_deliverd_at, -> { joins(:quote).merge(Quote.deliverd_at) }
+  # Quoteのdeliverd_atを使えるように
+  scope :desc_deliverd_at, -> { joins(:quote).merge(Quote.deliverd_at) }
 
-  #Workのステータス未作業のもの検索
+  # Workのステータス未作業のもの検索
   scope :draft, -> { where(status: 0) }
 
-  #Workのステータス作業中のもの検索
+  # Workのステータス作業中のもの検索
   scope :working, ->{ where(status: 10) }
 
   #----------------------------------------

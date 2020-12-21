@@ -25,29 +25,12 @@ class QuotesController < ApplicationController
     .order(date: :desc)
   }
 
-  expose_with_pagination(:quote_manager) {
+  expose_with_pagination(:quotes_general) {
     Quote
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .where(division_id: current_user.division.id)
-    .order(date: :desc)
-  }
-
-  expose_with_pagination(:quote_general) {
-    Quote
-    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .where(division_id: current_user.division.id)
     .where.not(status: :invoicing)
     .where.not(status: :lost)
     .order(date: :desc)
-  }
-
-  expose_with_pagination(:quote_operator) {
-    Quote
-    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .joins(:task)
-    .where.not(status: :invoicing)
-    .where.not(status: :lost)
-    .order(created_at: :desc)
   }
 
   #----------------------------------------
@@ -68,14 +51,7 @@ class QuotesController < ApplicationController
   #
   def index
 
-    @quotes = quotes
-    #@quotes = quotes if current_user.general? && @count.present? || current_user.manager? && @count.present? || current_user.operator? && @count.present?
-    @quotes = quote_manager if current_user.manager?
-    @quotes = quote_general if current_user.general?
-    @quotes = quote_operator if current_user.operator?
-    @quotes = quotes if current_user.general? && current_user.manager? && current_user.operator?
-
-    @count_number = @quotes.size
+    @quotes = current_user.admin? ? quotes : quotes_general
 
     add_breadcrumb '案件'
   end

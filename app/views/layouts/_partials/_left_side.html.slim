@@ -30,7 +30,7 @@
         = link_to expendables_path, class: current_controller(:expendables) do
           = render_application_icon :manufacturing_costs, size: :xs
           span.u-ml-5 経費入力
-      - if current_user.manager? | current_user.sales? | current_user.admin?
+      - if current_user.admin?
         li.l-dashboard__menuItem.u-mt-10
           = link_to categories_path, class: current_controller(:categories) do
             = render_application_icon :bizistant, size: :xs
@@ -50,7 +50,7 @@
           = render_application_icon :external_partner, size: :xs
           span.u-ml-5 外注先
 
-    - if current_user.manager? | current_user.sales? | current_user.admin?
+    - if current_user.admin?
       .l-dashboard__menuList.l-dashboard__menuList__border
         li.l-dashboard__menuItem
           = link_to targets_path, class: current_controller(:targets) do
