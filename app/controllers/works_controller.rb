@@ -19,16 +19,7 @@ class WorksController < ApplicationController
     .desc_deliverd_at
   }
 
-  # 作業進捗一覧
-  expose_with_pagination(:works_general) {
-    Work
-    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .where.not(status: :delivered)
-    .where.not(status: :completed)
-    .desc_deliverd_at
-  }
-
-  # 案件
+  # 作業書
   expose(:work) { Work.find_or_initialize_by id: params[:id] }
 
   #----------------------------------------
@@ -48,8 +39,6 @@ class WorksController < ApplicationController
   # @version 2018/06/10
   #
   def index
-
-    @works = current_user.admin? ? works : works_general
 
     add_breadcrumb '作業進捗一覧'
   end

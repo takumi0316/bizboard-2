@@ -4,7 +4,7 @@
 = link_to '案件を作成する', new_quote_path, class: 'c-btnMain c-btn-blue'
 
 .u-mt-15
-  = react_component :QuoteSearch, count_number: @quotes.size, search_status: params[:commit]
+  = react_component :QuoteSearch, count_number: quotes.size, search_status: params[:commit]
 
 .c-table.u-mt-15
   table
@@ -28,7 +28,7 @@
         th Web名刺
         th
     tbody
-      - @quotes.each do |r|
+      - quotes.each do |r|
         tr
           - if current_user.admin?
             td

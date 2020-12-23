@@ -25,14 +25,6 @@ class QuotesController < ApplicationController
     .order(date: :desc)
   }
 
-  expose_with_pagination(:quotes_general) {
-    Quote
-    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .where.not(status: :invoicing)
-    .where.not(status: :lost)
-    .order(date: :desc)
-  }
-
   #----------------------------------------
   #  ** Layouts **
   #----------------------------------------
@@ -50,8 +42,6 @@ class QuotesController < ApplicationController
   # @version 2019/03/12
   #
   def index
-
-    @quotes = current_user.admin? ? quotes : quotes_general
 
     add_breadcrumb '案件'
   end

@@ -27,7 +27,7 @@
     /モデル名変更する
     = form_for task, html: { class: 'p-tasks__inputarea', name: 'message_form'} do |f|
       = f.fields_for 'messages_attributes' do |t|
-        = t.text_area :content, placeholder: 'メッセージを入力', class: 'p-tasks__textarea', rows: 4
+        = t.text_area :content, placeholder: 'メッセージを入力', class: 'c-form-textarea', rows: 3
       .u-ta-right
         = f.file_field :attached_files, accept: 'text/plain, image/*, application/pdf', multiple: true, onchange: 'check()'
         = f.submit '送信', class: 'c-btnMain c-btn-blue'
