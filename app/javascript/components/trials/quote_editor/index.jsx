@@ -14,7 +14,7 @@ const Index = props => {
  
   return(
     <div className={ Style.QuoteEditor }>
-      <EditingViewer />
+      <EditingViewer divisions={ props.divisions }/>
       <DocumentPreviewer />
     </div>
   )

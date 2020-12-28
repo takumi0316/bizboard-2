@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import InputSuggestion from './input_suggestion'
 import QuoteEditor from './quote_editor'
 
 const Index = props => {
@@ -7,7 +6,7 @@ const Index = props => {
   return(
     <div>
       { /* <InputSuggestion /> */ }
-      <QuoteEditor />
+      <QuoteEditor divisions={ props.divisions }/>
     </div>
   )
 }
