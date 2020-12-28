@@ -274,7 +274,7 @@ const InvoicePdfGenrator = props => {
                   { props.quote.tax_type === 'exemption' ?
                     <Fragment>
                       <td className='u-va-middle'>合計金額</td>
-                      <td className='u-va-middle'>¥ { Math.u.floor(props.quote.price || 0).toLocaleString() }</td>
+                      <td className='u-va-middle'>¥ { Math.floor(props.quote.price || 0).toLocaleString() }</td>
                     </Fragment>
                     :
                     <Fragment>
