@@ -107,7 +107,7 @@ const CaseDetails = props => {
               </div>
               <div className='u-mt-15'>
                 { props.deliver_type === 'location' || props.deliver_type === 'other' ?
-                  <textarea placeholder='納品方法を記入てください' className='c-form-textarea' disabled={props.lock ? 'disabled' : null} row={5} autoComplete='off' spellCheck='false' type='text' defaultValue={ props.deliver_type_note } onBlur={ e => props.setDeliverTypeNote(e.target.value) }></textarea>
+                  <textarea placeholder='納品方法を記入てください' className='c-form-textarea' disabled={props.lock ? 'disabled' : null} row={5} autoComplete='off' spellCheck='false' type='text' defaultValue={ props.deliver_type_note } onBlur={ e => props.setDeliverTypeNote(e.target.value) }/>
                   : null
                 }
               </div>

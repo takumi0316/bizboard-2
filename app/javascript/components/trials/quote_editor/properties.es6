@@ -1,11 +1,19 @@
-/* --------------------- quote_editor/index.jsx --------------------- */
 export const QUOTE = {
   id: '',
-  google_drive_folder_id: ''
+  delivery_type: '',
+  google_drive_folder_id: '',
+  profit_price: '',
+  projects: [],
 }
-/* --------------------- quote_editor/index.jsx --------------------- */
 
-/* --------------------- quote_editor/modal/config.jsx --------------------- */
+export const defaultItems = {
+  id: 1,
+  name: 'test1',
+  cost: 100,
+  size: 1,
+  memo: ''
+}
+
 export const DELIVER_TYPES = [
   { key: 'seat', value: '席まで配達' },
   { key: 'location', value: '指定場所に配達' },
@@ -41,4 +49,10 @@ export const GOOGLE_DRIVE = [
   { key: true, value: '作成する' },
 ]
 
-/* --------------------- quote_editor/modal/config.jsx --------------------- */
+export const PATTERN = /\d+\.?\d*|\.\d+/
+
+export const LOCATION = 'location'
+
+export const OTHER = 'other'
+
+export const BPR_ERP = 'bpr_erp'

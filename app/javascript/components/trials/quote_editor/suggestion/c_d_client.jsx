@@ -16,7 +16,6 @@ const InputSuggestion = props => {
   const handleSelect = e => {
     
     const targetClient = { ...state.clients[e.target.dataset.number].client, name: `会社名: ${ state.clients[e.target.dataset.number].company.name } 部署名: ${ state.clients[e.target.dataset.number].division.name } 担当者名: ${ state.clients[e.target.dataset.number].client.name }` }
-    //props.applyClient(targetClient, props.index)
     setState({ ...state, selectClient: targetClient, clients: '', searchTxt: targetClient.name })
   }
   
@@ -38,13 +37,15 @@ const InputSuggestion = props => {
     request.then(res => {
       const resClients = res.data.clients.length === 0 ? '' : res.data.clients
       setState({ ...state, clients: resClients , searchTxt: inputTxt })
-    }).catch(err => window.mf_like_modal({ icon: 'info', message: '担当者を取得出来ませんでした。' }))
+    }).catch(err => window.mf_like_modal({ icon: 'info', message: '担当者を取得出来ませんでした。', close_callback: () => console.log(err) }))
   }
   
   return(
     <div className={ Style.Style }>
       <input
         key={ state.selectClient.id }
+        data-set={ state.selectClient.id || '' }
+        ref={ props.clientRef }
         className='c-form-text'
         placeholder='担当者名を入力'
         autoComplete='off'
