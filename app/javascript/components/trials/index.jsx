@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import QuoteEditor from './quote_editor'
+import QuoteEditor from './mask_quote_editor'
 
 const Index = props => {
  

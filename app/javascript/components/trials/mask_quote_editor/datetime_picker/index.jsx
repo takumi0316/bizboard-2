@@ -37,7 +37,7 @@ export default class DatetimePicker extends React.Component {
    */
   _apply = e => {
 
-    e.stopPropagation()
+    // e.stopPropagation()
 
     let datetime = this.state.current_datetime
 
@@ -59,9 +59,12 @@ export default class DatetimePicker extends React.Component {
       this.props.apply({ datetime: datetime })
     } else {
 
-      this.inputRef.value = this.state.current_datetime.format('YYYY-MM-DD')
+      this.inputRef.value = datetime.format(`YYYY年MM月DD日${ this.props.show_time ? 'HH時mm分' : '' }`)
     }
-
+  
+    if(this.props.applyDateTime) {
+      this.props.applyDateTime(Dayjs(datetime).format(`YYYY-MM-DD${ this.props.show_time ? ' HH:mm' : '' }`), this.props.state, this.props.setState)
+    }
 		this.close()
   }
 
@@ -71,7 +74,7 @@ export default class DatetimePicker extends React.Component {
    */
   _clear = e => {
 
-    //e.stopPropagation()
+    // e.stopPropagation()
 
     document.body.style.overflow = 'auto'
 
@@ -204,7 +207,7 @@ export default class DatetimePicker extends React.Component {
                             const target_date = week - current_week + 1
                             const is_active = current_date == target_date && is_current_month && is_current_year
                             return ( current_week > week ?
-                              <td key={`week-${week}`}></td>
+                              <td key={`week-${week}`}/>
                               :
                               <td key={`week-${week}`}>
                                 <div className={`${is_active ? Style.DatetimePicker__active : Style.DatetimePicker__date}`} onClick={this._onChangeDate}>
@@ -232,7 +235,7 @@ export default class DatetimePicker extends React.Component {
                                     </div>
                                   </td>
                                   :
-                                  <td key={`date-${date}`}></td>
+                                  <td key={ `date-${date}` }/>
                                 )
                               })}
                             </tr>
@@ -279,10 +282,17 @@ export default class DatetimePicker extends React.Component {
                     </div>
                     : null
                   }
-
-                  { this.props.show_time ? <div onClick={this._apply} className='u-mt-30 c-btnMain u-display-block'>適用する</div> : null }
-                  <div className='c-flex__center'>
-                    <button onClick={this._clear} className='c-btnMain u-display-block'>クリアする</button>
+  
+                  <div className='u-mt-15 c-flex c-flex__center'>
+                    { this.props.show_time ?
+                      <div>
+                        <button onClick={this._apply} className='c-btnMain c-btn-blue'>適用する</button>
+                      </div>
+                      : null
+                    }
+                    <div className='u-ml-10'>
+                      <button onClick={this._clear} className='c-btnMain'>クリアする</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -290,11 +300,20 @@ export default class DatetimePicker extends React.Component {
           </div>
           : null
         }
-        { this.props.type == 'button' ?
+        { this.props.type === 'button' ?
           <div className='c-btn-main u-display-block' onClick={this.open}>公開日を指定する</div>
           :
           <div className={Style.DatetimePicker__input}>
-            <input id={ this.props.id } type='text' className='u-ta-center c-form-text' ref={ node => this.inputRef = node } defaultValue={ Dayjs(this.props.default_datetime).format("YYYY-MM-DD") || '' } onClick={this.open} readOnly={true} placeholder='日付を選択' />
+            <input
+              id={ this.props.id }
+              type='text'
+              className='u-ta-center c-form-text'
+              ref={ node => this.inputRef = node }
+              defaultValue={ Dayjs(this.props.default_datetime).format(`YYYY年MM月DD日${ this.props.show_time ? 'HH時mm分' : '' }`) }
+              onClick={ this.open }
+              readOnly={ true }
+              placeholder='日付を選択'
+            />
           </div>
         }
       </React.Fragment>

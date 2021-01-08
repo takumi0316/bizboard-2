@@ -11,7 +11,11 @@ import {
   handleChangeDeliverType,
   handleChangeChannel,
   handleChangeDiscount,
-  handleFocusRed
+  handleFocusRed,
+  setDeliverAt,
+  setDeliveryNoteDate,
+  setDate,
+  currentDateTime
 } from '../function'
 
 import {
@@ -62,9 +66,6 @@ const ConfigModal = props => {
      */
 
     let setValues = {
-      date: document.getElementById('date').value,
-      delivery_note_date: document.getElementById('delivery_note_date').value,
-      deliver_at: document.getElementById('deliver_at').value,
       deliver_type: deliverTypeRef.current.value,
       deliver_type_note: state.show_delivery_type ? deliverTypeNoteRef.current.value : '',
       channel: channelRef.current.value,
@@ -144,17 +145,44 @@ const ConfigModal = props => {
 
               <tr>
                 <th>案件作成日</th>
-                <td><DatetimePicker id='date' default_datetime={ props.quote.date }/></td>
+                <td>
+                  <DatetimePicker
+                    id='date'
+                    default_datetime={ props.quote.date || currentDateTime }
+                    show_time={ true }
+                    state={ props.quote }
+                    setState={ props.setQuote }
+                    applyDateTime={ setDate }
+                  />
+                </td>
               </tr>
 
               <tr>
                 <th>納品日</th>
-                <td><DatetimePicker id='delivery_note_date' default_datetime={ props.quote.delivery_note_date }/></td>
+                <td>
+                  <DatetimePicker
+                    id='delivery_note_date'
+                    default_datetime={ props.quote.delivery_note_date || currentDateTime }
+                    show_time={ true }
+                    state={ props.quote }
+                    setState={ props.setQuote }
+                    applyDateTime={ setDeliveryNoteDate }
+                  />
+                </td>
               </tr>
 
               <tr>
                 <th>納期</th>
-                <td><DatetimePicker id='deliver_at' default_datetime={ props.quote.deliver_at }/></td>
+                <td>
+                  <DatetimePicker
+                    id='deliver_at'
+                    default_datetime={ props.quote.deliver_at || currentDateTime }
+                    show_time={ true }
+                    state={ props.quote }
+                    setState={ props.setQuote }
+                    applyDateTime={ setDeliverAt }
+                  />
+                </td>
               </tr>
 
               <tr>

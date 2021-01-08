@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Style from './style.sass'
 
+import {
+ setQuoteProjectName,
+ applyQuoteProject
+} from '../function'
 const InputSuggestion = props => {
   
   const init = {
@@ -11,12 +15,12 @@ const InputSuggestion = props => {
   
   const [state, setState] = useState(init)
   
-  useEffect(() => { /* props.setName(props.index, state.searchTxt) */ }, [state.searchTxt])
+  useEffect(() => { setQuoteProjectName(props.index, state.searchTxt, props.quote, props.setQuote) }, [state.searchTxt])
   
   const handleSelect = e => {
     
     const targetProject = state.projects[e.target.dataset.number]
-    props.applyProject(targetProject, props.index)
+    applyQuoteProject(props.index, targetProject, props.quote, props.setQuote)
     setState({ ...state, selectProject: targetProject, projects: '', searchTxt: targetProject.name })
   }
   

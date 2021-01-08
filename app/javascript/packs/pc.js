@@ -161,6 +161,8 @@ import Trials from 'components/trials'
 
 import MFLikeModal from 'components/mf_like_modal'
 
+import MaskQuoteEditor from 'components/mask_quote_editor'
+
 WebpackerReact.setup({
   Kawaii,
   Alert,
@@ -214,4 +216,5 @@ WebpackerReact.setup({
   ShowCompanyDivisionClient,
   Trials,
   MFLikeModal,
+  MaskQuoteEditor,
 })

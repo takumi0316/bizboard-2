@@ -1,0 +1,49 @@
+@import '../../../../assets/stylesheets/foundation/_variables.scss'
+%formStyle
+  display: inline-block
+  padding: 5px
+  border: 1px solid #aab4b9
+  border-radius: 2px
+  appearance: none
+  &:focus
+    outline: none
+    border: solid 1px map-get($layoutColors, 'core')
+
+.Style
+  textarea
+    @extend %formStyle
+    line-height: 2rem
+    min-height: 40px
+    width: 100%
+  input
+    appearance: none
+    padding: .2rem .2rem .2rem 1rem
+    border-radius: 3px
+    border: 1px solid #ccc
+    min-height: 30px
+    &:focus
+      outline: 0
+      box-shadow: none
+      border: 2px solid #00A2E4
+      background-color: #ffffff
+
+  &__search
+    &Suggestions
+      max-height: 300px
+      position: absolute
+      z-index: 999
+      width: 600px
+      display: block
+      overflow: auto
+      border: 1px solid #cbd3dd
+      background: #fff
+    &Suggestion
+      overflow: hidden
+      cursor: pointer
+      padding: 5px 15px
+      font-size: 14px
+      line-height: 1.428571429
+      &:hover
+        background: #ddd
+      strong
+        color: #1dadd7

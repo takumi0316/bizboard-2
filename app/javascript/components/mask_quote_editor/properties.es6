@@ -3,15 +3,22 @@ export const QUOTE = {
   delivery_type: '',
   google_drive_folder_id: '',
   profit_price: '',
-  projects: [],
+  quote_projects: [],
 }
 
-export const defaultItems = {
-  id: 1,
-  name: 'test1',
-  cost: 100,
-  size: 1,
-  memo: ''
+const uid = new Date().getTime().toString(16) + Math.floor(1000 * Math.random()).toString(16)
+
+export const QUOTE_PROJECT = {
+  'id': '',
+  'uid': uid,
+  'project_id': '',
+  'quote_id': '',
+  'name': '',
+  'unit_price': '',
+  'unit': '',
+  'price': '',
+  'project_name': '',
+  'remarks': ''
 }
 
 export const DELIVER_TYPES = [

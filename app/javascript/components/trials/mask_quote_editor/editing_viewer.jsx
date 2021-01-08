@@ -11,13 +11,15 @@ import DatetimePicker from './datetime_picker'
 
 import {
   currentDate,
-  addProject,
+  addQuoteProject,
   handleOpenDetailConfig,
   handleFocusRed,
+  setIssuesDate,
+  setExpiration,
 } from './function'
 
 import {
-  defaultItems,
+  QUOTE_PROJECT,
 } from './properties.es6'
 
 const EditingViewer = props => {
@@ -25,12 +27,10 @@ const EditingViewer = props => {
   const clientRef = useRef(null)
   const divisionRef = useRef(null)
   const subjectRef = useRef(null)
-  const remarksRef = useRef(null)
   const memoRef = useRef(null)
 
   const init = {
     open_detail_config: false,
-    projects: props.quote.projects || [defaultItems],
     detail_config_values: {}
   }
  
@@ -47,7 +47,6 @@ const EditingViewer = props => {
       division_id: divisionRef.current.value,
       issues_date: document.getElementById('issues_date').value,
       expiration: document.getElementById('expiration').value,
-      remarks: remarksRef.current.value || '',
       memo: memoRef.current.value || '',
     }
 
@@ -76,7 +75,7 @@ const EditingViewer = props => {
     }
  
   }
-
+  
   return (
     <div className={ Style.EditingViewer }>
       <div className={ Style.EditingViewer__header }>見積書編集</div>
@@ -116,13 +115,26 @@ const EditingViewer = props => {
           <div
             className={ `${ Style.EditingViewer__innerColumn__three } ${ Style.EditingViewer__innerColumn__threeDate }` }>
             <strong>発行日</strong>
-            <DatetimePicker id='issues_date' default_datetime={ currentDate }/>
+            <DatetimePicker
+              id='issues_date'
+              default_datetime={ props.quote.issues_date || currentDate }
+              state={ props.quote }
+              setState={ props.setQuote }
+              applyDateTime={ setIssuesDate }
+            />
           </div>
           <div
             className={ `${ Style.EditingViewer__innerColumn__three } ${ Style.EditingViewer__innerColumn__threeDate }` }>
             <strong>有効期限</strong>
             <div>
-              <DatetimePicker id='expiration' key={ props.quote.expiration } default_datetime={ props.quote.expiration }/>
+              <DatetimePicker
+                id='expiration'
+                key={ props.quote.expiration }
+                default_datetime={ props.quote.expiration || currentDate }
+                state={ props.quote }
+                setState={ props.setQuote }
+                applyDateTime={ setExpiration }
+              />
               <div className='u-mt-5 c-flex__between'>
                 <span
                   className={ Style.EditingViewer__btnFreeze }
@@ -150,7 +162,11 @@ const EditingViewer = props => {
               <div className={ Style.EditingViewer__innerColumn__must }>必須</div>
             </strong>
             <div className='u-mt-5'>
-              <input className='c-form-text' ref={ subjectRef } defaultValue={ props.quote ? props.quote.subject : '' }/>
+              <input
+                className='c-form-text'
+                defaultValue={ props.quote ? props.quote.subject : '' }
+                onChange={ e => props.setQuote({ ...props.quote, subject: e.target.value }) }
+              />
             </div>
           </div>
         </div>
@@ -158,11 +174,11 @@ const EditingViewer = props => {
         <div className={ Style.EditingViewer__innerColumn }>
           <div>
             <strong>明細</strong>
-            <ItemTable parentState={ state } parentSetState={ setState }/>
+            <ItemTable quote={ props.quote } setQuote={ props.setQuote }/>
           </div>
 
           <div className='u-ta-right u-mt-5'>
-            <button className={ Style.EditingViewer__btnNormal } onClick={ e => addProject(e, state, setState) }>
+            <button className={ Style.EditingViewer__btnNormal } onClick={ e => addQuoteProject(e, props.quote, props.setQuote) }>
               <i/>
               行を追加
             </button>
@@ -176,7 +192,7 @@ const EditingViewer = props => {
               <Help content='見積もりに記載されます'/>
             </strong>
             <div className='u-mt-5'>
-              <textarea className='c-form-textarea' ref={ remarksRef }/>
+              <textarea className='c-form-textarea' onChange={ e => props.setQuote({ ...props.quote, remarks: e.target.value }) }/>
             </div>
           </div>
         </div>
@@ -205,7 +221,12 @@ const EditingViewer = props => {
       </div>
 
       { state.open_detail_config ?
-        <DetailConfigModal quote={ props.quote } setQuote={ props.setQuote } parentState={ state } parentSetState={ setState }/>
+        <DetailConfigModal
+          quote={ props.quote }
+          setQuote={ props.setQuote }
+          parentState={ state }
+          parentSetState={ setState }
+        />
         : null
       }
     </div>
