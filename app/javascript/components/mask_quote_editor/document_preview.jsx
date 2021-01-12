@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import Style from './style.sass'
 import Dayjs from 'dayjs'
 
@@ -8,16 +8,19 @@ import ElectronicSeal from '../../../assets/images/electronic-seal.png'
 
 const DocumentPreviewer = props => {
  
+  const taxRef = useRef(parseInt(props.quote.tax * 100) - 100)
   const [totalPrice, setTotalPrice] = useState(0)
- 
+  const [subTotal, setSubTotal] = useState(0)
+  const [amountTax, setAmountTax] = useState(0)
+
   useEffect(() => {
 
-    const selectedProjects = props.quote.quote_projects.filter(project => project.project_id)
-    if(selectedProjects === []) return
+    const selectedQuoteProjects = props.quote.quote_projects.filter(quote_project => !quote_project._destroy).filter(quote_project => quote_project.unit && quote_project.unit_price)
+    if(selectedQuoteProjects === []) return
   
     let sumPrice = 0
-    selectedProjects.map(project => {
-     const price = parseFloat(project.unit) * parseFloat(project.unit_price)
+    selectedQuoteProjects.map(quote_project => {
+     const price = parseFloat(quote_project.unit) * parseFloat(quote_project.unit_price)
      sumPrice += price
     })
 
@@ -76,15 +79,15 @@ const DocumentPreviewer = props => {
           </div>
  
           <div className='u-mt-20'>
-            <p className={ `${ Style.DocumentPreview__innerContents__border } u-fw-bold` }>{ `御見積金額\b ${ totalPrice }円` }</p>
+            <p className={ `${ Style.DocumentPreview__innerContents__border } u-fw-bold` }>{ `御見積金額\b ${ Math.round(totalPrice * props.quote.tax).toLocaleString() }円` }</p>
           </div>
  
           <div className='u-mt-30'>
             <table style={{ width: '100%' }}>
               <colgroup>
-                <col width='57%'/>
-                <col width='17%'/>
-                <col width='10%'/>
+                <col width='62%'/>
+                <col width='14%'/>
+                <col width='8%'/>
                 <col width='16%'/>
               </colgroup>
               <thead>
@@ -96,29 +99,44 @@ const DocumentPreviewer = props => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  { props.quote.quote_projects.map(quote_project => {
-                    const key = 'quote_project' + quote_project.id
-                    return(
-                      <Fragment key={ key }>
-                        <td>{ quote_project.name }</td>
-                        <td className='u-ta-right'>{ quote_project.unit_price }</td>
-                        <td>{ quote_project.unit }</td>
-                        <td>{ quote_project.project_id ? parseFloat(quote_project.unit_price) * parseFloat(quote_project.unit) : '' }</td>
-                      </Fragment>
-                    )
-                  }) }
-                </tr>
+                { props.quote.quote_projects.filter(quote_project => !quote_project._destroy).map((quote_project, index) => {
+                  const key = 'quote_project' + quote_project.uid + quote_project.id
+                  const setText = quote_project.remarks ? quote_project.remarks.replace(/\n/g, '<br />') : ''
+                  return(
+                    <Fragment key={ key }>
+                      { !quote_project._destroy ?
+                        <Fragment>
+                          <tr className={ Style.DocumentPreview__innerContents__items } style={{ backgroundColor: `${ index % 2 ? '#ddd' : '#fff' }` }}>
+                            <td>{ quote_project.name }</td>
+                            <td className='u-ta-right'>{ quote_project.unit_price.toLocaleString() }</td>
+                            <td className='u-ta-right'>{ quote_project.unit.toLocaleString() }</td>
+                            <td className='u-ta-right'>{ quote_project.unit && quote_project.unit_price ? (parseFloat(quote_project.unit_price) * parseFloat(quote_project.unit)).toLocaleString() : '' }</td>
+                          </tr>
+                          { quote_project.remarks ?
+                            <tr className={ Style.DocumentPreview__innerContents__items} style={{ backgroundColor: `${ index % 2 ? '#ddd' : '#fff' }`, width: '100%' }}>
+                              <td dangerouslySetInnerHTML={{ __html: setText }}/>
+                              <td/>
+                              <td/>
+                              <td/>
+                            </tr>
+                            : null
+                          }
+                        </Fragment>
+                        : null
+                      }
+                    </Fragment>
+                  )
+                }) }
               </tbody>
             </table>
           </div>
 
           <div className='u-mt-30'>
             <div className={ Style.DocumentPreview__innerContents__billingTotal }>
-              <div className=''><p>小計<span>{ 3000 }円</span></p></div>
-              <div className=''><p>消費税<span>{ 100 }円</span></p></div>
+              <div className=''><p>小計<span>{ totalPrice.toLocaleString() }円</span></p></div>
+              <div className=''><p>消費税<span>{ (totalPrice * (props.quote.tax === 1.1 ? 0.1 : 0.08)).toLocaleString()  }円</span></p></div>
               <div className={ Style.DocumentPreview__innerContents__billingTotal__price }>
-                <p>合計<span>{ 100 }円</span></p>
+                <p>合計<span>{ Math.round(totalPrice * props.quote.tax).toLocaleString() }円</span></p>
               </div>
             </div>
             <div className={ `${ Style.DocumentPreview__innerContents__breakDown } c-flex__between` }>
@@ -130,14 +148,14 @@ const DocumentPreviewer = props => {
                   <div className='c-flex__column'>
                     <div className='c-flex__between'>
                       <div className={ Style.DocumentPreview__innerContetns__breakDown__exciseContainer }>
-                        <p>10%対象</p>
+                        <p>{ `${ taxRef.current }%対象` }</p>
                       </div>
                       <div className={ Style.DocumentPreview__innerContents__breakDown__subtotalContainer }>
-                        <p>{ 1000 }円</p>
+                        <p>{ totalPrice.toLocaleString() }円</p>
                       </div>
                     </div>
                     <div className='c-flex__end'>
-                      <p>{ `消費税\b${100}円` }</p>
+                      <p>{ `消費税\b${ (totalPrice * (props.quote.tax === 1.1 ? 0.1 : 0.08)).toLocaleString() }円` }</p>
                     </div>
                   </div>
                 </div>

@@ -11,7 +11,7 @@ import {
 
 const Index = props => {
  
-  const [quote, setQuote] = useState( { ...props.quote, quote_projects: props.quote_projects, company_name: props.company_name, client_name: props.client_name })
+  const [quote, setQuote] = useState( { ...props.quote,  quote_projects: props.quote_projects, company_name: props.company_name, client_name: props.client_name })
 
   useEffect(() => {
     document.getElementsByClassName('l-dashboard__main')[0].style = 'padding-top: 41.5px; padding-left: 104px;'
@@ -22,7 +22,7 @@ const Index = props => {
 
   return(
     <div className={ Style.QuoteEditor }>
-      <EditingViewer divisions={ props.divisions } quote={ quote } setQuote={ setQuote }/>
+      <EditingViewer divisions={ props.divisions } quote={ quote } setQuote={ setQuote } action={ props.action } user_id={ props.user_id }/>
       <DocumentPreviewer quote={ quote } jii_address={ props.jii_address } jii_tel={ props.jii_tel }/>
     </div>
   )

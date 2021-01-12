@@ -4,7 +4,8 @@ import {
   QUOTE_PROJECT,
   LOCATION,
   OTHER,
-  BPR_ERP
+  BPR_ERP,
+  PATTERN
 } from './properties.es6'
 
 export const addQuoteProject = (e, quote, setQuote) => {
@@ -13,7 +14,7 @@ export const addQuoteProject = (e, quote, setQuote) => {
   e.target.blur()
 
   const quoteProjects = JSON.parse(JSON.stringify(quote.quote_projects))
-  quoteProjects.push(QUOTE_PROJECT)
+  quoteProjects.push({ ...QUOTE_PROJECT, uid: new Date().getTime().toString(16) + Math.floor(1000 * Math.random()).toString(16) })
   setQuote({ ...quote, quote_projects: quoteProjects })
 }
 
@@ -34,8 +35,14 @@ export const handleCloseDetailItem = (state, setState) => setState({ ...state, o
 
 export const removeQuoteProject = (index, quote, setQuote) => {
 
-  const projectAfterOmission = quote.quote_projects.filter((project, pi) => index !== pi)
-  setQuote({ ...quote, quote_projects: projectAfterOmission })
+  const quote_projects = JSON.parse(JSON.stringify(quote.quote_projects)).map((project, pi) => {
+
+    if(index !== pi) return project
+    
+    if(index === pi) return { ...project, _destroy: true }
+  })
+
+  setQuote({ ...quote, quote_projects: quote_projects })
 }
 
 export const handleCloseDetailConfig = (state, setState) => setState({ ...state, open_detail_config: false })
@@ -95,18 +102,40 @@ export const setQuoteProjectName = (passIndex, name, quote, setQuote) => {
   setQuote({ ...quote, quote_projects: quote_projects })
 }
 
+// 品目数量
 export const setQuoteProjectUnit = (e, passIndex, quote, setQuote) => {
   
+  let tar_unit = e.target.value
   let quote_projects = JSON.parse(JSON.stringify(quote.quote_projects))
-  quote_projects[passIndex].unit = e.target.value
-  setQuote({ ...quote, quote_projects: quote_projects })
+  tar_unit = tar_unit.replace(/[ー]/, '-')
+  const cast_unit = tar_unit.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0)-0xFEE0))
+  const res_unit = cast_unit.replace(PATTERN, '')
+  const unit = quote_projects[passIndex].unit
+
+  if(unit !== res_unit) {
+    quote_projects[passIndex].unit = parseFloat(res_unit)
+    setQuote({ ...quote, quote_projects: quote_projects })
+  }
+  if(unit === res_unit) e.target.value = parseFloat(res_unit)
+  if(!unit && !res_unit) e.target.value = ''
 }
 
+// 品目単価
 export const setQuoteProjectUnitPrice = (e, passIndex, quote, setQuote) => {
   
+  let tar_unit_price = e.target.value
   let quote_projects = JSON.parse(JSON.stringify(quote.quote_projects))
-  quote_projects[passIndex].unit_price = e.target.value
-  setQuote({ ...quote, quote_projects: quote_projects })
+  tar_unit_price = tar_unit_price.replace(/[ー]/, '-')
+  const cast_unit_price = tar_unit_price.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0)-0xFEE0))
+  const res_unit_price = cast_unit_price.replace(PATTERN, '')
+  const unit_price = quote_projects[passIndex].unit_price
+
+  if(unit_price !== res_unit_price) {
+    quote_projects[passIndex].unit_price = parseFloat(res_unit_price)
+    setQuote({ ...quote, quote_projects: quote_projects })
+  }
+  if(unit_price === res_unit_price) e.target.value = parseFloat(res_unit_price)
+  if(!unit_price && !res_unit_price) e.target.value = ''
 }
 
 export const setQuoteProjectRemarks = (e, passIndex, quote, setQuote) => {

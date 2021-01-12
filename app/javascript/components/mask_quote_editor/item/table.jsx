@@ -45,41 +45,48 @@ const Table = props => {
         <tbody>
           { props.quote.quote_projects.map((project, index) => {
             const key = 'project' + index
-              return(
-                <tr key={ key }>
-                  <td>
-                    <ProjectSuggestion
-                      inputTxt={ project.name }
-                      quote={ props.quote }
-                      setQuote={ props.setQuote }
-                      index={ index }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className='c-form-text'
-                      type='text'
-                      defaultValue={ project.unit_price }
-                      onChange={ e => setQuoteProjectUnitPrice(e, index, props.quote, props.setQuote) }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className='c-form-text'
-                      type='text'
-                      defaultValue={ project.unit }
-                      onChange={ e => setQuoteProjectUnit(e, index, props.quote, props.setQuote) }
-                    />
-                  </td>
-                  <td className='u-va-middle u-ta-right'>{ project.project_id ? project.unit * project.unit_price : '' }</td>
-                  <td className={ `u-ta-center u-va-middle ${ Style.EditingViewer__svgIcon }` }>
-                    <Icon name='detail_item' size='s' action={ () => handleOpenDetailItem(index, state, setState) }/>
-                  </td>
-                  <td className={ `u-ta-center u-va-middle ${ Style.EditingViewer__svgIcon }` }>
-                    <Icon index={ index } name='destroy_item' size='s' action={ () => removeQuoteProject(index, props.quote, props.setQuote) }/>
-                  </td>
-                </tr>
-              )
+            return(
+              <Fragment key={ key }>
+                { !project._destroy ?
+                  <tr>
+                    <td>
+                      <ProjectSuggestion
+                        inputTxt={ project.name }
+                        quote={ props.quote }
+                        setQuote={ props.setQuote }
+                        index={ index }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        key={ project.unit_price }
+                        className='c-form-text'
+                        type='text'
+                        defaultValue={ project.unit_price }
+                        onBlur={ e => setQuoteProjectUnitPrice(e, index, props.quote, props.setQuote) }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        key={ project.unit }
+                        className='c-form-text'
+                        type='text'
+                        defaultValue={ project.unit }
+                        onBlur={ e => setQuoteProjectUnit(e, index, props.quote, props.setQuote) }
+                      />
+                    </td>
+                    <td className='u-va-middle u-ta-right'>{ project.unit && project.unit_price ? (parseFloat(project.unit) * parseFloat(project.unit_price)).toLocaleString() : '' }</td>
+                    <td className={ `u-ta-center u-va-middle ${ Style.EditingViewer__svgIcon }` }>
+                      <Icon name='detail_item' size='s' action={ () => handleOpenDetailItem(index, state, setState) }/>
+                    </td>
+                    <td className={ `u-ta-center u-va-middle ${ Style.EditingViewer__svgIcon }` }>
+                      <Icon index={ index } name='destroy_item' size='s' action={ () => removeQuoteProject(index, props.quote, props.setQuote) }/>
+                    </td>
+                  </tr>
+                  : null
+                }
+              </Fragment>
+            )
           })}
         </tbody>
       </table>

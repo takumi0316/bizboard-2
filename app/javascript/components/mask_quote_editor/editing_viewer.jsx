@@ -39,11 +39,12 @@ const EditingViewer = props => {
     //console.log(state)
   }, [state])
  
+  // TODO: 案件ロック時にグレーアウト
+  // TODO: 導線ボタンを下部に設置
   const saveContents = e => {
 
     e.preventDefault()
     let setContents = {
-      division_id: divisionRef.current.value,
       issues_date: document.getElementById('issues_date').value,
       expiration: document.getElementById('expiration').value,
       memo: memoRef.current.value || '',
@@ -61,7 +62,6 @@ const EditingViewer = props => {
       return
     }
 
-    console.log(props.quote)
     const subject = props.quote.subject
     if(subject) setContents = { ...setContents, subject: subject }
     if(!subject) {
@@ -82,7 +82,8 @@ const EditingViewer = props => {
     
       if(project.id && noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
       if(!project.id && project._destroy) return
-      if(project.id && project._destroy) field.append('quote[quote_projects_attributes][][_destroy]', 1)
+ 
+      const sumPrice = Math.round(parseFloat(project.unit) * parseFloat(project.unit_price))
       field.append('quote[quote_projects_attributes][][id]', project.id)
       field.append('quote[quote_projects_attributes][][project_id]', project.project_id)
       field.append('quote[quote_projects_attributes][][quote_id]', project.quote_id)
@@ -90,23 +91,27 @@ const EditingViewer = props => {
       field.append('quote[quote_projects_attributes][][remarks]', project.remarks)
       field.append('quote[quote_projects_attributes][][unit_price]', project.unit_price)
       field.append('quote[quote_projects_attributes][][unit]', project.unit)
-      field.append('quote[quote_projects_attributes][][price]', (project.unit + project.unit_price))
+      field.append('quote[quote_projects_attributes][][price]', sumPrice)
       field.append('quote[quote_projects_attributes][][project_name]', project.project_name)
-      price = price + (parseFloat(project.unit) * parseFloat(project.unit_price))
+      if(project.id && project._destroy) {
+        field.append('quote[quote_projects_attributes][][_destroy]', 1)
+        return
+      }
+      price = price + sumPrice
     })
  
-    field.append('quote[id]', props.quote.quote_id || '')
-    field.append('quote[division_id]', setContents.division_id)
+    field.append('quote[id]', props.quote.id || '')
+    field.append('quote[division_id]', props.quote.division_id)
     field.append('quote[company_division_client_id]', setContents.client_id)
     field.append('quote[subject]', setContents.subject)
     field.append('quote[quote_type]', props.quote.quote_type)
     field.append('quote[quote_number]', props.quote.quote_number || '')
-    field.append('quote[temporary_price]', props.quote.temporary_price || '')
-    field.append('quote[profit_price]', props.quote.profit_price || '')
+    field.append('quote[temporary_price]', props.quote.temporary_price || 0)
+    field.append('quote[profit_price]', props.quote.profit_price || 0)
     field.append('quote[tax_type]', props.quote.tax_type)
     field.append('quote[tax]', props.quote.tax)
     field.append('quote[payment_terms]', props.quote.payment_terms)
-    field.append('quote[channel]', props.quote.channel)
+    field.append('quote[channel]', props.quote.channel || 'estimate')
     field.append('quote[date]', props.quote.date || '')
     field.append('quote[issues_date]', props.quote.issues_date || '')
     field.append('quote[expiration]', props.quote.expiration || '')
@@ -114,17 +119,17 @@ const EditingViewer = props => {
     field.append('quote[deliver_at]', props.quote.deliver_at || '')
     field.append('quote[reception]', props.quote.reception)
     field.append('quote[remarks]', props.quote.remarks)
-    field.append('quote[memo]', props.quote.memo)
-    field.append('quote[drive_folder_id]', props.quote.drive_folder_id)
+    field.append('quote[memo]', memoRef.current.value)
+    field.append('quote[drive_folder_id]', props.quote.drive_folder_id || '')
     field.append('quote[user_id]', props.user_id)
     field.append('quote[discount]', props.quote.discount)
-    field.append('quote[price]', props.quote.discount === 0 ? price : price - props.quote.discount)
+    field.append('quote[price]', price)
     field.append('quote[deliver_type]', props.quote.deliver_type)
     field.append('quote[deliver_type_note]', props.quote.deliver_type_note || '')
 
     if(!props.quote.drive_folder_id && props.quote.drive_folder_exist) field.append('quote[google_drive_exist]', 'true')
 
-    const request = this.state.quote_id ? window.xhrRequest.put(props.action, field) : window.xhrRequest.post(props.action, field)
+    const request = props.quote.id ? window.xhrRequest.put(props.action, field) : window.xhrRequest.post(props.action, field)
     request.then(res => {
     
       if(res.data.status === 'success') {
@@ -135,7 +140,7 @@ const EditingViewer = props => {
         }
       
         // 編集ページへリダイレクト
-        if(props.quote.id) {
+        if(!props.quote.id) {
           const redirect = () => location.href = `${res.data.quote.id}/edit`
           window.mf_like_modal({ icon: 'success', message: '案件を保存しました。', close_callback: () => redirect() })
         }
@@ -163,8 +168,6 @@ const EditingViewer = props => {
             />
           </div>
         </div>
-
-
 
         <div className={ `${ Style.EditingViewer__innerColumn } u-mt-5` }>
           <div className={ `${ Style.EditingViewer__innerColumn__three } ${ Style.EditingViewer__innerColumn__quoteNumber }` }>
@@ -254,7 +257,12 @@ const EditingViewer = props => {
               <Help content='見積もりに記載されます'/>
             </strong>
             <div>
-              <textarea className='c-form-textarea' rows='3' onChange={ e => props.setQuote({ ...props.quote, remarks: e.target.value }) }/>
+              <textarea
+                className='c-form-textarea'
+                rows='3'
+                onChange={ e => props.setQuote({ ...props.quote, remarks: e.target.value }) }
+                defaultValue={ props.quote.remarks }
+              />
             </div>
           </div>
         </div>
@@ -266,7 +274,12 @@ const EditingViewer = props => {
               <Help content='見積もりに記載されません'/>
             </strong>
             <div>
-              <textarea className='c-form-textarea' rows='3' ref={ memoRef }/>
+              <textarea
+                className='c-form-textarea'
+                rows='3'
+                defaultValue={ props.quote.memo }
+                ref={ memoRef }
+              />
             </div>
           </div>
         </div>
@@ -288,6 +301,8 @@ const EditingViewer = props => {
           setQuote={ props.setQuote }
           parentState={ state }
           parentSetState={ setState }
+          divisions={ props.divisions }
+          division_id={ props.quote.division_id || props.division_id }
         />
         : null
       }

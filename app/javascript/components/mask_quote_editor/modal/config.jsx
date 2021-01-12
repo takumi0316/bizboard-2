@@ -32,10 +32,9 @@ import {
   BPR_ERP
 } from '../properties.es6'
 
-// TODO: 保存ボタン押下時に親へ設定値を渡す
-// TODO: QuoteをFirst Componentで管理する
 const ConfigModal = props => {
  
+  const divisionRef = useRef(null)
   const deliverTypeRef = useRef(null)
   const deliverTypeNoteRef = useRef(null)
   const channelRef = useRef(null)
@@ -62,28 +61,24 @@ const ConfigModal = props => {
  
     e.preventDefault()
 
-    /*
-      TODO: 浮動小数を正規表現
-      CONCRETE-1: 文字列をtrim
-      CONCRETE-2: 文字列が入力された場合は、setStateしない
-     */
-
     let setValues = {
+      division_id: divisionRef.current.value,
       deliver_type: deliverTypeRef.current.value,
       deliver_type_note: state.show_deliver_type ? deliverTypeNoteRef.current.value : '',
       channel: channelRef.current.value,
       quote_number: state.show_detail_channel ? quoteNumberRef.current.value : '',
-      drive_folder_exist: googleDriveExistRef.current.value,
       reception: state.reception,
       quote_type: quoteTypeRef.current.value,
       tax_type: taxTypeRef.current.value,
       payment_terms: paymentTermsRef.current.value
     }
 
-    const profitPrice = profitPriceRef.current.value
-    const matchProfitPrice = profitPrice.match(PATTERN)[0]
-    if(matchProfitPrice.length === profitPrice.length) setValues = { ...setValues, profit_price: parseFloat(matchProfitPrice) }
-    if(matchProfitPrice.length !== profitPrice.length) {
+    let profit_price = profitPriceRef.current.value
+    profit_price = profit_price.replace(/[ー]/, '-')
+    const cast_profit_price = profit_price.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0)-0xFEE0))
+    const res_profit_price = cast_profit_price.replace(PATTERN, '')
+    if(res_profit_price) setValues = { ...setValues, profit_price: res_profit_price }
+    if(!res_profit_price) {
 
       mf_like_modal({
         icon: 'error',
@@ -95,11 +90,13 @@ const ConfigModal = props => {
 
     if(state.show_detail_channel) {
 
-      const temporaryPrice = temporaryPriceRef.current.value
-      const matchTemporaryPrice = temporaryPrice.match(PATTERN)[0]
-      if(matchTemporaryPrice.length === temporaryPrice.length) setValues = { ...setValues, temporary_price: parseFloat(matchTemporaryPrice) }
-      if(matchTemporaryPrice.length !== temporaryPrice.length) {
-  
+      let temporary_price = temporaryPriceRef.current.value
+      temporary_price = temporary_price.replace(/[ー]/, '-')
+      const cast_temporary_price = temporary_price.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0)-0xFEE0))
+      const res_temporary_price = cast_temporary_price.replace(PATTERN, '')
+      if(res_temporary_price) setValues = { ...setValues, temporary_price: res_temporary_price }
+      if(!res_temporary_price) {
+
         mf_like_modal({
           icon: 'error',
           message: '整数・小数のみ入力してください。',
@@ -109,22 +106,26 @@ const ConfigModal = props => {
       }
     }
   
-    if(state.active_discount) {
-    
-      const discount = discountRef.current.value
-      const matchDiscount = discount.match(PATTERN)[0]
-      if(matchDiscount.length === discount.length) setValues = { ...setValues, discount: parseFloat(discount) }
-      if(matchDiscount.length !== discount.length) {
+    if(!props.quote.drive_folder_id) setValues = { ...setValues, drive_folder_exist: googleDriveExistRef.current.value }
+ 
+    { /*
+      if(state.active_discount) {
       
-        mf_like_modal({
-          icon: 'error',
-          message: '整数・小数のみ入力してください。',
-          close_callback: () => handleFocusRed(discountRef.current)
-        })
-        return
+        const discount = discountRef.current.value
+        const matchDiscount = discount.match(PATTERN)[0]
+        if(matchDiscount.length === discount.length) setValues = { ...setValues, discount: parseFloat(discount) }
+        if(matchDiscount.length !== discount.length) {
+        
+          mf_like_modal({
+            icon: 'error',
+            message: '整数・小数のみ入力してください。',
+            close_callback: () => handleFocusRed(discountRef.current)
+          })
+          return
+        }
       }
-    }
-  
+     */ }
+
     props.parentSetState({ ...props.parentState, open_detail_config: false })
     props.setQuote({ ...props.quote, ...setValues })
   }
@@ -190,6 +191,21 @@ const ConfigModal = props => {
               </tr>
 
               <tr>
+                <th>売り上げ部署</th>
+                <td>
+                  <div className='c-form-selectWrap'>
+                    <select
+                      className='c-form-select'
+                      defaultValue={ props.division_id }
+                      ref={ divisionRef }
+                    >
+                      { props.divisions.map(division => <option key={ division[1] } value={ division[1] }>{ division[0] }</option>) }
+                    </select>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
                 <th>納品方法</th>
                 <td>
                   <div className='c-form-selectWrap'>
@@ -204,7 +220,7 @@ const ConfigModal = props => {
                   </div>
                   { state.show_deliver_type ?
                     <div className='u-mt-5'>
-                      <textarea className='c-form-textarea' ref={ deliverTypeNoteRef }/>
+                      <textarea className='c-form-textarea' defaultValue={ props.quote.deliver_type_note } ref={ deliverTypeNoteRef }/>
                     </div>
                     : null
                   }
@@ -380,46 +396,48 @@ const ConfigModal = props => {
                 </td>
               </tr>
 
-              <tr>
-                <th>値引き</th>
-                <td>
-                  <div>
-                    <label className='c-form-radioLabel'>
-                      <input
-                        className='c-form-radio'
-                        type='radio'
-                        checked={ !state.active_discount }
-                        disabled={ '' }
-                        onChange={ () => handleChangeDiscount(state, setState) }
-                      />
-                      <i className='c-form-radioIcon'/>
-                      <span>値引きなし</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-15'>
-                      <input
-                        className='c-form-radio'
-                        type='radio'
-                        checked={ state.active_discount }
-                        disabled={ '' }
-                        onChange={ () => handleChangeDiscount(state, setState) }
-                      />
-                      <i className='c-form-radioIcon'/>
-                      <span>値引きあり</span>
-                    </label>
-                  </div>
-                  { state.active_discount ?
-                    <div className='u-mt-5'>
-                      <input
-                        className='c-form-text'
-                        type='text'
-                        defaultValue={ props.quote.discount || 0 }
-                        ref={ discountRef }
-                      />
+              { /* MEMO: 品目にマイナス金額を入力することで同等の処理を実現
+                <tr>
+                  <th>値引き</th>
+                  <td>
+                    <div>
+                      <label className='c-form-radioLabel'>
+                        <input
+                          className='c-form-radio'
+                          type='radio'
+                          checked={ !state.active_discount }
+                          disabled={ '' }
+                          onChange={ () => handleChangeDiscount(state, setState) }
+                        />
+                        <i className='c-form-radioIcon'/>
+                        <span>値引きなし</span>
+                      </label>
+                      <label className='c-form-radioLabel u-ml-15'>
+                        <input
+                          className='c-form-radio'
+                          type='radio'
+                          checked={ state.active_discount }
+                          disabled={ '' }
+                          onChange={ () => handleChangeDiscount(state, setState) }
+                        />
+                        <i className='c-form-radioIcon'/>
+                        <span>値引きあり</span>
+                      </label>
                     </div>
-                    : null
-                  }
-                </td>
-              </tr>
+                    { state.active_discount ?
+                      <div className='u-mt-5'>
+                        <input
+                          className='c-form-text'
+                          type='text'
+                          defaultValue={ props.quote.discount || 0 }
+                          ref={ discountRef }
+                        />
+                      </div>
+                      : null
+                    }
+                  </td>
+                </tr>
+              */ }
 
               <tr>
                 <th>課税対象</th>

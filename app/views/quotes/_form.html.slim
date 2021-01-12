@@ -24,8 +24,8 @@
 		user_id: current_user.id,
 		division_id: current_user.id,
 		divisions: Division.pluck(:name, :id),
-		company_name: quote.client.company_division.company.name,
-		client_name: "会社名: #{ quote.client.company_division.company.name }\n部署名: #{ quote.client.company_division.name }\n担当者名: #{ quote.client.name }",
+		company_name: quote.persisted?? quote.client.company_division.company.name : '',
+		client_name: quote.persisted?? "会社名: #{ quote.client.company_division.company.name }\n部署名: #{ quote.client.company_division.name }\n担当者名: #{ quote.client.name }" : '',
 		jii_address: SiteConfig.get_all[:jii_address],
 		jii_tel: SiteConfig.get_all[:jii_tel],
 	}
