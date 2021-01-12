@@ -158,6 +158,7 @@ const ConfigModal = props => {
                     state={ props.quote }
                     setState={ props.setQuote }
                     applyDateTime={ setDate }
+                    lock={ props.quote.lock }
                   />
                 </td>
               </tr>
@@ -172,6 +173,7 @@ const ConfigModal = props => {
                     state={ props.quote }
                     setState={ props.setQuote }
                     applyDateTime={ setDeliveryNoteDate }
+                    lock={ props.quote.lock }
                   />
                 </td>
               </tr>
@@ -186,6 +188,7 @@ const ConfigModal = props => {
                     state={ props.quote }
                     setState={ props.setQuote }
                     applyDateTime={ setDeliverAt }
+                    lock={ props.quote.lock }
                   />
                 </td>
               </tr>
@@ -198,6 +201,7 @@ const ConfigModal = props => {
                       className='c-form-select'
                       defaultValue={ props.division_id }
                       ref={ divisionRef }
+                      disabled={ props.quote.lock }
                     >
                       { props.divisions.map(division => <option key={ division[1] } value={ division[1] }>{ division[0] }</option>) }
                     </select>
@@ -214,6 +218,7 @@ const ConfigModal = props => {
                       defaultValue={ props.quote.deliver_type }
                       onChange={ e => handleChangeDeliverType(e, state, setState) }
                       ref={ deliverTypeRef }
+                      disabled={ props.quote.lock }
                     >
                       { DELIVER_TYPES.map(type => <option key={ type.key } value={ type.key }>{ type.value }</option>) }
                     </select>
@@ -236,6 +241,7 @@ const ConfigModal = props => {
                       defaultValue={ props.quote.channel }
                       onChange={ e => handleChangeChannel(e, state, setState) }
                       ref={ channelRef }
+                      disabled={ props.quote.lock }
                     >
                       { CHANNELS.map(type => <option key={ type.key } value={ type.key }>{ type.value }</option>) }
                     </select>
@@ -254,6 +260,7 @@ const ConfigModal = props => {
                         placeholder='BPR/ERP番号を入れてください。'
                         defaultValue={ props.quote.quote_number || '' }
                         ref={ quoteNumberRef }
+                        disabled={ props.quote.lock }
                       />
                     </td>
                   </tr>
@@ -269,6 +276,7 @@ const ConfigModal = props => {
                         type='text'
                         defaultValue={ props.quote.temporary_price || 0 }
                         ref={ temporaryPriceRef }
+                        disabled={ props.quote.lock }
                       />
                     </td>
                   </tr>
@@ -286,8 +294,8 @@ const ConfigModal = props => {
                         type='radio'
                         value='acceptance'
                         checked={ state.reception === 'acceptance' }
-                        disabled={ '' }
                         onChange={ e => setReception(e.target.value, state, setState) }
+                        disabled={ props.quote.lock }
                       />
                       <i className='c-form-radioIcon'/>
                       <span>受付</span>
@@ -298,7 +306,7 @@ const ConfigModal = props => {
                         type='radio'
                         value='mail'
                         checked={ state.reception === 'mail' }
-                        disabled={ '' }
+                        disabled={ props.quote.lock }
                         onChange={ e => setReception(e.target.value, state, setState) }
                       />
                       <i className='c-form-radioIcon'/>
@@ -310,7 +318,7 @@ const ConfigModal = props => {
                         type='radio'
                         value='delivery'
                         checked={ state.reception === 'delivery' }
-                        disabled={ '' }
+                        disabled={ props.quote.lock }
                         onChange={ e => setReception(e.target.value, state, setState) }
                       />
                       <i className='c-form-radioIcon'/>
@@ -324,7 +332,7 @@ const ConfigModal = props => {
                         type='radio'
                         value='reservation'
                         checked={ state.reception === 'reservation' }
-                        disabled={ '' }
+                        disabled={ props.quote.lock }
                         onChange={ e => setReception(e.target.value, state, setState) }
                       />
                       <i className='c-form-radioIcon'/>
@@ -336,7 +344,7 @@ const ConfigModal = props => {
                         type='radio'
                         value='bizstant'
                         checked={ state.reception === 'bizstant' }
-                        disabled={ '' }
+                        disabled={ props.quote.lock }
                         onChange={ e => setReception(e.target.value, state, setState) }
                       />
                       <i className='c-form-radioIcon'/>
@@ -348,7 +356,7 @@ const ConfigModal = props => {
                         type='radio'
                         value='reception_other'
                         checked={ state.reception === 'reception_other' }
-                        disabled={ '' }
+                        disabled={ props.quote.lock }
                         onChange={ e => setReception(e.target.value, state, setState) }
                       />
                       <i className='c-form-radioIcon'/>
@@ -366,6 +374,7 @@ const ConfigModal = props => {
                       className='c-form-select'
                       defaultValue={ props.quote.quote_type || '' }
                       ref={ quoteTypeRef }
+                      disabled={ props.quote.lock }
                     >
                       { QUOTE_TYPES.map(type => <option key={ type.key } value={ type.key }>{ type.value }</option>) }
                     </select>
@@ -388,6 +397,7 @@ const ConfigModal = props => {
                         className='c-form-select'
                         defaultValue={ props.quote.drive_folder_exist }
                         ref={ googleDriveExistRef }
+                        disabled={ props.quote.lock }
                       >
                         { GOOGLE_DRIVE.map(type => <option key={ type.key } value={ type.key }>{ type.value }</option> ) }
                       </select>
@@ -447,6 +457,7 @@ const ConfigModal = props => {
                       className='c-form-select'
                       defaultValue={ props.quote.tax_type || '' }
                       ref={ taxTypeRef }
+                      disabled={ props.quote.lock }
                     >
                       { TAX_TYPES.map(type => <option key={ type.key } value={ type.key }>{ type.value }</option>) }
                     </select>
@@ -462,6 +473,7 @@ const ConfigModal = props => {
                       className='c-form-select'
                       defaultValue={ props.quote.payment_terms }
                       ref={ paymentTermsRef }
+                      disabled={ props.quote.lock }
                     >
                       { PAYMENT_TERMS.map(type => <option key={ type.key } value={ type.key }>{ type.value }</option>) }
                     </select>
@@ -477,6 +489,7 @@ const ConfigModal = props => {
                     type='text'
                     defaultValue={ props.quote.profit_price || 0 }
                     ref={ profitPriceRef }
+                    disabled={ props.quote.lock }
                   />
                 </td>
               </tr>
@@ -484,11 +497,14 @@ const ConfigModal = props => {
               </tbody>
             </table>
           </div>
-          
-          <div className='u-ta-center u-mt-15 u-mb-20'>
-            <button className='c-btnMain c-btn-blue' onClick={ saveDetailConfig }>保存</button>
-          </div>
-        
+
+          { !props.quote.lock ?
+            <div className='u-ta-center u-mt-15 u-mb-20'>
+              <button className='c-btnMain c-btn-blue' onClick={ saveDetailConfig }>保存</button>
+            </div>
+            : null
+          }
+
         </div>
       </div>
     </div>

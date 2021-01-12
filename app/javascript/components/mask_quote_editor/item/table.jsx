@@ -63,6 +63,7 @@ const Table = props => {
                         className='c-form-text'
                         type='text'
                         defaultValue={ project.unit_price }
+                        disabled={ props.quote.lock }
                         onBlur={ e => setQuoteProjectUnitPrice(e, index, props.quote, props.setQuote) }
                       />
                     </td>
@@ -72,6 +73,7 @@ const Table = props => {
                         className='c-form-text'
                         type='text'
                         defaultValue={ project.unit }
+                        disabled={ props.quote.lock }
                         onBlur={ e => setQuoteProjectUnit(e, index, props.quote, props.setQuote) }
                       />
                     </td>
@@ -80,7 +82,10 @@ const Table = props => {
                       <Icon name='detail_item' size='s' action={ () => handleOpenDetailItem(index, state, setState) }/>
                     </td>
                     <td className={ `u-ta-center u-va-middle ${ Style.EditingViewer__svgIcon }` }>
-                      <Icon index={ index } name='destroy_item' size='s' action={ () => removeQuoteProject(index, props.quote, props.setQuote) }/>
+                      { props.quote.lock ?
+                        <Icon name='destroy_item' size='s'/>
+                        : <Icon index={ index } name='destroy_item' size='s' action={ () => removeQuoteProject(index, props.quote, props.setQuote) }/>
+                      }
                     </td>
                   </tr>
                   : null

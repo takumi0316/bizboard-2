@@ -308,11 +308,11 @@ export default class DatetimePicker extends React.Component {
               id={ this.props.id }
               type='text'
               className='c-form-text'
+              placeholder='日付を選択'
               ref={ node => this.inputRef = node }
               defaultValue={ Dayjs(this.props.default_datetime).format(`YYYY年MM月DD日${ this.props.show_time ? 'HH時mm分' : '' }`) }
+              disabled={ this.props.lock }
               onClick={ this.open }
-              readOnly={ true }
-              placeholder='日付を選択'
             />
           </div>
         }

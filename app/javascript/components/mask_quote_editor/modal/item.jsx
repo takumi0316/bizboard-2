@@ -43,6 +43,7 @@ const ItemModal = props => {
                       className='c-form-textarea'
                       ref={ remarksRef }
                       defaultValue={ props.quote.quote_projects[props.state.tarIndex].remarks }
+                      disabled={ props.quote.lock }
                     />
                   </td>
                 </tr>
@@ -50,9 +51,12 @@ const ItemModal = props => {
             </table>
           </div>
 
-          <div className='u-ta-center u-mt-15 u-mb-20'>
-            <button className='c-btnMain c-btn-blue' onClick={ saveContents }>保存</button>
-          </div>
+          { !props.quote.lock ?
+            <div className='u-ta-center u-mt-15 u-mb-20'>
+              <button className='c-btnMain c-btn-blue' onClick={ saveContents }>保存</button>
+            </div>
+            : null
+          }
 
         </div>
       </div>

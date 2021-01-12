@@ -52,6 +52,7 @@ const ProjectSuggestion = props => {
         placeholder='品目名を入力'
         autoComplete='off'
         defaultValue={ state.searchTxt }
+        disabled={ props.quote.lock }
         onBlur={ handleFocusOut }
         onChange={ handleChange }
       />

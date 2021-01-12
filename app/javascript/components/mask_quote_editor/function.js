@@ -144,3 +144,5 @@ export const setQuoteProjectRemarks = (e, passIndex, quote, setQuote) => {
   quote_projects[passIndex].remarks = e.target.value
   setQuote({ quote_projects: quote_projects })
 }
+
+export const setCompanyName = (company_name, quote, setQuote) => setQuote({ ...quote, company_name: company_name })

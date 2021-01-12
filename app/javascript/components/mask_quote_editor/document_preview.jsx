@@ -39,7 +39,7 @@ const DocumentPreviewer = props => {
 
           <div className='u-mt-20 c-flex__between'>
             <div>
-              <p>{ `${ props.quote.company_name }\b御中` }</p>
+              <p>{ `${ props.quote.company_name || '' }\b御中` }</p>
             </div>
             <div>
               <img src={ JiiLogo } style={{ height: '40px', width: '289px' }} alt='日本工業社ロゴ'/>
@@ -104,21 +104,26 @@ const DocumentPreviewer = props => {
                   const setText = quote_project.remarks ? quote_project.remarks.replace(/\n/g, '<br />') : ''
                   return(
                     <Fragment key={ key }>
-                      { !quote_project._destroy ?
+                      { quote_project.name || quote_project.unit_price || quote_project.unit ?
                         <Fragment>
-                          <tr className={ Style.DocumentPreview__innerContents__items } style={{ backgroundColor: `${ index % 2 ? '#ddd' : '#fff' }` }}>
-                            <td>{ quote_project.name }</td>
-                            <td className='u-ta-right'>{ quote_project.unit_price.toLocaleString() }</td>
-                            <td className='u-ta-right'>{ quote_project.unit.toLocaleString() }</td>
-                            <td className='u-ta-right'>{ quote_project.unit && quote_project.unit_price ? (parseFloat(quote_project.unit_price) * parseFloat(quote_project.unit)).toLocaleString() : '' }</td>
-                          </tr>
-                          { quote_project.remarks ?
-                            <tr className={ Style.DocumentPreview__innerContents__items} style={{ backgroundColor: `${ index % 2 ? '#ddd' : '#fff' }`, width: '100%' }}>
-                              <td dangerouslySetInnerHTML={{ __html: setText }}/>
-                              <td/>
-                              <td/>
-                              <td/>
-                            </tr>
+                          { !quote_project._destroy ?
+                            <Fragment>
+                              <tr className={ Style.DocumentPreview__innerContents__items } style={{ backgroundColor: `${ index % 2 ? '#ddd' : '#fff' }` }}>
+                                <td>{ quote_project.name }</td>
+                                <td className='u-ta-right'>{ quote_project.unit_price.toLocaleString() }</td>
+                                <td className='u-ta-right'>{ quote_project.unit.toLocaleString() }</td>
+                                <td className='u-ta-right'>{ quote_project.unit && quote_project.unit_price ? (parseFloat(quote_project.unit_price) * parseFloat(quote_project.unit)).toLocaleString() : '' }</td>
+                              </tr>
+                              { quote_project.remarks ?
+                                <tr className={ Style.DocumentPreview__innerContents__items} style={{ backgroundColor: `${ index % 2 ? '#ddd' : '#fff' }`, width: '100%' }}>
+                                  <td dangerouslySetInnerHTML={{ __html: setText }}/>
+                                  <td/>
+                                  <td/>
+                                  <td/>
+                                </tr>
+                                : null
+                              }
+                            </Fragment>
                             : null
                           }
                         </Fragment>

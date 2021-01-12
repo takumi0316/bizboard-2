@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Style from './style.sass'
+import { setCompanyName } from '../function'
 
 const CDClientSuggestion = props => {
  
@@ -11,16 +12,13 @@ const CDClientSuggestion = props => {
   
   const [state, setState] = useState(init)
   
-  useEffect(() => { /* props.setName(props.index, state.searchTxt) */ }, [state.searchTxt])
+  useEffect(() => { setCompanyName(state.company_name, props.quote, props.setQuote) }, [state.clientId])
   
   const handleSelect = e => {
-    
-    const targetClient = {
-      ...state.clients[e.target.dataset.number].client,
-      name: `会社名: ${ state.clients[e.target.dataset.number].company.name }\n部署名: ${ state.clients[e.target.dataset.number].division.name }\n担当者名: ${ state.clients[e.target.dataset.number].client.name }`
-    }
 
-    setState({ ...state, clientId: targetClient.id, clients: '', searchTxt: targetClient.name })
+    const target_client = state.clients[e.target.dataset.number]
+
+    setState({ ...state, clientId: target_client.client.id, clients: '', searchTxt: `会社名: ${ target_client.company.name }\n部署名: ${ target_client.division.name }\n担当者名: ${ target_client.client.name }`, company_name: target_client.company.name })
   }
   
   const handleFocusOut = e => {
@@ -55,6 +53,7 @@ const CDClientSuggestion = props => {
         placeholder='担当者名を入力'
         autoComplete='off'
         defaultValue={ state.searchTxt }
+        disabled={ props.quote.lock }
         onBlur={ handleFocusOut }
         onChange={ handleChange }
       />

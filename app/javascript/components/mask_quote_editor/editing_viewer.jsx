@@ -165,6 +165,8 @@ const EditingViewer = props => {
               inputTxt={ props.quote.client_name }
               client_id={ props.quote.company_division_client_id }
               clientRef={ clientRef }
+              quote={ props.quote }
+              setQuote={ props.setQuote }
             />
           </div>
         </div>
@@ -183,6 +185,7 @@ const EditingViewer = props => {
               state={ props.quote }
               setState={ props.setQuote }
               applyDateTime={ setIssuesDate }
+              lock={ props.quote.lock }
             />
           </div>
           <div
@@ -196,25 +199,29 @@ const EditingViewer = props => {
                 state={ props.quote }
                 setState={ props.setQuote }
                 applyDateTime={ setExpiration }
+                lock={ props.quote.lock }
               />
-              <div className='u-mt-5 c-flex__center'>
-                <span
-                  className={ Style.EditingViewer__btnFreeze }
-                  data-set={ Dayjs(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)).format('YYYY-MM-DD') }
-                  onClick={ e => props.setQuote({ ...props.quote, expiration: e.target.dataset.set }) }
-                >
-                  今月末
-                </span>
-                <div className='u-ml-5'>
+              { !props.quote.lock ?
+                <div className='u-mt-5 c-flex__center'>
                   <span
                     className={ Style.EditingViewer__btnFreeze }
-                    data-set={ Dayjs(new Date(new Date().getFullYear(), new Date().getMonth() + 2, 0)).format('YYYY-MM-DD') }
+                    data-set={ Dayjs(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)).format('YYYY-MM-DD') }
                     onClick={ e => props.setQuote({ ...props.quote, expiration: e.target.dataset.set }) }
                   >
-                    来月末
+                    今月末
                   </span>
+                  <div className='u-ml-5'>
+                    <span
+                      className={ Style.EditingViewer__btnFreeze }
+                      data-set={ Dayjs(new Date(new Date().getFullYear(), new Date().getMonth() + 2, 0)).format('YYYY-MM-DD') }
+                      onClick={ e => props.setQuote({ ...props.quote, expiration: e.target.dataset.set }) }
+                    >
+                      来月末
+                    </span>
+                  </div>
                 </div>
-              </div>
+                : null
+              }
             </div>
           </div>
         </div>
@@ -228,8 +235,9 @@ const EditingViewer = props => {
             <div className='u-mt-5'>
               <input
                 className='c-form-text'
-                defaultValue={ props.quote.subject || '' }
                 ref={ subjectRef }
+                defaultValue={ props.quote.subject || '' }
+                disabled={ props.quote.lock }
                 onChange={ e => props.setQuote({ ...props.quote, subject: e.target.value }) }
               />
             </div>
@@ -242,12 +250,15 @@ const EditingViewer = props => {
             <ItemTable quote={ props.quote } setQuote={ props.setQuote }/>
           </div>
 
-          <div className='u-ta-right u-mt-5'>
-            <button className={ Style.EditingViewer__btnNormal } onClick={ e => addQuoteProject(e, props.quote, props.setQuote) }>
-              <i/>
-              行を追加
-            </button>
-          </div>
+          { !props.quote.lock ?
+            <div className='u-ta-right u-mt-5'>
+              <button className={ Style.EditingViewer__btnNormal } onClick={ e => addQuoteProject(e, props.quote, props.setQuote) }>
+                <i/>
+                行を追加
+              </button>
+            </div>
+            : null
+          }
         </div>
 
         <div className={ `${ Style.EditingViewer__innerColumn } u-mt-5` }>
@@ -262,6 +273,7 @@ const EditingViewer = props => {
                 rows='3'
                 onChange={ e => props.setQuote({ ...props.quote, remarks: e.target.value }) }
                 defaultValue={ props.quote.remarks }
+                disabled={ props.quote.lock }
               />
             </div>
           </div>
@@ -279,6 +291,7 @@ const EditingViewer = props => {
                 rows='3'
                 defaultValue={ props.quote.memo }
                 ref={ memoRef }
+                disabled={ props.quote.lock }
               />
             </div>
           </div>
@@ -288,9 +301,12 @@ const EditingViewer = props => {
           <div>
             <button className='c-btnMain' onClick={ e => handleOpenDetailConfig(e, state, setState) }>詳細設定</button>
           </div>
-          <div className='u-ml-5'>
-            <button className='c-btnMain c-btn-blue' onClick={ saveContents }>保存</button>
-          </div>
+          { !props.quote.lock ?
+             <div className='u-ml-5'>
+               <button className='c-btnMain c-btn-blue' onClick={ saveContents }>保存</button>
+             </div>
+            : null
+          }
         </div>
 
       </div>
