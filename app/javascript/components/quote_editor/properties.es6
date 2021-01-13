@@ -1,133 +1,71 @@
-// ------------------------------------
-// 共通
-// ------------------------------------
-
-export const CHANNELS = {
-  '営業': 'estimate',
-  'BPR/ERP': 'bpr_erp',
-  '受付':   'reception',
-  'その他': 'channel_other',
+export const QUOTE = {
+  id: '',
+  delivery_type: '',
+  google_drive_folder_id: '',
+  profit_price: '',
+  quote_projects: [],
 }
 
-export const QUOTE_TYPES = {
-  '請負': 'contract',
-  '分散機': 'copy',
+const uid = new Date().getTime().toString(16) + Math.floor(1000 * Math.random()).toString(16)
+
+export const QUOTE_PROJECT = {
+  'id': '',
+  'uid': uid,
+  'project_id': '',
+  'quote_id': '',
+  'name': '',
+  'unit_price': '',
+  'unit': '',
+  'price': '',
+  'project_name': '',
+  'remarks': ''
 }
 
-export const TAX_TYPES = {
-  '課税対象': 'taxation',
-  '非課税対象': 'exemption',
-}
+export const DELIVER_TYPES = [
+  { key: 'seat', value: '席まで配達' },
+  { key: 'location', value: '指定場所に配達' },
+  { key: 'pickup', value: '引き取り' },
+  { key: 'bizstant', value: 'ビジスタント' },
+  { key: 'other', value: 'その他' },
+]
 
-export const PAYMENT_TERMS = {
-  '後払い': 'postpaid',
-  '先払い': 'advance',
-}
+export const CHANNELS = [
+  { key: 'estimate', value: '営業' },
+  { key: 'bpr_erp', value: 'BPR/ERP' },
+  { key: 'reception', value: '受付' },
+  { key: 'channel_other', value: 'その他' },
+]
 
-export const GOOGLE_DRIVE = {
-  '作成しない': false,
-  '作成する': true
-}
+export const QUOTE_TYPES = [
+  { key: 'contract', value: '請負' },
+  { key: 'copy', value: '分散機' },
+]
 
-/**
- * @version 2018/06/10
- */
+export const TAX_TYPES = [
+  { key: 'taxation', value: '課税対象' },
+  { key: 'exemption', value: '非課税対象' },
+]
 
-export const YEARS = [
-  { value: 2018, name: 2018 },
-  { value: 2019, name: 2019 },
-  { value: 2020, name: 2020 },
-  { value: 2021, name: 2021 },
-  { value: 2022, name: 2022 },
-  { value: 2023, name: 2023 },
-  { value: 2024, name: 2024 },
-  { value: 2025, name: 2025 },
-  { value: 2026, name: 2026 },
-  { value: 2027, name: 2027 },
-  { value: 2028, name: 2028 },
-];
+export const PAYMENT_TERMS = [
+  { key: 'postpaid', value: '後払い' },
+  { key: 'advance', value: '先払い' },
+]
 
-export const MONTHS = [
-  { value: 0, name: 1 },
-  { value: 1, name: 2 },
-  { value: 2, name: 3 },
-  { value: 3, name: 4 },
-  { value: 4, name: 5 },
-  { value: 5, name: 6 },
-  { value: 6, name: 7 },
-  { value: 7, name: 8 },
-  { value: 8, name: 9 },
-  { value: 9, name: 10 },
-  { value: 10, name: 11 },
-  { value: 11, name: 12 }
-];
+export const GOOGLE_DRIVE = [
+  { key: false, value: '作成しない' },
+  { key: true, value: '作成する' },
+]
 
-export const DATES = [
-  { value: 1, name: 1 },
-  { value: 2, name: 2 },
-  { value: 3, name: 3 },
-  { value: 4, name: 4 },
-  { value: 5, name: 5 },
-  { value: 6, name: 6 },
-  { value: 7, name: 7 },
-  { value: 8, name: 8 },
-  { value: 9, name: 9 },
-  { value: 10, name: 10 },
-  { value: 11, name: 11 },
-  { value: 12, name: 12 },
-  { value: 13, name: 13 },
-  { value: 14, name: 14 },
-  { value: 15, name: 15 },
-  { value: 16, name: 16 },
-  { value: 17, name: 17 },
-  { value: 18, name: 18 },
-  { value: 19, name: 19 },
-  { value: 20, name: 20 },
-  { value: 21, name: 21 },
-  { value: 22, name: 22 },
-  { value: 23, name: 23 },
-  { value: 24, name: 24 },
-  { value: 25, name: 25 },
-  { value: 26, name: 26 },
-  { value: 27, name: 27 },
-  { value: 28, name: 28 },
-  { value: 29, name: 29 },
-  { value: 30, name: 30 },
-  { value: 31, name: 31 }
-];
+// 小数のみチェック
+// export const PATTERN = /\d+\.?\d*|\.\d+/
 
-export const HOURS = [
-  { value: 0, name: '00' },
-  { value: 1, name: '01' },
-  { value: 2, name: '02' },
-  { value: 3, name: '03' },
-  { value: 4, name: '04' },
-  { value: 5, name: '05' },
-  { value: 6, name: '06' },
-  { value: 7, name: '07' },
-  { value: 8, name: '08' },
-  { value: 9, name: '09' },
-  { value: 10, name: '10' },
-  { value: 11, name: '11' },
-  { value: 12, name: '12' },
-  { value: 13, name: '13' },
-  { value: 14, name: '14' },
-  { value: 15, name: '15' },
-  { value: 16, name: '16' },
-  { value: 17, name: '17' },
-  { value: 18, name: '18' },
-  { value: 19, name: '19' },
-  { value: 20, name: '20' },
-  { value: 21, name: '21' },
-  { value: 22, name: '22' },
-  { value: 23, name: '23' }
-];
+// 符号あり小数 (- のみ許容)
+// export const PATTERN = /^[-]?([1-9]\d*|0)(\.\d+)?$/g
 
-export const MINUTES = [
-  { value: 0, name: '00' },
-  { value: 10, name: '10' },
-  { value: 20, name: '20' },
-  { value: 30, name: '30' },
-  { value: 40, name: '40' },
-  { value: 50, name: '50' }
-];
+export const PATTERN = /[^-|0-9.]/g
+
+export const LOCATION = 'location'
+
+export const OTHER = 'other'
+
+export const BPR_ERP = 'bpr_erp'

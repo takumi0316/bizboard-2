@@ -1,15 +1,13 @@
-import React from 'react';
-import Style from '../style.sass';
-import Icon  from 'react-evil-icons';
-import Dayjs from 'dayjs';
+import React   from 'react'
+import Style   from './style.sass'
+import Dayjs   from 'dayjs'
+import Icon    from 'react-evil-icons'
 
 import {
-  YEARS,
-  MONTHS,
-  DATES,
+  WEEKS,
   HOURS,
   MINUTES,
-} from '../properties.es6';
+} from './properties.es6'
 
 /**
  *  @version 2018/06/10
@@ -20,175 +18,305 @@ export default class DatetimePicker extends React.Component {
    *  コンストラクタ
    *  @version 2018/06/10
    */
-  constructor (props) {
+  constructor(props) {
 
-    super(props);
+    super(props)
 
-    this.state = { show: false };
-  }
+    this.devise = props.devise || 'pc'
 
-  /**
-   *  モーダルを表示する
-   *  @version 2018/06/10
-   */
-  _open() {
-
-    this.setState({ show: true }, () => {
-
-      const defaultDatetime = this.props.defaultDatetime || new Date();
-
-      const datetime = Dayjs(defaultDatetime);
-      this.refs.published_year.value = datetime.year();
-      this.refs.published_month.value = datetime.month() + 1;
-      this.refs.published_date.value = datetime.date();
-      this.refs.published_hour.value = datetime.hour();
-      this.refs.published_minute.value = Math.floor(datetime.minute() / 10) * 10;
-    });
-  }
-
-  /**
-   *  モーダルを閉じる
-   *  @version 2018/06/10
-   */
-  _close() {
-
-    this.setState({ show: false });
+    this.state = {
+      show: false,
+      current_month: Dayjs(this.props.default_datetime || new Date()),
+      current_datetime: Dayjs(this.props.default_datetime || new Date()),
+    }
   }
 
   /**
    *  日時を適用する
    *  @version 2018/06/10
    */
-  _apply(e) {
+  _apply = e => {
 
-    e.stopPropagation();
+    // e.stopPropagation()
 
-    const year = this.refs.published_year.value;
-    const month = this.refs.published_month.value;
-    const date = this.refs.published_date.value;
-    const hour = this.refs.published_hour.value;
-    const minute = this.refs.published_minute.value;
+    let datetime = this.state.current_datetime
 
-    const datetime = `${year}-${month}-${date} ${hour}:${minute}:00`;
+    if (this.props.show_time) {
 
-    this.props.apply({
-      datetime: datetime,
-      year: year,
-      month: month,
-      date: date,
-      hour: hour,
-      minute: minute,
-    });
+      datetime = datetime.set('hour', this.publishedHourRef.value)
+      datetime = datetime.set('minute', this.publishedMinuteRef.value)
+    } else {
 
-    this.setState({ show: false });
+      datetime = datetime.set('hour', 0)
+      datetime = datetime.set('minute', 0)
+    }
+
+    document.body.style.overflow = 'auto'
+
+    // typeによって処理分け
+    if (this.props.type == 'button') {
+
+      this.props.apply({ datetime: datetime })
+    } else {
+
+      this.inputRef.value = datetime.format(`YYYY年MM月DD日${ this.props.show_time ? 'HH時mm分' : '' }`)
+    }
+  
+    if(this.props.applyDateTime) {
+      this.props.applyDateTime(Dayjs(datetime).format(`YYYY-MM-DD${ this.props.show_time ? ' HH:mm' : '' }`), this.props.state, this.props.setState)
+    }
+		this.close()
   }
 
   /**
-   *  親要素のクリックイベントを引き継がない
+   *  日時を適用する
    *  @version 2018/06/10
    */
-  _stopPropagation(event) {
+  _clear = e => {
 
-    event.stopPropagation();
+    // e.stopPropagation()
+
+    document.body.style.overflow = 'auto'
+
+    // typeによって処理分け
+    if (this.props.type == 'button') {
+
+      this.props.apply({ datetime: null })
+    } else {
+
+      this.inputRef.value = ''
+    }
+
+    this.close()
   }
+
+  /**
+   *  フォームモーダルを表示する
+   *  @version 2018/06/10
+   */
+  open = position => {
+
+    this.setState({ show: true, position: position }, () => {
+      document.body.style.overflow = 'hidden'
+    })
+  }
+
+  /**
+   *  フォームモーダルを閉じる
+   *  @version 2018/06/10
+   */
+  close = () => {
+
+    this.setState({ show: false }, () => {
+      document.body.style.overflow = 'auto'
+    })
+  }
+
+  /**
+   *  前の月
+   *  @version 2018/06/10
+   */
+  _prev = () => {
+
+    this.setState({
+      current_month: this.state.current_month.subtract(1, 'month'),
+    })
+  }
+
+  /**
+   *  次の月
+   *  @version 2018/06/10
+   */
+  _next = () => {
+
+    this.setState({
+      current_month: this.state.current_month.add(1, 'month'),
+    })
+  }
+
+  /**
+   *  日付を選択する
+   *  @version 2018/06/10
+   */
+  _onChangeDate = e => {
+
+    let current_datetime = this.state.current_datetime
+    current_datetime = current_datetime.set('year', this.state.current_month.year())
+    current_datetime = current_datetime.set('month', this.state.current_month.month())
+    current_datetime = current_datetime.set('date', e.target.innerText)
+
+    this.setState({current_datetime: current_datetime}, () => {
+
+      if (!this.props.show_time) this._apply(e)
+    })
+	}
+
+	range = (start, end) => {
+    return Array.from({length: (end + 1 - start)}, (v, k) => k + start )
+	}
 
   /**
    *  表示処理
    *  @version 2018/06/10
    */
-  render () {
+  render() {
 
-    return (this.state.show ?
-      <div className={Style.DatetimePicker} onMouseDown={::this._close}>
+    const datetime = this.state.current_month
+    const start = datetime.startOf('month')
+    const end_of_month = datetime.endOf('month').date()
+    const current_week = start.day()
 
-        <div className={Style.DatetimePicker__inner} onMouseDown={this._stopPropagation}>
+    const current_date = this.state.current_datetime.date()
+    const is_current_month = this.state.current_month.month() == this.state.current_datetime.month()
+    const is_current_year = this.state.current_month.year() == this.state.current_datetime.year()
 
-          { /* 年 */ }
-          <div className={Style.DatetimePicker__year}>
-            <div className='c-form-selectWrap'>
-              <select className='c-form-select' ref='published_year'>
-                { YEARS.map((year, index) => {
-                  const key = `year-${index}`;
-                  return (
-                    <option {...{key}} value={year.value}>{year.name}</option>
-                  );
-                })}
-              </select>
+    return (
+      <React.Fragment>
+        { this.state.show ?
+          <div className={Style[this.devise]}>
+            <div className={Style.DatetimePicker} onMouseDown={this.close}>
+              <div className={Style.DatetimePicker__body} onMouseDown={ e => { e.stopPropagation() } }>
+
+                <div className={Style.DatetimePicker__header}>
+                  { /* 月 */ }
+                  <div className={Style.DatetimePicker__year}>{ datetime.year() }年</div>
+                  <div className={Style.DatetimePicker__month}>{ datetime.month() + 1 }月</div>
+
+                  <div onClick={this.close} className={Style.DatetimePicker__closeIcon}>
+                    <Icon name='ei-close' size='s' color='white'/>
+                  </div>
+                </div>
+                <div className={Style.DatetimePicker__main}>
+                  <div onClick={this._prev} className={Style.DatetimePicker__prev}>前の月</div>
+                  <div onClick={this._next} className={Style.DatetimePicker__next}>次の月</div>
+                  <table className={Style.DatetimePicker__calendar}>
+                    <thead>
+                      <tr>
+                        { /* 曜日 */ }
+                        { this.range(0, 6).map(week => {
+                          return <th key={`week-${week}`}>{WEEKS[week]}</th>
+                        })}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      { /* 週ごとのレコード */ }
+                      <React.Fragment>
+                        <tr>
+                          { this.range(0, 6).map(week => {
+
+                            const target_date = week - current_week + 1
+                            const is_active = current_date == target_date && is_current_month && is_current_year
+                            return ( current_week > week ?
+                              <td key={`week-${week}`}/>
+                              :
+                              <td key={`week-${week}`}>
+                                <div className={`${is_active ? Style.DatetimePicker__active : Style.DatetimePicker__date}`} onClick={this._onChangeDate}>
+                                  {target_date}
+                                </div>
+                              </td>
+                            )
+                          })}
+                        </tr>
+
+                        { /* 日付 */ }
+                        { this.range(1, Math.ceil(end_of_month / 7)).map(weeks => {
+
+                          const start_of_date = (weeks * 7) - current_week + 1
+
+                          return (
+                            <tr key={`weeks-${start_of_date}`}>
+                              { this.range(start_of_date, start_of_date + 6).map(date => {
+
+                                const is_active = current_date == date && is_current_month && is_current_year
+                                return ( end_of_month >= date ?
+                                  <td key={`date-${date}`}>
+                                    <div className={`${is_active ? Style.DatetimePicker__active : Style.DatetimePicker__date}`} onClick={this._onChangeDate}>
+                                      {date}
+                                    </div>
+                                  </td>
+                                  :
+                                  <td key={ `date-${date}` }/>
+                                )
+                              })}
+                            </tr>
+                          )
+                        })}
+                      </React.Fragment>
+                    </tbody>
+                  </table>
+
+                  { this.props.show_time ?
+
+                    <div className={Style.DatetimePicker__time}>
+                      { /* 時 */ }
+                      <div className={Style.DatetimePicker__hours}>
+                        <div className='c-form-selectWrap'>
+                          <select className='c-form-select' defaultValue={datetime.hour()} ref={ node => this.publishedHourRef = node}>
+                            { HOURS.map((hour, index) => {
+                              const key = `hour-${index}`
+                              return (
+                                <option {...{key}} value={hour.value}>{hour.name}</option>
+                              )
+                            })}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className={Style.DatetimePicker__label}>時</div>
+
+                      { /* 分 */ }
+                      <div className={Style.DatetimePicker__minutes}>
+                        <div className='c-form-selectWrap'>
+                          <select className='c-form-select' defaultValue={Math.floor(datetime.minute() / 10) * 10} ref={ node => this.publishedMinuteRef = node}>
+                            { MINUTES.map((minute, index) => {
+                              const key = `minute-${index}`
+                              return (
+                                <option {...{key}} value={minute.value}>{minute.name}</option>
+                              )
+                            })}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className={Style.DatetimePicker__label}>分</div>
+                    </div>
+                    : null
+                  }
+  
+                  <div className='u-mt-15 c-flex c-flex__center'>
+                    { this.props.show_time ?
+                      <div>
+                        <button onClick={this._apply} className='c-btnMain c-btn-blue'>適用する</button>
+                      </div>
+                      : null
+                    }
+                    <div className='u-ml-10'>
+                      <button onClick={this._clear} className='c-btnMain'>クリアする</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className={Style.DatetimePicker__label}>年</div>
-
-          { /* 月 */ }
-          <div className={Style.DatetimePicker__month}>
-            <div className='c-form-selectWrap'>
-              <select className='c-form-select' ref='published_month'>
-                { MONTHS.map((month, index) => {
-                  const key = `month-${index}`;
-                  return (
-                    <option {...{key}} value={month.value + 1}>{month.name}</option>
-                  );
-                })}
-              </select>
-            </div>
+          : null
+        }
+        { this.props.type === 'button' ?
+          <div className='c-btn-main u-display-block' onClick={this.open}>公開日を指定する</div>
+          :
+          <div className={Style.DatetimePicker__input}>
+            <input
+              id={ this.props.id }
+              type='text'
+              className='c-form-text'
+              placeholder='日付を選択'
+              ref={ node => this.inputRef = node }
+              defaultValue={ Dayjs(this.props.default_datetime).format(`YYYY年MM月DD日${ this.props.show_time ? 'HH時mm分' : '' }`) }
+              disabled={ this.props.lock }
+              onClick={ this.open }
+            />
           </div>
-          <div className={Style.DatetimePicker__label}>月</div>
-
-          { /* 日 */ }
-          <div className={Style.DatetimePicker__date}>
-            <div className='c-form-selectWrap'>
-              <select className='c-form-select' ref='published_date'>
-                { DATES.map((date, index) => {
-                  const key = `date-${index}`;
-                  return (
-                    <option {...{key}} value={date.value}>{date.name}</option>
-                  );
-                })}
-              </select>
-            </div>
-          </div>
-          <div className={Style.DatetimePicker__label}>日</div>
-
-          { /* 時 */ }
-          <div className={Style.DatetimePicker__hour}>
-            <div className='c-form-selectWrap'>
-              <select className='c-form-select' ref='published_hour'>
-                { HOURS.map((hour, index) => {
-                  const key = `hour-${index}`;
-                  return (
-                    <option {...{key}} value={hour.value}>{hour.name}</option>
-                  );
-                })}
-              </select>
-            </div>
-          </div>
-          <div className={Style.DatetimePicker__label}>時</div>
-
-          { /* 分 */ }
-          <div className={Style.DatetimePicker__minute}>
-            <div className='c-form-selectWrap'>
-              <select className='c-form-select' ref='published_minute'>
-                { MINUTES.map((minute, index) => {
-                  const key = `minute-${index}`;
-                  return (
-                    <option {...{key}} value={minute.value}>{minute.name}</option>
-                  );
-                })}
-              </select>
-            </div>
-          </div>
-          <div className={Style.DatetimePicker__label}>分</div>
-
-          <div className='u-mt-30 u-ta-right'>
-            <button onClick={::this._apply} className='c-btnMain'>適用する</button>
-          </div>
-
-          <div className={Style.DatetimePicker__close} onClick={::this._close}>
-            <Icon name='ei-close' size='m'/>
-          </div>
-        </div>
-      </div>
-      :
-      <button className='c-btnMain' onClick={::this._open}>日時を指定する</button>
-    );
+        }
+      </React.Fragment>
+    )
   }
 }
