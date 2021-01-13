@@ -12,6 +12,8 @@ class TemplateClientsController < ApplicationController
 
   expose_with_pagination(:card_templates) { CardTemplate.search(params[:name]).all.reverse_order }
 
+  expose_with_pagination(:template_clients) { CompanyDivisionClient.where(company_division_id: card_template.company.divisions.ids).search(params[:name]) }
+
   expose(:card_template) { CardTemplate.find(params[:id]) }
 
   expose(:card_layout) { CardLayout.find(params[:card_layout_id]) }

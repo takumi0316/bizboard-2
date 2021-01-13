@@ -10,7 +10,6 @@ class CardTemplatesController < ApplicationController
 
   expose_with_pagination(:card_templates) { CardTemplate.search(params[:name]).all.reverse_order }
 
-
   expose(:card_template) { CardTemplate.find_or_initialize_by(id: params[:id]) }
 
   #----------------------------------------

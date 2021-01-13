@@ -16,7 +16,11 @@
   .c-flex.c-flex-alignItems__center
     .c-search__item
       = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'ビジスタント部 大島'
+
+    = f.hidden_field :id, value: params[:id]
     = f.submit '検索', class: 'c-btnMain'
+    .u-ml-10
+      a.c-btnMain(href="/template_clients?id=#{ params[:id] }") 元に戻す
 
 .u-mt-15.c-table
   table
@@ -30,14 +34,13 @@
         th レイアウト名(裏)
         th colspan=2
     tbody
-      - card_template.company.divisions.each do |division|
-        - division.clients.each_with_index do |client, index|
-          tr
-            td.u-ta-center.u-va-middle = index + 1
-            td.u-ta-center.u-va-middle = client.id
-            td.u-ta-center.u-va-middle = client.name
-            td.u-ta-center.u-va-middle = division.name
-            td.u-ta-center.u-va-middle = client.head_layout.name if client.head_layout_id.present?
-            td.u-ta-center.u-va-middle = client.tail_layout.name if client.tail_layout_id.present?
-            td.u-ta-center.u-va-middle = link_to '編集', head_template_client_path(id: card_template.id, client_id: client.id), class: 'c-btnMain c-btn-blue'
-            td.u-ta-center.u-va-middle = link_to '削除', destroy_layout_values_company_division_client_path(client.id), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }
+      - template_clients.each_with_index do |client, index|
+        tr
+          td.u-ta-center.u-va-middle = index + 1
+          td.u-ta-center.u-va-middle = client.id
+          td.u-ta-center.u-va-middle = client.name
+          td.u-ta-center.u-va-middle = client.company_division.name
+          td.u-ta-center.u-va-middle = client.head_layout.name if client.head_layout_id.present?
+          td.u-ta-center.u-va-middle = client.tail_layout.name if client.tail_layout_id.present?
+          td.u-ta-center.u-va-middle = link_to '編集', head_template_client_path(id: card_template.id, client_id: client.id), class: 'c-btnMain c-btn-blue'
+          td.u-ta-center.u-va-middle = link_to '削除', destroy_layout_values_company_division_client_path(client.id), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }
