@@ -14,13 +14,12 @@
           = simple_format("名称: #{task.delivery_target.name}\n住所: #{task.delivery_target.address1} #{task.delivery_target.address2}\n電話番号: #{task.delivery_target.tel}")
       dt.l-dashboard__menuList.u-fw-bold.u-mt-10 概要
       dd = task.remarks
-    .u-mt-15 = link_to '案件に戻る', edit_quote_path(task.quote), class: 'c-btnMain'
     dl = form_for task, html: { class: 'u-mt-15'} do |f|
       = f.fields_for 'quote_attributes', task.quote do |t|
         dt.l-dashboard__menuList.u-fw-bold.u-mt-15 メモ(仕様とか入力してね)
-        dd.u-mt-5 = t.text_area :memo, placeholder: 'メッセージを入力', class: 'p-tasks__textarea', rows: 10
+        dd.u-mt-5 = t.text_area :memo, placeholder: 'メッセージを入力', class: 'c-form-textarea', rows: 10
 
-      = f.submit task.new_record?? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'
+      .u-mt-10 = f.submit task.new_record?? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'
 
   .p-tasks__message
     = render 'message'
@@ -28,7 +27,7 @@
     /モデル名変更する
     = form_for task, html: { class: 'p-tasks__inputarea', name: 'message_form'} do |f|
       = f.fields_for 'messages_attributes' do |t|
-        = t.text_area :content, placeholder: 'メッセージを入力', class: 'p-tasks__textarea', rows: 4
+        = t.text_area :content, placeholder: 'メッセージを入力', class: 'c-form-textarea', rows: 3
       .u-ta-right
         = f.file_field :attached_files, accept: 'text/plain, image/*, application/pdf', multiple: true, onchange: 'check()'
         = f.submit '送信', class: 'c-btnMain c-btn-blue'

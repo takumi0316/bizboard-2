@@ -4,7 +4,7 @@
 = link_to '案件を作成する', new_quote_path, class: 'c-btnMain c-btn-blue'
 
 .u-mt-15
-  = react_component :QuoteSearch, count_number: @count_number, search_status: params[:commit]
+  = react_component :QuoteSearch, count_number: quotes.size, search_status: params[:commit]
 
 .c-table.u-mt-15
   table
@@ -28,18 +28,18 @@
         th Web名刺
         th
     tbody
-      - @quotes.each do |r|
+      - quotes.each do |r|
         tr
           - if current_user.admin?
             td
               - if r.lock?
                 = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
-                  = image_tag asset_url('閉じた鍵アイコン.png'), class: 'nonactive__lock'
-                  = image_tag asset_url('開いた鍵アイコン.png'), class: 'active__lock'
+                  = image_tag asset_url('close_key.png'), class: 'nonactive__lock'
+                  = image_tag asset_url('open_key.png'), class: 'active__lock'
               - else
                 = link_to quote_lock_path(r), method: :post, class: 'p-quotes__lock' do
-                  = image_tag asset_url('閉じた鍵アイコン.png'), class: 'active'
-                  = image_tag asset_url('開いた鍵アイコン.png'), class: 'nonactive'
+                  = image_tag asset_url('close_key.png'), class: 'active'
+                  = image_tag asset_url('open_key.png'), class: 'nonactive'
           td class="u-ta-center u-va-middle #{ 'p-tasks__unread' if r.task.messages.last.created_at.strftime("%Y %m %d") > current_user.lastaccesstask.strftime("%Y %m %d") if r.task.present? && r.task.messages.present? }"
             = r.quote_number if r.deliver_at.nil?
             - if r.deliver_at.present?

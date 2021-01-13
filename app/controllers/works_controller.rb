@@ -16,30 +16,10 @@ class WorksController < ApplicationController
     Work
     .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
     .all
-    .asc_deliverd_at
+    .desc_deliverd_at
   }
 
-  # 作業進捗一覧
-  expose_with_pagination(:work_manager) {
-    Work
-    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .where(division_id: current_user.division.id)
-    .where.not(status: :delivered)
-    .where.not(status: :completed)
-    .asc_deliverd_at
-  }
-
-  # 作業進捗一覧
-  expose_with_pagination(:work_general) {
-    Work
-    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
-    .where(division_id: current_user.division.id)
-    .where.not(status: :delivered)
-    .where.not(status: :completed)
-    .asc_deliverd_at
-  }
-
-  # 案件
+  # 作業書
   expose(:work) { Work.find_or_initialize_by id: params[:id] }
 
   #----------------------------------------
@@ -59,11 +39,6 @@ class WorksController < ApplicationController
   # @version 2018/06/10
   #
   def index
-
-    @draft = works.draft.where(division_id: current_user.division.id)
-    @working = works.working.where(division_id: current_user.division.id)
-    @count_draft = @draft.size
-    @count_working = @working.size
 
     add_breadcrumb '作業進捗一覧'
   end

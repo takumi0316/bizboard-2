@@ -37,9 +37,11 @@ class TasksController < ApplicationController
   #
   def show
 
-    add_breadcrumb '編集'
     @task_id = task.id
     @group = task.messages.group_by{|u| u.created_at.strftime('%m月%d日') }
+
+    add_breadcrumb '案件(編集)', path: edit_quote_path(task.quote.id)
+    add_breadcrumb 'チャット(詳細)'
   rescue => e
     #エラー時は進捗確認のタスク一覧へ。
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}

@@ -1,5 +1,4 @@
-.u-mt-15
-= react_component :WorksSearch, { count_draft: @count_draft, count_working: @count_working }
+.u-mt-15 = react_component :WorksSearch
 
 .c-table.u-mt-15
   table
@@ -18,7 +17,7 @@
         th 粗利
         th 粗利率
     tbody
-      - @works.each do |r|
+      - works.each do |r|
         tr
           td.u-ta-center.u-va-middle
             - if r.quote.deliver_at.blank?
@@ -30,7 +29,7 @@
                 .u-fc-vivid = r.quote.quote_number if r.quote&.quote_number.present?
               - else
                 = r.quote.quote_number if r.quote&.quote_number.present?
-          td.u-ta-center.u-va-middle = link_to '詳細', work_path(r), class: 'c-btnMain'
+          td.u-ta-center.u-va-middle = link_to '詳細', work_path(r), class: 'c-btnMain c-btn-blue'
           td.u-ta-center.u-va-middle = (r.quote.client&.company_division&.company&.name if r.quote&.client&.present?)
           td.u-ta-center.u-va-middle = r.quote.subject.truncate(25) if r.quote&.subject.present?
           td.u-ta-center.u-va-middle = r.quote.user&.name if r.quote&.user&.name.present?
