@@ -199,7 +199,7 @@ const ConfigModal = props => {
                   <div className='c-form-selectWrap'>
                     <select
                       className='c-form-select'
-                      defaultValue={ props.division_id }
+                      defaultValue={ props.quote.division_id }
                       ref={ divisionRef }
                       disabled={ props.quote.lock }
                     >

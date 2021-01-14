@@ -8,7 +8,7 @@ import ConductingWire from './conducting_wire'
 
 const QuoteEditor = props => {
  
-  const [quote, setQuote] = useState( { ...props.quote,  quote_projects: props.quote_projects, company_name: props.company_name || '', client_name: props.client_name || '' })
+  const [quote, setQuote] = useState( { ...props.quote, division_id: props.quote.division_id || props.division_id, quote_projects: props.quote_projects, company_name: props.company_name || '', client_name: props.client_name || '' })
 
   useEffect(() => {
     document.getElementsByClassName('l-dashboard__main')[0].style = 'padding-left: 104px;'
@@ -25,7 +25,18 @@ const QuoteEditor = props => {
         </div>
         <div className={ Style.QuoteEditor__footer }>
           <div className={ Style.QuoteEditor__footer__innerContents }>
-            <ConductingWire quote={ quote } work={ props.work } invoice={ props.invoice } activity={ props.activity } quotation={ props.quotation } delivery_note={ props.delivery_note } task={ props.task }/>
+            { props.quote.id ?
+              <ConductingWire
+                quote={ quote }
+                work={ props.work }
+                invoice={ props.invoice }
+                activity={ props.activity }
+                quotation={ props.quotation }
+                delivery_note={ props.delivery_note }
+                task={ props.task }
+              />
+              : null
+            }
           </div>
         </div>
       </div>

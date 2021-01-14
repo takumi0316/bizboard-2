@@ -68,7 +68,7 @@ class QuotesController < ApplicationController
     # slack通知
     if quote.advance?
 
-      Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{quote.quote_number}] お客様情報[#{quote&.client&.company_division&.company&.name} #{quote&.client&.name}] 担当者[#{quote&.user&.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
+      Slack.chat_postMessage(text: "<!here>料金先払いの案件が作成されました 案件番号[#{quote.quote_number}] お客様情報[#{quote.client.company_division.company.name} #{quote.client.name}] 担当者[#{quote.user.name}] 入金を確認したら担当者にSlackで入金された事を伝えてください", username: '入金確認bot', channel: '#入金確認')
     end
 
     render json: { status: :success, quote: quote }
