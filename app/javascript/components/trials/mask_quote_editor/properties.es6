@@ -56,13 +56,7 @@ export const GOOGLE_DRIVE = [
   { key: true, value: '作成する' },
 ]
 
-// 小数のみチェック
-// export const PATTERN = /\d+\.?\d*|\.\d+/
-
-// 符号あり小数 (- のみ許容)
-// export const PATTERN = /^[-]?([1-9]\d*|0)(\.\d+)?$/g
-
-export const PATTERN = /[^-|0-9.]/g
+export const PATTERN = /\d+\.?\d*|\.\d+/
 
 export const LOCATION = 'location'
 

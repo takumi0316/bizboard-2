@@ -37,9 +37,6 @@ import LogoEditor from 'components/logo_editor'
 // 案件作成
 import ProjectEditor from 'components/project_editor'
 
-// 見積り作成
-import QuoteEditor from 'components/quote_editor'
-
 //見積もり検索
 import QuoteSearch from 'components/quote_search'
 
@@ -157,9 +154,11 @@ import RegistorCompanyDivisionClient from 'components/company/division/client/re
 
 import ShowCompanyDivisionClient from 'components/company/division/client/show'
 
-import InputSuggestion from 'components/Trials/input_suggestion'
+import Trials from 'components/trials'
 
 import MFLikeModal from 'components/mf_like_modal'
+
+import QuoteEditor from 'components/quote_editor'
 
 WebpackerReact.setup({
   Kawaii,
@@ -167,7 +166,6 @@ WebpackerReact.setup({
   DataModal,
   LogoEditor,
   ProjectEditor,
-  QuoteEditor,
   QuoteSearch,
   CompanyDivisions,
   WorksSearch,
@@ -212,6 +210,7 @@ WebpackerReact.setup({
   CompanyDivisionClientList,
   RegistorCompanyDivisionClient,
   ShowCompanyDivisionClient,
-  InputSuggestion,
+  Trials,
   MFLikeModal,
+  QuoteEditor,
 })

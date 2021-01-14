@@ -4,11 +4,12 @@
 
 %formStyle
   display: inline-block
-  padding: 5px
+  // padding: 5px
+  padding: .2rem .2rem .2rem 1rem
   border: 1px solid #aab4b9
   border-radius: 2px
   appearance: none
-  height: 36px
+  height: 30px
   &:focus
     outline: none
     border: solid 1px map-get($layoutColors, 'core')
@@ -53,7 +54,6 @@
   &-text
     @extend %formStyle
     width: 100%
-    vertical-align: bottom
     &:disabled, &[disabled]
       background-color: map-get($layoutColors, 'gray')
     &:read-only
@@ -64,7 +64,6 @@
     @extend %formStyle
     width: 100%
     vertical-align: bottom
-    padding: 10px
     height: 100%
 
   &-toggle
@@ -256,7 +255,6 @@
     @extend %formStyle
     cursor: pointer
     padding-right: 33px
-    background: none
     background-color: map-get($layoutColors, 'white')
     width: 100%
     &::-ms-expand

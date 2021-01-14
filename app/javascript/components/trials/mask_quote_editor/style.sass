@@ -1,83 +1,23 @@
-@import '../../../assets/stylesheets/foundation/variables'
+@import '../../../../assets/stylesheets/foundation/variables'
 
 .QuoteEditor
+  // background: rgba(204,204,204,0.1)
   background: #f2f1ed
   width: 100%
-  display: flex
-  flex-direction: column
-  min-height: calc(100vh - 59.3px)
-  &__footer
-    margin-top: auto
-    &__innerContents
-      width: 100%
-      height: 45px
-      padding: 5px
-      background-color: #444444
-      display: flex
-      justify-content: center
-      align-items: center
+  height: 100vh
+  position: relative
 
 .DocumentPreview
-  flex: 1
-  &__innerContents
-    min-width: 765px
-    height: 700px
-    margin-top: 50px
-    background-color: #fff
-    overflow: hidden
-    padding: 30px
-    &__border
-      border-bottom: 1px solid #aaa
-    &__remarks
-      border: 1px solid #aaa
-    &__wrp
-      overflow: hidden
-    &__items
-      td
-        padding: 5px
-    &__billing
-      &Total
-        width: 300px
-        margin: auto 0 auto auto
-        p
-          margin: 0 0 10px
-          border-bottom: 1px solid #aaa
-          span
-            float: right
-        &__price
-          font-size: 16px
-          font-weight: bold
-          line-height: 1.6
-          span
-            float: right
-    &__breakDown
-      margin: auto 0 auto auto
-      width: 300px
-      border-bottom: solid 1px #aaa
-      font-size: 13px
-      &__header
-        width: 60px
-        font-weight: bold
-      &__container
-        display: block
-      &__content
-        display: inline-block
-        width: 240px
-      &__excise
-        &Container
-          width: 120px
-          text-align: left
-      &__subtotal
-        &Container
-          width: 120px
-          text-align: right
-      &__item
-        &Content
-          margin-bottom: 10px
+  position: absolute
+  top: 70px
+  left: 40%
+  width: 765px
+  border: 1px solid black
 
 .EditingViewer
-  max-width: 490px
-  margin-top: 50px
+  position: absolute
+  top: 70px
+  width: 29%
   &__modal
     display: block
     opacity: 1
@@ -145,17 +85,23 @@
       cursor: pointer
   &__btn
     &Normal
+      min-width: 70px
+      min-height: 32px
+      line-height: 32px
       display: inline-block
       vertical-align: middle
       zoom: 1
+      -moz-border-radius: 5px
+      -webkit-border-radius: 5px
       border-radius: 5px
       background-size: 100%
       cursor: pointer
-      background-image: linear-gradient(to bottom, #f8f8f8, #e3e3e3)
+      background-color: #e3e3e3
       border: solid 1px rgba(227,227,227,0.5)
       text-align: center
       color: #3b8dcd
       padding: 0 3px
+      font-weight: bold
       font-size: map-get($fontSize, 'base')
       &:hover
         background-color: #bbbbbb
@@ -165,11 +111,12 @@
       border-radius: 5px
       background-size: 100%
       cursor: pointer
-      background-image: linear-gradient(to bottom, #f8f8f8, #e3e3e3)
+      background-color: #e3e3e3
       border: solid 1px rgba(227,227,227,0.5)
       text-align: center
       color: #3b8dcd
       padding: 0 3px
+      font-weight: bold
       font-size: map-get($fontSize, 'base')
       &:hover
         background-color: #bbbbbb
@@ -184,8 +131,7 @@
         text-align: center
         font-weight: normal
         border-bottom: 1px solid #d2d4d8
-        padding: 3px 0
-        font-size: map-get($fontSize, 'small')
+        padding: 8px 0
       th + th
         border-left: 1px solid #d2d4d8
     tbody
@@ -205,6 +151,7 @@
     background: #fff
     &Column
       overflow: visible
+      margin-top: 10px
       strong
         display: inline-block
         font-weight: bold
@@ -220,11 +167,9 @@
         padding: 2px 5px
         font-weight: normal
         border-radius: 2px
-      &__quoteNumber
-        max-width: 210px
       &__three
         display: inline-block
         vertical-align: top
         &Date
-          margin-left: 5px
-          max-width: 120px
+          margin-left: 10px
+          width: 6vw

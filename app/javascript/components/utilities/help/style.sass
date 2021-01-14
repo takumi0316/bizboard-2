@@ -1,0 +1,41 @@
+@import '../../../../assets/stylesheets/foundation/variables'
+
+.Help
+  position: relative
+  text-align: center
+  display: inline-block
+  vertical-align: top
+  cursor: help
+  &:hover > .Help__tooltip
+    display: block
+
+  svg
+    fill: map-get($layoutColors, 'thinBlack')
+
+  &__tooltip
+    text-align: left
+    position: absolute
+    display: none
+    width: 200px
+    bottom: 125%
+    left: 50%
+    margin-left: -100px
+    background-color: map-get($layoutColors, 'thinBlack')
+    color: map-get($fontColors, 'white')
+    padding: 5px 10px
+    border-radius: 6px
+    font-size: 12px
+    z-index: 10000
+    &::after
+      content: ' '
+      position: absolute
+      top: 100%
+      left: 50%
+      margin-left: -5px
+      border-width: 5px
+      border-style: solid
+      border-color: map-get($layoutColors, 'thinBlack') transparent transparent transparent
+    a
+      display: block
+      color: map-get($fontColors, 'blue')
+      text-decoration: underline
