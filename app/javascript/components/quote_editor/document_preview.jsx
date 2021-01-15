@@ -77,7 +77,7 @@ const DocumentPreviewer = props => {
           </div>
  
           <div className='u-mt-20'>
-            <p className={ `${ Style.DocumentPreview__innerContents__border } u-fw-bold` }>{ `御見積金額\b ${ Math.round(totalPrice * props.quote.tax).toLocaleString() }円` }</p>
+            <p className={ `${ Style.DocumentPreview__innerContents__border } u-fw-bold` }>{ `御見積金額\b ${ parseInt(totalPrice * props.quote.tax).toLocaleString() }円` }</p>
           </div>
  
           <div className='u-mt-30'>
@@ -137,9 +137,9 @@ const DocumentPreviewer = props => {
           <div className='u-mt-30'>
             <div className={ Style.DocumentPreview__innerContents__billingTotal }>
               <div className=''><p>小計<span>{ totalPrice.toLocaleString() }円</span></p></div>
-              <div className=''><p>消費税<span>{ (totalPrice * (props.quote.tax === 1.1 ? 0.1 : 0.08)).toLocaleString()  }円</span></p></div>
+              <div className=''><p>消費税<span>{ parseInt(totalPrice * (props.quote.tax === 1.1 ? 0.1 : 0.08)).toLocaleString()  }円</span></p></div>
               <div className={ Style.DocumentPreview__innerContents__billingTotal__price }>
-                <p>合計<span>{ Math.round(totalPrice * props.quote.tax).toLocaleString() }円</span></p>
+                <p>合計<span>{ parseInt(totalPrice * props.quote.tax).toLocaleString() }円</span></p>
               </div>
             </div>
             <div className={ `${ Style.DocumentPreview__innerContents__breakDown } c-flex__between` }>
@@ -158,7 +158,7 @@ const DocumentPreviewer = props => {
                       </div>
                     </div>
                     <div className='c-flex__end'>
-                      <p>{ `消費税\b${ (totalPrice * (props.quote.tax === 1.1 ? 0.1 : 0.08)).toLocaleString() }円` }</p>
+                      <p>{ `消費税\b${ parseInt(totalPrice * (props.quote.tax === 1.1 ? 0.1 : 0.08)).toLocaleString() }円` }</p>
                     </div>
                   </div>
                 </div>

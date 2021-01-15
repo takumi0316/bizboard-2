@@ -432,7 +432,7 @@ const ConfigModal = props => {
           </div>
 
           { !props.quote.lock ?
-            <div className='u-ta-center u-mt-15 u-mb-20'>
+            <div className='u-ta-center u-mb-10'>
               <button className='c-btnMain c-btn-blue' onClick={ saveDetailConfig }>保存</button>
             </div>
             : null
