@@ -10,12 +10,10 @@ import {
   handleCloseDetailConfig,
   handleChangeDeliverType,
   handleChangeChannel,
-  handleChangeDiscount,
   handleFocusRed,
   setDeliverAt,
   setDeliveryNoteDate,
   setDate,
-  setReception,
   currentDateTime
 } from '../function'
 
@@ -29,7 +27,8 @@ import {
   PATTERN,
   LOCATION,
   OTHER,
-  BPR_ERP
+  BPR_ERP,
+  RECEPTIONS,
 } from '../properties.es6'
 
 const ConfigModal = props => {
@@ -41,8 +40,8 @@ const ConfigModal = props => {
   const quoteNumberRef = useRef(null)
   const temporaryPriceRef = useRef(null)
   const googleDriveExistRef = useRef(null)
+  const receptionRef = useRef(null)
   const quoteTypeRef = useRef(null)
-  const discountRef = useRef(null)
   const taxTypeRef = useRef(null)
   const paymentTermsRef = useRef(null)
   const profitPriceRef = useRef(null)
@@ -67,7 +66,7 @@ const ConfigModal = props => {
       deliver_type_note: state.show_deliver_type ? deliverTypeNoteRef.current.value : '',
       channel: channelRef.current.value,
       quote_number: state.show_detail_channel ? quoteNumberRef.current.value || props.quote.quote_number : props.quote.quote_number,
-      reception: state.reception,
+      reception: receptionRef.current.value,
       quote_type: quoteTypeRef.current.value,
       tax_type: taxTypeRef.current.value,
       payment_terms: paymentTermsRef.current.value
@@ -286,82 +285,16 @@ const ConfigModal = props => {
 
               <tr>
                 <th className='u-fw-bold'>受注方法</th>
-                <td className='c-flex c-flex__column'>
-                  <div>
-                    <label className='c-form-radioLabel'>
-                      <input
-                        className='c-form-radio'
-                        type='radio'
-                        value='acceptance'
-                        checked={ state.reception === 'acceptance' }
-                        onChange={ e => setReception(e.target.value, state, setState) }
-                        disabled={ props.quote.lock }
-                      />
-                      <i className='c-form-radioIcon'/>
-                      <span>受付</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-10'>
-                      <input
-                        className='c-form-radio'
-                        type='radio'
-                        value='mail'
-                        checked={ state.reception === 'mail' }
-                        disabled={ props.quote.lock }
-                        onChange={ e => setReception(e.target.value, state, setState) }
-                      />
-                      <i className='c-form-radioIcon'/>
-                      <span>メール</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-10'>
-                      <input
-                        className='c-form-radio'
-                        type='radio'
-                        value='delivery'
-                        checked={ state.reception === 'delivery' }
-                        disabled={ props.quote.lock }
-                        onChange={ e => setReception(e.target.value, state, setState) }
-                      />
-                      <i className='c-form-radioIcon'/>
-                      <span>集配</span>
-                    </label>
-                  </div>
-                  <div className='u-mt-10'>
-                    <label className='c-form-radioLabel'>
-                      <input
-                        className='c-form-radio'
-                        type='radio'
-                        value='reservation'
-                        checked={ state.reception === 'reservation' }
-                        disabled={ props.quote.lock }
-                        onChange={ e => setReception(e.target.value, state, setState) }
-                      />
-                      <i className='c-form-radioIcon'/>
-                      <span>予約</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-10'>
-                      <input
-                        className='c-form-radio'
-                        type='radio'
-                        value='bizstant'
-                        checked={ state.reception === 'bizstant' }
-                        disabled={ props.quote.lock }
-                        onChange={ e => setReception(e.target.value, state, setState) }
-                      />
-                      <i className='c-form-radioIcon'/>
-                      <span>ビジスタント</span>
-                    </label>
-                    <label className='c-form-radioLabel u-ml-10'>
-                      <input
-                        className='c-form-radio'
-                        type='radio'
-                        value='reception_other'
-                        checked={ state.reception === 'reception_other' }
-                        disabled={ props.quote.lock }
-                        onChange={ e => setReception(e.target.value, state, setState) }
-                      />
-                      <i className='c-form-radioIcon'/>
-                      <span>その他</span>
-                    </label>
+                <td>
+                  <div className='c-form-selectWrap'>
+                    <select
+                      className='c-form-select'
+                      defaultValue={ props.quote.reception || '' }
+                      ref={ receptionRef }
+                      disabled={ props.quote.lock }
+                    >
+                      { RECEPTIONS.map(type => <option key={ type.key } value={ type.key }>{ type.value }</option>) }
+                    </select>
                   </div>
                 </td>
               </tr>

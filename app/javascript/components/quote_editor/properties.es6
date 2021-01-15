@@ -36,6 +36,15 @@ export const CHANNELS = [
   { key: 'channel_other', value: 'その他' },
 ]
 
+export const RECEPTIONS = [
+  { key: 'acceptance', value: '受付' },
+  { key: 'mail', value: 'メール' },
+  { key: 'delivery', value: '集配' },
+  { key: 'reservation', value: '予約' },
+  { key: 'bizstant', value: 'ビジスタント' },
+  { key: 'reception_other', value: 'その他' },
+]
+
 export const QUOTE_TYPES = [
   { key: 'contract', value: '請負' },
   { key: 'copy', value: '分散機' },
