@@ -66,7 +66,7 @@ const ConfigModal = props => {
       deliver_type: deliverTypeRef.current.value,
       deliver_type_note: state.show_deliver_type ? deliverTypeNoteRef.current.value : '',
       channel: channelRef.current.value,
-      quote_number: state.show_detail_channel ? quoteNumberRef.current.value : '',
+      quote_number: state.show_detail_channel ? quoteNumberRef.current.value || props.quote.quote_number : props.quote.quote_number,
       reception: state.reception,
       quote_type: quoteTypeRef.current.value,
       tax_type: taxTypeRef.current.value,

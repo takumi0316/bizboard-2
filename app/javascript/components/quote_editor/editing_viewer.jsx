@@ -18,29 +18,16 @@ import {
   setExpiration,
 } from './function'
 
-import {
-  QUOTE_PROJECT,
-} from './properties.es6'
-
 const EditingViewer = props => {
 
   const clientRef = useRef(null)
-  const divisionRef = useRef(null)
   const subjectRef = useRef(null)
   const memoRef = useRef(null)
 
-  const init = {
-    open_detail_config: false,
-  }
+  const init = { open_detail_config: false }
  
   const [state, setState] = useState(init)
- 
-  useEffect(() => {
-    //console.log(state)
-  }, [state])
- 
-  // TODO: 案件ロック時にグレーアウト
-  // TODO: 導線ボタンを下部に設置
+
   const saveContents = e => {
 
     e.preventDefault()
@@ -56,7 +43,7 @@ const EditingViewer = props => {
 
       mf_like_modal({
         icon: 'error',
-        message: 'お客様情報を入力してください。',
+        message: 'お客様情報を入力してください',
         close_callback: () => handleFocusRed(clientDOM)
       })
       return
@@ -68,7 +55,7 @@ const EditingViewer = props => {
     
       mf_like_modal({
         icon: 'error',
-        message: '件名を入力して下さい。',
+        message: '件名を入力して下さい',
         close_callback: () => handleFocusRed(subjectRef.current)
       })
       return
@@ -78,6 +65,7 @@ const EditingViewer = props => {
     const field = new FormData()
 
     let price = 0
+ 
     props.quote.quote_projects.map((project, index) => {
     
       if(project.id && noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
@@ -127,7 +115,7 @@ const EditingViewer = props => {
     field.append('quote[deliver_type]', props.quote.deliver_type || 'seat')
     field.append('quote[deliver_type_note]', props.quote.deliver_type_note || '')
 
-    if(!props.quote.drive_folder_id && props.quote.drive_folder_exist) field.append('quote[google_drive_exist]', 'true')
+    if(!props.quote.drive_folder_id && props.quote.drive_folder_exist === 'true') field.append('quote[google_drive_exist]', 'true')
 
     const request = props.quote.id ? window.xhrRequest.put(props.action, field) : window.xhrRequest.post(props.action, field)
     request.then(res => {
@@ -136,16 +124,16 @@ const EditingViewer = props => {
       
         if(props.quote.id) {
           props.setQuote({ ...props.quote, price: price, drive_folder_id: res.data.drive_folder_id })
-          window.mf_like_modal({ icon: 'success', message: '案件を保存しました。', close_callback: () => console.log('')/* this.loadingRef.finish() */ })
+          window.mf_like_modal({ icon: 'success', message: '案件を保存しました' })
         }
       
         // 編集ページへリダイレクト
         if(!props.quote.id) {
           const redirect = () => location.href = `${res.data.quote.id}/edit`
-          window.mf_like_modal({ icon: 'success', message: '案件を保存しました。', close_callback: () => redirect() })
+          window.mf_like_modal({ icon: 'success', message: '案件を保存しました', close_callback: () => redirect() })
         }
       }
-    }).catch(err => window.mf_like_modal({ icon: 'error', message: err, close_callback: () => this.loadingRef.finish() }))
+    }).catch(err => window.mf_like_modal({ icon: 'error', message: '案件の保存に失敗しました', close_callback: () => console.log(err) }))
   }
   
   return (

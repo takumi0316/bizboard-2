@@ -10,8 +10,6 @@ const DocumentPreviewer = props => {
  
   const taxRef = useRef(parseInt(props.quote.tax * 100) - 100)
   const [totalPrice, setTotalPrice] = useState(0)
-  const [subTotal, setSubTotal] = useState(0)
-  const [amountTax, setAmountTax] = useState(0)
 
   useEffect(() => {
 
@@ -39,7 +37,7 @@ const DocumentPreviewer = props => {
 
           <div className='u-mt-20 c-flex__between'>
             <div>
-              <p>{ `${ props.quote.company_name || '' }\b御中` }</p>
+              <p>{ `${ props.quote.company_name }\b御中` }</p>
             </div>
             <div>
               <img src={ JiiLogo } style={{ height: '40px', width: '289px' }} alt='日本工業社ロゴ'/>

@@ -7,6 +7,7 @@ const CDClientSuggestion = props => {
   const init = {
     searchTxt: props.inputTxt || '',
     clientId: props.client_id || '',
+    company_name: props.quote.company_name,
     clients: '',
   }
   
