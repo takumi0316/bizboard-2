@@ -38,6 +38,7 @@
 #  delivery_note_date         :date
 #  lock                       :boolean          default(FALSE), not null
 #  drive_folder_id            :string(191)
+#  destination                :integer          default(0)
 #
 
 class Quote < ApplicationRecord
@@ -73,6 +74,8 @@ class Quote < ApplicationRecord
 
   enum payment_terms: { postpaid: 0, advance: 10 }
 
+  enum destination: { company_name: 0, client_name: 10 }
+ 
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------

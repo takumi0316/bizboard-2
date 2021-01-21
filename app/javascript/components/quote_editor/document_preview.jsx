@@ -2,6 +2,10 @@ import React, { Fragment, useEffect, useRef, useState } from 'react'
 import Style from './style.sass'
 import Dayjs from 'dayjs'
 
+import {
+  PREFECTURES
+} from './properties.es6'
+
 // Rails Assets
 import JiiLogo from '../../../assets/images/jii-log.png'
 import ElectronicSeal from '../../../assets/images/electronic-seal.png'
@@ -37,7 +41,14 @@ const DocumentPreviewer = props => {
 
           <div className='u-mt-20 c-flex__between'>
             <div>
-              <p>{ `${ props.quote.company_name }\b御中` }</p>
+              <p>
+                { `${ props.quote.destination === 'company_name' ? props.quote.company_name : props.quote.client_name }\b御中` }
+              </p>
+              <div className='u-mt-35'>
+                <p>{ `〒${ props.quote.company_division.zip || '' }` }</p>
+                <p>{ `${ props.quote.company_division.prefecture_id ? PREFECTURES[props.quote.company_division.prefecture_id - 1].name : '' } ${ props.quote.company_division.address1 || '' }` }</p>
+                <p>{ `${ props.quote.company_division.address2 || '' }` }</p>
+              </div>
             </div>
             <div>
               <img src={ JiiLogo } style={{ height: '40px', width: '289px' }} alt='日本工業社ロゴ'/>

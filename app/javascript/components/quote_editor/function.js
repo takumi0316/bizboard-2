@@ -134,4 +134,4 @@ export const setQuoteProjectUnitPrice = (e, passIndex, quote, setQuote) => {
   if(!unit_price && !res_unit_price) e.target.value = ''
 }
 
-export const setCompanyName = (company_name, quote, setQuote) => setQuote({ ...quote, company_name: company_name })
+export const setCompanyName = (company_name, company_division, client_name, quote, setQuote) => setQuote({ ...quote, company_name: company_name, company_division: company_division, client_name: client_name })

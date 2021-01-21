@@ -18,6 +18,8 @@ import {
   setExpiration,
 } from './function'
 
+import { DESTINATIONS } from './properties.es6'
+
 const EditingViewer = props => {
 
   const clientRef = useRef(null)
@@ -91,6 +93,7 @@ const EditingViewer = props => {
     field.append('quote[id]', props.quote.id || '')
     field.append('quote[division_id]', props.quote.division_id)
     field.append('quote[company_division_client_id]', setContents.client_id)
+    field.append('quote[destination]', props.quote.destination)
     field.append('quote[subject]', setContents.subject)
     field.append('quote[quote_type]', props.quote.quote_type || 'contract')
     field.append('quote[quote_number]', props.quote.quote_number || '')
@@ -142,20 +145,43 @@ const EditingViewer = props => {
       <div className={ Style.EditingViewer__inner }>
 
         <div className={ Style.EditingViewer__innerColumn }>
-          <div>
-            <strong>
-              お客様情報
-              <div className={ Style.EditingViewer__innerColumn__must }>必須</div>
-            </strong>
-          </div>
-          <div>
-            <CDClientSuggestion
-              inputTxt={ props.quote.client_name }
-              client_id={ props.quote.company_division_client_id }
-              clientRef={ clientRef }
-              quote={ props.quote }
-              setQuote={ props.setQuote }
-            />
+          <div className='c-flex'>
+
+            <div style={{ width: '60%' }}>
+              <div>
+                <strong>
+                  お客様情報
+                  <div className={ Style.EditingViewer__innerColumn__must }>必須</div>
+                </strong>
+              </div>
+              <div>
+                <CDClientSuggestion
+                  inputTxt={ props.quote.client_info }
+                  client_id={ props.quote.company_division_client_id }
+                  clientRef={ clientRef }
+                  quote={ props.quote }
+                  setQuote={ props.setQuote }
+                />
+              </div>
+            </div>
+
+            <div className='u-ml-20'>
+              <div>
+                <strong>
+                  宛先
+                  <Help content='帳票の宛先を指定してください'/>
+                  <div className={ Style.EditingViewer__innerColumn__must }>必須</div>
+                </strong>
+              </div>
+              <div className='c-form-selectWrap'>
+                <select className='c-form-select' defaultValue={ props.quote.destination } onChange={ e => props.setQuote({ ...props.quote, destination: e.target.value }) }>
+                  { DESTINATIONS.map(destination => {
+                    return <option key={ destination.key } value={ destination.key }>{ destination.value }</option>
+                  }) }
+                </select>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -258,7 +284,7 @@ const EditingViewer = props => {
             <div>
               <textarea
                 className='c-form-textarea'
-                rows={ props.quote.remarks.match(/\n/g) ? props.quote.remarks.match(/\n/g).length + 1 : 2 }
+                rows={ props.quote.remarks ? props.quote.remarks.match(/\n/g) ? props.quote.remarks.match(/\n/g).length + 1 : 2 : '' }
                 onChange={ e => props.setQuote({ ...props.quote, remarks: e.target.value }) }
                 defaultValue={ props.quote.remarks }
                 disabled={ props.quote.lock }
@@ -276,7 +302,7 @@ const EditingViewer = props => {
             <div>
               <textarea
                 className='c-form-textarea'
-                rows={ props.quote.memo.match(/\n/g) ? props.quote.memo.match(/\n/g).length + 1 : 2 }
+                rows={ props.quote.memo ? props.quote.memo.match(/\n/g) ? props.quote.memo.match(/\n/g).length + 1 : 2 : '' }
                 defaultValue={ props.quote.memo }
                 ref={ memoRef }
                 disabled={ props.quote.lock }

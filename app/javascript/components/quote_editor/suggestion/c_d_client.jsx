@@ -8,18 +8,27 @@ const CDClientSuggestion = props => {
     searchTxt: props.inputTxt || '',
     clientId: props.client_id || '',
     company_name: props.quote.company_name,
+    company_division: '',
+    client_name: '',
     clients: '',
   }
   
   const [state, setState] = useState(init)
   
-  useEffect(() => { setCompanyName(state.company_name, props.quote, props.setQuote) }, [state.clientId])
+  useEffect(() => { setCompanyName(state.company_name, state.company_division, state.client_name, props.quote, props.setQuote) }, [state.clientId])
   
   const handleSelect = e => {
 
-    const target_client = state.clients[e.target.dataset.number]
+    const { company, division, client } = state.clients[e.target.dataset.number]
+    const { zip, address1, address2, prefecture_id } = division
 
-    setState({ ...state, clientId: target_client.client.id, clients: '', searchTxt: `会社名: ${ target_client.company.name }\n部署名: ${ target_client.division.name }\n担当者名: ${ target_client.client.name }`, company_name: target_client.company.name })
+    setState({
+      ...state,
+      clientId: client.id,
+      company_division: { zip: zip, address1: address1, address2: address2, prefecture_id: prefecture_id },
+      client_name: client.name,
+      clients: '',
+      searchTxt: `${ company.name }\n${ division.name }\n${ client.name }`, company_name: company.name })
   }
   
   const handleFocusOut = e => {
