@@ -135,7 +135,7 @@ const EditingViewer = props => {
       }
     }).catch(err => window.mf_like_modal({ icon: 'error', message: '案件の保存に失敗しました', close_callback: () => console.log(err) }))
   }
-  
+
   return (
     <div className={ Style.EditingViewer }>
       <div className={ Style.EditingViewer__header }>見積書編集</div>
@@ -258,7 +258,7 @@ const EditingViewer = props => {
             <div>
               <textarea
                 className='c-form-textarea'
-                rows='3'
+                rows={ props.quote.remarks.match(/\n/g) ? props.quote.remarks.match(/\n/g).length + 1 : 2 }
                 onChange={ e => props.setQuote({ ...props.quote, remarks: e.target.value }) }
                 defaultValue={ props.quote.remarks }
                 disabled={ props.quote.lock }
@@ -276,7 +276,7 @@ const EditingViewer = props => {
             <div>
               <textarea
                 className='c-form-textarea'
-                rows='3'
+                rows={ props.quote.memo.match(/\n/g) ? props.quote.memo.match(/\n/g).length + 1 : 2 }
                 defaultValue={ props.quote.memo }
                 ref={ memoRef }
                 disabled={ props.quote.lock }
