@@ -38,6 +38,8 @@ class QuoteProject < ApplicationRecord
   #----------------------------------------
 
   belongs_to :quote
+ 
+  belongs_to :project
 
   #----------------------------------------
   #  ** Delegates **
