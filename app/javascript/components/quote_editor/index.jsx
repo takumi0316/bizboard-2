@@ -7,13 +7,16 @@ import DocumentPreviewer from './document_preview'
 import ConductingWire from './conducting_wire'
 
 const QuoteEditor = props => {
- 
+
+  const { zip, address1, address2, prefecture_id } = props.company_division
   const [quote, setQuote] = useState( {
     ...props.quote,
     division_id: props.quote.division_id || props.division_id,
     quote_projects: props.quote_projects,
     company_name: props.company_name,
-    client_name: props.client_name
+    company_division: { zip: zip || '', address1: address1 || '', address2: address2 || '', prefecture_id: prefecture_id || '' },
+    client_name: props.client_name,
+    client_info: props.client_info
   })
 
   useEffect(() => {

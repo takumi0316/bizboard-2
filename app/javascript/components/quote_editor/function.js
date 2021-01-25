@@ -61,8 +61,6 @@ export const handleChangeChannel = (e, state, setState) => {
   if(tarVal !== BPR_ERP && state.show_detail_channel) setState({ ...state, show_detail_channel: false })
 }
 
-export const handleChangeDiscount = (state, setState) => setState({ ...state, active_discount: !state.active_discount })
-
 export const handleFocusRed = tarDOM => {
 
   tarDOM.focus()
@@ -78,8 +76,6 @@ export const setDate = (value, quote, setQuote) => setQuote({ ...quote, date: va
 export const setDeliveryNoteDate = (value, quote, setQuote) => setQuote({ ...quote, delivery_note_date: value })
 
 export const setDeliverAt = (value, quote, setQuote) => setQuote({ ...quote, deliver_at: value })
-
-export const setReception = (value, state, setState) => setState({ ...state, reception: value })
 
 export const applyQuoteProject = (index, tarProject, quote, setQuote) => {
   
@@ -138,11 +134,4 @@ export const setQuoteProjectUnitPrice = (e, passIndex, quote, setQuote) => {
   if(!unit_price && !res_unit_price) e.target.value = ''
 }
 
-export const setQuoteProjectRemarks = (e, passIndex, quote, setQuote) => {
-  
-  let quote_projects = JSON.parse(JSON.stringify(quote.quote_projects))
-  quote_projects[passIndex].remarks = e.target.value
-  setQuote({ quote_projects: quote_projects })
-}
-
-export const setCompanyName = (company_name, quote, setQuote) => setQuote({ ...quote, company_name: company_name })
+export const setCompanyName = (company_name, company_division, client_name, quote, setQuote) => setQuote({ ...quote, company_name: company_name, company_division: company_division, client_name: client_name })
