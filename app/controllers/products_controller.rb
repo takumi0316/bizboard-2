@@ -9,7 +9,8 @@ class ProductsController < ApplicationController
   #----------------------------------------
 
   # 部署一覧
-  expose_with_pagination(:products) { Product.all.order(inventory_id: :desc) }
+  expose_with_pagination(:products) { Product.all.where(inventory_id: params[:inventory_id]) }
+
   # 部署
   expose(:product) { Product.find_or_initialize_by id: params[:id] }
 
@@ -126,6 +127,6 @@ class ProductsController < ApplicationController
     #
     def product_params
 
-      params.require(:product).permit :inventory_id, :name, :quantity, :remarks
+      params.require(:product).permit :inventory_id, :delivery_target_id, :name, :quantity, :remarks
     end
 end

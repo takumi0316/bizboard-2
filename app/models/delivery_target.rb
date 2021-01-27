@@ -2,12 +2,13 @@
 #
 # Table name: delivery_targets
 #
-#  id               :bigint(8)        not null, primary key
-#  card_template_id :bigint(8)
-#  name             :string(191)
-#  address1         :string(191)
-#  address2         :string(191)
-#  tel              :string(191)
+#  id                  :bigint(8)        not null, primary key
+#  card_template_id    :bigint(8)
+#  name                :string(191)
+#  address1            :string(191)
+#  address2            :string(191)
+#  tel                 :string(191)
+#  company_division_id :bigint(8)
 #
 
 class DeliveryTarget < ApplicationRecord
@@ -32,7 +33,11 @@ class DeliveryTarget < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :card_template
+  belongs_to :card_template, optional: true
+
+  belongs_to :company_division, optional: true
+
+  has_many :products
 
   #----------------------------------------
   #  ** Delegates **

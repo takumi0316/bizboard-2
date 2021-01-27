@@ -7,6 +7,12 @@
     = f.select :inventory_id, Inventory.all.joins(:company_division).pluck(:name, :id), { selected: params[:inventory_id], disabled: true }, { class: 'c-form-select' }
 
   .c-form-label
+    = f.label :delivery_target_id, '配送先'
+    span.c-form__required.u-ml-10 必須
+  .c-form-selectWrap.u-mb-30
+    = f.select :delivery_target_id, Inventory.find_by(id: params[:inventory_id]).delivery_targets.pluck(:name, :id), { selected: product.delivery_target_id, disabled: true }, { class: 'c-form-select' }
+
+  .c-form-label
     = f.label :name, '商品名'
     span.c-form__required.u-ml-10 必須
   = f.text_field :name, placeholder: '長３封筒', class: 'c-form-text u-mb-30', required: :true

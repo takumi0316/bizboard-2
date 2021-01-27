@@ -1,12 +1,16 @@
 .u-mt-15
-  = link_to '配送先を作成', new_delivery_target_path(card_template_id: params[:card_template_id]), class: 'c-btnMain c-btn-blue'
+  - if params[:card_template]
+    = link_to '配送先を作成', new_delivery_target_path(card_template_id: params[:card_template_id]), class: 'c-btnMain c-btn-blue'
+  - else
+    = link_to '配送先を作成', new_delivery_target_path(inventory_id: params[:inventory_id]), class: 'c-btnMain c-btn-blue'
 
 = form_with url: delivery_targets_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
 
-  .c-search__item
-    = f.label :name, '配送先名称'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグタイトル'
-  = f.submit '検索', class: 'c-btnMain'
+  = f.label :name, '配送先名称'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグタイトル'
+    = f.submit '検索', class: 'c-btnMain'
 
 .c-table.u-mt-10
   table
@@ -17,10 +21,20 @@
         th 住所
         th colspan=2
     tbody
-      - delivery_targets.each do |r|
-        tr
-        td.u-ta-center = r.id
-        td.u-ta-center = r.name
-        td.u-ta-center = "#{ r.address1 }#{ r.address2 }"
-        td.u-ta-center = link_to '編集', edit_delivery_target_path(r), class: 'c-btnMain'
-        td.u-ta-center = link_to '削除', delivery_target_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }
+      - if params[:card_template_id]
+        - template_delivery_targets.each do |r|
+          tr
+            td.u-ta-center.u-va-middle = r.id
+            td.u-ta-center.u-va-middle = r.name
+            td.u-ta-center.u-va-middle = "#{ r.address1 }#{ r.address2 }"
+            td.u-ta-center.u-va-middle = link_to '編集', edit_delivery_target_path(r), class: 'c-btnMain'
+            td.u-ta-center.u-va-middle = link_to '削除', delivery_target_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }
+
+      - else
+        - inventory_delivery_targets.each do |r|
+          tr
+            td.u-ta-center.u-va-middle = r.id
+            td.u-ta-center.u-va-middle = r.name
+            td.u-ta-center.u-va-middle = "#{ r.address1 }#{ r.address2 }"
+            td.u-ta-center.u-va-middle = link_to '編集', edit_delivery_target_path(r), class: 'c-btnMain'
+            td.u-ta-center.u-va-middle = link_to '削除', delivery_target_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }

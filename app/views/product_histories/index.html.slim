@@ -11,8 +11,8 @@
     tbody
       - @product_history.each do |r|
         tr
-          td = r.date
-          td = r.status_i18n
-          td = r.quantity
+          td.u-ta-center.u-va-middle = r.date
+          td.u-ta-center.u-va-middle = r.status_i18n
+          td.u-ta-center.u-va-middle = r.quantity
 
 = render 'layouts/_partials/pagination'

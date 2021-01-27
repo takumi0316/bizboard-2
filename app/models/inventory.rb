@@ -34,8 +34,12 @@ class Inventory < ApplicationRecord
   # 部署
   belongs_to :company_division
 
+  # 配送先
+  has_many :delivery_targets
+
   # 商品
   has_many :products, dependent: :destroy
+
   accepts_nested_attributes_for :products, allow_destroy: true
 
 

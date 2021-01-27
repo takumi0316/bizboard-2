@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_21_054155) do
+ActiveRecord::Schema.define(version: 2021_01_26_094007) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -217,7 +217,9 @@ ActiveRecord::Schema.define(version: 2021_01_21_054155) do
     t.string "address1", comment: "配送先の住所1"
     t.string "address2", comment: "配送先の住所2"
     t.string "tel"
+    t.bigint "inventory_id"
     t.index ["card_template_id"], name: "index_delivery_targets_on_card_template_id"
+    t.index ["inventory_id"], name: "index_delivery_targets_on_inventory_id"
   end
 
   create_table "divisions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -384,6 +386,8 @@ ActiveRecord::Schema.define(version: 2021_01_21_054155) do
     t.text "remarks", comment: "備考"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "delivery_target_id"
+    t.index ["delivery_target_id"], name: "index_products_on_delivery_target_id"
     t.index ["inventory_id"], name: "index_products_on_inventory_id"
   end
 
@@ -860,6 +864,7 @@ ActiveRecord::Schema.define(version: 2021_01_21_054155) do
   add_foreign_key "catalogs", "categories"
   add_foreign_key "company_division_clients", "card_layouts", column: "head_layout_id"
   add_foreign_key "company_division_clients", "card_layouts", column: "tail_layout_id"
+  add_foreign_key "delivery_targets", "inventories"
   add_foreign_key "expendables", "users"
   add_foreign_key "expendables", "work_subcontractor_details"
   add_foreign_key "expendables", "work_subcontractors"
@@ -871,6 +876,7 @@ ActiveRecord::Schema.define(version: 2021_01_21_054155) do
   add_foreign_key "messages", "users"
   add_foreign_key "payments", "expendables"
   add_foreign_key "payments", "work_subcontractors"
+  add_foreign_key "products", "delivery_targets"
   add_foreign_key "quotes", "divisions"
   add_foreign_key "tasks", "catalogs"
   add_foreign_key "tasks", "delivery_targets"

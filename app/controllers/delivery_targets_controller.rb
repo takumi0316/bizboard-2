@@ -9,7 +9,8 @@ class DeliveryTargetsController < ApplicationController
   #----------------------------------------
 
   # 配送先
-  expose(:delivery_targets) { DeliveryTarget.all.where(card_template_id: params[:card_template_id])  }
+  expose(:template_delivery_targets) { DeliveryTarget.where(card_template_id: params[:card_template_id])  }
+  expose(:inventory_delivery_targets) { DeliveryTarget.where(inventory_id: params[:inventory_id])  }
 
   # 配送先
   expose(:delivery_target) { DeliveryTarget.find_or_initialize_by id: params[:id] }
@@ -32,7 +33,11 @@ class DeliveryTargetsController < ApplicationController
   #
   def index
 
-    add_breadcrumb '一覧', path: card_templates_path
+    if params[:card_template_id]
+      add_breadcrumb '一覧', path: card_templates_path
+    else
+      add_breadcrumb '一覧', path: inventories_path
+    end
     add_breadcrumb '配送先一覧'
   end
 
@@ -42,8 +47,13 @@ class DeliveryTargetsController < ApplicationController
   #
   def new
 
-    add_breadcrumb '一覧', path: card_templates_path
-    add_breadcrumb '配送先一覧', path: delivery_targets_path(card_template_id: params[:card_template_id])
+    if params[:card_template_id]
+      add_breadcrumb '一覧', path: card_templates_path
+      add_breadcrumb '配送先一覧', path: delivery_targets_path(card_template_id: params[:card_template_id])
+    else
+      add_breadcrumb '一覧', path: inventories_path
+      add_breadcrumb '配送先一覧', path: delivery_targets_path(inventory_id: params[:inventory_id])
+    end
     add_breadcrumb '新規作成'
   end
 
@@ -67,8 +77,13 @@ class DeliveryTargetsController < ApplicationController
   #
   def edit
 
-    add_breadcrumb '一覧', path: card_templates_path
-    add_breadcrumb '配送先一覧', path: delivery_targets_path(card_template_id: params[:card_template_id])
+    if delivery_target.card_template_id
+      add_breadcrumb '一覧', path: card_templates_path
+      add_breadcrumb '配送先一覧', path: delivery_targets_path(card_template_id: delivery_target.card_template_id)
+    else
+      add_breadcrumb '一覧', path: inventories_path
+      add_breadcrumb '配送先一覧', path: delivery_targets_path(inventory_id: delivery_target.inventory_id)
+    end
     add_breadcrumb '編集'
   rescue => e
 
@@ -94,6 +109,10 @@ class DeliveryTargetsController < ApplicationController
   # @version 2018/06/10
   #
   def destroy
+  
+    raise '配送先が商品と紐づいているため削除できません' if delivery_target.products.present?
+
+    raise '配送先がWeb名刺登録部署に紐づいているため削除できません' if delivery_target.card_template.present?
 
     delivery_target.destroy!
  
@@ -115,6 +134,6 @@ class DeliveryTargetsController < ApplicationController
     #
     def delivery_target_params
 
-      params.require(:delivery_target).permit :card_template_id, :name, :address1, :address2, :tel
+      params.require(:delivery_target).permit :card_template_id, :inventory_id, :name, :address1, :address2, :tel
     end
 end
