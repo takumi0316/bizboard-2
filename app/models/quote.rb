@@ -262,10 +262,14 @@ class Quote < ApplicationRecord
 
   def self.production_script
 
-    Quote.where.not(discount: 0).map do |q|
+    self.where.not(discount: 0).map do |q|
 
-      concat_memo = q.memo ? q.memo + "\n" + "品目合計: #{ q.quote_projects.pluck(:price).map(&:to_i).sum }" + "\n" + "値引き額: #{ q.discount }" : "品目合計: #{ q.quote_projects.pluck(:price).map(&:to_i).sum }" + "\n" + "値引き額: #{ q.discount }"
-      q.update! memo: concat_memo
+      QuoteProject.create! quote_id: q.id, name: '値引き', unit_price: "-#{ q.discount }", unit: 1, price: q.discount
+      price = 0
+      q.quote_projects.each { |qp| price += (qp.unit.to_f * qp.unit_price.to_f) }
+
+      concat_memo = q.memo ? q.memo + "\n" + "元の金額: #{ q.price }" + "\n" + "品目合計: #{ price }" + "\n" + "値引き額: #{ q.discount }" : "元の金額: #{ q.price }" + "\n" + "品目合計: #{ price }" + "\n" + "値引き額: #{ q.discount }"
+      q.update! price: price, memo: concat_memo
     end
 
   end
