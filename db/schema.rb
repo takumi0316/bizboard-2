@@ -386,6 +386,8 @@ ActiveRecord::Schema.define(version: 2021_01_26_094007) do
     t.text "remarks", comment: "備考"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "unit"
+    t.integer "issue_quantity", limit: 1, default: 0
     t.bigint "delivery_target_id"
     t.index ["delivery_target_id"], name: "index_products_on_delivery_target_id"
     t.index ["inventory_id"], name: "index_products_on_inventory_id"

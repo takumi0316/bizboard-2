@@ -3,26 +3,46 @@
   .c-form-label
     = f.label :inventory_id, '在庫保有部署'
     span.c-form__required.u-ml-10 必須
-  .c-form-selectWrap.u-mb-30
-    = f.select :inventory_id, Inventory.all.joins(:company_division).pluck(:name, :id), { selected: params[:inventory_id], disabled: true }, { class: 'c-form-select' }
+  .c-form-selectWrap
+    = f.select :inventory_id, Inventory.all.joins(:company_division).pluck(:name, :id), { selected: params[:inventory_id] }, { class: 'c-form-select', disabled: product.persisted? }
 
-  .c-form-label
-    = f.label :delivery_target_id, '配送先'
-    span.c-form__required.u-ml-10 必須
-  .c-form-selectWrap.u-mb-30
-    = f.select :delivery_target_id, Inventory.find_by(id: params[:inventory_id]).delivery_targets.pluck(:name, :id), { selected: product.delivery_target_id, disabled: true }, { class: 'c-form-select' }
+  .u-mt-30
+    .c-form-label
+      = f.label :delivery_target_id, '配送先'
+      span.c-form__required.u-ml-10 必須
+    .c-form-selectWrap
+      - if product.new_record?
+        = f.select :delivery_target_id, Inventory.find(params[:inventory_id]).delivery_targets.pluck(:name, :id), { selected: product.delivery_target_id, disabled: true }, { class: 'c-form-select' }
+      - else
+        = f.select :delivery_target_id, product.inventory.delivery_targets.pluck(:name, :id), { selected: product.delivery_target_id, disabled: true }, { class: 'c-form-select' }
 
-  .c-form-label
-    = f.label :name, '商品名'
-    span.c-form__required.u-ml-10 必須
-  = f.text_field :name, placeholder: '長３封筒', class: 'c-form-text u-mb-30', required: :true
+  .u-mt-30
+    .c-form-label
+      = f.label :name, '商品名'
+      span.c-form__required.u-ml-10 必須
+    = f.text_field :name, placeholder: '長３封筒', class: 'c-form-text', required: :true
 
-  .c-form-label
-    = f.label :quantity, '数量'
-  = f.number_field :quantity, placeholder: '1000', class: 'c-form-text u-mb-30'
+  .u-mt-30
+    .c-form-label
+      = f.label :quantity, '数量'
+    = f.number_field :quantity, placeholder: '1000', readonly: product.persisted?, class: 'c-form-text'
 
-  .c-form-label
-    = f.label :remarks, '備考'
-  = f.text_area :remarks, placeholder: '在庫管理情報など入力', class: 'c-form-textarea u-mb-30', rows: 4
+  .u-mt-30
+    .c-form-label
+      = f.label :unit, '単位'
+  .c-form-selectWrap
+    = f.select :issue_quantity, Product.issue_quantities_i18n.keys.map{ |k| [I18n.t("enums.product.issue_quantity.#{k}"), k] }, { selected: params[:inventory_id] }, { class: 'c-form-select' }
 
-  .u-ta-center.u-mt-30 = f.submit product.new_record?? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'
+  .u-mt-30
+    .c-form-label
+      = f.label :issue_quantity, '1単位毎の出庫数'
+      span.c-form__required.u-ml-10 必須
+    = f.number_field :issue_quantity, placeholder: '10', class: 'c-form-text', required: :true
+
+  .u-mt-30
+    .c-form-label
+      = f.label :remarks, '備考'
+    = f.text_area :remarks, placeholder: '在庫管理情報など入力', class: 'c-form-textarea', rows: 4
+
+  .u-ta-center.u-mt-30
+    = f.submit product.new_record?? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'

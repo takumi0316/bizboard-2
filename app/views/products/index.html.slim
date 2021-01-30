@@ -6,14 +6,17 @@
     thead
       tr
         th 商品名
+        th 納品先
         th 在庫数
-        th colspan=3
+        th colspan=4
     tbody
       - products.each do |r|
         tr
           td.u-ta-center.u-va-middle = r.name
+          td.u-ta-center.u-va-middle = r.delivery_target&.address1
           td.u-ta-center.u-va-middle = r.quantity
           td.u-ta-center.u-va-middle = link_to '在庫履歴', product_histories_path(product_id: r.id), class: 'c-btnMain'
+          td.u-ta-center.u-va-middle = link_to '編集', edit_product_path(r), class: 'c-btnMain c-btn-blue'
           td.u-ta-center.u-va-middle = link_to '削除', product_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'
