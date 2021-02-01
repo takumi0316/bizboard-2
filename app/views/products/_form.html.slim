@@ -31,7 +31,7 @@
     .c-form-label
       = f.label :unit, '単位'
   .c-form-selectWrap
-    = f.select :issue_quantity, Product.issue_quantities_i18n.keys.map{ |k| [I18n.t("enums.product.issue_quantity.#{k}"), k] }, { selected: params[:inventory_id] }, { class: 'c-form-select' }
+    = f.select :unit, Product.units_i18n.keys.map{ |k| [I18n.t("enums.product.unit.#{k}"), k] }, { selected: params[:inventory_id] }, { class: 'c-form-select' }
 
   .u-mt-30
     .c-form-label

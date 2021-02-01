@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_26_094007) do
+ActiveRecord::Schema.define(version: 2021_02_01_152822) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -376,6 +376,7 @@ ActiveRecord::Schema.define(version: 2021_01_26_094007) do
     t.integer "quantity", default: 0, comment: "数量"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "apply_status", limit: 1, default: 0
     t.index ["product_id"], name: "index_product_histories_on_product_id"
   end
 
@@ -386,8 +387,8 @@ ActiveRecord::Schema.define(version: 2021_01_26_094007) do
     t.text "remarks", comment: "備考"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "unit"
-    t.integer "issue_quantity", limit: 1, default: 0
+    t.integer "unit", limit: 1, default: 0
+    t.string "issue_quantity"
     t.bigint "delivery_target_id"
     t.index ["delivery_target_id"], name: "index_products_on_delivery_target_id"
     t.index ["inventory_id"], name: "index_products_on_inventory_id"

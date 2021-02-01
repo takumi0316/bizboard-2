@@ -8,11 +8,18 @@
         th 発注日
         th 依頼内容
         th 数量
+        th
     tbody
-      - @product_history.each do |r|
+      - product_histories.each do |r|
         tr
           td.u-ta-center.u-va-middle = r.date
           td.u-ta-center.u-va-middle = r.status_i18n
-          td.u-ta-center.u-va-middle = r.quantity
+          td.u-ta-center.u-va-middle = "#{ r.delivery_stock? ? '-' : '+' } #{ r.quantity }"
+          td.u-ta-center.u-va-middle
+            - if r.add_stock?
+              - if r.not?
+                = link_to '反映', apply_product_history_path(r.id), method: :post, class: 'c-btnMain c-btn-blue'
+              - else
+                | 反映済み
 
 = render 'layouts/_partials/pagination'

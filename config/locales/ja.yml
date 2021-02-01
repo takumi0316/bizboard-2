@@ -409,7 +409,7 @@ ja:
         complete: 完了
 
     product:
-      issue_quantity:
+      unit:
         box: 箱
         book: 冊
         sheet: 枚

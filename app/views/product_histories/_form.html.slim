@@ -3,20 +3,20 @@
   .c-form-label
     = f.label :product_id, '商品名'
     span.c-form__required.u-ml-10 必須
-  .c-form-selectWrap.u-mb-30
-    = f.select :product_id, Product.all.pluck(:name, :id), { selected: params[:product_id], disabled: true }, { class: 'c-form-select' }
+  .c-form-selectWrap
+    = f.select :product_id, Product.all.pluck(:name, :id), { selected: params[:product_id] }, { class: 'c-form-select', disabled: true }
 
-  .c-form-label
+  .u-mt-15.c-form-label
     = f.label :date, '発注日'
     span.c-form__required.u-ml-10 必須
-  = f.date_select :date, {use_month_numbers: true, :start_year => Date.today.since(1.years).year, :end_year => Date.today.year}, {class: 'c-form-dateselect'}
+  = f.date_select :date, { use_month_numbers: true, start_year: Time.now.since(1.years).year, end_year: Time.now.year }, { class: 'c-form-dateselect' }
 
-  .c-form-label
+  .u-mt-15.c-form-label
     = f.label :status, '依頼内容'
     span.c-form__required.u-ml-10 必須
-  = f.select :status, ProductHistory.statuses_i18n.invert, {}, { class: 'c-form-dateselect' }
+  = f.select :status, ProductHistory.statuses_i18n.invert, { selected: product.product_histories.count == 0 ? 'first_stock' : 'delivery_stock' }, { class: 'c-form-dateselect', disabled: product.product_histories.count == 0 }
 
-  .c-form-label
+  .u-mt-15.c-form-label
     = f.label :quantity, '数量'
   = f.number_field :quantity, placeholder: '1000', class: 'c-form-text u-mb-30'
 

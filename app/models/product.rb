@@ -9,8 +9,8 @@
 #  remarks            :text(65535)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  unit               :string(191)
-#  issue_quantity     :integer          default(0)
+#  unit               :integer          default("box")
+#  issue_quantity     :string(191)
 #  delivery_target_id :bigint(8)
 #
 
@@ -28,7 +28,7 @@ class Product < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum issue_quantity: { box: 0, book: 10, sheet: 20 }
+  enum unit: { box: 0, book: 10, sheet: 20 }
 
   #----------------------------------------
   #  ** Validations **
