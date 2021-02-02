@@ -75,7 +75,7 @@ class Quote < ApplicationRecord
   enum payment_terms: { postpaid: 0, advance: 10 }
 
   enum destination: { company_name: 0, client_name: 10 }
- 
+
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------

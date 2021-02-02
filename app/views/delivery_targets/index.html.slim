@@ -3,10 +3,11 @@
 
 = form_with url: delivery_targets_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
 
-  .c-search__item
-    = f.label :name, '配送先名称'
-    = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグタイトル'
-  = f.submit '検索', class: 'c-btnMain'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.label :name, '配送先名称'
+      = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: 'フラグタイトル'
+    = f.submit '検索', class: 'c-btnMain'
 
 .c-table.u-mt-10
   table
@@ -19,8 +20,8 @@
     tbody
       - delivery_targets.each do |r|
         tr
-        td.u-ta-center = r.id
-        td.u-ta-center = r.name
-        td.u-ta-center = "#{ r.address1 }#{ r.address2 }"
-        td.u-ta-center = link_to '編集', edit_delivery_target_path(r), class: 'c-btnMain'
-        td.u-ta-center = link_to '削除', delivery_target_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }
+        td.u-ta-center.u-va-middle = r.id
+        td.u-ta-center.u-va-middle = r.name
+        td.u-ta-center.u-va-middle = "#{ r.address1 }#{ r.address2 }"
+        td.u-ta-center.u-va-middle = link_to '編集', edit_delivery_target_path(r), class: 'c-btnMain c-btn-blue'
+        td.u-ta-center.u-va-middle = link_to '削除', delivery_target_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }

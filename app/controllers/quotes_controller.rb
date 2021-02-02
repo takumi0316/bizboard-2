@@ -233,7 +233,7 @@ class QuotesController < ApplicationController
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
       card_template = CardTemplate.find_by(company_id: quote.client.company_division.company_id)
-      zipfile.get_output_stream("会社名:#{card_template.company.name}_#{card_template.name}.csv") do |f|
+      zipfile.get_output_stream("#{quote.subject}.csv") do |f|
 
         bom = "\uFEFF"
         f.puts(
@@ -243,6 +243,8 @@ class QuotesController < ApplicationController
             headers << 'テンプレート名'
             headers << '箱数'
             headers << '申込日'
+            headers << '申込者名'
+            headers << '配送先'
             headers << '表面レイアウト名'
             headers << '裏面レイアウト名'
 
@@ -261,6 +263,8 @@ class QuotesController < ApplicationController
               values << card_template.name
               values << TaskCardClient.find_by(quote_id: quote.id, card_client_id: r.id).count
               values << quote.created_at.strftime('%Y年 %m月 %d日')
+              values << "#{ quote.task.client_name }様"
+              values << "#{ quote.task&.delivery_target&.address1 }#{ quote.task&.delivery_target&.address2 }"
               values << r.head_layout.name
               values << r.tail_layout.name
 
