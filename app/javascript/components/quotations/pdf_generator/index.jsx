@@ -66,12 +66,14 @@ const QuotationPdfGenerator = props => {
                 : null
                 }
               </Fragment>
-              <tr>
-                <td className='u-va-middle'>値引金額</td>
-                <td/>
-                <td/>
-                <td className='u-va-middle'>{ Number(props.quote.discount).toLocaleString() }</td>
-              </tr>
+              { /*
+                <tr>
+                  <td className='u-va-middle'>値引金額</td>
+                  <td/>
+                  <td/>
+                  <td className='u-va-middle'>{ Number(props.quote.discount).toLocaleString() }</td>
+                </tr>
+              */ }
             </tbody>
           </table>
         </div>
