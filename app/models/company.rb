@@ -124,7 +124,7 @@ class Company < ApplicationRecord
         r.each do |ri|
 
           client = division_clients.find_or_initialize_by(email: ri[:mail])
-          client.update!(name: ri[:name], confirmation_token: 'FactoryToken', confirmed_at: Time.now, confirmation_sent_at: Time.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s, user_type: ri[:user_type].to_i)
+          client.update!(name: ri[:name], confirmation_token: 'FactoryToken', confirmed_at: Time.zone.now, confirmation_sent_at: Time.zone.now, password: ri[:password].to_s, password_confirmation: ri[:password].to_s, user_type: ri[:user_type].to_i)
         end
       end
     end

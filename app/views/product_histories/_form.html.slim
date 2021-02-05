@@ -9,7 +9,7 @@
   .u-mt-15.c-form-label
     = f.label :date, '発注日'
     span.c-form__required.u-ml-10 必須
-  = f.date_select :date, { use_month_numbers: true, start_year: Time.now.since(1.years).year, end_year: Time.now.year }, { class: 'c-form-dateselect' }
+  = f.date_select :date, { use_month_numbers: true, start_year: Time.zone.now.since(1.years).year, end_year: Time.zone.now.year }, { class: 'c-form-dateselect' }
 
   .u-mt-15.c-form-label
     = f.label :status, '依頼内容'

@@ -62,7 +62,7 @@ class ProductsController < ApplicationController
   def create
 
     product.update! product_params
-    ProductHistory.create! product_id: product.id, date: Time.now, status: 0, quantity: product.quantity
+    ProductHistory.create! product_id: product.id, date: Time.zone.now, status: 0, quantity: product.quantity
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'success', message: '商品を作成しました' }
   rescue => e

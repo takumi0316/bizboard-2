@@ -120,7 +120,7 @@ class Inquiry < ApplicationRecord
         end
 
       else
-        Inquiry.create!(quote_number: row, result: 0, import_time: Time.now)
+        Inquiry.create!(quote_number: row, result: 0, import_time: Time.zone.now)
         next
       end
     end
@@ -168,7 +168,7 @@ class Inquiry < ApplicationRecord
         end
 
       else
-        Inquiry.create!(quote_number: row, result: 0, import_time: Time.now)
+        Inquiry.create!(quote_number: row, result: 0, import_time: Time.zone.now)
         next
       end
     end
