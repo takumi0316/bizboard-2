@@ -77,7 +77,7 @@
                   .u-fw-light #{((r.price).to_i).to_s(:delimited)}
                 - else
                   .u-fw-light #{((r.price).to_f).to_s(:delimited)}
-          - if invoice.quote.discount.to_i > 0
+          /- if invoice.quote.discount.to_i > 0
             tr
               td.u-ta-left
                 .u-fw-light 値引き金額

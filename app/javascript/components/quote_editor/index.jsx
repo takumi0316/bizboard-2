@@ -20,8 +20,8 @@ const QuoteEditor = props => {
   })
 
   useEffect(() => {
-    document.getElementsByClassName('l-dashboard__main')[0].style = 'padding-left: 104px;'
     document.getElementsByClassName('l-dashboard__rootExcept')[0].style = 'padding: 0 0'
+    document.getElementById('js-drawerOpen').click()
   }, [])
 
   return(

@@ -259,4 +259,19 @@ class Quote < ApplicationRecord
 
     return _self
   end
+
+  def self.production_script
+
+    self.where.not(discount: 0).map do |q|
+
+      QuoteProject.create! quote_id: q.id, name: '値引き', unit_price: "-#{ q.discount }", unit: 1, price: q.discount
+      price = 0
+      q.quote_projects.each { |qp| price += (qp.unit.to_f * qp.unit_price.to_f) }
+
+      concat_memo = q.memo ? q.memo + "\n" + "元の金額: #{ q.price }" + "\n" + "品目合計: #{ price }" + "\n" + "値引き額: #{ q.discount }" : "元の金額: #{ q.price }" + "\n" + "品目合計: #{ price }" + "\n" + "値引き額: #{ q.discount }"
+      q.update! price: price, memo: concat_memo
+    end
+
+  end
+
 end

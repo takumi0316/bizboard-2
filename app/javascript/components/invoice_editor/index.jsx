@@ -258,12 +258,14 @@ const InvoicePdfGenrator = props => {
                     : null
                   }
                 </Fragment>
-                <tr>
-                  <td>値引金額</td>
-                  <td/>
-                  <td/>
-                  <td>{ Number(props.quote.discount).toLocaleString() }</td>
-                </tr>
+                { /*
+                  <tr>
+                    <td>値引金額</td>
+                    <td/>
+                    <td/>
+                    <td>{ Number(props.quote.discount).toLocaleString() }</td>
+                  </tr>
+                */ }
               </tbody>
             </table>
           </div>
