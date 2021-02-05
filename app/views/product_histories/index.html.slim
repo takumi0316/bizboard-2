@@ -17,9 +17,9 @@
           td.u-ta-center.u-va-middle = "#{ r.delivery_stock? ? '-' : '+' } #{ r.quantity }"
           td.u-ta-center.u-va-middle
             - if r.add_stock?
-              - if r.not?
-                = link_to '反映', apply_product_history_path(r.id), method: :post, class: 'c-btnMain c-btn-blue'
-              - else
+              - if r.applied?
                 | 反映済み
+              - else
+                = link_to '反映', apply_product_history_path(r.id), method: :post, class: 'c-btnMain c-btn-blue'
 
 = render 'layouts/_partials/pagination'

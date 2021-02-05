@@ -28,7 +28,7 @@ class ProductHistory < ApplicationRecord
 
   enum status: { first_stock: 0, delivery_stock: 10, add_stock: 20 }
 
-  enum apply_status: { not: 0, already: 10 }
+  enum apply_status: { unset: 0, applied: 10 }
 
   #----------------------------------------
   #  ** Validations **

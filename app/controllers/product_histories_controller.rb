@@ -60,7 +60,6 @@ class ProductHistoriesController < ApplicationController
 
     product_history.update! product_history_params
 
-
     if product_history.delivery_stock?
 
       total_stock = product_history.product.quantity - product_history.quantity
@@ -125,9 +124,13 @@ class ProductHistoriesController < ApplicationController
     redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
 
+  ##
+  # 追加在庫の適用
+  #
+  #
   def apply
 
-    product_history.already!
+    product_history.applied!
 
     product = product_history.product
     product.update! quantity: (product.quantity + product_history.quantity)
@@ -137,7 +140,7 @@ class ProductHistoriesController < ApplicationController
   rescue => e
 
     # エラー時は直前のページへ
-    redirect_back fallback_location: url_for({action: :new}), flash: { show: true, icon: 'info', message: e.message }
+    redirect_back fallback_location: url_for({action: :index}), flash: { show: true, icon: 'info', message: e.message }
   end
 
   #----------------------------------------
