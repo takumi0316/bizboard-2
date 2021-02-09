@@ -8,6 +8,7 @@
 #  address1         :string(191)
 #  address2         :string(191)
 #  tel              :string(191)
+#  inventory_id     :bigint(8)
 #
 
 class DeliveryTarget < ApplicationRecord
@@ -32,7 +33,11 @@ class DeliveryTarget < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  belongs_to :card_template
+  belongs_to :card_template, optional: true
+
+  belongs_to :company_division, optional: true
+
+  has_many :products
 
   #----------------------------------------
   #  ** Delegates **

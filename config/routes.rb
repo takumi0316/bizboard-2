@@ -197,7 +197,11 @@
   resources :products
 
   # 在庫管理用商品履歴
-  resources :product_histories
+  resources :product_histories do
+    member do
+      post :apply
+    end
+  end
 
   # 利益額
   resources :profit_graphs, only: [:index]

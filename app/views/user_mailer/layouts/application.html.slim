@@ -17,7 +17,6 @@ body
           .l-mailers__header = SiteConfig.site_name
       tr
         td.u-py-20.u-px-20
-  
           = yield
       
       tr
@@ -31,7 +30,7 @@ body
               tr
                 td
                   .l-mailers__text--small.u-fc-midBlack
-                    small &copy; #{Time.now.year} #{SiteConfig.site_name}
+                    small &copy; #{Time.zone.now.year} #{SiteConfig.site_name}
               tr
                 td
                   table.l-mailers__table.l-mailers__text--small cellpadding=12 cellspacing=0

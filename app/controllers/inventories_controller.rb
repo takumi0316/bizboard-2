@@ -10,10 +10,7 @@ class InventoriesController < ApplicationController
   expose(:companies) { Company.all.order(:id) }
 
   # 活動履歴
-  expose(:inventories) {
-    Inventory
-    .all
-  }
+  expose(:inventories) { Inventory.all }
 
   # 活動履歴
   expose(:inventory) { Inventory.find_or_initialize_by id: params[:id] || params[:Catalog_id] }
@@ -51,13 +48,29 @@ class InventoriesController < ApplicationController
   end
 
   ##
+  # 新規作成
+  # @version 2018/06/10
+  #
+  def create
+
+    inventory.update! inventory_params
+
+    redirect_to edit_inventory_path(inventory), flash: { notice: { message: '在庫管理を作成しました' } }
+  rescue => e
+
+    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
+  end
+
+  ##
   # 編集
   # @version 2018/06/10
   #
   def edit
+
     add_breadcrumb '在庫管理', path: inventories_path
     add_breadcrumb '編集'
   rescue => e
+
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
@@ -69,25 +82,12 @@ class InventoriesController < ApplicationController
 
     inventory.update! inventory_params
 
-    redirect_to inventories_path, flash: {notice: {message: '在庫管理を更新しました'}}
+    redirect_to inventories_path, flash: { notice: { message: '在庫管理を更新しました' } }
   rescue => e
 
     redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
   end
 
-  ##
-  # 新規作成
-  # @version 2018/06/10
-  #
-  def create
-
-    inventory.update! inventory_params
-
-    redirect_to inventories_path, flash: {notice: {message: '在庫管理を作成しました'}}
-  rescue => e
-
-    redirect_back fallback_location: url_for({action: :index}), flash: {notice: {message: e.message}}
-  end
 
   ##
   # 削除

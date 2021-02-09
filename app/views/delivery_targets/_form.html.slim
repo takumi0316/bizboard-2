@@ -18,11 +18,16 @@
     span.c-form__recommend.u-ml-10 任意
   = f.text_field :address2, placeholder: '住友不動産茅場町ビル2号館5F', class: 'c-form-text'
 
-  .c-form-label
-    = f.label :tel, '電話番号'
-    span.c-form__recommend 任意
-  = f.text_field :tel, placeholder: '03-6280-5510', class: 'c-form-text'
+  - if params[:card_template_id] || delivery_target.card_template_id
+    .c-form-label
+      = f.label :tel, '電話番号'
+      span.c-form__recommend 任意
+    = f.text_field :tel, placeholder: '03-6280-5510', class: 'c-form-text'
 
-  = f.hidden_field :card_template_id, value: params[:card_template_id] || delivery_target.card_template_id
+  - if delivery_target.new_record?
+    - if params[:card_template_id]
+      = f.hidden_field :card_template_id, value: params[:card_template_id] || delivery_target.card_template_id
+    - else
+      = f.hidden_field :inventory_id, value: params[:inventory_id] || delivery_target.card_template_id
 
   .u-mt-15 = f.submit delivery_target.new_record? ? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'

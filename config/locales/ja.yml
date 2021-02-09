@@ -46,8 +46,8 @@ ja:
         card_manager: 名刺担当者
     company:
       approval_status:
-         nothing: なし
-         approval: あり
+        nothing: なし
+        approval: あり
       online_web_business_card:
         disabled: なし
         enabled: あり
@@ -407,6 +407,12 @@ ja:
         wrong_quote_price: 金額不一致
         unknown_project_number: 品目不一致
         complete: 完了
+
+    product:
+      unit:
+        box: 箱
+        book: 冊
+        sheet: 枚
 
     product_history:
       status:
