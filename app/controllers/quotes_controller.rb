@@ -228,12 +228,12 @@ class QuotesController < ApplicationController
   #
   def bulk_download
 
-    filename = "#{quote.subject}.zip"
+    filename = "#{quote.quote_number}_#{quote.subject}.zip"
     fullpath = "#{Rails.root}/tmp/#{filename}"
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
       card_template = CardTemplate.find_by(company_id: quote.client.company_division.company_id)
-      zipfile.get_output_stream("#{quote.subject}.csv") do |f|
+      zipfile.get_output_stream("#{quote.quote_number}_#{quote.subject}.csv") do |f|
 
         bom = "\uFEFF"
         f.puts(
