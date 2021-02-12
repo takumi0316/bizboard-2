@@ -44,3 +44,5 @@
           td.u-ta-center.u-va-middle = client.tail_layout.name if client.tail_layout_id.present?
           td.u-ta-center.u-va-middle = link_to '編集', head_template_client_path(id: card_template.id, client_id: client.id), class: 'c-btnMain c-btn-blue'
           td.u-ta-center.u-va-middle = link_to '削除', destroy_layout_values_company_division_client_path(client.id), class: 'c-btnMain c-btn-red', method: :delete, data: { confirmable: '本当に削除しますか？' }
+
+= render 'layouts/_partials/pagination'
