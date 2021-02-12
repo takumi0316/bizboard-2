@@ -28,8 +28,6 @@ class CardTemplatesController < ApplicationController
 
   after_action :set_default_layout, only: [:create, :update]
 
-  after_action :release_default_layout, only: [:update]
-
   def index
 
     add_breadcrumb '一覧'
@@ -118,9 +116,10 @@ class CardTemplatesController < ApplicationController
         :id, :card_template_id, :card_layout_id, :status, :_destroy
       ]
     end
-
+ 
+    # 紐付けられたレイアウトが担当者に紐づいていない場合、自動で紐付けをする
     def set_default_layout
-  
+
       return if card_template.template_layouts.where(status: :head).blank? && card_template.template_layouts.where(status: :head).blank?
       card_template.company.divisions.each do |r|
 
@@ -128,32 +127,36 @@ class CardTemplatesController < ApplicationController
  
           head_layout_id = c.head_layout_id
           tail_layout_id = c.tail_layout_id
-          head_layout_id = head_layout_id == card_template.template_layouts.where(status: :head).first&.card_layout_id ? head_layout_id : card_template.template_layouts.where(status: :head).first&.card_layout_id
-          tail_layout_id = tail_layout_id == card_template.template_layouts.where(status: :tail).first&.card_layout_id ? tail_layout_id : card_template.template_layouts.where(status: :tail).first&.card_layout_id
+
+          # 表面が登録されている場合
+          if card_template.template_layouts.where(status: :head).present?
+            if c.head_layout_id.blank?
+  
+              head_layout_id = card_template.template_layouts.where(status: :head).first.card_layout_id
+            else
+
+              is_include = card_template.template_layouts.where(status: :head).pluck(:card_layout_id).include?(head_layout_id)
+              head_layout_id = card_template.template_layouts.where(status: :head).first.card_layout_id unless is_include
+            end
+          end
+
+          # 裏面が登録されている場合
+          if card_template.template_layouts.where(status: :tail).present?
+            if c.tail_layout_id.blank?
+
+              tail_layout_id = card_template.template_layouts.where(status: :tail).first.card_layout_id
+            else
+
+              is_include = card_template.template_layouts.where(status: :tail).pluck(:card_layout_id).include?(tail_layout_id)
+              tail_layout_id = card_template.template_layouts.where(status: :tail).first.card_layout_id unless is_include
+            end
+          end
 
           c.update! head_layout_id: head_layout_id, tail_layout_id: tail_layout_id
-
         end
       end
     end
 
-    def release_default_layout
-  
-      return if card_template.template_layouts.where(status: :head).present? && card_template.template_layouts.where(status: :tail).present?
-      card_template.company.divisions.each do |r|
-        r.clients.each do |c|
- 
-          head_layout_id = nil
-          tail_layout_id = nil
-          head_layout_id = card_template.template_layouts.where(status: :head).present? ? c.head_layout_id : head_layout_id
-          tail_layout_id = card_template.template_layouts.where(status: :tail).present? ? c.tail_layout_id : tail_layout_id
-  
-          c.update! head_layout_id: head_layout_id  , tail_layout_id: tail_layout_id
-
-        end
-      end
-    end
- 
     def set_the_required_data
 
       @heads = []

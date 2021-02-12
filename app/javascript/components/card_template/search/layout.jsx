@@ -71,8 +71,10 @@ const Layout = props => {
         <div className={ Style.Search }>
           <div className={ Style.Search__inner }>
             <div>
-              <div className={ Style.Search__form }>
-                <input type='text' ref={ inputEl } className={ Style.Search__input } placeholder='レイアウト名で検索' onChange={ onChange }/>
+              <div className='c-flex c-flex-alignItems__center'>
+                <div className='c-search__item'>
+                  <input type='text' ref={ inputEl } className={ Style.Search__input } placeholder='レイアウト名で検索' onChange={ onChange }/>
+                </div>
                 <div onClick={ onChange } className='c-btnMain u-ml-10'>検索</div>
               </div>
               { state.layouts.length > 0 ?
