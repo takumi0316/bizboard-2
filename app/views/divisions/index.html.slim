@@ -13,6 +13,6 @@ h1.l-dashboard__heading 自社部署一覧
     tbody
       - divisions.each do |r|
         tr
-          td = r.id
-          td = r.name
-          td = link_to '編集', edit_division_path(r), class: 'c-btnMain'
+          td.u-va-middle.u-ta-center = r.id
+          td.u-va-middle.u-ta-center = r.name
+          td.u-va-middle.u-ta-center = link_to '編集', edit_division_path(r), class: 'c-btnMain'

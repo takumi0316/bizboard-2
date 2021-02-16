@@ -26,8 +26,8 @@ CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |
   )
   csv << column_names
   @csv_data.each_with_index do |r, i|
-    if r.tax_type == 'exemption'
-      @price = (r.price).floor
+    if r.exemption?
+      @price = r.price.floor
       @I列 = '立替金'
       @K列 = '対象外'
     else
