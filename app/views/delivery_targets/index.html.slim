@@ -1,5 +1,5 @@
 .u-mt-15
-  - if params[:card_template]
+  - if params[:card_template_id]
     = link_to '配送先を作成', new_delivery_target_path(card_template_id: params[:card_template_id]), class: 'c-btnMain c-btn-blue'
   - else
     = link_to '配送先を作成', new_delivery_target_path(inventory_id: params[:inventory_id]), class: 'c-btnMain c-btn-blue'
