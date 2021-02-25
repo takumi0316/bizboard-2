@@ -87,6 +87,15 @@ ActiveRecord::Schema.define(version: 2021_02_01_152822) do
     t.index ["company_id"], name: "index_card_templates_on_company_id"
   end
 
+  create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "company_id"
+    t.string "name", comment: "名刺名称"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "free_word"
+    t.index ["company_id"], name: "index_cards_on_company_id"
+  end
+
   create_table "cart_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "card_client_id"
     t.bigint "cart_id"
@@ -101,11 +110,9 @@ ActiveRecord::Schema.define(version: 2021_02_01_152822) do
     t.bigint "company_division_client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", limit: 1, default: 0
-    t.bigint "company_division_id"
+    t.integer "status", default: 0
     t.bigint "delivery_target_id"
     t.index ["company_division_client_id"], name: "index_carts_on_company_division_client_id"
-    t.index ["company_division_id"], name: "index_carts_on_company_division_id"
     t.index ["delivery_target_id"], name: "index_carts_on_delivery_target_id"
   end
 
@@ -116,8 +123,6 @@ ActiveRecord::Schema.define(version: 2021_02_01_152822) do
     t.string "deliver_at", comment: "文言なども入る"
     t.bigint "category_id"
     t.integer "turn", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_catalogs_on_category_id"
   end
 
@@ -163,7 +168,7 @@ ActiveRecord::Schema.define(version: 2021_02_01_152822) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-06-16 21:30:03"
+    t.datetime "lastaccesstask", default: "2020-09-30 13:37:45"
     t.integer "opt", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -328,9 +333,9 @@ ActiveRecord::Schema.define(version: 2021_02_01_152822) do
     t.bigint "company_division_client_id"
     t.string "text_value"
     t.text "textarea_value"
+    t.integer "layout_type", comment: "レイアウトと結びつける"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "layout_type"
     t.bigint "content_flag_id"
     t.bigint "upload_id"
     t.bigint "layout_content_id"
@@ -735,7 +740,7 @@ ActiveRecord::Schema.define(version: 2021_02_01_152822) do
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2020-06-16 21:30:03"
+    t.datetime "clientlastaccess", default: "2020-09-30 13:37:45"
     t.integer "will_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -786,7 +791,7 @@ ActiveRecord::Schema.define(version: 2021_02_01_152822) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2020-06-16 21:30:03"
+    t.datetime "lastaccesstask", default: "2020-09-30 13:37:45"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_users_on_division_id"
