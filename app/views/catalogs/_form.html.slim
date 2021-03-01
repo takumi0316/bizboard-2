@@ -3,36 +3,35 @@
   .c-form-label
     = f.label :category_id, 'カテゴリー'
     span.c-form__required.u-ml-10 必須
-  = f.select :category_id, Category.all.pluck(:name, :id),{},{:class=>'c-form-dateselect'}
+  = f.select :category_id, Category.all.pluck(:name, :id), {}, { class: 'c-form-dateselect' }
 
-  .c-form-label
-    = f.label :turn, '表示優先度'
-  = f.number_field :turn, placeholder: '数字が大きいと上に表示されます', class: 'c-form-text u-mb-30'
+  - if catalog.persisted?
+    .u-mt-15.c-form-label
+      = f.label :turn, '表示優先度'
+    = f.select :turn, 1..Category.find(catalog.category_id).catalogs.count, { selected: catalog.turn }, { class: 'c-form-select' }
 
-
-  .c-form-label
+  .u-mt-15.c-form-label
     = f.label :name, 'カタログ名'
     span.c-form__required.u-ml-10 必須
-  = f.text_field :name, placeholder: 'カタログ名を入力してください', class: 'c-form-text u-mb-30', required: :true
+  = f.text_field :name, placeholder: 'カタログ名を入力してください', class: 'c-form-text', required: :true
 
-  .c-form-label
+  .u-mt-15.c-form-label
     = f.label :description, 'カタログ説明文'
-  = f.text_area :description, placeholder: '説明文を入力してください', class: 'c-form-textarea u-mb-30', rows: 2
+  = f.text_area :description, placeholder: '説明文を入力してください', class: 'c-form-textarea', rows: 3
 
-  .c-form-label
+  .u-mt-15.c-form-label
     = f.label :deliver_at, '納期目安 ※日付だけでなく〇〇営業日など記入可能です'
-  = f.text_field :deliver_at, placeholder: '納期の目安を入力してください', class: 'c-form-text u-mb-30'
+  = f.text_field :deliver_at, placeholder: '納期の目安を入力してください', class: 'c-form-text'
 
-  .c-form-label
+  .u-mt-15.c-form-label
     = f.label :price, '金額目安 ※〇〇円だけでなく１箱 〇〇円など記入可能です'
-  = f.text_field :price, placeholder: '金額を入力してください', class: 'c-form-text u-mb-30'
+  = f.text_field :price, placeholder: '金額を入力してください', class: 'c-form-text'
 
-  .c-form-label
+  .u-mt-15.c-form-label
     = f.label :image, 'カタログのイメージ写真'
-  = f.file_field :image, accept: :image, class: 'u-mb-30'
+  = f.file_field :image, accept: :image
 
   - if catalog.image.attached?
-    .u-mb-30 = image_tag catalog.decorate.image_thumb
-
+    .u-mt-15 = image_tag catalog.decorate.image_thumb
 
   .u-ta-center.u-mt-30 = f.submit catalog.new_record?? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'

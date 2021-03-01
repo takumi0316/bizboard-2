@@ -19,13 +19,13 @@
       - catalogs.each do |r|
         tr
           td.u-va-middle = r.category&.name
-          td.u-va-middle = r.turn
+          td.u-va-middle.u-ta-center = r.turn
           td.u-va-middle = r.name
           td.u-va-middle = r.description
           td.u-va-middle = r.deliver_at
           td.u-va-middle = r.price
           td.u-va-middle = image_tag r.decorate.image_thumb
-          td.u-ta-center.u-va-middle = link_to '編集', edit_catalog_path(r), class: 'c-btnMain'
+          td.u-ta-center.u-va-middle = link_to '編集', edit_catalog_path(r), class: 'c-btnMain c-btn-blue'
           td.u-ta-center.u-va-middle = link_to '削除', catalog_path(r), class: 'c-btnMain c-btn-red', method: :delete, data: { confirm: '本当に削除しますか?' }
 
 = render 'layouts/_partials/pagination'

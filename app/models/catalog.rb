@@ -56,4 +56,11 @@ class Catalog < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
+  before_validation :set_turn
+
+  def set_turn
+
+    self.turn = self.category.catalogs.count + 1 if self.new_record?
+  end
+
 end

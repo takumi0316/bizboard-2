@@ -249,13 +249,13 @@ class SessionsController < Devise::SessionsController
   #----------------------------------------
 
   private
-    
+
     ##
     # ユーザー認証
     # @version 2018/06/10
     #
     def authenticate
-      
+
       # すでにログイン済みの場合はユーザーのrootへ
       redirect_to root_path and return if user_signed_in?
     end
