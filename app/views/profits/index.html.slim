@@ -4,7 +4,7 @@ h1.l-dashboard__heading 取引先 請求情報一覧
 = react_component :ProfitSearch
 
 .u-mt-15
-  = link_to 'CSV書き出し', profits_path(date1: @date1.to_s(:profit), date2: @date2.to_s(:profit), format: :csv), class: 'c-btnMain'
+  = link_to 'CSV書き出し', profits_path(date1: @date1, date2: @date2, format: :csv), class: 'c-btnMain'
 
 .c-table.u-mt-15
   table
