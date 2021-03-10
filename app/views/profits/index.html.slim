@@ -15,5 +15,5 @@ h1.l-dashboard__heading 取引先 請求情報一覧
     tbody
       - @company.each do |key, r|
         tr
-          td.u-va-middle = link_to key, invoices_path(name: key, date1: params[:date1], date2: params[:date2])
+          td.u-va-middle = link_to key, invoices_path(name: key, date1: @date1, date2: @date2)
           td.u-ta-right.u-va-middle = "¥ #{r.pluck(:price).sum.to_s(:delimited)}"
