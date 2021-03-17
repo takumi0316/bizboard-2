@@ -131,7 +131,11 @@
   resources :payments
 
   # 取引先請求情報
-  resources :profits
+  resources :profits do
+    collection do
+      get :error_message
+    end
+  end
 
   # 請求情報
   resources :bills

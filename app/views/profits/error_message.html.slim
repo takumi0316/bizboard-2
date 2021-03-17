@@ -1,0 +1,17 @@
+h1.l-dashboard__heading 取引先 請求情報エラーメッセージ
+
+.u-mt-30.c-table
+  table
+    thead
+      tr
+        th 該当案件番号
+        th エラー原因
+    tbody
+      - @nil_division.each do |nd|
+        tr
+          td.u-va-middle.u-ta-center = link_to "#{ nd.quote_number }", edit_quote_path(nd), target: '_blank', class: 'u-td-underline'
+          td.u-va-middle 自社部署が紐づいていません。
+      - @nil_client.each do |nc|
+        tr
+          td.u-va-middle.u-ta-center = link_to "#{ nc.quote_number }", edit_quote_path(nc), target: '_blank', class: 'u-td-underline'
+          td.u-va-middle 担当者が紐づいていません。

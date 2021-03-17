@@ -51,7 +51,7 @@ const MFLikeModal = props => {
 
     bindKeyEvents()
     document.activeElement.blur()
-    setState({ ...state, ...options, show: true })
+    setState({ ...state, ...options, show: 'true' })
   }
   /**
    *  モーダルを閉じる
