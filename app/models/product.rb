@@ -9,9 +9,10 @@
 #  remarks            :text(65535)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  unit               :integer          default("box")
 #  issue_quantity     :string(191)
 #  delivery_target_id :bigint(8)
+#  max_unit           :integer          default(0)
+#  min_unit           :integer          default(0)
 #
 
 class Product < ApplicationRecord
