@@ -29,15 +29,27 @@
 
   .u-mt-30
     .c-form-label
-      = f.label :unit, '単位'
+      = f.label :max_unit, '最大単位'
   .c-form-selectWrap
-    = f.select :unit, Product.units_i18n.keys.map{ |k| [I18n.t("enums.product.unit.#{k}"), k] }, { selected: params[:inventory_id] }, { class: 'c-form-select' }
+    = f.select :max_unit, Product.max_units_i18n.keys.map{ |k| [I18n.t("enums.product.max_unit.#{k}"), k] }, { selected: params[:inventory_id] }, { class: 'c-form-select' }
 
   .u-mt-30
     .c-form-label
-      = f.label :issue_quantity, '1単位毎の出庫数'
+      = f.label :min_unit, '最小単位'
+  .c-form-selectWrap
+    = f.select :min_unit, Product.min_units_i18n.keys.map{ |k| [I18n.t("enums.product.min_unit.#{k}"), k] }, { selected: params[:inventory_id] }, { class: 'c-form-select' }
+
+  .u-mt-30
+    .c-form-label
+      = f.label :issue_quantity, '最小単位毎の出庫数'
       span.c-form__required.u-ml-10 必須
     = f.number_field :issue_quantity, placeholder: '10', class: 'c-form-text', required: :true
+
+  .u-mt-30
+    .c-form-label
+      = f.label :fixed_additions, '最大追加在庫数'
+      span.c-form__required.u-ml-10 必須
+    = f.number_field :fixed_additions, placeholder: '10', class: 'c-form-text', required: :true
 
   .u-mt-30
     .c-form-label

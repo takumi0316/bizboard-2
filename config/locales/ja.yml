@@ -33,6 +33,7 @@ ja:
         sales: 営業
         admin: 管理者
         operator: チャットオペレーター
+
     company_division_client:
       title:
         nothing: なし
@@ -44,6 +45,7 @@ ja:
         admin: 管理者
         jii: 日本工業社管理
         card_manager: 名刺担当者
+
     company:
       approval_status:
         nothing: なし
@@ -51,11 +53,13 @@ ja:
       online_web_business_card:
         disabled: なし
         enabled: あり
+
     subcontractor_division_client:
       title:
         nothing: なし
         honorific: 様
         normal: さん
+
     activity:
       status:
         contact: 問い合わせ
@@ -80,6 +84,7 @@ ja:
         lost: 失注
         rejection: 不採用
         other: その他
+
     quote:
       attention:
         messrs: 御中
@@ -124,6 +129,7 @@ ja:
       payment_terms:
         postpaid: 後払い
         advance: 先払い
+
     project:
       project_category:
         project_print: プリント
@@ -139,6 +145,7 @@ ja:
       binding_work:
         binding_works_unnecessary: なし
         binding_works_necessary: あり
+
     project_binding_work:
       bind_type:
         original_bind_type: 原稿通り
@@ -169,6 +176,7 @@ ja:
       radio_cut:
         radio_cut_necessary: あり
         radio_cut_unnecessary: なし
+
     work:
       status:
         draft: 未作業
@@ -409,7 +417,11 @@ ja:
         complete: 完了
 
     product:
-      unit:
+      max_unit:
+        box: 箱
+        book: 冊
+        sheet: 枚
+      min_unit:
         box: 箱
         book: 冊
         sheet: 枚
@@ -435,6 +447,7 @@ ja:
         email: メールアドレス
         body: お問い合わせ内容
         terms_of_service: プライバシーポリシー
+
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"

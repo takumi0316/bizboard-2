@@ -9,7 +9,7 @@
 #  quantity     :integer          default(0)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  apply_status :integer          default(0)
+#  apply_status :integer          default("unset")
 #
 
 class ProductHistory < ApplicationRecord

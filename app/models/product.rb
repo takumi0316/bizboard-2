@@ -9,9 +9,11 @@
 #  remarks            :text(65535)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  unit               :integer          default("box")
 #  issue_quantity     :string(191)
 #  delivery_target_id :bigint(8)
+#  max_unit           :integer          default("box")
+#  min_unit           :integer          default("box")
+#  fixed_additions    :integer
 #
 
 class Product < ApplicationRecord
@@ -28,7 +30,9 @@ class Product < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum unit: { box: 0, book: 10, sheet: 20 }
+  enum max_unit: { box: 0, book: 10, sheet: 20 }, _prefix: true
+
+  enum min_unit: { box: 0, book: 10, sheet: 20 }, _prefix: true
 
   #----------------------------------------
   #  ** Validations **
