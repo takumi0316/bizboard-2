@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_21_044236) do
+ActiveRecord::Schema.define(version: 2021_03_21_135453) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -391,6 +391,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_044236) do
     t.bigint "delivery_target_id"
     t.integer "max_unit", limit: 1, default: 0
     t.integer "min_unit", limit: 1, default: 0
+    t.integer "fixed_additions", default: 1
     t.index ["delivery_target_id"], name: "index_products_on_delivery_target_id"
     t.index ["inventory_id"], name: "index_products_on_inventory_id"
   end

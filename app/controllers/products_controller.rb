@@ -125,6 +125,6 @@ class ProductsController < ApplicationController
     #
     def product_params
 
-      params.require(:product).permit :inventory_id, :delivery_target_id, :name, :quantity, :unit, :issue_quantity, :remarks
+      params.require(:product).permit :inventory_id, :delivery_target_id, :name, :quantity, :max_unit, :min_unit, :issue_quantity, :remarks, :fixed_additions
     end
 end
