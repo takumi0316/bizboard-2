@@ -3,12 +3,26 @@ local:
   root: <%= Rails.root.join('tmp/storage') %>
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
-amazon:
+amazon_production:
   service: S3
-  access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
-  secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
-  region: <%= Rails.application.credentials.dig(:aws, :region) %>
-  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) %>
+  access_key_id: <%= Rails.application.credentials.dig(:aws_production, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:aws_production, :secret_access_key) %>
+  region: <%= Rails.application.credentials.dig(:aws_production, :region) %>
+  bucket: <%= Rails.application.credentials.dig(:aws_production, :bucket) %>
+
+amazon_development:
+  service: S3
+  access_key_id: <%= Rails.application.credentials.dig(:aws_development, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:aws_development, :secret_access_key) %>
+  region: <%= Rails.application.credentials.dig(:aws_development, :region) %>
+  bucket: <%= Rails.application.credentials.dig(:aws_development, :bucket) %>
+
+amazon_staging:
+  service: S3
+  access_key_id: <%= Rails.application.credentials.dig(:aws_staging, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:aws_staging, :secret_access_key) %>
+  region: <%= Rails.application.credentials.dig(:aws_staging, :region) %>
+  bucket: <%= Rails.application.credentials.dig(:aws_staging, :bucket) %>
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
