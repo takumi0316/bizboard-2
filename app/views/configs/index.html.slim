@@ -6,7 +6,7 @@ h2.l-dashboard__heading ロゴ設定
 h2.l-dashboard__heading ファビコン設定
 
 = form_with url: configs_create_favicon_path, local: true, method: :post, class: 'u-mt-10' do |f|
-  
+
   = f.file_field :favicon, accept: :image
   = image_tag site_configs[:favicon], height: 30 if site_configs[:favicon].present?
 
