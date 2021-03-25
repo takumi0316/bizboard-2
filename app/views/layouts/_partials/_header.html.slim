@@ -1,7 +1,7 @@
 header.l-header
   .l-header__inner
     = link_to user_signed_in? ? root_path : root_path do
-      h1
+      /h1
         - if SiteConfig.logo
           = image_tag SiteConfig.logo, height: 30, alt: "#{SiteConfig.site_title}|#{SiteConfig.site_name}"
         - else
