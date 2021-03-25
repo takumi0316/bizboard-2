@@ -10,16 +10,15 @@ class CreateTableDeliveryTarget < ActiveRecord::Migration[5.2]
       t.string :address2, limit: 191, comment: '配送先の住所2'
     end
 
-    remove_column :tasks, :shipping_address
+    #remove_column :tasks, :shipping_address
     add_reference :tasks, :delivery_target, foreign_key: true
   end
 
   def down
   
     drop_table :delivery_targets
-    add_column :tasks, :shipping_address, :string, limit: 191
+    #add_column :tasks, :shipping_address, :string, limit: 191
     remove_reference :tasks, :delivery_target, foreign_key: true
-
   end
 
 end

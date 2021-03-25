@@ -18,6 +18,7 @@
 
       - if user.image.attached?
         .u-mb-30 = image_tag user.decorate.image_thumb
+        /.u-mb-30 = image_tag user.image
 
       / 記事にユーザーを表示する場合
       - if SiteConfig.display_article_writer
