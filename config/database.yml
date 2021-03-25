@@ -25,10 +25,10 @@ development:
 
 staging:
   <<: *default
-  database: factory
-  username: root
-  password:
-  host: localhost
+  database: factory_staging
+  username: factory_staging
+  password: factoryfactory_staging
+  host: factory-staging-instance-1.cyss4kcjgyjd.ap-northeast-1.rds.amazonaws.com
 
 production:
   <<: *default
