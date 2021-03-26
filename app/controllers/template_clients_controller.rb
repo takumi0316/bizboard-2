@@ -74,6 +74,9 @@ class TemplateClientsController < ApplicationController
 
   def download
 
+    # CsvExportJob.perform_later(card_template)
+    # redirect_to template_clients_path(id: params[:id])
+    #
     bom = "\uFEFF"
     download_csv = CSV.generate(bom) do |csv|
 
@@ -146,7 +149,6 @@ class TemplateClientsController < ApplicationController
           csv << values
         end
       end
-
     end
 
     send_data download_csv, filename: '担当者情報ダウンロード.csv', type: :csv
