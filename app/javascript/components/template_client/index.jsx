@@ -170,18 +170,14 @@ const Index = props => {
       field.append('company_division_client[layout_values_attributes][][company_division_client_id]', props.client_id)
       field.append('company_division_client[layout_values_attributes][][content_flag_id]', content.flag_id)
       field.append('company_division_client[layout_values_attributes][][layout_type]', content.content_type)
-      if(content.content_type === 'image') {
-
-        field.append('layout_content[][id]', content.id)
-        field.append('company_division_client[layout_values_attributes][][layout_content_id]', content.id)
-        if(doc.dataset.set === 'no_image') {
-          field.append('company_division_client[layout_values_attributes][][upload_url]', '')
-          field.append('company_division_client[layout_values_attributes][][upload_id]', '')
-        } else {
-          field.append('company_division_client[layout_values_attributes][][upload_url]', doc.src)
-          field.append('company_division_client[layout_values_attributes][][upload_id]', doc.dataset.set)
+        if(content.content_type === 'image') {
+          
+          const result = doc.dataset.set === 'no_image'
+          field.append('layout_content[][id]', content.id)
+          field.append('layout_content[][no_image]', result)
+          field.append('company_division_client[layout_values_attributes][][layout_content_id]', content.id)
+          if(!result) field.append('company_division_client[layout_values_attributes][][upload_id]', doc.dataset.set)
         }
-      }
       if(content.content_type === 'text') field.append('company_division_client[layout_values_attributes][][text_value]', doc.value || '')
       if(content.content_type === 'text_area') field.append('company_division_client[layout_values_attributes][][textarea_value]', doc.value || '')
     })
