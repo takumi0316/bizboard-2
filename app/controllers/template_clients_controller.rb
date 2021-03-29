@@ -74,81 +74,18 @@ class TemplateClientsController < ApplicationController
 
   def download
 
-    # CsvExportJob.perform_later(card_template)
-    # redirect_to template_clients_path(id: params[:id])
-    #
-    bom = "\uFEFF"
-    download_csv = CSV.generate(bom) do |csv|
-
-      # ヘッダー情報
-      headers = []
-      headers << 'No.'
-      headers << 'テンプレートID'
-      headers << 'デフォルトレイアウトID(表)'
-      headers << 'デフォルトレイアウトID(裏)'
-      headers << 'ID'
-      headers << '会社名'
-      headers << '部署ID'
-      headers << '部署名'
-      headers << '担当者ID'
-      headers << '担当者名'
-
-      # flagをuniqにするため
-      flags = []
-      ct = CardTemplate.find(params[:id])
-      ct_company = ct.company
-      ct.card_layouts.map { |r| r.contents.each { |c| flags << c.content_flag_id } }
-
-      flags.uniq!
-      flags.each { |f| headers << ContentFlag.find(f).name }
-      csv << headers
-
-      ct.company.divisions.each do |division|
-        division.clients.each_with_index do |client, index|
-
-          head_template_layouts = TemplateLayout.where(card_template_id: params[:id]).where(status: :head)
-          # head_result = card_template.template_layouts.where(status: :head).map { |head| client.head_layout_id == head.card_layout_id ? true : false }
-          head_result = head_template_layouts.pluck(:card_layout_id)
-          head_layout_id = head_result.include?(client.head_layout_id) ? client.head_layout_id : head_result[0]
-
-          tail_template_layouts = TemplateLayout.where(card_template_id: params[:id]).where(status: :tail)
-          tail_result = tail_template_layouts.pluck(:card_layout_id)
-          tail_layout_id = tail_result.include?(client.tail_layout_id) ? client.tail_layout_id : tail_result[0]
-
-          values = []
-          values << index + 1
-          values << ct.id
-          values << head_layout_id
-          values << tail_layout_id
-          values << ct.company.id
-          values << ct.company.name
-          values << division.id
-          values << division.name
-          values << client.id
-          values << client.name
-          flags.each do |f|
-
-            flag = ContentFlag.find(f)
-            layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: f)
-            values << layout_value.text_value if flag.text?
-            values << layout_value.textarea_value if flag.text_area?
-            if flag.image?
-              if layout_value.upload_id.present?
-                values << layout_value.upload_id
-              else
-                values << '画像なし'
-              end
-            end
-          end
-
-          csv << values
-        end
-      end
-    end
-
-    send_data download_csv, filename: '担当者情報ダウンロード.csv', type: :csv
+    CsvExportWorker.perform_async(params[:id])
+    redirect_to template_clients_path(id: params[:id]), flash: { show: true, icon: 'info', message: 'もう少々お待ちください。'}
   end
 
+  def download_csv
+
+    file_name = "#{card_template.name}_担当者情報.csv"
+    full_path = "#{Rails.root}/#{file_name}"
+    send_data File.read(full_path), filename: file_name, type: :csv
+    File.delete(full_path)
+  end
+ 
   def upload
 
     flag_ids = []

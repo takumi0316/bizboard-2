@@ -8,7 +8,9 @@
 
 .u-mt-15
   = link_to 'アップロード', upload_template_clients_path(id: params[:id]), class: 'c-btnMain'
-  = link_to 'ダウンロード', download_template_clients_path(id: params[:id]), method: :post, class: 'u-ml-15 c-btnMain'
+  = link_to 'ダウンロードCSV生成', download_template_clients_path(id: params[:id]), method: :post, class: 'u-ml-15 c-btnMain'
+  - if File.exist?("#{Rails.root}/#{CardTemplate.find(params[:id]).name}_担当者情報.csv")
+    = link_to 'CSVダウンロード', download_csv_template_clients_path(id: params[:id]), method: :post, class: 'u-ml-15 c-btnMain'
 
 = form_with url: template_clients_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
 

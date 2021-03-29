@@ -172,6 +172,7 @@
     collection do
       get :upload
       post :download
+      post :download_csv
       post :import_csv
       post :transfer
       post :image_transfer
