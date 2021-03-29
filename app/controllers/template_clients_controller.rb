@@ -95,13 +95,15 @@ class TemplateClientsController < ApplicationController
 
       # flagをuniqにするため
       flags = []
-      card_template.card_layouts.map { |r| r.contents.each { |c| flags << c.content_flag_id } }
+      ct = CardTemplate.find(params[:id])
+      ct_company = ct.company
+      ct.card_layouts.map { |r| r.contents.each { |c| flags << c.content_flag_id } }
 
       flags.uniq!
       flags.each { |f| headers << ContentFlag.find(f).name }
       csv << headers
 
-      card_template.company.divisions.each do |division|
+      ct.company.divisions.each do |division|
         division.clients.each_with_index do |client, index|
 
           head_template_layouts = TemplateLayout.where(card_template_id: params[:id]).where(status: :head)
@@ -115,11 +117,11 @@ class TemplateClientsController < ApplicationController
 
           values = []
           values << index + 1
-          values << card_template.id
+          values << ct.id
           values << head_layout_id
           values << tail_layout_id
-          values << card_template.company.id
-          values << card_template.company.name
+          values << ct.company.id
+          values << ct.company.name
           values << division.id
           values << division.name
           values << client.id
