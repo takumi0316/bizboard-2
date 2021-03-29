@@ -29,17 +29,19 @@ const Editing = props => {
         const content_type = content.content_type === 'image'
         const upload = () => content.uploads.find(upload => upload.upload_id === content.upload_id)
 
+        console.log({ ...content })
         return(
           <tr { ...{ key } }>
-            { content_type ?
+            <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
+            { /* content_type ?
               <Fragment>
                 { content.upload_id ?
-                  <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
+                  <td className='u-ta-center u-va-middle'>{ upload().name }</td>
                   : <td className='u-ta-center u-va-middle'>No Image</td>
                 }
               </Fragment>
               : <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
-            }
+            */ }
             <td className='u-ta-center'>
               { content_type ?
                 <Fragment>

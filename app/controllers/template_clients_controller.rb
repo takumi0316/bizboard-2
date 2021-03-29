@@ -316,9 +316,6 @@ class TemplateClientsController < ApplicationController
           value[:textarea_value] = layout_value.textarea_value
         end
         if flag.image?
-          # upload_url: flag.image?? layout_value.upload_id ? layout_value.upload_url || url_for(layout_value.upload.image) : '' : '',
-          # upload_name: flag.image?? layout_value.upload_id ? layout_value.upload.name : '' : '',
-          # upload_id: flag.image?? layout_value.upload_id || '' : '',
           value[:logo_height] = r.logo_height
           value[:logo_width] = r.logo_width
           value[:upload_id] = layout_value.upload_id || ''

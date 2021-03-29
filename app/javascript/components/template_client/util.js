@@ -135,45 +135,56 @@ export const setPDFValue = (file, contents) => {
         // 画像なしの場合
         if(!content.upload_id) return
 
-        // 画像をbase変換しないと、スクショ時にCORSエラーが出る
-        const field = new FormData()
-        const upload = () => {
+        draw.appendChild(parent_div)
+        const logoHeight = mmTopx(content.logo_height)
+        const logoWidth = mmTopx(content.logo_width)
+        let child_img = document.createElement('img')
+        child_img.id = `child_img-${ index }`
+        child_img.src = content.uploads.find(upload => upload.id === content.upload_id).url
+        child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`
+        parent_div.appendChild(child_img)
 
-          let re_upload;
-          if(content.upload_id) {
+        /*
+          画像をbase変換しないと、スクショ時にCORSエラーが出る
+          const field = new FormData()
+          const upload = () => {
 
-            const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id)
-            re_upload = upload[0]
+            let re_upload;
+            if(content.upload_id) {
+
+              const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id)
+              re_upload = upload[0]
+            }
+
+            if(!content.upload_id || !re_upload) {
+
+              re_upload = content.uploads[0]
+            }
+
+            return re_upload
           }
 
-          if(!content.upload_id || !re_upload) {
+          field.append('url', upload().url)
+          const request = window.xhrRequest.post('/template_clients/image_transfer', field, { responseType: 'blob' })
+          request.then(res => {
+            const image = new Blob([res.data])
+            const blob_path = (window.URL || window.webkitURL).createObjectURL(image)
 
-            re_upload = content.uploads[0]
-          }
+            draw.appendChild(parent_div)
 
-          return re_upload
-        }
+            const logoHeight = mmTopx(content.logo_height)
+            const logoWidth = mmTopx(content.logo_width)
 
-        field.append('url', upload().url)
-        const request = window.xhrRequest.post('/template_clients/image_transfer', field, { responseType: 'blob' })
-        request.then(res => {
-          const image = new Blob([res.data])
-          const blob_path = (window.URL || window.webkitURL).createObjectURL(image)
+            let child_img = document.createElement('img')
 
-          draw.appendChild(parent_div)
+            child_img.id = `child_img-${ index }`
+            child_img.src = blob_path
+            child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`
 
-          const logoHeight = mmTopx(content.logo_height)
-          const logoWidth = mmTopx(content.logo_width)
+            parent_div.appendChild(child_img)
 
-          let child_img = document.createElement('img')
-
-          child_img.id = `child_img-${ index }`
-          child_img.src = blob_path
-          child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`
-
-          parent_div.appendChild(child_img)
-
-        }).catch(err => window.mf_like_modal({ icon: 'error', message: '画像を取得できませんでした。', close_callback: () => console.log(err) }))
+          }).catch(err => window.mf_like_modal({ icon: 'error', message: '画像を取得できませんでした。', close_callback: () => console.log(err) }))
+        */
       }
     })
   }).catch(error => window.mf_like_modal({ icon: 'error', message: error }))
