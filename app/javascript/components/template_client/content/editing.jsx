@@ -10,13 +10,15 @@ const Editing = props => {
 
   const [state, setState] = useState(init);
 
-  const applyUpload = props => {
+  const applyUpload = selected => {
 
     const contents = JSON.parse(JSON.stringify(state.contents)).map((content, index) => {
 
-      if(index !== props.index) return content
+      if(index !== selected.index) return content
 
-      if(index === props.index)  return { ...content, upload_id: props.upload_id, no_image: props.no_image }
+      if(index === selected.index) {
+        return { ...content, upload_name: selected.name, upload_id: selected.upload_id, upload_url: selected.no_image ? '' :  selected.url }
+      }
     })
 
     setState({ ...state, contents: contents });
@@ -28,6 +30,7 @@ const Editing = props => {
 
         const key = `content-${ index }`
         const content_type = content.content_type === 'image'
+        /*
         const upload = () => {
 
           if(content_type) {
@@ -44,16 +47,28 @@ const Editing = props => {
             return re_upload
           }
         }
+       */
 
         return(
           <tr { ...{ key } }>
-            <td className='u-ta-center u-va-middle'>{ content_type ? upload().name : content.flag_name }</td>
+            { /* content.content_type === 'image' ?
+              <Fragment>
+                { content.upload_url ?
+                  <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
+                  :
+                  <td className='u-ta-center u-va-middle'>'No Image'</td>
+                }
+              </Fragment>
+              :
+              <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
+            */ }
+            <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
             <td className='u-ta-center'>
               { content_type ?
                 <Fragment>
-                  { content.no_image ?
-                    <NoImage id={ content.flag_name } style={{ height: '150px', width: '150px' }}/>
-                    : <img id={ content.flag_name } data-set={ upload().upload_id } src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                  { content.upload_url ?
+                    <img id={ content.flag_name } data-set={ content.upload_id } src={ content.upload_url } style={{ height: '150px', width: '150px' }}/>
+                    : <NoImage id={ content.flag_name } style={{ height: '150px', width: '150px' }}/>
                   }
                   <SearchImg index={ index } uploads={ content.uploads } applyUpload={ applyUpload }/>
                 </Fragment>

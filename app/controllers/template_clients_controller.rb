@@ -326,10 +326,6 @@ class TemplateClientsController < ApplicationController
 
   private
 
-    def template_clients_params
-
-    end
-
     def cast_action
 
       sym = params[:layout_type].blank? ? params[:action].to_sym : params[:layout_type].to_sym
@@ -345,7 +341,7 @@ class TemplateClientsController < ApplicationController
       {
         id: layout.id,
         name: layout.name,
-        url: layout.file.preview(resize: '3000x3000').processed.service_url
+        url: url_for(layout.file)
       }
     end
 
@@ -359,8 +355,8 @@ class TemplateClientsController < ApplicationController
 
       layout.contents.map { |r|
         flag = ContentFlag.find(r.content_flag_id)
-        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id) if flag.content_type != 'image'
-        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id, layout_content_id: r.id) if flag.content_type == 'image'
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id) unless flag.image?
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id, layout_content_id: r.id) if flag.image?
         {
           id: r.id,
           name: r.name,
@@ -383,13 +379,15 @@ class TemplateClientsController < ApplicationController
           text_value: layout_value.text_value,
           textarea_value: layout_value.textarea_value,
           no_image: r.no_image,
-          upload_id: layout_value.upload_id,
+          upload_url: flag.image?? layout_value.upload_id ? layout_value.upload_url || url_for(layout_value.upload.image) : '' : '',
+          upload_name: flag.image?? layout_value.upload_id ? layout_value.upload.name : '' : '',
+          upload_id: flag.image?? layout_value.upload_id || '' : '',
           uploads: r.content_uploads.map do |c|
             {
               id: c.id,
               upload_id: c.upload_id,
               name: c.upload.name,
-              url: c.upload.image.service_url
+              url: url_for(c.upload.image)
             }
           end
         }
