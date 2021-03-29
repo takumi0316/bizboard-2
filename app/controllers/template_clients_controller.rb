@@ -95,36 +95,23 @@ class TemplateClientsController < ApplicationController
 
       # flagをuniqにするため
       flags = []
-      card_template.card_layouts.map { |r| r.contents.map { |c| flags << c.content_flag_id } }
+      card_template.card_layouts.map { |r| r.contents.each { |c| flags << c.content_flag_id } }
 
       flags.uniq!
-      flags.map { |f| headers << ContentFlag.find(f).name }
+      flags.each { |f| headers << ContentFlag.find(f).name }
       csv << headers
 
       card_template.company.divisions.each do |division|
         division.clients.each_with_index do |client, index|
 
-          head_layout_id = ''
-          head_result = card_template.template_layouts.where(status: :head).map { |head| client.head_layout_id == head.card_layout_id ? true : false }
+          head_template_layouts = TemplateLayout.where(card_template_id: params[:id]).where(status: :head)
+          # head_result = card_template.template_layouts.where(status: :head).map { |head| client.head_layout_id == head.card_layout_id ? true : false }
+          head_result = head_template_layouts.pluck(:card_layout_id)
+          head_layout_id = head_result.include?(client.head_layout_id) ? client.head_layout_id : head_result[0]
 
-          if head_result.include?(true)
-
-            head_layout_id = client.head_layout_id
-          else
-
-            head_layout_id = card_template.template_layouts.where(status: :head).first.card_layout_id
-          end
-
-          tail_layout_id = ''
-          tail_result = card_template.template_layouts.where(status: :tail).map { |tail| client.tail_layout_id == tail.card_layout_id ? true : false }
-
-          if tail_result.include?(true)
-
-            tail_layout_id = client.tail_layout_id
-          else
-
-            tail_layout_id = card_template.template_layouts.where(status: :tail).first.card_layout_id
-          end
+          tail_template_layouts = TemplateLayout.where(card_template_id: params[:id]).where(status: :tail)
+          tail_result = tail_template_layouts.pluck(:card_layout_id)
+          tail_layout_id = tail_result.include?(client.tail_layout_id) ? client.tail_layout_id : tail_result[0]
 
           values = []
           values << index + 1
@@ -137,13 +124,19 @@ class TemplateClientsController < ApplicationController
           values << division.name
           values << client.id
           values << client.name
-          flags.map do |f|
+          flags.each do |f|
 
             flag = ContentFlag.find(f)
             layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client.id, content_flag_id: f)
             values << layout_value.text_value if flag.text?
             values << layout_value.textarea_value if flag.text_area?
-            values << layout_value.upload_id if flag.image?
+            if flag.image?
+              if layout_value.upload_id.present?
+                values << layout_value.upload_id
+              else
+                values << '画像なし'
+              end
+            end
           end
 
           csv << values

@@ -4,7 +4,7 @@
 # http://unicorn.bogomips.org/Unicorn/Configurator.html
 preload_app true
 
-timeout 2000
+timeout 3000
 
 @app_path = '/home/media/current'
 
