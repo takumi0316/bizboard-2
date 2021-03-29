@@ -57,133 +57,124 @@ export const setPDFValue = (file, contents) => {
       canvasContext: ctx,
       transform: [1, 0, 0, 1, 0, 0],
       viewport: viewport
-    };
+    }
 
-    page.render(renderContext);
+    page.render(renderContext)
 
-    if(draw.childElementCount > 0) draw.textContent = null;
+    if(draw.childElementCount > 0) draw.textContent = null
 
     contents.map((content, index) => {
 
-      let values = [];
+      let values = []
 
       if(content.content_type === 'text') {
-
-        if(!content.text_value) return;
-        values.push(content.text_value.trim());
-      };
+        if(!content.text_value) return
+        values.push(content.text_value.trim())
+      }
 
       if(content.content_type === 'text_area') {
+        if(!content.textarea_value) return
+        values = content.textarea_value.split('\n').map(value => value.trim())
+      }
 
-        if(!content.textarea_value) return;
-        values = content.textarea_value.split('\n').map(value => value.trim());
-      };
+      const y = mmTopx(content.y_coordinate) * 2
+      const x = mmTopx(content.x_coordinate) * 2
+      const fontSize = mmTopx(ptTomm(content.font_size)) * 2
+      const letterSpacing = mmTopx(content.letter_spacing)
+      const contentLength = mmTopx(content.layout_length)
 
-      const y = mmTopx(content.y_coordinate) * 2;
-      const x = mmTopx(content.x_coordinate) * 2;
-      const fontSize = mmTopx(ptTomm(content.font_size)) * 2;
-      const letterSpacing = mmTopx(content.letter_spacing);
-      const contentLength = mmTopx(content.layout_length);
+      let parent_div = document.createElement('div')
+      parent_div.id = `parent_div-${ index }`
+      parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`
 
-      let parent_div = document.createElement('div');
-      parent_div.id = `parent_div-${ index }`;
-      parent_div.style = `position: relative; transform: translate(${ x }px, ${ y }px);`;
-
-      if(content.content_type != 'image') {
+      if(content.content_type !== 'image') {
 
         const font_family = Object.keys(FontFamilies).find((font_family, index) => index === content.font_family)
         const font_weight = FontWeights[content.font_weight]
 
-        let child_div = document.createElement('div');
-        child_div.id = `child_div-${ index }`;
-        draw.appendChild(parent_div);
+        let child_div = document.createElement('div')
+        child_div.id = `child_div-${ index }`
+        draw.appendChild(parent_div)
 
-        let text_height = 0;
+        let text_height = 0
 
         values.map((value, val_index) => {
-
           if(val_index > 0) {
+            const before_child_p = document.getElementById(`child_p-${ index }-${ val_index - 1 }`)
+            text_height = text_height + before_child_p.clientHeight
+          }
 
-            const before_child_p = document.getElementById(`child_p-${ index }-${ val_index - 1 }`);
-            text_height = text_height + before_child_p.clientHeight;
-          };
+          let child_p = document.createElement('p')
+          child_p.id = `child_p-${ index }-${ val_index }`
 
-          let child_p = document.createElement('p');
-          child_p.id = `child_p-${ index }-${ val_index }`;
+          child_p.textContent = value || ''
 
-          child_p.textContent = value || '';
-
-          child_p.style = `white-spae: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ text_height }px;`;
-          parent_div.appendChild(child_p);
-
+          child_p.style = `white-spae: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; letter-spacing: ${ letterSpacing }px; position: absolute; top: ${ text_height }px;`
+          parent_div.appendChild(child_p)
+  
           if((contentLength - child_p.clientWidth) < 0) {
 
             // 縮小率が指定よりも小さい場合は、最小値を代入
-            if(content.is_reduction_rated === 'true') {
+            if(content.is_reduction_rated == 'true') {
 
-              const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100);
-              const red_cal =  Math.floor(content.reduction_rate);
+              const p_cal = Math.floor((contentLength / child_p.clientWidth) * 100)
+              const red_cal =  Math.floor(content.reduction_rate)
 
-              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
+              child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; letter-spacing: ${ letterSpacing }px; transform: scaleX(${ (contentLength / child_p.clientWidth) }); transform-origin: left center; position: absolute; top: ${ text_height };`
 
               if((p_cal - red_cal) < 0) {
-
-                child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ text_height };`;
-              };
-            };
-          };
+                child_p.style = `white-space: nowrap; font-size: ${ fontSize }px; font-family: ${ font_family }; font-weight: ${ font_weight }; transform: scaleX(${ (red_cal / 100) }); transform-origin: left center; position: absolute; top: ${ text_height };`
+              }
+            }
+          }
 
           child_div.style = `width: ${ contentLength }px; height: ${ val_index > 0 ? text_height + child_p.clientHeight : child_p.clientHeight }px; border: 1px solid; position: absolute;`;
-        });
-
-        parent_div.appendChild(child_div);
+        })
+        parent_div.appendChild(child_div)
       } else {
-
         // 画像なしの場合
-        if(content.no_image) return
+        if(!content.upload_id) return
 
         // 画像をbase変換しないと、スクショ時にCORSエラーが出る
-        const field = new FormData();
+        const field = new FormData()
         const upload = () => {
 
           let re_upload;
           if(content.upload_id) {
 
-            const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id);
-            re_upload = upload[0];
-          };
+            const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id)
+            re_upload = upload[0]
+          }
 
           if(!content.upload_id || !re_upload) {
 
-            re_upload = content.uploads[0];
-          };
+            re_upload = content.uploads[0]
+          }
 
-          return re_upload;
-        };
+          return re_upload
+        }
 
-        field.append('url', upload().url);
-        const request = window.xhrRequest.post('/template_clients/image_transfer', field, { responseType: 'blob' });
+        field.append('url', upload().url)
+        const request = window.xhrRequest.post('/template_clients/image_transfer', field, { responseType: 'blob' })
         request.then(res => {
+          const image = new Blob([res.data])
+          const blob_path = (window.URL || window.webkitURL).createObjectURL(image)
 
-          const image = new Blob([res.data]);
-          const blob_path = (window.URL || window.webkitURL).createObjectURL(image);
+          draw.appendChild(parent_div)
 
-          draw.appendChild(parent_div);
+          const logoHeight = mmTopx(content.logo_height)
+          const logoWidth = mmTopx(content.logo_width)
 
-          const logoHeight = mmTopx(content.logo_height);
-          const logoWidth = mmTopx(content.logo_width);
+          let child_img = document.createElement('img')
 
-          let child_img = document.createElement('img');
+          child_img.id = `child_img-${ index }`
+          child_img.src = blob_path
+          child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`
 
-          child_img.id = `child_img-${ index }`;
-          child_img.src = blob_path;
-          child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`;
+          parent_div.appendChild(child_img)
 
-          parent_div.appendChild(child_img);
-
-        }).catch(err => window.mf_like_modal({ icon: 'error', message: '画像を取得できませんでした。', close_callback: () => console.log(err) }));
-      };
-
-    });
-  }).catch(error => window.mf_like_modal({ icon: 'error', message: error }));
-};
+        }).catch(err => window.mf_like_modal({ icon: 'error', message: '画像を取得できませんでした。', close_callback: () => console.log(err) }))
+      }
+    })
+  }).catch(error => window.mf_like_modal({ icon: 'error', message: error }))
+}

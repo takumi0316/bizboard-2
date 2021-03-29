@@ -291,40 +291,47 @@ class TemplateClientsController < ApplicationController
 
       layout.contents.map { |r|
         flag = ContentFlag.find(r.content_flag_id)
-        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id) if flag.content_type != 'image'
-        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id, layout_content_id: r.id) if flag.content_type == 'image'
-        {
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id) unless flag.image?
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id, layout_content_id: r.id) if flag.image?
+        value = {
           id: r.id,
           name: r.name,
           x_coordinate: r.x_coordinate,
           y_coordinate: r.y_coordinate,
-          font_size: r.font_size,
-          layout_length: r.layout_length,
-          letter_spacing: r.letter_spacing,
-          reduction_rate: r.reduction_rate,
-          is_reduction_rated: r.is_reduction_rated,
-          font_family: r.font_family,
-          font_color: r.font_color,
-          font_weight: r.font_weight,
-          logo_height: r.logo_height,
-          logo_width: r.logo_width,
           flag_id: r.content_flag_id,
           flag_name: r.content_flag.name,
           content_type: r.content_flag.content_type,
-          layout_value_id: layout_value.id,
-          text_value: layout_value.text_value,
-          textarea_value: layout_value.textarea_value,
-          no_image: r.no_image,
-          upload_id: layout_value.upload_id,
-          uploads: r.content_uploads.map do |c|
+          layout_value_id: layout_value.id
+        }
+        if flag.text? || flag.text_area?
+          value[:layout_length] = r.layout_length
+          value[:reduction_rate] = r.reduction_rate
+          value[:letter_spacing] = r.letter_spacing
+          value[:is_reduction_rated] = r.is_reduction_rated
+          value[:font_size] = r.font_size
+          value[:font_family] = r.font_family
+          value[:font_color] = r.font_color
+          value[:font_weight] = r.font_weight
+          value[:text_value] = layout_value.text_value
+          value[:textarea_value] = layout_value.textarea_value
+        end
+        if flag.image?
+          # upload_url: flag.image?? layout_value.upload_id ? layout_value.upload_url || url_for(layout_value.upload.image) : '' : '',
+          # upload_name: flag.image?? layout_value.upload_id ? layout_value.upload.name : '' : '',
+          # upload_id: flag.image?? layout_value.upload_id || '' : '',
+          value[:logo_height] = r.logo_height
+          value[:logo_width] = r.logo_width
+          value[:upload_id] = layout_value.upload_id || ''
+          value[:uploads] = r.content_uploads.map do |cu|
             {
-              id: c.id,
-              upload_id: c.upload_id,
-              name: c.upload.name,
-              url: c.upload.image.service_url
+              id: cu.id,
+              upload_id: cu.upload_id,
+              name: cu.upload.name,
+              url: url_for(cu.upload.image)
             }
           end
-        }
+        end
+        value
       }
     end
 

@@ -10,51 +10,39 @@ const ReadOnly = props => {
    * @version 2019/12/26
    */
   const setDangerHtml = (text, style) => {
-
-    const setText = text ? text.replace(/\n/g, '<br />') : text;
-    return(
-      <div className={ `${ style }` } dangerouslySetInnerHTML={{ __html: setText }}/>
-    );
-  };
+    const setText = text ? text.replace(/\n/g, '<br />') : text
+    return <div className={ `${ style }` } dangerouslySetInnerHTML={{ __html: setText }}/>
+  }
 
   return(
     <Fragment>
       { props.contents.map((content, index) => {
-
-        const key = `content-${ index }`;
+        const key = `content-${ index }`
         const content_type = content.content_type === 'image'
-        const upload = () => {
-
-          if(content_type) {
-
-            let re_upload ;
-            if(content.upload_id) {
-
-              const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id);
-              re_upload = upload[0];
-            };
-
-            if(!content.upload_id || !re_upload) {
-
-              re_upload = content.uploads[0];
-            };
-
-            return re_upload;
-          };
-        };
+        const upload = () => content.uploads.find(upload => upload.upload_id === content.upload_id)
 
         return(
           <tr { ...{key} }>
-            <td className='u-ta-center u-va-middle'>{ content_type ? content.no_image ? 'No Image' : upload().name : content.name }</td>
+            { content_type ?
+              <Fragment>
+                { content.upload_id ?
+                  <td className='u-ta-center u-va-middle'>{ upload().name }</td>
+                  : <td className='u-ta-center u-va-middle'>No Image</td>
+                }
+              </Fragment>
+              :
+              <td className='u-ta-center u-va-middle'>{ content.name }</td>
+            }
             <td className='u-ta-center u-va-middle'>
               { content_type ?
                 <Fragment>
-                  { content.no_image ?
-                    <NoImage style={{ height: '150px', width: '150px' }}/>
-                    : <img src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                  { content.upload_id ?
+                    <img src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                    : <NoImage style={{ height: '150px', width: '150px' }}/>
                   }
                 </Fragment>
-                : <Fragment>
+                :
+                <Fragment>
                   { content.content_type === 'text' ?
                     content.text_value
                     : <Fragment>{ setDangerHtml(content.textarea_value) }</Fragment>
@@ -63,10 +51,10 @@ const ReadOnly = props => {
               }
             </td>
           </tr>
-        );
+        )
       })}
     </Fragment>
-  );
-};
+  )
+}
 
-export default ReadOnly;
+export default ReadOnly

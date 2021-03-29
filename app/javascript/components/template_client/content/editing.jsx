@@ -2,13 +2,13 @@ import React, { Fragment, useState } from 'react'
 
 // components
 import NoImage from './no_image'
-import SearchImg from './search_img';
+import SearchImg from './search_img'
 
 const Editing = props => {
 
-  const init = { contents: props.contents };
+  const init = { contents: props.contents }
 
-  const [state, setState] = useState(init);
+  const [state, setState] = useState(init)
 
   const applyUpload = props => {
 
@@ -16,44 +16,36 @@ const Editing = props => {
 
       if(index !== props.index) return content
 
-      if(index === props.index)  return { ...content, upload_id: props.upload_id, no_image: props.no_image }
+      if(index === props.index)  return { ...content, upload_id: props.upload_id }
     })
 
-    setState({ ...state, contents: contents });
-  };
+    setState({ ...state, contents: contents })
+  }
 
   return(
     <Fragment>
       { state.contents.map((content, index) => {
-
         const key = `content-${ index }`
         const content_type = content.content_type === 'image'
-        const upload = () => {
-
-          if(content_type) {
-
-            let re_upload;
-            if(content.upload_id) {
-
-              const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id)
-              re_upload = upload[0]
-            }
-
-            if(!content.upload_id || !re_upload) re_upload = content.uploads[0]
-
-            return re_upload
-          }
-        }
+        const upload = () => content.uploads.find(upload => upload.upload_id === content.upload_id)
 
         return(
           <tr { ...{ key } }>
-            <td className='u-ta-center u-va-middle'>{ content_type ? upload().name : content.flag_name }</td>
+            { content_type ?
+              <Fragment>
+                { content.upload_id ?
+                  <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
+                  : <td className='u-ta-center u-va-middle'>No Image</td>
+                }
+              </Fragment>
+              : <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
+            }
             <td className='u-ta-center'>
               { content_type ?
                 <Fragment>
-                  { content.no_image ?
-                    <NoImage id={ content.flag_name } style={{ height: '150px', width: '150px' }}/>
-                    : <img id={ content.flag_name } data-set={ upload().upload_id } src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                  { content.upload_id ?
+                    <img id={ content.flag_name } data-set={ upload().upload_id } src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                    : <NoImage id={ content.flag_name } style={{ height: '150px', width: '150px' }}/>
                   }
                   <SearchImg index={ index } uploads={ content.uploads } applyUpload={ applyUpload }/>
                 </Fragment>
@@ -67,10 +59,10 @@ const Editing = props => {
               }
             </td>
           </tr>
-        );
+        )
       })}
     </Fragment>
-  );
-};
+  )
+}
 
-export default Editing;
+export default Editing
