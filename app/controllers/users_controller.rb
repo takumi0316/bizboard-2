@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
   # ユーザー一覧
   expose_with_pagination(:users) { User.with_eager_loaded_image.reverse_order }
+
   # ユーザー
   expose(:user) { User.find_or_initialize_by id: params[:id] }
 

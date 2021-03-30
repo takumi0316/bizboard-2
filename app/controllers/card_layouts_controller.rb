@@ -190,7 +190,7 @@ class CardLayoutsController < ApplicationController
           }
         end
 
-        @pdf = card_layout.file.service_url
+        @pdf = card_layout.file.attached?? card_layout.file.service_url : ''
         @action = card_layout_path
         @new_record = false
 
