@@ -135,6 +135,7 @@ export const setPDFValue = (file, contents) => {
         // 画像なしの場合
         if(!content.upload_id) return
 
+        console.log({ ...content })
         draw.appendChild(parent_div)
         const logoHeight = mmTopx(content.logo_height)
         const logoWidth = mmTopx(content.logo_width)

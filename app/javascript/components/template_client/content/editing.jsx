@@ -29,7 +29,6 @@ const Editing = props => {
         const content_type = content.content_type === 'image'
         const upload = () => content.uploads.find(upload => upload.upload_id === content.upload_id)
 
-        console.log({ ...content })
         return(
           <tr { ...{ key } }>
             <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
