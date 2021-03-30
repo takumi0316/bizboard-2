@@ -142,7 +142,7 @@ export const setPDFValue = (file, contents) => {
         const logoWidth = mmTopx(content.logo_width)
         let child_img = document.createElement('img')
         child_img.id = `child_img-${ index }`
-        child_img.src = content.uploads.find(upload => upload.id === content.upload_id).url
+        child_img.src = content.uploads.find(upload => upload.upload_id === content.upload_id).url
         child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`
         parent_div.appendChild(child_img)
 
