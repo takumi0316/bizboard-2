@@ -143,48 +143,6 @@ export const setPDFValue = (file, contents) => {
         child_img.src = content.uploads.find(upload => upload.upload_id === content.upload_id).url
         child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`
         parent_div.appendChild(child_img)
-
-        /*
-          画像をbase変換しないと、スクショ時にCORSエラーが出る
-          const field = new FormData()
-          const upload = () => {
-
-            let re_upload;
-            if(content.upload_id) {
-
-              const upload = content.uploads.filter(upload => upload.upload_id === content.upload_id)
-              re_upload = upload[0]
-            }
-
-            if(!content.upload_id || !re_upload) {
-
-              re_upload = content.uploads[0]
-            }
-
-            return re_upload
-          }
-
-          field.append('url', upload().url)
-          const request = window.xhrRequest.post('/template_clients/image_transfer', field, { responseType: 'blob' })
-          request.then(res => {
-            const image = new Blob([res.data])
-            const blob_path = (window.URL || window.webkitURL).createObjectURL(image)
-
-            draw.appendChild(parent_div)
-
-            const logoHeight = mmTopx(content.logo_height)
-            const logoWidth = mmTopx(content.logo_width)
-
-            let child_img = document.createElement('img')
-
-            child_img.id = `child_img-${ index }`
-            child_img.src = blob_path
-            child_img.style = `height: ${ logoHeight }px; width: ${ logoWidth }px; position: absolute;`
-
-            parent_div.appendChild(child_img)
-
-          }).catch(err => window.mf_like_modal({ icon: 'error', message: '画像を取得できませんでした。', close_callback: () => console.log(err) }))
-        */
       }
     })
   }).catch(error => window.mf_like_modal({ icon: 'error', message: error }))

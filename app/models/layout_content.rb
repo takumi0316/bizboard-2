@@ -64,6 +64,8 @@ class LayoutContent < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  # has_one :layout_value, dependent: :destroy
+
   belongs_to :content_flag
 
   has_many :content_uploads
