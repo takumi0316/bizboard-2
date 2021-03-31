@@ -54,17 +54,15 @@ export default class Uploads extends React.Component {
    */
   onSelect = e => {
 
-    let upload = { index: this.props.index, no_image: true }
-    const result = e.target.dataset.set === 'no_image'
-    
+    let upload = { index: this.props.index, upload_id: '' }
+
     // 画像ありの場合
-    if(!result) {
+    if(!(e.target.dataset.set === 'no_image')) {
       
       upload = { ...upload,
         upload_id: JSON.parse(e.target.dataset.upload).upload_id,
         name: JSON.parse(e.target.dataset.upload).name,
         url: e.target.src,
-        no_image: result
       }
     }
 

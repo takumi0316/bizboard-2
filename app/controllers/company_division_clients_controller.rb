@@ -215,7 +215,7 @@ class CompanyDivisionClientsController < ApplicationController
   def client_params
     
     params.require(:company_division_client).permit :company_division_id, :user_id, :name, :kana, :title, :tel, :email, :password, :password_confirmation, :user_type, :note, :head_layout_id, :tail_layout_id, layout_values_attributes: [
-      :id, :company_division_client_id, :text_value, :textarea_value, :layout_type, :content_flag_id, :upload_id, :layout_content_id
+      :id, :company_division_client_id, :text_value, :textarea_value, :layout_type, :content_flag_id, :upload_id, :upload_url, :layout_content_id
     ]
   end
   
