@@ -201,6 +201,15 @@ class CompanyDivisionClientsController < ApplicationController
     
     redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
   end
+
+  def test
+    
+    unless request.xhr?
+      
+      add_breadcrumb '担当者一覧'
+      @divisions = CompanyDivision.all
+    end
+  end
   
   #----------------------------------------
   #  ** Methods **

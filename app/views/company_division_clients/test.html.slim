@@ -1,0 +1,38 @@
+.u-mt-15 = link_to '取引先を作成する', new_company_path, class: 'c-btnMain c-btn-blue'
+
+= form_with url: companies_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+  = f.label :name, '会社名'
+  .c-flex.c-flex-alignItems__center
+    .c-search__item
+      = f.text_field :name, value: params[:name], class: 'c-form-text', placeholder: '日本工業社'
+    = f.submit '検索', class: 'c-btnMain'
+
+.c-table.u-mt-15
+	table
+		thead
+			tr
+				th ID
+				th 会社名
+				th 部署名
+				th 担当者
+		tbody
+			- first_company_id = [clients.first.company_division.company.id]
+			- first_division_id = [clients.first.company_division.id]
+			- first_client_id = [clients.first.id]
+			- clients.each.with_index do |r, i|
+				tr
+					- belong_company_id = @divisions.find(r.company_division_id).company_id
+					- belong_division_ids = @divisions.where(company_id: belong_company_id).ids if first_company_id != belong_company_id || i == 0
+					- company_count = clients.where(company_division_id: belong_division_ids).count if first_company_id != belong_company_id || i == 0
+					- division_count = clients.where(company_division_id: r.company_division_id).count
+					- if first_company_id != belong_company_id || i == 0
+						td.u-va-middle rowspan=(company_count) = r.company_division.company.id 
+						td.u-va-middle rowspan=(company_count) = r.company_division.company.name
+					- first_company_id = belong_company_id if first_company_id != belong_company_id
+					- if first_division_id != r.company_division_id
+						td.u-va-middle rowspan=(division_count) = r.company_division.name
+						- first_division_id = r.company_division_id if first_division_id != r.company_division_id
+					td.u-va-middle = r.name
+
+
+= render 'layouts/_partials/pagination'
