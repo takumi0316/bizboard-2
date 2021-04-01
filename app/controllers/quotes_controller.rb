@@ -286,8 +286,8 @@ class QuotesController < ApplicationController
 
                       values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
                     else
-
-                      values.push layout_content.no_image ? '' : layout_value.upload.name
+ 
+                      values << layout_value.upload_id ? layout_value.upload.name : ''
                     end
                   end
 
@@ -307,7 +307,7 @@ class QuotesController < ApplicationController
                       values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
                     else
 
-                      values.push layout_content.no_image ? '' : layout_value.upload.name
+                      values << layout_value.upload_id ? layout_value.upload.name : ''
                     end
                   end
 
