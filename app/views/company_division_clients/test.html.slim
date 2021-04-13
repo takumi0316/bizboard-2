@@ -30,7 +30,10 @@
 						td.u-va-middle rowspan=(company_count) = r.company_division.company.name
 					- first_company_id = belong_company_id if first_company_id != belong_company_id
 					- if first_division_id != r.company_division_id
-						td.u-va-middle rowspan=(division_count) = r.company_division.name
+						td.u-va-middle rowspan=(division_count) 
+							= r.company_division.name
+							.u-mt-10 
+								= react_component :CompanyDivisionClient,{client: r,}
 						- first_division_id = r.company_division_id if first_division_id != r.company_division_id
 					td.u-va-middle = r.name
 

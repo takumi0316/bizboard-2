@@ -150,6 +150,8 @@ import ShowCompanyDivision from 'components/company/division/show'
 
 import CompanyDivisionClientList from 'components/company/division/client/list'
 
+import CompanyDivisionClient from 'components/company_division_clients'
+
 import RegistorCompanyDivisionClient from 'components/company/division/client/registor'
 
 import ShowCompanyDivisionClient from 'components/company/division/client/show'
@@ -208,6 +210,7 @@ WebpackerReact.setup({
   RegistorCompanyDivision,
   ShowCompanyDivision,
   CompanyDivisionClientList,
+  CompanyDivisionClient,
   RegistorCompanyDivisionClient,
   ShowCompanyDivisionClient,
   Trials,
