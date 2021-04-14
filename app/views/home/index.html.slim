@@ -13,7 +13,7 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
     - quotes = Quote.invoicing.joins(:invoice).merge(Invoice.date_in(range))
     - sales = quotes.pluck(:price).sum
     / 原価
-    - expendables = Expendable.date_in(range)
+    - expendables = Expendable.where(accouting_status: :active).date_in(range)
     - labors = Labor.date_in(range)
     - expendable_cost = expendables.pluck(:price).sum
     - labor_cost = labors.pluck(:price).sum
@@ -40,7 +40,7 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
       - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.pluck(:price).sum
       / 原価
-      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - expendables = Expendable.where("(division_id = ?) OR (accouting_status = ?)", r.division.id,active).date_in(range)
       - labors = Labor.where(division_id: r.division.id).date_in(range)
       - expendable_cost = expendables.pluck(:price).sum
       - labor_cost = labors.pluck(:price).sum
@@ -56,7 +56,7 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
       - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.pluck(:price).sum
       / 原価
-      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - expendables = Expendable.where("(division_id = ?) OR (accouting_status = ?)", r.division.id,active).date_in(range)
       - labors = Labor.where(division_id: r.division.id).date_in(range)
       - expendable_cost = expendables.pluck(:price).sum
       - labor_cost = labors.pluck(:price).sum
@@ -72,7 +72,7 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
       - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
       - sales = quotes.pluck(:price).sum
       / 原価
-      - expendables = Expendable.where(division_id: r.division.id).date_in(range)
+      - expendables = Expendable.where("(division_id = ?) OR (accouting_status = ?)", r.division.id,active).date_in(range)
       - labors = Labor.where(division_id: r.division.id).date_in(range)
       - expendable_cost = expendables.pluck(:price).sum
       - labor_cost = labors.pluck(:price).sum
