@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_26_095531) do
+ActiveRecord::Schema.define(version: 2021_04_16_053038) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -259,6 +259,13 @@ ActiveRecord::Schema.define(version: 2021_03_26_095531) do
     t.index ["user_id"], name: "index_expendables_on_user_id"
     t.index ["work_subcontractor_detail_id"], name: "index_expendables_on_work_subcontractor_detail_id"
     t.index ["work_subcontractor_id"], name: "index_expendables_on_work_subcontractor_id"
+  end
+
+  create_table "flag_uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "flag_id"
+    t.bigint "upload_id"
+    t.index ["flag_id"], name: "index_flag_uploads_on_flag_id"
+    t.index ["upload_id"], name: "index_flag_uploads_on_upload_id"
   end
 
   create_table "inquiries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

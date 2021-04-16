@@ -1,21 +1,13 @@
 # == Schema Information
 #
-# Table name: layout_values
+# Table name: flag_uploads
 #
-#  id                         :bigint(8)        not null, primary key
-#  company_division_client_id :bigint(8)
-#  text_value                 :string(191)
-#  textarea_value             :text(65535)
-#  layout_type                :integer
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  content_flag_id            :bigint(8)
-#  upload_id                  :bigint(8)
-#  layout_content_id          :bigint(8)
-#  upload_url                 :string(191)
+#  id        :bigint(8)        not null, primary key
+#  flag_id   :bigint(8)
+#  upload_id :bigint(8)
 #
 
-class LayoutValue < ApplicationRecord
+class FlagUpload < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -29,19 +21,9 @@ class LayoutValue < ApplicationRecord
   #  ** Enums **
   #----------------------------------------
 
-  enum layout_type: { text: 0, text_area: 10, image: 20 }
-
   #----------------------------------------
   #  ** Validations **
   #----------------------------------------
-
-  belongs_to :company_division_client
-
-  belongs_to :layout_content, optional: true
-
-  belongs_to :content_flag
-
-  belongs_to :upload, optional: true
 
   #----------------------------------------
   #  ** Associations **
@@ -58,5 +40,5 @@ class LayoutValue < ApplicationRecord
   #----------------------------------------
   #  ** Methods **
   #----------------------------------------
-
+ 
 end
