@@ -1,22 +1,27 @@
 = form_with model: upload, local: true do |f|
+  .u-mt-15
+    .c-form-label
+      = f.label :name, '画像タイトル'
+      span.u-ml-10.c-form__required 必須
+    = f.text_field :name, placeholder: '画像タイトルを入力してください。', class: 'c-form-text', required: true
+    .u-mt-10
+      .c-form-label = f.label :image, '画像'
+      = f.file_field :image, accept: :image, required: upload.new_record?
 
-  .c-form-label
-    = f.label :name, '画像タイトル'
-    span.c-form-required.u-mt-10 必須
-  = f.text_field :name, placeholder: '画像タイトルを入力してください。', class: 'c-form-text', required: true
-
+  = react_component :SettingContentFlag, { content_flag_uploads: @content_flag_uploads, upload_id: upload.id }
   .u-mt-15 = f.submit upload.new_record? ? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'
 
-.c-attention.u-mt-30
-  .u-mt-5
-    span.u-fw-bold 更新日時:
-    = upload.updated_at
-  .u-mt-5
-    span.u-fw-bold サイズ:
-    - size = ActiveStorage::Analyzer::ImageAnalyzer.new(upload.image).metadata
-    = "#{ size[:width] }x#{ size[:height] }"
+- if upload.persisted?
+  .c-attention.u-mt-30
+    .u-mt-5
+      span.u-fw-bold 更新日時:
+      = upload.updated_at
+    .u-mt-5
+      span.u-fw-bold サイズ:
+      - size = ActiveStorage::Analyzer::ImageAnalyzer.new(upload.image).metadata
+      = " #{ size[:width] }x#{ size[:height] }"
+    .u-mt-15
+      span.u-fw-bold URL:
+      = text_field_tag :url, upload.decorate.image_original, class: 'c-form-text', readonly: :true
   .u-mt-15
-    span.u-fw-bold URL:
-    = text_field_tag :url, upload.decorate.image_original, class: 'c-form-text', readonly: :true
-.u-mt-15
-  = image_tag upload.image
+    = image_tag upload.image

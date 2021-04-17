@@ -39,9 +39,15 @@ class Upload < ApplicationRecord
   # file
   has_one_attached :image, dependent: :detach
 
+  has_many :content_flag_uploads
+
+  has_many :content_flags, through: :content_flag_uploads
+
   has_many :content_uploads
 
   has_many :layout_contents, through: :content_uploads
+
+  accepts_nested_attributes_for :content_flag_uploads, allow_destroy: true
 
   #----------------------------------------
   #  ** Delegates **

@@ -176,7 +176,7 @@ export default class DataModal extends React.Component {
               { icon && icon === 'error' ? <div className={Style.DataModal__icon}><ErrorIcon /></div> : null }
               { title ? <div className={Style.DataModal__title}>{title}</div> : null }
               <div className={Style.DataModal__message} dangerouslySetInnerHTML={{__html: message}}></div>
-              { confirm ? <div className='c-flex__center'><button onClick={this.do} className={`c-btnMain ${Style.DataModal__button}`}>続行する</button></div> : null }
+              { confirm ? <div className='c-flex__center'><button onClick={this.do} className='c-btnMain c-btn-blue'>続行する</button></div> : null }
               <div className='u-mt-10 c-flex__center'>
                 <button onClick={this.close} className='c-btnMain'>閉じる</button>
               </div>

@@ -13,7 +13,7 @@
         span.c-form__required.u-ml-10 必須
       = f.text_field :email, placeholder: 'メールアドレス', class: 'c-form-text u-mb-30', required: :true
 
-      .c-form-label= f.label :image, '画像'
+      .c-form-label = f.label :image, '画像'
       = f.file_field :image, accept: :image, class: 'u-mb-30'
 
       - if user.image.attached?

@@ -200,6 +200,13 @@ ActiveRecord::Schema.define(version: 2021_04_16_053038) do
     t.index ["company_id"], name: "index_company_divisions_on_company_id"
   end
 
+  create_table "content_flag_uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "content_flag_id"
+    t.bigint "upload_id"
+    t.index ["content_flag_id"], name: "index_content_flag_uploads_on_content_flag_id"
+    t.index ["upload_id"], name: "index_content_flag_uploads_on_upload_id"
+  end
+
   create_table "content_flags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -259,13 +266,6 @@ ActiveRecord::Schema.define(version: 2021_04_16_053038) do
     t.index ["user_id"], name: "index_expendables_on_user_id"
     t.index ["work_subcontractor_detail_id"], name: "index_expendables_on_work_subcontractor_detail_id"
     t.index ["work_subcontractor_id"], name: "index_expendables_on_work_subcontractor_id"
-  end
-
-  create_table "flag_uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "flag_id"
-    t.bigint "upload_id"
-    t.index ["flag_id"], name: "index_flag_uploads_on_flag_id"
-    t.index ["upload_id"], name: "index_flag_uploads_on_upload_id"
   end
 
   create_table "inquiries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

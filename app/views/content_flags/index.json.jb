@@ -1,6 +1,6 @@
 json = { status: :success }
 
-json[:flags] = ContentFlag.search(params[:name]).all.map do |r|
+json[:flags] = ContentFlag.all.search(params[:name]).where(content_type: params[:content_type]).map do |r|
   {
     id: r.id,
     name: r.name,

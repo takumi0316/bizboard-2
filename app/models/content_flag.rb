@@ -36,6 +36,10 @@ class ContentFlag < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  has_many :content_flag_uploads
+
+  has_many :uploads, through: :content_flag_uploads
+
   has_many :contents, class_name: 'LayoutContent'
 
   #----------------------------------------

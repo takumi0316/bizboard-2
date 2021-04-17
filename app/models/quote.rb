@@ -109,14 +109,16 @@ class Quote < ApplicationRecord
   # 活動履歴
   has_one  :activity, -> { order(created_at: :desc) }, dependent: :destroy
 
-  # ec始まったらコメントアウト外す
+  # ビジスタント起案
   has_one :task, dependent: :destroy
 
+  #
   has_one :inquiry, dependent: :destroy
 
   # 品目
   has_many :quote_projects, dependent: :destroy
 
+  # 中間テーブル
   has_many :task_card_clients
 
   # 名刺担当者情報

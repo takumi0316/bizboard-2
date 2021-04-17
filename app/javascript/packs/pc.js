@@ -160,6 +160,8 @@ import MFLikeModal from 'components/mf_like_modal'
 
 import QuoteEditor from 'components/quote_editor'
 
+import SettingContentFlag from 'components/upload/setting_content_flag'
+
 WebpackerReact.setup({
   Kawaii,
   Alert,
@@ -213,4 +215,5 @@ WebpackerReact.setup({
   Trials,
   MFLikeModal,
   QuoteEditor,
+  SettingContentFlag,
 })

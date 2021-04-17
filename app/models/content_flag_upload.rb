@@ -1,13 +1,13 @@
 # == Schema Information
 #
-# Table name: flag_uploads
+# Table name: content_flag_uploads
 #
-#  id        :bigint(8)        not null, primary key
-#  flag_id   :bigint(8)
-#  upload_id :bigint(8)
+#  id              :bigint(8)        not null, primary key
+#  content_flag_id :bigint(8)
+#  upload_id       :bigint(8)
 #
 
-class FlagUpload < ApplicationRecord
+class ContentFlagUpload < ApplicationRecord
 
   #----------------------------------------
   #  ** Includes **
@@ -29,6 +29,10 @@ class FlagUpload < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
+  belongs_to :content_flag
+
+  belongs_to :upload
+ 
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

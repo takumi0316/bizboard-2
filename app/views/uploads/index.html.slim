@@ -1,7 +1,8 @@
 = render 'layouts/_partials/card_tabmenu'
 
 .u-mt-15
-  = react_component :ImageUploader
+  /= react_component :ImageUploader
+  = link_to '画像アップロード', new_upload_path, class: 'c-btnMain c-btn-blue'
 
 = form_with url: uploads_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
   = f.label :name, '画像タイトル'
