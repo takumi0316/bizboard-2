@@ -162,7 +162,7 @@ const Index = props => {
     const url = `/company_division_clients/${ props.client_id }/update_layout_values?layout_type=${ props.head ? 'head' : 'tail' }`
     const field = new FormData()
     field.append(`company_division_client[${ props.head ? 'head_layout_id' : 'tail_layout_id' }]`, state.apply_layout.id)
-    state.contents.map((content, index) => {
+    state.contents.forEach(content => {
 
       const doc = document.getElementById(content.flag_name)
 
@@ -170,11 +170,7 @@ const Index = props => {
       field.append('company_division_client[layout_values_attributes][][company_division_client_id]', props.client_id)
       field.append('company_division_client[layout_values_attributes][][content_flag_id]', content.flag_id)
       field.append('company_division_client[layout_values_attributes][][layout_type]', content.content_type)
-      if(content.content_type === 'image') {
-        field.append('layout_content[][id]', content.id)
-        field.append('company_division_client[layout_values_attributes][][layout_content_id]', content.id)
-        field.append('company_division_client[layout_values_attributes][][upload_id]', doc.dataset.set === 'no_image' ? '' : doc.dataset.set)
-      }
+      if(content.content_type === 'image') field.append('company_division_client[layout_values_attributes][][upload_id]', doc.dataset.set === 'no_image' ? '' : doc.dataset.set)
       if(content.content_type === 'text') field.append('company_division_client[layout_values_attributes][][text_value]', doc.value || '')
       if(content.content_type === 'text_area') field.append('company_division_client[layout_values_attributes][][textarea_value]', doc.value || '')
     })

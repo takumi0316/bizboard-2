@@ -159,31 +159,24 @@ class CardTemplatesController < ApplicationController
 
     def set_the_required_data
 
-      @heads = []
-      @tails = []
+      @heads = TemplateLayout.where(card_template_id: card_template.id).where(status: :head).map do |r|
+        {
+          id: r.id,
+          card_template_id: r.card_template_id,
+          card_layout_id: r.card_layout_id,
+          layout_name: r.card_layout.name,
+          status: r.status
+        }
+      end
 
-      if card_template.persisted?
-
-        @heads = TemplateLayout.where(card_template_id: card_template.id).where(status: :head).map do |r|
-          {
-            id: r.id,
-            card_template_id: r.card_template_id,
-            card_layout_id: r.card_layout_id,
-            layout_name: r.card_layout.name,
-            status: r.status
-          }
-        end
-
-        @tails = TemplateLayout.where(card_template_id: card_template.id).where(status: :tail).map do |r|
-          {
-            id: r.id,
-            card_template_id: r.card_template_id,
-            card_layout_id: r.card_layout_id,
-            layout_name: r.card_layout.name,
-            status: r.status
-          }
-        end
-
+      @tails = TemplateLayout.where(card_template_id: card_template.id).where(status: :tail).map do |r|
+        {
+          id: r.id,
+          card_template_id: r.card_template_id,
+          card_layout_id: r.card_layout_id,
+          layout_name: r.card_layout.name,
+          status: r.status
+        }
       end
     end
 end

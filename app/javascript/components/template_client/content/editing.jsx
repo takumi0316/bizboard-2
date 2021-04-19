@@ -12,13 +12,7 @@ const Editing = props => {
 
   const applyUpload = props => {
 
-    const contents = JSON.parse(JSON.stringify(state.contents)).map((content, index) => {
-
-      if(index !== props.index) return content
-
-      if(index === props.index)  return { ...content, upload_id: props.upload_id }
-    })
-
+    const contents = JSON.parse(JSON.stringify(state.contents)).map((content, index) => index === props.index ? { ...content, upload_id: props.upload_id } : content )
     setState({ ...state, contents: contents })
   }
 
@@ -27,25 +21,16 @@ const Editing = props => {
       { state.contents.map((content, index) => {
         const key = `content-${ index }`
         const content_type = content.content_type === 'image'
-        const upload = () => content.uploads.find(upload => upload.upload_id === content.upload_id)
+        const upload = () => content.uploads.find(upload => upload.id === content.upload_id)
 
         return(
           <tr { ...{ key } }>
             <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
-            { /* content_type ?
-              <Fragment>
-                { content.upload_id ?
-                  <td className='u-ta-center u-va-middle'>{ upload().name }</td>
-                  : <td className='u-ta-center u-va-middle'>No Image</td>
-                }
-              </Fragment>
-              : <td className='u-ta-center u-va-middle'>{ content.flag_name }</td>
-            */ }
             <td className='u-ta-center'>
               { content_type ?
                 <Fragment>
                   { content.upload_id ?
-                    <img id={ content.flag_name } data-set={ upload().upload_id } src={ upload().url } style={{ height: '150px', width: '150px' }}/>
+                    <img id={ content.flag_name } data-set={ upload().id } src={ upload().url } style={{ height: '150px', width: '150px' }}/>
                     : <NoImage id={ content.flag_name } style={{ height: '150px', width: '150px' }}/>
                   }
                   <SearchImg index={ index } uploads={ content.uploads } applyUpload={ applyUpload }/>

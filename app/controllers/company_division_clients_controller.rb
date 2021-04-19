@@ -138,14 +138,6 @@ class CompanyDivisionClientsController < ApplicationController
     
     client.update! client_params
     
-    if params[:layout_content].present?
-      
-      params[:layout_content].each do |content|
-        layout_content = LayoutContent.find(content[:id])
-        layout_content.update! no_image: content[:no_image]
-      end
-    end
-    
     layout = params[:layout_type] == 'head' ? client.head_layout : client.tail_layout
     contents = layout.contents.map do |r|
       
@@ -173,12 +165,11 @@ class CompanyDivisionClientsController < ApplicationController
         textarea_value: layout_value.textarea_value,
         no_image: r.no_image,
         upload_id: layout_value.upload_id,
-        uploads: r.content_uploads.map do |c|
+        uploads: r.content_flag.uploads.map do |c|
           {
             id: c.id,
-            upload_id: c.upload_id,
-            name: c.upload.name,
-            url: c.upload.image.service_url
+            name: c.name,
+            url: url_for(c.image)
           }
         end
       }

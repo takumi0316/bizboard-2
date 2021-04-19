@@ -291,8 +291,7 @@ class TemplateClientsController < ApplicationController
 
       layout.contents.map { |r|
         flag = ContentFlag.find(r.content_flag_id)
-        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id) unless flag.image?
-        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id, layout_content_id: r.id) if flag.image?
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id)
         value = {
           id: r.id,
           name: r.name,
@@ -319,12 +318,11 @@ class TemplateClientsController < ApplicationController
           value[:logo_height] = r.logo_height
           value[:logo_width] = r.logo_width
           value[:upload_id] = layout_value.upload_id || ''
-          value[:uploads] = r.content_uploads.map do |cu|
+          value[:uploads] = flag.uploads.map do |c|
             {
-              id: cu.id,
-              upload_id: cu.upload_id,
-              name: cu.upload.name,
-              url: url_for(cu.upload.image)
+              id: c.id,
+              name: c.name,
+              url: url_for(c.image)
             }
           end
         end

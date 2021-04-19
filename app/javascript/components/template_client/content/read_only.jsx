@@ -19,7 +19,7 @@ const ReadOnly = props => {
       { props.contents.map((content, index) => {
         const key = `content-${ index }`
         const content_type = content.content_type === 'image'
-        const upload = () => content.uploads.find(upload => upload.upload_id === content.upload_id)
+        const upload = () => content.uploads.find(upload => upload.id === content.upload_id)
 
         return(
           <tr { ...{key} }>
