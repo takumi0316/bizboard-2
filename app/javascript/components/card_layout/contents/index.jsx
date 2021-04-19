@@ -28,7 +28,7 @@ const Index = props => {
                     <td className='u-ta-center u-va-middle'>{ index + 1 }</td>
                     <td className='u-ta-center u-va-middle'>{ layout_content.content_type !== 'image' ? layout_content.name : '画像' }</td>
                     <td className='u-ta-center u-va-middle'>{ layout_content.content_flag_name }</td>
-                    <td className='u-ta-center u-va-middle'><button data-number={ index } className='c-btnMain' onClick={ props.openRightPanel }>編集</button></td>
+                    <td className='u-ta-center u-va-middle'><button data-number={ index } className='c-btnMain c-btn-blue' onClick={ props.openRightPanel }>編集</button></td>
                     <td className='u-ta-center u-va-middle'><button data-number={ index } className='c-btnMain c-btn-red' onClick={ props.removeContent }>削除</button></td>
                   </tr>
                   : null

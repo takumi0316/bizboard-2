@@ -1,11 +1,29 @@
 json = { status: :success }
 
-json[:flags] = ContentFlag.all.search(params[:name]).where(content_type: params[:content_type]).map do |r|
-  {
-    id: r.id,
-    name: r.name,
-    content_type: r.content_type
-  }
+content_flags = ContentFlag.all.search(params[:name])
+
+if params[:request_action] == 'card_layout'
+  json[:flags] = content_flags.map do |r|
+    {
+      id: r.id,
+      name: r.name,
+      content_type: r.content_type,
+      uploads: r.image? ? r.uploads.map do |c| {
+        id: c.id,
+        name: c.name,
+        url: url_for(c.image)
+        }
+      end : []
+    }
+  end
+else
+  json[:flags] = content_flags.where(content_type: params[:content_type]).map do |r|
+    {
+      id: r.id,
+      name: r.name,
+      content_type: r.content_type
+    }
+  end
 end
 
 json

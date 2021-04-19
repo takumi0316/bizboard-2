@@ -33,6 +33,10 @@ class CardLayoutsController < ApplicationController
 
   def new
 
+    @pdf = ''
+    @action = card_layouts_path
+    @new_record = true
+
     add_breadcrumb '一覧', path: card_layouts_path
     add_breadcrumb '新規作成'
   end
@@ -48,6 +52,10 @@ class CardLayoutsController < ApplicationController
   end
 
   def edit
+
+    @pdf = card_layout.file.attached?? url_for(card_layout.file.service_url) : ''
+    @action = card_layout_path
+    @new_record = false
 
     add_breadcrumb '一覧', path: card_layouts_path
     add_breadcrumb '編集'
@@ -119,7 +127,7 @@ class CardLayoutsController < ApplicationController
       dup_content = content.dup
       dup_content.card_layout_id = dup_card_layout.id
       dup_content.save!
-      next unless content.content_flag.content_type == 'image'
+      next unless content.content_flag.image?
 
       content.content_uploads.map do |cp|
 
@@ -153,49 +161,35 @@ class CardLayoutsController < ApplicationController
 
     def set_the_required_data
 
-      @layout_contents = []
-      @pdf = ''
-      @action = card_layouts_path
-      @new_record = card_layout.new_record?
-
-      if card_layout.persisted?
-
-        @layout_contents = card_layout.contents.map do |r|
-          {
-            id: r.id,
-            name: r.name,
-            x_coordinate: r.x_coordinate,
-            y_coordinate: r.y_coordinate,
-            font_family: r.font_family,
-            font_size: r.font_size,
-            font_color: r.font_color_before_type_cast,
-            font_weight: r.font_weight,
-            layout_length: r.layout_length,
-            letter_spacing: r.letter_spacing,
-            reduction_rate: r.reduction_rate,
-            is_reduction_rated: r.is_reduction_rated,
-            content_flag_name: r.content_flag.name,
-            content_flag_id: r.content_flag.id,
-            content_type: r.content_flag.content_type,
-            logo_height: r.logo_height,
-            logo_width: r.logo_width,
-            uploads: r.content_uploads.map do |c|
-              {
-                id: c.id,
-                upload_id: c.upload_id,
-                name: c.upload.name,
-                url: c.upload.image.service_url
-              }
-            end
-          }
-        end
-
-        @pdf = card_layout.file.attached?? card_layout.file.service_url : ''
-        @action = card_layout_path
-        @new_record = false
-
+      @layout_contents = card_layout.contents.map do |r|
+        {
+          id: r.id,
+          name: r.name,
+          x_coordinate: r.x_coordinate,
+          y_coordinate: r.y_coordinate,
+          font_family: r.font_family,
+          font_size: r.font_size,
+          font_color: r.font_color_before_type_cast,
+          font_weight: r.font_weight,
+          layout_length: r.layout_length,
+          letter_spacing: r.letter_spacing,
+          reduction_rate: r.reduction_rate,
+          is_reduction_rated: r.is_reduction_rated,
+          content_flag_name: r.content_flag.name,
+          content_flag_id: r.content_flag.id,
+          content_type: r.content_flag.content_type,
+          logo_height: r.logo_height,
+          logo_width: r.logo_width,
+          uploads: r.content_flag.uploads.map do |c|
+            {
+              id: c.id,
+              upload_id: c.id,
+              name: c.name,
+              url: url_for(c.image.service_url)
+            }
+          end
+        }
       end
-
     end
 
 end
