@@ -76,7 +76,7 @@ export default class Company_Division_Clients extends React.Component {
         { this.state.show_modal ?
           <div className='c-overlay-edit'>
             <div className='c-overlay-content'>
-              <div>
+              <div className='u-px-25'>
                 <form class="u-mt-30" id="new_company_division_client" action="/company_division_clients" accept-charset="UTF-8" method="post"/>
                   <div class="c-form-label">
                     <label>会社</label>
@@ -121,7 +121,7 @@ export default class Company_Division_Clients extends React.Component {
                   <div class="c-form-label">
                     <label for="company_division_client_title">敬称</label>
                   </div>
-                  <select class="c-form-select" name="company_division_client[title]" id="company_division_client_title">
+                  <select class="c-form-select u-mb-30" name="company_division_client[title]" id="company_division_client_title">
                     <option value="nothing">なし</option>
                     <option selected="selected" value="honorific">様</option>
                     <option value="normal">さん</option>
@@ -158,13 +158,14 @@ export default class Company_Division_Clients extends React.Component {
                       <option value="card_manager">名刺担当者</option>
                     </select>
                   </div>
-                  <div class="c-form-label">
+                  <div class="c-form-label"> 
                     <label for="company_division_client_note">メモ</label>
                   </div>
                   <textarea placeholder="メモを入力してください" class="c-form-textarea u-mb-30" rows="4" autocomplete="off" spellcheck="false" name="company_division_client[note]" id="company_division_client_note" ></textarea>
-                  <input type="submit" name="commit" value="作成する" class="c-btnMain c-btn-blue u-ta-center u-mt-30" data-disable-with="作成する"/>
+                  <div>
+                    <input type="submit" name="commit" value="作成する" class="c-btnMain c-btn-blue" data-disable-with="作成する"/>
+                  </div>
               </div>
-
               <button className='c-btnMain c-btn-blue' onClick={(client_id) => {this._closeModal(client_id)}}>Close</button>
             </div>
           </div>
