@@ -49,11 +49,8 @@ class ContentFlagUpload < ApplicationRecord
   def self.transferring_data_script
 
     ContentFlag.where(content_type: :image).each do |f|
-      layout_content = LayoutContent.find_or_initialize_by(content_flag_id: f.id)
-      next if layout_content.persisted?
-      LayoutContent.find_by(content_flag_id: f.id).uploads.each { |u|
-        ContentFlagUpload.create! content_flag_id: f.id, upload_id: u.id
-      }
+      uploads = LayoutContent.find_or_initialize_by(content_flag_id: f.id).uploads
+      uploads.each { |u| ContentFlagUpload.find_or_create_by content_flag_id: f.id, upload_id: u.id }
     end
   end
 
