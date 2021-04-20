@@ -13,7 +13,7 @@ set :assets_roles, [:assets]
 
 # rails
 set :rails_env, 'staging'
-set :branch, '#1'
+set :branch, 'master'
 set :deploy_to, '/home/media'
 set :log_level, :debug
 set :default_shell, '/bin/bash -l'
