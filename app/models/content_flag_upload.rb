@@ -45,4 +45,14 @@ class ContentFlagUpload < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
  
+
+  def transferring_data_script
+
+    ContentFlag.where(content_type: :image).each do |f|
+      LayoutContent.find_by(content_flag_id: f.id).uploads.each { |u|
+        ContentFlagUpload.create! content_flag_id: f.id, upload_id: u.id
+      }
+    end
+  end
+
 end

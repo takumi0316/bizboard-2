@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_053038) do
+ActiveRecord::Schema.define(version: 2021_04_20_050831) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -346,7 +346,6 @@ ActiveRecord::Schema.define(version: 2021_04_16_053038) do
     t.bigint "content_flag_id"
     t.bigint "upload_id"
     t.bigint "layout_content_id"
-    t.string "upload_url"
     t.index ["company_division_client_id"], name: "index_layout_values_on_company_division_client_id"
     t.index ["content_flag_id"], name: "index_layout_values_on_content_flag_id"
     t.index ["layout_content_id"], name: "index_layout_values_on_layout_content_id"

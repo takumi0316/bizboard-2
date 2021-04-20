@@ -287,11 +287,12 @@ class TemplateClientsController < ApplicationController
       @layouts = result ? [] : access_template_layouts(cast_action).map do |r| access_card_layouts(r.card_layout) end
     end
 
-    def access_contents layout, client_id=nil
+    def access_contents(layout, client_id=company_division_client.id)
 
       layout.contents.map { |r|
         flag = ContentFlag.find(r.content_flag_id)
-        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id ? client_id : company_division_client.id, content_flag_id: flag.id)
+        layout_content_id = flag.image? ? r.id : nil
+        layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: client_id, content_flag_id: flag.id, layout_content_id: layout_content_id)
         value = {
           id: r.id,
           name: r.name,
