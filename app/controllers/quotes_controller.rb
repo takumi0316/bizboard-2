@@ -247,91 +247,13 @@ class QuotesController < ApplicationController
             headers << '配送先'
             headers << '表面レイアウト名'
             headers << '裏面レイアウト名'
-
             flag_ids = []
             card_template.card_layouts.each { |cl| cl.contents.each { |ct| flag_ids << ct.content_flag_id } }
             flag_ids.uniq!
-
             flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
-
             csv << headers
-
-            quote.card_clients.each do |r|
-
-              values = []
-
-              values << card_template.name
-              values << TaskCardClient.find_by(quote_id: quote.id, card_client_id: r.id).count
-              values << quote.created_at.strftime('%Y年 %m月 %d日')
-              values << "#{ quote.task.client_name }様"
-              values << "#{ quote.task&.delivery_target&.address1 }#{ quote.task&.delivery_target&.address2 }"
-              values << r.head_layout.name
-              values << r.tail_layout.name
-
-              flag_ids.each do |flag_id|
-
-                flag = ContentFlag.find(flag_id)
-                if r.head_layout.contents.pluck(:content_flag_id).include?(flag_id)
-
-                  layout_content = r.head_layout.contents.where(content_flag_id: flag_id).first
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) unless flag.image?
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.image?
-
-                  values << layout_value.text_value if flag.text?
-                  values << layout_value.textarea_value if flag.text_area?
-
-                  if flag.image?
-
-                    if layout_value.new_record?
-
-                      values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
-                    else
- 
-                      if layout_value.upload_id.nil?
-                        values << ''
-                      else
-                        values << layout_value.upload.name
-                      end
-                    end
-                  end
-
-                elsif r.tail_layout.contents.pluck(:content_flag_id).include?(flag_id)
-
-                  layout_content = r.tail_layout.contents.where(content_flag_id: flag_id).first
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) unless flag.image?
-                  layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.image?
-
-                  values << layout_value.text_value if flag.text?
-                  values << layout_value.textarea_value if flag.text_area?
-
-                  if flag.image?
-
-                    if layout_value.new_record?
-
-                      values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
-                    else
-  
-                      if layout_value.upload_id.nil?
-                        values << ''
-                      else
-                        values << layout_value.upload.name
-                      end
-                    end
-                  end
-
-                else
-
-                  values << ''
-                end
-
-              end
-
-              csv << values
-
-            end
-
-            csv
-
+            create_csv_row_data_from_master(flag_ids, card_template, csv) if quote.task.cart.nil?
+            create_csv_row_data_from_archive(flag_ids, card_template, csv) if quote.task.cart.present?
           end
         )
       end
@@ -339,11 +261,11 @@ class QuotesController < ApplicationController
 
     # 新規ダウンロードの場合は、作業書作成 && 案件ステータスを作業中
     if quote.unworked? && quote.work.blank? || quote.draft? && quote.work.blank?
-      quote.build_work(division_id: current_user.division_id, status: 10).save!
+      quote.build_work(division_id: current_user.division_id, status: :working).save!
       quote.working!
     end
 
-    quote.build_work(division_id: current_user.division_id, status: 10).save! if quote.advance? && quote.invoicing? && quote.work.blank?
+    quote.build_work(division_id: current_user.division_id, status: :working).save! if quote.advance? && quote.invoicing? && quote.work.blank?
 
     # zipをダウンロードして、直後に削除する
     send_data File.read(fullpath), filename: filename, type: 'application/zip'
@@ -395,5 +317,95 @@ class QuotesController < ApplicationController
       session = GoogleDrive::Session.from_config('config.json')
       root_folder = session.collection_by_id('0AMp2Ot6o6NNAUk9PVA')
       params[:quote][:drive_folder_id] = root_folder.create_subfolder("#{ Rails.env == :development ? '開発環境(デバッグ): ' : '' }#{params[:quote][:quote_number]} #{params[:quote][:subject]} #{client.name}").id
+    end
+
+    def create_csv_row_data_from_master(flag_ids, card_template, csv)
+
+      quote.card_clients.each do |r|
+        values = []
+        values << card_template.name
+        values << TaskCardClient.find_by(quote_id: quote.id, card_client_id: r.id).count
+        values << quote.created_at.strftime('%Y年 %m月 %d日')
+        values << "#{ quote.task.client_name }様"
+        values << "#{ quote.task&.delivery_target&.address1 }#{ quote.task&.delivery_target&.address2 }"
+        values << r.head_layout.name
+        values << r.tail_layout.name
+        flag_ids.each do |flag_id|
+          flag = ContentFlag.find(flag_id)
+          if r.head_layout.contents.pluck(:content_flag_id).include?(flag_id)
+            layout_content = r.head_layout.contents.where(content_flag_id: flag_id).first
+            layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) unless flag.image?
+            layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.image?
+            values << layout_value.text_value if flag.text?
+            values << layout_value.textarea_value if flag.text_area?
+            if flag.image?
+              if layout_value.new_record?
+                values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
+              else
+                if layout_value.upload_id.nil?
+                  values << ''
+                else
+                  values << layout_value.upload.name
+                end
+              end
+            end
+          elsif r.tail_layout.contents.pluck(:content_flag_id).include?(flag_id)
+            layout_content = r.tail_layout.contents.where(content_flag_id: flag_id).first
+            layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id) unless flag.image?
+            layout_value = LayoutValue.find_or_initialize_by(company_division_client_id: r.company_division_client, content_flag_id: flag_id, layout_content_id: layout_content.id) if flag.image?
+            values << layout_value.text_value if flag.text?
+            values << layout_value.textarea_value if flag.text_area?
+            if flag.image?
+              if layout_value.new_record?
+                values << r.head_layout.contents.where(content_flag_id: flag_id).first.content_uploads.first.upload.name
+              else
+                if layout_value.upload_id.nil?
+                  values << ''
+                else
+                  values << layout_value.upload.name
+                end
+              end
+            end
+          else
+            values << ''
+          end
+        end
+        csv << values
+      end
+      csv
+    end
+
+    def create_csv_row_data_from_archive(flag_ids, card_template, csv)
+
+      require 'nkf'
+      quote.task.cart.cart_items.each do |r|
+        values = []
+        values << card_template.name
+        values << r.quantity
+        values << quote.created_at.strftime('%Y年 %m月 %d日')
+        values << "#{ quote.task.client_name }様"
+        values << "#{ quote.task&.delivery_target&.address1 }#{ quote.task&.delivery_target&.address2 }"
+        values << r.card_client.head_layout.name
+        values << r.card_client.tail_layout.name
+        parse_csv_data = CSV.parse(r.csv_file.download.force_encoding(Encoding.find('UTF-8')), liberal_parsing: true)
+        head_hash, tail_hash = {}, {}
+        head_content_ids, tail_content_ids = parse_csv_data[1], []
+        head_content_ids.each { |hh| parse_csv_data[4].reject { |n| n == hh } }
+        if head_content_ids.length > parse_csv_data[4].length
+          tail_content_ids = parse_csv_data[4].each { |p| head_content_ids.reject { |n| p == n } }
+        else
+          tail_content_ids = head_content_ids.each { |p| parse_csv_data[4].reject { |n| p == n } }
+        end
+        head_content_ids.each_with_index { |p, i| head_hash[p] = NKF.nkf('-w', parse_csv_data[0][i] || '') }
+        tail_content_ids.each_with_index { |p, i| tail_hash[p] = NKF.nkf('-w', parse_csv_data[3][i] || '') }
+        flag_ids.each do |f|
+  
+          values << '' if head_hash[f.to_s].nil? && tail_hash[f.to_s].nil?
+          values << head_hash[f.to_s] if head_hash[f.to_s].present?
+          values << tail_hash[f.to_s] if tail_hash[f.to_s].present?
+        end
+        csv << values
+      end
+      csv
     end
 end

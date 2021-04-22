@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_26_095531) do
+ActiveRecord::Schema.define(version: 2021_04_22_054755) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -112,8 +112,10 @@ ActiveRecord::Schema.define(version: 2021_03_26_095531) do
     t.datetime "updated_at", null: false
     t.integer "status", default: 0
     t.bigint "delivery_target_id"
+    t.bigint "task_id"
     t.index ["company_division_client_id"], name: "index_carts_on_company_division_client_id"
     t.index ["delivery_target_id"], name: "index_carts_on_delivery_target_id"
+    t.index ["task_id"], name: "index_carts_on_task_id"
   end
 
   create_table "catalogs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -198,6 +200,13 @@ ActiveRecord::Schema.define(version: 2021_03_26_095531) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_company_divisions_on_company_id"
+  end
+
+  create_table "content_flag_uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "content_flag_id"
+    t.bigint "upload_id"
+    t.index ["content_flag_id"], name: "index_content_flag_uploads_on_content_flag_id"
+    t.index ["upload_id"], name: "index_content_flag_uploads_on_upload_id"
   end
 
   create_table "content_flags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -339,7 +348,6 @@ ActiveRecord::Schema.define(version: 2021_03_26_095531) do
     t.bigint "content_flag_id"
     t.bigint "upload_id"
     t.bigint "layout_content_id"
-    t.string "upload_url"
     t.index ["company_division_client_id"], name: "index_layout_values_on_company_division_client_id"
     t.index ["content_flag_id"], name: "index_layout_values_on_content_flag_id"
     t.index ["layout_content_id"], name: "index_layout_values_on_layout_content_id"
@@ -872,6 +880,7 @@ ActiveRecord::Schema.define(version: 2021_03_26_095531) do
   add_foreign_key "card_clients", "card_layouts", column: "head_layout_id"
   add_foreign_key "card_clients", "card_layouts", column: "tail_layout_id"
   add_foreign_key "carts", "delivery_targets"
+  add_foreign_key "carts", "tasks"
   add_foreign_key "catalogs", "categories"
   add_foreign_key "company_division_clients", "card_layouts", column: "head_layout_id"
   add_foreign_key "company_division_clients", "card_layouts", column: "tail_layout_id"
