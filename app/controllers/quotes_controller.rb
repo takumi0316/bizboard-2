@@ -253,7 +253,7 @@ class QuotesController < ApplicationController
             flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
             csv << headers
             create_csv_row_data_from_master(flag_ids, card_template, csv) if quote.task.cart.nil?
-            create_csv_row_data_from_archive(flag_ids, card_template, csv) if quote.task.cart.present?
+            create_csv_row_data_from_archive(flag_ids, card_template, csv, headers) if quote.task.cart.present?
           end
         )
       end
@@ -375,7 +375,7 @@ class QuotesController < ApplicationController
       csv
     end
 
-    def create_csv_row_data_from_archive(flag_ids, card_template, csv)
+    def create_csv_row_data_from_archive(flag_ids, card_template, csv, headers)
 
       require 'nkf'
       quote.task.cart.cart_items.each do |r|
@@ -388,24 +388,47 @@ class QuotesController < ApplicationController
         values << r.card_client.head_layout.name
         values << r.card_client.tail_layout.name
         parse_csv_data = CSV.parse(r.csv_file.download.force_encoding(Encoding.find('UTF-8')), liberal_parsing: true)
-        head_hash, tail_hash = {}, {}
-        head_content_ids, tail_content_ids = parse_csv_data[1], []
-        head_content_ids.each { |hh| parse_csv_data[4].reject { |n| n == hh } }
-        if head_content_ids.length > parse_csv_data[4].length
-          tail_content_ids = parse_csv_data[4].each { |p| head_content_ids.reject { |n| p == n } }
-        else
-          tail_content_ids = head_content_ids.each { |p| parse_csv_data[4].reject { |n| p == n } }
+        head_hash, tail_hash, dup_hash = {}, {}, {}
+        head_content_flag_ids,
+        tail_content_flag_ids,
+        dup_head_content_flag_ids,
+        dup_tail_content_flag_ids = convert_to_content_flag_ids(parse_csv_data[1]), convert_to_content_flag_ids(parse_csv_data[4]), [], []
+        head_content_flag_ids & tail_content_flag_ids.each do |d|
+          head_content_flag_ids.each_with_index do |h, i|
+            if h == d
+              next unless ContentFlag.find(h).image?
+              dup_hash[h] = NKF.nkf('-w', parse_csv_data[0][i] || '')
+              dup_head_content_flag_ids << h
+            end
+          end
+          tail_content_flag_ids.each_with_index do |t, i|
+            if t == d
+              next unless ContentFlag.find(t).image?
+              next if dup_hash.select { |k, v| k == t }.empty?
+              dup_hash[t] = NKF.nkf('-w', parse_csv_data[3][i] || '')
+              dup_tail_content_flag_ids << t
+            end
+          end
         end
-        head_content_ids.each_with_index { |p, i| head_hash[p] = NKF.nkf('-w', parse_csv_data[0][i] || '') }
-        tail_content_ids.each_with_index { |p, i| tail_hash[p] = NKF.nkf('-w', parse_csv_data[3][i] || '') }
+        head_content_flag_ids.each_with_index { |p, i| head_hash[p] = NKF.nkf('-w', parse_csv_data[0][i] || '') }
+        tail_content_flag_ids.each_with_index { |p, i| tail_hash[p] = NKF.nkf('-w', parse_csv_data[3][i] || '') }
         flag_ids.each do |f|
-  
-          values << '' if head_hash[f.to_s].nil? && tail_hash[f.to_s].nil?
-          values << head_hash[f.to_s] if head_hash[f.to_s].present?
-          values << tail_hash[f.to_s] if tail_hash[f.to_s].present?
+          if head_hash[f].present?
+            values << head_hash[f]
+          elsif tail_hash[f].present?
+            values << tail_hash[f]
+          else
+            values << ''
+          end
         end
         csv << values
       end
       csv
     end
+
+    def convert_to_content_flag_ids(layout_content_ids)
+
+      layout_content_ids.map { |r| LayoutContent.find(r).content_flag_id }
+    end
+
 end
