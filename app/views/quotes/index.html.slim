@@ -97,7 +97,7 @@
               | 未発行
           td.u-ta-center.u-va-middle = link_to '活動履歴', activities_path(quote_id: r.id), class: 'c-btnMain'
           - if r.task.present?
-            - if r.task.card_clients.present?
+            - if r.task.catalog.name == 'Web名刺受付'
               td.u-ta-center.u-va-middle = link_to 'CSV', bulk_download_quote_path(r), class: 'c-btnMain'
             - else
               td
