@@ -37,11 +37,19 @@ class ExpendablesController < ApplicationController
 
     add_breadcrumb '製造経費入力'
     respond_to do |format|
-      format.html do
-      end
+      format.html do end
       format.csv do
-        @csv_data = Expendable.where(date: params[:date1]..params[:date2]).order(:subcontractor_id).order(:division_id)
-        send_data render_to_string, filename: "製造経費データ#{params[:date1].to_datetime.month}月分.csv", type: :csv
+
+        current_time = Time.now
+        start_time = params[:date1] || current_time.beginning_of_month.months_ago(1)
+        end_time =  params[:date2] || current_time.beginning_of_month.months_since(2)
+        @csv_data = Expendable.where(date: start_time..end_time).order(:subcontractor_id).order(:division_id)
+
+        start_year = params[:date1].nil? ? current_time.year : params[:date1].to_time.year
+        start_month = params[:date1].nil? ? current_time.month - 1 : params[:date1].to_time.month
+        end_month = params[:date2].nil? ? current_time.month + 2 : params[:date2].to_time.month
+        end_year = params[:date2].nil? ? current_time.year : params[:date2].to_time.year
+        send_data render_to_string, filename: "製造経費データ#{start_year}年#{start_month}月〜#{end_year}年#{end_month}月分.csv", type: :csv
       end
     end
   end
