@@ -17,7 +17,7 @@ const ExpendableSearch = props => {
   const year = date.getFullYear()
   const last_month = date.getMonth() - 1
   const next_month = date.getMonth() + 2
-  const day = date.getDate()
+  const day = 1
 
   const init = {
     startDate: new Date(year, last_month, day),
