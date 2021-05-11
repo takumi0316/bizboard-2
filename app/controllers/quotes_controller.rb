@@ -388,35 +388,25 @@ class QuotesController < ApplicationController
         values << r.card_client.head_layout.name
         values << r.card_client.tail_layout.name
         parse_csv_data = CSV.parse(r.csv_file.download.force_encoding(Encoding.find('UTF-8')), liberal_parsing: true)
-        head_hash, tail_hash, dup_hash = {}, {}, {}
-        head_content_flag_ids,
-        tail_content_flag_ids,
-        dup_head_content_flag_ids,
-        dup_tail_content_flag_ids = convert_to_content_flag_ids(parse_csv_data[1]), convert_to_content_flag_ids(parse_csv_data[4]), [], []
-        head_content_flag_ids & tail_content_flag_ids.each do |d|
-          head_content_flag_ids.each_with_index do |h, i|
-            if h == d
-              next unless ContentFlag.find(h).image?
-              dup_hash[h] = NKF.nkf('-w', parse_csv_data[0][i] || '')
-              dup_head_content_flag_ids << h
-            end
-          end
-          tail_content_flag_ids.each_with_index do |t, i|
-            if t == d
-              next unless ContentFlag.find(t).image?
-              next if dup_hash.select { |k, v| k == t }.empty?
-              dup_hash[t] = NKF.nkf('-w', parse_csv_data[3][i] || '')
-              dup_tail_content_flag_ids << t
-            end
-          end
-        end
+        head_hash, tail_hash = {}, {}
+        head_content_flag_ids, tail_content_flag_ids = convert_to_content_flag_ids(parse_csv_data[1]), convert_to_content_flag_ids(parse_csv_data[4])
+
         head_content_flag_ids.each_with_index { |p, i| head_hash[p] = NKF.nkf('-w', parse_csv_data[0][i] || '') }
         tail_content_flag_ids.each_with_index { |p, i| tail_hash[p] = NKF.nkf('-w', parse_csv_data[3][i] || '') }
         flag_ids.each do |f|
+          flag = ContentFlag.find(f)
           if head_hash[f].present?
-            values << head_hash[f]
+            if flag.image?
+              values << Upload.find(head_hash.select { |k, v| k == f}[f]).name
+            else
+              values << head_hash[f]
+            end
           elsif tail_hash[f].present?
-            values << tail_hash[f]
+            if flag.image?
+              values << Upload.find(tail_hash.select{ |k, v| k == f }[f]).name
+            else
+              values << tail_hash[f]
+            end
           else
             values << ''
           end
