@@ -83,7 +83,7 @@ class Invoice < ApplicationRecord
     elsif parameters[:name].present?
 
       # 名称検索
-      _self = self.date_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month..Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+      _self = self.date_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
 
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
 
@@ -98,11 +98,24 @@ class Invoice < ApplicationRecord
     elsif parameters[:name].blank?
 
       #日付検索
-      _self = self.date_in(parameters[:date1].to_datetime.beginning_of_day..parameters[:date2].to_datetime.end_of_day)
+      _self = self.date_in(parameters[:date1].to_datetime.beginning_of_day, parameters[:date2].to_datetime.end_of_day)
 
       return _self
     end
 
+  end
+
+  def self.production_script
+
+    self.all.each do |r|
+      quote_number = r.quote&.quote_number
+      set_content = "お支払通知には、請求書番号「#{ quote_number }」をご記入下さい。"
+      if r.remarks.blank?
+        r.update! remarks: set_content
+      else
+        r.update! remarks: r.remarks + "\n" + set_content
+      end
+    end
   end
 
 end

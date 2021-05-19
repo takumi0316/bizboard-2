@@ -12,11 +12,13 @@ const InvoicePdfGenrator = props => {
   const year = date.getFullYear()
   const month = date.getMonth() + 2
 
+  const init_remarks = `お支払通知には、請求書番号「${ props.quote.quote_number }」 をご記入下さい。`
+
   const init = {
     date: props.invoice ? props.invoice.date : date,
     expiration: props.invoice ? props.invoice.expiration : new Date(year, month, 0),
     subject: props.quote.subject,
-    remarks: props.invoice ? props.invoice.remarks : props.quote.remarks,
+    remarks: props.invoice ? props.invoice.remarks : init_remarks,
     memo: props.invoice ? props.invoice.memo : props.quote.memo,
     attention: props.invoice ? props.invoice.attention || '請求書' : '請求書'
   }
@@ -40,7 +42,7 @@ const InvoicePdfGenrator = props => {
         check: true,
         message: '取引先を案件で登録してください。'
       }
-	  }
+    }
 
     return send
   }
@@ -149,7 +151,7 @@ const InvoicePdfGenrator = props => {
   const setUpdateInvoice = e => {
 
     e.preventDefault()
-  
+
     const url = `/invoices/${ props.invoice.id }`
     const field = new FormData()
     field.append('invoice[quote_id]', props.quote.id)
@@ -159,7 +161,7 @@ const InvoicePdfGenrator = props => {
     field.append('invoice[remarks]', state.remarks)
     field.append('invoice[memo]', state.memo)
     field.append('invoice[attention]', state.attention)
-  
+
     const request = window.xhrRequest.put(url, field)
     request.then(res => {
       window.mf_like_modal({ icon: 'success', message: '案件の更新に成功しました。' })
@@ -290,12 +292,12 @@ const InvoicePdfGenrator = props => {
           </div>
           <div className='u-mt-30'>
             <label name='remarks' className='c-form-label'>備考　※請求書に記載されます</label>
-            <textarea name='remarks' placeholder='備考を入力してください' className='c-form-text' rows='4' defaultValue={ state.remarks } onChange={ e => setRemarks(e) }/>
+            <textarea name='remarks' placeholder='備考を入力してください' className='c-form-textarea' type='textarea' rows='4' defaultValue={ state.remarks } onChange={ e => setRemarks(e) }/>
           </div>
           <div className='u-mt-10'>
             <label className='c-form-label'>メモ　※請求書に記載されません</label>
-            <textarea name='memo' placeholder='メモを入力してください' className='c-form-text' rows='4' defaultValue={ state.memo } onChange={ e => setMemo(e) }/>
-	        </div>
+            <textarea name='memo' placeholder='メモを入力してください' className='c-form-textarea' rows='4' defaultValue={ state.memo } onChange={ e => setMemo(e) }/>
+          </div>
           <div className='c-overlay-submit'>
             <div className='c-flex c-flex__center c-flex-alignItems__center'>
               <div>
@@ -311,7 +313,7 @@ const InvoicePdfGenrator = props => {
             </div>
           </div>
         </form>
-	      :
+        :
         <div>
           <CustomerAddress company={ props.company} division={ props.division } client={ props.client }/>
           <div className='u-mt-30 c-flex'>
@@ -412,16 +414,16 @@ const InvoicePdfGenrator = props => {
           </div>
           <div className='u-mt-30'>
             <label name='remarks' className='c-form-label'>備考　※請求書に記載されます</label>
-            <textarea name='remarks' placeholder='備考を入力してください' className='c-form-text' rows='4' defaultValue={ state.remarks } onChange={ setRemarks }/>
+            <textarea name='remarks' placeholder='備考を入力してください' className='c-form-textarea' type='textarea' rows='4' defaultValue={ state.remarks } onChange={ setRemarks }/>
           </div>
           <div className='u-mt-10'>
-	          <label className='c-form-label'>メモ　※請求書に記載されません</label>
-	          <textarea name='memo' placeholder='メモを入力してください' className='c-form-text' rows='4' defaultValue={ state.memo } onChange={ setMemo }/>
+            <label className='c-form-label'>メモ　※請求書に記載されません</label>
+            <textarea name='memo' placeholder='メモを入力してください' className='c-form-textarea' rows='4' defaultValue={ state.memo } onChange={ setMemo }/>
           </div>
           <div className='c-overlay-submit'>
             <div className='c-flex c-flex__center'>
               <div>
-	              <a className='c-btnMain c-btn-blue' onClick={ setNewInvoice }>作成する</a>
+                <a className='c-btnMain c-btn-blue' onClick={ setNewInvoice }>作成する</a>
               </div>
               <div className='u-ml-10'>
                 <a className='c-btnMain' href={ `/quotes/${props.quote.id}/edit` }>案件に戻る</a>

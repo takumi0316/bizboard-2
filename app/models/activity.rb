@@ -65,7 +65,7 @@ class Activity < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
-  scope :date_in, ->(datetime) { where(scheduled_date: datetime) }
+  scope :date_in, -> from, to { where(scheduled_date: from..to) }
 
   #----------------------------------------
   #  ** Methods **
