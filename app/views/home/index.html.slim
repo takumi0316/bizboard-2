@@ -7,6 +7,7 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
   = link_to '次月 >>', root_path(current: params[:current] ? (Date.parse(params[:current]) + 1.month).to_s(:system) : Date.today.to_s(:system)), class: 'l-dashboard__monthNext'
   h2.l-dashboard__heading 全体
   .l-dashboard__graphs
+    - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
     / 形状範囲
     - start_date = current_date.beginning_of_month.beginning_of_day
     - end_date = current_date.end_of_month.end_of_day
@@ -35,14 +36,12 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
   .l-dashboard__graphs
     .l-dashboard__graph
     - targets.each do |r|
-      / 形状範囲
-      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
       / 売上
-      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(start_date, end_date))
       - sales = quotes.pluck(:price).sum
       / 原価
       - expendables = expendables.where(division_id: r.division.id)
-      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(start_date, end_date)
       - expendable_cost = expendables.pluck(:price).sum
       - labor_cost = labors.pluck(:price).sum
       - cost = expendable_cost + labor_cost
@@ -51,14 +50,12 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
   .l-dashboard__graphs
     .l-dashboard__graph
     - targets.each do |r|
-      / 形状範囲
-      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
       / 売上
-      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(start_date, end_date))
       - sales = quotes.pluck(:price).sum
       / 原価
       - expendables = expendables.where(division_id: r.division.id)
-      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(start_date, end_date)
       - expendable_cost = expendables.pluck(:price).sum
       - labor_cost = labors.pluck(:price).sum
       - cost = expendable_cost + labor_cost
@@ -67,14 +64,12 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
   .l-dashboard__graphs
     .l-dashboard__graph
     - targets.each do |r|
-      / 形状範囲
-      - range = current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day
       / 売上
-      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(range))
+      - quotes = Quote.invoicing.where(division_id: r.division.id).joins(:invoice).merge(Invoice.date_in(start_date, end_date))
       - sales = quotes.pluck(:price).sum
       / 原価
       - expendables = expendables.where(division_id: r.division.id)
-      - labors = Labor.where(division_id: r.division.id).date_in(range)
+      - labors = Labor.where(division_id: r.division.id).date_in(start_date, end_date)
       - expendable_cost = expendables.pluck(:price).sum
       - labor_cost = labors.pluck(:price).sum
       - cost = expendable_cost + labor_cost
@@ -84,11 +79,9 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
     .l-dashboard__graph
     - prospect_targets = targets.where.not(division_id: 2).where.not(division_id: 7).where.not(division_id: 8)
     - prospect_targets.each do |r|
-      / 形状範囲
-      - range = current_date.beginning_of_month..current_date.end_of_month
       / 見込み
       / range内の納期に紐づく案件IDを取得
-      - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(range).pluck(:id)
+      - quote_ids = Quote.where(division_id: r.division_id).deliverd_in(start_date, end_date).pluck(:id)
       / 活動履歴と案件を組み合わせて受注予定日と合う物を取得
       - activity = Activity.where(quote_id: quote_ids).joins(:quote)
       / 活動履歴から同じquote_idを持つのから最新の作成日を取得
@@ -98,9 +91,9 @@ script[src="https://embed.small.chat/T8Q27PK2RGLJTNMG8Z.js" async]
 
       - if activity_ids.blank?
         - activity_ids = activity.ids
-        - activities = activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+        - activities = activity.where(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(start_date, end_date))
       - else
-        - activities = activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(range))
+        - activities = activity.where.not(id: activity_ids).joins(:quote).merge(Quote.deliverd_in(start_date, end_date))
 
       / 確度
       - accurary_a = activities.where(accurary: 0).pluck(:price).sum
