@@ -70,7 +70,7 @@ class Expendable < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
-  scope :date_in, -> from, to { where(date: form..to) }
+  scope :date_in, -> from, to { where(date: from..to) }
 
   #----------------------------------------
   #  ** Methods **
