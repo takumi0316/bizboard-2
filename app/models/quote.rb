@@ -132,7 +132,7 @@ class Quote < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
-  scope :deliverd_in, ->(datetime) { where(deliver_at: datetime) }
+  scope :deliverd_in, -> from, to { where(deliver_at: from..to) }
 
   scope :deliverd_at, -> { order(deliver_at: :desc) }
 

@@ -50,8 +50,7 @@ class Invoice < ApplicationRecord
 
   scope :invoiced_in, ->(datetime) { where(created_at: datetime) }
 
-  scope :date_in, ->(datetime) { where(date: datetime) }
-
+  scope :date_in, -> (from, to) { where(date: from..to) }
 
   #----------------------------------------
   #  ** Methods **
