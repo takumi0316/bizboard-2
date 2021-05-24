@@ -12,7 +12,7 @@ const InvoicePdfGenrator = props => {
   const year = date.getFullYear()
   const month = date.getMonth() + 2
 
-  const init_remarks = `お支払通知には、請求書番号「${ props.quote.quote_number }」 をご記入下さい。`
+  const init_remarks = `${ props.quote.remarks }\nお支払通知には、請求書番号「${ props.quote.quote_number }」 をご記入下さい。`
 
   const init = {
     date: props.invoice ? props.invoice.date : date,
