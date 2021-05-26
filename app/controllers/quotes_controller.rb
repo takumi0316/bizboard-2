@@ -377,7 +377,6 @@ class QuotesController < ApplicationController
 
     def create_csv_row_data_from_archive(flag_ids, card_template, csv, headers)
 
-      require 'nkf'
       quote.task.cart.cart_items.each do |r|
         values = []
         values << card_template.name
@@ -391,8 +390,8 @@ class QuotesController < ApplicationController
         head_hash, tail_hash = {}, {}
         head_content_flag_ids, tail_content_flag_ids = convert_to_content_flag_ids(parse_csv_data[1]), convert_to_content_flag_ids(parse_csv_data[4])
 
-        head_content_flag_ids.each_with_index { |p, i| head_hash[p] = NKF.nkf('-w', parse_csv_data[0][i] || '') }
-        tail_content_flag_ids.each_with_index { |p, i| tail_hash[p] = NKF.nkf('-w', parse_csv_data[3][i] || '') }
+        head_content_flag_ids.each_with_index { |p, i| head_hash[p] = parse_csv_data[0][i] || '' }
+        tail_content_flag_ids.each_with_index { |p, i| tail_hash[p] = parse_csv_data[3][i] || '' }
         flag_ids.each do |f|
           flag = ContentFlag.find(f)
           if head_hash[f].present?
