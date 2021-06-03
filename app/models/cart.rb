@@ -38,7 +38,7 @@ class Cart < ApplicationRecord
   belongs_to :task
 
   has_many :cart_items
- 
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------

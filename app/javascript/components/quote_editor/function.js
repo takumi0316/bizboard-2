@@ -98,10 +98,14 @@ export const setQuoteProjectName = (passIndex, name, quote, setQuote) => {
   setQuote({ ...quote, quote_projects: quote_projects })
 }
 
-// 品目数量
+/*
+   品目数量
+   品目単価と品目数量は同じロジックにまとめれられそう
+ */
+
 export const setQuoteProjectUnit = (e, passIndex, quote, setQuote) => {
-  
-  let tar_unit = e.target.value
+
+  let tar_unit = e.target.value.trim()
   let quote_projects = JSON.parse(JSON.stringify(quote.quote_projects))
   tar_unit = tar_unit.replace(/[ー]/, '-')
   const cast_unit = tar_unit.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0)-0xFEE0))
@@ -109,17 +113,16 @@ export const setQuoteProjectUnit = (e, passIndex, quote, setQuote) => {
   const unit = quote_projects[passIndex].unit
 
   if(unit !== res_unit) {
-    quote_projects[passIndex].unit = parseFloat(res_unit)
+    const set_unit = isNaN(parseFloat(res_unit)) ? 0 : res_unit
+    quote_projects[passIndex].unit = parseFloat(set_unit)
     setQuote({ ...quote, quote_projects: quote_projects })
   }
-  if(unit === res_unit) e.target.value = parseFloat(res_unit)
-  if(!unit && !res_unit) e.target.value = ''
 }
 
 // 品目単価
 export const setQuoteProjectUnitPrice = (e, passIndex, quote, setQuote) => {
   
-  let tar_unit_price = e.target.value
+  let tar_unit_price = e.target.value.trim()
   let quote_projects = JSON.parse(JSON.stringify(quote.quote_projects))
   tar_unit_price = tar_unit_price.replace(/[ー]/, '-')
   const cast_unit_price = tar_unit_price.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0)-0xFEE0))
@@ -127,11 +130,11 @@ export const setQuoteProjectUnitPrice = (e, passIndex, quote, setQuote) => {
   const unit_price = quote_projects[passIndex].unit_price
 
   if(unit_price !== res_unit_price) {
-    quote_projects[passIndex].unit_price = parseFloat(res_unit_price)
+    const set_unit_price = isNaN(parseFloat(res_unit_price)) ? 0 : res_unit_price
+    quote_projects[passIndex].unit_price = parseFloat(set_unit_price)
     setQuote({ ...quote, quote_projects: quote_projects })
   }
-  if(unit_price === res_unit_price) e.target.value = parseFloat(res_unit_price)
-  if(!unit_price && !res_unit_price) e.target.value = ''
 }
 
 export const setCompanyName = (company_name, company_division, client_name, quote, setQuote) => setQuote({ ...quote, company_name: company_name, company_division: company_division, client_name: client_name })
+
