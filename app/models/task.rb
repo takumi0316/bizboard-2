@@ -44,7 +44,7 @@ class Task < ApplicationRecord
   #  ** Associations **
   #----------------------------------------
 
-  has_one :cart
+  has_one :cart, dependent: :destroy
 
   # quote
   belongs_to :quote

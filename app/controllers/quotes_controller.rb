@@ -113,12 +113,10 @@ class QuotesController < ApplicationController
   def destroy
 
     quote.destroy!
+    redirect_to quotes_path, flash: { show: true, icon: 'success', message: '案件を削除しました' }
   rescue => e
 
-    flash[:warning] = { message: e.message }
-  ensure
-
-    redirect_to action: :index
+    redirect_to quotes_path, flash: { show: true, icon: 'error', message: e.message }
   end
 
   ##
