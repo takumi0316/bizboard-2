@@ -62,7 +62,7 @@ class WorksController < ApplicationController
     work.update! work_params
 
     work.quote.working! if work.working? && !work.quote.invoicing?
-    work.quote.end_work! if work.completed? && !work.quote.invoicing?
+    work.quote.update! status: :end_work, lock: true if work.completed? && !work.quote.invoicing?
 
     render json: { status: :success, work: work }
   rescue => e
