@@ -1,6 +1,13 @@
-.u-mt-15 = link_to '取引先を作成する', new_company_path, class: 'c-btnMain c-btn-blue'
+.u-mt-15 
+	= react_component :CompanyEdit,
+		{   companies: @companies,
+			divisions: @divisions,
+			company: Company.new,
+			division: CompanyDivision.new,
+			clients: client,
+		}
 
-= form_with url: companies_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
+= form_with url: test_company_division_clients_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
   = f.label :name, '会社名'
   .c-flex.c-flex-alignItems__center
     .c-search__item
@@ -27,15 +34,55 @@
 					- division_count = clients.where(company_division_id: r.company_division_id).count
 					- if first_company_id != belong_company_id || i == 0
 						td.u-va-middle rowspan=(company_count) = r.company_division.company.id 
-						td.u-va-middle rowspan=(company_count) = r.company_division.company.name
+						td.u-va-middle rowspan=(company_count) 
+							.c-flex__between
+								= r.company_division.company.name
+								= react_component :CompanyEdit,
+									{   companies: @companies,
+										divisions: @divisions,
+										company: r.company_division.company,
+										division: CompanyDivision.new,
+										clients: client,
+									}
+							.u-mt-10
+								= react_component :DivisionEdit,
+									{ companies: @companies,
+									  divisions: @divisions,
+									  company: r.company_division.company,
+									  division: CompanyDivision.new,
+									  clients: client,
+									}
 					- first_company_id = belong_company_id if first_company_id != belong_company_id
 					- if first_division_id != r.company_division_id
-						td.u-va-middle rowspan=(division_count) 
-							= r.company_division.name
-							.u-mt-10 
-								= react_component :CompanyDivisionClient,{client: r,}
+						td.u-va-middle rowspan=(division_count)
+							.c-flex__between
+								= r.company_division.name
+								= react_component :DivisionEdit,
+									{ companies: @companies,
+									  divisions: @divisions,
+									  company: r.company_division.company,
+									  division: r.company_division,
+									}
+							.u-mt-10
+								= react_component :CompanyDivisionClient,
+								{ division: r.company_division,
+								  companies: @companies,
+								  divisions: @divisions,
+								  users: @users,
+								  current_user_id: current_user.id,
+								  clients: client,
+								}
 						- first_division_id = r.company_division_id if first_division_id != r.company_division_id
-					td.u-va-middle = r.name
+					td.u-va-middle.c-flex__between
+						= r.name
+						= react_component :CompanyDivisionClient,
+								{ division: r.company_division,
+								  companies: @companies,
+								  divisions: @divisions,
+								  users: @users,
+								  current_user_id: current_user.id,
+								  clients: r,
+								}
 
 
 = render 'layouts/_partials/pagination'
