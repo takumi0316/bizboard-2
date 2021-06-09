@@ -101,7 +101,9 @@
 
   # 取引先(会社)
   resources :companies do
-    collection { post :import_client }
+    collection do
+      post :import_client
+    end
   end
 
   # 取引先(部署)
@@ -111,6 +113,7 @@
   resources :company_division_clients do
     collection do
       get :search_clients
+      get :all_edit
     end
     member do
       post :update_layout_values

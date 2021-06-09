@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(version: 2021_04_22_054755) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2021-03-25 02:14:19"
+    t.datetime "lastaccesstask", default: "2020-09-30 13:37:45"
     t.integer "opt", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -751,7 +751,7 @@ ActiveRecord::Schema.define(version: 2021_04_22_054755) do
     t.bigint "catalog_id", comment: "catalogのid"
     t.string "client_name"
     t.string "client_mail"
-    t.datetime "clientlastaccess", default: "2021-03-25 02:14:19"
+    t.datetime "clientlastaccess", default: "2020-09-30 13:37:45"
     t.integer "will_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -802,7 +802,7 @@ ActiveRecord::Schema.define(version: 2021_04_22_054755) do
     t.datetime "confirmed_at", comment: "承認日時"
     t.datetime "confirmation_sent_at", comment: "認証トークン作成日時"
     t.string "unconfirmed_email", comment: "承認待時メール送信先"
-    t.datetime "lastaccesstask", default: "2021-03-25 02:14:19"
+    t.datetime "lastaccesstask", default: "2020-09-30 13:37:45"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_users_on_division_id"

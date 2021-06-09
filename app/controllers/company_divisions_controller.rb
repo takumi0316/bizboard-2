@@ -56,8 +56,9 @@ class CompanyDivisionsController < ApplicationController
   def create
   
     division.update! division_params
-  
-    redirect_to edit_company_division_path(division), flash: { show: true, icon: 'info', message: '取引先部署情報を更新しました' }
+    CompanyDivisionClient.create client_params.merge(company_division_id: division.id, confirmation_token: 'FactoryToken', confirmed_at: Time.zone.now, confirmation_sent_at: Time.zone.now) if !client_params.nil?
+
+    redirect_to edit_company_division_path(division), flash: { show: true, icon: 'info', message: '取引先部署を作成しました' }
   rescue => e
   
     redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }
@@ -113,11 +114,21 @@ class CompanyDivisionsController < ApplicationController
   private
   
   ##
-  # パラメータの取得
+  # 部署パラメータの取得
   # @version 2018/06/10
   #
   def division_params
     
     params.require(:company_division).permit :company_id, :name, :kana, :zip, :prefecture_id, :address1, :address2, :note
   end
+
+  ##
+  # 担当者パラメータの取得
+  # @version 2018/06/10
+  #
+  def client_params
+    
+    params.require(:company_division_client).permit :company_division_id, :user_id, :name, :kana, :title, :tel, :email, :password, :password_confirmation, :user_type, :note, :confirmation_token, :confirmed_at, :confirmation_sent_at
+  end
+
 end
