@@ -202,13 +202,6 @@ ActiveRecord::Schema.define(version: 2021_04_22_054755) do
     t.index ["company_id"], name: "index_company_divisions_on_company_id"
   end
 
-  create_table "content_flag_uploads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "content_flag_id"
-    t.bigint "upload_id"
-    t.index ["content_flag_id"], name: "index_content_flag_uploads_on_content_flag_id"
-    t.index ["upload_id"], name: "index_content_flag_uploads_on_upload_id"
-  end
-
   create_table "content_flags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -348,6 +341,7 @@ ActiveRecord::Schema.define(version: 2021_04_22_054755) do
     t.bigint "content_flag_id"
     t.bigint "upload_id"
     t.bigint "layout_content_id"
+    t.string "upload_url"
     t.index ["company_division_client_id"], name: "index_layout_values_on_company_division_client_id"
     t.index ["content_flag_id"], name: "index_layout_values_on_content_flag_id"
     t.index ["layout_content_id"], name: "index_layout_values_on_layout_content_id"
