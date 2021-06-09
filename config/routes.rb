@@ -113,7 +113,7 @@
   resources :company_division_clients do
     collection do
       get :search_clients
-      get :test
+      get :all_edit
     end
     member do
       post :update_layout_values
