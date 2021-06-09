@@ -6,7 +6,7 @@
   division_id: current_user.division.id,
   divisions: Division.pluck(:name, :id),
   company_name: quote.persisted?? quote.client.company_division.company.name : '',
-	company_division: quote.persisted?? quote.client.company_division : '',
+  company_division: quote.persisted?? quote.client.company_division : '',
   client_info: quote.persisted?? "#{ quote.client.company_division.company.name }\n#{ quote.client.company_division.name }\n#{ quote.client.name }" : '',
   client_name: quote.persisted?? quote.client.name : '',
   jii_address: SiteConfig.get_all[:jii_address],

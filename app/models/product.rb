@@ -13,7 +13,7 @@
 #  delivery_target_id :bigint(8)
 #  max_unit           :integer          default("box")
 #  min_unit           :integer          default("box")
-#  fixed_additions    :integer
+#  fixed_additions    :integer          default(1)
 #
 
 class Product < ApplicationRecord

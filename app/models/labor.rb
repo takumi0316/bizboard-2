@@ -38,7 +38,7 @@ class Labor < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
-  scope :date_in, ->(datetime) { where(date: datetime) }
+  scope :date_in, -> from, to { where(date: from..to) }
 
   #----------------------------------------
   #  ** Methods **

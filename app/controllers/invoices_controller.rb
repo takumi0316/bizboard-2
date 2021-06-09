@@ -161,7 +161,7 @@ class InvoicesController < ApplicationController
       redirect_to action: :index
     else
 
-      _self = Invoice.date_in(params[:date1].to_datetime.beginning_of_day..params[:date2].to_datetime.end_of_day)
+      _self = Invoice.date_in(params[:date1].to_datetime.beginning_of_day, params[:date2].to_datetime.end_of_day)
       terms = params[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       @invoice = _self.where(query, *terms.map { |term| "%#{term}%" })
