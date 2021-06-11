@@ -229,6 +229,7 @@ class QuotesController < ApplicationController
     filename = "#{quote.quote_number}_#{quote.subject}.zip"
     fullpath = "#{Rails.root}/tmp/#{filename}"
 
+    binding.pry
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
       card_template = CardTemplate.find_by(company_id: quote.client.company_division.company_id)
       zipfile.get_output_stream("#{quote.quote_number}_#{quote.subject}.csv".encode('cp932')) do |f|
@@ -384,7 +385,7 @@ class QuotesController < ApplicationController
         values << "#{ quote.task&.delivery_target&.address1 }#{ quote.task&.delivery_target&.address2 }"
         values << r.card_client.head_layout.name
         values << r.card_client.tail_layout.name
-        parse_csv_data = CSV.parse(r.csv_file.download.force_encoding(Encoding.find('UTF-8')), liberal_parsing: true)
+        parse_csv_data = CSV.parse(r.csv_file.download.force_encoding(Encoding.find('CP932')), liberal_parsing: true)
         head_hash, tail_hash = {}, {}
         head_content_flag_ids, tail_content_flag_ids = convert_to_content_flag_ids(parse_csv_data[1]), convert_to_content_flag_ids(parse_csv_data[4])
 
