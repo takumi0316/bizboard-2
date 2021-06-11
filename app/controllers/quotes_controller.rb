@@ -229,7 +229,6 @@ class QuotesController < ApplicationController
     filename = "#{quote.quote_number}_#{quote.subject}.zip"
     fullpath = "#{Rails.root}/tmp/#{filename}"
 
-    binding.pry
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
       card_template = CardTemplate.find_by(company_id: quote.client.company_division.company_id)
       zipfile.get_output_stream("#{quote.quote_number}_#{quote.subject}.csv".encode('cp932')) do |f|
