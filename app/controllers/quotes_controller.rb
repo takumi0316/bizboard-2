@@ -231,8 +231,7 @@ class QuotesController < ApplicationController
 
     Zip::File.open(fullpath, Zip::File::CREATE) do |zipfile|
       card_template = CardTemplate.find_by(company_id: quote.client.company_division.company_id)
-      zipfile.force_entry_names_encoding = 'UTF-8'
-      zipfile.get_output_stream("#{quote.quote_number}_#{quote.subject}.csv") do |f|
+      zipfile.get_output_stream("#{quote.quote_number}_#{quote.subject}.csv".encode('cp932')) do |f|
 
         bom = "\uFEFF"
         f.puts(
