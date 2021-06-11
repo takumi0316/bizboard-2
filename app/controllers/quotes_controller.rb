@@ -235,7 +235,7 @@ class QuotesController < ApplicationController
 
         bom = "\uFEFF"
         f.puts(
-          CSV.generate(bom) do |csv|
+          CSV.generate do |csv|
 
             headers = []
             headers << 'テンプレート名'
