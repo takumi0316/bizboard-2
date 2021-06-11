@@ -1,11 +1,11 @@
-.u-mt-15 
-	= react_component :CompanyEdit,
-		{   companies: @companies,
-			divisions: @divisions,
-			company: Company.new,
-			division: CompanyDivision.new,
-			clients: client,
-		}
+.u-mt-15
+  = react_component :CompanyEdit,
+    {   companies: @companies,
+      divisions: @divisions,
+      company: Company.new,
+      division: CompanyDivision.new,
+      clients: client,
+    }
 
 = form_with url: all_edit_company_division_clients_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
   = f.label :name, '会社名'
@@ -15,74 +15,74 @@
     = f.submit '検索', class: 'c-btnMain'
 
 .c-table.u-mt-15
-	table
-		thead
-			tr
-				th ID
-				th 会社名
-				th 部署名
-				th 担当者
-		tbody
-			- first_company_id = [clients.first.company_division.company.id]
-			- first_division_id = [clients.first.company_division.id]
-			- first_client_id = [clients.first.id]
-			- clients.each.with_index do |r, i|
-				tr
-					- belong_company_id = @divisions.find(r.company_division_id).company_id
-					- belong_division_ids = @divisions.where(company_id: belong_company_id).ids if first_company_id != belong_company_id || i == 0
-					- company_count = clients.where(company_division_id: belong_division_ids).count if first_company_id != belong_company_id || i == 0
-					- division_count = clients.where(company_division_id: r.company_division_id).count
-					- if first_company_id != belong_company_id || i == 0
-						td.u-va-middle rowspan=(company_count) = r.company_division.company.id 
-						td.u-va-middle rowspan=(company_count) 
-							.c-flex__between
-								= r.company_division.company.name
-								= react_component :CompanyEdit,
-									{   companies: @companies,
-										divisions: @divisions,
-										company: r.company_division.company,
-										division: CompanyDivision.new,
-										clients: client,
-									}
-							.u-mt-10
-								= react_component :DivisionEdit,
-									{ companies: @companies,
-									  divisions: @divisions,
-									  company: r.company_division.company,
-									  division: CompanyDivision.new,
-									  clients: client,
-									}
-					- first_company_id = belong_company_id if first_company_id != belong_company_id
-					- if first_division_id != r.company_division_id
-						td.u-va-middle rowspan=(division_count)
-							.c-flex__between
-								= r.company_division.name
-								= react_component :DivisionEdit,
-									{ companies: @companies,
-									  divisions: @divisions,
-									  company: r.company_division.company,
-									  division: r.company_division,
-									}
-							.u-mt-10
-								= react_component :CompanyDivisionClient,
-								{ division: r.company_division,
-								  companies: @companies,
-								  divisions: @divisions,
-								  users: @users,
-								  current_user_id: current_user.id,
-								  clients: client,
-								}
-						- first_division_id = r.company_division_id if first_division_id != r.company_division_id
-					td.u-va-middle.c-flex__between
-						= r.name
-						= react_component :CompanyDivisionClient,
-								{ division: r.company_division,
-								  companies: @companies,
-								  divisions: @divisions,
-								  users: @users,
-								  current_user_id: current_user.id,
-								  clients: r,
-								}
+  table
+    thead
+      tr
+        th ID
+        th 会社名
+        th 部署名
+        th 担当者
+    tbody
+      - first_company_id = [clients.first.company_division.company.id]
+      - first_division_id = [clients.first.company_division.id]
+      - first_client_id = [clients.first.id]
+      - clients.each.with_index do |r, i|
+        tr
+          - belong_company_id = @divisions.find(r.company_division_id).company_id
+          - belong_division_ids = @divisions.where(company_id: belong_company_id).ids if first_company_id != belong_company_id || i == 0
+          - company_count = clients.where(company_division_id: belong_division_ids).count if first_company_id != belong_company_id || i == 0
+          - division_count = clients.where(company_division_id: r.company_division_id).count
+          - if first_company_id != belong_company_id || i == 0
+            td.u-va-middle rowspan=(company_count) = r.company_division.company.id
+            td.u-va-middle rowspan=(company_count)
+              .c-flex__between
+                = r.company_division.company.name
+                = react_component :CompanyEdit,
+                  {   companies: @companies,
+                    divisions: @divisions,
+                    company: r.company_division.company,
+                    division: CompanyDivision.new,
+                    clients: client,
+                  }
+              .u-mt-10
+                = react_component :DivisionEdit,
+                  { companies: @companies,
+                    divisions: @divisions,
+                    company: r.company_division.company,
+                    division: CompanyDivision.new,
+                    clients: client,
+                  }
+          - first_company_id = belong_company_id if first_company_id != belong_company_id
+          - if first_division_id != r.company_division_id
+            td.u-va-middle rowspan=(division_count)
+              .c-flex__between
+                = r.company_division.name
+                = react_component :DivisionEdit,
+                  { companies: @companies,
+                    divisions: @divisions,
+                    company: r.company_division.company,
+                    division: r.company_division,
+                  }
+              .u-mt-10
+                = react_component :CompanyDivisionClient,
+                { division: r.company_division,
+                  companies: @companies,
+                  divisions: @divisions,
+                  users: @users,
+                  current_user_id: current_user.id,
+                  clients: client,
+                }
+            - first_division_id = r.company_division_id if first_division_id != r.company_division_id
+          td.u-va-middle.c-flex__between
+            = r.name
+            = react_component :CompanyDivisionClient,
+                { division: r.company_division,
+                  companies: @companies,
+                  divisions: @divisions,
+                  users: @users,
+                  current_user_id: current_user.id,
+                  clients: r,
+                }
 
 
 = render 'layouts/_partials/pagination'

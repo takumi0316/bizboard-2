@@ -9,7 +9,7 @@ import {
 } from './properties.es6'
 
 export const addQuoteProject = (e, quote, setQuote) => {
-  
+
   //e.preventDefault()
   e.target.blur()
 
@@ -19,7 +19,7 @@ export const addQuoteProject = (e, quote, setQuote) => {
 }
 
 export const handleOpenDetailConfig = (e, state, setState) => {
-  
+
   e.preventDefault()
   e.target.blur()
   setState({ ...state, open_detail_config: true })
@@ -38,7 +38,7 @@ export const removeQuoteProject = (index, quote, setQuote) => {
   const quote_projects = JSON.parse(JSON.stringify(quote.quote_projects)).map((project, pi) => {
 
     if(index !== pi) return project
-    
+
     if(index === pi) return { ...project, _destroy: true }
   })
 
@@ -48,13 +48,13 @@ export const removeQuoteProject = (index, quote, setQuote) => {
 export const handleCloseDetailConfig = (state, setState) => setState({ ...state, open_detail_config: false })
 
 export const handleChangeDeliverType = (e, state, setState) => {
-  
+
   const tarVal = e.target.value
   setState({ ...state, show_deliver_type: tarVal === LOCATION || tarVal === OTHER })
 }
 
 export const handleChangeChannel = (e, state, setState) => {
-  
+
   const tarVal = e.target.value
 
   if(tarVal === BPR_ERP && !state.show_detail_channel) setState({ ...state, show_detail_channel: true })
@@ -78,7 +78,7 @@ export const setDeliveryNoteDate = (value, quote, setQuote) => setQuote({ ...quo
 export const setDeliverAt = (value, quote, setQuote) => setQuote({ ...quote, deliver_at: value })
 
 export const applyQuoteProject = (index, tarProject, quote, setQuote) => {
-  
+
   const quote_projects = JSON.parse(JSON.stringify(quote.quote_projects))
 
   quote_projects[index].project_id = tarProject.id
@@ -92,7 +92,7 @@ export const applyQuoteProject = (index, tarProject, quote, setQuote) => {
 }
 
 export const setQuoteProjectName = (passIndex, name, quote, setQuote) => {
-  
+
   let quote_projects = JSON.parse(JSON.stringify(quote.quote_projects))
   quote_projects[passIndex].name = name
   setQuote({ ...quote, quote_projects: quote_projects })
@@ -121,7 +121,7 @@ export const setQuoteProjectUnit = (e, passIndex, quote, setQuote) => {
 
 // 品目単価
 export const setQuoteProjectUnitPrice = (e, passIndex, quote, setQuote) => {
-  
+
   let tar_unit_price = e.target.value.trim()
   let quote_projects = JSON.parse(JSON.stringify(quote.quote_projects))
   tar_unit_price = tar_unit_price.replace(/[ー]/, '-')
