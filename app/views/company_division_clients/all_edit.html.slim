@@ -23,20 +23,31 @@
 				th 部署名
 				th 担当者
 		tbody
-			- first_company_id = [clients.first.company_division.company.id]
-			- first_division_id = [clients.first.company_division.id]
-			- first_client_id = [clients.first.id]
-			- clients.each.with_index do |r, i|
+
+			//最初の会社IDを取得
+			- first_company_id = [clients.first.company_division.company.id] if !clients.blank?
+			//最初の部署IDを取得
+			- first_division_id = [clients.first.company_division.id] if !clients.blank?
+			
+			- clients.each_with_index do |r, i|
 				tr
+					//担当者が所属する部署から会社のIDを見つける
 					- belong_company_id = @divisions.find(r.company_division_id).company_id
-					- belong_division_ids = @divisions.where(company_id: belong_company_id).ids if first_company_id != belong_company_id || i == 0
-					- company_count = clients.where(company_division_id: belong_division_ids).count if first_company_id != belong_company_id || i == 0
+					//担当者が所属する会社の全ての部署IDを見つける　eachが初回の処理以外なら飛ばす
+					- belong_division_ids = @divisions.where(company_id: belong_company_id).ids if  first_company_id != belong_company_id || i == 0
+					//担当者が所属する会社の全てのユーザー数を保存　eachが初回の処理以外なら飛ばす					
+					- company_count = clients.where(company_divisions: { id: belong_division_ids}).count if first_company_id != belong_company_id || i == 0
+					//担当者が所属する部署の全てのユーザー数を保存　eachが初回の処理以外なら飛ばす					
 					- division_count = clients.where(company_division_id: r.company_division_id).count
-					- if first_company_id != belong_company_id || i == 0
-						td.u-va-middle rowspan=(company_count) = r.company_division.company.id 
+
+					- if first_company_id != belong_company_id || i == 0 
+						td.u-va-middle rowspan=(company_count) 
+							= r.company_division.company.id
 						td.u-va-middle rowspan=(company_count) 
 							.c-flex__between
 								= r.company_division.company.name
+								= clients.where(company_division_id: belong_division_ids).count
+								= i
 								= react_component :CompanyEdit,
 									{   companies: @companies,
 										divisions: @divisions,
@@ -83,6 +94,4 @@
 								  current_user_id: current_user.id,
 								  clients: r,
 								}
-
-
 = render 'layouts/_partials/pagination'
