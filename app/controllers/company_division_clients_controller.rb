@@ -14,13 +14,18 @@ class CompanyDivisionClientsController < ApplicationController
   #----------------------------------------
   
   expose(:companies) { Company.all.order(:id) }
+
+  expose(:divisions) { CompanyDivision.all.order(:id) }
+
+  expose(:all_clients) { CompanyDivisionClient.all.joins(company_division: :company) }
+
+  expose(:users) { User.all.order(:id) }
   
   expose_with_pagination(:clients) { 
     CompanyDivisionClient
     .all
     .search(params[:name])
     .joins(company_division: :company)
-    
   }
   
   expose(:client) { CompanyDivisionClient.find_or_initialize_by id: params[:id] }
@@ -213,12 +218,7 @@ class CompanyDivisionClientsController < ApplicationController
   def all_edit
     
     unless request.xhr?
-      binding.pry
       add_breadcrumb '担当者一覧'
-      @divisions = CompanyDivision.all
-      @companies = Company.all
-      @users = User.all
-      
     end
   end
   

@@ -32,13 +32,13 @@
 			- clients.each_with_index do |r, i|
 				tr
 					//担当者が所属する部署から会社のIDを見つける
-					- belong_company_id = @divisions.find(r.company_division_id).company_id
+					- belong_company_id = divisions.find(r.company_division_id).company_id
 					//担当者が所属する会社の全ての部署IDを見つける　eachが初回の処理以外なら飛ばす
-					- belong_division_ids = @divisions.where(company_id: belong_company_id).ids if  first_company_id != belong_company_id || i == 0
-					//担当者が所属する会社の全てのユーザー数を保存　eachが初回の処理以外なら飛ばす					
-					- company_count = clients.where(company_divisions: { id: belong_division_ids}).count if first_company_id != belong_company_id || i == 0
+					- belong_division_ids = divisions.where(company_id: belong_company_id).ids if  first_company_id != belong_company_id || i == 0
+					//担当者が所属する会社の全てのユーザー数を保存　eachが初回の処理以外なら飛ばす	
+					- company_count = all_clients.where(company_divisions: { id: belong_division_ids}).count if first_company_id != belong_company_id || i == 0
 					//担当者が所属する部署の全てのユーザー数を保存　eachが初回の処理以外なら飛ばす					
-					- division_count = clients.where(company_division_id: r.company_division_id).count
+					- division_count = all_clients.where(company_division_id: r.company_division_id).count
 
 					- if first_company_id != belong_company_id || i == 0 
 						td.u-va-middle rowspan=(company_count) 
@@ -46,19 +46,17 @@
 						td.u-va-middle rowspan=(company_count) 
 							.c-flex__between
 								= r.company_division.company.name
-								= clients.where(company_division_id: belong_division_ids).count
-								= i
 								= react_component :CompanyEdit,
-									{   companies: @companies,
-										divisions: @divisions,
+									{   companies: companies,
+										divisions: divisions,
 										company: r.company_division.company,
 										division: CompanyDivision.new,
 										clients: client,
 									}
 							.u-mt-10
 								= react_component :DivisionEdit,
-									{ companies: @companies,
-									  divisions: @divisions,
+									{ companies: companies,
+									  divisions: divisions,
 									  company: r.company_division.company,
 									  division: CompanyDivision.new,
 									  clients: client,
@@ -69,17 +67,17 @@
 							.c-flex__between
 								= r.company_division.name
 								= react_component :DivisionEdit,
-									{ companies: @companies,
-									  divisions: @divisions,
+									{ companies: companies,
+									  divisions: divisions,
 									  company: r.company_division.company,
 									  division: r.company_division,
 									}
 							.u-mt-10
 								= react_component :CompanyDivisionClient,
 								{ division: r.company_division,
-								  companies: @companies,
-								  divisions: @divisions,
-								  users: @users,
+								  companies: companies,
+								  divisions: divisions,
+								  users: users,
 								  current_user_id: current_user.id,
 								  clients: client,
 								}
@@ -88,9 +86,9 @@
 						= r.name
 						= react_component :CompanyDivisionClient,
 								{ division: r.company_division,
-								  companies: @companies,
-								  divisions: @divisions,
-								  users: @users,
+								  companies: companies,
+								  divisions: divisions,
+								  users: users,
 								  current_user_id: current_user.id,
 								  clients: r,
 								}
