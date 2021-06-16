@@ -27,7 +27,7 @@ const EditingViewer = props => {
   const memoRef = useRef(null)
 
   const init = { open_detail_config: false }
- 
+
   const [state, setState] = useState(init)
 
   const saveContents = e => {
@@ -54,7 +54,7 @@ const EditingViewer = props => {
     const subject = props.quote.subject
     if(subject) setContents = { ...setContents, subject: subject }
     if(!subject) {
-    
+
       mf_like_modal({
         icon: 'error',
         message: '件名を入力して下さい',
@@ -62,17 +62,17 @@ const EditingViewer = props => {
       })
       return
     }
-  
+
     const noSelectedProject = []
     const field = new FormData()
 
     let price = 0
- 
+
     props.quote.quote_projects.map((project, index) => {
-    
+
       if(project.id && noSelectedProject.length === 0 && !project.name && !project.project_id) noSelectedProject.push({ index: index })
       if(!project.id && project._destroy) return
- 
+
       const sumPrice = Math.round(parseFloat(project.unit) * parseFloat(project.unit_price))
       field.append('quote[quote_projects_attributes][][id]', project.id)
       field.append('quote[quote_projects_attributes][][project_id]', project.project_id)
@@ -89,7 +89,7 @@ const EditingViewer = props => {
       }
       price = price + sumPrice
     })
- 
+
     field.append('quote[id]', props.quote.id || '')
     field.append('quote[division_id]', props.quote.division_id)
     field.append('quote[company_division_client_id]', setContents.client_id)
@@ -122,14 +122,14 @@ const EditingViewer = props => {
 
     const request = props.quote.id ? window.xhrRequest.put(props.action, field) : window.xhrRequest.post(props.action, field)
     request.then(res => {
-    
+
       if(res.data.status === 'success') {
-      
+
         if(props.quote.id) {
           props.setQuote({ ...props.quote, price: price, drive_folder_id: res.data.drive_folder_id })
           window.mf_like_modal({ icon: 'success', message: '案件を保存しました' })
         }
-      
+
         // 編集ページへリダイレクト
         if(!props.quote.id) {
           const redirect = () => location.href = `${res.data.quote.id}/edit`
@@ -190,8 +190,7 @@ const EditingViewer = props => {
             <strong>見積書番号</strong>
             <input className='c-form-text' defaultValue={ props.quote.quote_number } readOnly='readonly'/>
           </div>
-          <div
-            className={ `${ Style.EditingViewer__innerColumn__three } ${ Style.EditingViewer__innerColumn__threeDate }` }>
+          <div className={ `${ Style.EditingViewer__innerColumn__three } ${ Style.EditingViewer__innerColumn__threeDate }` }>
             <strong>発行日</strong>
             <DatetimePicker
               id='issues_date'

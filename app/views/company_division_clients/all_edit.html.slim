@@ -1,11 +1,11 @@
-.u-mt-15 
-	= react_component :CompanyEdit,
-		{   companies: @companies,
-			divisions: @divisions,
-			company: Company.new,
-			division: CompanyDivision.new,
-			clients: client,
-		}
+.u-mt-15
+  = react_component :CompanyEdit,
+    {   companies: @companies,
+      divisions: @divisions,
+      company: Company.new,
+      division: CompanyDivision.new,
+      clients: client,
+    }
 
 = form_with url: all_edit_company_division_clients_path, local: true, method: :get, class: 'c-search u-mt-15' do |f|
   = f.label :name, '会社名'
