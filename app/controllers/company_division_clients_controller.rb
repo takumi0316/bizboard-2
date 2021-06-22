@@ -7,18 +7,12 @@ class CompanyDivisionClientsController < ApplicationController
   #  ** Includes **
   #----------------------------------------
 
-<<<<<<< HEAD
-  include Pagy::Backend
-  
-=======
->>>>>>> origin
   #----------------------------------------
   #  ** Instance variables **
   #----------------------------------------
 
   expose(:companies) { Company.all.order(:id) }
 
-<<<<<<< HEAD
   expose(:divisions) { CompanyDivision.all.order(:id) }
 
   expose(:all_clients) { CompanyDivisionClient.all.joins(company_division: :company) }
@@ -32,10 +26,6 @@ class CompanyDivisionClientsController < ApplicationController
     .joins(company_division: :company)
   }
   
-=======
-  expose_with_pagination(:clients) { CompanyDivisionClient.all.joins(company_division: :company).merge(Company.order(:id)).search(params[:name])}
-
->>>>>>> origin
   expose(:client) { CompanyDivisionClient.find_or_initialize_by id: params[:id] }
 
   #----------------------------------------
