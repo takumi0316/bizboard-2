@@ -57,6 +57,8 @@ class Activity < ApplicationRecord
 
   belongs_to :quote
 
+  belongs_to :user
+
   #----------------------------------------
   #  ** Delegates **
   #----------------------------------------
@@ -65,7 +67,7 @@ class Activity < ApplicationRecord
   #  ** Scopes **
   #----------------------------------------
 
-  scope :date_in, -> from, to { where(scheduled_date: from..to) }
+  scope :date_in, -> from, to { where(next_action_date: from..to) }
 
   #----------------------------------------
   #  ** Methods **
@@ -80,20 +82,36 @@ class Activity < ApplicationRecord
   #
   def set_free_word
 
-    self.free_word = "#{ self.memo } #{ self.quote_id } #{ self.quote.user.name } #{ self.quote.subject }"
+    self.free_word = "#{ self.memo } #{ self.user&.name } #{ self.quote&.subject } #{self.status_i18n}"
   end
 
   ##
   # 名称検索
   # @version 2018/06/10
   #
-  def self.search(word)
+  def self.search(**parameters)
+    _self = self
+    
+    if parameters[:name].blank? && parameters[:status].blank? && parameters[:date1].blank? && parameters[:date2].blank?
+      return _self
+    end
+      _self = self.date_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d'), Time.zone.strptime(parameters[:date2], '%Y-%m-%d'))
+    # フリーワードが入っている場合
+    if parameters[:name].present?
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
 
-    # 検索ワードをスペース区切りで配列化(検索ワードは2つまで対応)
-    terms = word.to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
-    query = (['free_word like ?'] * terms.size).join(' and ')
+      query = (['free_word like ?'] * terms.size).join(' and ')
 
-    where(query, *terms.map { |term| "%#{term}%" })
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
+    end
+
+
+    if parameters[:status].present?
+      _self = _self.where(next_action: parameters[:status])
+    end
+
+
+    return _self
   end
 
   ##

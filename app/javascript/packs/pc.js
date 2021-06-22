@@ -166,6 +166,8 @@ import MFLikeModal from 'components/mf_like_modal'
 
 import QuoteEditor from 'components/quote_editor'
 
+import ActivitySearch from 'components/activity_search'
+
 WebpackerReact.setup({
   Kawaii,
   Alert,
@@ -222,4 +224,5 @@ WebpackerReact.setup({
   Trials,
   MFLikeModal,
   QuoteEditor,
+  ActivitySearch,
 })
