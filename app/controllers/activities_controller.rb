@@ -11,7 +11,7 @@ class ActivitiesController < ApplicationController
   #----------------------------------------
 
   # 活動履歴
-  expose_with_pagination(:activities) { Activity.search(params[:name]).all.order(date: :desc) }
+  expose_with_pagination(:activities) { Activity.all.search(name: params[:name],status: params[:status], date1: params[:date1], date2: params[:date2]).order(date: :desc) }
 
   # 活動履歴
   expose(:activity) { Activity.find_or_initialize_by id: params[:id] || params[:activity_id] }
@@ -35,8 +35,8 @@ class ActivitiesController < ApplicationController
   def index
 
     add_breadcrumb '活動履歴'
-    @activities = activities
     @activities = activities.where(quote_id: params[:quote_id]) if params[:quote_id]
+    @users = User.all
   end
 
   ##
@@ -134,7 +134,7 @@ class ActivitiesController < ApplicationController
 
   def activity_params
 
-    params.require(:activity).permit :name, :date, :status, :memo, :attachment, :quote_id, :accurary, :next_action, :next_action_date, :scheduled_date
+    params.require(:activity).permit :name, :date, :status, :memo, :attachment, :quote_id, :accurary, :next_action, :next_action_date, :scheduled_date, :user_id
   end
 
   ##
