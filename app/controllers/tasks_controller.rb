@@ -11,11 +11,8 @@ class TasksController < ApplicationController
   #  ** Instance variables **
   #----------------------------------------
   # タスク
-  expose(:tasks) {
-    Task
-    .joins(:quote)
-    .merge(Quote.joins(client: :company_division)
-    .where(:company_divisions => {:id => current_company_division_client.company_division_id}))
+  expose(:tasks) { 
+    Task.includes(quote: [client: [:company_division, :company]]).all.order(created_at: :desc)
   }
 
   # タスク
@@ -31,6 +28,16 @@ class TasksController < ApplicationController
   #----------------------------------------
   #  ** Actions **
   #----------------------------------------
+  
+  ##
+  # 一覧
+  # @version 2018/06/10
+  #
+  def index
+    
+
+  end
+  
   ##
   # タスク編集
   # @version 2018/06/10

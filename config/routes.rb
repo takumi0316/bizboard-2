@@ -221,7 +221,7 @@
   end
 
   # タスク管理
-  resources :tasks, only: [:show, :update]
+  resources :tasks, only: [:show, :update, :index]
 
   resources :delivery_targets
 

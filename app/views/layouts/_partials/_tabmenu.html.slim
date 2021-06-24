@@ -17,3 +17,6 @@ ul.l-dashboard__tabmenu
   li
     = link_to_unless_current '請求書', invoices_path, class: 'l-dashboard__tabmenuText' do
       .l-dashboard__tabmenuText--active 請求書
+  li
+    = link_to_unless_current 'チャット', tasks_path, class: 'l-dashboard__tabmenuText' do
+      .l-dashboard__tabmenuText--active チャット

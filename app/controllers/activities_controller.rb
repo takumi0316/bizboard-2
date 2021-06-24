@@ -11,7 +11,13 @@ class ActivitiesController < ApplicationController
   #----------------------------------------
 
   # 活動履歴
-  expose_with_pagination(:activities) { Activity.all.search(name: params[:name],status: params[:status], date1: params[:date1], date2: params[:date2]).order(date: :desc) }
+  expose_with_pagination(:activities) { 
+    if params[:quote_id].blank?
+      Activity.all.search(name: params[:name],status: params[:status], date1: params[:date1], date2: params[:date2]).order(date: :desc) 
+    else
+      Activity.all.search(name: params[:name],status: params[:status], date1: params[:date1], date2: params[:date2]).where(quote_id: params[:quote_id]).order(date: :desc) 
+    end
+  }
 
   # 活動履歴
   expose(:activity) { Activity.find_or_initialize_by id: params[:id] || params[:activity_id] }
@@ -35,7 +41,6 @@ class ActivitiesController < ApplicationController
   def index
 
     add_breadcrumb '活動履歴'
-    @activities = activities.where(quote_id: params[:quote_id]) if params[:quote_id]
     @users = User.all
   end
 
@@ -105,7 +110,7 @@ class ActivitiesController < ApplicationController
 
     @sort = activity.quote_id
 
-    redirect_to activities_path(name: @sort), flash: { show: true, icon: 'success', message: '活動履歴を更新しました' }
+    redirect_to activities_path(quote_id: @sort), flash: { show: true, icon: 'success', message: '活動履歴を更新しました' }
   rescue => e
 
     redirect_back fallback_location: url_for({ action: :index }), flash: { show: true, icon: 'info', message: e.message }

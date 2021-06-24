@@ -1,0 +1,27 @@
+= render 'layouts/_partials/tabmenu'
+
+.u-mt-15
+  
+
+.c-table.u-mt-15
+  table
+    thead
+      tr
+        th 案件No.
+        th ステータス
+        th 件名
+        th お客様
+        th 納期
+        th チャット
+    tbody
+      - tasks.each do |r|
+        tr
+          td class="u-ta-center u-va-middle #{ 'p-tasks__unread' if r.messages.last.created_at.strftime("%Y %m %d") > current_user.lastaccesstask.strftime("%Y %m %d") if r.present? && r.messages.present? }"
+            = r&.quote&.quote_number
+          td.u-va-middle = r.quote&.status_i18n
+          td.u-va-middle = r.quote&.subject.truncate(25)
+          td.u-va-middle = r.quote&.client&.name
+          td.u-va-middle = r.quote&.deliver_at ? r.quote&.deliver_at.strftime("%y年%m月%d日") : nil
+          td.u-ta-center.u-va-middle = link_to 'チャットページへ', task_path(r), class: 'c-btnMain c-btn-blue'
+
+= render 'layouts/_partials/pagination'
