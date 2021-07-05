@@ -43,7 +43,8 @@ class Expendable < ApplicationRecord
     communication: 70,
     delivery: 80,
     maintenance: 90,
-    cost: 100
+    cost: 100,
+    advertisement: 110
   }
 
   enum accouting_status: { active: 0, inactive: 10 }

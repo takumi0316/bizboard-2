@@ -12,7 +12,7 @@ class TasksController < ApplicationController
   #----------------------------------------
   # タスク
   expose(:tasks) { 
-    Task.includes(quote: [client: [:company_division, :company]]).all.order(created_at: :desc)
+    Task.includes(quote: [client: [company_division: :company]]).all.order(created_at: :desc)
   }
 
   # タスク

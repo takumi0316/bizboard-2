@@ -14,4 +14,5 @@ export const ENUM_STATUS = {
   '荷造運賃': 'delivery',
   '保守料': 'maintenance',
   '外注費': 'cost',
+  '広告宣伝費': 'advertisement'
 };
