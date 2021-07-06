@@ -30,6 +30,7 @@ import {
   BPR_ERP,
   RECEPTIONS,
 } from '../properties.es6'
+import KeyBindingUtil from 'draft-js/lib/KeyBindingUtil'
 
 const ConfigModal = props => {
  
