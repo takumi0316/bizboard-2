@@ -18,8 +18,11 @@
       = f.fields_for 'quote_attributes', task.quote do |t|
         dt.l-dashboard__menuList.u-fw-bold.u-mt-15 メモ(仕様とか入力してね)
         dd.u-mt-5 = t.text_area :memo, placeholder: 'メッセージを入力', class: 'c-form-textarea', rows: 10
+      .c-flex__between
+        .u-mt-10 = f.submit task.new_record?? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'
+        - if task.catalog.name == 'Web名刺受付'
+          .u-mt-10 = link_to '名刺CSVダウンロード', bulk_download_quote_path(task.quote), class: 'c-btnMain'
 
-      .u-mt-10 = f.submit task.new_record?? '作成する' : '更新する', class: 'c-btnMain c-btn-blue'
 
   .p-tasks__message
     = render 'message'
