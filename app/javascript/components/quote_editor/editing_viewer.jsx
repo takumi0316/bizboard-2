@@ -128,6 +128,7 @@ const EditingViewer = props => {
         if(props.quote.id) {
           props.setQuote({ ...props.quote, price: price, drive_folder_id: res.data.drive_folder_id })
           window.mf_like_modal({ icon: 'success', message: '案件を保存しました' })
+          location.reload()
         }
 
         // 編集ページへリダイレクト
@@ -135,7 +136,7 @@ const EditingViewer = props => {
           const redirect = () => location.href = `${res.data.quote.id}/edit`
           window.mf_like_modal({ icon: 'success', message: '案件を保存しました', close_callback: () => redirect() })
         }
-        location.reload()
+                
       }
     }).catch(err => window.mf_like_modal({ icon: 'error', message: '案件の保存に失敗しました', close_callback: () => console.log(err) }))
   }
@@ -317,7 +318,7 @@ const EditingViewer = props => {
           </div>
           { !props.quote.lock ?
              <div className='u-ml-5'>
-               <button className='c-btnMain c-btn-blue' onClick={ saveContents }>保存</button>
+               <button className='c-btnMain c-btn-blue' onClick={ saveContents }>保存</button>               
              </div>
             : null
           }
