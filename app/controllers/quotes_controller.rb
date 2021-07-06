@@ -245,7 +245,6 @@ class QuotesController < ApplicationController
             headers << '配送先'
             headers << '表面レイアウト名'
             headers << '裏面レイアウト名'
-            headers << '請求部署名'
             flag_ids = []
             card_template.card_layouts.each { |cl| cl.contents.each { |ct| flag_ids << ct.content_flag_id } }
             flag_ids.uniq!
@@ -331,7 +330,6 @@ class QuotesController < ApplicationController
         values << "#{ quote.task&.delivery_target&.address1 }#{ quote.task&.delivery_target&.address2 }"
         values << r.head_layout.name
         values << r.tail_layout.name
-        values << quote.client.company_division.name
         flag_ids.each do |flag_id|
           flag = ContentFlag.find(flag_id)
           if r.head_layout.contents.pluck(:content_flag_id).include?(flag_id)
@@ -388,7 +386,6 @@ class QuotesController < ApplicationController
         values << "#{ quote.task&.delivery_target&.address1 }#{ quote.task&.delivery_target&.address2 }"
         values << r.card_client.head_layout.name
         values << r.card_client.tail_layout.name
-        values << quote.client.company_division.name
         parse_csv_data = CSV.parse(r.csv_file.download.force_encoding(Encoding.find('UTF-8')), liberal_parsing: true)
         head_hash, tail_hash = {}, {}
         head_content_flag_ids, tail_content_flag_ids = convert_to_content_flag_ids(parse_csv_data[1]), convert_to_content_flag_ids(parse_csv_data[4])
