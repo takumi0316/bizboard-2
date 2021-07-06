@@ -135,6 +135,7 @@ const EditingViewer = props => {
           const redirect = () => location.href = `${res.data.quote.id}/edit`
           window.mf_like_modal({ icon: 'success', message: '案件を保存しました', close_callback: () => redirect() })
         }
+        location.reload()
       }
     }).catch(err => window.mf_like_modal({ icon: 'error', message: '案件の保存に失敗しました', close_callback: () => console.log(err) }))
   }
