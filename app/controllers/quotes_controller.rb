@@ -249,6 +249,7 @@ class QuotesController < ApplicationController
             card_template.card_layouts.each { |cl| cl.contents.each { |ct| flag_ids << ct.content_flag_id } }
             flag_ids.uniq!
             flag_ids.each { |flag| headers << ContentFlag.find(flag).name }
+            headers << '請求部署'
             csv << headers
             create_csv_row_data_from_master(flag_ids, card_template, csv) if quote.task.cart.nil?
             create_csv_row_data_from_archive(flag_ids, card_template, csv, headers) if quote.task.cart.present?
@@ -370,6 +371,7 @@ class QuotesController < ApplicationController
             values << ''
           end
         end
+        values << quote.client.company_division.name
         csv << values
       end
       csv
@@ -410,6 +412,7 @@ class QuotesController < ApplicationController
             values << ''
           end
         end
+        values << quote.client.company_division.name
         csv << values
       end
       csv
