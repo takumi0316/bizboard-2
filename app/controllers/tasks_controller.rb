@@ -12,7 +12,7 @@ class TasksController < ApplicationController
   #----------------------------------------
   # タスク
   expose(:tasks) { 
-    Task.includes(quote: [client: [company_division: :company]]).all.order(created_at: :desc)
+    Task.all.includes(quote: [client: [company_division: :company]]).all.order(created_at: :desc)
   }
 
   # タスク
@@ -34,7 +34,6 @@ class TasksController < ApplicationController
   # @version 2018/06/10
   #
   def index
-    
 
   end
   

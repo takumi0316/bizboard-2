@@ -107,7 +107,7 @@ const DeliverySearch = props => {
   return (
     <div className='c-search'>
       <Fragment>
-        <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納期で検索されます</label>
+        <label>フリーワード検索 ※スペース区切り単語2つまで 日付検索は納品日で検索されます</label>
       </Fragment>
       <form method='get' action='/delivery_notes?count='>
         <div className='c-flex c-flex-alignItems__center'>
@@ -133,7 +133,7 @@ const DeliverySearch = props => {
 					/>
           <input type='hidden' name='count' value='1'/>
           <div className='u-ml-10'><input type='submit' name='commit' value='検索' className='c-btnMain'/></div>
-          <div className='u-ml-10'><a className='c-btnMain' href='/deliveries'>元に戻す</a></div>
+          <div className='u-ml-10'><a className='c-btnMain' href='/delivery_notes'>元に戻す</a></div>
         </div>
       </form>
     </div>

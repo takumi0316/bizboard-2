@@ -16,7 +16,7 @@ class DeliveryNotesController < ApplicationController
 
     Quote
     .all
-    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2])
+    .search(name: params[:name], status: params[:status], date1: params[:date1], date2: params[:date2], delivery_date: true)
     .order(date: :desc)
   }
 
