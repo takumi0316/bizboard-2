@@ -36,18 +36,22 @@ const ConductingWire = props => {
         </Fragment>
         : null
       }
-
-      { props.work.status === 'completed' ?
+      { props.work ?
         <Fragment>
-          <div className='u-ml-10'>
-            <a
-              className='c-btnMain'
-              href={ `/delivery_notes/${ props.quote.id }/edit` }
-              target='_blank'
-            >
-              納品書
-            </a>
-          </div>
+          { props.work.status === 'completed' ?
+            <Fragment>
+              <div className='u-ml-10'>
+                <a
+                  className='c-btnMain'
+                  href={ `/delivery_notes/${ props.quote.id }/edit` }
+                  target='_blank'
+                >
+                  納品書
+                </a>
+              </div>
+            </Fragment>
+            : null
+          }
         </Fragment>
         : null
       }

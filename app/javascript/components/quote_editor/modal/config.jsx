@@ -154,7 +154,7 @@ const ConfigModal = props => {
                   <DatetimePicker
                     id='date'
                     default_datetime={ props.quote.date || currentDateTime }
-                    show_time={ true }
+                    show_time={ false }
                     state={ props.quote }
                     setState={ props.setQuote }
                     applyDateTime={ setDate }
@@ -169,7 +169,7 @@ const ConfigModal = props => {
                   <DatetimePicker
                     id='delivery_note_date'
                     default_datetime={ props.quote.delivery_note_date || currentDateTime }
-                    show_time={ true }
+                    show_time={ false }
                     state={ props.quote }
                     setState={ props.setQuote }
                     applyDateTime={ setDeliveryNoteDate }
@@ -184,7 +184,7 @@ const ConfigModal = props => {
                   <DatetimePicker
                     id='deliver_at'
                     default_datetime={ props.quote.deliver_at || currentDateTime }
-                    show_time={ true }
+                    show_time={ false }
                     state={ props.quote }
                     setState={ props.setQuote }
                     applyDateTime={ setDeliverAt }
