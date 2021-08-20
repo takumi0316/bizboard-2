@@ -12,7 +12,7 @@ h1.l-dashboard__heading 担当者
     = f.label :user_id, '自社担当者'
     span.c-form__required.u-ml-10 必須
   .c-form-selectWrap.u-mb-30
-    = f.select :user_id, User.all.pluck(:name, :id), {}, { class: 'c-form-select', required: true }
+    = f.select :user_id, User.all.where(status: 10).pluck(:name, :id), {}, { class: 'c-form-select', required: true }
 
   .c-form-label
     = f.label :name, '氏名'
