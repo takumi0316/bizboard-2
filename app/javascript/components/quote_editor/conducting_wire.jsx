@@ -37,7 +37,7 @@ const ConductingWire = props => {
         : null
       }
 
-      { props.invoice.id ?
+      { props.work.status === 'completed' ?
         <Fragment>
           <div className='u-ml-10'>
             <a
