@@ -12,7 +12,12 @@ class TasksController < ApplicationController
   #----------------------------------------
   # タスク
   expose(:tasks) { 
-    Task.all.includes(quote: [client: [company_division: :company]]).all.order(created_at: :desc)
+
+    if !params[:commit].blank?
+      Task.all.search(name: params[:name],status: params[:status]).includes(quote: [client: [company_division: :company]]).order(created_at: :desc)
+    else
+      Task.all.includes(quote: [client: [company_division: :company]]).where('quotes.status': 0).order(created_at: :desc)
+    end
   }
 
   # タスク

@@ -77,4 +77,51 @@ class Task < ApplicationRecord
   #  ** Methods **
   #----------------------------------------
 
+    ##
+  # 名称検索
+  #
+  #
+  def self.search(**parameters)
+
+    _self = self
+
+    # フリーワードが入っていて、ステータスが未選択
+    if parameters[:name].present? && parameters[:status] == ''
+
+      # 検索元ネタ
+      _self = Task.all.includes(quote: [client: [company_division: :company]])
+      # 名称検索
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['quotes.free_word like ?'] * terms.size).join(' and ')
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" })
+
+      return _self
+    # フリーワードが入っていて、ステータスが選択されている
+    elsif parameters[:name].present? && parameters[:status] != ''
+
+      # 検索元ネタ
+      _self = Task.all.includes(quote: [client: [company_division: :company]])
+      # 名称検索
+      terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
+      query = (['quotes.free_word like ?'] * terms.size).join(' and ')
+      _self = _self.where(query, *terms.map { |term| "%#{term}%" }).where('quotes.status': parameters[:status])
+
+      # 日付検索
+      return _self
+    # フリーワードが空で、ステータスが入力されている
+    elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != ''
+
+      # 検索元ネタ
+      _self = Task.all.includes(quote: [client: [company_division: :company]])
+
+      # ステータス検索
+      _self = _self.where('quotes.status': parameters[:status])
+
+      return _self
+    end
+
+    return _self
+  end
+
+
 end
