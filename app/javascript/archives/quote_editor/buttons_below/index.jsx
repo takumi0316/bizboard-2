@@ -26,7 +26,7 @@ const ButtonsBelow = props => {
               : null
             }
             <Fragment>
-              { props.invoice.id ?
+              { props.work.status === 'completed' ?
                 <Fragment>
                   <div className='u-ml-10'><a className='c-btnMain' href={ `/delivery_notes/${ props.quote.id }/edit` } target='_blank'>納品書</a></div>
                 </Fragment>

@@ -39,7 +39,6 @@ class TasksController < ApplicationController
   # @version 2018/06/10
   #
   def index
-    
 
   end
   

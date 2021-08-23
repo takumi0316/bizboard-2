@@ -11,7 +11,7 @@
         th ステータス
         th 作業ステータス
         th 件名
-        th 納期
+        th 納品日
         th colspan=2
     tbody
       - quotes.each do |r|
@@ -34,7 +34,7 @@
               = r.activity&.status_i18n
           td.u-ta-center.u-va-middle = r.work&.status_i18n
           td.u-va-middle = r.subject
-          td.u-ta-center.u-va-middle = r.deliver_at ? r.deliver_at.strftime("%y年%m月%d日") : nil
+          td.u-ta-center.u-va-middle = r.delivery_note_date ? r.delivery_note_date.strftime("%y年%m月%d日") : nil
           td.u-ta-center.u-va-middle = link_to '編集', edit_delivery_note_path(r), class: 'c-btnMain c-btn-blue'
           td.u-ta-center.u-va-middle = link_to '詳細', delivery_note_path(r), class: 'c-btnMain', target: '_blank' if ActiveStorage::Blob.where(filename: "納品書＿#{r.id}.pdf").present?
 

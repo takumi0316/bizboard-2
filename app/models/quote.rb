@@ -134,6 +134,8 @@ class Quote < ApplicationRecord
 
   scope :deliverd_in, -> from, to { where(deliver_at: from..to) }
 
+  scope :delivery_in, -> from, to { where(delivery_note_date: from..to) }
+
   scope :deliverd_at, -> { order(deliver_at: :desc) }
 
   #----------------------------------------
@@ -218,7 +220,8 @@ class Quote < ApplicationRecord
     if parameters[:name].present? && parameters[:status] == ''
 
       # 名称検索
-      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if parameters[:delivery_date].nil?
+      _self = Quote.all.delivery_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if !parameters[:delivery_date].nil?
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
       query = (['free_word like ?'] * terms.size).join(' and ')
       _self = _self.where(query, *terms.map { |term| "%#{term}%" })
@@ -228,7 +231,8 @@ class Quote < ApplicationRecord
     # フリーワードが入っていて、ステータスが選択されている
     elsif parameters[:name].present? && parameters[:status] != ''
 
-      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if parameters[:delivery_date].nil?
+      _self = Quote.all.delivery_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if !parameters[:delivery_date].nil?
 
       # 名称検索
       terms = parameters[:name].to_s.gsub(/(?:[[:space:]%_])+/, ' ').split(' ')[0..1]
@@ -242,14 +246,16 @@ class Quote < ApplicationRecord
     elsif parameters[:name].blank? && parameters[:status] == ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if parameters[:delivery_date].nil?
+      _self = Quote.all.delivery_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if !parameters[:delivery_date].nil?
 
       return _self
     # フリーワードが空で、ステータスが入力されている
     elsif parameters[:name].blank? && parameters[:status] != nil && parameters[:status] != ''
 
       # 日付検索
-      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day)
+      _self = Quote.all.deliverd_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if parameters[:delivery_date].nil?
+      _self = Quote.all.delivery_in(Time.zone.strptime(parameters[:date1], '%Y-%m-%d').beginning_of_month, Time.zone.strptime(parameters[:date2], '%Y-%m-%d').end_of_day) if !parameters[:delivery_date].nil?
 
       # ステータス検索
       _self = _self.where(status: parameters[:status])
