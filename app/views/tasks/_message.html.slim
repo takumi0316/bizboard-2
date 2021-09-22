@@ -15,6 +15,8 @@
               dt = simple_format(r.content)
             .p-tasks__message-current-time = r.created_at.strftime('%H:%M')
             .p-tasks__message-current-time.u-mb-20 = r.name
+            .p-tasks__message-current-time.u-mb-20 = r.name
+
         - if r.attached_files.attached?
 
           - r.attached_files.each do |file|
@@ -31,6 +33,8 @@
                     p.u-fw-bold ダウンロードする
                   .p-tasks__message-fileTime = r.created_at.strftime('%H:%M')
                   .p-tasks__message-fileTime.u-mb-20 = r.name
+                  .p-tasks__message-current-time.u-mb-20 = r.name
+
 
       - else
 
@@ -42,6 +46,8 @@
               dt = simple_format(r.content)
             .p-tasks__message-others-time = r.created_at.strftime('%H:%M')
             .p-tasks__message-others-time.u-mb-20 = r.name
+            .p-tasks__message-current-time.u-mb-20 = r.name
+
         - if r.attached_files.attached?
 
           - r.attached_files.each do |file|
@@ -58,6 +64,8 @@
                     p.u-fw-bold ダウンロードする
                 .p-tasks__message-others-time = r.created_at.strftime('%H:%M')
                 .p-tasks__message-others-time.u-mb-20 = r.name
+                .p-tasks__message-current-time.u-mb-20 = r.name
+
 
 javascript:
 
